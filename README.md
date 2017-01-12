@@ -2,7 +2,7 @@
 
 OSX-Arc menu is a Gnome shell extension designed to replace the standard menu found in Gnome 3 this menu is based on the zorin os menu, some of the added benefits of OSX-Arc Menu are a long awaited search functionality as well as quick access to files on your system and also the current  logged in user.
 
-## 0SX-Arc Menu changes theme depending which theme is applied 
+## OSX-Arc Menu changes theme depending which theme is applied 
 
 ##### Screenshots of OSX-Arc-menu with different themes applied.
 
