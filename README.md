@@ -24,6 +24,10 @@ OSX-Arc menu is a Gnome shell extension designed to replace the standard menu fo
 
 ![A screenshot of the OSX-Arc-Shadow theme](https://github.com/LinxGem33/OSX-Arc-Menu/blob/master/screenshots/bard3.png?raw=true)
 
+##### OSX-Arc-Menu in tweak tool extensions
+
+![A screenshot of the OSX-Arc-Shadow theme](https://github.com/LinxGem33/OSX-Arc-Menu/blob/master/screenshots/extb.png?raw=true)
+
 ## Installation
 
 Will hopefully be uploaded to Gnome-extentsions once more work is done.
@@ -39,11 +43,11 @@ How To Install:
 
 1. Download 
 
-2. Extract to ~/.Home/.local/share/gnome-shell/extentions
+2. Extract to ~/.Home/.local/share/gnome-shell/extensions
 
-3. Change via tweak tool and click on extentions tab.
+3. Change via tweak tool and click on extensions tab.
 
-**Note:** This extentsion is under development and might not work on your system right now even though it works on mine. 
+**Note:** This extension is under development and might not work on your system right now even though it works on mine. 
 
 
 
