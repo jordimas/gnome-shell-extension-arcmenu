@@ -54,7 +54,7 @@ Not recommended right now !
 
 
 ## Bugs
-bug page available soon.
+Bugs should be repoted [here](https://github.com/LinxGem33/OSX-Arc-Menu/issues) on the Github issues page.
 
 ## License
 OSX-Arc Menu is available under the terms of the GPL-3.0. See `COPYING` for details.
