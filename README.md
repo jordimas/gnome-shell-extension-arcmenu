@@ -41,6 +41,8 @@ Will hopefully be uploaded to Gnome-extentsions once more work is done.
 
 How To Install:
 
+Not recommended right now !
+
 1. Download 
 
 2. Extract to ~/.Home/.local/share/gnome-shell/extensions
