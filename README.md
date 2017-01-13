@@ -41,15 +41,10 @@ Will hopefully be uploaded to Gnome-extentsions once more work is done.
 
 How To Install:
 
-Not recommended right now !
+**Not recommended right now !
 
-1. Download 
 
-2. Extract to ~/.Home/.local/share/gnome-shell/extensions
-
-3. Change via tweak tool and click on extensions tab.
-
-**Note:** This extension is under development and might not work on your system right now even though it works on mine. 
+**Note:** This extension is under development and might not work on your system right now. 
 
 
 
