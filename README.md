@@ -44,15 +44,19 @@ How To Install:
 **Not recommended right now !**
 
 
-**Note:** This extension is under development and might not work on your system right now. 
+**Note:** This extension is under development and not ready for to use on a live system right now.
+
+**Update** The first Alpha release has been set for Febuary 25th.
 
 
 
 ## Bugs
 Bugs should be reported [here](https://github.com/LinxGem33/OSX-Arc-Menu/issues) on the Github issues page.
 
+
 ## License
 OSX-Arc Menu is available under the terms of the GPL-3.0. See `COPYING` for details.
+
 
 ## Full Preview
 
