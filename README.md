@@ -44,7 +44,7 @@ How To Install:
 **Not recommended right now !**
 
 
-**Note:** This extension is under development and not ready for to use on a live system right now.
+**Note:** This extension is under development and not ready for use on live systems right now.
 
 **Update** The first Alpha release has been set for Febuary 25th.
 
