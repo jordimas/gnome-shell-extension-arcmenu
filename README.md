@@ -39,11 +39,11 @@ How To Install:
 
 1. Download 
 
-2. Extract to /share/gnome-shell/extentions
+2. Extract to /usr/share/gnome-shell/extentions
 
 3. Change via tweak tool and click on extentions tab.
 
-**Note:** Not advised unless you are a developer or know what you are doing, this extentsion is under development and might not work on your system right now even though it works on mine. 
+**Note:** Installation is Not advised unless you are a developer or know what you are doing, this extension is under development and might not work on your system right now even though it works on mine. 
 
 **update** I've uploaded the first alpha pre release note i have left defaults on some of the js files to make it easier for testers and developers to contribute this is still under development and not ready for live systems until beta 1.Also i have changed the name to Arc menu
 
