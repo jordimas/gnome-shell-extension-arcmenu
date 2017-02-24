@@ -45,7 +45,7 @@ How To Install:
 
 **Note:** Installation is Not advised unless you are a developer or know what you are doing, this extension is under development and might not work on your system right now even though it works on mine. 
 
-**update** I've uploaded the first alpha pre release note i have left defaults on some of the js files to make it easier for testers and developers to contribute this is still under development and not ready for live systems until beta 1 also i have changed the name to Arc menu make sure if you test that you test against a 3.18 gnome stack.
+**update** I've uploaded the first alpha pre release note i have left defaults on some of the js files to make it easier for testers and developers to contribute this is still under development and not ready for live systems until beta 1 also i have changed the name to Arc menu make sure if you test that you test against a 3.18 gnome stack, for deb packegers I've left the urls pointed to the default zorin os urls for easier packaging see debian folder.
 
 
 
