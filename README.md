@@ -2,7 +2,7 @@
 
 OSX-Arc menu is a Gnome shell extension designed to replace the standard menu found in Gnome 3 this menu is based on the zorin os menu, some of the added benefits of OSX-Arc Menu are a long awaited search functionality as well as quick access to files on your system and also the current  logged in user.
 
-## OSX-Arc Menu changes theme depending which theme is applied 
+## 0SX-Arc Menu changes theme depending which theme is applied 
 
 ##### Screenshots of OSX-Arc-menu with different themes applied.
 
@@ -24,10 +24,6 @@ OSX-Arc menu is a Gnome shell extension designed to replace the standard menu fo
 
 ![A screenshot of the OSX-Arc-Shadow theme](https://github.com/LinxGem33/OSX-Arc-Menu/blob/master/screenshots/bard3.png?raw=true)
 
-##### OSX-Arc-Menu in tweak tool extensions
-
-![A screenshot of the OSX-Arc-Shadow theme](https://github.com/LinxGem33/OSX-Arc-Menu/blob/master/screenshots/extb.png?raw=true)
-
 ## Installation
 
 Will hopefully be uploaded to Gnome-extentsions once more work is done.
@@ -41,22 +37,21 @@ Will hopefully be uploaded to Gnome-extentsions once more work is done.
 
 How To Install:
 
-**Not recommended right now !**
+1. Download 
 
+2. Extract to ~/.Home/.local/share/gnome-shell/extentions
 
-**Note:** This extension is under development and not ready for use on live systems right now.
+3. Change via tweak tool and click on extentions tab.
 
-**Update** The first Alpha release has been set for Febuary 25th.
+**Note:** This extentsion is under development and might not work on your system right now even though it works on mine. 
 
 
 
 ## Bugs
-Bugs should be reported [here](https://github.com/LinxGem33/OSX-Arc-Menu/issues) on the Github issues page.
-
+bug page available soon.
 
 ## License
 OSX-Arc Menu is available under the terms of the GPL-3.0. See `COPYING` for details.
-
 
 ## Full Preview
 
