@@ -1,0 +1,61 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# Gheyret Kenji<gheyret@yahoo.com>,2010.
+# Sahran <sahran.ug@gmail.com>, 2010.
+# Zeper <zeper@msn.com>, 2010.
+# Bakhtiyar<bakhtiyar108@gmail.com>, 2011
+# Oghlan Temkin <temkin119@gmail.com>,2011
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-shell&keywords=I18N+L10N&component=general\n"
+"POT-Creation-Date: 2013-03-04 08:38+0000\n"
+"PO-Revision-Date: 2013-03-07 21:01+0900\n"
+"Last-Translator: Gheyret Kenji <gheyret@gmail.com>\n"
+"Language-Team: Uyghur Computer Science Association <UKIJ@yahoogroups.com>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#: ../../../menu.js:96
+msgid "Activities Overview"
+msgstr "قىسقىچە بايان"
+
+#: ../../../menu.js:120
+msgid "Power Off"
+msgstr "توكنى ئۈز"
+
+#: ../../../menu.js:145
+msgid "Log Out"
+msgstr "تىزىمدىن چىقىش"
+
+#: ../../../menu.js:170
+msgid "Lock"
+msgstr "قۇلۇپلا"
+
+#: ../../../menu.js:198
+msgid "Back"
+msgstr "كەينى"
+
+#: ../../../menu.js:363
+msgid "Favorites"
+msgstr ""
+
+#: ../../../menu.js:783
+msgid "Home"
+msgstr "ماكان"
+
+#: ../../../menu.js:848
+msgid "Type to search…"
+msgstr "ئىزدەيدىغاننى كىرگۈزۈڭ.…"
+
+#: ../../../menu.js:932
+msgid "Software"
+msgstr "يۇمشاق دېتال"
+
+#: ../../../menu.js:936
+msgid "Settings"
+msgstr "تەڭشەكلەر"

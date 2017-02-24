@@ -1,9 +1,0 @@
-{
-"extension-id": "osx-arc-menu",
-"uuid": "osx-arc-menu@andy.c@zoho.com",
-"gettext-domain": "gnome-shell-extensions",
-"name": "Osx-arc Menu",
-"description": "The applications menu for Gnome shell.",
-"shell-version": [ "3.18" ],
-"url": "https://github.com/LinxGem33/OSX-Arc-menu.git"
-}

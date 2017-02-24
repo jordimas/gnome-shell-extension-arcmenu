@@ -1,0 +1,61 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# Siegfried-Angel Gevatter Pujals <rainct@ubuntu.com>, 2009.
+# Jordi Serratosa <jordis@softcatala.cat>, 2012.
+# Gil Forcada <gilforcada@guifi.net>, 2010, 2011, 2013, 2014.
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
+"shell&keywords=I18N+L10N&component=general\n"
+"POT-Creation-Date: 2014-09-14 19:34+0000\n"
+"PO-Revision-Date: 2014-09-14 23:32+0200\n"
+"Last-Translator: Gil Forcada <gilforcada@guifi.net>\n"
+"Language-Team: Catalan <tradgnome@softcatala.org>\n"
+"Language: ca-XV\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bits\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Gtranslator 2.91.6\n"
+
+#: ../../../menu.js:96
+msgid "Activities Overview"
+msgstr "Vista general"
+
+#: ../../../menu.js:120
+msgid "Power Off"
+msgstr "Apaga"
+
+#: ../../../menu.js:145
+msgid "Log Out"
+msgstr "Ix"
+
+#: ../../../menu.js:170
+msgid "Lock"
+msgstr "Bloqueja"
+
+#: ../../../menu.js:198
+msgid "Back"
+msgstr "Arrere"
+
+#: ../../../menu.js:363
+msgid "Favorites"
+msgstr ""
+
+#: ../../../menu.js:783
+msgid "Home"
+msgstr "Inici"
+
+#: ../../../menu.js:848
+msgid "Type to search…"
+msgstr "Teclegeu per cercar…"
+
+#: ../../../menu.js:932
+msgid "Software"
+msgstr "Programari"
+
+#: ../../../menu.js:936
+msgid "Settings"
+msgstr "Paràmetres"

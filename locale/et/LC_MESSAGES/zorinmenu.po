@@ -1,0 +1,60 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# Ivar Smolin <okul linux ee>, 2011.
+# Mattias Põldaru <mahfiaz@gmail.com>, 2010, 2011, 2012, 2013.
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
+"shell&keywords=I18N+L10N&component=general\n"
+"POT-Creation-Date: 2014-01-14 01:18+0000\n"
+"PO-Revision-Date: 2014-01-14 13:33+0300\n"
+"Last-Translator: Mattias Põldaru <mahfiaz@gmail.com>\n"
+"Language-Team: Estonian <>\n"
+"Language: et\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n!=1);\n"
+"X-Generator: Poedit 1.5.4\n"
+
+#: ../../../menu.js:96
+msgid "Activities Overview"
+msgstr "Tegevuste ülevaade"
+
+#: ../../../menu.js:120
+msgid "Power Off"
+msgstr "Lülita välja"
+
+#: ../../../menu.js:145
+msgid "Log Out"
+msgstr "Logi välja"
+
+#: ../../../menu.js:170
+msgid "Lock"
+msgstr "Lukusta"
+
+#: ../../../menu.js:198
+msgid "Back"
+msgstr "Tagasi"
+
+#: ../../../menu.js:363
+msgid "Favorites"
+msgstr "Lemmikud"
+
+#: ../../../menu.js:783
+msgid "Home"
+msgstr "Kodukataloog"
+
+#: ../../../menu.js:848
+msgid "Type to search…"
+msgstr "Otsing…"
+
+#: ../../../menu.js:932
+msgid "Software"
+msgstr "Tarkvara"
+
+#: ../../../menu.js:936
+msgid "Settings"
+msgstr "Sätted"

@@ -1,0 +1,9 @@
+{
+"extension-id": "arc-menu",
+"uuid": "arc-menu@linxgem33.com",
+"gettext-domain": "arcmenu",
+"name": "arc Menu",
+"description": "The new applications menu for Gnome 3.",
+"shell-version": [ "3.18" ],
+"url": "https://github.com/LinxGem33/OSX-Arc-Menu.git"
+}

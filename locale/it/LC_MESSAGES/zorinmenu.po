@@ -1,0 +1,61 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+#
+# Giovanni Campagna <scampa.giovanni@gmail.com>, 2011
+# Milo Casagrande <milo@milo.name>, 2013, 2014, 2015.
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
+"shell&keywords=I18N+L10N&component=extensions\n"
+"POT-Creation-Date: 2015-02-23 20:41+0000\n"
+"PO-Revision-Date: 2015-02-24 09:37+0100\n"
+"Last-Translator: Milo Casagrande <milo@milo.name>\n"
+"Language-Team: Italian <tp@lists.linux.it>\n"
+"Language: it\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n!=1);\n"
+"X-Generator: Poedit 1.7.4\n"
+
+#: ../../../menu.js:96
+msgid "Activities Overview"
+msgstr "Panoramica attività"
+
+#: ../../../menu.js:120
+msgid "Power Off"
+msgstr "Spegni"
+
+#: ../../../menu.js:145
+msgid "Log Out"
+msgstr "Termina sessione"
+
+#: ../../../menu.js:170
+msgid "Lock"
+msgstr "Blocca"
+
+#: ../../../menu.js:198
+msgid "Back"
+msgstr "Indietro"
+
+#: ../../../menu.js:363
+msgid "Favorites"
+msgstr "Preferiti"
+
+#: ../../../menu.js:783
+msgid "Home"
+msgstr "Home"
+
+#: ../../../menu.js:848
+msgid "Type to search…"
+msgstr "Digita per cercare…"
+
+#: ../../../menu.js:932
+msgid "Software"
+msgstr "Software"
+
+#: ../../../menu.js:936
+msgid "Settings"
+msgstr "Impostazioni"

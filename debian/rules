@@ -1,0 +1,28 @@
+#!/usr/bin/make -f
+# -*- makefile -*-
+
+# Uncomment this to turn on verbose mode.
+#export DH_VERBOSE=1
+
+PKD   = $(abspath $(dir $(MAKEFILE_LIST)))
+PKG   = $(word 2,$(shell dpkg-parsechangelog -l$(PKD)/changelog | grep ^Source))
+
+
+%:
+	dh $@
+
+override_dh_auto_build:
+	glib-compile-schemas --strict --targetdir=schemas/ schemas
+	for po in locale/*/*/*.po; do \
+		msgfmt -cv -o $${po%.po}.mo $$po; \
+        done
+	dh_auto_build
+
+override_dh_install:
+	# Installing translations
+	for mo in $$(cd locale; ls */*/*.mo); do \
+        	lang=$$(dirname $$mo); \
+		mkdir -p debian/$(PKG)/usr/share/locale/$$lang; \
+		cp locale/$$mo debian/$(PKG)/usr/share/locale/$$lang/zorinmenu.mo; \
+	done
+	dh_install

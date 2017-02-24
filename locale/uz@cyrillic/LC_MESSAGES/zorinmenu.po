@@ -1,0 +1,60 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# Bahodir Mansurov <6ahodir@gmail.com>, 2014.
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
+"shell&keywords=I18N+L10N&component=general\n"
+"POT-Creation-Date: 2014-10-18 23:46+0000\n"
+"PO-Revision-Date: 2014-10-19 13:38-0500\n"
+"Last-Translator: Bahodir Mansurov <6ahodir@gmail.com>\n"
+"Language-Team: Uzbek (Cyrillic) <>\n"
+"Language: uz@cyrillic\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-DamnedLies-Scope: partial\n"
+"X-Generator: Poedit 1.6.9\n"
+
+#: ../../../menu.js:96
+msgid "Activities Overview"
+msgstr "Тепадан кўриниш"
+
+#: ../../../menu.js:120
+msgid "Power Off"
+msgstr "Ўчган"
+
+#: ../../../menu.js:145
+msgid "Log Out"
+msgstr "Сеансни якунлаш"
+
+#: ../../../menu.js:170
+msgid "Lock"
+msgstr "Қулфлаш"
+
+#: ../../../menu.js:198
+msgid "Back"
+msgstr "Орқага"
+
+#: ../../../menu.js:363
+msgid "Favorites"
+msgstr ""
+
+#: ../../../menu.js:783
+msgid "Home"
+msgstr "Уй:"
+
+#: ../../../menu.js:848
+msgid "Type to search…"
+msgstr "Қидириш учун ёзинг..."
+
+#: ../../../menu.js:932
+msgid "Software"
+msgstr ""
+
+#: ../../../menu.js:936
+msgid "Settings"
+msgstr ""

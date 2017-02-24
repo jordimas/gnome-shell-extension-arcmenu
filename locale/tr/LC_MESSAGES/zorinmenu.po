@@ -1,0 +1,60 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# Osman Karagöz <osmank3@gmail.com>, 2012.
+# sabri ünal <yakushabb@gmail.com>, 2014.
+# Gökhan Gurbetoğlu <ggurbet@gmail.com>, 2014.
+# Muhammet Kara <muhammetk@gmail.com>, 2013, 2014, 2015.
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-shell&keywords=I18N+L10N&component=extensions\n"
+"POT-Creation-Date: 2015-02-14 08:39+0000\n"
+"PO-Revision-Date: 2015-02-14 15:43+0000\n"
+"Last-Translator: Muhammet Kara <muhammetk@gmail.com>\n"
+"Language-Team: Türkçe <gnome-turk@gnome.org>\n"
+"Language: tr_TR\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#: ../../../menu.js:96
+msgid "Activities Overview"
+msgstr "Genel Görünüm"
+
+#: ../../../menu.js:120
+msgid "Power Off"
+msgstr "Kapat"
+
+#: ../../../menu.js:145
+msgid "Log Out"
+msgstr "Çıkış"
+
+#: ../../../menu.js:170
+msgid "Lock"
+msgstr "Kilitle"
+
+#: ../../../menu.js:198
+msgid "Back"
+msgstr "Geri"
+
+#: ../../../menu.js:363
+msgid "Favorites"
+msgstr "Gözdeler"
+
+#: ../../../menu.js:783
+msgid "Home"
+msgstr "Başlangıç"
+
+#: ../../../menu.js:848
+msgid "Type to search…"
+msgstr "Aramak için buraya yazın..."
+
+#: ../../../menu.js:932
+msgid "Software"
+msgstr "Yazılımlar"
+
+#: ../../../menu.js:936
+msgid "Settings"
+msgstr "Ayarlar"

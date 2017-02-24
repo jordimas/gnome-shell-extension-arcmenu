@@ -1,0 +1,74 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# Og Maciel <ogmaciel@gnome.org>, 2009.
+# Rodrigo Flores <mail@rodrigoflores.org>, 2009.
+# Felipe Borges <felipe10borges@gmail.com>, 2010.
+# Henrique P. Machado <hpmachado@gnome.org>, 2010, 2011.
+# Jonh Wendell <wendell@bani.com.br>, 2010.
+# Rodrigo Padula <contato@rodrigopadula.com>, 2011.
+# Gabriel F. Vilar <cogumm@gmail.com>, 2011.
+# Adorilson Bezerra <adorilson@gmail.com>, 2011, 2014.
+# Djavan Fagundes <djavan@comum.org>, 2012.
+# Juan Diego Martins da Costa Cruz <juan.martins@ifrn.edu.br>, 2013.
+# Fábio Nogueira <fnogueira@gnome.org>, 2014.
+# Rafael Fontenelle <rffontenelle@gmail.com>, 2013, 2014,2015.
+# Georges Basile Stavracas Neto <georges.stavracas@gmail.com>, 2014.
+# Enrico Nicoletto <liverig@gmail.com>, 2013, 2014, 2015.
+# Felipe Braga <fbobraga@gmail.com>, 2015.
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
+"shell&keywords=I18N+L10N&component=general\n"
+"POT-Creation-Date: 2015-09-29 08:39+0000\n"
+"PO-Revision-Date: 2015-09-29 16:08-0300\n"
+"Last-Translator: Rafael Fontenelle <rffontenelle@gmail.com>\n"
+"Language-Team: Brazilian Portuguese <gnome-pt_br-list@gnome.org>\n"
+"Language: pt_BR\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"X-Generator: Poedit 1.8.1\n"
+"X-Project-Style: gnome\n"
+
+#: ../../../menu.js:96
+msgid "Activities Overview"
+msgstr "Panorama de atividades"
+
+#: ../../../menu.js:120
+msgid "Power Off"
+msgstr "Desligar"
+
+#: ../../../menu.js:145
+msgid "Log Out"
+msgstr "Encerrar sessão"
+
+#: ../../../menu.js:170
+msgid "Lock"
+msgstr "Bloquear"
+
+#: ../../../menu.js:198
+msgid "Back"
+msgstr "Voltar"
+
+#: ../../../menu.js:363
+msgid "Favorites"
+msgstr "Favoritos"
+
+#: ../../../menu.js:783
+msgid "Home"
+msgstr "Pasta pessoal"
+
+#: ../../../menu.js:848
+msgid "Type to search…"
+msgstr "Digite para pesquisar…"
+
+#: ../../../menu.js:932
+msgid "Software"
+msgstr "Aplicativo Software"
+
+#: ../../../menu.js:936
+msgid "Settings"
+msgstr "Configurações"

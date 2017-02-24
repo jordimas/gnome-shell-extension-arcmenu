@@ -1,0 +1,58 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# Fabio Tomat <f.t.public@gmail.com>, 2013.
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=gnome-"
+"shell&keywords=I18N+L10N&component=extensions\n"
+"POT-Creation-Date: 2015-07-05 08:17+0000\n"
+"PO-Revision-Date: 2015-07-05 14:57+0100\n"
+"Last-Translator: Fabio Tomat <f.t.public@gmail.com>\n"
+"Language-Team: Friulian <fur@li.org>\n"
+"Language: fur\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.8.1\n"
+
+#: ../../../menu.js:96
+msgid "Activities Overview"
+msgstr "Panoramiche ativitâts"
+
+#: ../../../menu.js:120
+msgid "Power Off"
+msgstr "Stude"
+
+#: ../../../menu.js:145
+msgid "Log Out"
+msgstr "Jes"
+
+#: ../../../menu.js:170
+msgid "Lock"
+msgstr "Bloche"
+
+#: ../../../menu.js:198
+msgid "Back"
+msgstr "Indaûr"
+
+#: ../../../menu.js:363
+msgid "Favorites"
+msgstr "Preferîts"
+
+#: ../../../menu.js:783
+msgid "Home"
+msgstr "Cjase"
+
+#: ../../../menu.js:848
+msgid "Type to search…"
+msgstr "Scrîf par cirî..."
+
+#: ../../../menu.js:932
+msgid "Software"
+msgstr "Software"
+
+#: ../../../menu.js:936
+msgid "Settings"
+msgstr "Impostazions"
