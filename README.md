@@ -2,25 +2,21 @@
 
 Arc menu is a Gnome shell extension designed to replace the standard menu found in Gnome 3 this menu is based on the zorin os menu, some of the added benefits of Arc Menu are a long awaited search functionality as well as quick access to files on your system and also the current  logged in user.
 
-## Arc Menu changes theme depending which theme is applied 
+##### Arc Menu on the desktop 
 
 ##### Screenshots of Arc-menu with different themes applied.
 
-![A screenshot of the Arc-Menu](https://github.com/LinxGem33/OSX-Arc-Menu/blob/master/screenshots/menul.png?raw=true)
+![A screenshot of the Arc-Menu](https://github.com/LinxGem33/Arc-Menu/blob/master/screenshots/arcm.png?raw=true)
 
-##### Arc-Menu
+##### Arc Menu in the tweak tool
 
-![A screenshot of the Arc-Darker theme](https://github.com/LinxGem33/OSX-Arc-Menu/blob/master/screenshots/menud.png?raw=true)
+![A screenshot of the Arc-Shadow theme](https://github.com/LinxGem33/Arc-Menu/blob/master/screenshots/tm.png?raw=true)
 
-##### Arc-Menu
-
-![A screenshot of the Arc-Shadow theme](https://github.com/LinxGem33/OSX-Arc-Menu/blob/master/screenshots/mend7.png?raw=true)
-
-##### Arc-Menu Icon on panel
+##### Arc Menu Icon on panel
 
 ![A screenshot of the Arc-Shadow theme](https://github.com/LinxGem33/OSX-Arc-Menu/blob/master/screenshots/bar1.png?raw=true)
 
-##### Arc-Menu Icon on panel
+##### Arc Menu Icon on panel
 
 ![A screenshot of the Arc-Shadow theme](https://github.com/LinxGem33/OSX-Arc-Menu/blob/master/screenshots/bard3.png?raw=true)
 
