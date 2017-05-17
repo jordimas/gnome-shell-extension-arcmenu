@@ -1,4 +1,4 @@
-# Arc Menu
+# ![Arc Menu](https://github.com/LinxGem33/Arc-Menu/blob/master/screenshots/aam.resized.png?raw=true) Arc Menu
 
 Arc menu is a Gnome shell extension designed to replace the standard menu found in Gnome 3 this menu is based on the zorin os menu, some of the added benefits of Arc Menu are a long awaited search functionality as well as quick access to files on your system and also the current  logged in user.
 
