@@ -2,9 +2,9 @@
 
 Arc menu is a Gnome shell extension designed to replace the standard menu found in Gnome 3 this menu is based on the zorin os menu, some of the added benefits of Arc Menu are a long awaited search functionality as well as quick access to files on your system and also the current  logged in user.
 
-##### Arc Menu on the desktop 
+##
 
-##### Screenshots of Arc-menu with different themes applied.
+##### Arc Menu on the desktop.
 
 ![A screenshot of the Arc-Menu](https://github.com/LinxGem33/Arc-Menu/blob/master/screenshots/arcm.png?raw=true)
 
@@ -12,44 +12,40 @@ Arc menu is a Gnome shell extension designed to replace the standard menu found 
 
 ![A screenshot of the Arc-Shadow theme](https://github.com/LinxGem33/Arc-Menu/blob/master/screenshots/tm.png?raw=true)
 
-##### Arc Menu Icon on panel
+##### Arc Menu Icon on the panel
 
 ![A screenshot of the Arc-Shadow theme](https://github.com/LinxGem33/OSX-Arc-Menu/blob/master/screenshots/bar1.png?raw=true)
 
-##### Arc Menu Icon on panel
+##### Arc Menu Icon on the panel
 
 ![A screenshot of the Arc-Shadow theme](https://github.com/LinxGem33/OSX-Arc-Menu/blob/master/screenshots/bard3.png?raw=true)
 
-## Installation
+##
 
-Will hopefully be uploaded to Gnome-extentsions once more work is done.
+### Installation
 
+Awaiting approval on gnome.extensions.org.
+
+##
 ### Packages
+Information to follow.
 
-
---
-
+##
 ### Manual Installation
 
 How To Install:
 
-1. Download 
+Information to follow.
 
-2. Extract to /usr/share/gnome-shell/extentions
-
-3. Change via tweak tool and click on extentions tab.
-
-**Note:** Installation is Not advised unless you are a developer or know what you are doing, this extension is under development and might not work on your system right now even though it works on mine. 
-
-**update** I've uploaded the first alpha pre release note i have left defaults on some of the js files to make it easier for testers and developers to contribute this is still under development and not ready for live systems until beta 1 also i have changed the name to Arc menu make sure if you test that you test against a 3.18 gnome stack, for deb packegers I've left the urls pointed to the default zorin os urls for easier packaging see debian folder.
-
-
-
-## Bugs
+##
+### Bugs
 bug page available soon.
 
-## License
+##
+### License
 Arc Menu is available under the terms of the GPL-3.0. See `COPYING` for details.
 
-## Full Preview
+##
+### Full Preview
 
+Information to follow.
