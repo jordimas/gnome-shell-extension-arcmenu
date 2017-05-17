@@ -3,7 +3,7 @@
  *
  * Original work: Copyright (C) 2015 Giovanni Campagna
  * Modified work: Copyright (C) 2016-2017 Zorin OS Technologies Ltd.
- * Modified work: Copyright (C) 2017 LinxGem33.
+ * Modified work: Copyright (C) 2017 LinxGem33. 
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
