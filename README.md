@@ -24,7 +24,7 @@ Arc menu is a Gnome shell extension designed to replace the standard menu found 
 
 ### Installation
 
-Awaiting approval on gnome.extensions.org.
+Awaiting approval on extensions.gnome.org.
 
 ##
 ### Packages
