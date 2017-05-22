@@ -24,22 +24,27 @@ Arc menu is a Gnome shell extension designed to replace the standard menu found 
 
 ### Installation
 
-Awaiting approval on extensions.gnome.org.
+You can now install this extension from extension.gnome.org as a one click install just click on he link below
+> ![One Click Install](https://extensions.gnome.org/extension/1228/arc-menu/)
 
 ##
 ### Packages
-Information to follow.
+Awaiting packagers
 
 ##
 ### Manual Installation
 
-How To Install:
+To install the Arc Menu, copy the Arc Menu folder to: 
 
-Information to follow.
+`~/.local/share/gnome-shell/extensions` or to `/usr/share/gnome-shell/extensions` for system-wide use. 
+
+Now open the gnome tweak tool window by executing `plank --preferences` from the system menu and then select 
+from the extensions tab on the gnome tweak tool and turn on Arc Menu.
+
 
 ##
 ### Bugs
-bug page available soon.
+Bugs should be reported [here](https://github.com/LinxGem33/Arc-Menu/issues) on the Github issues page.
 
 ##
 ### License & Terms ![](https://github.com/LinxGem33/IP-Finder/blob/master/screens/Copyleft-16.png?raw=true)
@@ -47,6 +52,6 @@ bug page available soon.
 Arc Menu is available under the terms of the GPL-2.0 license See [`COPYING`](https://github.com/LinxGem33/Arc-Menu/blob/master/COPYING) for details.
 
 ##
-### Full Preview
+### Contributions & Suggestions
 
-Information to follow.
+Any suggestions for features and contributions to the continuing development can be made via the issue tracker or contributions via a pull request.
