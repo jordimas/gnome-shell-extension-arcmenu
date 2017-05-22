@@ -25,7 +25,7 @@ Arc menu is a Gnome shell extension designed to replace the standard menu found 
 ### Installation
 
 You can now install this extension from extensions.gnome.org as a one click install just click on the link below
-> ![One Click Install](https://extensions.gnome.org/extension/1228/arc-menu)
+> ![One Click Install](https://extensions.gnome.org/extension/1228/arc-menu/)
 
 ##
 ### Packages
