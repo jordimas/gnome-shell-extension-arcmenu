@@ -38,7 +38,7 @@ To install the Arc Menu, copy the Arc Menu folder to:
 
 `~/.local/share/gnome-shell/extensions` or to `/usr/share/gnome-shell/extensions` for system-wide use. 
 
-Now open the gnome tweak tool window by executing `plank --preferences` from the system menu and then select 
+Now open the gnome tweak tool window by executing `gnome tweak tool` from the system menu and then select 
 from the extensions tab on the gnome tweak tool and turn on Arc Menu.
 
 
