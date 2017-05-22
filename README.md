@@ -12,13 +12,13 @@ Arc menu is a Gnome shell extension designed to replace the standard menu found 
 |Click image to enlarge|Click image to enlarge|Click image to enlarge|Click image to enlarge|
 
 ##
-
-
-![A screenshot of the Arc-Shadow theme](https://github.com/LinxGem33/Arc-Menu/blob/master/screenshots/tm.png?raw=true)
-##
 |Panel Icon|Panel Icon Hover|Panel Icon|Panel Icon Hover|
 |------|-----|-----|-----|
 |![](https://github.com/LinxGem33/Arc-Menu/blob/master/screenshots/m.png?raw=true)|![](https://github.com/LinxGem33/Arc-Menu/blob/master/screenshots/m2.png?raw=true)|![](https://github.com/LinxGem33/Arc-Menu/blob/master/screenshots/m3.png?raw=true)|![](https://github.com/LinxGem33/Arc-Menu/blob/master/screenshots/m4.png?raw=true)|
+
+##
+
+![A screenshot of the Arc-Shadow theme](https://github.com/LinxGem33/Arc-Menu/blob/master/screenshots/tm.png?raw=true)
 
 ##
 
