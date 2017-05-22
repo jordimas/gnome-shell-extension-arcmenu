@@ -8,15 +8,15 @@ Arc menu is a Gnome shell extension designed to replace the standard menu found 
 
 ![A screenshot of the Arc-Menu](https://github.com/LinxGem33/Arc-Menu/blob/master/screenshots/arcm.png?raw=true)
 ##
-> ##### Arc Menu in the tweak tool
+
 
 ![A screenshot of the Arc-Shadow theme](https://github.com/LinxGem33/Arc-Menu/blob/master/screenshots/tm.png?raw=true)
 ##
-> ##### Arc Menu Icon on the panel
+
 
 ![A screenshot of the Arc-Shadow theme](https://github.com/LinxGem33/OSX-Arc-Menu/blob/master/screenshots/bar1.png?raw=true)
 
-> ##### Arc Menu Icon on the panel
+
 
 ![A screenshot of the Arc-Shadow theme](https://github.com/LinxGem33/OSX-Arc-Menu/blob/master/screenshots/bard3.png?raw=true)
 
