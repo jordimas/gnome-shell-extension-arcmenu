@@ -4,8 +4,6 @@ Arc menu is a Gnome shell extension designed to replace the standard menu found 
 
 ##
 
-> ##### Arc Menu on the desktop.
-
 |Default Gnome Theme|OSX Arc Theme|Adapta Theme (Dark)|Adapta Theme (Light)|
 |:------:|:-----:|:-----:|:-----:|
 |![](https://github.com/LinxGem33/Arc-Menu/blob/master/screenshots/arcm.png?raw=true)|![](https://github.com/LinxGem33/Arc-Menu/blob/master/screenshots/ma1.png?raw=true)|![](https://github.com/LinxGem33/Arc-Menu/blob/master/screenshots/ma2.png?raw=true)|![](https://github.com/LinxGem33/Arc-Menu/blob/master/screenshots/ma3.png?raw=true)|
