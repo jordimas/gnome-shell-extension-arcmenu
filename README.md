@@ -41,6 +41,8 @@ To install the Arc Menu, copy the Arc Menu folder to:
 Now open the gnome tweak tool window by executing `gnome tweak tool` from the system menu and then select 
 from the extensions tab on the gnome tweak tool and turn on Arc Menu.
 
+**Note:** make sure you restart your system after you install this extension as the extension may not show up in gnome tweak tool.
+
 
 ##
 ### Bugs
