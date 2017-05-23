@@ -68,3 +68,17 @@ Arc Menu is available under the terms of the GPL-2.0 license See [`COPYING`](htt
 [LinxGem33](https://github.com/LinxGem33)
 
 [fishears](https://github.com/fishears)
+
+## Credits
+
+Much of the code in this extension comes from [Zorin OS menu](https://zorinos.com/).
+
+Additional credits: This extension leverages the work for [Giovanni Campagna gnome Applications Menu](https://git.gnome.org//browse/gnome-shell-extensions) used in [ZorinOS](https://zorinos.com/) to allow the menu to be embedded in the Gnome main panel.
+
+Code to set compiled schema's  taken from [fishears](https://github.com/LinxGem33/Arc-Menu/pulls?q=is%3Apr+is%3Aclosed).
+
+Thanks to the following people for contributing via pull requests:
+- @fishears compiling the schema's
+- @Giovanni Campagna original menu code base
+- @Zorin OS for modified code base
+- Bug Fixes: 
