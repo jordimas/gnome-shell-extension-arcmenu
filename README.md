@@ -4,7 +4,7 @@ Arc menu is a Gnome shell extension designed to replace the standard menu found 
 
 ##
 
-### What next for Arc Menu?
+### What's next for Arc Menu?
 
 My first initial priority was to get this extension stable enough to upload to extensions.gnome.org as this was a menu baked into the Zorin OS operating system so it had to be ported to work with the gnome shell eco system, once I've ironed out the bugs which appear after this first release i can then move onto stage two which is to start adding new features.
 
