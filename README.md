@@ -12,7 +12,7 @@ My first initial priority was to get this extension stable enough to upload to e
 
 ### About the Developer
 
-Hi my alias is LinxGem33 I’m better known for being the creator of OSX Arc Collection a theme based on Arc and also more recently Arc menu i have a passion for FOSS and GNU/Linux, i have recently started learning JavaScript about a month and a half now but I’m starting to pick it up slowly hence why I’ve started to develop gnome extensions and help out the community with extensions Id like to see in the gnome-shell eco system so please feel free to contribute if you feel that you could add a feature or help out in any way.
+Hi my alias is LinxGem33 I’m better known for being the creator of OSX Arc Collection a theme based on Arc and also more recently Arc menu i have a passion for FOSS and GNU/Linux, i have recently started learning JavaScript about a month and a half now although JavaScript is not my native programming language but I’m starting to pick it up slowly hence why I’ve started to develop gnome extensions and help out the community with extensions Id like to see in the gnome-shell eco system so please feel free to contribute if you feel that you could add a feature or help out in any way.
 
 ##
 |Default Gnome Theme|OSX Arc Theme|Adapta Theme (Dark)|Adapta Theme (Light)|
