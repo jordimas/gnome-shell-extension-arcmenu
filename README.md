@@ -73,9 +73,9 @@ Additional credits: This extension leverages the work for [Giovanni Campagna gno
 Code to set compiled schema's  taken from [fishears](https://github.com/LinxGem33/Arc-Menu/pulls?q=is%3Apr+is%3Aclosed).
 
 Thanks to the following people for contributing via pull requests:
-- @fishears compiling the schema's
-- @ JasonLG1979  menu style fix
+- @[fishears](https://github.com/fishears/Arc-Menu) compiling the schema's
+- @[JasonLG1979](https://github.com/JasonLG1979/Arc-Menu)  menu style fix
 
 - Bug Fixes: 
 
-- @ JasonLG1979  menu style fix
+- @[JasonLG1979](https://github.com/JasonLG1979/Arc-Menu)  menu style fix
