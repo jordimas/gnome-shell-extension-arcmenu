@@ -77,4 +77,5 @@ Thanks to the following people for contributing via pull requests:
 - @ JasonLG1979  menu style fix
 
 - Bug Fixes: 
+
 -@ JasonLG1979  menu style fix
