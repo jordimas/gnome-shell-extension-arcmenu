@@ -74,5 +74,7 @@ Code to set compiled schema's  taken from [fishears](https://github.com/LinxGem3
 
 Thanks to the following people for contributing via pull requests:
 - @fishears compiling the schema's
+- @ JasonLG1979  menu style fix
 
 - Bug Fixes: 
+-@ JasonLG1979  menu style fix
