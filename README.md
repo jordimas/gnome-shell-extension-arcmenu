@@ -78,4 +78,4 @@ Thanks to the following people for contributing via pull requests:
 
 - Bug Fixes: 
 
--@ JasonLG1979  menu style fix
+- @ JasonLG1979  menu style fix
