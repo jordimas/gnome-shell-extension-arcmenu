@@ -62,14 +62,9 @@ Bugs should be reported [here](https://github.com/LinxGem33/Arc-Menu/issues) on 
 
 Arc Menu is available under the terms of the GPL-2.0 license See [`COPYING`](https://github.com/LinxGem33/Arc-Menu/blob/master/COPYING) for details.
 
-##
-### List of Contributors
+## 
 
-[LinxGem33](https://github.com/LinxGem33)
-
-[fishears](https://github.com/fishears)
-
-## Credits
+### Credits
 
 Much of the code in this extension comes from [Zorin OS menu](https://zorinos.com/).
 
@@ -79,6 +74,5 @@ Code to set compiled schema's  taken from [fishears](https://github.com/LinxGem3
 
 Thanks to the following people for contributing via pull requests:
 - @fishears compiling the schema's
-- @Giovanni Campagna original menu code base
-- @Zorin OS for modified code base
+
 - Bug Fixes: 
