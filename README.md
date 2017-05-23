@@ -10,7 +10,7 @@ My first initial priority was to get this extension stable enough to upload to e
 
 ##
 
-### About the Developer
+### Contributions & Development
 
 Hi my alias is LinxGem33 I’m better known for being the creator of OSX Arc Collection a theme based on Arc and also more recently Arc menu i have a passion for FOSS and GNU/Linux, i have recently started learning JavaScript about a month and a half now although JavaScript is not my native programming language but I’m starting to pick it up slowly hence why I’ve started to develop gnome extensions and help out the community with extensions Id like to see in the gnome-shell eco system so please feel free to contribute if you feel that you could add a feature or help out in any way.
 
@@ -63,6 +63,8 @@ Bugs should be reported [here](https://github.com/LinxGem33/Arc-Menu/issues) on 
 Arc Menu is available under the terms of the GPL-2.0 license See [`COPYING`](https://github.com/LinxGem33/Arc-Menu/blob/master/COPYING) for details.
 
 ##
-### Contributions & Suggestions
+### List of Contributors
 
-Any suggestions for features and contributions to the continuing development can be made via the issue tracker or contributions via a pull request.
+[LinxGem33](https://github.com/LinxGem33)
+
+[fishears](https://github.com/fishears)
