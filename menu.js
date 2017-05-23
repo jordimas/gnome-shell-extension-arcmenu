@@ -977,11 +977,10 @@ const ApplicationsButton = new Lang.Class({
         // Left Box
         if(this._settings.get_enum('visible-menus') == visibleMenus.ALL ||
            this._settings.get_enum('visible-menus') == visibleMenus.APPS_ONLY) {
-            this.leftBox = new St.BoxLayout({ vertical: true });
-            this.leftBox.style = ('width: 20em;');
+            this.leftBox = new St.BoxLayout({ vertical: true, style_class: 'left-box' });
             this.applicationsScrollBox = new St.ScrollView({ x_fill: true, y_fill: false,
                                                              y_align: St.Align.START,
-                                                             style_class: 'apps-menu vfade' });
+                                                             style_class: 'apps-menu vfade left-scroll-area' });
             this.applicationsScrollBox.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC);
             let vscroll = this.applicationsScrollBox.get_vscroll_bar();
             vscroll.connect('scroll-start', Lang.bind(this, function() {
@@ -995,8 +994,7 @@ const ApplicationsButton = new Lang.Class({
                                                          y_align: St.Align.START });
 
             // Create search box
-            this.searchBox = new St.BoxLayout({ style_class: 'search-box' });
-            this.searchBox.set_style("padding-top: 15px; padding-left: 15px; padding-right: 6px");
+            this.searchBox = new St.BoxLayout({ style_class: 'search-box search-box-padding' });
             this._searchInactiveIcon = new St.Icon({ style_class: 'search-entry-icon', icon_name: 'edit-find-symbolic', icon_size: 16 });
             this._searchActiveIcon = new St.Icon({ style_class: 'search-entry-icon', icon_name: 'edit-clear-symbolic', icon_size: 16 });
             this.searchEntry = new St.Entry({ name: 'search-entry',
@@ -1039,8 +1037,7 @@ const ApplicationsButton = new Lang.Class({
         // Right Box
         if(this._settings.get_enum('visible-menus') == visibleMenus.ALL ||
            this._settings.get_enum('visible-menus') == visibleMenus.SYSTEM_ONLY) {
-            this.rightBox = new St.BoxLayout({ vertical: true });
-            this.rightBox.style = ('width: 15em;');
+            this.rightBox = new St.BoxLayout({ vertical: true, style_class: 'right-box' });
             this.actionsBox = new PopupMenu.PopupBaseMenuItem({ reactive: false,
                                                                 can_focus: false });
 

@@ -17,14 +17,31 @@
  */
 
 .main-box {
-    height: 505px;
+    height: 36em;
 }
 
+.left-scroll-area {
+    width: 20em;
+}
+
+.left-box {
+    width: 20em;
+}
+
+.right-box {
+    width: 18em;
+}
+
+.search-box-padding {
+    padding-top: 1em; 
+    padding-left: 1em;
+    padding-right: 0.25em;
+}
 /* Style to add padding to the menu's app section */
 .apps-menu:ltr {
-    padding-right: 3px;
+    padding-right: 0.1875em;
 }
 
 .apps-menu:rtl {
-    padding-left: 3px;
+    padding-left: 0.1875em;
 }
