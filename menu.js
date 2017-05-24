@@ -84,6 +84,18 @@ const DEFAULT_DIRECTORIES = [
     GLib.UserDirectory.DIRECTORY_VIDEOS,
 ];
 
+function setIconAsync(icon, gioFile, fallback_icon_name) {
+  gioFile.load_contents_async(null, function(source, result) {
+    try {
+      let bytes = source.load_contents_finish(result)[1];
+      icon.gicon = Gio.BytesIcon.new(bytes);
+    }
+    catch(err) {
+      icon.icon_name = fallback_icon_name;
+    }
+  });
+}
+
 // Removing the default behaviour which selects a hovered item if the space key is pressed.
 // This avoids issues when searching for an app with a space character in its name.
 const BaseMenuItem = new Lang.Class({
@@ -293,13 +305,7 @@ const UserMenuItem = new Lang.Class({
             if (this._userIcon) {
                 let iconFileName = this._user.get_icon_file();
                 let iconFile = Gio.file_new_for_path(iconFileName);
-                let icon;
-                if (iconFile.query_exists(null)) {
-                    icon = new Gio.FileIcon({file: iconFile});
-                } else {
-                    icon = new Gio.ThemedIcon({name: 'avatar-default'});
-                }
-                this._userIcon.set_gicon (icon);
+                setIconAsync(this._userIcon, iconFile, 'avatar-default');
             }
         }
     },
