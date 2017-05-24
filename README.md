@@ -68,7 +68,7 @@ Code to set compiled schema's  taken from [fishears](https://github.com/LinxGem3
 
 Thanks to the following people for contributing via pull requests:
 - @[fishears](https://github.com/fishears/Arc-Menu) compiling the schema's
-- @[JasonLG1979](https://github.com/JasonLG1979/Arc-Menu)  menu style fix
+- @[JasonLG1979](https://github.com/JasonLG1979/Arc-Menu)  (1) menu style fix, (2) Asynchronously set an icon and handle errors
 
 - Bug Fixes: 
 
