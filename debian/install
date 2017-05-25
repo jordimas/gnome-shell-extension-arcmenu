@@ -1,5 +1,0 @@
-*.js     usr/share/gnome-shell/extensions/zorin-menu@zorinos.com
-*.json   usr/share/gnome-shell/extensions/zorin-menu@zorinos.com
-*.css   usr/share/gnome-shell/extensions/zorin-menu@zorinos.com
-*.svg   usr/share/gnome-shell/extensions/zorin-menu@zorinos.com
-schemas/*.xml  usr/share/glib-2.0/schemas
