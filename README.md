@@ -67,7 +67,7 @@ Additional credits: This extension leverages the work for [Giovanni Campagna gno
 ### Pull Requests
 
 Thanks to the following people for contributing via pull requests:
-- @[fishears](https://github.com/fishears/Arc-Menu) (1) compiling the schema's (2) Added suspend button & re-order buttons
+- @[fishears](https://github.com/fishears/Arc-Menu) (1) compiling the schema's (2) Added suspend button and re-order buttons
 - @[JasonLG1979](https://github.com/JasonLG1979/Arc-Menu)  (1) menu style fix, (2) Asynchronously set an icon and handle errors
 - @[lexruee](https://github.com/lexruee/Arc-Menu) (1) Added the shortcut 'Tweak Tool' (2) shortcut for opening the trash 
 
