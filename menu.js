@@ -58,6 +58,7 @@ const Tweener = imports.ui.tweener;
 const DND = imports.ui.dnd;
 const AppDisplay = imports.ui.appDisplay;
 const Mainloop = imports.mainloop;
+const LoginManager = imports.misc.loginManager;
 
 // Menu Size variables
 const APPLICATION_ICON_SIZE = 32;
@@ -186,6 +187,37 @@ const LogoutButton = new Lang.Class({
     _onClick: function() {
         this._button.menu.toggle();
         this._button._session.LogoutRemote(0);
+    }
+});
+
+// Suspend Button
+const SuspendButton = new Lang.Class({
+    Name: 'SuspendButton',
+
+    // Initialize the button
+    _init: function(button) {
+        this._button = button;
+        this.actor = new St.Button({
+            reactive: true,
+            can_focus: true,
+            track_hover: true,
+            accessible_name: _("Suspend"),
+            style_class: 'system-menu-action'
+        });
+        this.actor.child = new St.Icon({ icon_name: 'media-playback-pause-symbolic' });
+        this.actor.connect('clicked', Lang.bind(this, this._onClick));
+    },
+
+    // Activate the button (Suspend the system)
+    _onClick: function() {
+        this._button.menu.toggle();
+        let loginManager = LoginManager.getLoginManager();
+            loginManager.canSuspend(Lang.bind(this,
+                function(result) {
+                    if (result) {
+                        loginManager.suspend();
+                    }
+            }));
     }
 });
 
@@ -1048,11 +1080,11 @@ const ApplicationsButton = new Lang.Class({
                                                                 can_focus: false });
 
             // Add session buttons to menu
-            let power = new PowerButton(this);
-            this.actionsBox.actor.add(power.actor, { expand: true,
-                                                     x_fill: false,
-                                                     y_align: St.Align.START
-                                                   });
+            let logout = new LogoutButton(this);
+            this.actionsBox.actor.add(logout.actor, { expand: true,
+                                                      x_fill: false,
+                                                      y_align: St.Align.START
+                                                    });
 
             let lock = new LockButton(this);
             this.actionsBox.actor.add(lock.actor, { expand: true,
@@ -1060,11 +1092,17 @@ const ApplicationsButton = new Lang.Class({
                                                     y_align: St.Align.START
                                                   });
 
-            let logout = new LogoutButton(this);
-            this.actionsBox.actor.add(logout.actor, { expand: true,
-                                                      x_fill: false,
-                                                      y_align: St.Align.START
-                                                    });
+            let suspend = new SuspendButton(this);
+            this.actionsBox.actor.add(suspend.actor, { expand: true,
+                                                    x_fill: false,
+                                                    y_align: St.Align.START
+                                                  });
+
+            let power = new PowerButton(this);
+            this.actionsBox.actor.add(power.actor, { expand: true,
+                                                     x_fill: false,
+                                                     y_align: St.Align.START
+                                                   });
 
             let user = new UserMenuItem(this);
             this.rightBox.add(user.actor, { expand: false,
