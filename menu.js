@@ -984,6 +984,10 @@ const ApplicationsButton = new Lang.Class({
             let placeMenuItem = new PlaceMenuItem(this, placeInfo);
             this.rightBox.add_actor(placeMenuItem.actor);
         }
+        
+        let placeInfo = new PlaceInfo(Gio.File.new_for_uri("trash:///"), _("Trash"));
+        let placeMenuItem = new PlaceMenuItem(this, placeInfo);
+        this.rightBox.add_actor(placeMenuItem.actor);
     },
 
     // Scroll to a specific button (menu item) in the applications scroll view
