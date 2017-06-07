@@ -65,9 +65,6 @@ const HORIZ_FACTOR = 5;
 const NAVIGATION_REGION_OVERSHOOT = 50;
 const MINIMUM_PADDING = 4;
 
-// Menu panel icon
-const menu_icon = Me.path + '/zorin-icon-symbolic.svg';
-
 // Menu Layout Enum
 const visibleMenus = {
     ALL: 0,
@@ -699,10 +696,8 @@ const ApplicationsButton = new Lang.Class({
         Main.panel.menuManager.addMenu(this.menu);
         this.actor.accessible_role = Atk.Role.LABEL;
         let hbox = new St.BoxLayout({ style_class: 'panel-status-menu-box' });
-        this._iconSize = 32;
-        this._icon = new St.Icon({ gicon: Gio.icon_new_for_string(menu_icon),
-                                   icon_size: this._iconSize,
-                                   style_class: 'popup-menu-icon' });
+        this._icon = new St.Icon({ icon_name: 'start-here-symbolic',
+                                    style_class: 'popup-menu-icon'});
         hbox.add_child(this._icon);
         hbox.add_child(PopupMenu.arrowIcon(St.Side.BOTTOM));
         this.actor.add_actor(hbox);
