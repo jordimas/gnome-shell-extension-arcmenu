@@ -69,7 +69,7 @@ Additional credits: This extension leverages the work for [Giovanni Campagna gno
 Thanks to the following people for contributing via pull requests:
 - @[fishears](https://github.com/fishears/Arc-Menu) compiling the schema's
 - @[JasonLG1979](https://github.com/JasonLG1979/Arc-Menu)  (1) menu style fix, (2) Asynchronously set an icon and handle errors
-- @[lexruee](https://github.com/lexruee/Arc-Menu) (1)Add the shortcut 'Tweak Tool' to the Arc Menu
+- @[lexruee](https://github.com/lexruee/Arc-Menu) (1) Added the shortcut 'Tweak Tool'
 
 
 - Bug Fixes: 
