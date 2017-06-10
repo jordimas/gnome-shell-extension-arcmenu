@@ -3,16 +3,18 @@ CSS=*.css
 MD=*.md
 JSON=*.json
 TXT=AUTHORS COPYING
-IMG=*.svg
 DIRS=schemas locale
 
 DEST=~/.local/share/gnome-shell/extensions/arc-menu@linxgem33.com
 
 
-install:
+compile:
+	glib-compile-schemas ./schemas
+
+install: compile
 	mkdir -p $(DEST)
-	cp $(JS) $(CSS) $(JSON) $(MD) $(TXT) $(IMG) $(DEST)
+	cp $(JS) $(CSS) $(JSON) $(MD) $(TXT) $(DEST)
 	cp -r $(DIRS) $(DEST)
 	
 uninstall:
-	rm -rfi $(DEST)
+	rm -rf $(DEST)
