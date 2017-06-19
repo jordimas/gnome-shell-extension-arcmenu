@@ -16,6 +16,3 @@ let settings = Convenience.getSettings();
 
 const AppEntry = new Lang.Class({
     Name: 'AppEntry',
-
-});
-
