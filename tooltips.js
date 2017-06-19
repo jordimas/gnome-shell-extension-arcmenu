@@ -8,5 +8,3 @@ function Tooltip(item, initTitle) {
     this._init(item, initTitle);
 }
 
-};
-
