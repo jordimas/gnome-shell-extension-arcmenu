@@ -80,7 +80,7 @@ const DEFAULT_DIRECTORIES = [
     GLib.UserDirectory.DIRECTORY_MUSIC,
     GLib.UserDirectory.DIRECTORY_PICTURES,
     GLib.UserDirectory.DIRECTORY_VIDEOS,
-    GLib.UserDirectory.DIRECTORY_TRASH,
+	
 ];
 
 function setIconAsync(icon, gioFile, fallback_icon_name) {
