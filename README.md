@@ -41,11 +41,10 @@ To install the Arc Menu, copy the Arc Menu folder to:
 
 `~/.local/share/gnome-shell/extensions` or to `/usr/share/gnome-shell/extensions` for system-wide use. 
 
+**Note**: make sure you change the name of the folder to `arc-menu@linxgem33.com` and also delete the make file in the folder and then reboot your system or log out and back in again.
+
 Now open the gnome tweak tool window by executing `gnome tweak tool` from the system menu and then select 
 from the extensions tab on the gnome tweak tool and turn on Arc Menu.
-
-**Note:** make sure you restart your system after you install this extension as the extension may not show up in gnome tweak tool.
-
 
 ##
 ### Bugs

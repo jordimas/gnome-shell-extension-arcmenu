@@ -51,11 +51,11 @@ function init(metadata) {
 
 // Enable the extension
 function enable() {
-    settings = Convenience.getSettings('org.gnome.shell.extensions.zorin-menu');
+    settings = Convenience.getSettings(Me.metadata['settings-schema']);
     activitiesButton = Main.panel.statusArea['activities'];
     Main.panel._leftBox.remove_child(activitiesButton.container);
     appsMenuButton = new Menu.ApplicationsButton(settings);
-    Main.panel.addToStatusArea('zorin-menu', appsMenuButton, 0, 'left');
+    Main.panel.addToStatusArea('arc-menu', appsMenuButton, 0, 'left');
     bindSettingsChanges();
     oldGetAppFromSource = Dash.getAppFromSource;
     Dash.getAppFromSource = getAppFromSource;
@@ -86,8 +86,10 @@ function getAppFromSource(source) {
 }
 
 function bindSettingsChanges() {
-    settings.connect('changed::visible-menus', function(){
-        disable();
-        enable();
-    });
+    settings.connect('changed::visible-menus', function() { appsMenuButton.updateMenu(); });
+    settings.connect('changed::disable-activities-hotcorner', function() { appsMenuButton.updateMenu(); });
+    settings.connect('changed::menu-hotkey', function() { appsMenuButton.updateMenu(); });
+    settings.connect('changed::enable-menu-keybinding', function() { appsMenuButton.updateMenu(); });
 }
+
+

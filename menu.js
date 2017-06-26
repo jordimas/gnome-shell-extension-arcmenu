@@ -3,7 +3,7 @@
  *
  * Original work: Copyright (C) 2015 Giovanni Campagna
  * Modified work: Copyright (C) 2016-2017 Zorin OS Technologies Ltd.
- * Modified work: Copyright (C) 2017 LinxGem33. 
+ * Modified work: Copyright (C) 2017 LinxGem33, lexruee
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -28,7 +28,6 @@
  * https://github.com/The-Panacea-Projects/Gnomenu
  */
 
-
 // Import Libraries
 const Atk = imports.gi.Atk;
 const GMenu = imports.gi.GMenu;
@@ -47,11 +46,14 @@ const AccountsService = imports.gi.AccountsService;
 const Gio = imports.gi.Gio;
 const Util = imports.misc.util;
 const GnomeSession = imports.misc.gnomeSession;
-const Gettext = imports.gettext.domain('zorinmenu');
-const _ = Gettext.gettext;
+
 const ExtensionUtils = imports.misc.extensionUtils;
 const Me = ExtensionUtils.getCurrentExtension();
+const Helper = Me.imports.helper;
 const Convenience = Me.imports.convenience;
+const Gettext = imports.gettext.domain(Me.metadata['gettext-domain']);
+const _ = Gettext.gettext;
+
 const SecondaryMenu = Me.imports.secondaryMenu;
 const appSys = Shell.AppSystem.get_default();
 const Tweener = imports.ui.tweener;
@@ -59,6 +61,7 @@ const DND = imports.ui.dnd;
 const AppDisplay = imports.ui.appDisplay;
 const Mainloop = imports.mainloop;
 const LoginManager = imports.misc.loginManager;
+
 
 // Menu Size variables
 const APPLICATION_ICON_SIZE = 32;
@@ -701,15 +704,6 @@ const ApplicationsMenu = new Lang.Class({
         if (this._button.hotCorner.actor)
             this._button.hotCorner.actor.show();
         this.parent(animate);
-    },
-
-    // Toggle menu open state
-    toggle: function() {
-        if (!this.isOpen) {
-            if (Main.overview.visible)
-                Main.overview.hide();
-        }
-        this.parent();
     }
 });
 
@@ -725,6 +719,7 @@ const ApplicationsButton = new Lang.Class({
         this._settings = settings;
         this.parent(1.0, null, false);
         this._session = new GnomeSession.SessionManager();
+
         this.setMenu(new ApplicationsMenu(this.actor, 1.0, St.Side.TOP, this, this._settings));
         Main.panel.menuManager.addMenu(this.menu);
         this.actor.accessible_role = Atk.Role.LABEL;
@@ -743,9 +738,7 @@ const ApplicationsButton = new Lang.Class({
         this._hidingId = Main.overview.connect('hiding', Lang.bind(this, function() {
             this.actor.remove_accessible_state (Atk.StateType.CHECKED);
         }));
-        Main.layoutManager.connect('startup-complete',
-                                   Lang.bind(this, this._setKeybinding));
-        this._setKeybinding();
+
         this.reloadFlag = false;
         this._createLayout();
         this._display();
@@ -764,6 +757,47 @@ const ApplicationsButton = new Lang.Class({
             function() {
                 this._redisplay();
             }));
+
+        // Create a Hot Corner Manager, a Menu Keybinder as well as a Keybinding Manager
+        this._hotCornerManager = new Helper.HotCornerManager();
+        this._menuHotKeybinder = new Helper.MenuHotKeybinder(this._settings,
+            Lang.bind(this, function() {
+                this.menu.toggle();
+            }));
+        this._keybindingManager = new Helper.KeybindingManager(this._settings);
+
+        this._applySettings();
+    },
+
+    // Apply the settings from the arc-menu schema
+    _applySettings: function() {
+        if(this._settings.get_boolean('disable-activities-hotcorner')) {
+            // Keep it simple and stupid, disable all hot corners.
+            this._hotCornerManager.disableHotCorners();
+        } else {
+            this._hotCornerManager.enableHotCorners();
+        }
+
+        let menuHotkeyPos = this._settings.get_enum('menu-hotkey');
+        if(menuHotkeyPos) {
+           this._menuHotKeybinder.enable();
+        } else {
+            this._menuHotKeybinder.disable();
+        }
+
+        if(this._settings.get_boolean('enable-menu-keybinding')) {
+            this._keybindingManager.bind('menu-keybinding-text', 'menu-keybinding',
+                Lang.bind(this, function() {
+                    this.menu.toggle();
+                }));
+        } else {
+            this._keybindingManager.unbind('menu-keybinding-text');
+        }
+    },
+
+    // Method or callback function for updating the menu
+    updateMenu: function() {
+        this._applySettings();
     },
 
     _adjustIconSize: function() {
@@ -823,12 +857,6 @@ const ApplicationsButton = new Lang.Class({
         Main.overview.disconnect(this._hidingId);
         Main.layoutManager.disconnect(this._panelBoxChangedId);
         appSys.disconnect(this._installedChangedId);
-        Main.wm.setCustomKeybindingHandler('panel-main-menu',
-                                           Shell.ActionMode.NORMAL |
-                                           Shell.ActionMode.OVERVIEW,
-                                           Main.sessionMode.hasOverview ?
-                                           Lang.bind(Main.overview, Main.overview.toggle) :
-                                           null);
     },
 
     // Handle captured event
@@ -897,16 +925,6 @@ const ApplicationsButton = new Lang.Class({
            this.mainBox.show();
        }
        this.parent(menu, open);
-    },
-
-    // Set menu key binding
-    _setKeybinding: function() {
-        Main.wm.setCustomKeybindingHandler('panel-main-menu',
-                                           Shell.ActionMode.NORMAL |
-                                           Shell.ActionMode.OVERVIEW,
-                                           Lang.bind(this, function() {
-                                               this.menu.toggle();
-                                           }));
     },
 
     // Redisplay the menu
@@ -980,10 +998,7 @@ const ApplicationsButton = new Lang.Class({
             let placeMenuItem = new PlaceMenuItem(this, placeInfo);
             this.rightBox.add_actor(placeMenuItem.actor);
         }
-        
-        let placeInfo = new PlaceInfo(Gio.File.new_for_uri("trash:///"), _("Trash"));
-        let placeMenuItem = new PlaceMenuItem(this, placeInfo);
-        this.rightBox.add_actor(placeMenuItem.actor);
+	    
     },
 
     // Scroll to a specific button (menu item) in the applications scroll view
@@ -1303,6 +1318,9 @@ const ApplicationsButton = new Lang.Class({
 
     // Destroy (deactivate) the menu
     destroy: function() {
+        this._hotCornerManager.destroy();
+        this._menuHotKeybinder.destroy();
+        this._keybindingManager.destroy();
         this.menu.actor.get_children().forEach(function(c) { c.destroy() });
         this.parent();
     }
