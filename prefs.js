@@ -32,6 +32,11 @@ const _ = Gettext.gettext;
 
 // Constants
 const SUPER_L = 'Super_L'
+const MENU_POSITION = {
+    Left: 0,
+    Center: 1,
+    Right: 2
+};
 
 /*
  * Arc Menu Preferences Widget
@@ -228,6 +233,64 @@ const GeneralSettingsPage = new Lang.Class({
         menuKeybindingBox.add(menuKeybindingDescriptionBox);
         vbox.add(menuKeybindingBox);
 
+         /*
+         * Menu Position Box
+         */
+         let menuPositionBox = new Gtk.Box({
+            spacing: 20,
+            orientation: Gtk.Orientation.HORIZONTAL,
+            homogeneous: false,
+            margin_left: 5,
+            margin_top: 5,
+            margin_bottom: 5,
+            margin_right: 5
+        });
+        let menuPositionBoxLabel = new Gtk.Label({
+            label: _("Menu position in panel"),
+            use_markup: true,
+            xalign: 0,
+            hexpand: true
+        });
+
+        let menuPositionLeftButton = new Gtk.RadioButton({
+        	label: _('Left')
+        });
+        let menuPositionCenterButton = new Gtk.RadioButton({
+        label: _('Center'),
+        group: menuPositionLeftButton
+        });
+        let menuPositionRightButton = new Gtk.RadioButton({
+            label: _('Right'),
+            group: menuPositionLeftButton
+        });
+        // callback handlers for the radio buttons
+        menuPositionLeftButton.connect('clicked', Lang.bind(this, function() {
+            this.settings.set_enum('position-in-panel', MENU_POSITION.Left);
+        }));
+        menuPositionCenterButton.connect('clicked', Lang.bind(this, function() {
+            this.settings.set_enum('position-in-panel', MENU_POSITION.Center);
+        }));
+        menuPositionRightButton.connect('clicked', Lang.bind(this, function() {
+            this.settings.set_enum('position-in-panel', MENU_POSITION.Right);
+        }));
+
+        switch(this.settings.get_enum('position-in-panel')) {
+            case MENU_POSITION.Left:
+                menuPositionLeftButton.set_active(true);
+                break;
+            case MENU_POSITION.Center:
+                menuPositionCenterButton.set_active(true);
+                break;
+            case MENU_POSITION.Right:
+                menuPositionRightButton.set_active(true);
+                break;
+		}
+
+        menuPositionBox.add(menuPositionBoxLabel);
+        menuPositionBox.add(menuPositionLeftButton);
+        menuPositionBox.add(menuPositionCenterButton);
+        menuPositionBox.add(menuPositionRightButton);
+        vbox.add(menuPositionBox);
 
         this.add(vbox);
     }

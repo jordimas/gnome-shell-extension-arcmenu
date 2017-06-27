@@ -10,6 +10,11 @@
     <value value='1' nick='Super_L'/>
     <value value='2' nick='Super_R'/>
   </enum>
+  <enum id='org.gnome.shell.extensions.arc-menu.menu-position'>
+    <value value="0" nick="Left"/>
+    <value value="1" nick="Center"/>
+    <value value="2" nick="Right"/>
+  </enum>
   <schema path="/org/gnome/shell/extensions/arc-menu/" id="org.gnome.shell.extensions.arc-menu">
     <key name="visible-menus" enum="org.gnome.shell.extensions.arc-menu.visible">
       <default>'ALL'</default>
@@ -40,6 +45,10 @@
       <default><![CDATA[['<Super>x']]]></default>
       <summary>Keybinding to open the Arc Menu.</summary>
       <description>Keybinding to open the Arc Menu.</description>
+    </key>
+    <key name="position-in-panel" enum="org.gnome.shell.extensions.arc-menu.menu-position">
+      <default>'Left'</default>
+      <summary>Position in Panel</summary>
     </key>
   </schema>
 </schemalist>
