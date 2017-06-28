@@ -82,9 +82,9 @@ and it never dies.
 We are often unaware of it,
 but it is always awake.
 ##
-|:star:Top Contributor|Developer Name|
+|:star: - Top Contributor|Developer Name|Profile / Description|
 |-----|-----|
-|:star: | @[**lexruee**](https://github.com/lexruee/Arc-Menu)|
+|:star: | @[**lexruee**](https://github.com/lexruee/Arc-Menu)|Programmer, Tinkerer, Single Board Computer and GNU/Linux enthusiast.|
 
 ##
 
