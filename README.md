@@ -70,7 +70,9 @@ Arc Menu is available under the terms of the GPL-2.0 license See [`COPYING`](htt
 
 ## 
 ### Top Developers 
-This section is reserved for those who have contributed a great deal to the project with their time skill and patience and a big thank you from me for giving back to the community.
+##
+This section is reserved for those who have contributed a great deal to the project with their time skill and patience with a big thank you for giving back to the community with their selfless acts of helping "when they didnt have to".
+##
 
 :star: @[lexruee](https://github.com/lexruee/Arc-Menu)
 
