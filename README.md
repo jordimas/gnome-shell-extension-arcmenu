@@ -69,6 +69,12 @@ Bugs should be reported [here](https://github.com/LinxGem33/Arc-Menu/issues) on 
 Arc Menu is available under the terms of the GPL-2.0 license See [`COPYING`](https://github.com/LinxGem33/Arc-Menu/blob/master/COPYING) for details.
 
 ## 
+### Top Developers 
+This section is reserved for those who have contributed a great deal to the project with their time skill and patience and a big thank you from me for giving back to the community.
+
+:star: @[lexruee](https://github.com/lexruee/Arc-Menu)
+
+##
 
 ### Credits
 
