@@ -36,6 +36,7 @@ const AppDisplay = imports.ui.appDisplay;
 
 const Me = imports.misc.extensionUtils.getCurrentExtension();
 const Menu = Me.imports.menu;
+const Helper = Me.imports.helper;
 const Convenience = Me.imports.convenience;
 
 // Initialize panel button variables
@@ -43,6 +44,7 @@ let settings;
 let appsMenuButton;
 let activitiesButton;
 let oldGetAppFromSource;
+let menuButtonManager;
 
 // Initialize menu language translations
 function init(metadata) {
@@ -52,10 +54,13 @@ function init(metadata) {
 // Enable the extension
 function enable() {
     settings = Convenience.getSettings(Me.metadata['settings-schema']);
-    activitiesButton = Main.panel.statusArea['activities'];
-    Main.panel._leftBox.remove_child(activitiesButton.container);
     appsMenuButton = new Menu.ApplicationsButton(settings);
-    Main.panel.addToStatusArea('arc-menu', appsMenuButton, 0, 'left');
+
+    // Create a Menu Button Manager that is responsible for enabling, disabling,
+    // and managing the position of the menu button
+    menuButtonManager = new Helper.MenuButtonManager(settings, appsMenuButton);
+    menuButtonManager.enableButton();
+
     bindSettingsChanges();
     oldGetAppFromSource = Dash.getAppFromSource;
     Dash.getAppFromSource = getAppFromSource;
@@ -63,11 +68,11 @@ function enable() {
 
 // Disable the extension
 function disable() {
-    Main.panel.menuManager.removeMenu(appsMenuButton.menu);
+    menuButtonManager.destroy();
     appsMenuButton.destroy();
     settings.run_dispose();
-    Main.panel._leftBox.add_child(activitiesButton.container);
 
+    menuButtonManager = null;
     settings = null;
     appsMenuButton = null;
     activitiesButton = null;
@@ -90,6 +95,7 @@ function bindSettingsChanges() {
     settings.connect('changed::disable-activities-hotcorner', function() { appsMenuButton.updateMenu(); });
     settings.connect('changed::menu-hotkey', function() { appsMenuButton.updateMenu(); });
     settings.connect('changed::enable-menu-keybinding', function() { appsMenuButton.updateMenu(); });
+    settings.connect('changed::position-in-panel', function() {
+        menuButtonManager.updateButtonPosition();
+    });
 }
-
-

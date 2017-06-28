@@ -38,6 +38,11 @@ const ARC_MENU_HOT_KEY = {
     1: 'Super_L',
     2: 'Super_R'
 };
+const MENU_POSITION = {
+    Left: 0,
+    Center: 1,
+    Right: 2
+};
 
 
 /**
@@ -250,5 +255,99 @@ const HotCornerManager = new Lang.Class({
             this.enableHotCorners();
         }
        this._hotCornersChangedId = null;
+    }
+});
+
+/**
+ * The Menu Button Manager class is responsible for enabling, disabling,
+ * and managing the position of the menu button.
+ * As such, it helps us to position the menu button at the left, at the center,
+ * or at the right of the gnome-shell main panel.
+ */
+ const MenuButtonManager = new Lang.Class({
+    Name: 'ArcMenu.MenuPositionManager',
+
+    _init: function(settings, menuButton) {
+        this._settings = settings;
+        this._menuButton = menuButton;
+        this._activitiesButtonIsRemoved = false;
+        this._activitiesButton = Main.panel.statusArea['activities'];
+    },
+
+    // Get the current position of the menu button and its associated position order
+    _getMenuPositionTuple: function() {
+        switch(this._settings.get_enum('position-in-panel')) {
+            case MENU_POSITION.Left:
+                return ['left', 0];
+            case MENU_POSITION.Center:
+                return ['center', 0];
+            case MENU_POSITION.Right:
+                return ['right', -1];
+            default:
+                return ['left', 0];
+        }
+    },
+
+    // Remove the activities button from the main panel
+    _removeActivitiesButton: function() {
+        if(!this._activitiesButtonIsRemoved) {
+            Main.panel._leftBox.remove_child(this._activitiesButton.container);
+            this._activitiesButtonIsRemoved = true;
+        }
+    },
+
+    // Add or restore the activities button on the main panel
+    _addActivitiesButton: function() {
+        if(this._activitiesButtonIsRemoved) {
+            // Retsore the activities button at the default position
+            Main.panel._leftBox.add_child(this._activitiesButton.container);
+            Main.panel._leftBox.set_child_at_index(this._activitiesButton.container, 0);
+            this._activitiesButtonIsRemoved = false;
+        }
+    },
+
+    // Add the menu button to the main panel
+    _addMenuButton: function() {
+        let [menuPosition, order] = this._getMenuPositionTuple();
+        Main.panel.addToStatusArea('arc-menu', this._menuButton, order, menuPosition);
+    },
+
+    // Remove the menu button from the main panel
+    _removeMenuButton: function() {
+        Main.panel.menuManager.removeMenu(this._menuButton.menu);
+        Main.panel.statusArea['arc-menu'] = null;
+    },
+
+    // Enable the menu button and disable the activities button
+    enableButton: function() {
+        this._removeActivitiesButton();
+        this._addMenuButton();
+    },
+
+    // Disable the menu button and restore the default activities button
+    disableButton: function() {
+        this._removeMenuButton();
+        this._addActivitiesButton();
+    },
+
+    // Place the menu button to main panel as specified in the settings
+    updateButtonPosition: function() {
+        this._removeMenuButton();
+        this._addMenuButton();
+    },
+
+    _isButtonEnabled: function() {
+        return Main.panel.statusArea['arc-menu'] !== null;
+    },
+
+    // Destroy this object
+    destroy: function() {
+        // Clean up and restore the default behaviour
+        if(this._isButtonEnabled()) {
+            this.disableButton();
+        }
+        this._settings = null;
+        this._activitiesButton = null;
+        this._menuButton = null;
     }
 });
