@@ -104,4 +104,5 @@ Thanks to the following people for contributing via pull requests:
 
 - Bug Fixes: 
 
-- @[JasonLG1979](https://github.com/JasonLG1979/Arc-Menu)  menu style fix
+- @[JasonLG1979](https://github.com/JasonLG1979/Arc-Menu) (1) menu style fix
+- @[lexruee](https://github.com/lexruee/Arc-Menu) (1) correctly restore the Activities button
