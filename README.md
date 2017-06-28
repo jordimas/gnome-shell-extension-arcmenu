@@ -15,11 +15,6 @@ My first initial priority was to get this extension stable enough to upload to e
 |Click image to enlarge|Click image to enlarge|Click image to enlarge|Click image to enlarge|
 
 ##
-|Panel Icon|Panel Icon Hover|Panel Icon|Panel Icon Hover|
-|------|-----|-----|-----|
-|![](https://github.com/LinxGem33/Arc-Menu/blob/master/screenshots/m.png?raw=true)|![](https://github.com/LinxGem33/Arc-Menu/blob/master/screenshots/m2.png?raw=true)|![](https://github.com/LinxGem33/Arc-Menu/blob/master/screenshots/m3.png?raw=true)|![](https://github.com/LinxGem33/Arc-Menu/blob/master/screenshots/m4.png?raw=true)|
-
-##
 
 ![A screenshot of the Arc-Shadow theme](https://github.com/LinxGem33/Arc-Menu/blob/master/screenshots/tm.png?raw=true)
 
@@ -45,6 +40,24 @@ To install the Arc Menu, copy the Arc Menu folder to:
 
 Now open the gnome tweak tool window by executing `gnome tweak tool` from the system menu and then select 
 from the extensions tab on the gnome tweak tool and turn on Arc Menu.
+##
+### Advanced Installation (for testers & developers)
+
+You can use the Makefile to compile the schema & install the extension:
+```
+make compile
+```
+In short, the make command compiles the schema file in the directory schemas. Basically, it runs the following command:
+```
+glib-compile-schemas ./schemas
+```
+
+When you are testing a new feature, you can use the install/uninstall commands:
+
+```
+make uninstall
+make install
+```
 
 ##
 ### Bugs
