@@ -92,7 +92,7 @@ but it is always awake.
 
 Much of the code in this extension comes from [Zorin OS menu](https://zorinos.com/).
 
-Additional credits: This extension also leverages the work from [Giovanni Campagna ](https://git.gnome.org//browse/gnome-shell-extensions) gnome Applications Menu used in [ZorinOS](https://zorinos.com/) to allow the menu to be embedded in the Gnome main panel.
+Additional credits: This extension also leverages the work from [Giovanni Campagna ](https://git.gnome.org//browse/gnome-shell-extensions) gnome Applications Menu used in [Gnome 3](https://www.gnome.org/) to allow the menu to be embedded in the Gnome main panel.
 ##
 ### Pull Requests
 
