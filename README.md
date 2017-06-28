@@ -83,7 +83,7 @@ We are often unaware of it,
 but it is always awake.
 ##
 
-:star: - @[**lexruee**](https://github.com/lexruee/Arc-Menu)
+:star: - (1)- @[**lexruee**](https://github.com/lexruee/Arc-Menu)
 
 ##
 
