@@ -84,7 +84,7 @@ but it is always awake.
 ##
 |Ranked :trophy:|Developer Name|Profile / Description|
 |:-----:|:-----:|:-----:|
-|:heavy_check_mark: |[lexruee](https://github.com/lexruee/Arc-Menu)|Programmer, Tinkerer, Single Board Computer and GNU/Linux enthusiast.|
+|:heavy_check_mark: |[lexruee (Xander)](https://github.com/lexruee)|Programmer, Tinkerer, Single Board Computer and GNU/Linux enthusiast.|
 
 ##
 
@@ -99,7 +99,7 @@ Additional credits: This extension leverages the work for [Giovanni Campagna gno
 Thanks to the following people for contributing via pull requests:
 - @[fishears](https://github.com/fishears/Arc-Menu) (1) compiling the schema's (2) Added suspend button and re-order buttons
 - @[JasonLG1979](https://github.com/JasonLG1979/Arc-Menu)  (1) menu style fix, (2) Asynchronously set an icon and handle errors
-- @[lexruee](https://github.com/lexruee/Arc-Menu) (1) Added the shortcut 'Tweak Tool' (2) shortcut for opening the trash 
+- @[lexruee](https://github.com/lexruee/Arc-Menu) (1) Added the shortcut 'Tweak Tool' (2) shortcut for opening the trash (3) Implement "super key/keybinding" feature and "disable/enable activities hot corner (4) Implement the menu-position-feature (5) Make file
 
 
 - Bug Fixes: 
