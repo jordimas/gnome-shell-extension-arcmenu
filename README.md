@@ -85,8 +85,7 @@ but it is always awake.
 |Ranked :trophy:|Developer Name|Profile / Description|
 |:-----:|:-----:|:-----:|
 |:heavy_check_mark: |[lexruee](https://github.com/lexruee/Arc-Menu)|Programmer, Tinkerer, Single Board Computer and GNU/Linux enthusiast.|
-||||
-||||
+
 ##
 
 ### Credits
