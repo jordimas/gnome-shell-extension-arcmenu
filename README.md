@@ -82,8 +82,8 @@ and it never dies.
 We are often unaware of it,
 but it is always awake.
 ##
-|Rank :trophy:|Developer Name|Profile / Description|
-|-----|-----|-----|
+|Ranked :trophy:|Developer Name|Profile / Description|
+|:-----:|:-----:|:-----:|
 |:heavy_check_mark: |[lexruee](https://github.com/lexruee/Arc-Menu)|Programmer, Tinkerer, Single Board Computer and GNU/Linux enthusiast.|
 
 ##
