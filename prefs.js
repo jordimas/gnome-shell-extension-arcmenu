@@ -22,6 +22,7 @@ const GLib = imports.gi.GLib;
 const GObject = imports.gi.GObject;
 const Gio = imports.gi.Gio;
 const Gtk = imports.gi.Gtk;
+const GdkPixbuf = imports.gi.GdkPixbuf;
 const Lang = imports.lang;
 
 const ExtensionUtils = imports.misc.extensionUtils;
@@ -58,9 +59,9 @@ const ArcMenuPreferencesWidget= new GObject.Class({
         
         let generalSettingsPage = new GeneralSettingsPage(this.settings);
         notebook.append_page(generalSettingsPage, generalSettingsPage.title);
-        
-        //~ let shortcutsSettingsPage = new ShortcutsSettingsPage(this.settings);
-        //~ notebook.append_page(shortcutsSettingsPage, shortcutsSettingsPage.title);
+
+        let aboutPage = new AboutPage(this.settings);
+        notebook.append_page(aboutPage, aboutPage.title);
 
 
         this.add(notebook);
@@ -296,21 +297,88 @@ const GeneralSettingsPage = new Lang.Class({
     }
 });
 
-
 /*
- * TODO: Shortcuts Settings Page
+ * About Page
  */
-const ShortcutsSettingsPage = new Lang.Class({
-    Name: 'ShortcutsSettingsPage',
+const AboutPage = new Lang.Class({
+    Name: 'AboutPage',
     Extends: ArcMenuNotebookPage,
 
     _init: function(settings, params) {
-        this.parent(_('Menu Shortcuts'), settings, params);
+        this.parent(_('About'), settings, params);
 
-        // Container for all general settings boxes
-        let vbox = new Gtk.Box({
-            orientation: Gtk.Orientation.VERTICAL
+        // Container for all GUI elements
+        let vbox = new Gtk.VBox({
+            margin_top: 24,
+            margin_bottom: 24,
+            spacing: 5,
+            expand: false
         });
+
+        // Use meta information from metadata.json
+        let releaseVersion = Me.metadata['version'] || 'bleeding-edge ;-)';
+        let projectName = Me.metadata['name'];
+        let projectDescription = Me.metadata['description'];
+        let projectUrl = Me.metadata['url'];
+
+        // Create GUI elements
+        // Create the image box
+        let logoPath = Me.path + '/media/logo.png'; //TODO: path your logo
+        let [imageWidth, imageHeight] = [216, 150]; //TODO: set correct image size
+        let pixbuf = GdkPixbuf.Pixbuf.new_from_file_at_size(logoPath, imageWidth, imageHeight);
+        let arcMenuImage = new Gtk.Image({ pixbuf: pixbuf });
+        let arcMenuImageBox = new Gtk.VBox({
+            margin_top:5,
+            margin_bottom: 5,
+            expand: false
+        });
+        arcMenuImageBox.add(arcMenuImage);
+
+        // Create the info box
+        let arcMenuInfoBox = new Gtk.VBox({
+            margin_top:5,
+            margin_bottom: 5,
+            expand: false
+        });
+        let arcMenuLabel = new Gtk.Label({
+            label: '<b>' + _('Arc-Menu') + '</b>',
+            use_markup: true,
+            expand: false
+        });
+        let versionLabel = new Gtk.Label({
+        	label:  _('version: ') + releaseVersion,
+        	expand: false
+        });
+        let projectDescriptionLabel = new Gtk.Label({
+        	label:  _(projectDescription),
+        	expand: false
+        });
+        let projectLinkButton = new Gtk.LinkButton({
+            label: _('Webpage'),
+            uri: projectUrl,
+            expand: false
+        });
+        arcMenuInfoBox.add(arcMenuLabel);
+        arcMenuInfoBox.add(versionLabel);
+        arcMenuInfoBox.add(projectDescriptionLabel);
+        arcMenuInfoBox.add(projectLinkButton);
+
+        // Create the GNU software box
+        let gnuSofwareLabel = new Gtk.Label({
+            label: '<span size="small">' + _('This program comes with absolutely no warranty.') + '\n' +
+            ('See the <a href="https://gnu.org/licenses/old-licenses/gpl-2.0.html">GNU General Public License, version 2 or later</a> for details.</span>'),
+            use_markup: true,
+            justify: Gtk.Justification.CENTER,
+            expand: true
+        });
+        let gnuSofwareLabelBox = new Gtk.VBox({});
+        gnuSofwareLabelBox.pack_end(gnuSofwareLabel,false, false, 0);
+
+        vbox.add(arcMenuImageBox);
+        vbox.add(arcMenuInfoBox);
+        vbox.add(gnuSofwareLabelBox);
+
+        this.add(vbox);
     }
 });
 

@@ -3,7 +3,7 @@ CSS=*.css
 MD=*.md
 JSON=*.json
 TXT=AUTHORS COPYING
-DIRS=schemas locale
+DIRS=schemas locale media
 
 DEST=~/.local/share/gnome-shell/extensions/arc-menu@linxgem33.com
 
