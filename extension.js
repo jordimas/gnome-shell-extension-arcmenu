@@ -3,7 +3,7 @@
  *
  * Original work: Copyright (C) 2015 Giovanni Campagna
  * Modified work: Copyright (C) 2016-2017 Zorin OS Technologies Ltd.
- * Modified work: Copyright (C) 2017 LinxGem33. 
+ * Modified work: Copyright (C) 2017 LinxGem33, Alexander Rüedlinger
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -36,15 +36,15 @@ const AppDisplay = imports.ui.appDisplay;
 
 const Me = imports.misc.extensionUtils.getCurrentExtension();
 const Menu = Me.imports.menu;
-const Helper = Me.imports.helper;
+const Controller = Me.imports.controller;
 const Convenience = Me.imports.convenience;
 
 // Initialize panel button variables
 let settings;
+let settingsController;
 let appsMenuButton;
 let activitiesButton;
 let oldGetAppFromSource;
-let menuButtonManager;
 
 // Initialize menu language translations
 function init(metadata) {
@@ -56,23 +56,24 @@ function enable() {
     settings = Convenience.getSettings(Me.metadata['settings-schema']);
     appsMenuButton = new Menu.ApplicationsButton(settings);
 
-    // Create a Menu Button Manager that is responsible for enabling, disabling,
-    // and managing the position of the menu button
-    menuButtonManager = new Helper.MenuButtonManager(settings, appsMenuButton);
-    menuButtonManager.enableButton();
+    // Create a Menu Controller that is responsible for controlling
+    // and managing the menu as well as the menu button.
+    settingsController = new Controller.MenuSettingsController(settings, appsMenuButton);
+    settingsController.enableButton();
+    settingsController.bindSettingsChanges();
 
-    bindSettingsChanges();
     oldGetAppFromSource = Dash.getAppFromSource;
     Dash.getAppFromSource = getAppFromSource;
 }
 
 // Disable the extension
 function disable() {
-    menuButtonManager.destroy();
+    settingsController.disableButton();
+    settingsController.destroy();
     appsMenuButton.destroy();
     settings.run_dispose();
 
-    menuButtonManager = null;
+    settingsController =  null;
     settings = null;
     appsMenuButton = null;
     activitiesButton = null;
@@ -88,14 +89,4 @@ function getAppFromSource(source) {
     } else {
         return null;
     }
-}
-
-function bindSettingsChanges() {
-    settings.connect('changed::visible-menus', function() { appsMenuButton.updateMenu(); });
-    settings.connect('changed::disable-activities-hotcorner', function() { appsMenuButton.updateMenu(); });
-    settings.connect('changed::menu-hotkey', function() { appsMenuButton.updateMenu(); });
-    settings.connect('changed::enable-menu-keybinding', function() { appsMenuButton.updateMenu(); });
-    settings.connect('changed::position-in-panel', function() {
-        menuButtonManager.updateButtonPosition();
-    });
 }
