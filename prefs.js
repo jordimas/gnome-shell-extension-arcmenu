@@ -52,8 +52,8 @@ const ArcMenuPreferencesWidget= new GObject.Class({
         
         let notebook = new AM.Notebook();
         
-        let generalSettingsPage = new GeneralSettingsPage(this.settings);
-        notebook.append_page(generalSettingsPage, generalSettingsPage.title);
+        let behaviourSettingsPage = new BehaviourSettingsPage(this.settings);
+        notebook.append_page(behaviourSettingsPage, behaviourSettingsPage.title);
 
         let appearancePage = new AppearanceSettingsPage(this.settings);
         notebook.append_page(appearancePage, appearancePage.title);
@@ -66,30 +66,21 @@ const ArcMenuPreferencesWidget= new GObject.Class({
 });
 
 /*
- * General Settings Page
+ * Behaviour Settings Page
  */
-const GeneralSettingsPage = new Lang.Class({
-    Name: 'GeneralSettingsPage',
+const BehaviourSettingsPage = new Lang.Class({
+    Name: 'BehaviourSettingsPage',
     Extends: AM.NotebookPage,
 
     _init: function(settings) {
-        this.parent(_('General'));
+        this.parent(_('Behaviour'));
         this.settings = settings;
 
-        // Container for all general settings boxes
-        let vbox = new Gtk.VBox({});
-
         /*
-         * Hot Corner Box
+         * Hot Corner Frame Box
          */
-        let disableHotCornerBox = new Gtk.HBox({
-            spacing: 20,
-            homogeneous: false,
-            margin_left: 5,
-            margin_top: 5,
-            margin_bottom: 5,
-            margin_right: 5
-        });
+        let disableHotCornerFrame = new AM.FrameBox();
+        let disableHotCornerRow = new AM.FrameBoxRow();
         let disableHotCornerLabel = new Gtk.Label({
             label: _("Disable activities hot corner"),
             use_markup: true,
@@ -101,22 +92,18 @@ const GeneralSettingsPage = new Lang.Class({
         disableHotCornerSwitch.connect('notify::active', Lang.bind(this, function(check) {
             this.settings.set_boolean('disable-activities-hotcorner', check.get_active());
         }));
-        disableHotCornerBox.add(disableHotCornerLabel);
-        disableHotCornerBox.add(disableHotCornerSwitch);
-        vbox.add(disableHotCornerBox);
+        disableHotCornerRow.add(disableHotCornerLabel);
+        disableHotCornerRow.add(disableHotCornerSwitch);
+        disableHotCornerFrame.add(disableHotCornerRow);
 
         /*
-         * Menu Hotkey Box
+         * Menu Hotkey and Keybinding Frame Box
          */
-        let enableMenuHotkeyBox = new Gtk.HBox({
-            spacing: 20,
-            homogeneous: false,
-            margin_left: 5,
-            margin_top: 5,
-            margin_bottom: 5,
-            margin_right: 5
-        });
-        let enableMenuHotkeyLabel = new Gtk.Label({
+        let menuKeybindingFrame = new AM.FrameBox();
+
+        // first row: hot key
+        let menuHotkeyRow = new AM.FrameBoxRow();
+        let menuHotkeyLabel = new Gtk.Label({
             label: _("Set menu hotkey"),
             use_markup: true,
             xalign: 0,
@@ -130,64 +117,50 @@ const GeneralSettingsPage = new Lang.Class({
         menuHotkeyCombo.connect('changed', Lang.bind (this, function(widget) {
                 this.settings.set_enum('menu-hotkey', widget.get_active());
         }));
-        enableMenuHotkeyBox.add(enableMenuHotkeyLabel);
-        enableMenuHotkeyBox.add(menuHotkeyCombo);
-        vbox.add(enableMenuHotkeyBox);
+        menuHotkeyRow.add(menuHotkeyLabel);
+        menuHotkeyRow.add(menuHotkeyCombo);
+        menuKeybindingFrame.add(menuHotkeyRow);
 
-        /*
-         * Menu Keybinding Box
-         */
-        let menuKeybindingBox = new Gtk.VBox({});
-        let enableMenuKeybindingBox = new Gtk.HBox({
-            spacing: 20,
-            homogeneous: false,
-            margin_left: 5,
-            margin_top: 5,
-            margin_right: 5
-        });
-        let enableMenuKeybindingLabel = new Gtk.Label({
+        // second row: custom Keybinding
+        let menuKeybindingRow = new AM.FrameBoxRow();
+        let menuKeybindingLabel = new Gtk.Label({
             label: _("Enable custom menu keybinding"),
             use_markup: true,
             xalign: 0,
             hexpand: true
         });
-        let menuKeybindingDescriptionBox = new Gtk.HBox({
-            spacing: 20,
-            homogeneous: false,
-            margin_left: 5,
-            margin_bottom: 5,
-            margin_right: 5
-        });
+        let menuKeybindingDescriptionRow = new AM.FrameBoxRow();
         let menuKeybindingDescriptionLabel = new Gtk.Label({
             label: _("Syntax: <Shift>, <Ctrl>, <Alt>, <Super>")
         });
 
-        let enableMenuKeybindingSwitch = new Gtk.Switch({ halign: Gtk.Align.END });
-        enableMenuKeybindingSwitch.set_active(this.settings.get_boolean('enable-menu-keybinding'));
-        enableMenuKeybindingSwitch.connect('notify::active', Lang.bind(this, function(check) {
+        let menuKeybindingSwitch = new Gtk.Switch({ halign: Gtk.Align.END });
+        menuKeybindingSwitch.set_active(this.settings.get_boolean('enable-menu-keybinding'));
+        menuKeybindingSwitch.connect('notify::active', Lang.bind(this, function(check) {
             this.settings.set_boolean('enable-menu-keybinding', check.get_active());
         }));
         let menuKeybindingEntry = new Gtk.Entry({ halign: Gtk.Align.END });
         menuKeybindingEntry.set_width_chars(15);
         menuKeybindingEntry.set_text(this.settings.get_string('menu-keybinding-text'));
         menuKeybindingEntry.connect('changed', Lang.bind(this, function(entry) {
-            let menuKeybinding = entry.get_text();
+            let _menuKeybinding = entry.get_text();
             //TODO: catch possible user mistakes
-            this.settings.set_string('menu-keybinding-text', menuKeybinding);
+            this.settings.set_string('menu-keybinding-text', _menuKeybinding);
             // Always deactivate the menu keybinding after it has been changed.
             // By that we avoid pssible "UX" or sync bugs.
-            enableMenuKeybindingSwitch.set_active(false);
+            menuKeybindingSwitch.set_active(false);
         }));
-        enableMenuKeybindingBox.add(enableMenuKeybindingLabel);
-        enableMenuKeybindingBox.add(menuKeybindingEntry);
-        enableMenuKeybindingBox.add(enableMenuKeybindingSwitch);
-        menuKeybindingBox.add(enableMenuKeybindingBox);
-        menuKeybindingDescriptionBox.add(menuKeybindingDescriptionLabel);
-        menuKeybindingBox.add(menuKeybindingDescriptionBox);
-        vbox.add(menuKeybindingBox);
+        menuKeybindingRow.add(menuKeybindingLabel);
+        menuKeybindingRow.add(menuKeybindingEntry);
+        menuKeybindingRow.add(menuKeybindingSwitch);
+        menuKeybindingDescriptionRow.add(menuKeybindingDescriptionLabel);
 
+        menuKeybindingFrame.add(menuKeybindingRow);
+        menuKeybindingFrame.add(menuKeybindingDescriptionRow);
 
-        this.add(vbox);
+        // add the frames
+        this.add(disableHotCornerFrame);
+        this.add(menuKeybindingFrame);
     }
 });
 
@@ -243,7 +216,7 @@ const AppearanceSettingsPage = new Lang.Class({
         /*
          * Menu Position Box
          */
-	let menuPositionFrame = new AM.FrameBox();
+        let menuPositionFrame = new AM.FrameBox();
         let menuPositionRow = new AM.FrameBoxRow();
         let menuPositionBoxLabel = new Gtk.Label({
             label: _("Menu position in panel"),
@@ -291,6 +264,8 @@ const AppearanceSettingsPage = new Lang.Class({
         menuPositionRow.add(menuPositionCenterButton);
         menuPositionRow.add(menuPositionRightButton);
         menuPositionFrame.add(menuPositionRow);
+
+        // add the frames
         this.add(menuPositionFrame);
     }
 });
@@ -473,14 +448,6 @@ const AboutPage = new Lang.Class({
         this.parent(_('About'));
         this.settings = settings;
 
-        // Container for all GUI elements
-        let vbox = new Gtk.VBox({
-            margin_top: 24,
-            margin_bottom: 24,
-            spacing: 5,
-            expand: false
-        });
-
         // Use meta information from metadata.json
         let releaseVersion = Me.metadata['version'] || 'bleeding-edge ;-)';
         let projectName = Me.metadata['name'];
@@ -531,20 +498,15 @@ const AboutPage = new Lang.Class({
 
         // Create the GNU software box
         let gnuSofwareLabel = new Gtk.Label({
-            label: '<span size="small">' + _('This program comes with absolutely no warranty.') + '\n' +
-            ('See the <a href="https://gnu.org/licenses/old-licenses/gpl-2.0.html">GNU General Public License, version 2 or later</a> for details.</span>'),
+            label: Constants.GNU_SOFYWARE,
             use_markup: true,
             justify: Gtk.Justification.CENTER,
             expand: true
         });
-        let gnuSofwareLabelBox = new Gtk.VBox({});
-        gnuSofwareLabelBox.pack_end(gnuSofwareLabel,false, false, 0);
 
-        vbox.add(arcMenuImageBox);
-        vbox.add(arcMenuInfoBox);
-        vbox.add(gnuSofwareLabelBox);
-
-        this.add(vbox);
+        this.add(arcMenuImageBox);
+        this.add(arcMenuInfoBox);
+        this.add(gnuSofwareLabel);
     }
 });
 
