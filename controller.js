@@ -92,6 +92,8 @@ const Helper = Me.imports.helper;
         if (hotKeyPos != Constants.HOT_KEY.Undefined) {
             let hotKey = Constants.HOT_KEY[hotKeyPos];
             this._menuHotKeybinder.enableHotKey(hotKey);
+        } else {
+            this._menuHotKeybinder.disableHotKey();
         }
     },
 
