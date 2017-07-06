@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schemalist gettext-domain="gnome-shell-extensions-arc-menu">
+  <enum id='org.gnome.shell.extensions.arc-menu.visible'>
+    <value value='0' nick='ALL'/>
+    <value value='1' nick='APPS_ONLY'/>
+    <value value='2' nick='SYSTEM_ONLY'/>
+  </enum>
+  <enum id='org.gnome.shell.extensions.arc-menu.menu-hotkey'>
+    <value value='0' nick='Undefined'/>
+    <value value='1' nick='Super_L'/>
+    <value value='2' nick='Super_R'/>
+  </enum>
+  <enum id='org.gnome.shell.extensions.arc-menu.menu-position'>
+    <value value="0" nick="Left"/>
+    <value value="1" nick="Center"/>
+    <value value="2" nick="Right"/>
+  </enum>
+  <enum id='org.gnome.shell.extensions.arc-menu.menu-button-appearance'>
+    <value value="0" nick="Icon"/>
+    <value value="1" nick="Text"/>
+    <value value="2" nick="Icon_Text"/>
+    <value value="3" nick="Text_Icon"/>
+  </enum>
+  <enum id='org.gnome.shell.extensions.arc-menu.menu-button-text'>
+    <value value="0" nick="System_Text"/>
+    <value value="1" nick="Custom_Text"/>
+  </enum>
+  <enum id='org.gnome.shell.extensions.arc-menu.menu-button-icon'>
+    <value value="0" nick="Arc_Menu_Icon"/>
+    <value value="1" nick="System_Icon"/>
+    <value value="2" nick="Custom_Icon"/>
+  </enum>
+  <schema path="/org/gnome/shell/extensions/arc-menu/" id="org.gnome.shell.extensions.arc-menu">
+    <key name="visible-menus" enum="org.gnome.shell.extensions.arc-menu.visible">
+      <default>'ALL'</default>
+      <summary>Visible menus</summary>
+      <description>Which menus are visible within the Arc Menu popup.</description>
+    </key>
+    <key type="b" name="disable-activities-hotcorner">
+      <default>false</default>
+      <summary>Disable activities hotcorner</summary>
+      <description>Disable activities hotcorner.</description>
+    </key>
+    <key name="menu-hotkey" enum="org.gnome.shell.extensions.arc-menu.menu-hotkey">
+      <default>'Undefined'</default>
+      <summary>The menu hotkey to open the Arc Menu.</summary>
+      <description>The menu hotkey to open the Arc Menu.</description>
+    </key>
+    <key type="b" name="enable-menu-keybinding">
+      <default>false</default>
+      <summary>Enable the keybinding for the Arc Menu.</summary>
+      <description>Enable the keybinding for the Arc Menu.</description>
+    </key>
+    <key type="s" name="menu-keybinding-text">
+      <default>'&lt;Super&gt;x'</default>
+      <summary>Keybinding to open the Arc Menu.</summary>
+      <description>Keybinding to open the Arc Menu..</description>
+    </key>
+    <key type="as" name="menu-keybinding">
+      <default><![CDATA[['<Super>x']]]></default>
+      <summary>Keybinding to open the Arc Menu.</summary>
+      <description>Keybinding to open the Arc Menu.</description>
+    </key>
+    <key name="position-in-panel" enum="org.gnome.shell.extensions.arc-menu.menu-position">
+      <default>'Left'</default>
+      <summary>The menu position in the panel</summary>
+      <description>The menu position in the panel.</description>
+    </key>
+    <key name="menu-button-appearance" enum="org.gnome.shell.extensions.arc-menu.menu-button-appearance">
+      <default>'Icon'</default>
+      <summary>Appearance of the menu button.</summary>
+      <description>Appearance of the menu button.</description>
+    </key>
+    <key name="menu-button-text" enum="org.gnome.shell.extensions.arc-menu.menu-button-text">
+      <default>'System_Text'</default>
+      <summary>Text of the menu button.</summary>
+      <description>Text of the menu button.</description>
+    </key>
+    <key type="b" name="enable-menu-button-arrow">
+      <default>true</default>
+      <summary>Enables the default menu button arrow.</summary>
+      <description>Enables the default menu button arrow.</description>
+    </key>
+    <key type="s" name="custom-menu-button-text">
+      <default>'Applications'</default>
+      <summary>Text of the menu button.</summary>
+      <description>Text of the menu button.</description>
+    </key>
+    <key name="menu-button-icon" enum="org.gnome.shell.extensions.arc-menu.menu-button-icon">
+      <default>'Arc_Menu_Icon'</default>
+      <summary>Icon of the menu button.</summary>
+      <description>Icon of the menu button.</description>
+    </key>
+    <key type="s" name="custom-menu-button-icon">
+      <default>''</default>
+      <summary>File path of the custom icon for the menu button.</summary>
+      <description>File path of the custom icon for the menu button.</description>
+    </key>
+    <key type="d" name="custom-menu-button-icon-size">
+      <default>22</default>
+      <summary>Size of the icon in percentage.</summary>
+      <description>Size of the icon in percentage.</description>
+    </key>
+  </schema>
+</schemalist>

@@ -3,7 +3,7 @@
  *
  * Original work: Copyright (C) 2015 Giovanni Campagna
  * Modified work: Copyright (C) 2016-2017 Zorin OS Technologies Ltd.
- * Modified work: Copyright (C) 2017 LinxGem33. 
+ * Modified work: Copyright (C) 2017 LinxGem33, Alexander Rüedlinger
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -28,7 +28,6 @@
  * https://github.com/The-Panacea-Projects/Gnomenu
  */
 
-
 // Import Libraries
 const Atk = imports.gi.Atk;
 const GMenu = imports.gi.GMenu;
@@ -47,11 +46,14 @@ const AccountsService = imports.gi.AccountsService;
 const Gio = imports.gi.Gio;
 const Util = imports.misc.util;
 const GnomeSession = imports.misc.gnomeSession;
-const Gettext = imports.gettext.domain('zorinmenu');
-const _ = Gettext.gettext;
+
 const ExtensionUtils = imports.misc.extensionUtils;
 const Me = ExtensionUtils.getCurrentExtension();
+const Helper = Me.imports.helper;
 const Convenience = Me.imports.convenience;
+const Gettext = imports.gettext.domain(Me.metadata['gettext-domain']);
+const _ = Gettext.gettext;
+
 const SecondaryMenu = Me.imports.secondaryMenu;
 const appSys = Shell.AppSystem.get_default();
 const Tweener = imports.ui.tweener;
@@ -80,6 +82,7 @@ const DEFAULT_DIRECTORIES = [
     GLib.UserDirectory.DIRECTORY_MUSIC,
     GLib.UserDirectory.DIRECTORY_PICTURES,
     GLib.UserDirectory.DIRECTORY_VIDEOS,
+	
 ];
 
 function setIconAsync(icon, gioFile, fallback_icon_name) {
@@ -680,9 +683,6 @@ const ApplicationsMenu = new Lang.Class({
 
     // Handle opening the menu
     open: function(animate) {
-        this._button.hotCorner.setBarrierSize(0);
-        if (this._button.hotCorner.actor)
-            this._button.hotCorner.actor.hide();
         this.parent(animate);
         if (this._settings.get_enum('visible-menus') != visibleMenus.SYSTEM_ONLY) {
              global.stage.set_key_focus(this._button.searchEntry);
@@ -696,19 +696,80 @@ const ApplicationsMenu = new Lang.Class({
             this._button.selectCategory(null);
             this._button.resetSearch();
         }
-        this._button.hotCorner.setBarrierSize(size);
-        if (this._button.hotCorner.actor)
-            this._button.hotCorner.actor.show();
         this.parent(animate);
+    }
+});
+
+/**
+ * This class is responsible for the appearance of the menu button.
+ */
+const MenuButtonWidget = new Lang.Class({
+    Name: 'MenuButtonWidget',
+    Extends: St.BoxLayout,
+
+    _init: function() {
+        this.parent({
+            style_class: 'panel-status-menu-box',
+            pack_start: false,
+        });
+        this._arrowIcon = PopupMenu.arrowIcon(St.Side.BOTTOM);
+        this._icon = new St.Icon({
+            icon_name: 'start-here-symbolic',
+            style_class: 'popup-menu-icon'
+        });
+        this._label = new St.Label({
+            text: _("Applications"),
+            y_expand: true,
+            y_align: Clutter.ActorAlign.CENTER
+        });
+
+        this.add_child(this._icon);
+        this.add_child(this._label);
+        this.add_child(this._arrowIcon);
     },
 
-    // Toggle menu open state
-    toggle: function() {
-        if (!this.isOpen) {
-            if (Main.overview.visible)
-                Main.overview.hide();
+    getPanelLabel: function() {
+        return this._label;
+    },
+
+    getPanelIcon: function() {
+        return this._icon;
+    },
+
+    showArrowIcon: function() {
+        if (this.get_children().indexOf(this._arrowIcon) == -1) {
+            this.add_child(this._arrowIcon);
         }
-        this.parent();
+    },
+
+    hideArrowIcon: function() {
+        if (this.get_children().indexOf(this._arrowIcon) != -1) {
+            this.remove_child(this._arrowIcon);
+        }
+    },
+
+    showPanelIcon: function() {
+        if (this.get_children().indexOf(this._icon) == -1) {
+            this.add_child(this._icon);
+        }
+    },
+
+    hidePanelIcon: function() {
+        if (this.get_children().indexOf(this._icon) != -1) {
+            this.remove_child(this._icon);
+        }
+    },
+
+    showPanelText: function() {
+        if (this.get_children().indexOf(this._label) == -1) {
+            this.add_child(this._label);
+        }
+    },
+
+    hidePanelText: function() {
+        if (this.get_children().indexOf(this._label) != -1) {
+            this.remove_child(this._label);
+        }
     }
 });
 
@@ -724,15 +785,14 @@ const ApplicationsButton = new Lang.Class({
         this._settings = settings;
         this.parent(1.0, null, false);
         this._session = new GnomeSession.SessionManager();
+
         this.setMenu(new ApplicationsMenu(this.actor, 1.0, St.Side.TOP, this, this._settings));
         Main.panel.menuManager.addMenu(this.menu);
         this.actor.accessible_role = Atk.Role.LABEL;
-        let hbox = new St.BoxLayout({ style_class: 'panel-status-menu-box' });
-        this._icon = new St.Icon({ icon_name: 'start-here-symbolic',
-                                    style_class: 'popup-menu-icon'});
-        hbox.add_child(this._icon);
-        hbox.add_child(PopupMenu.arrowIcon(St.Side.BOTTOM));
-        this.actor.add_actor(hbox);
+
+        this._menuButtonWidget = new MenuButtonWidget();
+        this.actor.add_actor(this._menuButtonWidget);
+
         this.actor.name = 'panelApplications';
         this.actor.connect('captured-event', Lang.bind(this, this._onCapturedEvent));
         this.actor.connect('destroy', Lang.bind(this, this._onDestroy));
@@ -742,9 +802,7 @@ const ApplicationsButton = new Lang.Class({
         this._hidingId = Main.overview.connect('hiding', Lang.bind(this, function() {
             this.actor.remove_accessible_state (Atk.StateType.CHECKED);
         }));
-        Main.layoutManager.connect('startup-complete',
-                                   Lang.bind(this, this._setKeybinding));
-        this._setKeybinding();
+
         this.reloadFlag = false;
         this._createLayout();
         this._display();
@@ -765,47 +823,12 @@ const ApplicationsButton = new Lang.Class({
             }));
     },
 
-    _adjustIconSize: function() {
-            let scaleFactor = St.ThemeContext.get_for_stage(global.stage).scale_factor;
-            let iconSizes = availableIconSizes.map(function(s) {
-                return s * scaleFactor;
-            });
-
-            let availSize = Main.panel.actor.get_height() - (MINIMUM_PADDING * 2);
-
-            let newIconSize = availableIconSizes[0];
-            for (let i = 0; i < iconSizes.length ; i++) {
-                if (iconSizes[i] < availSize) {
-                    newIconSize = availableIconSizes[i];
-                }
-            }
-
-            if (newIconSize == this._iconSize)
-                return;
-
-            let oldIconSize = this._iconSize;
-            this._iconSize = newIconSize;
-            this.emit('icon-size-changed');
-            this._icon.set_icon_size(this._iconSize);
-            /*let scale = oldIconSize / newIconSize;
-            let [targetWidth, targetHeight] = this._icon.get_size();
-
-            // Scale the icon's texture to the previous size and
-            // tween to the new size
-            this._icon.set_size(this._icon.width * scale,
-                               this._icon.height * scale);
-
-            Tweener.addTween(this._icon,
-                             { width: targetWidth,
-                               height: targetHeight,
-                               time: 0.2,
-                               transition: 'easeOutQuad',
-                             });*/
+    toggleMenu: function() {
+    	this.menu.toggle();
     },
 
-    // Get hot corner
-    get hotCorner() {
-        return Main.layoutManager.hotCorners[Main.layoutManager.primaryIndex];
+    getWidget: function() {
+        return this._menuButtonWidget;
     },
 
     // Create a vertical separator
@@ -822,12 +845,6 @@ const ApplicationsButton = new Lang.Class({
         Main.overview.disconnect(this._hidingId);
         Main.layoutManager.disconnect(this._panelBoxChangedId);
         appSys.disconnect(this._installedChangedId);
-        Main.wm.setCustomKeybindingHandler('panel-main-menu',
-                                           Shell.ActionMode.NORMAL |
-                                           Shell.ActionMode.OVERVIEW,
-                                           Main.sessionMode.hasOverview ?
-                                           Lang.bind(Main.overview, Main.overview.toggle) :
-                                           null);
     },
 
     // Handle captured event
@@ -898,22 +915,11 @@ const ApplicationsButton = new Lang.Class({
        this.parent(menu, open);
     },
 
-    // Set menu key binding
-    _setKeybinding: function() {
-        Main.wm.setCustomKeybindingHandler('panel-main-menu',
-                                           Shell.ActionMode.NORMAL |
-                                           Shell.ActionMode.OVERVIEW,
-                                           Lang.bind(this, function() {
-                                               this.menu.toggle();
-                                           }));
-    },
-
     // Redisplay the menu
     _redisplay: function() {
         if (this.applicationsBox)
             this.applicationsBox.destroy_all_children();
         this._display();
-        this._adjustIconSize();
     },
 
     // Load menu category data for a single category

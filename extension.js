@@ -3,7 +3,8 @@
  *
  * Original work: Copyright (C) 2015 Giovanni Campagna
  * Modified work: Copyright (C) 2016-2017 Zorin OS Technologies Ltd.
- * Modified work: Copyright (C) 2017 LinxGem33. 
+ * Modified work: Copyright (C) 2017 LinxGem33
+ * Modified work: Copyright (C) 2017 Alexander Rüedlinger
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -36,10 +37,12 @@ const AppDisplay = imports.ui.appDisplay;
 
 const Me = imports.misc.extensionUtils.getCurrentExtension();
 const Menu = Me.imports.menu;
+const Controller = Me.imports.controller;
 const Convenience = Me.imports.convenience;
 
 // Initialize panel button variables
 let settings;
+let settingsController;
 let appsMenuButton;
 let activitiesButton;
 let oldGetAppFromSource;
@@ -51,23 +54,27 @@ function init(metadata) {
 
 // Enable the extension
 function enable() {
-    settings = Convenience.getSettings('org.gnome.shell.extensions.zorin-menu');
-    activitiesButton = Main.panel.statusArea['activities'];
-    Main.panel._leftBox.remove_child(activitiesButton.container);
+    settings = Convenience.getSettings(Me.metadata['settings-schema']);
     appsMenuButton = new Menu.ApplicationsButton(settings);
-    Main.panel.addToStatusArea('zorin-menu', appsMenuButton, 0, 'left');
-    bindSettingsChanges();
+
+    // Create a Menu Controller that is responsible for controlling
+    // and managing the menu as well as the menu button.
+    settingsController = new Controller.MenuSettingsController(settings, appsMenuButton);
+    settingsController.enableButton();
+    settingsController.bindSettingsChanges();
+
     oldGetAppFromSource = Dash.getAppFromSource;
     Dash.getAppFromSource = getAppFromSource;
 }
 
 // Disable the extension
 function disable() {
-    Main.panel.menuManager.removeMenu(appsMenuButton.menu);
+    settingsController.disableButton();
+    settingsController.destroy();
     appsMenuButton.destroy();
     settings.run_dispose();
-    Main.panel._leftBox.add_child(activitiesButton.container);
 
+    settingsController =  null;
     settings = null;
     appsMenuButton = null;
     activitiesButton = null;
@@ -83,11 +90,4 @@ function getAppFromSource(source) {
     } else {
         return null;
     }
-}
-
-function bindSettingsChanges() {
-    settings.connect('changed::visible-menus', function(){
-        disable();
-        enable();
-    });
 }
