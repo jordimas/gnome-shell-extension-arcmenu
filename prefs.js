@@ -42,7 +42,7 @@ const ArcMenuPreferencesWidget= new GObject.Class({
     GTypeName: 'ArcMenuPreferencesWidget',
     Extends: Gtk.Box,
 
-    _init: function(params) {
+    _init: function() {
         this.parent({
             orientation: Gtk.Orientation.VERTICAL,
             spacing: 5,
@@ -72,8 +72,8 @@ const GeneralSettingsPage = new Lang.Class({
     Name: 'GeneralSettingsPage',
     Extends: AM.NotebookPage,
 
-    _init: function(settings, params) {
-        this.parent(_('General'), settings, params);
+    _init: function(settings) {
+        this.parent(_('General'), settings);
 
         // Container for all general settings boxes
         let vbox = new Gtk.VBox({});
@@ -197,24 +197,14 @@ const AppearanceSettingsPage = new Lang.Class({
     Name: 'AppearanceSettingsPage',
     Extends: AM.NotebookPage,
 
-    _init: function(settings, params) {
-        this.parent(_('Appearance'), settings, params);
-
-        // Container for all general settings boxes
-        let vbox = new Gtk.VBox({});
+    _init: function(settings) {
+        this.parent(_('Appearance'), settings);
 
         /*
-         * Menu Button Appearance Box
+         * Menu Button Appearance Frame Box
          */
-         let menuButtonAppearanceBox = new Gtk.Box({
-            spacing: 20,
-            orientation: Gtk.Orientation.HORIZONTAL,
-            homogeneous: false,
-            margin_left: 5,
-            margin_top: 5,
-            margin_bottom: 5,
-            margin_right: 5
-        });
+        let menuButtonAppearanceFrame = new AM.FrameBox();
+        let menuButtonAppearanceRow = new AM.FrameBoxRow();
         let menuButtonAppearanceLabel = new Gtk.Label({
             label: _("Customize menu button appearance"),
             use_markup: true,
@@ -242,22 +232,17 @@ const AppearanceSettingsPage = new Lang.Class({
             dialog.show_all();
         }));
 
-        menuButtonAppearanceBox.add(menuButtonAppearanceLabel);
-        menuButtonAppearanceBox.add(menuButtonAppearanceSettingsButton);
-        menuButtonAppearanceBox.add(menuButtonAppearanceCombo);
-        vbox.add(menuButtonAppearanceBox);
+        menuButtonAppearanceRow.add(menuButtonAppearanceLabel);
+        menuButtonAppearanceRow.add(menuButtonAppearanceSettingsButton);
+        menuButtonAppearanceRow.add(menuButtonAppearanceCombo);
+        menuButtonAppearanceFrame.add(menuButtonAppearanceRow);
+        this.add(menuButtonAppearanceFrame);
 
         /*
          * Menu Position Box
          */
-        let menuPositionBox = new Gtk.HBox({
-            spacing: 20,
-            homogeneous: false,
-            margin_left: 5,
-            margin_top: 5,
-            margin_bottom: 5,
-            margin_right: 5
-        });
+	let menuPositionFrame = new AM.FrameBox();
+        let menuPositionRow = new AM.FrameBoxRow();
         let menuPositionBoxLabel = new Gtk.Label({
             label: _("Menu position in panel"),
             use_markup: true,
@@ -299,13 +284,12 @@ const AppearanceSettingsPage = new Lang.Class({
                 break;
         }
 
-        menuPositionBox.add(menuPositionBoxLabel);
-        menuPositionBox.add(menuPositionLeftButton);
-        menuPositionBox.add(menuPositionCenterButton);
-        menuPositionBox.add(menuPositionRightButton);
-        vbox.add(menuPositionBox);
-
-        this.add(vbox);
+        menuPositionRow.add(menuPositionBoxLabel);
+        menuPositionRow.add(menuPositionLeftButton);
+        menuPositionRow.add(menuPositionCenterButton);
+        menuPositionRow.add(menuPositionRightButton);
+        menuPositionFrame.add(menuPositionRow);
+        this.add(menuPositionFrame);
     }
 });
 
@@ -482,8 +466,8 @@ const AboutPage = new Lang.Class({
     Name: 'AboutPage',
     Extends: AM.NotebookPage,
 
-    _init: function(settings, params) {
-        this.parent(_('About'), settings, params);
+    _init: function(settings) {
+        this.parent(_('About'), settings);
 
         // Container for all GUI elements
         let vbox = new Gtk.VBox({

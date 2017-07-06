@@ -40,8 +40,11 @@ const Notebook = new GObject.Class({
     GTypeName: 'ArcMenuNotebook',
     Extends: Gtk.Notebook,
 
-    _init: function(params) {
-        this.parent(params);
+    _init: function() {
+        this.parent({
+            margin_left: 6,
+            margin_right: 6
+        });
     }
 });
 
@@ -51,17 +54,14 @@ const Notebook = new GObject.Class({
 const NotebookPage = new GObject.Class({
     Name: 'ArcMenu.ArcMenuNotebookPage',
     GTypeName: 'ArcMenuNotebookPage',
-    Extends: Gtk.Box,
+    Extends: Gtk.VBox,
 
-    _init: function(title, settings, params) {
+    _init: function(title, settings) {
         this.parent({
-            orientation: Gtk.Orientation.VERTICAL,
-            margin_left: 10,
-            margin_right: 10,
-            margin_bottom: 20
+            margin: 24,
+            homogeneous: false
         });
         this.settings = settings;
-
         this.title = new Gtk.Label({
             label: "<b>" + title + "</b>",
             use_markup: true,
