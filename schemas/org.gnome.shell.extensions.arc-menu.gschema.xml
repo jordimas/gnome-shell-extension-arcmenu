@@ -97,7 +97,7 @@
       <description>File path of the custom icon for the menu button.</description>
     </key>
     <key type="d" name="custom-menu-button-icon-size">
-      <default>24</default>
+      <default>22</default>
       <summary>Size of the icon in percentage.</summary>
       <description>Size of the icon in percentage.</description>
     </key>
