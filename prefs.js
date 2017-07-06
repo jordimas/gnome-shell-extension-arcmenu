@@ -73,7 +73,8 @@ const GeneralSettingsPage = new Lang.Class({
     Extends: AM.NotebookPage,
 
     _init: function(settings) {
-        this.parent(_('General'), settings);
+        this.parent(_('General'));
+        this.settings = settings;
 
         // Container for all general settings boxes
         let vbox = new Gtk.VBox({});
@@ -198,7 +199,8 @@ const AppearanceSettingsPage = new Lang.Class({
     Extends: AM.NotebookPage,
 
     _init: function(settings) {
-        this.parent(_('Appearance'), settings);
+        this.parent(_('Appearance'));
+        this.settings = settings;
 
         /*
          * Menu Button Appearance Frame Box
@@ -298,7 +300,8 @@ const MenuButtonCustomizationWindow = new Lang.Class({
     Extends: AM.DialogWindow,
 
     _init: function(settings, parent) {
-        this.parent(_('Button appearance'), settings, parent);
+        this._settings = settings;
+        this.parent(_('Button appearance'), parent);
     },
 
     _createLayout: function(vbox) {
@@ -467,7 +470,8 @@ const AboutPage = new Lang.Class({
     Extends: AM.NotebookPage,
 
     _init: function(settings) {
-        this.parent(_('About'), settings);
+        this.parent(_('About'));
+        this.settings = settings;
 
         // Container for all GUI elements
         let vbox = new Gtk.VBox({
