@@ -59,3 +59,8 @@ const ARC_MENU_LOGO = {
     Path: '/media/logo.png',
     Size: [216, 229] // width, height
 };
+const GNU_SOFTWARE = '<span size="small">' +
+    'This program comes with absolutely no warranty.\n' +
+    'See the <a href="https://gnu.org/licenses/old-licenses/gpl-2.0.html">' +
+	'GNU General Public License, version 2 or later</a> for details.' +
+	'</span>';
