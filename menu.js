@@ -3,7 +3,7 @@
  *
  * Original work: Copyright (C) 2015 Giovanni Campagna
  * Modified work: Copyright (C) 2016-2017 Zorin OS Technologies Ltd.
- * Modified work: Copyright (C) 2017 LinxGem33, lexruee
+ * Modified work: Copyright (C) 2017 LinxGem33, Alexander Rüedlinger
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -61,7 +61,6 @@ const DND = imports.ui.dnd;
 const AppDisplay = imports.ui.appDisplay;
 const Mainloop = imports.mainloop;
 const LoginManager = imports.misc.loginManager;
-
 
 // Menu Size variables
 const APPLICATION_ICON_SIZE = 32;
@@ -684,9 +683,9 @@ const ApplicationsMenu = new Lang.Class({
 
     // Handle opening the menu
     open: function(animate) {
-        this._button.hotCorner.setBarrierSize(0);
-        if (this._button.hotCorner.actor)
-            this._button.hotCorner.actor.hide();
+        // this._button.hotCorner.setBarrierSize(0);
+        // if (this._button.hotCorner.actor)
+        //     this._button.hotCorner.actor.hide();
         this.parent(animate);
         if (this._settings.get_enum('visible-menus') != visibleMenus.SYSTEM_ONLY) {
              global.stage.set_key_focus(this._button.searchEntry);
@@ -700,10 +699,83 @@ const ApplicationsMenu = new Lang.Class({
             this._button.selectCategory(null);
             this._button.resetSearch();
         }
-        this._button.hotCorner.setBarrierSize(size);
-        if (this._button.hotCorner.actor)
-            this._button.hotCorner.actor.show();
+        // this._button.hotCorner.setBarrierSize(size);
+        // if (this._button.hotCorner.actor)
+        //     this._button.hotCorner.actor.show();
         this.parent(animate);
+    }
+});
+
+/**
+ * This class is responsible for the appearance of the menu button.
+ */
+const MenuButtonWidget = new Lang.Class({
+    Name: 'MenuButtonWidget',
+    Extends: St.BoxLayout,
+
+    _init: function() {
+        this.parent({
+            style_class: 'panel-status-menu-box',
+            pack_start: false,
+        });
+        this._arrowIcon = PopupMenu.arrowIcon(St.Side.BOTTOM);
+        this._icon = new St.Icon({
+            icon_name: 'start-here-symbolic',
+            style_class: 'popup-menu-icon'
+        });
+        this._label = new St.Label({
+            text: _("Applications"),
+            y_expand: true,
+            y_align: Clutter.ActorAlign.CENTER
+        });
+
+        this.add_child(this._icon);
+        this.add_child(this._label);
+        this.add_child(this._arrowIcon);
+    },
+
+    getPanelLabel: function() {
+        return this._label;
+    },
+
+    getPanelIcon: function() {
+        return this._icon;
+    },
+
+    showArrowIcon: function() {
+        if (this.get_children().indexOf(this._arrowIcon) == -1) {
+            this.add_child(this._arrowIcon);
+        }
+    },
+
+    hideArrowIcon: function() {
+        if (this.get_children().indexOf(this._arrowIcon) != -1) {
+            this.remove_child(this._arrowIcon);
+        }
+    },
+
+    showPanelIcon: function() {
+        if (this.get_children().indexOf(this._icon) == -1) {
+            this.add_child(this._icon);
+        }
+    },
+
+    hidePanelIcon: function() {
+        if (this.get_children().indexOf(this._icon) != -1) {
+            this.remove_child(this._icon);
+        }
+    },
+
+    showPanelText: function() {
+        if (this.get_children().indexOf(this._label) == -1) {
+            this.add_child(this._label);
+        }
+    },
+
+    hidePanelText: function() {
+        if (this.get_children().indexOf(this._label) != -1) {
+            this.remove_child(this._label);
+        }
     }
 });
 
@@ -723,12 +795,10 @@ const ApplicationsButton = new Lang.Class({
         this.setMenu(new ApplicationsMenu(this.actor, 1.0, St.Side.TOP, this, this._settings));
         Main.panel.menuManager.addMenu(this.menu);
         this.actor.accessible_role = Atk.Role.LABEL;
-        let hbox = new St.BoxLayout({ style_class: 'panel-status-menu-box' });
-        this._icon = new St.Icon({ icon_name: 'start-here-symbolic',
-                                    style_class: 'popup-menu-icon'});
-        hbox.add_child(this._icon);
-        hbox.add_child(PopupMenu.arrowIcon(St.Side.BOTTOM));
-        this.actor.add_actor(hbox);
+
+        this._menuButtonWidget = new MenuButtonWidget();
+        this.actor.add_actor(this._menuButtonWidget);
+
         this.actor.name = 'panelApplications';
         this.actor.connect('captured-event', Lang.bind(this, this._onCapturedEvent));
         this.actor.connect('destroy', Lang.bind(this, this._onDestroy));
@@ -757,71 +827,39 @@ const ApplicationsButton = new Lang.Class({
             function() {
                 this._redisplay();
             }));
-
-        // Create a Hot Corner Manager, a Menu Keybinder as well as a Keybinding Manager
-        this._hotCornerManager = new Helper.HotCornerManager();
-        this._menuHotKeybinder = new Helper.MenuHotKeybinder(this._settings,
-            Lang.bind(this, function() {
-                this.menu.toggle();
-            }));
-        this._keybindingManager = new Helper.KeybindingManager(this._settings);
-
-        this._applySettings();
     },
 
-    // Apply the settings from the arc-menu schema
-    _applySettings: function() {
-        if(this._settings.get_boolean('disable-activities-hotcorner')) {
-            // Keep it simple and stupid, disable all hot corners.
-            this._hotCornerManager.disableHotCorners();
-        } else {
-            this._hotCornerManager.enableHotCorners();
-        }
-
-        let menuHotkeyPos = this._settings.get_enum('menu-hotkey');
-        if(menuHotkeyPos) {
-           this._menuHotKeybinder.enable();
-        } else {
-            this._menuHotKeybinder.disable();
-        }
-
-        if(this._settings.get_boolean('enable-menu-keybinding')) {
-            this._keybindingManager.bind('menu-keybinding-text', 'menu-keybinding',
-                Lang.bind(this, function() {
-                    this.menu.toggle();
-                }));
-        } else {
-            this._keybindingManager.unbind('menu-keybinding-text');
-        }
+    toggleMenu: function() {
+    	this.menu.toggle();
     },
 
-    // Method or callback function for updating the menu
-    updateMenu: function() {
-        this._applySettings();
+    getWidget: function() {
+        return this._menuButtonWidget;
     },
 
     _adjustIconSize: function() {
-            let scaleFactor = St.ThemeContext.get_for_stage(global.stage).scale_factor;
-            let iconSizes = availableIconSizes.map(function(s) {
-                return s * scaleFactor;
-            });
+            // let scaleFactor = St.ThemeContext.get_for_stage(global.stage).scale_factor;
+            // let iconSizes = availableIconSizes.map(function(s) {
+            //     return s * scaleFactor;
+            // });
 
-            let availSize = Main.panel.actor.get_height() - (MINIMUM_PADDING * 2);
+            // let availSize = Main.panel.actor.get_height() - (MINIMUM_PADDING * 2);
 
-            let newIconSize = availableIconSizes[0];
-            for (let i = 0; i < iconSizes.length ; i++) {
-                if (iconSizes[i] < availSize) {
-                    newIconSize = availableIconSizes[i];
-                }
-            }
+            // let newIconSize = availableIconSizes[0];
+            // for (let i = 0; i < iconSizes.length ; i++) {
+            //     if (iconSizes[i] < availSize) {
+            //         newIconSize = availableIconSizes[i];
+            //     }
+            // }
 
-            if (newIconSize == this._iconSize)
-                return;
+            // if (newIconSize == this._iconSize)
+            //     return;
 
-            let oldIconSize = this._iconSize;
-            this._iconSize = newIconSize;
-            this.emit('icon-size-changed');
-            this._icon.set_icon_size(this._iconSize);
+            // let oldIconSize = this._iconSize;
+            // this._iconSize = newIconSize;
+            // this.emit('icon-size-changed');
+            // this._icon.set_icon_size(this._iconSize);
+
             /*let scale = oldIconSize / newIconSize;
             let [targetWidth, targetHeight] = this._icon.get_size();
 
@@ -839,9 +877,9 @@ const ApplicationsButton = new Lang.Class({
     },
 
     // Get hot corner
-    get hotCorner() {
-        return Main.layoutManager.hotCorners[Main.layoutManager.primaryIndex];
-    },
+    // get hotCorner() {
+    //     return Main.layoutManager.hotCorners[Main.layoutManager.primaryIndex];
+    // },
 
     // Create a vertical separator
     _createVertSeparator: function() {
@@ -932,7 +970,7 @@ const ApplicationsButton = new Lang.Class({
         if (this.applicationsBox)
             this.applicationsBox.destroy_all_children();
         this._display();
-        this._adjustIconSize();
+        //this._adjustIconSize();
     },
 
     // Load menu category data for a single category
@@ -1318,9 +1356,6 @@ const ApplicationsButton = new Lang.Class({
 
     // Destroy (deactivate) the menu
     destroy: function() {
-        this._hotCornerManager.destroy();
-        this._menuHotKeybinder.destroy();
-        this._keybindingManager.destroy();
         this.menu.actor.get_children().forEach(function(c) { c.destroy() });
         this.parent();
     }
