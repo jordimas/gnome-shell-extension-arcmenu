@@ -683,9 +683,6 @@ const ApplicationsMenu = new Lang.Class({
 
     // Handle opening the menu
     open: function(animate) {
-        // this._button.hotCorner.setBarrierSize(0);
-        // if (this._button.hotCorner.actor)
-        //     this._button.hotCorner.actor.hide();
         this.parent(animate);
         if (this._settings.get_enum('visible-menus') != visibleMenus.SYSTEM_ONLY) {
              global.stage.set_key_focus(this._button.searchEntry);
@@ -699,9 +696,6 @@ const ApplicationsMenu = new Lang.Class({
             this._button.selectCategory(null);
             this._button.resetSearch();
         }
-        // this._button.hotCorner.setBarrierSize(size);
-        // if (this._button.hotCorner.actor)
-        //     this._button.hotCorner.actor.show();
         this.parent(animate);
     }
 });
@@ -837,50 +831,6 @@ const ApplicationsButton = new Lang.Class({
         return this._menuButtonWidget;
     },
 
-    _adjustIconSize: function() {
-            // let scaleFactor = St.ThemeContext.get_for_stage(global.stage).scale_factor;
-            // let iconSizes = availableIconSizes.map(function(s) {
-            //     return s * scaleFactor;
-            // });
-
-            // let availSize = Main.panel.actor.get_height() - (MINIMUM_PADDING * 2);
-
-            // let newIconSize = availableIconSizes[0];
-            // for (let i = 0; i < iconSizes.length ; i++) {
-            //     if (iconSizes[i] < availSize) {
-            //         newIconSize = availableIconSizes[i];
-            //     }
-            // }
-
-            // if (newIconSize == this._iconSize)
-            //     return;
-
-            // let oldIconSize = this._iconSize;
-            // this._iconSize = newIconSize;
-            // this.emit('icon-size-changed');
-            // this._icon.set_icon_size(this._iconSize);
-
-            /*let scale = oldIconSize / newIconSize;
-            let [targetWidth, targetHeight] = this._icon.get_size();
-
-            // Scale the icon's texture to the previous size and
-            // tween to the new size
-            this._icon.set_size(this._icon.width * scale,
-                               this._icon.height * scale);
-
-            Tweener.addTween(this._icon,
-                             { width: targetWidth,
-                               height: targetHeight,
-                               time: 0.2,
-                               transition: 'easeOutQuad',
-                             });*/
-    },
-
-    // Get hot corner
-    // get hotCorner() {
-    //     return Main.layoutManager.hotCorners[Main.layoutManager.primaryIndex];
-    // },
-
     // Create a vertical separator
     _createVertSeparator: function() {
         let separator = new St.DrawingArea({ style_class: 'calendar-vertical-separator',
@@ -970,7 +920,6 @@ const ApplicationsButton = new Lang.Class({
         if (this.applicationsBox)
             this.applicationsBox.destroy_all_children();
         this._display();
-        //this._adjustIconSize();
     },
 
     // Load menu category data for a single category

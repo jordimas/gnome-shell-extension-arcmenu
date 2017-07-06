@@ -56,7 +56,7 @@ const Notebook = new GObject.Class({
 const NotebookPage = new GObject.Class({
     Name: 'ArcMenu.ArcMenuNotebookPage',
     GTypeName: 'ArcMenuNotebookPage',
-    Extends: Gtk.Box, // Don't why but Gtk.VBox does not work here...
+    Extends: Gtk.Box, // Don't know why but Gtk.VBox does not work here...
 
     _init: function(title) {
         this.parent({
