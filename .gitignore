@@ -1,2 +1,11 @@
 # ignorre compiled schemas
 *.compiled
+
+# ignore genrated zip files
+*.zip
+
+# ignore compiled po files
+*.mo
+
+# ignore build directory
+build
