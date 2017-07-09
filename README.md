@@ -61,7 +61,7 @@ When you are testing a new feature, you can use the install/uninstall commands:
 make uninstall
 make install
 ```
-
+##
 *Thanks to the the adapted Makefile, we can now easily build the whole project. In summary, the Makefile supports the following make commands*:
 
 **For Translations**
@@ -84,7 +84,7 @@ make install
  ```
  * Deletes all build files and the .*/build* directory.
  ```
- make clean <=> 
+ make clean
  ```
  * Creates a distributable zip-file of the whole project.
  ```
