@@ -49,7 +49,7 @@ let oldGetAppFromSource;
 
 // Initialize menu language translations
 function init(metadata) {
-    Convenience.initTranslations();
+    Convenience.initTranslations('arc-menu');
 }
 
 // Enable the extension
