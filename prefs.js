@@ -401,7 +401,7 @@ const MenuButtonCustomizationWindow = new Lang.Class({
         let menuButtonIconScaleBoxRow = new AM.FrameBoxRow();
         let iconSize = this._settings.get_double('custom-menu-button-icon-size');
         let menuButtonIconScaleBoxLabel = new Gtk.Label({
-            label: _('Icon size\n(default is ' + Constants.DEFAULT_ICON_SIZE + ')'),
+            label: _('Icon size') + '\n(' + _('default is') + ' ' + Constants.DEFAULT_ICON_SIZE + ')',
             use_markup: true,
             xalign: 0
         });
