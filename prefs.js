@@ -514,7 +514,7 @@ const AboutPage = new Lang.Class({
 
 // Initialize menu language translations
 function init() {
-    Convenience.initTranslations();
+    Convenience.initTranslations(Me.metadata['gettext-domain']);
 }
 
 function buildPrefsWidget() {

@@ -2,7 +2,7 @@
 "extension-id": "arc-menu",
 "uuid": "arc-menu@linxgem33.com",
 "settings-schema": "org.gnome.shell.extensions.arc-menu",
-"gettext-domain": "gnome-shell-extension-arc-menu",
+"gettext-domain": "arc-menu",
 "name": "Arc Menu",
 "description": "The new applications menu for Gnome 3.",
   "shell-version": [
