@@ -11,7 +11,7 @@ CSS=*.css
 MD=*.md
 JSON=*.json
 TXT=AUTHORS COPYING
-DIRS=schemas locale media po
+DIRS=schemas media po
 MSG_SRC=$(wildcard ./po/*.po)
 
 
@@ -46,10 +46,16 @@ $(POT_FILE): $(TO_LOCALIZE)
 compile:
 	glib-compile-schemas ./schemas
 
-build: translations compile
+build: translations compile $(MSG_SRC:.po=.mo)
 	mkdir -p ./build
 	cp $(JS) $(CSS) $(JSON) $(MD) $(TXT) ./build
 	cp -r $(DIRS) ./build
+	mkdir -p ./build/locale
+	for l in $(MSG_SRC:.po=.mo) ; do \
+		lf=./build/locale/`basename $$l .mo`; \
+		mkdir -p $$lf/LC_MESSAGES; \
+		cp $$l $$lf/LC_MESSAGES/arc-menu.mo; \
+	done;
 
 zip-file: build
 	zip -qr $(ZIP_FILE) ./build
