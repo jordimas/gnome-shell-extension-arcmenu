@@ -61,21 +61,43 @@ When you are testing a new feature, you can use the install/uninstall commands:
 make uninstall
 make install
 ```
-Thanks to the the adapted Makefile, we can now easily build the whole project. In summary, the Makefile supports the following make commands:
 
- * make potfile <=> Used to generate the potfile that contains all translatable strings of the Arc Meu project.
+*Thanks to the the adapted Makefile, we can now easily build the whole project. In summary, the Makefile supports the following make commands*:
+
+**For Translations**
  
- * make translations <=> When the translatable strings change this command can be used to update all po files before updating translations.
+ * Used to generate the potfile that contains all translatable strings of the Arc Meu project. 
+ ```
+ make potfile
+ ```
+ * When the translatable strings change this command can be used to update all po files before updating translations.
+ ```
+ make translations
+ ```
+ ##
  
- * make build <=> Builds the whole project in the subdirectory `./build`.
+ **Build's / Un/Install's / Compile's**
  
- * make clean <=> Deletes all build files and the `./build` directory.
- 
- * make zip-file <=> Creates a distributable zip-file of the whole project.
- 
- * make install <=> Installs Arc Menu in `~/.local/share/gnome-shell/extensions/arc-menu@linxgem33.com`.
- 
- * make uninstall <=> Deletes the directory `~/.local/share/gnome-shell/extensions/arc-menu@linxgem33.com`.
+ * Builds the whole project in the subdirectory *./build*.
+ ```
+ make build 
+ ```
+ * Deletes all build files and the .*/build* directory.
+ ```
+ make clean <=> 
+ ```
+ * Creates a distributable zip-file of the whole project.
+ ```
+ make zip-file 
+ ```
+ * Installs Arc Menu in *~/.local/share/gnome-shell/extensions/arc-menu@linxgem33.com*.
+ ```
+ make install 
+ ```
+ * Deletes the directory *~/.local/share/gnome-shell/extensions/arc-menu@linxgem33.com*.
+``` 
+ make uninstall 
+```
 ##
 ### Bugs
 Bugs should be reported [here](https://github.com/LinxGem33/Arc-Menu/issues) on the Github issues page.
