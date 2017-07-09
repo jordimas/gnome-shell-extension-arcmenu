@@ -9,3 +9,6 @@
 
 # ignore build directory
 build
+
+# ignore files such as de.po~
+*~
