@@ -207,4 +207,4 @@ msgstr "Impostazioni"
 
 #: menu.js:1139
 msgid "Tweak Tool"
-msgstr "Strumento di personalizzazione GNOME"
+msgstr "Strumento di personalizzazione"
