@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<schemalist gettext-domain="gnome-shell-extensions-arc-menu">
+<schemalist gettext-domain="arc-menu">
   <enum id='org.gnome.shell.extensions.arc-menu.visible'>
     <value value='0' nick='ALL'/>
     <value value='1' nick='APPS_ONLY'/>
