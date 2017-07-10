@@ -54,7 +54,7 @@ make uninstall
 make install
 ```
 
-4) Restart the GNOME Shell by Alt + F2 and enter 'r' (without quotes).
+4) Restart the GNOME Shell with Alt + F2 and enter 'r' (without quotes).
 
 5) Open the gnome-tweak-tool and activate Arc-Menu.
 
