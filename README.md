@@ -3,7 +3,7 @@
 
 ### The new applications menu for Gnome 3.
 
-Arc menu is a Gnome shell extension designed to replace the standard menu found in Gnome 3 this applications menu extension leverages some of the work from [Zorin OS menu](https://zorinos.com/)., some of the added benefits of the Arc Menu extension is the long awaited search functionality as well as quick access to files on your system and also the current logged in user along with quick access to the software centre and system settings and other features which can be accessed from the settings menu.
+Arc Menu is a Gnome shell extension designed to replace the standard menu found in Gnome 3 this applications menu extension leverages some of the work from [Zorin OS menu](https://zorinos.com/)., some of the added benefits of the Arc Menu extension is the long awaited search functionality as well as quick access to files on your system and also the current logged in user along with quick access to the software centre and system settings and other features which can be accessed from the settings menu.
 
 ##
 
@@ -33,74 +33,48 @@ You can now install this extension from extensions.gnome.org as a one click inst
 Awaiting packagers
 
 ##
-### Manual Installation
+### Manual Installation (for testers & enthusiasts)
+Probably, the simplest way to install Arc Menu is using git and make.
+So, if you have installed git and make, you can proceed as follows.
 
-To install the Arc Menu, copy the Arc Menu folder to: 
-
-`~/.local/share/gnome-shell/extensions` or to `/usr/share/gnome-shell/extensions` for system-wide use. 
-
-**Note**: make sure you change the name of the folder to `arc-menu@linxgem33.com` and also delete the make file in the folder and then reboot your system or log out and back in again.
-
-Now open the gnome tweak tool window by executing `gnome tweak tool` from the system menu and then select 
-from the extensions tab on the gnome tweak tool and turn on Arc Menu.
-##
-### Advanced Installation (for testers & developers)
-
-You can use the Makefile to compile the schema & install the extension:
+1) Clone the repository via the git-clone command and change to the Arc-Menu directory:
 ```
-make compile
-```
-In short, the make command compiles the schema file in the directory schemas. Basically, it runs the following command:
-```
-glib-compile-schemas ./schemas
+git clone https://github.com/LinxGem33/Arc-Menu.git
+cd Arc-Menu
 ```
 
-When you are testing a new feature, you can use the install/uninstall commands:
-
+2) If you have already installed Arc Menu, then please remove the existing installation via:
 ```
 make uninstall
+```
+
+
+3) Install it via:
+```
 make install
 ```
-##
-*Thanks to the the adapted Makefile, we can now easily build the whole project. In summary, the Makefile supports the following make commands*:
 
-**For Translations**
- 
- * Used to generate the potfile that contains all translatable strings of the Arc Meu project. 
- ```
- make potfile
- ```
- * When the translatable strings change this command can be used to update all po files before updating translations.
- ```
- make translations
- ```
- ##
- 
- **Build's / Un/Install's / Compile's**
- 
- * Builds the whole project in the subdirectory *./build*.
- ```
- make build 
- ```
- * Deletes all build files and the .*/build* directory.
- ```
- make clean
- ```
- * Creates a distributable zip-file of the whole project.
- ```
- make zip-file 
- ```
- * Installs Arc Menu in *~/.local/share/gnome-shell/extensions/arc-menu@linxgem33.com*.
- ```
- make install 
- ```
- * Deletes the directory *~/.local/share/gnome-shell/extensions/arc-menu@linxgem33.com*.
-``` 
- make uninstall 
-```
+4) Restart the GNOME Shell by Alt + F2 and enter 'r' (without quotes).
+
+5) Open the gnome-tweak-tool and activate Arc-Menu.
+
+
 ##
 ### Bugs
 Bugs should be reported [here](https://github.com/LinxGem33/Arc-Menu/issues) on the Github issues page.
+
+Please note that without any information about your system, the Arc Menu Team can only speculate what the problem is.
+So, please provide us information about your GNU/Linux distribution and the GNOME Shell version. Otherwise, we are not able to solve your problem.
+
+In summary, it is considered good practice to create bug reports with the following information:
+
+* Problem description
+
+* Information about your distribution. Use the command `lsb_release -a` to retrieve information about your distribution.
+
+* Unformation about your GNOME Shell version. Use the command `gnome-shell --version` to retrieve information about your GNOME Shell version.
+* Logs from the systemd journal. Use the command `journalctl /usr/bin/gnome-shell -f -o cat` to log the occurrence of the bug.
+
 
 ##
 ### License & Terms ![](https://github.com/LinxGem33/IP-Finder/blob/master/screens/Copyleft-16.png?raw=true)
