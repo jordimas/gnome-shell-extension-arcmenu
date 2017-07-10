@@ -34,8 +34,8 @@ Awaiting packagers
 
 ##
 ### Manual Installation (for testers & enthusiasts)
-Probably, the simplest way to install Arc Menu is using **git** and **make**.
-So, if you have installed git and make, you can proceed as follows.
+Probably, the simplest way to install Arc Menu is using **git**, **make** and **gnome-shell-extension-tool**.
+So, if you have installed git, make and gnome-shell-extension-tool, you can proceed as follows.
 
 1) Clone the repository via the git-clone command and change to the Arc-Menu directory:
 ```
@@ -54,9 +54,14 @@ make uninstall
 make install
 ```
 
-4) Restart the GNOME Shell with Alt + F2 and enter 'r' (without quotes).
+4) Enable or disable the extension via:
+```
+make enable
+```
 
-5) Open the gnome-tweak-tool and activate Arc-Menu.
+```
+make disable
+```
 
 
 ##
