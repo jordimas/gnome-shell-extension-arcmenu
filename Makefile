@@ -15,6 +15,12 @@ DIRS=schemas media
 MSG_SRC=$(wildcard ./po/*.po)
 
 
+enable:
+	gnome-shell-extension-tool -e $(UUID)
+
+disable:
+	gnome-shell-extension-tool -d $(UUID)
+
 clean:
 	rm -f ./schemas/gschemas.compiled
 	rm -rf ./build
