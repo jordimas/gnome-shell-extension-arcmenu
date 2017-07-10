@@ -66,7 +66,7 @@ make disable
 Bugs should be reported [here](https://github.com/LinxGem33/Arc-Menu/issues) on the Github issues page.
 
 Please note that without any information about your system, the Arc Menu Team can only speculate what the problem is.
-So, please provide us information about your GNU/Linux distribution and the GNOME Shell version. Otherwise, we are not able to solve your problem.
+So, please provide us information about your GNU/Linux distribution and the GNOME Shell version. Otherwise, we are not able to try and solve your problem.
 
 ##
 
@@ -123,3 +123,9 @@ Thanks to the following people for contributing via pull requests:
 
 - @[JasonLG1979](https://github.com/JasonLG1979/Arc-Menu) (1) menu style fix
 - @[lexruee](https://github.com/lexruee/Arc-Menu) (1) correctly restore the Activities button
+
+- Translations:
+
+- @[h3r0n](https://github.com/h3r0n) Italian
+- @[pkomur](https://github.com/pkomur) Polish
+- @[danielstuart14](https://github.com/danielstuart14) Brazilian portuguese
