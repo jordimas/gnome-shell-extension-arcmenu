@@ -16,6 +16,7 @@ My first initial priority was to get this extension stable enough to upload to e
 |Arc Menu integrated with Dash-to-Dock|Arc Menu integrated with Dash-to-Panel|
 |:-----:|:-----:|
 |![](https://github.com/LinxGem33/Arc-Menu/blob/master/screenshots/apm3.png?raw=true)|![](https://github.com/LinxGem33/Arc-Menu/blob/master/screenshots/apm5.png?raw=true)|
+|Click image to enlarge|Click image to enlarge|
 
 ##
 
