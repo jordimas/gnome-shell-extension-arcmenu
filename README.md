@@ -74,7 +74,7 @@ In summary, it is considered good practice to create bug reports with the follow
 
 * Information about your distribution. Use the command `lsb_release -a` to retrieve information about your distribution.
 
-* Unformation about your GNOME Shell version. Use the command `gnome-shell --version` to retrieve information about your GNOME Shell version.
+* Information about your GNOME Shell version. Use the command `gnome-shell --version` to retrieve information about your GNOME Shell version.
 * Logs from the systemd journal. Use the command `journalctl /usr/bin/gnome-shell -f -o cat` to log the occurrence of the bug.
 
 ##
