@@ -63,14 +63,14 @@ make disable
 
 ##
 ### Bugs
-Bugs should be reported [here](https://github.com/LinxGem33/Arc-Menu/issues) on the Github issues page.
+#### Bugs should be reported [here](https://github.com/LinxGem33/Arc-Menu/issues) on the Github issues page.
 
 Please note that without any information about your system, the Arc Menu Team can only speculate what the problem is.
 So, please provide us information about your GNU/Linux distribution and the GNOME Shell version. Otherwise, we are not able to try and solve your problem.
 
 ##
 
-In summary, it is considered good practice to create bug reports with the following information:
+#### In summary, it is considered good practice to create bug reports with the following information:
 
 * Problem description
 
