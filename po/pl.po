@@ -23,7 +23,7 @@ msgstr "Zachowanie"
 
 #: prefs.js:85
 msgid "Disable activities hot corner"
-msgstr "Nieaktywny \"gorący narożnik\" Podglądu"
+msgstr "Działania wyłączyć gorąco narożne"
 
 #: prefs.js:107
 msgid "Set menu hotkey"
