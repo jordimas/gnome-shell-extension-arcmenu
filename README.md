@@ -34,7 +34,7 @@ Awaiting packagers
 
 ##
 ### Manual Installation (for testers & enthusiasts)
-Probably, the simplest way to install Arc Menu is using git and make.
+Probably, the simplest way to install Arc Menu is using **git** and **make**.
 So, if you have installed git and make, you can proceed as follows.
 
 1) Clone the repository via the git-clone command and change to the Arc-Menu directory:
@@ -66,6 +66,8 @@ Bugs should be reported [here](https://github.com/LinxGem33/Arc-Menu/issues) on 
 Please note that without any information about your system, the Arc Menu Team can only speculate what the problem is.
 So, please provide us information about your GNU/Linux distribution and the GNOME Shell version. Otherwise, we are not able to solve your problem.
 
+##
+
 In summary, it is considered good practice to create bug reports with the following information:
 
 * Problem description
@@ -74,7 +76,6 @@ In summary, it is considered good practice to create bug reports with the follow
 
 * Unformation about your GNOME Shell version. Use the command `gnome-shell --version` to retrieve information about your GNOME Shell version.
 * Logs from the systemd journal. Use the command `journalctl /usr/bin/gnome-shell -f -o cat` to log the occurrence of the bug.
-
 
 ##
 ### License & Terms ![](https://github.com/LinxGem33/IP-Finder/blob/master/screens/Copyleft-16.png?raw=true)
