@@ -60,6 +60,10 @@ make enable
 make disable
 ```
 
+5) Logout from the current GNOME session and login again for the changes to take effect. Alternatively, you can restart the GNOME Shell with:
+```
+Alt + F2 and enter 'r' (without quotes).
+```
 
 ##
 ### Bugs
