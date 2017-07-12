@@ -23,7 +23,7 @@ msgstr "Verhalten"
 
 #: prefs.js:85
 msgid "Disable activities hot corner"
-msgstr "Aktive Ecke der Aktivitäten-Übersicht deaktivieren"
+msgstr "Aktive Ecke deaktivieren"
 
 #: prefs.js:107
 msgid "Set menu hotkey"
