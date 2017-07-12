@@ -3,7 +3,8 @@
  *
  * Original work: Copyright (C) 2015 Giovanni Campagna
  * Modified work: Copyright (C) 2016-2017 Zorin OS Technologies Ltd.
- * Modified work: Copyright (C) 2017 LinxGem33, Alexander Rüedlinger
+ * Modified work: Copyright (C) 2017 LinxGem33
+ * Modified work: Copyright (C) 2017 Alexander Rüedlinger
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -82,13 +83,6 @@ const DEFAULT_DIRECTORIES = [
     GLib.UserDirectory.DIRECTORY_MUSIC,
     GLib.UserDirectory.DIRECTORY_PICTURES,
     GLib.UserDirectory.DIRECTORY_VIDEOS
-];
-const DEFAULT_DIRECTORY_NAMES = [
-    _("Documents"),
-    _("Downloads"),
-    _("Music"),
-    _("Pictures"),
-    _("Videos")
 ];
 
 
@@ -983,16 +977,14 @@ const ApplicationsButton = new Lang.Class({
         let placeInfo = new PlaceInfo(Gio.File.new_for_path(homePath), _("Home"));
         let placeMenuItem = new PlaceMenuItem(this, placeInfo);
         this.rightBox.add_actor(placeMenuItem.actor);
-
-        for (let i=0; i < DEFAULT_DIRECTORIES.length; i++) {
-            let dir = DEFAULT_DIRECTORIES[i];
-            let name = DEFAULT_DIRECTORY_NAMES[i];
-            let path = GLib.get_user_special_dir(dir);
-            if (path !== null && path != homePath) {
-                let placeInfo = new PlaceInfo(Gio.File.new_for_path(path), name);
-                let placeMenuItem = new PlaceMenuItem(this, placeInfo);
-                this.rightBox.add_actor(placeMenuItem.actor);
-            }
+        let dirs = DEFAULT_DIRECTORIES.slice();
+        for (let i = 0; i < dirs.length; i++) {
+            let path = GLib.get_user_special_dir(dirs[i]);
+            if (path == null || path == homePath)
+                continue;
+            let placeInfo = new PlaceInfo(Gio.File.new_for_path(path));
+            let placeMenuItem = new PlaceMenuItem(this, placeInfo);
+            this.rightBox.add_actor(placeMenuItem.actor);
         }
     },
 
