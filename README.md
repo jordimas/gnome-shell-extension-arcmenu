@@ -128,7 +128,7 @@ Additional credits: This extension also leverages the work from [Giovanni Campag
 
 - @[JasonLG1979](https://github.com/JasonLG1979/Arc-Menu) (1) menu style fix
 - @[lexruee](https://github.com/lexruee/Arc-Menu) (1) correctly restore the Activities button
-
+##
 #### Translations:
 
 |Contributor|Language|Implimented|Contributor|Language|Implimented|
@@ -141,3 +141,4 @@ Additional credits: This extension also leverages the work from [Giovanni Campag
 ||Portuguese|||Bengali||
 ||Russian|||Japanese||
 ||Swedish|||Dutch||
+|@[neynefes](https://github.com/neynefes)|Turkish|![ti](https://user-images.githubusercontent.com/19158615/27998683-9dd48cd0-650a-11e7-87c3-0ac3256ae574.png)||||
