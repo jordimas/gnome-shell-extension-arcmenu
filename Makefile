@@ -15,6 +15,12 @@ DIRS=schemas media
 MSG_SRC=$(wildcard ./po/*.po)
 
 
+enable:
+	gnome-shell-extension-tool -e $(UUID)
+
+disable:
+	gnome-shell-extension-tool -d $(UUID)
+
 clean:
 	rm -f ./schemas/gschemas.compiled
 	rm -rf ./build
@@ -35,7 +41,7 @@ translations: $(POT_FILE)
 
 potfile: $(POT_FILE)
 
-$(POT_FILE): $(TO_LOCALIZE)
+$(POT_FILE): $(TO_LOCALIZE) FORCE
 	echo $(POT_FILE)
 	xgettext --from-code=UTF-8 -k --keyword=_ --keyword=N_ --add-comments='Translators:' \
 		-o $(POT_FILE) --package-name "Arc Menu" $(TO_LOCALIZE)
@@ -60,3 +66,6 @@ build: translations compile $(MSG_SRC:.po=.mo)
 zip-file: build
 	zip -qr $(ZIP_FILE) ./build
 	rm -rf ./build
+
+.PHONY: FORCE
+FORCE:
