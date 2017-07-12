@@ -141,4 +141,4 @@ Additional credits: This extension also leverages the work from [Giovanni Campag
 ||Portuguese|||Bengali||
 ||Russian|||Japanese||
 ||Swedish|||Dutch||
-|@[neynefes](https://github.com/neynefes)|Turkish|![ti](https://user-images.githubusercontent.com/19158615/27998683-9dd48cd0-650a-11e7-87c3-0ac3256ae574.png)||||
+|@[neynefes](https://github.com/neynefes)|Turkish|![ti](https://user-images.githubusercontent.com/19158615/27998683-9dd48cd0-650a-11e7-87c3-0ac3256ae574.png)||Javanese||
