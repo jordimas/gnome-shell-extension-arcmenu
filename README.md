@@ -131,8 +131,13 @@ Additional credits: This extension also leverages the work from [Giovanni Campag
 
 #### Translations:
 
-- @[h3r0n](https://github.com/h3r0n) Italian
-- @[pkomur](https://github.com/pkomur) Polish
-- @[danielstuart14](https://github.com/danielstuart14) Brazilian portuguese
-- @[zakkak](https://github.com/zakkak) Greek
-- @[mrprobot](https://github.com/mrprobot) German
+|Contributor|Language|Implimented|Contributor|Language|Implimented|
+|:-----|:-----|:-----:|:-----|:-----|:-----:|
+|@[h3r0n](https://github.com/h3r0n)|Italian|![ti](https://user-images.githubusercontent.com/19158615/27998683-9dd48cd0-650a-11e7-87c3-0ac3256ae574.png)||French|
+|@[pkomur](https://github.com/pkomur)|Polish|![ti](https://user-images.githubusercontent.com/19158615/27998683-9dd48cd0-650a-11e7-87c3-0ac3256ae574.png)||Arabic|
+|@[danielstuart14](https://github.com/danielstuart14)|Brazilian portuguese|![ti](https://user-images.githubusercontent.com/19158615/27998683-9dd48cd0-650a-11e7-87c3-0ac3256ae574.png)||Chinese|
+|@[zakkak](https://github.com/zakkak)|Greek|![ti](https://user-images.githubusercontent.com/19158615/27998683-9dd48cd0-650a-11e7-87c3-0ac3256ae574.png)||Spanish|
+|@[mrprobot](https://github.com/mrprobot)|German|![ti](https://user-images.githubusercontent.com/19158615/27998683-9dd48cd0-650a-11e7-87c3-0ac3256ae574.png)||Hindi|
+||Portuguese|||Bengali||
+||Russian|||Japanese||
+||Swedish|||Dutch||
