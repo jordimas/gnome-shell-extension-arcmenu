@@ -3,7 +3,7 @@
 
 ### The new applications menu for Gnome 3.
 
-Arc Menu is a Gnome shell extension designed to replace the standard menu found in Gnome 3 this applications menu extension leverages some of the work from Zorin OS menu, some of the added benefits of the Arc Menu extension is the long awaited search functionality as well as quick access to files on your system and also the current logged in user along with quick access to the software centre and system settings and other features which can be accessed from the settings menu.
+Arc Menu is a Gnome shell extension designed to replace the standard menu found in Gnome 3 this applications menu extension leverages some of the work from Zorin OS menu and some of the added benefits of the Arc Menu extension is the long awaited search functionality as well as quick access to files on your system and also the current logged in user along with quick access to the software centre and system settings and other features which can be accessed from the settings menu.
 ##
 ![](https://github.com/LinxGem33/Arc-Menu/blob/master/screenshots/browser.png?raw=true)
 ##
