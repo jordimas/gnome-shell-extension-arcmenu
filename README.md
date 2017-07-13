@@ -3,7 +3,6 @@
 
 ## The new applications menu for Gnome 3. 
 ![](https://img.shields.io/badge/release-v13-brightgreen.svg) ![](https://img.shields.io/badge/Language-JavaScript-yellow.svg)  ![](https://img.shields.io/badge/Licence-GPL--2.0-blue.svg) 
-[![GitHub stars](https://img.shields.io/github/stars/badges/shields.svg?style=social&label=Star)](https://github.com/LinxGem33/Arc-Menu/stargazers)
 
 ##
 
