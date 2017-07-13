@@ -102,7 +102,7 @@ Additional credits: This extension also leverages the work from [Giovanni Campag
 
 #### @[LinxGem33](https://github.com/LinxGem33) - **Founder** - **Developer** - Digital Art Designer
 
-#### @[lexruee](https://github.com/lexruee/Arc-Menu) - **Lead Project Developer** - UI/UX Designer
+#### @[lexruee](https://github.com/lexruee) - **Lead Project Developer** - UI/UX Designer
 
 ##
 ### Technical Advisors
