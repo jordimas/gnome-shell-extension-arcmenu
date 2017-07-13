@@ -116,7 +116,7 @@ This extension leverages some of the work from [Zorin OS menu](https://zorinos.c
 Additional credits: This extension also leverages the work from [Giovanni Campagna ](https://git.gnome.org//browse/gnome-shell-extensions) gnome Applications Menu used in [Gnome 3](https://www.gnome.org/) to allow the menu to be embedded in the Gnome main panel.
 ##
 
-### Lead Developer's
+### Project Developer's
 
 #### @[LinxGem33](https://github.com/LinxGem33) - **Founder** - **Developer** - Digital Art Designer
 
