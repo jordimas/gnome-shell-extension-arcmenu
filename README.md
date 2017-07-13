@@ -119,9 +119,10 @@ Additional credits: This extension also leverages the work from [Giovanni Campag
 
 #### Thanks to the following people for contributing via pull requests:
 
+#### @[lexruee](https://github.com/lexruee/Arc-Menu) **Lead Project Developer**
+
 - @[fishears](https://github.com/fishears/Arc-Menu) (1) compiling the schema's (2) Added suspend button and re-order buttons
 - @[JasonLG1979](https://github.com/JasonLG1979/Arc-Menu)  (1) menu style fix, (2) Asynchronously set an icon and handle errors
-#### - @[lexruee](https://github.com/lexruee/Arc-Menu) **Lead Project Developer**
 - @[itmitica](https://github.com/itmitica) (1) icon symbolic
 
 #### Bug Fixes: 
