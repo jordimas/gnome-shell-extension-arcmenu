@@ -1,4 +1,4 @@
-<img src="https://github.com/LinxGem33/Arc-Menu/blob/master/screenshots/avatar.resized.png?raw=true" alt="Logo" align="left" height="42" width="42"/>
+<img src="https://github.com/LinxGem33/Arc-Menu/blob/master/screenshots/avatar.resized.png?raw=true" alt="Logo" align="left" border="5"/>
 
 Arc Menu ![](https://img.shields.io/badge/release-v13-brightgreen.svg) ![](https://img.shields.io/badge/Language-JavaScript-yellow.svg)  ![](https://img.shields.io/badge/Licence-GPL--2.0-blue.svg)
 ======
