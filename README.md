@@ -88,25 +88,6 @@ So, please provide us information about your GNU/Linux distribution and the GNOM
 ### License & Terms ![](https://github.com/LinxGem33/IP-Finder/blob/master/screens/Copyleft-16.png?raw=true)
 
 Arc Menu is available under the terms of the GPL-2.0 license See [`COPYING`](https://github.com/LinxGem33/Arc-Menu/blob/master/COPYING) for details.
-
-## 
-### Top Developers on the Project
-
-This section is reserved for those who have contributed a great deal to the project with their time skill and patience with a big thank you for giving back to the community with their selfless acts of helping.
-
-> “There is a desire within each of us,
-in the deep center of ourselves
-that we call our heart.
-We were born with it,
-it is never completely satisfied,
-and it never dies.
-We are often unaware of it,
-but it is always awake.
-##
-|Ranked :trophy:|Developer Name|Profile / Description|
-|:-----:|:-----:|:-----:|
-|:heavy_check_mark: |[lexruee (Xander)](https://github.com/lexruee)|Programmer, Tinkerer, Single Board Computer and GNU/Linux enthusiast.|
-
 ##
 
 ### Credits
