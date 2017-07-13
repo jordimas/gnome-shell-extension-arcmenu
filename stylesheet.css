@@ -35,4 +35,73 @@
 
 .apps-menu:rtl {
     padding-left: 0.1875em;
+
+/* Popovers/Menus For arc menu*/
+.popup-menu {
+  min-width: 6em;
+  color: #D3DAE3;
+  border-image: url("dark-assets/menu/menu.svg") 9 9 9 9; }
+  .popup-menu .popup-sub-menu {
+    background: none;
+    box-shadow: none;
+    border-image: url("dark-assets/menu/submenu.svg") 9 9 9 9; }
+  .popup-menu .popup-menu-content {
+    padding: 0.6em 0em 0.6em 0em; }
+  .popup-menu .popup-menu-item {
+    spacing: 12px; }
+    .popup-menu .popup-menu-item:ltr {
+      padding: .4em 2em .4em 0em; }
+    .popup-menu .popup-menu-item:rtl {
+      padding: .4em 0em .4em 2em; }
+    .popup-menu .popup-menu-item:checked {
+      font-weight: normal;
+      background: transparent;
+      box-shadow: none;
+      border-image: url("dark-assets/menu/submenu-open.svg") 9 9 9 9; }
+    .popup-menu .popup-menu-item:active, .popup-menu .popup-menu-item.selected {
+      color: #ffffff;
+      background-color: transparent;
+      border-image: url("common-assets/menu/menu-hover.svg") 9 9 1 1; }
+    .popup-menu .popup-menu-item:insensitive {
+      color: rgba(211, 218, 227, 0.5);
+      background: none; }
+  .popup-menu .popup-inactive-menu-item {
+    color: #D3DAE3; }
+    .popup-menu .popup-inactive-menu-item:insensitive {
+      color: rgba(211, 218, 227, 0.45); }
+  .popup-menu.panel-menu {
+    -boxpointer-gap: 0px;
+    margin-bottom: 0.75em; }
+
+.popup-menu-ornament {
+  text-align: right;
+  margin-left: 10px;
+  width: 16px; }
+
+.popup-menu-boxpointer {
+  -arrow-border-radius: 2px;
+  -arrow-background-color: transparent;
+  -arrow-border-width: 1px;
+  -arrow-border-color: transparent;
+  -arrow-base: 0;
+  -arrow-rise: 0; }
+
+.candidate-popup-boxpointer {
+  -arrow-border-radius: 2px;
+  -arrow-background-color: rgba(53, 57, 69, 0.95);
+  -arrow-border-width: 1px;
+  -arrow-border-color: rgba(0, 0, 0, 0.4);
+  -arrow-base: 5;
+  -arrow-rise: 5; }
+
+.popup-separator-menu-item {
+  height: 1px;
+  margin: 0;
+  background-color: transparent;
+  border: none;
+  border-image: url("common-assets/menu/menu-separator.svg") 1 1 1 1; }
+
+.background-menu {
+  -boxpointer-gap: 4px;
+  -arrow-rise: 0px; }
 }
