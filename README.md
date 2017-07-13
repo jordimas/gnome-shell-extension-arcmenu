@@ -73,17 +73,7 @@ Alt + F2 and enter 'r' (without quotes).
 Please note that without any information about your system, the Arc Menu Team can only speculate what the problem is.
 So, please provide us information about your GNU/Linux distribution and the GNOME Shell version. Otherwise, we are not able to try and solve your problem.
 
-##
-
-#### In summary, it is considered good practice to create bug reports with the following information:
-
-* Problem description
-
-* Information about your distribution. Use the command `lsb_release -a` to retrieve information about your distribution.
-
-* GNOME Shell version. Use the command `gnome-shell --version` to retrieve information about your Shell version.
-
-* Logs from the systemd journal. Use the command `journalctl /usr/bin/gnome-shell -f -o cat` to log the occurrence of the bug.
+#### Please refer to: [Reporting Bug's](https://github.com/LinxGem33/Arc-Menu/wiki/Reporting-Bug's)
 
 ##
 ### License & Terms ![](https://github.com/LinxGem33/IP-Finder/blob/master/screens/Copyleft-16.png?raw=true)
