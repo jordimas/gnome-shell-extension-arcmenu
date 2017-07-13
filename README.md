@@ -115,11 +115,23 @@ This extension leverages some of the work from [Zorin OS menu](https://zorinos.c
 
 Additional credits: This extension also leverages the work from [Giovanni Campagna ](https://git.gnome.org//browse/gnome-shell-extensions) gnome Applications Menu used in [Gnome 3](https://www.gnome.org/) to allow the menu to be embedded in the Gnome main panel.
 ##
+
+### Lead Developer's
+
+#### @[LinxGem33](https://github.com/LinxGem33) - **Founder** - **Developer** - Digital Art Designer
+
+#### @[lexruee](https://github.com/lexruee/Arc-Menu) - **Lead Project Developer** - UI/UX Designer
+
+##
+### Technical Advisors
+
+#### @[lestcape](https://github.com/lestcape) - **Senior Extension Developer**
+
+##
+
 ### Pull Requests
 
 #### Thanks to the following people for contributing via pull requests:
-
-#### @[lexruee](https://github.com/lexruee/Arc-Menu) **Lead Project Developer**
 
 - @[fishears](https://github.com/fishears/Arc-Menu) (1) compiling the schema's (2) Added suspend button and re-order buttons
 - @[JasonLG1979](https://github.com/JasonLG1979/Arc-Menu)  (1) menu style fix, (2) Asynchronously set an icon and handle errors
