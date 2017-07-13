@@ -1,11 +1,14 @@
+<img src="https://github.com/LinxGem33/Arc-Menu/blob/master/screenshots/avatar.resized.png?raw=true" alt="Logo" align="left" /> Arc Menu
+======
+![](https://img.shields.io/badge/release-v13-brightgreen.svg) ![](https://img.shields.io/badge/Language-JavaScript-yellow.svg) 
+![](https://img.shields.io/badge/Language-make-lightgrey.svg) ![](https://img.shields.io/badge/Licence-GPL--2.0-blue.svg) 
+[![GitHub stars](https://img.shields.io/github/stars/badges/shields.svg?style=social&label=Star)](https://github.com/LinxGem33/Arc-Menu/stargazers) [![Twitter URL](https://img.shields.io/twitter/url/http/shields.io.svg?style=social)]()
+
+### The new applications menu for Gnome 3.
+##
 ![](https://img.shields.io/badge/release-v13-brightgreen.svg) ![](https://img.shields.io/badge/Language-JavaScript-yellow.svg) ![](https://img.shields.io/badge/Language-make-lightgrey.svg) ![](https://img.shields.io/badge/Licence-GPL--2.0-blue.svg) 
 [![GitHub stars](https://img.shields.io/github/stars/badges/shields.svg?style=social&label=Star)](https://github.com/LinxGem33/Arc-Menu/stargazers) [![Twitter URL](https://img.shields.io/twitter/url/http/shields.io.svg?style=social)]()
 ##
-<img src="https://github.com/LinxGem33/Arc-Menu/blob/master/screenshots/avatar.resized.png?raw=true" alt="Logo" align="left" /> Arc Menu
-======
-
-### The new applications menu for Gnome 3.
-
 Arc Menu is a Gnome shell extension designed to replace the standard menu found in Gnome 3 this applications menu extension leverages some of the work from Zorin OS menu and some of the added benefits of the Arc Menu extension is the long awaited search functionality as well as quick access to files on your system and also the current logged in user along with quick access to the software centre and system settings and other features which can be accessed from the settings menu.
 ##
 ![](https://github.com/LinxGem33/Arc-Menu/blob/master/screenshots/browser.png?raw=true)
