@@ -121,7 +121,7 @@ Additional credits: This extension also leverages the work from [Giovanni Campag
 
 - @[fishears](https://github.com/fishears/Arc-Menu) (1) compiling the schema's (2) Added suspend button and re-order buttons
 - @[JasonLG1979](https://github.com/JasonLG1979/Arc-Menu)  (1) menu style fix, (2) Asynchronously set an icon and handle errors
-- @[lexruee](https://github.com/lexruee/Arc-Menu) (1) Added the shortcut 'Tweak Tool' (2) shortcut for opening the trash (3) Implement "super key/keybinding" feature and "disable/enable activities hot corner (4) Implement the menu-position-feature (5) Make file (6) Move the logic for handling settings changes in controller.js (7) Move common constants in constants.js (8) Refactor helper.js (9) Refactor some parts in menu.js (10) Implement the basic GUI option for changing the menu button text and the menu button icon (11) Update the schema file to include the new settings options (12) Add the file am.js, which provides customized GTK GUI elements for the prefs.js file (13) Replace author lexruee with Alexander Rüedlinger
+#### - @[lexruee](https://github.com/lexruee/Arc-Menu) **Lead Project Developer**
 - @[itmitica](https://github.com/itmitica) (1) icon symbolic
 
 #### Bug Fixes: 
