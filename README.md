@@ -99,7 +99,6 @@ Additional credits: This extension also leverages the work from [Giovanni Campag
 ##
 ### Technical Advisors
 
-#### @[lestcape](https://github.com/lestcape) - **Senior Extension Developer**
 
 ##
 
