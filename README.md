@@ -69,11 +69,12 @@ Alt + F2 and enter 'r' (without quotes).
 ##
 ### Bugs
 **Bugs should be reported [here](https://github.com/LinxGem33/Arc-Menu/issues) on the Github issues page**.
+##
+#### Please refer to the Wiki section for a guide on: [Reporting Bug's](https://github.com/LinxGem33/Arc-Menu/wiki/Reporting-Bug's)
 
 Please note that without any information about your system, the Arc Menu Team can only speculate what the problem is.
 So, please provide us information about your GNU/Linux distribution and the GNOME Shell version. Otherwise, we are not able to try and solve your problem.
 
-#### Please refer to the Wiki section for a guide on: [Reporting Bug's](https://github.com/LinxGem33/Arc-Menu/wiki/Reporting-Bug's)
 
 ##
 ### License & Terms ![](https://github.com/LinxGem33/IP-Finder/blob/master/screens/Copyleft-16.png?raw=true)
