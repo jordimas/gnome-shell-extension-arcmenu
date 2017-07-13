@@ -3,7 +3,7 @@
 Arc Menu ![](https://img.shields.io/badge/release-v13-brightgreen.svg) ![](https://img.shields.io/badge/Language-JavaScript-yellow.svg)  ![](https://img.shields.io/badge/Licence-GPL--2.0-blue.svg) 
 ======
 
-## The new applications menu for Gnome 3. 
+### The new applications menu for Gnome 3. 
 
 Arc Menu is a Gnome shell extension designed to replace the standard menu found in Gnome 3 this applications menu extension leverages some of the work from Zorin OS menu and some of the added benefits of the Arc Menu extension is the long awaited search functionality as well as quick access to files on your system and also the current logged in user along with quick access to the software centre and system settings and other features which can be accessed from the settings menu.
 ##
