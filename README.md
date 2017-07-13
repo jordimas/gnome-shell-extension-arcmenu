@@ -3,14 +3,14 @@
 
 ### The new applications menu for Gnome 3.
 
-Arc Menu is a Gnome shell extension designed to replace the standard menu found in Gnome 3 this applications menu extension leverages some of the work from [Zorin OS menu](https://zorinos.com/)., some of the added benefits of the Arc Menu extension is the long awaited search functionality as well as quick access to files on your system and also the current logged in user along with quick access to the software centre and system settings and other features which can be accessed from the settings menu.
+Arc Menu is a Gnome shell extension designed to replace the standard menu found in Gnome 3 this applications menu extension leverages some of the work from Zorin OS menu, some of the added benefits of the Arc Menu extension is the long awaited search functionality as well as quick access to files on your system and also the current logged in user along with quick access to the software centre and system settings and other features which can be accessed from the settings menu.
 ##
 ![](https://github.com/LinxGem33/Arc-Menu/blob/master/screenshots/browser.png?raw=true)
 ##
 
 ### What's next for Arc Menu?
 
-My first initial priority was to get this extension stable enough to upload to extensions.gnome.org as this was a menu baked into the Zorin OS operating system so it had to be ported to work with the gnome shell eco system, now the first stage of development is over features are now being added and I'm pleased to announce a new member of the team ([lexruee (Xander)](https://github.com/lexruee) and now a lead developer in the design and development of this extension hopefully more features are planned for future development and a lot has already been implemented.
+My first initial priority was to get this extension stable enough to upload to extensions.gnome.org as it had to be ported to work with the gnome shell eco system, now the first stage of development is over features are now being added and I'm pleased to announce a new member of the team ([lexruee (Xander)](https://github.com/lexruee) and now a lead developer in the design and development of this extension hopefully more features are planned for future development and a lot has already been implemented.
 
 ##
 |Arc Menu integrated with Dash-to-Dock|Arc Menu integrated with Dash-to-Panel|
@@ -26,6 +26,7 @@ You can now install this extension from extensions.gnome.org as a one click inst
 > [One Click Install](https://extensions.gnome.org/extension/1228/arc-menu/)
 
 ##
+
 ### Packages
 Awaiting packagers
 
