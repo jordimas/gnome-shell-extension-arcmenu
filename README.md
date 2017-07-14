@@ -1,10 +1,10 @@
 # ![](https://github.com/LinxGem33/Arc-Menu/blob/master/screenshots/avatar.resized.png?raw=true) Arc Menu
-## The new applications menu for Gnome 3    
-![](https://img.shields.io/badge/release-v13-brightgreen.svg) ![](https://img.shields.io/badge/Language-JavaScript-yellow.svg) ![](https://img.shields.io/badge/Licence-GPL--2.0-blue.svg) 
+## The new application menu for Gnome 3
+![](https://img.shields.io/badge/release-v13-brightgreen.svg) ![](https://img.shields.io/badge/Language-JavaScript-yellow.svg) ![](https://img.shields.io/badge/Licence-GPL--2.0-blue.svg)
 
-###  
+###
 
-Arc Menu is a Gnome shell extension designed to replace the standard menu found in Gnome 3 this applications menu extension leverages some of the work from Zorin OS menu and some of the added benefits of the Arc Menu extension is the long awaited search functionality as well as quick access to files on your system and also the current logged in user along with quick access to the software centre and system settings and other features which can be accessed from the settings menu.
+Arc Menu is a Gnome shell extension designed to replace the standard menu found in Gnome 3 this application menu extension leverages some of the work from Zorin OS menu and some of the added benefits of the Arc Menu extension is the long awaited search functionality as well as quick access to files on your system and also the current logged in user along with quick access to the software centre and system settings and other features which can be accessed from the settings menu.
 ##
 ![](https://github.com/LinxGem33/Arc-Menu/blob/master/screenshots/browser.png?raw=true)
 ##
@@ -71,7 +71,7 @@ Alt + F2 and enter 'r' (without quotes).
 ### Bugs
 **Bugs should be reported [here](https://github.com/LinxGem33/Arc-Menu/issues) on the Github issues page**.
 ##
-#### Please refer to the Wiki section for a guide on: [Reporting Bug's](https://github.com/LinxGem33/Arc-Menu/wiki/Reporting-Bug's)
+#### Please refer to the Wiki section for a guide on: [Reporting Bugs](https://github.com/LinxGem33/Arc-Menu/wiki/Reporting-Bug's)
 
 Please note that without any information about your system, the Arc Menu Team can only speculate what the problem is.
 So, please provide us information about your GNU/Linux distribution and the GNOME Shell version. Otherwise, we are not able to try and solve your problem.
@@ -87,10 +87,10 @@ Arc Menu is available under the terms of the GPL-2.0 license See [`COPYING`](htt
 
 This extension leverages some of the work from [Zorin OS menu](https://zorinos.com/).
 
-Additional credits: This extension also leverages the work from [Giovanni Campagna ](https://git.gnome.org//browse/gnome-shell-extensions) gnome Applications Menu used in [Gnome 3](https://www.gnome.org/) to allow the menu to be embedded in the Gnome main panel.
+Additional credits: This extension also leverages the work from [Giovanni Campagna ](https://git.gnome.org//browse/gnome-shell-extensions) gnome Application Menu used in [Gnome 3](https://www.gnome.org/) to allow the menu to be embedded in the Gnome main panel.
 ##
 
-### Project Developer's
+### Project Developers
 
 #### @[LinxGem33](https://github.com/LinxGem33) - **Founder** - **Developer** - Digital Art Designer
 
@@ -110,14 +110,18 @@ Additional credits: This extension also leverages the work from [Giovanni Campag
 - @[JasonLG1979](https://github.com/JasonLG1979/Arc-Menu)  (1) menu style fix, (2) Asynchronously set an icon and handle errors
 - @[itmitica](https://github.com/itmitica) (1) icon symbolic
 
-#### Bug Fixes: 
+#### Bug Fixes:
 
 - @[JasonLG1979](https://github.com/JasonLG1979/Arc-Menu) (1) menu style fix
 - @[lexruee](https://github.com/lexruee/Arc-Menu) (1) correctly restore the Activities button
 ##
 #### Please refer to the Wiki section for a [Translation Guide](https://github.com/LinxGem33/Arc-Menu/wiki/Translation-Guide)
 
-|Contributor|Language|Implimented|Contributor|Language|Implimented|
+[//]: # (This table design is awful and must be fixed.)
+[//]: # (For translators: the syntax is |@username|Language|ti tag + image link|.)
+[//]: # (Documented by @elsieholmes.)
+
+|Contributor|Language|Implemented|Contributor|Language|Implemented|
 |:-----|:-----|:-----:|:-----|:-----|:-----:|
 |@[h3r0n](https://github.com/h3r0n)|Italian|![ti](https://user-images.githubusercontent.com/19158615/27998683-9dd48cd0-650a-11e7-87c3-0ac3256ae574.png)||French|
 |@[pkomur](https://github.com/pkomur)|Polish|![ti](https://user-images.githubusercontent.com/19158615/27998683-9dd48cd0-650a-11e7-87c3-0ac3256ae574.png)||Arabic|
@@ -125,6 +129,7 @@ Additional credits: This extension also leverages the work from [Giovanni Campag
 |@[zakkak](https://github.com/zakkak)|Greek|![ti](https://user-images.githubusercontent.com/19158615/27998683-9dd48cd0-650a-11e7-87c3-0ac3256ae574.png)||Spanish|
 |@[mrprobot](https://github.com/mrprobot)|German|![ti](https://user-images.githubusercontent.com/19158615/27998683-9dd48cd0-650a-11e7-87c3-0ac3256ae574.png)||Hindi|
 ||Portuguese|||Bengali||
-||Russian|||Japanese||
+|@[elsieholmes](https://github.com/elsieholmes)|Russian|![ti](https://user-images.githubusercontent.com/19158615/27998683-9dd48cd0-650a-11e7-87c3-0ac3256ae574.png)||Japanese||
 ||Swedish|||Dutch||
 |@[neynefes](https://github.com/neynefes)|Turkish|![ti](https://user-images.githubusercontent.com/19158615/27998683-9dd48cd0-650a-11e7-87c3-0ac3256ae574.png)||Javanese||
+|@[elsieholmes](https://github.com/elsieholmes)|Ukrainian|![ti](https://user-images.githubusercontent.com/19158615/27998683-9dd48cd0-650a-11e7-87c3-0ac3256ae574.png)|
