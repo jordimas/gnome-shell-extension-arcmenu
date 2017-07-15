@@ -53,7 +53,7 @@ const MENU_BUTTON_ICON = { // See: org.gnome.shell.extensions.arc-menu.menu-butt
     Custom: 2
 };
 const MENU_ICON_PATH = {
-    Arc_Menu: '/media/arc-menu-symbolic.svg'
+    Arc_Menu: '/media/icon.svg'
 };
 const ICON_SIZES = [ 16, 24, 32, 40, 48 ];
 const DEFAULT_ICON_SIZE = 22;
