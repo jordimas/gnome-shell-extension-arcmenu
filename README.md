@@ -67,9 +67,9 @@ make disable
 Alt + F2 and enter 'r' (without quotes).
 ```
 ##
-### Arc menu Wiki Guide
+### Arc Menu Wiki Guide
 
-if you have any issues with regard to Arc menu and your unsure of a certain features or just want to know more about Arc menu, then the Arc menu wiki guide is a good place to start.
+If you have any issues with regard to Arc menu and your unsure of a certain features or just want to know more about Arc menu, then the Arc menu wiki guide is a good place to start.
 
 Please refer to the Arc menu [Wiki Guide](https://github.com/LinxGem33/Arc-Menu/wiki) 
 
