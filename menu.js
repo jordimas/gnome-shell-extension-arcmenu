@@ -773,7 +773,6 @@ const MenuButtonWidget = new Lang.Class({
     }
 });
 
-const availableIconSizes = [ 16, 22, 24, 32, 48, 64, 96, 128 ];
 
 // Application Menu Button class (most of the menu logic is here)
 const ApplicationsButton = new Lang.Class({
