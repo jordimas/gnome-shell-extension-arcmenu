@@ -1,10 +1,13 @@
 ![](https://github.com/LinxGem33/Neon/blob/master/artwork/arc-wide-banner5.png?raw=true)
+
 ##
+
 ![](https://img.shields.io/badge/release-v13-brightgreen.svg) ![](https://img.shields.io/badge/Language-JavaScript-yellow.svg) ![](https://img.shields.io/badge/Licence-GPL--2.0-blue.svg)
 
 ###
 
-Arc Menu is a Gnome shell extension designed to replace the standard menu found in Gnome 3 this application menu extension leverages some of the work from Zorin OS menu and some of the added benefits of the Arc Menu extension is the long awaited search functionality as well as quick access to files on your system and also the current logged in user along with quick access to the software centre and system settings and other features which can be accessed from the settings menu.
+Arc Menu is a Gnome shell extension designed to replace the standard menu found in Gnome 3 this application menu extension has  some added benefits over the standard menu found in Gnome 3, these include the long awaited search functionality as well as quick access to files on your system and also the current logged in user along with quick access to the software centre and system settings and other features which can be accessed from the settings menu.
+
 ##
 ![](https://github.com/LinxGem33/Arc-Menu/blob/master/screenshots/browser.png?raw=true)
 ##
@@ -66,6 +69,12 @@ make disable
 ```
 Alt + F2 and enter 'r' (without quotes).
 ```
+##
+### Arc menu Wiki Guide
+
+if you have any issues with regard to Arc menu and your unsure of a certain features or just want to know more about Arc menu, then the Arc menu wiki guide is a good place to start.
+
+Please refer to the Arc menu [Wiki Guide](https://github.com/LinxGem33/Arc-Menu/wiki) 
 
 ##
 ### Bugs
