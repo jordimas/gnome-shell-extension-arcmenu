@@ -71,17 +71,19 @@ Alt + F2 and enter 'r' (without quotes).
 
 If you have any issues with regard to Arc menu and your unsure of a certain features or just want to know more about Arc menu, then the Arc menu wiki guide is a good place to start.
 
-#### Please refer to the Arc menu [Wiki Guide](https://github.com/LinxGem33/Arc-Menu/wiki) 
+Please refer to the Arc menu [Wiki Guide](https://github.com/LinxGem33/Arc-Menu/wiki) 
 
 ##
 ### Bugs
+
 Bugs should be reported [here](https://github.com/LinxGem33/Arc-Menu/issues) on the Github issues page.
+
 ##
-#### Please refer to the Wiki section for a guide on: [Reporting Bugs](https://github.com/LinxGem33/Arc-Menu/wiki/Reporting-Bug's)
+
+Please refer to the Wiki section for a guide on: [Reporting Bugs](https://github.com/LinxGem33/Arc-Menu/wiki/Reporting-Bug's)
 
 Please note that without any information about your system, the Arc Menu Team can only speculate what the problem is.
 So, please provide us information about your GNU/Linux distribution and the GNOME Shell version. Otherwise, we are not able to try and solve your problem.
-
 
 ##
 ### License & Terms ![](https://github.com/LinxGem33/IP-Finder/blob/master/screens/Copyleft-16.png?raw=true)
@@ -122,10 +124,6 @@ Additional credits: This extension also leverages the work from [Giovanni Campag
 - @[lexruee](https://github.com/lexruee/Arc-Menu) (1) correctly restore the Activities button
 ##
 #### Please refer to the Wiki section for a [Translation Guide](https://github.com/LinxGem33/Arc-Menu/wiki/Translation-Guide)
-
-[//]: # (This table design is awful and must be fixed.)
-[//]: # (For translators: the syntax is |@username|Language|ti tag + image link|.)
-[//]: # (Documented by @elsieholmes.)
 
 |Contributor|Language|Implemented|Contributor|Language|Implemented|
 |:-----|:-----|:-----:|:-----|:-----|:-----:|
