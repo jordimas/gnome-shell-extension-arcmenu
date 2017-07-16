@@ -71,11 +71,11 @@ Alt + F2 and enter 'r' (without quotes).
 
 If you have any issues with regard to Arc menu and your unsure of a certain features or just want to know more about Arc menu, then the Arc menu wiki guide is a good place to start.
 
-Please refer to the Arc menu [Wiki Guide](https://github.com/LinxGem33/Arc-Menu/wiki) 
+#### Please refer to the Arc menu [Wiki Guide](https://github.com/LinxGem33/Arc-Menu/wiki) 
 
 ##
 ### Bugs
-**Bugs should be reported [here](https://github.com/LinxGem33/Arc-Menu/issues) on the Github issues page**.
+Bugs should be reported [here](https://github.com/LinxGem33/Arc-Menu/issues) on the Github issues page.
 ##
 #### Please refer to the Wiki section for a guide on: [Reporting Bugs](https://github.com/LinxGem33/Arc-Menu/wiki/Reporting-Bug's)
 
