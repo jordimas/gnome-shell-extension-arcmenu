@@ -36,11 +36,3 @@
 .apps-menu:rtl {
     padding-left: 0.1875em;
 }
-
-/* adapta fixes */
-#panelApplications StIcon, #panelApplications:hover StIcon, #panelApplications:focus StIcon, #panelApplications:active StIcon, #panelApplications:checked StIcon { color: inherit; }
-
-#panelApplications StIcon.popup-menu-icon { background-image: initial; }
-
-#panelApplications:hover StIcon.popup-menu-icon, #panelApplications:focus StIcon.popup-menu-icon, #panelApplications:active StIcon.popup-menu-icon, #panelApplications:checked StIcon.popup-menu-icon { background-image: initial; }
-

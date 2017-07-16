@@ -179,10 +179,6 @@ const Helper = Me.imports.helper;
         let menuButtonWidget = this._menuButton.getWidget();
         let stIcon = menuButtonWidget.getPanelIcon();
 
-        if (stIcon.has_style_class_name('popup-menu-icon')) {
-            stIcon.remove_style_class_name('popup-menu-icon');
-        }
-
         switch (this._settings.get_enum('menu-button-icon')) {
             case Constants.MENU_BUTTON_ICON.Custom:
                 if (GLib.file_test(iconFilepath, GLib.FileTest.EXISTS)) {
@@ -198,7 +194,6 @@ const Helper = Me.imports.helper;
             case Constants.MENU_BUTTON_ICON.System:
             default:
                 stIcon.set_icon_name('start-here-symbolic');
-                stIcon.add_style_class_name('popup-menu-icon');
         }
     },
 
