@@ -705,13 +705,12 @@ const ApplicationsMenu = new Lang.Class({
  * This class is responsible for the appearance of the menu button.
  */
 const MenuButtonWidget = new Lang.Class({
-    Name: 'MenuButtonWidget',
-    Extends: St.BoxLayout,
+    Name: 'Class',
 
     _init: function() {
-        this.parent({
+        this.actor = new St.BoxLayout({
             style_class: 'panel-status-menu-box',
-            pack_start: false,
+            pack_start: false
         });
         this._arrowIcon = PopupMenu.arrowIcon(St.Side.BOTTOM);
         this._icon = new St.Icon({
@@ -724,9 +723,9 @@ const MenuButtonWidget = new Lang.Class({
             y_align: Clutter.ActorAlign.CENTER
         });
 
-        this.add_child(this._icon);
-        this.add_child(this._label);
-        this.add_child(this._arrowIcon);
+        this.actor.add_child(this._icon);
+        this.actor.add_child(this._label);
+        this.actor.add_child(this._arrowIcon);
     },
 
     getPanelLabel: function() {
@@ -738,38 +737,38 @@ const MenuButtonWidget = new Lang.Class({
     },
 
     showArrowIcon: function() {
-        if (this.get_children().indexOf(this._arrowIcon) == -1) {
-            this.add_child(this._arrowIcon);
+        if (!this.actor.contains(this._arrowIcon)) {
+            this.actor.add_child(this._arrowIcon);
         }
     },
 
     hideArrowIcon: function() {
-        if (this.get_children().indexOf(this._arrowIcon) != -1) {
-            this.remove_child(this._arrowIcon);
+        if (this.actor.contains(this._arrowIcon)) {
+            this.actor.remove_child(this._arrowIcon);
         }
     },
 
     showPanelIcon: function() {
-        if (this.get_children().indexOf(this._icon) == -1) {
-            this.add_child(this._icon);
+        if (!this.actor.contains(this._icon)) {
+            this.actor.add_child(this._icon);
         }
     },
 
     hidePanelIcon: function() {
-        if (this.get_children().indexOf(this._icon) != -1) {
-            this.remove_child(this._icon);
+        if (this.actor.contains(this._icon)) {
+            this.actor.remove_child(this._icon);
         }
     },
 
     showPanelText: function() {
-        if (this.get_children().indexOf(this._label) == -1) {
-            this.add_child(this._label);
+        if (!this.actor.contains(this._label)) {
+            this.actor.add_child(this._label);
         }
     },
 
     hidePanelText: function() {
-        if (this.get_children().indexOf(this._label) != -1) {
-            this.remove_child(this._label);
+        if (this.actor.contains(this._label)) {
+            this.actor.remove_child(this._label);
         }
     }
 });
@@ -792,7 +791,7 @@ const ApplicationsButton = new Lang.Class({
         this.actor.accessible_role = Atk.Role.LABEL;
 
         this._menuButtonWidget = new MenuButtonWidget();
-        this.actor.add_actor(this._menuButtonWidget);
+        this.actor.add_actor(this._menuButtonWidget.actor);
 
         this.actor.name = 'panelApplications';
         this.actor.connect('captured-event', Lang.bind(this, this._onCapturedEvent));
