@@ -1,6 +1,5 @@
 ![](https://github.com/LinxGem33/Neon/blob/master/artwork/arc-wide-banner5.png?raw=true)
 
-![](https://img.shields.io/badge/release-v13-brightgreen.svg) ![](https://img.shields.io/badge/Language-JavaScript-yellow.svg) ![](https://img.shields.io/badge/Licence-GPL--2.0-blue.svg)
 ##
 ![](https://github.com/LinxGem33/Arc-Menu/blob/master/screenshots/browser.png?raw=true)
 ##
@@ -140,3 +139,5 @@ Additional credits: This extension also leverages the work from [Giovanni Campag
 ||Swedish|||Dutch||
 |@[neynefes](https://github.com/neynefes)|Turkish|![ti](https://user-images.githubusercontent.com/19158615/27998683-9dd48cd0-650a-11e7-87c3-0ac3256ae574.png)||Javanese||
 |@[elsieholmes](https://github.com/elsieholmes)|Ukrainian|![ti](https://user-images.githubusercontent.com/19158615/27998683-9dd48cd0-650a-11e7-87c3-0ac3256ae574.png)|
+##
+![](https://img.shields.io/badge/release-v13-brightgreen.svg) ![](https://img.shields.io/badge/Language-JavaScript-yellow.svg) ![](https://img.shields.io/badge/Licence-GPL--2.0-blue.svg)
