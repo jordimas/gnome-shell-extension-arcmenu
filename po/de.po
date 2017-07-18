@@ -1,4 +1,4 @@
-# German language file for Arc-Menu.
+# German translation file for Arc Menu.
 # Copyright (C) 2017
 # This file is distributed under the same license as the Arc Menu package.
 # Markus Neumeister <markus.neumeister@hotmail.com>, 2017.
@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: Arc Menu\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2017-07-09 16:09+0200\n"
-"PO-Revision-Date: 2017-07-12 16:00+0200\n"
+"PO-Revision-Date: 2017-07-17 16:31+0200\n"
 "Last-Translator: Markus Neumeister <markus.neumeister@hotmail.com>\n"
 "Language-Team: \n"
 "Language: German\n"
@@ -147,7 +147,7 @@ msgstr "Über"
 
 #: prefs.js:477
 msgid "Arc-Menu"
-msgstr "Arc-Menü"
+msgstr "Arc-Menu"
 
 #: prefs.js:482
 msgid "version: "
