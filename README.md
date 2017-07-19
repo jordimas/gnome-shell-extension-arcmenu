@@ -127,7 +127,7 @@ Additional credits: This extension also leverages the work from [Giovanni Campag
 
 |Contributor|Language|Implemented|Contributor|Language|Implemented|
 |:-----|:-----|:-----:|:-----|:-----|:-----:|
-|@[h3r0n](https://github.com/h3r0n)|Italian|![ti](https://user-images.githubusercontent.com/19158615/27998683-9dd48cd0-650a-11e7-87c3-0ac3256ae574.png)||French|
+|@[h3r0n](https://github.com/h3r0n)|Italian|![ti](https://user-images.githubusercontent.com/19158615/27998683-9dd48cd0-650a-11e7-87c3-0ac3256ae574.png)|@[megasyl](https://github.com/megasyl)|French|![ti](https://user-images.githubusercontent.com/19158615/27998683-9dd48cd0-650a-11e7-87c3-0ac3256ae574.png)
 |@[pkomur](https://github.com/pkomur)|Polish|![ti](https://user-images.githubusercontent.com/19158615/27998683-9dd48cd0-650a-11e7-87c3-0ac3256ae574.png)||Arabic|
 |@[danielstuart14](https://github.com/danielstuart14)|Brazilian portuguese|![ti](https://user-images.githubusercontent.com/19158615/27998683-9dd48cd0-650a-11e7-87c3-0ac3256ae574.png)||Chinese|
 |@[zakkak](https://github.com/zakkak)|Greek|![ti](https://user-images.githubusercontent.com/19158615/27998683-9dd48cd0-650a-11e7-87c3-0ac3256ae574.png)||Spanish|
