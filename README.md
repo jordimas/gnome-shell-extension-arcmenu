@@ -125,7 +125,7 @@ Additional credits: This extension also leverages the work from [Giovanni Campag
 ##
 #### Please refer to the Wiki section for a [Translation Guide](https://github.com/LinxGem33/Arc-Menu/wiki/Translation-Guide)
 
-|Contributor|Language|Implemented|Contributor|Language|Implemented|
+|Contributor|Language|Translated|Contributor|Language|Translated|
 |:-----|:-----|:-----:|:-----|:-----|:-----:|
 |@[h3r0n](https://github.com/h3r0n)|Italian|![ti](https://user-images.githubusercontent.com/19158615/27998683-9dd48cd0-650a-11e7-87c3-0ac3256ae574.png)|@[megasyl](https://github.com/megasyl)|French|![ti](https://user-images.githubusercontent.com/19158615/27998683-9dd48cd0-650a-11e7-87c3-0ac3256ae574.png)
 |@[pkomur](https://github.com/pkomur)|Polish|![ti](https://user-images.githubusercontent.com/19158615/27998683-9dd48cd0-650a-11e7-87c3-0ac3256ae574.png)||Arabic|
