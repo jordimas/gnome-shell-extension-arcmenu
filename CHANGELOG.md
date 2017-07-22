@@ -1,4 +1,4 @@
-### [unreleased]()
+### Unreleased
 
 #### [Jul 22, 2017]() 
 
@@ -33,7 +33,7 @@
 - Add Greek translation
          
 ##
-### [Changelog for v13]()
+### Changelog for v13
 
 
 #### [Jul 06, 2017]()
