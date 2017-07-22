@@ -1,5 +1,5 @@
 ### Unreleased
-
+##
 #### [Jul 22, 2017]() 
 
 - fix-disable-hotcorner-bug 
@@ -34,10 +34,9 @@
          
 ##
 ### Changelog for v13
-
+##
 
 #### [Jul 06, 2017]()
-##
 
 - Implement menu-button-customization feature (update). 
 - refactor the appearance settings page and fix some code in prefs.js a… 
