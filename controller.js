@@ -44,7 +44,7 @@ const Helper = Me.imports.helper;
         this._activitiesButton = Main.panel.statusArea['activities'];
 
         // Create a Hot Corner Manager, a Menu Keybinder as well as a Keybinding Manager
-        this._hotCornerManager = new Helper.HotCornerManager();
+        this._hotCornerManager = new Helper.HotCornerManager(this._settings);
         this._menuHotKeybinder = new Helper.MenuHotKeybinder(Lang.bind(this, function() {
                 this._menuButton.toggleMenu();
             }));
