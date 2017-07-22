@@ -1,11 +1,11 @@
-### unreleased
+### [unreleased]()
 
-#### Jul 22, 2017 
+#### [Jul 22, 2017]() 
 
 - fix-disable-hotcorner-bug 
 - fix: keep disabled hot corner disabled on new session
  
-#### Jul 16, 2017 
+#### [Jul 16, 2017]() 
  
 - Merge pull request #91 from lexruee/refactoring
 - menu.js: remove unused constant availableIconSizes 
@@ -14,29 +14,29 @@
 - remove fixes for the adapta theme 
 - #87 from itmitica/Development-Branch 
     
-#### Jul 15, 2017 
+#### [Jul 15, 2017]() 
     
 - symbolic icon: svg in media, const in constants.js
 - Adapta-Theme changes for symbolic icon
 - #86 from LinxGem33/revert-78-Development-Branch 
     
-#### Jul 13, 2017 
+#### [Jul 13, 2017]() 
      
 - controller.js: implement method _isActivitiesButtonPresent 
 - Merge pull request #79 from lexruee/sync-development-branch 
 - Sync development branch with master 
         
-#### Jul 11, 2017 
+#### [Jul 11, 2017]() 
         
 - icon: symbolic
 - Merge pull request #75 from zakkak/master 
 - Add Greek translation
          
 ##
-### Changelog for v13
+### [Changelog for v13]()
 
 
-#### Jul 06, 2017
+#### [Jul 06, 2017]()
 ##
 
 - Implement menu-button-customization feature (update). 
