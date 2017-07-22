@@ -2,7 +2,7 @@
 
 #### Jul 22, 2017 
 
-- fix-disable-hotcorner-bug
+- fix-disable-hotcorner-bug 
 - fix: keep disabled hot corner disabled on new session
  
 #### Jul 16, 2017 
