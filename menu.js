@@ -107,7 +107,8 @@ const BaseMenuItem = new Lang.Class({
     _onKeyPressEvent: function (actor, event) {
         let symbol = event.get_key_symbol();
 
-        if (symbol == Clutter.KEY_Return) {
+        if (symbol == Clutter.KEY_Return ||
+            symbol == Clutter.KEY_KP_Enter) {
             this.activate(event);
             return Clutter.EVENT_STOP;
         }
@@ -869,7 +870,8 @@ const ApplicationsButton = new Lang.Class({
             if (this.menu.actor.navigate_focus(global.stage.key_focus, direction, false))
                 return true;
         } else if (symbol == Clutter.KEY_Return ||
-                   symbol == Clutter.KEY_Tab) {
+                   symbol == Clutter.KEY_Tab ||
+                   symbol == Clutter.KEY_KP_Enter) {
             return this.parent(actor, event);
         } else if (symbol == Clutter.KEY_BackSpace) {
             if (!this.searchEntry.contains(global.stage.get_key_focus())) {
