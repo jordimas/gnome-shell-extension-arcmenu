@@ -505,6 +505,17 @@ const ApplicationMenuItem = new Lang.Class({
         this._menu.actor.navigate_focus(null, Gtk.DirectionType.TAB_FORWARD, false);
     },
 
+    _onKeyPressEvent: function (actor, event) {
+        let symbol = event.get_key_symbol();
+        if (symbol == Clutter.KEY_space ||
+            symbol == Clutter.KEY_Return ||
+            symbol == Clutter.KEY_KP_Enter) {
+            this.activate(event);
+            return Clutter.EVENT_STOP;
+        }
+        return Clutter.EVENT_PROPAGATE;
+    },
+
     _onButtonPressEvent: function(actor, event) {
         this.actor.add_style_pseudo_class ('active');
         let button = event.get_button();
