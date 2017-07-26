@@ -383,11 +383,7 @@ const ApplicationMenuItem = new Lang.Class({
             function() {
                 textureCache.disconnect(iconThemeChangedId);
             }));
-        this.actor.connect('popup-menu', Lang.bind(this, this._onKeyboardPopupMenu));
         this._updateIcon();
-        this._menu = null;
-        this._menuManager = new PopupMenu.PopupMenuManager(this);
-        this._menuTimeoutId = 0;
 
         this._draggable = DND.makeDraggable(this.actor);
         this.isDraggableApp = true;
@@ -438,104 +434,6 @@ const ApplicationMenuItem = new Lang.Class({
     // Update the app icon in the menu
     _updateIcon: function() {
         this._iconBin.set_child(this._app.create_icon_texture(APPLICATION_ICON_SIZE));
-    },
-
-    _removeMenuTimeout: function() {
-        if (this._menuTimeoutId > 0) {
-            Mainloop.source_remove(this._menuTimeoutId);
-            this._menuTimeoutId = 0;
-        }
-    },
-
-    _setPopupTimeout: function() {
-        this._removeMenuTimeout();
-        this._menuTimeoutId = Mainloop.timeout_add(AppDisplay.MENU_POPUP_TIMEOUT,
-            Lang.bind(this, function() {
-                this._menuTimeoutId = 0;
-                this.popupMenu();
-                return GLib.SOURCE_REMOVE;
-            }));
-        GLib.Source.set_name_by_id(this._menuTimeoutId, '[gnome-shell] this.popupMenu');
-    },
-
-    _onLeaveEvent: function(actor, event) {
-        this._removeMenuTimeout();
-    },
-
-    popupMenu: function() {
-        this._removeMenuTimeout();
-
-        if (this._draggable)
-            this._draggable.fakeRelease();
-
-        if (!this._menu) {
-            this._menu = new SecondaryMenu.AppItemMenu(this);;
-            this._menu.connect('activate-window', Lang.bind(this, function (menu, window) {
-                this.activateWindow(window);
-            }));
-            this._menu.connect('open-state-changed', Lang.bind(this, function (menu, isPoppedUp) {
-                if (!isPoppedUp)
-                    this._onMenuPoppedDown();
-            }));
-            let id = Main.overview.connect('hiding', Lang.bind(this, function () { this._menu.close(); }));
-            this.actor.connect('destroy', function() {
-                Main.overview.disconnect(id);
-            });
-
-            this._menuManager.addMenu(this._menu);
-        }
-
-        this.emit('menu-state-changed', true);
-
-        this.actor.set_hover(true);
-        this._menu.popup();
-        this._menuManager.ignoreRelease();
-
-        return false;
-    },
-
-    _onMenuPoppedDown: function() {
-        this.actor.sync_hover();
-        this.emit('menu-state-changed', false);
-    },
-
-    _onKeyboardPopupMenu: function() {
-        this.popupMenu();
-        this._menu.actor.navigate_focus(null, Gtk.DirectionType.TAB_FORWARD, false);
-    },
-
-    _onButtonPressEvent: function(actor, event) {
-        this.actor.add_style_pseudo_class ('active');
-        let button = event.get_button();
-        if (button == 1) {
-            this._setPopupTimeout();
-        } else if (button == 3) {
-            this.popupMenu();
-            return Clutter.EVENT_STOP;
-        }
-        return Clutter.EVENT_PROPAGATE;
-    },
-
-    _onButtonReleaseEvent: function (actor, event) {
-        this._removeMenuTimeout();
-        this.actor.remove_style_pseudo_class ('active');
-        let button = event.get_button();
-        if (button != 3) {
-            this.activate(event);
-        }
-        return Clutter.EVENT_STOP;
-    },
-
-    _onTouchEvent: function (actor, event) {
-        if (event.type() == Clutter.EventType.TOUCH_BEGIN)
-            this._setPopupTimeout();
-
-        return Clutter.EVENT_PROPAGATE;
-    },
-
-    _onDestroy: function() {
-        this.parent();
-        this._removeMenuTimeout();
     }
 });
 
