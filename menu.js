@@ -813,9 +813,6 @@ const ApplicationsButton = new Lang.Class({
                 this.reloadFlag = true;
             }
         }));
-        this._panelBoxChangedId = Main.layoutManager.connect('panel-box-changed', Lang.bind(this, function() {
-            container.queue_relayout();
-        }));
         Main.panel.actor.connect('notify::height', Lang.bind(this,
             function() {
                 this._redisplay();
@@ -842,7 +839,6 @@ const ApplicationsButton = new Lang.Class({
     _onDestroy: function() {
         Main.overview.disconnect(this._showingId);
         Main.overview.disconnect(this._hidingId);
-        Main.layoutManager.disconnect(this._panelBoxChangedId);
         appSys.disconnect(this._installedChangedId);
     },
 
