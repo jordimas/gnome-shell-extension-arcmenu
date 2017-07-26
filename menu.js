@@ -389,7 +389,6 @@ const ApplicationMenuItem = new Lang.Class({
         this.isDraggableApp = true;
         this._draggable.connect('drag-begin', Lang.bind(this,
             function () {
-                this._removeMenuTimeout();
                 Main.overview.beginItemDrag(this);
             }));
         this._draggable.connect('drag-cancelled', Lang.bind(this,
