@@ -175,7 +175,7 @@ msgstr "Suspendre"
 
 #: menu.js:235
 msgid "Lock"
-msgstr "Verouiller"
+msgstr "Verrouiller"
 
 #: menu.js:263
 msgid "Back"
