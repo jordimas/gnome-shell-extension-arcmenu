@@ -137,12 +137,10 @@ const FrameBox = new Lang.Class({
     Extends: Gtk.Frame,
 
     _init: function() {
+        this.parent({ label_yalign: 0.50 });
         this._listBox = new Gtk.ListBox();
         this._listBox.set_selection_mode(Gtk.SelectionMode.NONE);
-        this.parent({
-            label_yalign: 0.50,
-            child: this._listBox // this a dirty hack but it does the job
-        });
+        Gtk.Frame.prototype.add.call(this, this._listBox);
     },
 
     add: function(boxRow) {
@@ -159,14 +157,13 @@ const FrameBoxRow = new Lang.Class({
     Extends: Gtk.ListBoxRow,
 
     _init: function() {
+        this.parent({});
         this._grid = new Gtk.Grid({
             margin: 5,
             column_spacing: 20,
             row_spacing: 20
         });
-        this.parent({
-            child: this._grid // this a dirty hack but it does the job
-        });
+        Gtk.ListBoxRow.prototype.add.call(this, this._grid);
     },
 
     add: function(widget) {
