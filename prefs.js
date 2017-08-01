@@ -506,7 +506,7 @@ const AboutPage = new Lang.Class({
         let gnuSofwareLabelBox = new Gtk.Box({
             orientation: Gtk.Orientation.VERTICAL
         });
-        gnuSofwareLabelBox.add(gnuSofwareLabel,false, false, 0);
+        gnuSofwareLabelBox.add(gnuSofwareLabel);
 
         this.add(arcMenuImageBox);
         this.add(arcMenuInfoBox);
