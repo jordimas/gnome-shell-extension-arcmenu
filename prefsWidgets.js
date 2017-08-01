@@ -56,7 +56,7 @@ const Notebook = new GObject.Class({
 const NotebookPage = new GObject.Class({
     Name: 'ArcMenu.ArcMenuNotebookPage',
     GTypeName: 'ArcMenuNotebookPage',
-    Extends: Gtk.Box, // Don't know why but Gtk.VBox does not work here...
+    Extends: Gtk.Box,
 
     _init: function(title) {
         this.parent({
@@ -112,7 +112,8 @@ const DialogWindow = new Lang.Class({
             use_header_bar: true,
             modal: true
         });
-        let vbox = new Gtk.VBox({
+        let vbox = new Gtk.Box({
+            orientation: Gtk.Orientation.VERTICAL,
             spacing: 20,
             homogeneous: false,
             margin: 5
