@@ -699,7 +699,7 @@ const ApplicationsButton = new Lang.Class({
         this._hidingId = Main.overview.connect('hiding', Lang.bind(this, function() {
             this.actor.remove_accessible_state (Atk.StateType.CHECKED);
         }));
-
+        this._applicationsButtons = [];
         this.reloadFlag = false;
         this._createLayout();
         this._display();
@@ -1052,7 +1052,7 @@ const ApplicationsButton = new Lang.Class({
     _display: function() {
         this.mainBox.hide();
         if (this._settings.get_enum('visible-menus') != visibleMenus.SYSTEM_ONLY) {
-            this._applicationsButtons = new Array();
+            this._applicationsButtons.length = 0;
             this._loadCategories();
             this._previousSearchPattern = "";
             this.backButton.actor.hide();
