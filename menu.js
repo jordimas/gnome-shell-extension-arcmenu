@@ -1019,19 +1019,32 @@ const ApplicationsButton = new Lang.Class({
                                                  x_fill: true, y_fill: false,
                                                  y_align: St.Align.START });
 
-            // Add shortcuts to menu
-            let software = new ShortcutMenuItem(this, _("Software"), "gnome-software-symbolic", "gnome-software");
-            this.rightBox.add(software.actor, { expand: false,
-                                                 x_fill: true, y_fill: false,
-                                                 y_align: St.Align.START });
-            let settings = new ShortcutMenuItem(this, _("Settings"), "preferences-system-symbolic", "gnome-control-center");
-            this.rightBox.add(settings.actor, { expand: false,
-                                                 x_fill: true, y_fill: false,
-                                                 y_align: St.Align.START });
-            let tweaktool = new ShortcutMenuItem(this, _("Tweak Tool"), "gnome-tweak-tool-symbolic", "gnome-tweak-tool");
-            this.rightBox.add(tweaktool.actor, { expand: false,
-                                                 x_fill: true, y_fill: false,
-                                                 y_align: St.Align.START });
+            // List of shortcuts that will be added to the menu
+            let shortcuts = [
+                {   label: _("Software"),
+                    symbolic: "gnome-software-symbolic",
+                    command: "gnome-software" },
+                {   label: _("Settings"),
+                    symbolic: "preferences-system-symbolic",
+                    command: "gnome-control-center" },
+                {   label: _("Tweak Tool"),
+                    symbolic: "gnome-tweak-tool-symbolic",
+                    command: "gnome-tweak-tool" },
+                {   label: _("Tweaks"), // Tweak Tool is called Tweaks in GNOME 3.26
+                    symbolic: "gnome-tweak-tool-symbolic",
+                    command: "gnome-tweaks" }
+            ];
+            shortcuts.forEach(Lang.bind(this, function(shortcut) {
+                if (GLib.find_program_in_path(shortcut.command)) {
+                    let shortcutMenuItem = new ShortcutMenuItem(this, shortcut.label, shortcut.symbolic, shortcut.command);
+                    this.rightBox.add(shortcutMenuItem.actor, {
+                        expand: false,
+                        x_fill: true, y_fill: false,
+                        y_align: St.Align.START
+                    });
+                }
+            }));
+
             let activities = new ActivitiesMenuItem(this);
             this.rightBox.add(activities.actor, { expand: false,
                                                  x_fill: true, y_fill: false,
