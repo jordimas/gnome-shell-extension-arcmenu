@@ -1106,7 +1106,7 @@ const ApplicationsButton = new Lang.Class({
         if (category_menu_id) {
             applist = this.applicationsByCategory[category_menu_id];
         } else {
-            applist = new Array();
+            applist = [];
             for (let directory in this.applicationsByCategory)
                 applist = applist.concat(this.applicationsByCategory[directory]);
         }
@@ -1115,7 +1115,7 @@ const ApplicationsButton = new Lang.Class({
 
         // Get search results based on pattern (query)
         if (pattern) {
-            let searchResults = new Array();
+            let searchResults = [];
             for (let i in applist) {
                 let app = applist[i];
                 let info = Gio.DesktopAppInfo.new (app.get_id());
