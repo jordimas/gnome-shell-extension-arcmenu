@@ -503,12 +503,14 @@ const AboutPage = new Lang.Class({
             justify: Gtk.Justification.CENTER,
             expand: true
         });
-        let gnuSofwareLabelBox = new Gtk.VBox({});
-        gnuSofwareLabelBox.pack_end(gnuSofwareLabel,false, false, 0);
+        let gnuSofwareLabelBox = new Gtk.Box({
+            orientation: Gtk.Orientation.VERTICAL
+        });
+        gnuSofwareLabelBox.add(gnuSofwareLabel,false, false, 0);
 
         this.add(arcMenuImageBox);
         this.add(arcMenuInfoBox);
-        this.add(gnuSofwareLabel);
+        this.add(gnuSofwareLabelBox);
     }
 });
 
