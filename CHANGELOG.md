@@ -3,7 +3,7 @@
 ##
 ### Changelog for v14
 ##
-[Aug 1, 2017]()
+#### [Aug 1, 2017]()
 
 - prefs.js: show GPL2 info text on the about page
 - Prepare menu.js for gnome tweaks/GNOME 3.26
@@ -14,11 +14,11 @@
 - prefs.js: rename AM constant to PW and rename am.js file to prefsWidgets.js
 - menu.js: initiliaze and clear array properly 
 
-[Jul 31, 2017]()
+#### [Jul 31, 2017]()
 
 - Update fr.po 
 
-[Jul 26, 2017]()
+#### [Jul 26, 2017]()
 
 - menu.js: eliminate unnecessary code in class ApplicationMenuItem
 - menu.js: fix #77
