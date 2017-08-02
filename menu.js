@@ -107,7 +107,8 @@ const BaseMenuItem = new Lang.Class({
     _onKeyPressEvent: function (actor, event) {
         let symbol = event.get_key_symbol();
 
-        if (symbol == Clutter.KEY_Return) {
+        if (symbol == Clutter.KEY_Return ||
+            symbol == Clutter.KEY_KP_Enter) {
             this.activate(event);
             return Clutter.EVENT_STOP;
         }
@@ -383,17 +384,12 @@ const ApplicationMenuItem = new Lang.Class({
             function() {
                 textureCache.disconnect(iconThemeChangedId);
             }));
-        this.actor.connect('popup-menu', Lang.bind(this, this._onKeyboardPopupMenu));
         this._updateIcon();
-        this._menu = null;
-        this._menuManager = new PopupMenu.PopupMenuManager(this);
-        this._menuTimeoutId = 0;
 
         this._draggable = DND.makeDraggable(this.actor);
         this.isDraggableApp = true;
         this._draggable.connect('drag-begin', Lang.bind(this,
             function () {
-                this._removeMenuTimeout();
                 Main.overview.beginItemDrag(this);
             }));
         this._draggable.connect('drag-cancelled', Lang.bind(this,
@@ -438,104 +434,6 @@ const ApplicationMenuItem = new Lang.Class({
     // Update the app icon in the menu
     _updateIcon: function() {
         this._iconBin.set_child(this._app.create_icon_texture(APPLICATION_ICON_SIZE));
-    },
-
-    _removeMenuTimeout: function() {
-        if (this._menuTimeoutId > 0) {
-            Mainloop.source_remove(this._menuTimeoutId);
-            this._menuTimeoutId = 0;
-        }
-    },
-
-    _setPopupTimeout: function() {
-        this._removeMenuTimeout();
-        this._menuTimeoutId = Mainloop.timeout_add(AppDisplay.MENU_POPUP_TIMEOUT,
-            Lang.bind(this, function() {
-                this._menuTimeoutId = 0;
-                this.popupMenu();
-                return GLib.SOURCE_REMOVE;
-            }));
-        GLib.Source.set_name_by_id(this._menuTimeoutId, '[gnome-shell] this.popupMenu');
-    },
-
-    _onLeaveEvent: function(actor, event) {
-        this._removeMenuTimeout();
-    },
-
-    popupMenu: function() {
-        this._removeMenuTimeout();
-
-        if (this._draggable)
-            this._draggable.fakeRelease();
-
-        if (!this._menu) {
-            this._menu = new SecondaryMenu.AppItemMenu(this);;
-            this._menu.connect('activate-window', Lang.bind(this, function (menu, window) {
-                this.activateWindow(window);
-            }));
-            this._menu.connect('open-state-changed', Lang.bind(this, function (menu, isPoppedUp) {
-                if (!isPoppedUp)
-                    this._onMenuPoppedDown();
-            }));
-            let id = Main.overview.connect('hiding', Lang.bind(this, function () { this._menu.close(); }));
-            this.actor.connect('destroy', function() {
-                Main.overview.disconnect(id);
-            });
-
-            this._menuManager.addMenu(this._menu);
-        }
-
-        this.emit('menu-state-changed', true);
-
-        this.actor.set_hover(true);
-        this._menu.popup();
-        this._menuManager.ignoreRelease();
-
-        return false;
-    },
-
-    _onMenuPoppedDown: function() {
-        this.actor.sync_hover();
-        this.emit('menu-state-changed', false);
-    },
-
-    _onKeyboardPopupMenu: function() {
-        this.popupMenu();
-        this._menu.actor.navigate_focus(null, Gtk.DirectionType.TAB_FORWARD, false);
-    },
-
-    _onButtonPressEvent: function(actor, event) {
-        this.actor.add_style_pseudo_class ('active');
-        let button = event.get_button();
-        if (button == 1) {
-            this._setPopupTimeout();
-        } else if (button == 3) {
-            this.popupMenu();
-            return Clutter.EVENT_STOP;
-        }
-        return Clutter.EVENT_PROPAGATE;
-    },
-
-    _onButtonReleaseEvent: function (actor, event) {
-        this._removeMenuTimeout();
-        this.actor.remove_style_pseudo_class ('active');
-        let button = event.get_button();
-        if (button != 3) {
-            this.activate(event);
-        }
-        return Clutter.EVENT_STOP;
-    },
-
-    _onTouchEvent: function (actor, event) {
-        if (event.type() == Clutter.EventType.TOUCH_BEGIN)
-            this._setPopupTimeout();
-
-        return Clutter.EVENT_PROPAGATE;
-    },
-
-    _onDestroy: function() {
-        this.parent();
-        this._removeMenuTimeout();
     }
 });
 
@@ -705,13 +603,12 @@ const ApplicationsMenu = new Lang.Class({
  * This class is responsible for the appearance of the menu button.
  */
 const MenuButtonWidget = new Lang.Class({
-    Name: 'MenuButtonWidget',
-    Extends: St.BoxLayout,
+    Name: 'Class',
 
     _init: function() {
-        this.parent({
+        this.actor = new St.BoxLayout({
             style_class: 'panel-status-menu-box',
-            pack_start: false,
+            pack_start: false
         });
         this._arrowIcon = PopupMenu.arrowIcon(St.Side.BOTTOM);
         this._icon = new St.Icon({
@@ -724,9 +621,9 @@ const MenuButtonWidget = new Lang.Class({
             y_align: Clutter.ActorAlign.CENTER
         });
 
-        this.add_child(this._icon);
-        this.add_child(this._label);
-        this.add_child(this._arrowIcon);
+        this.actor.add_child(this._icon);
+        this.actor.add_child(this._label);
+        this.actor.add_child(this._arrowIcon);
     },
 
     getPanelLabel: function() {
@@ -738,43 +635,42 @@ const MenuButtonWidget = new Lang.Class({
     },
 
     showArrowIcon: function() {
-        if (this.get_children().indexOf(this._arrowIcon) == -1) {
-            this.add_child(this._arrowIcon);
+        if (!this.actor.contains(this._arrowIcon)) {
+            this.actor.add_child(this._arrowIcon);
         }
     },
 
     hideArrowIcon: function() {
-        if (this.get_children().indexOf(this._arrowIcon) != -1) {
-            this.remove_child(this._arrowIcon);
+        if (this.actor.contains(this._arrowIcon)) {
+            this.actor.remove_child(this._arrowIcon);
         }
     },
 
     showPanelIcon: function() {
-        if (this.get_children().indexOf(this._icon) == -1) {
-            this.add_child(this._icon);
+        if (!this.actor.contains(this._icon)) {
+            this.actor.add_child(this._icon);
         }
     },
 
     hidePanelIcon: function() {
-        if (this.get_children().indexOf(this._icon) != -1) {
-            this.remove_child(this._icon);
+        if (this.actor.contains(this._icon)) {
+            this.actor.remove_child(this._icon);
         }
     },
 
     showPanelText: function() {
-        if (this.get_children().indexOf(this._label) == -1) {
-            this.add_child(this._label);
+        if (!this.actor.contains(this._label)) {
+            this.actor.add_child(this._label);
         }
     },
 
     hidePanelText: function() {
-        if (this.get_children().indexOf(this._label) != -1) {
-            this.remove_child(this._label);
+        if (this.actor.contains(this._label)) {
+            this.actor.remove_child(this._label);
         }
     }
 });
 
-const availableIconSizes = [ 16, 22, 24, 32, 48, 64, 96, 128 ];
 
 // Application Menu Button class (most of the menu logic is here)
 const ApplicationsButton = new Lang.Class({
@@ -792,7 +688,7 @@ const ApplicationsButton = new Lang.Class({
         this.actor.accessible_role = Atk.Role.LABEL;
 
         this._menuButtonWidget = new MenuButtonWidget();
-        this.actor.add_actor(this._menuButtonWidget);
+        this.actor.add_actor(this._menuButtonWidget.actor);
 
         this.actor.name = 'panelApplications';
         this.actor.connect('captured-event', Lang.bind(this, this._onCapturedEvent));
@@ -803,7 +699,7 @@ const ApplicationsButton = new Lang.Class({
         this._hidingId = Main.overview.connect('hiding', Lang.bind(this, function() {
             this.actor.remove_accessible_state (Atk.StateType.CHECKED);
         }));
-
+        this._applicationsButtons = [];
         this.reloadFlag = false;
         this._createLayout();
         this._display();
@@ -814,9 +710,6 @@ const ApplicationsButton = new Lang.Class({
             } else {
                 this.reloadFlag = true;
             }
-        }));
-        this._panelBoxChangedId = Main.layoutManager.connect('panel-box-changed', Lang.bind(this, function() {
-            container.queue_relayout();
         }));
         Main.panel.actor.connect('notify::height', Lang.bind(this,
             function() {
@@ -844,7 +737,6 @@ const ApplicationsButton = new Lang.Class({
     _onDestroy: function() {
         Main.overview.disconnect(this._showingId);
         Main.overview.disconnect(this._hidingId);
-        Main.layoutManager.disconnect(this._panelBoxChangedId);
         appSys.disconnect(this._installedChangedId);
     },
 
@@ -871,7 +763,8 @@ const ApplicationsButton = new Lang.Class({
             if (this.menu.actor.navigate_focus(global.stage.key_focus, direction, false))
                 return true;
         } else if (symbol == Clutter.KEY_Return ||
-                   symbol == Clutter.KEY_Tab) {
+                   symbol == Clutter.KEY_Tab ||
+                   symbol == Clutter.KEY_KP_Enter) {
             return this.parent(actor, event);
         } else if (symbol == Clutter.KEY_BackSpace) {
             if (!this.searchEntry.contains(global.stage.get_key_focus())) {
@@ -1126,19 +1019,32 @@ const ApplicationsButton = new Lang.Class({
                                                  x_fill: true, y_fill: false,
                                                  y_align: St.Align.START });
 
-            // Add shortcuts to menu
-            let software = new ShortcutMenuItem(this, _("Software"), "gnome-software-symbolic", "gnome-software");
-            this.rightBox.add(software.actor, { expand: false,
-                                                 x_fill: true, y_fill: false,
-                                                 y_align: St.Align.START });
-            let settings = new ShortcutMenuItem(this, _("Settings"), "preferences-system-symbolic", "gnome-control-center");
-            this.rightBox.add(settings.actor, { expand: false,
-                                                 x_fill: true, y_fill: false,
-                                                 y_align: St.Align.START });
-            let tweaktool = new ShortcutMenuItem(this, _("Tweak Tool"), "gnome-tweak-tool-symbolic", "gnome-tweak-tool");
-            this.rightBox.add(tweaktool.actor, { expand: false,
-                                                 x_fill: true, y_fill: false,
-                                                 y_align: St.Align.START });
+            // List of shortcuts that will be added to the menu
+            let shortcuts = [
+                {   label: _("Software"),
+                    symbolic: "gnome-software-symbolic",
+                    command: "gnome-software" },
+                {   label: _("Settings"),
+                    symbolic: "preferences-system-symbolic",
+                    command: "gnome-control-center" },
+                {   label: _("Tweak Tool"),
+                    symbolic: "gnome-tweak-tool-symbolic",
+                    command: "gnome-tweak-tool" },
+                {   label: _("Tweaks"), // Tweak Tool is called Tweaks in GNOME 3.26
+                    symbolic: "gnome-tweak-tool-symbolic",
+                    command: "gnome-tweaks" }
+            ];
+            shortcuts.forEach(Lang.bind(this, function(shortcut) {
+                if (GLib.find_program_in_path(shortcut.command)) {
+                    let shortcutMenuItem = new ShortcutMenuItem(this, shortcut.label, shortcut.symbolic, shortcut.command);
+                    this.rightBox.add(shortcutMenuItem.actor, {
+                        expand: false,
+                        x_fill: true, y_fill: false,
+                        y_align: St.Align.START
+                    });
+                }
+            }));
+
             let activities = new ActivitiesMenuItem(this);
             this.rightBox.add(activities.actor, { expand: false,
                                                  x_fill: true, y_fill: false,
@@ -1159,7 +1065,7 @@ const ApplicationsButton = new Lang.Class({
     _display: function() {
         this.mainBox.hide();
         if (this._settings.get_enum('visible-menus') != visibleMenus.SYSTEM_ONLY) {
-            this._applicationsButtons = new Array();
+            this._applicationsButtons.length = 0;
             this._loadCategories();
             this._previousSearchPattern = "";
             this.backButton.actor.hide();
@@ -1213,7 +1119,7 @@ const ApplicationsButton = new Lang.Class({
         if (category_menu_id) {
             applist = this.applicationsByCategory[category_menu_id];
         } else {
-            applist = new Array();
+            applist = [];
             for (let directory in this.applicationsByCategory)
                 applist = applist.concat(this.applicationsByCategory[directory]);
         }
@@ -1222,7 +1128,7 @@ const ApplicationsButton = new Lang.Class({
 
         // Get search results based on pattern (query)
         if (pattern) {
-            let searchResults = new Array();
+            let searchResults = [];
             for (let i in applist) {
                 let app = applist[i];
                 let info = Gio.DesktopAppInfo.new (app.get_id());

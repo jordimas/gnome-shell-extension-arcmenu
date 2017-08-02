@@ -183,8 +183,15 @@ const KeybindingManager = new Lang.Class({
 const HotCornerManager = new Lang.Class({
     Name: 'ArcMenu.HotCornerManager',
 
-    _init: function() {
-        this._hotCornersChangedId = null;
+    _init: function(settings) {
+        this._settings = settings;
+        this._hotCornersChangedId = Main.layoutManager.connect('hot-corners-changed', Lang.bind(this, this._redisableHotCorners));
+    },
+
+    _redisableHotCorners: function() {
+        if (this._settings.get_boolean('disable-activities-hotcorner')) {
+            this.disableHotCorners();
+        }
     },
 
     // Get all hot corners from the main layout manager
@@ -194,13 +201,8 @@ const HotCornerManager = new Lang.Class({
 
     // Enable all hot corners
     enableHotCorners: function() {
-        if (this._hotCornersChangedId) {
-            // Restore the default behaviour and connect
-            // the callback and recreate the hot corners
-            Main.layoutManager.disconnect(this._hotCornersChangedId);
-            Main.layoutManager._updateHotCorners();
-            this._hotCornersChangedId = null;
-        }
+        // Restore the default behaviour and recreate the hot corners
+        Main.layoutManager._updateHotCorners();
     },
 
     // Disable all hot corners
@@ -213,20 +215,16 @@ const HotCornerManager = new Lang.Class({
                 corner._pressureBarrier._trigger = function() {};
             }
         });
-        if (!this._hotCornersChangedId) {
-            this._hotCornersChangedId = Main.layoutManager.connect('hot-corners-changed',
-            Lang.bind(this, function() {
-                this.enableHotCorners(false);
-            }));
-        }
     },
 
     // Destroy this object
     destroy: function() {
-        // Clean up and restore the default behaviour
         if (this._hotCornersChangedId) {
-            this.enableHotCorners();
+            Main.layoutManager.disconnect(this._hotCornersChangedId);
+            this._hotCornersChangedId = null;
         }
-       this._hotCornersChangedId = null;
+
+        // Clean up and restore the default behaviour
+        this.enableHotCorners();
     }
 });

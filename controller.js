@@ -41,11 +41,10 @@ const Helper = Me.imports.helper;
     _init: function(settings, menuButton) {
         this._settings = settings;
         this._menuButton = menuButton;
-        this._activitiesButtonIsRemoved = false;
         this._activitiesButton = Main.panel.statusArea['activities'];
 
         // Create a Hot Corner Manager, a Menu Keybinder as well as a Keybinding Manager
-        this._hotCornerManager = new Helper.HotCornerManager();
+        this._hotCornerManager = new Helper.HotCornerManager(this._settings);
         this._menuHotKeybinder = new Helper.MenuHotKeybinder(Lang.bind(this, function() {
                 this._menuButton.toggleMenu();
             }));
@@ -180,10 +179,6 @@ const Helper = Me.imports.helper;
         let menuButtonWidget = this._menuButton.getWidget();
         let stIcon = menuButtonWidget.getPanelIcon();
 
-        if (stIcon.has_style_class_name('popup-menu-icon')) {
-            stIcon.remove_style_class_name('popup-menu-icon');
-        }
-
         switch (this._settings.get_enum('menu-button-icon')) {
             case Constants.MENU_BUTTON_ICON.Custom:
                 if (GLib.file_test(iconFilepath, GLib.FileTest.EXISTS)) {
@@ -199,7 +194,6 @@ const Helper = Me.imports.helper;
             case Constants.MENU_BUTTON_ICON.System:
             default:
                 stIcon.set_icon_name('start-here-symbolic');
-                stIcon.add_style_class_name('popup-menu-icon');
         }
     },
 
@@ -226,21 +220,27 @@ const Helper = Me.imports.helper;
         }
     },
 
+    // Check if the activities button is present on the main panel
+    _isActivitiesButtonPresent: function () {
+        // Thanks to lestcape @github.com for the refinement of this method.
+        return (this._activitiesButton &&
+            this._activitiesButton.container &&
+            Main.panel._leftBox.contains(this._activitiesButton.container));
+    },
+
     // Remove the activities button from the main panel
     _removeActivitiesButtonFromMainPanel: function() {
-        if (!this._activitiesButtonIsRemoved) {
+        if (this._isActivitiesButtonPresent()) {
             Main.panel._leftBox.remove_child(this._activitiesButton.container);
-            this._activitiesButtonIsRemoved = true;
         }
     },
 
     // Add or restore the activities button on the main panel
     _addActivitiesButtonToMainPanel: function() {
-        if (this._activitiesButtonIsRemoved) {
+        if (!this._isActivitiesButtonPresent()) {
             // Retsore the activities button at the default position
             Main.panel._leftBox.add_child(this._activitiesButton.container);
             Main.panel._leftBox.set_child_at_index(this._activitiesButton.container, 0);
-            this._activitiesButtonIsRemoved = false;
         }
     },
 

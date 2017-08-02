@@ -28,7 +28,7 @@ const GdkPixbuf = imports.gi.GdkPixbuf;
 const Lang = imports.lang;
 
 /**
- * The module am.js contains all the customized GUI elements
+ * The module prefsWidgets.js contains all the customized GUI elements
  * for the preferences widget (prefs.js).
  * In order to have a consistent UI/UX, every GUI element in the preferences
  * should be based on a widget from this module.
@@ -56,7 +56,7 @@ const Notebook = new GObject.Class({
 const NotebookPage = new GObject.Class({
     Name: 'ArcMenu.ArcMenuNotebookPage',
     GTypeName: 'ArcMenuNotebookPage',
-    Extends: Gtk.Box, // Don't know why but Gtk.VBox does not work here...
+    Extends: Gtk.Box,
 
     _init: function(title) {
         this.parent({
@@ -112,7 +112,8 @@ const DialogWindow = new Lang.Class({
             use_header_bar: true,
             modal: true
         });
-        let vbox = new Gtk.VBox({
+        let vbox = new Gtk.Box({
+            orientation: Gtk.Orientation.VERTICAL,
             spacing: 20,
             homogeneous: false,
             margin: 5
@@ -136,12 +137,10 @@ const FrameBox = new Lang.Class({
     Extends: Gtk.Frame,
 
     _init: function() {
+        this.parent({ label_yalign: 0.50 });
         this._listBox = new Gtk.ListBox();
         this._listBox.set_selection_mode(Gtk.SelectionMode.NONE);
-        this.parent({
-            label_yalign: 0.50,
-            child: this._listBox // this a dirty hack but it does the job
-        });
+        Gtk.Frame.prototype.add.call(this, this._listBox);
     },
 
     add: function(boxRow) {
@@ -158,14 +157,13 @@ const FrameBoxRow = new Lang.Class({
     Extends: Gtk.ListBoxRow,
 
     _init: function() {
+        this.parent({});
         this._grid = new Gtk.Grid({
             margin: 5,
             column_spacing: 20,
             row_spacing: 20
         });
-        this.parent({
-            child: this._grid // this a dirty hack but it does the job
-        });
+        Gtk.ListBoxRow.prototype.add.call(this, this._grid);
     },
 
     add: function(widget) {

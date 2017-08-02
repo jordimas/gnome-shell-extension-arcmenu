@@ -29,7 +29,7 @@ const ExtensionUtils = imports.misc.extensionUtils;
 const Me = ExtensionUtils.getCurrentExtension();
 const Convenience = Me.imports.convenience;
 const Constants = Me.imports.constants;
-const AM = Me.imports.am;
+const PW = Me.imports.prefsWidgets;
 
 const Gettext = imports.gettext.domain(Me.metadata['gettext-domain']);
 const _ = Gettext.gettext;
@@ -50,7 +50,7 @@ const ArcMenuPreferencesWidget= new GObject.Class({
         });
         this.settings = Convenience.getSettings(Me.metadata['settings-schema']);
         
-        let notebook = new AM.Notebook();
+        let notebook = new PW.Notebook();
         
         let behaviourSettingsPage = new BehaviourSettingsPage(this.settings);
         notebook.append_page(behaviourSettingsPage, behaviourSettingsPage.title);
@@ -70,7 +70,7 @@ const ArcMenuPreferencesWidget= new GObject.Class({
  */
 const BehaviourSettingsPage = new Lang.Class({
     Name: 'BehaviourSettingsPage',
-    Extends: AM.NotebookPage,
+    Extends: PW.NotebookPage,
 
     _init: function(settings) {
         this.parent(_('Behaviour'));
@@ -79,8 +79,8 @@ const BehaviourSettingsPage = new Lang.Class({
         /*
          * Hot Corner Box
          */
-        let disableHotCornerFrame = new AM.FrameBox();
-        let disableHotCornerRow = new AM.FrameBoxRow();
+        let disableHotCornerFrame = new PW.FrameBox();
+        let disableHotCornerRow = new PW.FrameBoxRow();
         let disableHotCornerLabel = new Gtk.Label({
             label: _("Disable activities hot corner"),
             use_markup: true,
@@ -99,10 +99,10 @@ const BehaviourSettingsPage = new Lang.Class({
         /*
          * Menu Hotkey and Keybinding Frame Box
          */
-        let menuKeybindingFrame = new AM.FrameBox();
+        let menuKeybindingFrame = new PW.FrameBox();
 
         // first row: hot key
-        let menuHotkeyRow = new AM.FrameBoxRow();
+        let menuHotkeyRow = new PW.FrameBoxRow();
         let menuHotkeyLabel = new Gtk.Label({
             label: _("Set menu hotkey"),
             use_markup: true,
@@ -122,14 +122,14 @@ const BehaviourSettingsPage = new Lang.Class({
         menuKeybindingFrame.add(menuHotkeyRow);
 
         // second row: custom Keybinding
-        let menuKeybindingRow = new AM.FrameBoxRow();
+        let menuKeybindingRow = new PW.FrameBoxRow();
         let menuKeybindingLabel = new Gtk.Label({
             label: _("Enable custom menu keybinding"),
             use_markup: true,
             xalign: 0,
             hexpand: true
         });
-        let menuKeybindingDescriptionRow = new AM.FrameBoxRow();
+        let menuKeybindingDescriptionRow = new PW.FrameBoxRow();
         let menuKeybindingDescriptionLabel = new Gtk.Label({
             label: _("Syntax: <Shift>, <Ctrl>, <Alt>, <Super>")
         });
@@ -169,7 +169,7 @@ const BehaviourSettingsPage = new Lang.Class({
  */
 const AppearanceSettingsPage = new Lang.Class({
     Name: 'AppearanceSettingsPage',
-    Extends: AM.NotebookPage,
+    Extends: PW.NotebookPage,
 
     _init: function(settings) {
         this.parent(_('Appearance'));
@@ -178,15 +178,15 @@ const AppearanceSettingsPage = new Lang.Class({
         /*
          * Menu Button Appearance Frame Box
          */
-        let menuButtonAppearanceFrame = new AM.FrameBox();
-        let menuButtonAppearanceRow = new AM.FrameBoxRow();
+        let menuButtonAppearanceFrame = new PW.FrameBox();
+        let menuButtonAppearanceRow = new PW.FrameBoxRow();
         let menuButtonAppearanceLabel = new Gtk.Label({
             label: _("Customize menu button appearance"),
             use_markup: true,
             xalign: 0,
             hexpand: true
         });
-        let menuButtonAppearanceSettingsButton = new AM.IconButton({
+        let menuButtonAppearanceSettingsButton = new PW.IconButton({
             circular: true,
             icon_name: 'emblem-system-symbolic'
         });
@@ -216,8 +216,8 @@ const AppearanceSettingsPage = new Lang.Class({
         /*
          * Menu Position Box
          */
-        let menuPositionFrame = new AM.FrameBox();
-        let menuPositionRow = new AM.FrameBoxRow();
+        let menuPositionFrame = new PW.FrameBox();
+        let menuPositionRow = new PW.FrameBoxRow();
         let menuPositionBoxLabel = new Gtk.Label({
             label: _("Menu position in panel"),
             use_markup: true,
@@ -272,7 +272,7 @@ const AppearanceSettingsPage = new Lang.Class({
 
 const MenuButtonCustomizationWindow = new Lang.Class({
     Name: 'MenuButtonCustomizationWindow',
-    Extends: AM.DialogWindow,
+    Extends: PW.DialogWindow,
 
     _init: function(settings, parent) {
         this._settings = settings;
@@ -283,10 +283,10 @@ const MenuButtonCustomizationWindow = new Lang.Class({
         /*
         * Text Appearance Frame
         */
-        let menuButtonTextFrame = new AM.FrameBox();
+        let menuButtonTextFrame = new PW.FrameBox();
 
         //first row
-        let menuButtonTextBoxRow = new AM.FrameBoxRow();
+        let menuButtonTextBoxRow = new PW.FrameBoxRow();
         let menuButtonTextLabel = new Gtk.Label({
             label: _('Text for the menu button'),
             use_markup: true,
@@ -315,7 +315,7 @@ const MenuButtonCustomizationWindow = new Lang.Class({
         menuButtonTextFrame.add(menuButtonTextBoxRow);
 
         // second row
-        let menuButtonCustomTextBoxRow = new AM.FrameBoxRow();
+        let menuButtonCustomTextBoxRow = new PW.FrameBoxRow();
         let menuButtonCustomTextLabel = new Gtk.Label({
             label: _('Set custom text for the menu button'),
             use_markup: true,
@@ -335,7 +335,7 @@ const MenuButtonCustomizationWindow = new Lang.Class({
         menuButtonTextFrame.add(menuButtonCustomTextBoxRow);
 
         // third row
-        let menuButtonArrowIconBoxRow = new AM.FrameBoxRow();
+        let menuButtonArrowIconBoxRow = new PW.FrameBoxRow();
         let menuButtonArrowIconLabel = new Gtk.Label({
             label: _('Enable the arrow icon beside the button text'),
             use_markup: true,
@@ -354,10 +354,10 @@ const MenuButtonCustomizationWindow = new Lang.Class({
         /*
         * Icon Appearance Frame
         */
-        let menuButtonIconFrame = new AM.FrameBox();
+        let menuButtonIconFrame = new PW.FrameBox();
 
         // first row
-        let menuButtonIconBoxRow = new AM.FrameBoxRow();
+        let menuButtonIconBoxRow = new PW.FrameBoxRow();
         let menuButtonIconBoxLabel = new Gtk.Label({
             label: _('Select icon for the menu button'),
             use_markup: true,
@@ -398,7 +398,7 @@ const MenuButtonCustomizationWindow = new Lang.Class({
         menuButtonIconFrame.add(menuButtonIconBoxRow)
 
         // second row
-        let menuButtonIconScaleBoxRow = new AM.FrameBoxRow();
+        let menuButtonIconScaleBoxRow = new PW.FrameBoxRow();
         let iconSize = this._settings.get_double('custom-menu-button-icon-size');
         let menuButtonIconScaleBoxLabel = new Gtk.Label({
             label: _('Icon size') + '\n(' + _('default is') + ' ' + Constants.DEFAULT_ICON_SIZE + ')',
@@ -442,7 +442,7 @@ const MenuButtonCustomizationWindow = new Lang.Class({
  */
 const AboutPage = new Lang.Class({
     Name: 'AboutPage',
-    Extends: AM.NotebookPage,
+    Extends: PW.NotebookPage,
 
     _init: function(settings) {
         this.parent(_('About'));
@@ -503,12 +503,14 @@ const AboutPage = new Lang.Class({
             justify: Gtk.Justification.CENTER,
             expand: true
         });
-        let gnuSofwareLabelBox = new Gtk.VBox({});
-        gnuSofwareLabelBox.pack_end(gnuSofwareLabel,false, false, 0);
+        let gnuSofwareLabelBox = new Gtk.Box({
+            orientation: Gtk.Orientation.VERTICAL
+        });
+        gnuSofwareLabelBox.add(gnuSofwareLabel);
 
         this.add(arcMenuImageBox);
         this.add(arcMenuInfoBox);
-        this.add(gnuSofwareLabel);
+        this.add(gnuSofwareLabelBox);
     }
 });
 
