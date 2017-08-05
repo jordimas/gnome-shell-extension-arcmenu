@@ -2,7 +2,7 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the Arc Menu package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-#
+# Igor Serwin <serwinigor@gmail.com>, 2017.
 msgid ""
 msgstr ""
 "Project-Id-Version: Arc Menu\n"
@@ -23,7 +23,7 @@ msgstr "Zachowanie"
 
 #: prefs.js:85
 msgid "Disable activities hot corner"
-msgstr "Działania wyłączyć gorąco narożne"
+msgstr "Wyłącz aktywny narożnik podglądu"
 
 #: prefs.js:107
 msgid "Set menu hotkey"
@@ -43,7 +43,7 @@ msgstr "Prawy Super (Meta)"
 
 #: prefs.js:127
 msgid "Enable custom menu keybinding"
-msgstr "Własne skróty klawiszowe"
+msgstr "Włącz własny skrót klawiszowy"
 
 #: prefs.js:134
 msgid "Syntax: <Shift>, <Ctrl>, <Alt>, <Super>"
@@ -55,7 +55,7 @@ msgstr "Wygląd"
 
 #: prefs.js:184
 msgid "Customize menu button appearance"
-msgstr ""
+msgstr "Spersonalizuj wygląd przycisku menu"
 
 #: prefs.js:194
 msgid "Icon"
@@ -91,55 +91,55 @@ msgstr "Z prawej"
 
 #: prefs.js:279
 msgid "Button appearance"
-msgstr ""
+msgstr "Wygląd przycisku"
 
 #: prefs.js:291
 msgid "Text for the menu button"
-msgstr ""
+msgstr "Tekst dla przycisku menu"
 
 #: prefs.js:297
 msgid "System text"
-msgstr ""
+msgstr "Domyślny tekst"
 
 #: prefs.js:300
-msgid "Custom text"
-msgstr ""
+msgid "Custom tekst"
+msgstr "Własny tekst"
 
 #: prefs.js:320
 msgid "Set custom text for the menu button"
-msgstr ""
+msgstr "Ustaw własny tekst dla przycisku menu"
 
 #: prefs.js:340
 msgid "Enable the arrow icon beside the button text"
-msgstr ""
+msgstr "Włącze ikonę strzałki obok tekstu przycisku"
 
 #: prefs.js:362
 msgid "Select icon for the menu button"
-msgstr ""
+msgstr "Wybierz ikone dla przycisku menu"
 
 #: prefs.js:372
 msgid "Please select an image icon"
-msgstr ""
+msgstr "Wybierz obraz ikony"
 
 #: prefs.js:387
 msgid "Arc Menu Icon"
-msgstr ""
+msgstr "Ikona Arc Menu"
 
 #: prefs.js:388
 msgid "System Icon"
-msgstr ""
+msgstr "Ikona Systemowa"
 
 #: prefs.js:389
 msgid "Custom Icon"
-msgstr ""
+msgstr "Własna Ikona"
 
 #: prefs.js:404
 msgid "Icon size"
-msgstr ""
+msgstr "Rozmiar ikony"
 
 #: prefs.js:404
 msgid "default is"
-msgstr ""
+msgstr "Domyślnie wynosi"
 
 #: prefs.js:448
 msgid "About"
