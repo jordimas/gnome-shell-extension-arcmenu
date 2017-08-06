@@ -47,6 +47,14 @@ const Notebook = new GObject.Class({
             margin_left: 6,
             margin_right: 6
         });
+    },
+
+    append_page: function(notebookPage) {
+        Gtk.Notebook.prototype.append_page.call(
+            this,
+            notebookPage,
+            notebookPage.getTitleLabel()
+        );
     }
 });
 
@@ -65,11 +73,15 @@ const NotebookPage = new GObject.Class({
             spacing: 20,
             homogeneous: false
         });
-        this.title = new Gtk.Label({
+        this._title = new Gtk.Label({
             label: "<b>" + title + "</b>",
             use_markup: true,
             xalign: 0
         });
+    },
+
+    getTitleLabel: function() {
+        return this._title;
     }
 });
 
