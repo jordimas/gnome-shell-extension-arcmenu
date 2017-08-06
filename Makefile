@@ -5,6 +5,7 @@ DEST=~/.local/share/gnome-shell/extensions/$(UUID)
 ZIP_FILE=$(UUID).zip
 POT_FILE=./po/arc-menu.pot
 TO_LOCALIZE=prefs.js menu.js
+VERSION=$(shell git log --pretty=format:'%h' -n 1)
 
 JS=*.js
 CSS=*.css
@@ -62,6 +63,7 @@ build: translations compile $(MSG_SRC:.po=.mo)
 		mkdir -p $$lf/LC_MESSAGES; \
 		cp $$l $$lf/LC_MESSAGES/arc-menu.mo; \
 	done;
+	sed -i 's/"version": -1/"version": "$(VERSION)"/'  build/metadata.json;
 
 zip-file: build
 	zip -qr $(ZIP_FILE) ./build

@@ -449,7 +449,7 @@ const AboutPage = new Lang.Class({
         this.settings = settings;
 
         // Use meta information from metadata.json
-        let releaseVersion = Me.metadata['version'] || 'bleeding-edge ;-)';
+        let releaseVersion = Me.metadata['version'] || 'unknown';
         let projectName = Me.metadata['name'];
         let projectDescription = Me.metadata['description'];
         let projectUrl = Me.metadata['url'];
