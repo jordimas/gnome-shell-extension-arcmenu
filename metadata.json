@@ -5,6 +5,7 @@
     "gettext-domain": "arc-menu",
     "name": "Arc Menu",
     "description": "The new applications menu for Gnome 3.",
+    "version": -1,
     "shell-version": [
         "3.14",
         "3.16",
