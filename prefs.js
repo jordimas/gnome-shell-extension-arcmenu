@@ -53,13 +53,13 @@ const ArcMenuPreferencesWidget= new GObject.Class({
         let notebook = new PW.Notebook();
         
         let behaviourSettingsPage = new BehaviourSettingsPage(this.settings);
-        notebook.append_page(behaviourSettingsPage, behaviourSettingsPage.title);
+        notebook.append_page(behaviourSettingsPage);
 
         let appearancePage = new AppearanceSettingsPage(this.settings);
-        notebook.append_page(appearancePage, appearancePage.title);
+        notebook.append_page(appearancePage);
 
         let aboutPage = new AboutPage(this.settings);
-        notebook.append_page(aboutPage, aboutPage.title);
+        notebook.append_page(aboutPage);
 
         this.add(notebook);
     }
