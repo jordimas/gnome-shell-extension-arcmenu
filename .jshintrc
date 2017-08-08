@@ -78,5 +78,5 @@
     "white"         : false,    // true: Check against strict whitespace and indentation rules
 
     // Custom Globals
-    "predef"        : [ "global", "log", "logError", "print", "printerr", "imports", "ARGV", "pkg", "_", "C_", "N_" ]
+    "predef"        : [ "global", "log", "logError", "print", "printerr", "imports", "ARGV", "pkg", "C_", "N_" ]
 }
