@@ -136,109 +136,6 @@ const BehaviourSettingsPage = new Lang.Class({
 /*
  * TODO: Appearance Settings Page
  */
-const AppearanceSettingsPage = new Lang.Class({
-    Name: 'AppearanceSettingsPage',
-    Extends: PW.NotebookPage,
-
-    _init: function(settings) {
-        this.parent(_('Appearance'));
-        this.settings = settings;
-
-        /*
-         * Menu Button Appearance Frame Box
-         */
-        let menuButtonAppearanceFrame = new PW.FrameBox();
-        let menuButtonAppearanceRow = new PW.FrameBoxRow();
-        let menuButtonAppearanceLabel = new Gtk.Label({
-            label: _("Customize menu button appearance"),
-            use_markup: true,
-            xalign: 0,
-            hexpand: true
-        });
-        let menuButtonAppearanceSettingsButton = new PW.IconButton({
-            circular: true,
-            icon_name: 'emblem-system-symbolic'
-        });
-        let menuButtonAppearanceCombo = new Gtk.ComboBoxText({ halign:Gtk.Align.END });
-        menuButtonAppearanceCombo.append_text(_("Icon"));
-        menuButtonAppearanceCombo.append_text(_("Text"));
-        menuButtonAppearanceCombo.append_text(_("Icon and Text"));
-        menuButtonAppearanceCombo.append_text(_("Text and Icon"));
-        menuButtonAppearanceCombo.set_active(this.settings.get_enum('menu-button-appearance'));
-        menuButtonAppearanceCombo.connect('changed', Lang.bind (this, function(widget) {
-                this.settings.set_enum('menu-button-appearance', widget.get_active());
-        }));
-
-        // Extra settings for the appearance of the menu button
-        menuButtonAppearanceSettingsButton.connect('clicked',
-        Lang.bind(this, function() {
-            let dialog = new MenuButtonCustomizationWindow(this.settings, this);
-            dialog.show_all();
-        }));
-
-        menuButtonAppearanceRow.add(menuButtonAppearanceLabel);
-        menuButtonAppearanceRow.add(menuButtonAppearanceSettingsButton);
-        menuButtonAppearanceRow.add(menuButtonAppearanceCombo);
-        menuButtonAppearanceFrame.add(menuButtonAppearanceRow);
-        this.add(menuButtonAppearanceFrame);
-
-        /*
-         * Menu Position Box
-         */
-        let menuPositionFrame = new PW.FrameBox();
-        let menuPositionRow = new PW.FrameBoxRow();
-        let menuPositionBoxLabel = new Gtk.Label({
-            label: _("Menu position in panel"),
-            use_markup: true,
-            xalign: 0,
-            hexpand: true
-        });
-
-        let menuPositionLeftButton = new Gtk.RadioButton({
-        	label: _('Left')
-        });
-        let menuPositionCenterButton = new Gtk.RadioButton({
-        label: _('Center'),
-        group: menuPositionLeftButton
-        });
-        let menuPositionRightButton = new Gtk.RadioButton({
-            label: _('Right'),
-            group: menuPositionLeftButton
-        });
-        // callback handlers for the radio buttons
-        menuPositionLeftButton.connect('clicked', Lang.bind(this, function() {
-            this.settings.set_enum('position-in-panel', Constants.MENU_POSITION.Left);
-        }));
-        menuPositionCenterButton.connect('clicked', Lang.bind(this, function() {
-            this.settings.set_enum('position-in-panel', Constants.MENU_POSITION.Center);
-        }));
-        menuPositionRightButton.connect('clicked', Lang.bind(this, function() {
-            this.settings.set_enum('position-in-panel', Constants.MENU_POSITION.Right);
-        }));
-
-        switch(this.settings.get_enum('position-in-panel')) {
-            case Constants.MENU_POSITION.Left:
-                menuPositionLeftButton.set_active(true);
-                break;
-            case Constants.MENU_POSITION.Center:
-                menuPositionCenterButton.set_active(true);
-                break;
-            case Constants.MENU_POSITION.Right:
-                menuPositionRightButton.set_active(true);
-                break;
-        }
-
-        menuPositionRow.add(menuPositionBoxLabel);
-        menuPositionRow.add(menuPositionLeftButton);
-        menuPositionRow.add(menuPositionCenterButton);
-        menuPositionRow.add(menuPositionRightButton);
-        menuPositionFrame.add(menuPositionRow);
-
-        // add the frames
-        this.add(menuPositionFrame);
-    }
-});
-
 const MenuButtonCustomizationWindow = new Lang.Class({
     Name: 'MenuButtonCustomizationWindow',
     Extends: PW.DialogWindow,
@@ -408,6 +305,109 @@ const MenuButtonCustomizationWindow = new Lang.Class({
         // add the frames to the vbox
         vbox.add(menuButtonTextFrame);
         vbox.add(menuButtonIconFrame);
+    }
+});
+
+const AppearanceSettingsPage = new Lang.Class({
+    Name: 'AppearanceSettingsPage',
+    Extends: PW.NotebookPage,
+
+    _init: function(settings) {
+        this.parent(_('Appearance'));
+        this.settings = settings;
+
+        /*
+         * Menu Button Appearance Frame Box
+         */
+        let menuButtonAppearanceFrame = new PW.FrameBox();
+        let menuButtonAppearanceRow = new PW.FrameBoxRow();
+        let menuButtonAppearanceLabel = new Gtk.Label({
+            label: _("Customize menu button appearance"),
+            use_markup: true,
+            xalign: 0,
+            hexpand: true
+        });
+        let menuButtonAppearanceSettingsButton = new PW.IconButton({
+            circular: true,
+            icon_name: 'emblem-system-symbolic'
+        });
+        let menuButtonAppearanceCombo = new Gtk.ComboBoxText({ halign:Gtk.Align.END });
+        menuButtonAppearanceCombo.append_text(_("Icon"));
+        menuButtonAppearanceCombo.append_text(_("Text"));
+        menuButtonAppearanceCombo.append_text(_("Icon and Text"));
+        menuButtonAppearanceCombo.append_text(_("Text and Icon"));
+        menuButtonAppearanceCombo.set_active(this.settings.get_enum('menu-button-appearance'));
+        menuButtonAppearanceCombo.connect('changed', Lang.bind (this, function(widget) {
+                this.settings.set_enum('menu-button-appearance', widget.get_active());
+        }));
+
+        // Extra settings for the appearance of the menu button
+        menuButtonAppearanceSettingsButton.connect('clicked',
+        Lang.bind(this, function() {
+            let dialog = new MenuButtonCustomizationWindow(this.settings, this);
+            dialog.show_all();
+        }));
+
+        menuButtonAppearanceRow.add(menuButtonAppearanceLabel);
+        menuButtonAppearanceRow.add(menuButtonAppearanceSettingsButton);
+        menuButtonAppearanceRow.add(menuButtonAppearanceCombo);
+        menuButtonAppearanceFrame.add(menuButtonAppearanceRow);
+        this.add(menuButtonAppearanceFrame);
+
+        /*
+         * Menu Position Box
+         */
+        let menuPositionFrame = new PW.FrameBox();
+        let menuPositionRow = new PW.FrameBoxRow();
+        let menuPositionBoxLabel = new Gtk.Label({
+            label: _("Menu position in panel"),
+            use_markup: true,
+            xalign: 0,
+            hexpand: true
+        });
+
+        let menuPositionLeftButton = new Gtk.RadioButton({
+        	label: _('Left')
+        });
+        let menuPositionCenterButton = new Gtk.RadioButton({
+        label: _('Center'),
+        group: menuPositionLeftButton
+        });
+        let menuPositionRightButton = new Gtk.RadioButton({
+            label: _('Right'),
+            group: menuPositionLeftButton
+        });
+        // callback handlers for the radio buttons
+        menuPositionLeftButton.connect('clicked', Lang.bind(this, function() {
+            this.settings.set_enum('position-in-panel', Constants.MENU_POSITION.Left);
+        }));
+        menuPositionCenterButton.connect('clicked', Lang.bind(this, function() {
+            this.settings.set_enum('position-in-panel', Constants.MENU_POSITION.Center);
+        }));
+        menuPositionRightButton.connect('clicked', Lang.bind(this, function() {
+            this.settings.set_enum('position-in-panel', Constants.MENU_POSITION.Right);
+        }));
+
+        switch(this.settings.get_enum('position-in-panel')) {
+            case Constants.MENU_POSITION.Left:
+                menuPositionLeftButton.set_active(true);
+                break;
+            case Constants.MENU_POSITION.Center:
+                menuPositionCenterButton.set_active(true);
+                break;
+            case Constants.MENU_POSITION.Right:
+                menuPositionRightButton.set_active(true);
+                break;
+        }
+
+        menuPositionRow.add(menuPositionBoxLabel);
+        menuPositionRow.add(menuPositionLeftButton);
+        menuPositionRow.add(menuPositionCenterButton);
+        menuPositionRow.add(menuPositionRightButton);
+        menuPositionFrame.add(menuPositionRow);
+
+        // add the frames
+        this.add(menuPositionFrame);
     }
 });
 
