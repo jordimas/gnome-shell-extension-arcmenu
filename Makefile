@@ -15,6 +15,7 @@ TXT=AUTHORS COPYING
 DIRS=schemas media
 MSG_SRC=$(wildcard ./po/*.po)
 
+all: build
 
 enable:
 	gnome-shell-extension-tool -e $(UUID)
@@ -26,6 +27,11 @@ clean:
 	rm -f ./schemas/gschemas.compiled
 	rm -rf ./build
 	rm -f $(ZIP_FILE)
+
+jshint:
+	jshint $(JS)
+
+test: jshint
 
 install: build
 	mkdir -p $(DEST)
