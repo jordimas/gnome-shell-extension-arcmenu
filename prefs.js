@@ -395,7 +395,7 @@ const MenuButtonCustomizationWindow = new Lang.Class({
         menuButtonIconBoxRow.add(menuButtonIconBoxLabel);
         menuButtonIconBoxRow.add(fileChooserButton);
         menuButtonIconBoxRow.add(menuButtonIconCombo);
-        menuButtonIconFrame.add(menuButtonIconBoxRow)
+        menuButtonIconFrame.add(menuButtonIconBoxRow);
 
         // second row
         let menuButtonIconScaleBoxRow = new PW.FrameBoxRow();
@@ -432,7 +432,7 @@ const MenuButtonCustomizationWindow = new Lang.Class({
         menuButtonIconFrame.add(menuButtonIconScaleBoxRow);
 
         // add the frames to the vbox
-        vbox.add(menuButtonTextFrame)
+        vbox.add(menuButtonTextFrame);
         vbox.add(menuButtonIconFrame);
     }
 });
