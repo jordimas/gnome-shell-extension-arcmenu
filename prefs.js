@@ -300,9 +300,13 @@ const MenuButtonCustomizationWindow = new Lang.Class({
             label: _('Custom text'),
             group: systemTextButton
         });
-        //TODO: fix this hack
-        systemTextButton.set_active(this._settings.get_enum('menu-button-text') == Constants.MENU_BUTTON_TEXT.System);
-        customTextButton.set_active(this._settings.get_enum('menu-button-text') == Constants.MENU_BUTTON_TEXT.Custom);
+
+        if(this._settings.get_enum('menu-button-text') === Constants.MENU_BUTTON_TEXT.System) {
+            systemTextButton.set_active(true);
+        } else {
+            customTextButton.set_active(true);
+        }
+
         systemTextButton.connect('clicked', Lang.bind(this, function() {
             this._settings.set_enum('menu-button-text', Constants.MENU_BUTTON_TEXT.System);
         }));
