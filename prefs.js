@@ -35,37 +35,6 @@ const Gettext = imports.gettext.domain(Me.metadata['gettext-domain']);
 const _ = Gettext.gettext;
 
 /*
- * Arc Menu Preferences Widget
- */
-const ArcMenuPreferencesWidget= new GObject.Class({
-    Name: 'ArcMenu.ArcMenuPreferencesWidget',
-    GTypeName: 'ArcMenuPreferencesWidget',
-    Extends: Gtk.Box,
-
-    _init: function() {
-        this.parent({
-            orientation: Gtk.Orientation.VERTICAL,
-            spacing: 5,
-            border_width: 5
-        });
-        this.settings = Convenience.getSettings(Me.metadata['settings-schema']);
-        
-        let notebook = new PW.Notebook();
-        
-        let behaviourSettingsPage = new BehaviourSettingsPage(this.settings);
-        notebook.append_page(behaviourSettingsPage);
-
-        let appearancePage = new AppearanceSettingsPage(this.settings);
-        notebook.append_page(appearancePage);
-
-        let aboutPage = new AboutPage(this.settings);
-        notebook.append_page(aboutPage);
-
-        this.add(notebook);
-    }
-});
-
-/*
  * Behaviour Settings Page
  */
 const BehaviourSettingsPage = new Lang.Class({
@@ -516,6 +485,37 @@ const AboutPage = new Lang.Class({
         this.add(arcMenuImageBox);
         this.add(arcMenuInfoBox);
         this.add(gnuSofwareLabelBox);
+    }
+});
+
+/*
+ * Arc Menu Preferences Widget
+ */
+const ArcMenuPreferencesWidget= new GObject.Class({
+    Name: 'ArcMenu.ArcMenuPreferencesWidget',
+    GTypeName: 'ArcMenuPreferencesWidget',
+    Extends: Gtk.Box,
+
+    _init: function() {
+        this.parent({
+            orientation: Gtk.Orientation.VERTICAL,
+            spacing: 5,
+            border_width: 5
+        });
+        this.settings = Convenience.getSettings(Me.metadata['settings-schema']);
+
+        let notebook = new PW.Notebook();
+
+        let behaviourSettingsPage = new BehaviourSettingsPage(this.settings);
+        notebook.append_page(behaviourSettingsPage);
+
+        let appearancePage = new AppearanceSettingsPage(this.settings);
+        notebook.append_page(appearancePage);
+
+        let aboutPage = new AboutPage(this.settings);
+        notebook.append_page(aboutPage);
+
+        this.add(notebook);
     }
 });
 
