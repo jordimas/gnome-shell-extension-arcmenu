@@ -372,6 +372,16 @@ const MenuButtonCustomizationWindow = new Lang.Class({
             title: _('Please select an image icon'),
             filter: fileFilter
         });
+
+        let menuButtonIconCombo = new Gtk.ComboBoxText({ halign:Gtk.Align.END });
+        menuButtonIconCombo.append_text(_("Arc Menu Icon"));
+        menuButtonIconCombo.append_text(_("System Icon"));
+        menuButtonIconCombo.append_text(_("Custom Icon"));
+        menuButtonIconCombo.set_active(this._settings.get_enum('menu-button-icon'));
+        menuButtonIconCombo.connect('changed', Lang.bind(this, function(widget) {
+            this._settings.set_enum('menu-button-icon', widget.get_active());
+        }));
+
         fileChooserButton.connect('file-set', Lang.bind(this, function(fileChooserButton) {
             let iconFilepath = fileChooserButton.get_filename();
             this._settings.set_string('custom-menu-button-icon', iconFilepath);
@@ -382,15 +392,6 @@ const MenuButtonCustomizationWindow = new Lang.Class({
         if(iconFilepath) {
             fileChooserButton.set_filename(iconFilepath);
         }
-
-        let menuButtonIconCombo = new Gtk.ComboBoxText({ halign:Gtk.Align.END });
-        menuButtonIconCombo.append_text(_("Arc Menu Icon"));
-        menuButtonIconCombo.append_text(_("System Icon"));
-        menuButtonIconCombo.append_text(_("Custom Icon"));
-        menuButtonIconCombo.set_active(this._settings.get_enum('menu-button-icon'));
-        menuButtonIconCombo.connect('changed', Lang.bind(this, function(widget) {
-            this._settings.set_enum('menu-button-icon', widget.get_active());
-        }));
 
         menuButtonIconBoxRow.add(menuButtonIconBoxLabel);
         menuButtonIconBoxRow.add(fileChooserButton);
