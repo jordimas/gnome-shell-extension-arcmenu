@@ -31,6 +31,9 @@ const Me = ExtensionUtils.getCurrentExtension();
 const Constants = Me.imports.constants;
 const Helper = Me.imports.helper;
 
+const Gettext = imports.gettext.domain(Me.metadata['gettext-domain']);
+const _ = Gettext.gettext;
+
 /**
  * The Menu Settings Controller class is responsible for changing and handling
  * the settings changes of the Arc Menu.
@@ -41,7 +44,7 @@ const Helper = Me.imports.helper;
     _init: function(settings, menuButton) {
         this._settings = settings;
         this._menuButton = menuButton;
-        this._activitiesButton = Main.panel.statusArea['activities'];
+        this._activitiesButton = Main.panel.statusArea.activities;
 
         // Create a Hot Corner Manager, a Menu Keybinder as well as a Keybinding Manager
         this._hotCornerManager = new Helper.HotCornerManager(this._settings);
@@ -90,7 +93,7 @@ const Helper = Me.imports.helper;
 
     _updateHotKeyBinder: function() {
         let hotKeyPos = this._settings.get_enum('menu-hotkey');
-        if (hotKeyPos != Constants.HOT_KEY.Undefined) {
+        if (hotKeyPos !== Constants.HOT_KEY.Undefined) {
             let hotKey = Constants.HOT_KEY[hotKeyPos];
             this._menuHotKeybinder.enableHotKey(hotKey);
         } else {
@@ -137,7 +140,7 @@ const Helper = Me.imports.helper;
                 menuButtonWidget.showPanelText();
                 menuButtonWidget.showPanelIcon();
                 break;
-            case Constants.MENU_APPEARANCE.Icon:
+            case Constants.MENU_APPEARANCE.Icon: /* falls through */
             default:
                 menuButtonWidget.hidePanelText();
                 menuButtonWidget.showPanelIcon();
@@ -166,7 +169,7 @@ const Helper = Me.imports.helper;
                 let customTextLabel = this._settings.get_string('custom-menu-button-text');
                 label.set_text(customTextLabel);
                 break;
-            case Constants.MENU_BUTTON_TEXT.System:
+            case Constants.MENU_BUTTON_TEXT.System: /* falls through */
             default:
                 let systemTextLabel = _('Applications');
                 label.set_text(systemTextLabel);
@@ -184,14 +187,14 @@ const Helper = Me.imports.helper;
                 if (GLib.file_test(iconFilepath, GLib.FileTest.EXISTS)) {
                     stIcon.set_gicon(Gio.icon_new_for_string(iconFilepath));
                     break;
-                }
+                } /* falls through */
             case Constants.MENU_BUTTON_ICON.Arc_Menu:
                 let arcMenuIconPath = Me.path + Constants.MENU_ICON_PATH.Arc_Menu;
                 if (GLib.file_test(arcMenuIconPath, GLib.FileTest.EXISTS)) {
                     stIcon.set_gicon(Gio.icon_new_for_string(arcMenuIconPath));
                     break;
-                }
-            case Constants.MENU_BUTTON_ICON.System:
+                } /* falls through */
+            case Constants.MENU_BUTTON_ICON.System: /* falls through */
             default:
                 stIcon.set_icon_name('start-here-symbolic');
         }
@@ -214,7 +217,7 @@ const Helper = Me.imports.helper;
                 return ['center', 0];
             case Constants.MENU_POSITION.Right:
                 return ['right', -1];
-            case Constants.MENU_POSITION.Left:
+            case Constants.MENU_POSITION.Left: /* falls through */
             default:
                 return ['left', 0];
         }
