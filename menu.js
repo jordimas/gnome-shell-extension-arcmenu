@@ -402,6 +402,17 @@ const ApplicationMenuItem = new Lang.Class({
             }));
     },
 
+    _onKeyPressEvent: function (actor, event) {
+        let symbol = event.get_key_symbol();
+        if (symbol == Clutter.KEY_space ||
+            symbol == Clutter.KEY_Return ||
+            symbol == Clutter.KEY_KP_Enter) {
+            this.activate(event);
+            return Clutter.EVENT_STOP;
+        }
+        return Clutter.EVENT_PROPAGATE;
+    },
+
     get_app_id: function() {
         return this._app.get_id();
     },
