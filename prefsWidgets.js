@@ -26,6 +26,7 @@ const Gio = imports.gi.Gio;
 const Gtk = imports.gi.Gtk;
 const GdkPixbuf = imports.gi.GdkPixbuf;
 const Lang = imports.lang;
+const Params = imports.misc.params;
 
 /**
  * The module prefsWidgets.js contains all the customized GUI elements
@@ -94,14 +95,18 @@ const IconButton = new GObject.Class({
     Extends: Gtk.Button,
 
     _init: function(params) {
-        this.parent({});
-        if (params['circular']) {
+        this.parent();
+        this._params = Params.parse(params, {
+            circular: true,
+            icon_name: ''
+        });
+        if (this._params.circular) {
             let context = this.get_style_context();
             context.add_class('circular');
         }
-        if (params['icon_name']) {
+        if (this._params.icon_name) {
             let image = new Gtk.Image({
-                icon_name: params['icon_name'],
+                icon_name: this._params.icon_name,
                 xalign: 0.46
             });
             this.add(image);
