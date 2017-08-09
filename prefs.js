@@ -35,37 +35,6 @@ const Gettext = imports.gettext.domain(Me.metadata['gettext-domain']);
 const _ = Gettext.gettext;
 
 /*
- * Arc Menu Preferences Widget
- */
-const ArcMenuPreferencesWidget= new GObject.Class({
-    Name: 'ArcMenu.ArcMenuPreferencesWidget',
-    GTypeName: 'ArcMenuPreferencesWidget',
-    Extends: Gtk.Box,
-
-    _init: function() {
-        this.parent({
-            orientation: Gtk.Orientation.VERTICAL,
-            spacing: 5,
-            border_width: 5
-        });
-        this.settings = Convenience.getSettings(Me.metadata['settings-schema']);
-        
-        let notebook = new PW.Notebook();
-        
-        let behaviourSettingsPage = new BehaviourSettingsPage(this.settings);
-        notebook.append_page(behaviourSettingsPage);
-
-        let appearancePage = new AppearanceSettingsPage(this.settings);
-        notebook.append_page(appearancePage);
-
-        let aboutPage = new AboutPage(this.settings);
-        notebook.append_page(aboutPage);
-
-        this.add(notebook);
-    }
-});
-
-/*
  * Behaviour Settings Page
  */
 const BehaviourSettingsPage = new Lang.Class({
@@ -167,6 +136,178 @@ const BehaviourSettingsPage = new Lang.Class({
 /*
  * TODO: Appearance Settings Page
  */
+const MenuButtonCustomizationWindow = new Lang.Class({
+    Name: 'MenuButtonCustomizationWindow',
+    Extends: PW.DialogWindow,
+
+    _init: function(settings, parent) {
+        this._settings = settings;
+        this.parent(_('Button appearance'), parent);
+    },
+
+    _createLayout: function(vbox) {
+        /*
+        * Text Appearance Frame
+        */
+        let menuButtonTextFrame = new PW.FrameBox();
+
+        //first row
+        let menuButtonTextBoxRow = new PW.FrameBoxRow();
+        let menuButtonTextLabel = new Gtk.Label({
+            label: _('Text for the menu button'),
+            use_markup: true,
+            xalign: 0,
+            hexpand: true
+        });
+        let systemTextButton = new Gtk.RadioButton({
+            label: _('System text')
+        });
+        let customTextButton = new Gtk.RadioButton({
+            label: _('Custom text'),
+            group: systemTextButton
+        });
+
+        if(this._settings.get_enum('menu-button-text') === Constants.MENU_BUTTON_TEXT.System) {
+            systemTextButton.set_active(true);
+        } else {
+            customTextButton.set_active(true);
+        }
+
+        systemTextButton.connect('clicked', Lang.bind(this, function() {
+            this._settings.set_enum('menu-button-text', Constants.MENU_BUTTON_TEXT.System);
+        }));
+        customTextButton.connect('clicked', Lang.bind(this, function() {
+            this._settings.set_enum('menu-button-text', Constants.MENU_BUTTON_TEXT.Custom);
+        }));
+        menuButtonTextBoxRow.add(menuButtonTextLabel);
+        menuButtonTextBoxRow.add(systemTextButton);
+        menuButtonTextBoxRow.add(customTextButton);
+        menuButtonTextFrame.add(menuButtonTextBoxRow);
+
+        // second row
+        let menuButtonCustomTextBoxRow = new PW.FrameBoxRow();
+        let menuButtonCustomTextLabel = new Gtk.Label({
+            label: _('Set custom text for the menu button'),
+            use_markup: true,
+            xalign: 0,
+            hexpand: true
+        });
+
+        let menuButtonCustomTextEntry = new Gtk.Entry({ halign: Gtk.Align.END });
+        menuButtonCustomTextEntry.set_width_chars(15);
+        menuButtonCustomTextEntry.set_text(this._settings.get_string('custom-menu-button-text'));
+        menuButtonCustomTextEntry.connect('changed', Lang.bind(this, function(entry) {
+        let customMenuButtonText = entry.get_text();
+            this._settings.set_string('custom-menu-button-text', customMenuButtonText);
+        }));
+        menuButtonCustomTextBoxRow.add(menuButtonCustomTextLabel);
+        menuButtonCustomTextBoxRow.add(menuButtonCustomTextEntry);
+        menuButtonTextFrame.add(menuButtonCustomTextBoxRow);
+
+        // third row
+        let menuButtonArrowIconBoxRow = new PW.FrameBoxRow();
+        let menuButtonArrowIconLabel = new Gtk.Label({
+            label: _('Enable the arrow icon beside the button text'),
+            use_markup: true,
+            xalign: 0,
+            hexpand: true
+        });
+        let enableArrowIconSwitch = new Gtk.Switch({ halign: Gtk.Align.END });
+        enableArrowIconSwitch.set_active(this._settings.get_boolean('enable-menu-button-arrow'));
+        enableArrowIconSwitch.connect('notify::active', Lang.bind(this, function(check) {
+             this._settings.set_boolean('enable-menu-button-arrow', check.get_active());
+        }));
+        menuButtonArrowIconBoxRow.add(menuButtonArrowIconLabel);
+        menuButtonArrowIconBoxRow.add(enableArrowIconSwitch);
+        menuButtonTextFrame.add(menuButtonArrowIconBoxRow);
+
+        /*
+        * Icon Appearance Frame
+        */
+        let menuButtonIconFrame = new PW.FrameBox();
+
+        // first row
+        let menuButtonIconBoxRow = new PW.FrameBoxRow();
+        let menuButtonIconBoxLabel = new Gtk.Label({
+            label: _('Select icon for the menu button'),
+            use_markup: true,
+            xalign: 0,
+            hexpand: true
+        });
+        // create file filter and file chooser button
+        let fileFilter = new Gtk.FileFilter();
+        fileFilter.add_pixbuf_formats();
+        let fileChooserButton = new Gtk.FileChooserButton({
+            action: Gtk.FileChooserAction.OPEN,
+            title: _('Please select an image icon'),
+            filter: fileFilter
+        });
+
+        let menuButtonIconCombo = new Gtk.ComboBoxText({ halign:Gtk.Align.END });
+        menuButtonIconCombo.append_text(_("Arc Menu Icon"));
+        menuButtonIconCombo.append_text(_("System Icon"));
+        menuButtonIconCombo.append_text(_("Custom Icon"));
+        menuButtonIconCombo.set_active(this._settings.get_enum('menu-button-icon'));
+        menuButtonIconCombo.connect('changed', Lang.bind(this, function(widget) {
+            this._settings.set_enum('menu-button-icon', widget.get_active());
+        }));
+
+        fileChooserButton.connect('file-set', Lang.bind(this, function(fileChooserButton) {
+            let iconFilepath = fileChooserButton.get_filename();
+            this._settings.set_string('custom-menu-button-icon', iconFilepath);
+            menuButtonIconCombo.set_active(Constants.MENU_BUTTON_ICON.Custom);
+        }));
+        fileChooserButton.set_current_folder(GLib.get_user_special_dir(GLib.UserDirectory.DIRECTORY_PICTURES));
+        let iconFilepath = this._settings.get_string('custom-menu-button-icon');
+        if(iconFilepath) {
+            fileChooserButton.set_filename(iconFilepath);
+        }
+
+        menuButtonIconBoxRow.add(menuButtonIconBoxLabel);
+        menuButtonIconBoxRow.add(fileChooserButton);
+        menuButtonIconBoxRow.add(menuButtonIconCombo);
+        menuButtonIconFrame.add(menuButtonIconBoxRow);
+
+        // second row
+        let menuButtonIconScaleBoxRow = new PW.FrameBoxRow();
+        let iconSize = this._settings.get_double('custom-menu-button-icon-size');
+        let menuButtonIconScaleBoxLabel = new Gtk.Label({
+            label: _('Icon size') + '\n(' + _('default is') + ' ' + Constants.DEFAULT_ICON_SIZE + ')',
+            use_markup: true,
+            xalign: 0
+        });
+        let hscale = new Gtk.HScale({
+            adjustment: new Gtk.Adjustment({
+                lower: 1,
+                upper: 64,
+                step_increment: 1,
+                page_increment: 1,
+                page_size: 0
+            }),
+            digits: 0,
+            round_digits: 0,
+            hexpand: true,
+            value_pos: Gtk.PositionType.RIGHT
+        });
+        hscale.connect('format-value', function(scale, value) { return value.toString() + ' px'; });
+        Constants.ICON_SIZES.forEach(function(num) {
+            hscale.add_mark(num, Gtk.PositionType.BOTTOM, num.toString());
+        });
+        hscale.set_value(iconSize);
+        hscale.connect('value-changed', Lang.bind(this, function(){
+            this._settings.set_double('custom-menu-button-icon-size', hscale.get_value());
+        }));
+
+        menuButtonIconScaleBoxRow.add(menuButtonIconScaleBoxLabel);
+        menuButtonIconScaleBoxRow.add(hscale);
+        menuButtonIconFrame.add(menuButtonIconScaleBoxRow);
+
+        // add the frames to the vbox
+        vbox.add(menuButtonTextFrame);
+        vbox.add(menuButtonIconFrame);
+    }
+});
+
 const AppearanceSettingsPage = new Lang.Class({
     Name: 'AppearanceSettingsPage',
     Extends: PW.NotebookPage,
@@ -270,173 +411,6 @@ const AppearanceSettingsPage = new Lang.Class({
     }
 });
 
-const MenuButtonCustomizationWindow = new Lang.Class({
-    Name: 'MenuButtonCustomizationWindow',
-    Extends: PW.DialogWindow,
-
-    _init: function(settings, parent) {
-        this._settings = settings;
-        this.parent(_('Button appearance'), parent);
-    },
-
-    _createLayout: function(vbox) {
-        /*
-        * Text Appearance Frame
-        */
-        let menuButtonTextFrame = new PW.FrameBox();
-
-        //first row
-        let menuButtonTextBoxRow = new PW.FrameBoxRow();
-        let menuButtonTextLabel = new Gtk.Label({
-            label: _('Text for the menu button'),
-            use_markup: true,
-            xalign: 0,
-            hexpand: true
-        });
-        let systemTextButton = new Gtk.RadioButton({
-            label: _('System text')
-        });
-        let customTextButton = new Gtk.RadioButton({
-            label: _('Custom text'),
-            group: systemTextButton
-        });
-        //TODO: fix this hack
-        systemTextButton.set_active(this._settings.get_enum('menu-button-text') == Constants.MENU_BUTTON_TEXT.System);
-        customTextButton.set_active(this._settings.get_enum('menu-button-text') == Constants.MENU_BUTTON_TEXT.Custom);
-        systemTextButton.connect('clicked', Lang.bind(this, function() {
-            this._settings.set_enum('menu-button-text', Constants.MENU_BUTTON_TEXT.System);
-        }));
-        customTextButton.connect('clicked', Lang.bind(this, function() {
-            this._settings.set_enum('menu-button-text', Constants.MENU_BUTTON_TEXT.Custom);
-        }));
-        menuButtonTextBoxRow.add(menuButtonTextLabel);
-        menuButtonTextBoxRow.add(systemTextButton);
-        menuButtonTextBoxRow.add(customTextButton);
-        menuButtonTextFrame.add(menuButtonTextBoxRow);
-
-        // second row
-        let menuButtonCustomTextBoxRow = new PW.FrameBoxRow();
-        let menuButtonCustomTextLabel = new Gtk.Label({
-            label: _('Set custom text for the menu button'),
-            use_markup: true,
-            xalign: 0,
-            hexpand: true
-        });
-
-        let menuButtonCustomTextEntry = new Gtk.Entry({ halign: Gtk.Align.END });
-        menuButtonCustomTextEntry.set_width_chars(15);
-        menuButtonCustomTextEntry.set_text(this._settings.get_string('custom-menu-button-text'));
-        menuButtonCustomTextEntry.connect('changed', Lang.bind(this, function(entry) {
-        let customMenuButtonText = entry.get_text();
-            this._settings.set_string('custom-menu-button-text', customMenuButtonText);
-        }));
-        menuButtonCustomTextBoxRow.add(menuButtonCustomTextLabel);
-        menuButtonCustomTextBoxRow.add(menuButtonCustomTextEntry);
-        menuButtonTextFrame.add(menuButtonCustomTextBoxRow);
-
-        // third row
-        let menuButtonArrowIconBoxRow = new PW.FrameBoxRow();
-        let menuButtonArrowIconLabel = new Gtk.Label({
-            label: _('Enable the arrow icon beside the button text'),
-            use_markup: true,
-            xalign: 0,
-            hexpand: true
-        });
-        let enableArrowIconSwitch = new Gtk.Switch({ halign: Gtk.Align.END });
-        enableArrowIconSwitch.set_active(this._settings.get_boolean('enable-menu-button-arrow'));
-        enableArrowIconSwitch.connect('notify::active', Lang.bind(this, function(check) {
-             this._settings.set_boolean('enable-menu-button-arrow', check.get_active());
-        }));
-        menuButtonArrowIconBoxRow.add(menuButtonArrowIconLabel);
-        menuButtonArrowIconBoxRow.add(enableArrowIconSwitch);
-        menuButtonTextFrame.add(menuButtonArrowIconBoxRow);
-
-        /*
-        * Icon Appearance Frame
-        */
-        let menuButtonIconFrame = new PW.FrameBox();
-
-        // first row
-        let menuButtonIconBoxRow = new PW.FrameBoxRow();
-        let menuButtonIconBoxLabel = new Gtk.Label({
-            label: _('Select icon for the menu button'),
-            use_markup: true,
-            xalign: 0,
-            hexpand: true
-        });
-        // create file filter and file chooser button
-        let fileFilter = new Gtk.FileFilter();
-        fileFilter.add_pixbuf_formats();
-        let fileChooserButton = new Gtk.FileChooserButton({
-            action: Gtk.FileChooserAction.OPEN,
-            title: _('Please select an image icon'),
-            filter: fileFilter
-        });
-        fileChooserButton.connect('file-set', Lang.bind(this, function(fileChooserButton) {
-            let iconFilepath = fileChooserButton.get_filename();
-            this._settings.set_string('custom-menu-button-icon', iconFilepath);
-            menuButtonIconCombo.set_active(Constants.MENU_BUTTON_ICON.Custom);
-        }));
-        fileChooserButton.set_current_folder(GLib.get_user_special_dir(GLib.UserDirectory.DIRECTORY_PICTURES));
-        let iconFilepath = this._settings.get_string('custom-menu-button-icon');
-        if(iconFilepath) {
-            fileChooserButton.set_filename(iconFilepath);
-        }
-
-        let menuButtonIconCombo = new Gtk.ComboBoxText({ halign:Gtk.Align.END });
-        menuButtonIconCombo.append_text(_("Arc Menu Icon"));
-        menuButtonIconCombo.append_text(_("System Icon"));
-        menuButtonIconCombo.append_text(_("Custom Icon"));
-        menuButtonIconCombo.set_active(this._settings.get_enum('menu-button-icon'));
-        menuButtonIconCombo.connect('changed', Lang.bind(this, function(widget) {
-            this._settings.set_enum('menu-button-icon', widget.get_active());
-        }));
-
-        menuButtonIconBoxRow.add(menuButtonIconBoxLabel);
-        menuButtonIconBoxRow.add(fileChooserButton);
-        menuButtonIconBoxRow.add(menuButtonIconCombo);
-        menuButtonIconFrame.add(menuButtonIconBoxRow)
-
-        // second row
-        let menuButtonIconScaleBoxRow = new PW.FrameBoxRow();
-        let iconSize = this._settings.get_double('custom-menu-button-icon-size');
-        let menuButtonIconScaleBoxLabel = new Gtk.Label({
-            label: _('Icon size') + '\n(' + _('default is') + ' ' + Constants.DEFAULT_ICON_SIZE + ')',
-            use_markup: true,
-            xalign: 0
-        });
-        let hscale = new Gtk.HScale({
-            adjustment: new Gtk.Adjustment({
-                lower: 1,
-                upper: 64,
-                step_increment: 1,
-                page_increment: 1,
-                page_size: 0
-            }),
-            digits: 0,
-            round_digits: 0,
-            hexpand: true,
-            value_pos: Gtk.PositionType.RIGHT
-        });
-        hscale.connect('format-value', function(scale, value) { return value.toString() + ' px'; });
-        Constants.ICON_SIZES.forEach(function(num) {
-            hscale.add_mark(num, Gtk.PositionType.BOTTOM, num.toString());
-        });
-        hscale.set_value(iconSize);
-        hscale.connect('value-changed', Lang.bind(this, function(){
-            this._settings.set_double('custom-menu-button-icon-size', hscale.get_value());
-        }));
-
-        menuButtonIconScaleBoxRow.add(menuButtonIconScaleBoxLabel);
-        menuButtonIconScaleBoxRow.add(hscale);
-        menuButtonIconFrame.add(menuButtonIconScaleBoxRow);
-
-        // add the frames to the vbox
-        vbox.add(menuButtonTextFrame)
-        vbox.add(menuButtonIconFrame);
-    }
-});
-
 /*
  * About Page
  */
@@ -449,10 +423,10 @@ const AboutPage = new Lang.Class({
         this.settings = settings;
 
         // Use meta information from metadata.json
-        let releaseVersion = Me.metadata['version'] || 'unknown';
-        let projectName = Me.metadata['name'];
-        let projectDescription = Me.metadata['description'];
-        let projectUrl = Me.metadata['url'];
+        let releaseVersion = Me.metadata.version || 'unknown';
+        let projectName = Me.metadata.name;
+        let projectDescription = Me.metadata.description;
+        let projectUrl = Me.metadata.url;
 
         // Create GUI elements
         // Create the image box
@@ -511,6 +485,37 @@ const AboutPage = new Lang.Class({
         this.add(arcMenuImageBox);
         this.add(arcMenuInfoBox);
         this.add(gnuSofwareLabelBox);
+    }
+});
+
+/*
+ * Arc Menu Preferences Widget
+ */
+const ArcMenuPreferencesWidget= new GObject.Class({
+    Name: 'ArcMenu.ArcMenuPreferencesWidget',
+    GTypeName: 'ArcMenuPreferencesWidget',
+    Extends: Gtk.Box,
+
+    _init: function() {
+        this.parent({
+            orientation: Gtk.Orientation.VERTICAL,
+            spacing: 5,
+            border_width: 5
+        });
+        this.settings = Convenience.getSettings(Me.metadata['settings-schema']);
+
+        let notebook = new PW.Notebook();
+
+        let behaviourSettingsPage = new BehaviourSettingsPage(this.settings);
+        notebook.append_page(behaviourSettingsPage);
+
+        let appearancePage = new AppearanceSettingsPage(this.settings);
+        notebook.append_page(appearancePage);
+
+        let aboutPage = new AboutPage(this.settings);
+        notebook.append_page(aboutPage);
+
+        this.add(notebook);
     }
 });
 
