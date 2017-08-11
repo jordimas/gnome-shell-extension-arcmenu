@@ -131,7 +131,7 @@ Additional credits: This extension also leverages the work from [Giovanni Campag
 |@[pkomur](https://github.com/pkomur) <> updated by @[Ixoos](https://github.com/Ixoos)|Polish|![ti](https://user-images.githubusercontent.com/19158615/27998683-9dd48cd0-650a-11e7-87c3-0ac3256ae574.png)||Arabic|
 |@[danielstuart14](https://github.com/danielstuart14)|Brazilian portuguese|![ti](https://user-images.githubusercontent.com/19158615/27998683-9dd48cd0-650a-11e7-87c3-0ac3256ae574.png)||Chinese|
 |@[zakkak](https://github.com/zakkak)|Greek|![ti](https://user-images.githubusercontent.com/19158615/27998683-9dd48cd0-650a-11e7-87c3-0ac3256ae574.png)||Spanish|
-|@[mrprobot](https://github.com/mrprobot)|German|![ti](https://user-images.githubusercontent.com/19158615/27998683-9dd48cd0-650a-11e7-87c3-0ac3256ae574.png)||Hindi|
+|@[mrprobot](https://github.com/mrprobot)|German|![ti](https://user-images.githubusercontent.com/19158615/27998683-9dd48cd0-650a-11e7-87c3-0ac3256ae574.png)|@[saisasidhar](https://github.com/saisasidhar)|Hindi|![ti](https://user-images.githubusercontent.com/19158615/27998683-9dd48cd0-650a-11e7-87c3-0ac3256ae574.png)
 ||Portuguese|||Bengali||
 |@[elsieholmes](https://github.com/elsieholmes)|Russian|![ti](https://user-images.githubusercontent.com/19158615/27998683-9dd48cd0-650a-11e7-87c3-0ac3256ae574.png)||Japanese||
 ||Swedish|||Dutch||
