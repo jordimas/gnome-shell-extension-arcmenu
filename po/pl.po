@@ -1,15 +1,15 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the Arc Menu package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# Piotr Komur <pkomur@gmail.com>, 2017.
 # Igor Serwin <serwinigor@gmail.com>, 2017.
 msgid ""
 msgstr ""
 "Project-Id-Version:  Arc Menu\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2017-07-09 16:20+0200\n"
-"PO-Revision-Date: 2017-07-10 06:35+0200\n"
-"Last-Translator: Piotr Komur <pkomur@gmail.com>\n"
+"PO-Revision-Date: 2017-08-11 15:35+0200\n"
+"Last-Translator: Igor Serwin <serwinigor@gmail.com>\n"
 "Language-Team: \n"
 "Language: pl\n"
 "MIME-Version: 1.0\n"
@@ -75,7 +75,7 @@ msgstr "Tekst i ikona"
 
 #: prefs.js:222
 msgid "Menu position in panel"
-msgstr "Pozycja menu na panelu"
+msgstr "Pozycja menu na pasku"
 
 #: prefs.js:229
 msgid "Left"
@@ -111,7 +111,7 @@ msgstr "Ustaw własny tekst dla przycisku menu"
 
 #: prefs.js:340
 msgid "Enable the arrow icon beside the button text"
-msgstr "Włącze ikonę strzałki obok tekstu przycisku"
+msgstr "Włącz ikonę strzałki obok tekstu przycisku"
 
 #: prefs.js:362
 msgid "Select icon for the menu button"
@@ -139,7 +139,7 @@ msgstr "Rozmiar ikony"
 
 #: prefs.js:404
 msgid "default is"
-msgstr "Domyślnie wynosi"
+msgstr "Domyślny wynosi"
 
 #: prefs.js:448
 msgid "About"
