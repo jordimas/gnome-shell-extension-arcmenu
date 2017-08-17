@@ -15,7 +15,20 @@ TXT=AUTHORS COPYING
 DIRS=schemas media
 MSG_SRC=$(wildcard ./po/*.po)
 
+
 all: build
+
+help:
+	@echo "Usage: make [help | all | clean | install | jshint | compile | enable | disable]"
+	@echo ""
+	@echo "all          build the project and create the build directory"
+	@echo "clean        delete the build directory"
+	@echo "install      install the extension"
+	@echo "uninstall    uninstall the extension"
+	@echo "enable       enable the extension"
+	@echo "disable      disable the extension"
+	@echo "jshint       run jshint"
+	@echo "compile      compile the gschema xml file"
 
 enable:
 	gnome-shell-extension-tool -e $(UUID)
