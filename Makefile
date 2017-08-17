@@ -42,10 +42,10 @@ help:
 	@echo "compile      compile the gschema xml file"
 
 enable:
-	gnome-shell-extension-tool -e $(UUID)
+	-gnome-shell-extension-tool -e $(UUID)
 
 disable:
-	gnome-shell-extension-tool -d $(UUID)
+	-gnome-shell-extension-tool -d $(UUID)
 
 clean:
 	rm -f ./schemas/gschemas.compiled
