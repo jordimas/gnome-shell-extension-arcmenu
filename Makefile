@@ -19,8 +19,6 @@ else
 	VSTRING=$(VERSION)
 endif
 
-ZIP_FILE=$(UUID)_$(VSTRING).zip
-
 ifeq ($(strip $(INSTALL)),system) # check if INSTALL == system
 	INSTALL_TYPE=system
 	SHARE_PREFIX=$(DESTDIR)/usr/share
@@ -54,6 +52,7 @@ help:
 	@echo "jshint       run jshint"
 	@echo "compile      compile the gschema xml file"
 	@echo "zip-file     create a deployable zip file"
+	@echo "tgz-file     create a tar.gz file"
 
 enable:
 	-gnome-shell-extension-tool -e $(UUID)
@@ -65,6 +64,7 @@ clean:
 	rm -f ./schemas/gschemas.compiled
 	rm -rf ./build
 	rm -f ./$(UUID)*.zip
+	rm -f ./$(UUID)*.tar.gz
 
 jshint:
 	jshint $(JS)
@@ -119,7 +119,11 @@ build: translations compile $(MSG_SRC:.po=.mo)
 	sed -i 's/"version": -1/"version": "$(VERSION)"/'  build/metadata.json;
 
 zip-file: build
-	zip -qr $(ZIP_FILE) ./build
+	zip -qr $(UUID)_$(VSTRING).zip ./build
+	rm -rf ./build
+
+tgz-file: build
+	tar -zcf $(UUID)_$(VSTRING).tar.gz ./build
 	rm -rf ./build
 
 .PHONY: FORCE
