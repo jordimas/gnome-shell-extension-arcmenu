@@ -11,7 +11,7 @@ LAST_RELEASE=$(shell git describe --abbrev=0 --tags --match v[0-9]*)
 GIT_LAST_TAG=$(shell git show-ref -s $(LAST_RELEASE))
 
 # define VERSION and VSTRING
-ifeq ($(GIT_LAST_TAG), GIT_HEAD)
+ifeq ($(GIT_LAST_TAG),$(GIT_HEAD))
 	VERSION=$(subst v,,$(LAST_RELEASE))
 	VSTRING=$(LAST_RELEASE)
 else
