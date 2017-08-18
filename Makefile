@@ -42,7 +42,8 @@ MSG_SRC=$(wildcard ./po/*.po)
 all: build
 
 help:
-	@echo "Usage: make [help | all | clean | install | jshint | compile | enable | disable]"
+	@echo "Usage: make [help | all | clean | install | jshint | compile |"
+	@echo "             enable | disable | zip-file]"
 	@echo ""
 	@echo "all          build the project and create the build directory"
 	@echo "clean        delete the build directory"
@@ -52,6 +53,7 @@ help:
 	@echo "disable      disable the extension"
 	@echo "jshint       run jshint"
 	@echo "compile      compile the gschema xml file"
+	@echo "zip-file     create a deployable zip file"
 
 enable:
 	-gnome-shell-extension-tool -e $(UUID)
