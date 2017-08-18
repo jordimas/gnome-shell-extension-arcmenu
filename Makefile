@@ -65,6 +65,7 @@ clean:
 	rm -rf ./build
 	rm -f ./$(UUID)*.zip
 	rm -f ./$(UUID)*.tar.gz
+	rm -f MD5SUMS SHA1SUMS SHA256SUMS SHA512SUMS
 
 jshint:
 	jshint $(JS)
@@ -122,11 +123,19 @@ zip-file: build
 	mv ./build ./Arc-Menu-$(VSTRING)
 	zip -qr $(UUID)_$(VSTRING).zip Arc-Menu-$(VSTRING)
 	rm -rf ./Arc-Menu-$(VSTRING)
+	$(MAKE) _checksums ARCHIVE_FILE=*.zip
 
 tgz-file: build
 	mv ./build ./Arc-Menu-$(VSTRING)
 	tar -zcf $(UUID)_$(VSTRING).tar.gz Arc-Menu-$(VSTRING)
 	rm -rf ./Arc-Menu-$(VSTRING)
+	$(MAKE) _checksums ARCHIVE_FILE=*.tar.gz
+
+_checksums:
+	md5sum $(ARCHIVE_FILE) >> MD5SUMS
+	sha1sum $(ARCHIVE_FILE) >> SHA1SUMS
+	sha256sum $(ARCHIVE_FILE) >> SHA256SUMS
+	sha512sum $(ARCHIVE_FILE) >> SHA512SUMS
 
 .PHONY: FORCE
 FORCE:
