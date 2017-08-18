@@ -15,7 +15,7 @@ ifeq ($(GIT_LAST_TAG), GIT_HEAD)
 	VERSION=$(subst v,,$(LAST_RELEASE))
 	VSTRING=$(LAST_RELEASE)
 else
-	VERSION=$(shell git log --pretty=format:'%h' -n 1)
+	VERSION=$(shell git rev-parse --short HEAD)
 	VSTRING=$(VERSION)
 endif
 
