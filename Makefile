@@ -7,8 +7,8 @@ GSCHEMA_FILE=org.gnome.shell.extensions.arc-menu.gschema.xml
 TO_LOCALIZE=prefs.js menu.js
 
 GIT_HEAD=$(shell git rev-parse HEAD)
-GIT_LAST_TAG=$(shell git rev-list --tags --max-count=1)
-LAST_RELEASE=$(shell git describe --tags $(GIT_LAST_TAG))
+LAST_RELEASE=$(shell git describe --abbrev=0 --tags --match v[0-9]*)
+GIT_LAST_TAG=$(shell git show-ref -s $(LAST_RELEASE))
 
 # define VERSION and VSTRING
 ifeq ($(GIT_LAST_TAG), GIT_HEAD)
