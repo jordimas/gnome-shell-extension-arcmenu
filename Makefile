@@ -119,12 +119,14 @@ build: translations compile $(MSG_SRC:.po=.mo)
 	sed -i 's/"version": -1/"version": "$(VERSION)"/'  build/metadata.json;
 
 zip-file: build
-	zip -qr $(UUID)_$(VSTRING).zip ./build
-	rm -rf ./build
+	mv ./build ./Arc-Menu-$(VSTRING)
+	zip -qr $(UUID)_$(VSTRING).zip Arc-Menu-$(VSTRING)
+	rm -rf ./Arc-Menu-$(VSTRING)
 
 tgz-file: build
-	tar -zcf $(UUID)_$(VSTRING).tar.gz ./build
-	rm -rf ./build
+	mv ./build ./Arc-Menu-$(VSTRING)
+	tar -zcf $(UUID)_$(VSTRING).tar.gz Arc-Menu-$(VSTRING)
+	rm -rf ./Arc-Menu-$(VSTRING)
 
 .PHONY: FORCE
 FORCE:
