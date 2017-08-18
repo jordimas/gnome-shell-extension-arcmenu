@@ -1,13 +1,25 @@
 # Basic Makefile with bits inspired by dash-to-dock
 
 UUID=arc-menu@linxgem33.com
-ZIP_FILE=$(UUID).zip
 POT_FILEPATH=./po/arc-menu.pot
 MO_FILE=arc-menu.mo
 GSCHEMA_FILE=org.gnome.shell.extensions.arc-menu.gschema.xml
-
 TO_LOCALIZE=prefs.js menu.js
-VERSION=$(shell git log --pretty=format:'%h' -n 1)
+
+GIT_HEAD=$(shell git rev-parse HEAD)
+GIT_LAST_TAG=$(shell git rev-list --tags --max-count=1)
+LAST_RELEASE=$(shell git describe --tags $(GIT_LAST_TAG))
+
+# define VERSION and VSTRING
+ifeq ($(GIT_LAST_TAG), GIT_HEAD)
+	VERSION=$(subst v,,$(LAST_RELEASE))
+	VSTRING=$(LAST_RELEASE)
+else
+	VERSION=$(shell git log --pretty=format:'%h' -n 1)
+	VSTRING=$(VERSION)
+endif
+
+ZIP_FILE=$(UUID)_$(VSTRING).zip
 
 ifeq ($(strip $(INSTALL)),system) # check if INSTALL == system
 	INSTALL_TYPE=system
@@ -50,7 +62,7 @@ disable:
 clean:
 	rm -f ./schemas/gschemas.compiled
 	rm -rf ./build
-	rm -f $(ZIP_FILE)
+	rm -f ./$(UUID)*.zip
 
 jshint:
 	jshint $(JS)
