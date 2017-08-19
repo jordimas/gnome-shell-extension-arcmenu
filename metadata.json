@@ -1,17 +1,16 @@
 {
-"extension-id": "arc-menu",
-"uuid": "arc-menu@linxgem33.com",
-"settings-schema": "org.gnome.shell.extensions.arc-menu",
-"gettext-domain": "arc-menu",
-"name": "Arc Menu",
-"description": "The new applications menu for Gnome 3.",
-  "shell-version": [
-    "3.14", 
-    "3.16", 
-    "3.18", 
-    "3.20", 
-    "3.22", 
-    "3.24"
-  ],
-"url": "https://github.com/LinxGem33/Arc-Menu.git"
+    "extension-id": "arc-menu",
+    "uuid": "arc-menu@linxgem33.com",
+    "settings-schema": "org.gnome.shell.extensions.arc-menu",
+    "gettext-domain": "arc-menu",
+    "name": "Arc Menu",
+    "description": "The new applications menu for Gnome 3.",
+    "version": -1,
+    "shell-version": [
+        "3.18",
+        "3.20",
+        "3.22",
+        "3.24"
+    ],
+    "url": "https://github.com/LinxGem33/Arc-Menu.git"
 }
