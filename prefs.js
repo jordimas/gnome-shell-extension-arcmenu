@@ -35,6 +35,20 @@ const Gettext = imports.gettext.domain(Me.metadata['gettext-domain']);
 const _ = Gettext.gettext;
 
 /*
+ * General Settings Page
+ */
+const GeneralSettingsPage = new Lang.Class({
+    Name: 'GeneralSettingsPage',
+    Extends: PW.NotebookPage,
+
+    _init: function(settings) {
+        this.parent(_('General'));
+        this.settings = settings;
+
+    }
+});
+
+/*
  * Behaviour Settings Page
  */
 const BehaviourSettingsPage = new Lang.Class({
