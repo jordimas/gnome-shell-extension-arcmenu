@@ -131,7 +131,7 @@ const ActivitiesMenuItem = new Lang.Class({
         this.actor.add_child(this._icon);
         let label = new St.Label({ text: _("Activities Overview"), y_expand: true,
                                       y_align: Clutter.ActorAlign.CENTER });
-        this.actor.add_child(label, { expand: true });
+        this.actor.add_child(label);
     },
 
     // Activate the menu item (Open activities overview)
@@ -264,7 +264,7 @@ const BackMenuItem = new Lang.Class({
         this.actor.add_child(this._icon);
         let backLabel = new St.Label({ text: _("Back"), y_expand: true,
                                       y_align: Clutter.ActorAlign.CENTER });
-        this.actor.add_child(backLabel, { expand: true });
+        this.actor.add_child(backLabel);
     },
 
     // Activate the button (go back to category view)
@@ -291,7 +291,7 @@ const ShortcutMenuItem = new Lang.Class({
         this.actor.add_child(this._icon);
         let label = new St.Label({ text: name, y_expand: true,
                                       y_align: Clutter.ActorAlign.CENTER });
-        this.actor.add_child(label, { expand: true });
+        this.actor.add_child(label);
     },
 
     // Activate the menu item (Launch the shortcut)
@@ -318,7 +318,7 @@ const UserMenuItem = new Lang.Class({
         this.actor.add_child(this._userIcon);
         this._userLabel = new St.Label({ text: username, y_expand: true,
                                       y_align: Clutter.ActorAlign.CENTER });
-        this.actor.add_child(this._userLabel, { expand: true });
+        this.actor.add_child(this._userLabel);
         this._userLoadedId = this._user.connect('notify::is_loaded', Lang.bind(this, this._onUserChanged));
         this._userChangedId = this._user.connect('changed', Lang.bind(this, this._onUserChanged));
         this.actor.connect('destroy', Lang.bind(this, this._onDestroy));
@@ -374,7 +374,7 @@ const ApplicationMenuItem = new Lang.Class({
 
         let appLabel = new St.Label({ text: app.get_name(), y_expand: true,
                                       y_align: Clutter.ActorAlign.CENTER });
-        this.actor.add_child(appLabel, { expand: true });
+        this.actor.add_child(appLabel);
         this.actor.label_actor = appLabel;
 
         let textureCache = St.TextureCache.get_default();
@@ -470,7 +470,7 @@ const CategoryMenuItem = new Lang.Class({
         this.actor.add_child(this._icon);
         let categoryLabel = new St.Label({ text: name, y_expand: true,
                                       y_align: Clutter.ActorAlign.CENTER });
-        this.actor.add_child(categoryLabel, { expand: true });
+        this.actor.add_child(categoryLabel);
         this.actor.label_actor = categoryLabel;
     },
 
@@ -546,7 +546,7 @@ const PlaceMenuItem = new Lang.Class({
 	    this.actor.add_child(this._icon);
         this._label = new St.Label({ text: info.name, y_expand: true,
                                       y_align: Clutter.ActorAlign.CENTER });
-        this.actor.add_child(this._label, { expand: true });
+        this.actor.add_child(this._label);
         this._changedId = this._info.connect('changed',
                                        Lang.bind(this, this._propertiesChanged));
     },
@@ -684,7 +684,7 @@ const MenuButtonWidget = new Lang.Class({
 
 
 // Application Menu Button class (most of the menu logic is here)
-const ApplicationsButton = new Lang.Class({
+var ApplicationsButton = new Lang.Class({
     Name: 'ApplicationsButton',
     Extends: PanelMenu.Button,
 

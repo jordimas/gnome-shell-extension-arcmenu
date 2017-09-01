@@ -20,10 +20,10 @@
  */
 
 // Common constants that are used in this extension
-const EMPTY_STRING = '';
-const SUPER_L = 'Super_L';
-const SUPER_R = 'Super_R';
-const HOT_KEY = { // See: org.gnome.shell.extensions.arc-menu.menu-hotkey
+var EMPTY_STRING = '';
+var SUPER_L = 'Super_L';
+var SUPER_R = 'Super_R';
+var HOT_KEY = { // See: org.gnome.shell.extensions.arc-menu.menu-hotkey
     Undefined: 0,
     Super_L: 1,
     Super_R: 2,
@@ -32,36 +32,36 @@ const HOT_KEY = { // See: org.gnome.shell.extensions.arc-menu.menu-hotkey
     1: SUPER_L,
     2: SUPER_R
 };
-const MENU_POSITION = { // See: org.gnome.shell.extensions.arc-menu.menu-position
+var MENU_POSITION = { // See: org.gnome.shell.extensions.arc-menu.menu-position
     Left: 0,
     Center: 1,
     Right: 2
 };
-const MENU_APPEARANCE = { // See: org.gnome.shell.extensions.arc-menu.menu-button-icon
+var MENU_APPEARANCE = { // See: org.gnome.shell.extensions.arc-menu.menu-button-icon
     Icon: 0,
     Text: 1,
     Icon_Text: 2,
     Text_Icon: 3
 };
-const MENU_BUTTON_TEXT = { // See: org.gnome.shell.extensions.arc-menu.menu-button-text
+var MENU_BUTTON_TEXT = { // See: org.gnome.shell.extensions.arc-menu.menu-button-text
     System: 0,
     Custom: 1
 };
-const MENU_BUTTON_ICON = { // See: org.gnome.shell.extensions.arc-menu.menu-button-icon
+var MENU_BUTTON_ICON = { // See: org.gnome.shell.extensions.arc-menu.menu-button-icon
     Arc_Menu: 0,
     System: 1,
     Custom: 2
 };
-const MENU_ICON_PATH = {
+var MENU_ICON_PATH = {
     Arc_Menu: '/media/arc-menu-symbolic.svg'
 };
-const ICON_SIZES = [ 16, 24, 32, 40, 48 ];
-const DEFAULT_ICON_SIZE = 22;
-const ARC_MENU_LOGO = {
+var ICON_SIZES = [ 16, 24, 32, 40, 48 ];
+var DEFAULT_ICON_SIZE = 22;
+var ARC_MENU_LOGO = {
     Path: '/media/logo.png',
     Size: [216, 229] // width, height
 };
-const GNU_SOFTWARE = '<span size="small">' +
+var GNU_SOFTWARE = '<span size="small">' +
     'This program comes with absolutely no warranty.\n' +
     'See the <a href="https://gnu.org/licenses/old-licenses/gpl-2.0.html">' +
 	'GNU General Public License, version 2 or later</a> for details.' +

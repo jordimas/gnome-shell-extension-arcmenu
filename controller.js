@@ -38,7 +38,7 @@ const _ = Gettext.gettext;
  * The Menu Settings Controller class is responsible for changing and handling
  * the settings changes of the Arc Menu.
  */
- const MenuSettingsController = new Lang.Class({
+ var MenuSettingsController = new Lang.Class({
     Name: 'ArcMenu.MenuSettingsController',
 
     _init: function(settings, menuButton) {
