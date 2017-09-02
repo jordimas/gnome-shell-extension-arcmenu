@@ -170,7 +170,7 @@ const KeybindingManager = new Lang.Class({
     destroy: function() {
         let keyIter = this._keybindings.keys();
         for (let i = 0; i < this._keybindings.size; i++) {
-	        let keybindingNameKey = keyIter.next();
+	        let keybindingNameKey = keyIter.next().value;
 	        this.unbind(keybindingNameKey);
         }
     }
