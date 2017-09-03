@@ -115,12 +115,12 @@ Additional credits: This extension also leverages the work from [Giovanni Campag
 #### Thanks to the following people for contributing via pull requests:
 
 - @[fishears](https://github.com/fishears/Arc-Menu) (1) compiling the schema's (2) Added suspend button and re-order buttons
-- @[JasonLG1979](https://github.com/JasonLG1979/Arc-Menu)  (1) menu style fix, (2) Asynchronously set an icon and handle errors
+- @[JasonLG1979](https://github.com/JasonLG1979)  (1) menu style fix, (2) Asynchronously set an icon and handle errors
 - @[itmitica](https://github.com/itmitica) (1) icon symbolic
 
 #### Bug Fixes:
 
-- @[JasonLG1979](https://github.com/JasonLG1979/Arc-Menu) (1) menu style fix
+- @[JasonLG1979](https://github.com/JasonLG1979) (1) menu style fix
 - @[lexruee](https://github.com/lexruee/Arc-Menu) (1) correctly restore the Activities button
 ##
 #### Please refer to the Wiki section for a [Translation Guide](https://github.com/LinxGem33/Arc-Menu/wiki/Translation-Guide)
@@ -137,6 +137,7 @@ Additional credits: This extension also leverages the work from [Giovanni Campag
 ||Swedish|||Dutch||
 |@[neynefes](https://github.com/neynefes)|Turkish|![ti](https://user-images.githubusercontent.com/19158615/27998683-9dd48cd0-650a-11e7-87c3-0ac3256ae574.png)||Javanese||
 |@[elsieholmes](https://github.com/elsieholmes)|Ukrainian|![ti](https://user-images.githubusercontent.com/19158615/27998683-9dd48cd0-650a-11e7-87c3-0ac3256ae574.png)|@[PSSGCSim](https://github.com/PSSGCSim)|Czech|![ti](https://user-images.githubusercontent.com/19158615/27998683-9dd48cd0-650a-11e7-87c3-0ac3256ae574.png)
+|@[ipanamski](https://github.com/ipanamski)|Bulgarian|![ti](https://user-images.githubusercontent.com/19158615/27998683-9dd48cd0-650a-11e7-87c3-0ac3256ae574.png)||||
 
 ##
-![](https://img.shields.io/badge/release-v13-brightgreen.svg) ![](https://img.shields.io/badge/Language-JavaScript-yellow.svg) ![](https://img.shields.io/badge/Licence-GPL--2.0-blue.svg)
+ ![](https://img.shields.io/badge/Language-JavaScript-yellow.svg) ![](https://img.shields.io/badge/Licence-GPL--2.0-blue.svg)
