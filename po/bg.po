@@ -26,7 +26,7 @@ msgstr "Изключване на горещият ъгъл"
 
 #: prefs.js:107
 msgid "Set menu hotkey"
-msgstr "Задаване на клавиш за активиране на менюто"
+msgstr "Горещ клавиш за менюто"
 
 #: prefs.js:113
 msgid "Undefined"
