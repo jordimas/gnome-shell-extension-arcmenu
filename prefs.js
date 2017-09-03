@@ -519,6 +519,9 @@ const ArcMenuPreferencesWidget= new GObject.Class({
         this.settings = Convenience.getSettings(Me.metadata['settings-schema']);
 
         let notebook = new PW.Notebook();
+     
+        let generalSettingsPage = new GeneralSettingsPage(this.settings);
+        notebook.append_page(generalSettingsPage, generalSettingsPage.title);
 
         let behaviourSettingsPage = new BehaviourSettingsPage(this.settings);
         notebook.append_page(behaviourSettingsPage);
