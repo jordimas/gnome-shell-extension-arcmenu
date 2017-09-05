@@ -38,7 +38,7 @@ const WM_KEYBINDINGS_SCHEMA = 'org.gnome.desktop.wm.keybindings';
  * The Menu HotKeybinder class helps us to bind and unbind a menu hotkey
  * to the Arc Menu. Currently, valid hotkeys are Super_L and Super_R.
  */
-const MenuHotKeybinder = new Lang.Class({
+var MenuHotKeybinder = new Lang.Class({
     Name: 'ArcMenu.MenuHotKeybinder',
 
     _init: function(menuToggler) {
@@ -115,7 +115,7 @@ const MenuHotKeybinder = new Lang.Class({
  * The Keybinding Manager class allows us to bind and unbind keybindings
  * to a keybinding handler.
  */
-const KeybindingManager = new Lang.Class({
+var KeybindingManager = new Lang.Class({
     Name: 'ArcMenu.KeybindingManager',
 
     _init: function(settings) {
@@ -180,7 +180,7 @@ const KeybindingManager = new Lang.Class({
  * The Hot Corner Manager class allows us to disable and enable
  * the gnome-shell hot corners.
  */
-const HotCornerManager = new Lang.Class({
+var HotCornerManager = new Lang.Class({
     Name: 'ArcMenu.HotCornerManager',
 
     _init: function(settings) {
