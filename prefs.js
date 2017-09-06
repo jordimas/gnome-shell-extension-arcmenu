@@ -475,7 +475,7 @@ const AboutPage = new Lang.Class({
         	expand: false
         });
         let projectLinkButton = new Gtk.LinkButton({
-            label: _('Webpage'),
+            label: _('Github Page'),
             uri: projectUrl,
             expand: false
         });
