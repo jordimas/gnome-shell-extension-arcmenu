@@ -107,79 +107,6 @@ const ApplicationsMenu = new Lang.Class({
     }
 });
 
-/**
- * This class is responsible for the appearance of the menu button.
- */
-const MenuButtonWidget = new Lang.Class({
-    Name: 'Class',
-
-    _init: function() {
-        this.actor = new St.BoxLayout({
-            style_class: 'panel-status-menu-box',
-            pack_start: false
-        });
-        this._arrowIcon = PopupMenu.arrowIcon(St.Side.BOTTOM);
-        this._icon = new St.Icon({
-            icon_name: 'start-here-symbolic',
-            style_class: 'popup-menu-icon'
-        });
-        this._label = new St.Label({
-            text: _("Applications"),
-            y_expand: true,
-            y_align: Clutter.ActorAlign.CENTER
-        });
-
-        this.actor.add_child(this._icon);
-        this.actor.add_child(this._label);
-        this.actor.add_child(this._arrowIcon);
-    },
-
-    getPanelLabel: function() {
-        return this._label;
-    },
-
-    getPanelIcon: function() {
-        return this._icon;
-    },
-
-    showArrowIcon: function() {
-        if (!this.actor.contains(this._arrowIcon)) {
-            this.actor.add_child(this._arrowIcon);
-        }
-    },
-
-    hideArrowIcon: function() {
-        if (this.actor.contains(this._arrowIcon)) {
-            this.actor.remove_child(this._arrowIcon);
-        }
-    },
-
-    showPanelIcon: function() {
-        if (!this.actor.contains(this._icon)) {
-            this.actor.add_child(this._icon);
-        }
-    },
-
-    hidePanelIcon: function() {
-        if (this.actor.contains(this._icon)) {
-            this.actor.remove_child(this._icon);
-        }
-    },
-
-    showPanelText: function() {
-        if (!this.actor.contains(this._label)) {
-            this.actor.add_child(this._label);
-        }
-    },
-
-    hidePanelText: function() {
-        if (this.actor.contains(this._label)) {
-            this.actor.remove_child(this._label);
-        }
-    }
-});
-
-
 // Application Menu Button class (most of the menu logic is here)
 var ApplicationsButton = new Lang.Class({
     Name: 'ApplicationsButton',
@@ -195,7 +122,7 @@ var ApplicationsButton = new Lang.Class({
         Main.panel.menuManager.addMenu(this.menu);
         this.actor.accessible_role = Atk.Role.LABEL;
 
-        this._menuButtonWidget = new MenuButtonWidget();
+        this._menuButtonWidget = new MW.MenuButtonWidget();
         this.actor.add_actor(this._menuButtonWidget.actor);
 
         this.actor.name = 'panelApplications';
