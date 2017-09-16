@@ -712,7 +712,7 @@ var ApplicationsButton = new Lang.Class({
         this._hidingId = Main.overview.connect('hiding', Lang.bind(this, function() {
             this.actor.remove_accessible_state (Atk.StateType.CHECKED);
         }));
-        this._applicationsButtons = [];
+        this._applicationsButtons = new Map();
         this.reloadFlag = false;
         this._createLayout();
         this._display();
@@ -1078,7 +1078,7 @@ var ApplicationsButton = new Lang.Class({
     _display: function() {
         this.mainBox.hide();
         if (this._settings.get_enum('visible-menus') != visibleMenus.SYSTEM_ONLY) {
-            this._applicationsButtons.length = 0;
+            this._applicationsButtons.clear();
             this._loadCategories();
             this._previousSearchPattern = "";
             this.backButton.actor.hide();
@@ -1111,15 +1111,17 @@ var ApplicationsButton = new Lang.Class({
 
     // Display application menu items
     _displayButtons: function(apps) {
-         if (apps) {
+        if (apps) {
             for (let i = 0; i < apps.length; i++) {
-               let app = apps[i];
-               if (!this._applicationsButtons[app]) {
-                  let applicationMenuItem = new ApplicationMenuItem(this, app);
-                  this._applicationsButtons[app] = applicationMenuItem;
-               }
-               if (!this._applicationsButtons[app].actor.get_parent())
-                  this.applicationsBox.add_actor(this._applicationsButtons[app].actor);
+                let app = apps[i];
+                let item = this._applicationsButtons.get(app);
+                if (!item) {
+                    item = new ApplicationMenuItem(this, app);
+                    this._applicationsButtons.set(app, item);
+                }
+                if (!item.actor.get_parent()) {
+                    this.applicationsBox.add_actor(item.actor);
+                }
             }
          }
     },
