@@ -1224,7 +1224,9 @@ var ApplicationsButton = new Lang.Class({
 
     // Destroy (deactivate) the menu
     destroy: function() {
-        this.menu.actor.get_children().forEach(function(c) { c.destroy() });
+        this.menu.actor.get_children().forEach(function(c) {
+            c.destroy();
+        });
         this.parent();
     }
 });
