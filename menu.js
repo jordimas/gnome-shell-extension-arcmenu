@@ -388,18 +388,21 @@ const ApplicationMenuItem = new Lang.Class({
 
         this._draggable = DND.makeDraggable(this.actor);
         this.isDraggableApp = true;
-        this._draggable.connect('drag-begin', Lang.bind(this,
-            function () {
-                Main.overview.beginItemDrag(this);
-            }));
-        this._draggable.connect('drag-cancelled', Lang.bind(this,
-            function () {
-                Main.overview.cancelledItemDrag(this);
-            }));
-        this._draggable.connect('drag-end', Lang.bind(this,
-            function () {
-                Main.overview.endItemDrag(this);
-            }));
+        this._draggable.connect('drag-begin', Lang.bind(this, this._onDragBegin));
+        this._draggable.connect('drag-cancelled', Lang.bind(this, this._onDragCancelled));
+        this._draggable.connect('drag-end', Lang.bind(this, this._onDragEnd));
+    },
+
+    _onDragBegin: function() {
+        Main.overview.beginItemDrag(this);
+    },
+
+    _onDragCancelled: function() {
+        Main.overview.cancelledItemDrag(this);
+    },
+
+    _onDragEnd: function() {
+        Main.overview.endItemDrag(this);
     },
 
     _onKeyPressEvent: function (actor, event) {
