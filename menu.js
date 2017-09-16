@@ -1150,7 +1150,7 @@ var ApplicationsButton = new Lang.Class({
                 if (info.get_executable()) match += info.get_executable().toLowerCase() + " ";
                 if (info.get_keywords()) match += info.get_keywords().toString().toLowerCase() + " ";
                 if (app.get_description()) match += app.get_description().toLowerCase();
-                let index = match.indexOf(pattern)
+                let index = match.indexOf(pattern);
                 if (index != -1) {
                     searchResults.push([index, app]);
                 }
