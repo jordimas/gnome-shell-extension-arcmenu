@@ -724,10 +724,9 @@ var ApplicationsButton = new Lang.Class({
                 this.reloadFlag = true;
             }
         }));
-        Main.panel.actor.connect('notify::height', Lang.bind(this,
-            function() {
-                this._redisplay();
-            }));
+        Main.panel.actor.connect('notify::height', Lang.bind(this, function() {
+            this._redisplay();
+        }));
     },
 
     toggleMenu: function() {
@@ -740,8 +739,10 @@ var ApplicationsButton = new Lang.Class({
 
     // Create a vertical separator
     _createVertSeparator: function() {
-        let separator = new St.DrawingArea({ style_class: 'calendar-vertical-separator',
-                                             pseudo_class: 'highlighted' });
+        let separator = new St.DrawingArea({
+            style_class: 'calendar-vertical-separator',
+            pseudo_class: 'highlighted'
+        });
         separator.connect('repaint', Lang.bind(this, this._onVertSepRepaint));
         return separator;
     },
@@ -915,18 +916,25 @@ var ApplicationsButton = new Lang.Class({
         // Create main menu sections and scroll views
         let section = new PopupMenu.PopupMenuSection();
         this.menu.addMenuItem(section);
-        this.mainBox = new St.BoxLayout({ vertical: false,
-                                          style_class: 'main-box' });
+        this.mainBox = new St.BoxLayout({
+            vertical: false,
+            style_class: 'main-box'
+        });
         section.actor.add_actor(this.mainBox);
-
 
         // Left Box
         if(this._settings.get_enum('visible-menus') == visibleMenus.ALL ||
            this._settings.get_enum('visible-menus') == visibleMenus.APPS_ONLY) {
-            this.leftBox = new St.BoxLayout({ vertical: true, style_class: 'left-box' });
-            this.applicationsScrollBox = new St.ScrollView({ x_fill: true, y_fill: false,
-                                                             y_align: St.Align.START,
-                                                             style_class: 'apps-menu vfade left-scroll-area' });
+            this.leftBox = new St.BoxLayout({
+                vertical: true,
+                style_class: 'left-box'
+            });
+            this.applicationsScrollBox = new St.ScrollView({
+                x_fill: true,
+                y_fill: false,
+                y_align: St.Align.START,
+                style_class: 'apps-menu vfade left-scroll-area'
+            });
             this.applicationsScrollBox.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC);
             let vscroll = this.applicationsScrollBox.get_vscroll_bar();
             vscroll.connect('scroll-start', Lang.bind(this, function() {
@@ -935,23 +943,38 @@ var ApplicationsButton = new Lang.Class({
             vscroll.connect('scroll-stop', Lang.bind(this, function() {
                 this.menu.passEvents = false;
             }));
-            this.leftBox.add(this.applicationsScrollBox, { expand: true,
-                                                         x_fill: true, y_fill: true,
-                                                         y_align: St.Align.START });
+            this.leftBox.add(this.applicationsScrollBox, {
+                expand: true,
+                x_fill: true, y_fill: true,
+                y_align: St.Align.START
+            });
 
             // Create search box
-            this.searchBox = new St.BoxLayout({ style_class: 'search-box search-box-padding' });
-            this._searchInactiveIcon = new St.Icon({ style_class: 'search-entry-icon', icon_name: 'edit-find-symbolic', icon_size: 16 });
-            this._searchActiveIcon = new St.Icon({ style_class: 'search-entry-icon', icon_name: 'edit-clear-symbolic', icon_size: 16 });
-            this.searchEntry = new St.Entry({ name: 'search-entry',
-                                         hint_text: _("Type to search…"),
-                                         track_hover: true,
-                                         can_focus: true });
+            this.searchBox = new St.BoxLayout({
+                style_class: 'search-box search-box-padding'
+            });
+            this._searchInactiveIcon = new St.Icon({
+                style_class: 'search-entry-icon',
+                icon_name: 'edit-find-symbolic',
+                icon_size: 16
+            });
+            this._searchActiveIcon = new St.Icon({
+                style_class: 'search-entry-icon',
+                icon_name: 'edit-clear-symbolic',
+                icon_size: 16
+            });
+            this.searchEntry = new St.Entry({
+                name: 'search-entry',
+                hint_text: _("Type to search…"),
+                track_hover: true,
+                can_focus: true
+            });
             this.searchEntry.set_primary_icon(this._searchInactiveIcon);
-            this.searchBox.add(this.searchEntry, { expand: true,
-                                                   x_align:St.Align.START,
-                                                   y_align:St.Align.START
-                                                 });
+            this.searchBox.add(this.searchEntry, {
+                expand: true,
+                x_align:St.Align.START,
+                y_align:St.Align.START
+            });
             this.searchActive = false;
             this.searchEntryText = this.searchEntry.clutter_text;
             this.searchEntryText.connect('text-changed', Lang.bind(this, this._onSearchTextChanged));
@@ -961,76 +984,104 @@ var ApplicationsButton = new Lang.Class({
 
             // Add back button to menu
             this.backButton = new BackMenuItem(this);
-            this.leftBox.add(this.backButton.actor, { expand: false,
-                                                 x_fill: true, y_fill: false,
-                                                 y_align: St.Align.START });
+            this.leftBox.add(this.backButton.actor, {
+                expand: false,
+                x_fill: true,
+                y_fill: false,
+                y_align: St.Align.START
+            });
 
             // Add search box to menu
-            this.leftBox.add(this.searchBox, { expand: false,
-                                                 x_fill: true, y_fill: false,
-                                                 y_align: St.Align.START });
+            this.leftBox.add(this.searchBox, {
+                expand: false,
+                x_fill: true,
+                y_fill: false,
+                y_align: St.Align.START
+            });
 
             this.applicationsBox = new St.BoxLayout({ vertical: true });
             this.applicationsScrollBox.add_actor(this.applicationsBox);
-            this.mainBox.add(this.leftBox, { expand: true, x_fill: true, y_fill: true });
+            this.mainBox.add(this.leftBox, {
+                expand: true,
+                x_fill: true,
+                y_fill: true
+            });
 
-            if(this._settings.get_enum('visible-menus') == visibleMenus.ALL)
-                this.mainBox.add(this._createVertSeparator(), { expand: false, x_fill: false, y_fill: true});
+            if(this._settings.get_enum('visible-menus') == visibleMenus.ALL) {
+                this.mainBox.add(this._createVertSeparator(), {
+                    expand: false,
+                    x_fill: false,
+                    y_fill: true
+                });
+            }
         }
-
-
 
         // Right Box
         if(this._settings.get_enum('visible-menus') == visibleMenus.ALL ||
            this._settings.get_enum('visible-menus') == visibleMenus.SYSTEM_ONLY) {
-            this.rightBox = new St.BoxLayout({ vertical: true, style_class: 'right-box' });
-            this.actionsBox = new PopupMenu.PopupBaseMenuItem({ reactive: false,
-                                                                can_focus: false });
+            this.rightBox = new St.BoxLayout({
+                vertical: true,
+                style_class: 'right-box'
+            });
+            this.actionsBox = new PopupMenu.PopupBaseMenuItem({
+                reactive: false,
+                can_focus: false
+            });
 
             // Add session buttons to menu
             let logout = new LogoutButton(this);
-            this.actionsBox.actor.add(logout.actor, { expand: true,
-                                                      x_fill: false,
-                                                      y_align: St.Align.START
-                                                    });
+            this.actionsBox.actor.add(logout.actor, {
+                expand: true,
+                x_fill: false,
+                y_align: St.Align.START
+            });
 
             let lock = new LockButton(this);
-            this.actionsBox.actor.add(lock.actor, { expand: true,
-                                                    x_fill: false,
-                                                    y_align: St.Align.START
-                                                  });
+            this.actionsBox.actor.add(lock.actor, {
+                expand: true,
+                x_fill: false,
+                y_align: St.Align.START
+            });
 
             let suspend = new SuspendButton(this);
-            this.actionsBox.actor.add(suspend.actor, { expand: true,
-                                                    x_fill: false,
-                                                    y_align: St.Align.START
-                                                  });
+            this.actionsBox.actor.add(suspend.actor, {
+                expand: true,
+                x_fill: false,
+                y_align: St.Align.START
+            });
 
             let power = new PowerButton(this);
-            this.actionsBox.actor.add(power.actor, { expand: true,
-                                                     x_fill: false,
-                                                     y_align: St.Align.START
-                                                   });
+            this.actionsBox.actor.add(power.actor, {
+                expand: true,
+                x_fill: false,
+                y_align: St.Align.START
+            });
 
             let user = new UserMenuItem(this);
-            this.rightBox.add(user.actor, { expand: false,
-                                            x_fill: true,
-                                            y_fill: false,
-                                            y_align: St.Align.START
-                                          });
+            this.rightBox.add(user.actor, {
+                expand: false,
+                x_fill: true,
+                y_fill: false,
+                y_align: St.Align.START
+            });
 
             let separator = new PopupMenu.PopupSeparatorMenuItem();
-            this.rightBox.add(separator.actor, { expand: false,
-                                                 x_fill: true, y_fill: false,
-                                                 y_align: St.Align.START
-                                               });
+            this.rightBox.add(separator.actor, {
+                expand: false,
+                x_fill: true,
+                y_fill: false,
+                y_align: St.Align.START
+            });
 
             // Add place shortcuts to menu
             this._loadPlaces();
             separator = new PopupMenu.PopupSeparatorMenuItem();
-            this.rightBox.add(separator.actor, { expand: false,
-                                                 x_fill: true, y_fill: false,
-                                                 y_align: St.Align.START });
+            this.rightBox.add(separator.actor, {
+                expand: false,
+                x_fill: true,
+                y_fill: false,
+                y_align: St.Align.START
+            });
 
             // List of shortcuts that will be added to the menu
             let shortcuts = [
@@ -1052,23 +1103,33 @@ var ApplicationsButton = new Lang.Class({
                     let shortcutMenuItem = new ShortcutMenuItem(this, shortcut.label, shortcut.symbolic, shortcut.command);
                     this.rightBox.add(shortcutMenuItem.actor, {
                         expand: false,
-                        x_fill: true, y_fill: false,
+                        x_fill: true,
+                        y_fill: false,
                         y_align: St.Align.START
                     });
                 }
             }));
 
             let activities = new ActivitiesMenuItem(this);
-            this.rightBox.add(activities.actor, { expand: false,
-                                                 x_fill: true, y_fill: false,
-                                                 y_align: St.Align.START });
+            this.rightBox.add(activities.actor, {
+                expand: false,
+                x_fill: true,
+                y_fill: false,
+                y_align: St.Align.START
+            });
             separator = new PopupMenu.PopupSeparatorMenuItem();
-            this.rightBox.add(separator.actor, { expand: false,
-                                                 x_fill: true, y_fill: false,
-                                                 y_align: St.Align.START });
-            this.rightBox.add(this.actionsBox.actor, { expand: true,
-                                                 x_fill: true, y_fill: false,
-                                                 y_align: St.Align.END });
+            this.rightBox.add(separator.actor, {
+                expand: false,
+                x_fill: true,
+                y_fill: false,
+                y_align: St.Align.START
+            });
+            this.rightBox.add(this.actionsBox.actor, {
+                expand: true,
+                x_fill: true,
+                y_fill: false,
+                y_align: St.Align.END
+            });
             this.mainBox.add(this.rightBox);
         }
 
