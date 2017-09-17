@@ -36,3 +36,7 @@
 .apps-menu:rtl {
     padding-left: 0.1875em;
 }
+
+#search-entry {
+    max-width: 17.667em;
+}
