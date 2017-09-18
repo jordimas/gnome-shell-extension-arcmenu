@@ -28,7 +28,7 @@
 }
 
 .apps-menu:rtl {
-    padding-left: 0.1375em;
+    padding-left: 0.1875em;
 }
 /* workaround for the search entry box to limit character length */
 #search-entry {
