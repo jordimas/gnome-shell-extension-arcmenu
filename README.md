@@ -45,8 +45,9 @@ On Arch based systems:
 
 ##
 ### Manual Installation
-For installing Arc-Menu manually from source, please have a look at the 
-[Manual Installation Guide](https://github.com/LinxGem33/Arc-Menu/wiki/Installing-from-extensions.gnome.org#manual-installuninstall-using-make) 
+For installing Arc-Menu manually from source;
+
+Please take a look at the [Manual Installation Guide](https://github.com/LinxGem33/Arc-Menu/wiki/Installing-from-extensions.gnome.org#manual-installuninstall-using-make) 
 on the Arc-Menu Wiki.
 
 ##
