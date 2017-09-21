@@ -26,46 +26,31 @@ My first initial priority was to get this extension stable enough to upload to e
 You can now install this extension from extensions.gnome.org as a one click install just click on the link below
 > [One Click Install](https://extensions.gnome.org/extension/1228/arc-menu/)
 
-##
+#### Dependencies
+__Please note:__ For Arc-Menu to work properly, your GNOME Desktop must have 
+installed the following dependencies.
 
+On Ubuntu/Debian based systems:
+
+ * gnome-shell-extensions
+ * gnome-menus
+ * gnome-tweak-tool
+
+On Arch based systems:
+
+ * gnome-shell-extensions
+ * gnome-tweak-tool
+
+##
+### Manual Installation
+For installing Arc-Menu manually from source, please have a look at the 
+[Manual Installation Guide](https://github.com/LinxGem33/Arc-Menu/wiki/Installing-from-extensions.gnome.org#manual-installuninstall-using-make) 
+on the Arc-Menu Wiki.
+
+##
 ### Packages
 Awaiting packagers
 
-##
-### Manual Installation (for testers & enthusiasts)
-Probably, the simplest way to install Arc Menu is using **git**, **make** and **gnome-shell-extension-tool**.
-So, if you have installed git, make and gnome-shell-extension-tool, you can proceed as follows.
-
-1) Clone the repository via the git-clone command and change to the Arc-Menu directory:
-```
-git clone https://github.com/LinxGem33/Arc-Menu.git
-cd Arc-Menu
-```
-
-2) If you have already installed Arc Menu, then please remove the existing installation via:
-```
-make uninstall
-```
-
-
-3) Install it via:
-```
-make install
-```
-
-4) Enable or disable the extension via:
-```
-make enable
-```
-
-```
-make disable
-```
-
-5) Logout from the current GNOME session and login again for the changes to take effect. Alternatively, you can restart the GNOME Shell with:
-```
-Alt + F2 and enter 'r' (without quotes).
-```
 ##
 ### Wiki Guide
 
