@@ -26,7 +26,9 @@ My first initial priority was to get this extension stable enough to upload to e
 You can now install this extension from extensions.gnome.org as a one click install just click on the link below
 > [One Click Install](https://extensions.gnome.org/extension/1228/arc-menu/)
 
-#### Dependencies
+##
+### Dependencies
+
 __Please note:__ For Arc-Menu to work properly, your GNOME Desktop must have 
 installed the following dependencies.
 
