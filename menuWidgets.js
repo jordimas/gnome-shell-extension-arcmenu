@@ -101,27 +101,53 @@ const ActivitiesMenuItem = new Lang.Class({
     },
 });
 
-// Power Button
-const PowerButton = new Lang.Class({
-    Name: 'PowerButton',
 
-    // Initialize the button
-    _init: function(button) {
+/**
+ * A base class for custom session buttons.
+ */
+const SessionButton = new Lang.Class({
+    Name: 'SessionButton',
+
+    _init: function(button, accessible_name, icon_name) {
         this._button = button;
         this.actor = new St.Button({
             reactive: true,
             can_focus: true,
             track_hover: true,
-            accessible_name: _("Power Off"),
+            accessible_name: accessible_name,
             style_class: 'system-menu-action'
         });
-        this.actor.child = new St.Icon({ icon_name: 'system-shutdown-symbolic' });
+        this.actor.child = new St.Icon({ icon_name: icon_name });
         this.actor.connect('clicked', Lang.bind(this, this._onClick));
+        this.actor.connect('notify::hover', Lang.bind(this, this._onHover));
+    },
+
+    _onClick: function() {
+        this._button.menu.toggle();
+        this.activate();
+    },
+
+    activate: function() {
+        // Button specific action
+    },
+
+    _onHover: function() {
+        // TODO: implement tooltips
+    }
+});
+
+// Power Button
+const PowerButton = new Lang.Class({
+    Name: 'PowerButton',
+    Extends: SessionButton,
+
+    // Initialize the button
+    _init: function(button) {
+        this.parent(button, _("Power Off"), 'system-shutdown-symbolic');
     },
 
     // Activate the button (Shutdown)
-    _onClick: function() {
-        this._button.menu.toggle();
+    activate: function() {
         this._button._session.ShutdownRemote(0);
     }
 });
@@ -129,24 +155,15 @@ const PowerButton = new Lang.Class({
 // Logout Button
 const LogoutButton = new Lang.Class({
     Name: 'LogoutButton',
+    Extends: SessionButton,
 
     // Initialize the button
     _init: function(button) {
-        this._button = button;
-        this.actor = new St.Button({
-            reactive: true,
-            can_focus: true,
-            track_hover: true,
-            accessible_name: _("Log Out"),
-            style_class: 'system-menu-action'
-        });
-        this.actor.child = new St.Icon({ icon_name: 'application-exit-symbolic' });
-        this.actor.connect('clicked', Lang.bind(this, this._onClick));
+        this.parent(button, _("Log Out"), 'application-exit-symbolic');
     },
 
     // Activate the button (Logout)
-    _onClick: function() {
-        this._button.menu.toggle();
+    activate: function() {
         this._button._session.LogoutRemote(0);
     }
 });
@@ -154,24 +171,15 @@ const LogoutButton = new Lang.Class({
 // Suspend Button
 const SuspendButton = new Lang.Class({
     Name: 'SuspendButton',
+    Extends: SessionButton,
 
     // Initialize the button
     _init: function(button) {
-        this._button = button;
-        this.actor = new St.Button({
-            reactive: true,
-            can_focus: true,
-            track_hover: true,
-            accessible_name: _("Suspend"),
-            style_class: 'system-menu-action'
-        });
-        this.actor.child = new St.Icon({ icon_name: 'media-playback-pause-symbolic' });
-        this.actor.connect('clicked', Lang.bind(this, this._onClick));
+        this.parent(button, _("Suspend"), 'media-playback-pause-symbolic');
     },
 
     // Activate the button (Suspend the system)
-    _onClick: function() {
-        this._button.menu.toggle();
+    activate: function() {
         let loginManager = LoginManager.getLoginManager();
         loginManager.canSuspend(Lang.bind(this, function(result) {
             if (result) {
@@ -184,24 +192,15 @@ const SuspendButton = new Lang.Class({
 // Lock Screen Button
 const LockButton = new Lang.Class({
     Name: 'LockButton',
+    Extends: SessionButton,
 
     // Initialize the button
     _init: function(button) {
-        this._button = button;
-        this.actor = new St.Button({
-            reactive: true,
-            can_focus: true,
-            track_hover: true,
-            accessible_name: _("Lock"),
-            style_class: 'system-menu-action'
-        });
-        this.actor.child = new St.Icon({ icon_name: 'changes-prevent-symbolic' });
-        this.actor.connect('clicked', Lang.bind(this, this._onClick));
+        this.parent(button, _("Lock"), 'changes-prevent-symbolic');
     },
 
     // Activate the button (Lock the screen)
-    _onClick: function() {
-        this._button.menu.toggle();
+    activate: function() {
         Main.screenShield.lock(true);
     }
 });
