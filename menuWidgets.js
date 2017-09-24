@@ -559,6 +559,106 @@ const PlaceMenuItem = new Lang.Class({
 });
 
 /**
+ * This class represents a SearchBox.
+ */
+const SearchBox = new Lang.Class({
+    Name: 'Class',
+
+    _init: function() {
+        this.actor = new St.BoxLayout({
+            style_class: 'search-box search-box-padding'
+        });
+        this._stEntry = new St.Entry({
+            name: 'search-entry',
+            hint_text: _("Type to search…"),
+            track_hover: true,
+            can_focus: true
+        });
+        this._findIcon = new St.Icon({
+            style_class: 'search-entry-icon',
+            icon_name: 'edit-find-symbolic',
+            icon_size: 16
+        });
+        this._clearIcon = new St.Icon({
+            style_class: 'search-entry-icon',
+            icon_name: 'edit-clear-symbolic',
+            icon_size: 16
+        });
+        this._stEntry.set_primary_icon(this._findIcon);
+        this.actor.add(this._stEntry, {
+            expand: true,
+            x_align: St.Align.START,
+            y_align: St.Align.START
+        });
+
+        this._text = this._stEntry.get_clutter_text();
+        this._text.connect('text-changed', Lang.bind(this, this._onTextChanged));
+        this._text.connect('key-press-event', Lang.bind(this, this._onKeyPress));
+        this._searchIconClickedId = 0;
+    },
+
+    _isActivated: function() {
+        return this._stEntry.get_text().length > 0;
+    },
+
+    _isEmpty: function() {
+        return this._stEntry.get_text().length == 0;
+    },
+
+    _setClearIcon: function() {
+       this._stEntry.set_secondary_icon(this._clearIcon);
+        if (this._searchIconClickedId == 0) {
+            this._searchIconClickedId = this._stEntry.connect('secondary-icon-clicked',
+                Lang.bind(this, this.clear));
+        }
+    },
+
+    _unsetClearIcon: function() {
+       if (this._searchIconClickedId > 0) {
+            this._stEntry.disconnect(this._searchIconClickedId);
+        }
+        this._searchIconClickedId = 0;
+        this._stEntry.set_secondary_icon(null);
+    },
+
+    _onTextChanged: function(entryText) {
+        let searchString = this._stEntry.get_text();
+        if (this._isActivated()) {
+            this._setClearIcon();
+        } else {
+            this._unsetClearIcon();
+        }
+    },
+
+    _onKeyPress: function(actor, event) {
+        let symbol = event.get_key_symbol();
+        switch(symbol) {
+        case Clutter.KEY_Return:
+        case Clutter.KEY_KP_Enter:
+            if (!this._isEmpty()) {
+                this.emit('activate');
+            }
+            return Clutter.EVENT_STOP;
+        default:
+            return Clutter.EVENT_PROPAGATE;
+        }
+    },
+
+    // Set the key focus on the search box entry
+    focusEntry: function() {
+        this._stEntry.grab_key_focus();
+    },
+
+    // Clear the search box
+    clear: function() {
+        this._stEntry.set_text('');
+        this._stEntry.grab_key_focus();
+        this.emit('entry-cleared');
+    }
+});
+Signals.addSignalMethods(SearchBox.prototype);
+
+/**
  * This class is responsible for the appearance of the menu button.
  */
 const MenuButtonWidget = new Lang.Class({
