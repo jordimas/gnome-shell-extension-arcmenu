@@ -92,7 +92,8 @@ const ApplicationsMenu = new Lang.Class({
     open: function(animate) {
         this.parent(animate);
         if (this._settings.get_enum('visible-menus') != visibleMenus.SYSTEM_ONLY) {
-             global.stage.set_key_focus(this._button.searchEntry);
+            let searchBox = this._button.searchBox;
+            searchBox.grabKeyFocus();
         }
     },
 
@@ -101,7 +102,8 @@ const ApplicationsMenu = new Lang.Class({
         let size = Main.layoutManager.panelBox.height;
         if (this._button.applicationsBox) {
             this._button.selectCategory(null);
-            this._button.resetSearch();
+            let searchBox = this._button.searchBox;
+            searchBox.clear();
         }
         this.parent(animate);
     }
@@ -183,38 +185,6 @@ var ApplicationsButton = new Lang.Class({
                 return true;
         }
         return false;
-    },
-
-    // Handle key presses
-    _onMenuKeyPress: function(actor, event) {
-        let symbol = event.get_key_symbol();
-        if (symbol == Clutter.KEY_Left || symbol == Clutter.KEY_Right) {
-            let direction = symbol == Clutter.KEY_Left ? Gtk.DirectionType.LEFT
-                                                       : Gtk.DirectionType.RIGHT;
-            if (this.menu.actor.navigate_focus(global.stage.key_focus, direction, false))
-                return true;
-        } else if (symbol == Clutter.KEY_Up || symbol == Clutter.KEY_Down) {
-            let direction = symbol == Clutter.KEY_Up ? Gtk.DirectionType.UP
-                                                       : Gtk.DirectionType.DOWN;
-            if (this.menu.actor.navigate_focus(global.stage.key_focus, direction, false))
-                return true;
-        } else if (symbol == Clutter.KEY_Return ||
-                   symbol == Clutter.KEY_Tab ||
-                   symbol == Clutter.KEY_KP_Enter) {
-            return this.parent(actor, event);
-        } else if (symbol == Clutter.KEY_BackSpace) {
-            if (!this.searchEntry.contains(global.stage.get_key_focus())) {
-                global.stage.set_key_focus(this.searchEntry);
-                let newText = this.searchEntry.get_text().slice(0, -1);
-                this.searchEntry.set_text(newText);
-            }
-            return this.parent(actor, event);
-        }
-        let key = event.get_key_unicode();
-        global.stage.set_key_focus(this.searchEntry);
-        let newText = this.searchEntry.get_text() + key;
-        this.searchEntry.set_text(newText);
-        return this.parent(actor, event);
     },
 
     // Repaint vertical separator
@@ -372,37 +342,15 @@ var ApplicationsButton = new Lang.Class({
             });
 
             // Create search box
-            this.searchBox = new St.BoxLayout({
-                style_class: 'search-box search-box-padding'
-            });
-            this._searchInactiveIcon = new St.Icon({
-                style_class: 'search-entry-icon',
-                icon_name: 'edit-find-symbolic',
-                icon_size: 16
-            });
-            this._searchActiveIcon = new St.Icon({
-                style_class: 'search-entry-icon',
-                icon_name: 'edit-clear-symbolic',
-                icon_size: 16
-            });
-            this.searchEntry = new St.Entry({
-                name: 'search-entry',
-                hint_text: _("Type to search…"),
-                track_hover: true,
-                can_focus: true
-            });
-            this.searchEntry.set_primary_icon(this._searchInactiveIcon);
-            this.searchBox.add(this.searchEntry, {
-                expand: true,
-                x_align:St.Align.START,
-                y_align:St.Align.START
-            });
-            this.searchActive = false;
-            this.searchEntryText = this.searchEntry.clutter_text;
-            this.searchEntryText.connect('text-changed', Lang.bind(this, this._onSearchTextChanged));
-            this.searchEntryText.connect('key-press-event', Lang.bind(this, this._onMenuKeyPress));
-            this._previousSearchPattern = "";
-            this._searchIconClickedId = 0;
+            this.searchBox = new MW.SearchBox();
+            this._firstAppItem = null;
+            this._firstApp = null;
+            this._tabbedOnce = false;
+            this._searchBoxChangedId = this.searchBox.connect('changed', Lang.bind(this, this._onSearchBoxChanged));
+            this._searchBoxClearedId = this.searchBox.connect('cleared', Lang.bind(this, this._onSearchBoxCleared));
+            this._searchBoxActivateId = this.searchBox.connect('activate', Lang.bind(this, this._onSearchBoxActive));
+            this._searchBoxKeyPressId = this.searchBox.connect('key-press-event', Lang.bind(this, this._onSearchBoxKeyPress));
+            this._searchBoxKeyFocusInId = this.searchBox.connect('key-focus-in', Lang.bind(this, this._onSearchBoxKeyFocusIn));
 
             // Add back button to menu
             this.backButton = new MW.BackMenuItem(this);
@@ -414,7 +362,7 @@ var ApplicationsButton = new Lang.Class({
             });
 
             // Add search box to menu
-            this.leftBox.add(this.searchBox, {
+            this.leftBox.add(this.searchBox.actor, {
                 expand: false,
                 x_fill: true,
                 y_fill: false,
@@ -554,7 +502,70 @@ var ApplicationsButton = new Lang.Class({
             });
             this.mainBox.add(this.rightBox);
         }
+    },
 
+    _onSearchBoxKeyPress: function(searchBox, event) {
+        let symbol = event.get_key_symbol();
+        if (!searchBox.isEmpty() && searchBox.hasKeyFocus()) {
+            if (symbol == Clutter.Tab && !this._tabbedOnce) {
+                this._firstAppItem.setFakeActive(false);
+                this._firstAppItem.grabKeyFocus();
+                this._tabbedOnce = true;
+                return Clutter.EVENT_STOP;
+            } else if (symbol == Clutter.ISO_Left_Tab) {
+                this._firstAppItem.setFakeActive(false);
+            } else if (symbol == Clutter.Up) {
+                this._firstAppItem.setFakeActive(false);
+            } else if (symbol == Clutter.Down) {
+                this._firstAppItem.setFakeActive(false);
+                this._firstAppItem.grabKeyFocus();
+                return Clutter.EVENT_STOP;
+            }
+        }
+        return Clutter.EVENT_PROPAGATE;
+    },
+
+    _onSearchBoxKeyFocusIn: function(searchBox) {
+         if (!searchBox.isEmpty() && this._firstAppItem && !this._tabbedOnce) {
+            this._firstAppItem.setFakeActive(true);
+        }
+    },
+
+    _onSearchBoxChanged: function(searchBox, searchString) {
+        // normalize search string
+        let pattern = searchString.replace(/^\s+/g, '')
+            .replace(/\s+$/g, '')
+            .toLowerCase();
+        this._tabbedOnce = false;
+        if (pattern.length > 0) {
+            let appResults = this._listApplications(null, pattern);
+            if (appResults.length) {
+                this._firstApp = appResults[0];
+            }
+            if (this._firstAppItem) {
+                this._firstAppItem.setFakeActive(false);
+            }
+
+            this._clearApplicationsBox();
+            this._displayButtons(appResults);
+
+            this._firstAppItem = this._applicationsButtons.get(this._firstApp);
+            if (this._firstAppItem) {
+                this._firstAppItem.setFakeActive(true);
+            }
+            this.backButton.actor.show();
+        }
+    },
+
+    _onSearchBoxCleared: function() {
+        this.selectCategory(null);
+    },
+
+    _onSearchBoxActive: function() {
+        if (this._firstApp) {
+            let item = this._applicationsButtons.get(this._firstApp);
+            item.activate();
+        }
     },
 
     // Display the menu
@@ -563,7 +574,6 @@ var ApplicationsButton = new Lang.Class({
         if (this._settings.get_enum('visible-menus') != visibleMenus.SYSTEM_ONLY) {
             this._applicationsButtons.clear();
             this._loadCategories();
-            this._previousSearchPattern = "";
             this.backButton.actor.hide();
         }
     },
@@ -583,12 +593,12 @@ var ApplicationsButton = new Lang.Class({
         if (dir) {
             this._displayButtons(this._listApplications(dir.get_menu_id()));
             this.backButton.actor.show();
-            global.stage.set_key_focus(this.searchEntry);
+            this.searchBox.grabKeyFocus();
         }
         else {
             this._loadCategories();
             this.backButton.actor.hide();
-            global.stage.set_key_focus(this.searchEntry);
+            this.searchBox.grabKeyFocus();
         }
     },
 
@@ -655,63 +665,31 @@ var ApplicationsButton = new Lang.Class({
 	    return res;
     },
 
-    // Handle search text entry input changes
-    _onSearchTextChanged: function (se, prop) {
-        let searchString = this.searchEntry.get_text();
-        this.searchActive = searchString != '';
-        if (this.searchActive) {
-            this.searchEntry.set_secondary_icon(this._searchActiveIcon);
-            if (this._searchIconClickedId == 0) {
-                this._searchIconClickedId = this.searchEntry.connect('secondary-icon-clicked',
-                    Lang.bind(this, function() {
-                        this.resetSearch();
-                        this.selectCategory(null);
-                    }));
-            }
-            this._doSearch();
-        } else {
-            if (this._searchIconClickedId > 0)
-                this.searchEntry.disconnect(this._searchIconClickedId);
-            this._searchIconClickedId = 0;
-            this.searchEntry.set_secondary_icon(null);
-            if (searchString == "" && this._previousSearchPattern != "") {
-                this.selectCategory(null);
-            }
-            this._previousSearchPattern = "";
-        }
-        return false;
-    },
-
-    // Carry out a search based on the search text entry value
-    _doSearch: function(){
-        let pattern = this.searchEntryText.get_text().replace(/^\s+/g, '').replace(/\s+$/g, '').toLowerCase();
-        if (pattern==this._previousSearchPattern) return;
-        this._previousSearchPattern = pattern;
-        if (pattern.length == 0) {
-            return;
-        }
-        let appResults = this._listApplications(null, pattern);
-        this._clearApplicationsBox();
-        this._displayButtons(appResults);
-
-        if (this.applicationsBox.get_children().length > 0)
-            global.stage.set_key_focus(this.applicationsBox.get_first_child());
-
-        this.backButton.actor.show();
-    },
-
-    // Reset the search
-    resetSearch: function(){
-        this.searchEntry.set_text("");
-        this.searchActive = false;
-        global.stage.set_key_focus(this.searchEntry);
-     },
-
     // Destroy (deactivate) the menu
     destroy: function() {
         this.menu.actor.get_children().forEach(function(c) {
             c.destroy();
         });
+        if (this._searchBoxClearedId > 0) {
+            this.searchBox.disconnect(this._searchBoxClearedId);
+            this._searchBoxClearedId = 0;
+        }
+        if (this._searchBoxChangedId > 0) {
+            this.searchBox.disconnect(this._searchBoxChangedId);
+            this._searchBoxChangedId = 0;
+        }
+        if (this._searchBoxActivateId > 0) {
+            this.searchBox.disconnect(this._searchBoxActivateId);
+            this._searchBoxActivateId = 0;
+        }
+        if (this._searchBoxKeyPressId > 0) {
+            this.searchBox.disconnect(this._searchBoxKeyPressId);
+            this._searchBoxKeyPressId = 0;
+        }
+        if (this._searchBoxKeyFocusInId > 0) {
+            this.searchBox.disconnect(this._searchBoxKeyFocusInId);
+            this._searchBoxKeyFocusInId = 0;
+        }
         this.parent();
     }
 });

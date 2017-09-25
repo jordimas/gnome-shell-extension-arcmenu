@@ -415,6 +415,22 @@ const ApplicationMenuItem = new Lang.Class({
         this.parent(active, params);
     },
 
+    setFakeActive: function(active) {
+        if (active) {
+            this._button.scrollToButton(this);
+            //this.actor.add_style_pseudo_class('active');
+            this.actor.add_style_class_name('selected');
+        } else {
+            //this.actor.remove_style_pseudo_class('active');
+            this.actor.remove_style_class_name('selected');
+        }
+    },
+
+    // Grab the key focus
+    grabKeyFocus: function() {
+        this.actor.grab_key_focus();
+    },
+
     // Update the app icon in the menu
     _updateIcon: function() {
         this._iconBin.set_child(this._app.create_icon_texture(APPLICATION_ICON_SIZE));
@@ -592,17 +608,63 @@ const SearchBox = new Lang.Class({
         });
 
         this._text = this._stEntry.get_clutter_text();
-        this._text.connect('text-changed', Lang.bind(this, this._onTextChanged));
-        this._text.connect('key-press-event', Lang.bind(this, this._onKeyPress));
+        this._textChangedId = this._text.connect('text-changed', Lang.bind(this, this._onTextChanged));
+        this._keyPressId = this._text.connect('key-press-event', Lang.bind(this, this._onKeyPress));
+        this._keyFocusId = this._text.connect('key-focus-in', Lang.bind(this, this._onKeyFocusIn));
         this._searchIconClickedId = 0;
+        this._inputHistory = [];
+        this._maxInputHistory = 5;
+
+        this.actor.connect('destroy', Lang.bind(this, this._onDestroy));
+    },
+
+    _pushInput: function(searchString) {
+        if (this._inputHistory.length == this._maxInputHistory) {
+            this._inputHistory.shift();
+        }
+        this._inputHistory.push(searchString);
+    },
+
+    _lastInput: function() {
+        if (this._inputHistory.length != 0) {
+            return this._inputHistory[this._inputHistory.length-1];
+        }
+        return '';
+    },
+
+    _previousInput: function() {
+        if (this._inputHistory.length > 1) {
+            return this._inputHistory[this._inputHistory.length-2];
+        }
+        return '';
+    },
+
+    getText: function() {
+        return this._stEntry.get_text();
+    },
+
+    // Grab the key focus
+    grabKeyFocus: function() {
+        this._stEntry.grab_key_focus();
+    },
+
+    hasKeyFocus: function() {
+        return this._stEntry.contains(global.stage.get_key_focus());
+    },
+
+    // Clear the search box
+    clear: function() {
+        this._stEntry.set_text('');
+        this._stEntry.grab_key_focus();
+        this.emit('cleared');
+    },
+
+    isEmpty: function() {
+        return this._stEntry.get_text() == '';
     },
 
     _isActivated: function() {
-        return this._stEntry.get_text().length > 0;
-    },
-
-    _isEmpty: function() {
-        return this._stEntry.get_text().length == 0;
+        return this._stEntry.get_text() != '';
     },
 
     _setClearIcon: function() {
@@ -623,37 +685,49 @@ const SearchBox = new Lang.Class({
 
     _onTextChanged: function(entryText) {
         let searchString = this._stEntry.get_text();
+        this._pushInput(searchString);
         if (this._isActivated()) {
             this._setClearIcon();
         } else {
             this._unsetClearIcon();
+            if (searchString == '' && this._previousInput() != '') {
+                this.emit('cleared');
+            }
         }
+        this.emit('changed', searchString);
     },
 
     _onKeyPress: function(actor, event) {
         let symbol = event.get_key_symbol();
-        switch(symbol) {
-        case Clutter.KEY_Return:
-        case Clutter.KEY_KP_Enter:
-            if (!this._isEmpty()) {
+        if (symbol == Clutter.KEY_Return ||
+            symbol == Clutter.KEY_KP_Enter) {
+             if (!this.isEmpty()) {
                 this.emit('activate');
             }
             return Clutter.EVENT_STOP;
-        default:
-            return Clutter.EVENT_PROPAGATE;
         }
+        this.emit('key-press-event', event);
+        return Clutter.EVENT_PROPAGATE;
     },
 
-    // Set the key focus on the search box entry
-    focusEntry: function() {
-        this._stEntry.grab_key_focus();
+    _onKeyFocusIn: function(actor) {
+        this.emit('key-focus-in');
+        return Clutter.EVENT_PROPAGATE;
     },
 
-    // Clear the search box
-    clear: function() {
-        this._stEntry.set_text('');
-        this._stEntry.grab_key_focus();
-        this.emit('entry-cleared');
+    _onDestroy: function() {
+        if (this._textChangedId > 0) {
+            this._text.disconnect(this._textChangedId);
+            this._textChangedId = 0;
+        }
+        if (this._keyPressId > 0) {
+            this._keyPressId.disconnect(this._keyPressId);
+            this._keyPressId = 0;
+        }
+        if (this._keyFocusId > 0) {
+            this._text.disconnect(this._keyFocusId);
+            this._keyFocusId = 0;
+        }
     }
 });
 Signals.addSignalMethods(SearchBox.prototype);
