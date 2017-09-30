@@ -721,7 +721,7 @@ const SearchBox = new Lang.Class({
             this._textChangedId = 0;
         }
         if (this._keyPressId > 0) {
-            this._keyPressId.disconnect(this._keyPressId);
+            this._text.disconnect(this._keyPressId);
             this._keyPressId = 0;
         }
         if (this._keyFocusId > 0) {
