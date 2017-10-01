@@ -610,7 +610,7 @@ const SearchBox = new Lang.Class({
         this._text = this._stEntry.get_clutter_text();
         this._textChangedId = this._text.connect('text-changed', Lang.bind(this, this._onTextChanged));
         this._keyPressId = this._text.connect('key-press-event', Lang.bind(this, this._onKeyPress));
-        this._keyFocusId = this._text.connect('key-focus-in', Lang.bind(this, this._onKeyFocusIn));
+        this._keyFocusInId = this._text.connect('key-focus-in', Lang.bind(this, this._onKeyFocusIn));
         this._searchIconClickedId = 0;
         this._inputHistory = [];
         this._maxInputHistory = 5;
@@ -641,6 +641,10 @@ const SearchBox = new Lang.Class({
 
     getText: function() {
         return this._stEntry.get_text();
+    },
+
+    setText: function(text) {
+        this._stEntry.set_text(text);
     },
 
     // Grab the key focus
@@ -724,9 +728,9 @@ const SearchBox = new Lang.Class({
             this._text.disconnect(this._keyPressId);
             this._keyPressId = 0;
         }
-        if (this._keyFocusId > 0) {
-            this._text.disconnect(this._keyFocusId);
-            this._keyFocusId = 0;
+        if (this._keyFocusInId > 0) {
+            this._text.disconnect(this._keyFocusInId);
+            this._keyFocusInId = 0;
         }
     }
 });

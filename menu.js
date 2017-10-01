@@ -313,6 +313,7 @@ var ApplicationsButton = new Lang.Class({
             style_class: 'main-box'
         });
         section.actor.add_actor(this.mainBox);
+        this._mainBoxKeyPressId = this.mainBox.connect('key-press-event', Lang.bind(this, this._onMainBoxKeyPress));
 
         // Left Box
         if(this._settings.get_enum('visible-menus') == visibleMenus.ALL ||
@@ -504,6 +505,44 @@ var ApplicationsButton = new Lang.Class({
         }
     },
 
+    // Handle key press events on the mainBox to support the "type-away-feature"
+    _onMainBoxKeyPress: function(mainBox, event) {
+       if (!this.searchBox) {
+            return this.parent(mainBox, event);
+        }
+
+        let symbol = event.get_key_symbol();
+        let key = event.get_key_unicode();
+
+        switch (symbol) {
+            case Clutter.KEY_BackSpace:
+                if (!this.searchBox.hasKeyFocus()) {
+                    this.searchBox.grabKeyFocus();
+                    let newText = this.searchBox.getText().slice(0, -1);
+                    this.searchBox.setText(newText);
+                }
+                return Clutter.EVENT_PROPAGATE;
+            case Clutter.KEY_Tab:
+            case Clutter.KEY_KP_Tab:
+            case Clutter.Up:
+            case Clutter.KP_Up:
+            case Clutter.Down:
+            case Clutter.KP_Down:
+            case Clutter.Left:
+            case Clutter.KP_Left:
+            case Clutter.Right:
+            case Clutter.KP_Right:
+                return Clutter.EVENT_PROPAGATE;
+            default:
+                if (key.length != 0) {
+                    this.searchBox.grabKeyFocus();
+                    let newText = this.searchBox.getText() + key;
+                    this.searchBox.setText(newText);
+                }
+        }
+        return Clutter.EVENT_PROPAGATE;
+    },
+
     _onSearchBoxKeyPress: function(searchBox, event) {
         let symbol = event.get_key_symbol();
         if (!searchBox.isEmpty() && searchBox.hasKeyFocus()) {
@@ -689,6 +728,10 @@ var ApplicationsButton = new Lang.Class({
         if (this._searchBoxKeyFocusInId > 0) {
             this.searchBox.disconnect(this._searchBoxKeyFocusInId);
             this._searchBoxKeyFocusInId = 0;
+        }
+        if (this._mainBoxKeyPressId > 0) {
+            this.mainBox.disconnect(this._mainBoxKeyPressId);
+            this._mainBoxKeyPressId = 0;
         }
         this.parent();
     }
