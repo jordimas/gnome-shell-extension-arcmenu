@@ -507,8 +507,12 @@ var ApplicationsButton = new Lang.Class({
 
     // Handle key press events on the mainBox to support the "type-away-feature"
     _onMainBoxKeyPress: function(mainBox, event) {
-       if (!this.searchBox) {
-            return this.parent(mainBox, event);
+        if (!this.searchBox) {
+            return Clutter.EVENT_PROPAGATE;
+        }
+        if (event.has_control_modifier()) {
+            this.searchBox.grabKeyFocus();
+            return Clutter.EVENT_PROPAGATE;
         }
 
         let symbol = event.get_key_symbol();
