@@ -35,6 +35,20 @@ const Gettext = imports.gettext.domain(Me.metadata['gettext-domain']);
 const _ = Gettext.gettext;
 
 /*
+ * General Settings Page
+ */
+const GeneralSettingsPage = new Lang.Class({
+    Name: 'GeneralSettingsPage',
+    Extends: PW.NotebookPage,
+
+    _init: function(settings) {
+        this.parent(_('General'));
+        this.settings = settings;
+
+    }
+});
+
+/*
  * Behaviour Settings Page
  */
 const BehaviourSettingsPage = new Lang.Class({
@@ -461,7 +475,7 @@ const AboutPage = new Lang.Class({
         	expand: false
         });
         let projectLinkButton = new Gtk.LinkButton({
-            label: _('Webpage'),
+            label: _('Github Page'),
             uri: projectUrl,
             expand: false
         });
@@ -505,6 +519,9 @@ const ArcMenuPreferencesWidget= new GObject.Class({
         this.settings = Convenience.getSettings(Me.metadata['settings-schema']);
 
         let notebook = new PW.Notebook();
+        // Spoiler alert: There will be a general settings page in v16 ;-)
+        //let generalSettingsPage = new GeneralSettingsPage(this.settings);
+        //notebook.append_page(generalSettingsPage, generalSettingsPage.title);
 
         let behaviourSettingsPage = new BehaviourSettingsPage(this.settings);
         notebook.append_page(behaviourSettingsPage);

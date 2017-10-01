@@ -21,7 +21,7 @@
 const Lang = imports.lang;
 
 // Logging levels.
-const Level = {
+var Level = {
     Off: 0x00,
     Log: 0x01,
     Debug: 0x02,
@@ -33,7 +33,7 @@ const Level = {
 /**
  * A basic Logger class that supports multiple logging levels.
  */
-const Logger = new Lang.Class({
+var Logger = new Lang.Class({
     Name: 'ArcMenu.Logger',
 
     _init: function(params) {
@@ -60,5 +60,5 @@ const Logger = new Lang.Class({
     }
 });
 
-const logger = new Logger({ level: Level.All });
+var logger = new Logger({ level: Level.All });
 

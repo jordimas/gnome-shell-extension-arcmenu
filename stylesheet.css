@@ -3,7 +3,7 @@
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version. 
+ * (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -22,12 +22,6 @@
     width: 20em;
 }
 
-.search-box-padding {
-    padding-top: 1em;
-    padding-bottom: 0.25em; 
-    padding-left: 1em;
-    padding-right: 0.25em;
-}
 /* Style to add padding to the menu's app section */
 .apps-menu:ltr {
     padding-right: 0.1875em;
@@ -35,4 +29,15 @@
 
 .apps-menu:rtl {
     padding-left: 0.1875em;
+}
+/* workaround for the search entry box to limit character length */
+#search-entry {
+    max-width: 17.667em;
+}
+
+.search-box-padding {
+    padding-top: 1em;
+    padding-bottom: 0.25em;
+    padding-left: 1em;
+    padding-right: 0.25em;
 }
