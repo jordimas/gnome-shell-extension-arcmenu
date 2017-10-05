@@ -212,7 +212,7 @@ var BackMenuItem = new Lang.Class({
 
     // Initialize the button
     _init: function(button) {
-	    this.parent();
+        this.parent();
         this._button = button;
         this._icon = new St.Icon({
             icon_name: 'go-previous-symbolic',
@@ -274,7 +274,7 @@ var UserMenuItem = new Lang.Class({
 
     // Initialize the menu item
     _init: function(button) {
-	    this.parent();
+        this.parent();
         this._button = button;
         let username = GLib.get_user_name();
         this._user = AccountsService.UserManager.get_default().get_user(username);
@@ -334,8 +334,8 @@ var ApplicationMenuItem = new Lang.Class({
 
     // Initialize menu item
     _init: function(button, app) {
-	    this.parent();
-	    this._app = app;
+        this.parent();
+        this._app = app;
         this.app = app;
         this._button = button;
         this._iconBin = new St.Bin();
@@ -444,8 +444,8 @@ var CategoryMenuItem = new Lang.Class({
 
     // Initialize menu item
     _init: function(button, category) {
-	    this.parent();
-	    this._category = category;
+        this.parent();
+        this._category = category;
         this._button = button;
         let name;
         if (this._category) {
@@ -533,9 +533,9 @@ var PlaceMenuItem = new Lang.Class({
 
     // Initialize menu item
     _init: function(button, info) {
-	    this.parent();
-	    this._button = button;
-	    this._info = info;
+        this.parent();
+        this._button = button;
+        this._info = info;
         this._icon = new St.Icon({
             gicon: info.icon,
             icon_size: 16
