@@ -55,7 +55,7 @@ function setIconAsync(icon, gioFile, fallback_icon_name) {
 
 // Removing the default behaviour which selects a hovered item if the space key is pressed.
 // This avoids issues when searching for an app with a space character in its name.
-const BaseMenuItem = new Lang.Class({
+var BaseMenuItem = new Lang.Class({
     Name: 'BaseMenuItem',
     Extends: PopupMenu.PopupBaseMenuItem,
 
@@ -71,7 +71,7 @@ const BaseMenuItem = new Lang.Class({
 });
 
 // Menu item to launch GNOME activities overview
-const ActivitiesMenuItem = new Lang.Class({
+var ActivitiesMenuItem = new Lang.Class({
     Name: 'ActivitiesMenuItem',
     Extends: BaseMenuItem,
 
@@ -105,7 +105,7 @@ const ActivitiesMenuItem = new Lang.Class({
 /**
  * A base class for custom session buttons.
  */
-const SessionButton = new Lang.Class({
+var SessionButton = new Lang.Class({
     Name: 'SessionButton',
 
     _init: function(button, accessible_name, icon_name) {
@@ -137,7 +137,7 @@ const SessionButton = new Lang.Class({
 });
 
 // Power Button
-const PowerButton = new Lang.Class({
+var PowerButton = new Lang.Class({
     Name: 'PowerButton',
     Extends: SessionButton,
 
@@ -153,7 +153,7 @@ const PowerButton = new Lang.Class({
 });
 
 // Logout Button
-const LogoutButton = new Lang.Class({
+var LogoutButton = new Lang.Class({
     Name: 'LogoutButton',
     Extends: SessionButton,
 
@@ -169,7 +169,7 @@ const LogoutButton = new Lang.Class({
 });
 
 // Suspend Button
-const SuspendButton = new Lang.Class({
+var SuspendButton = new Lang.Class({
     Name: 'SuspendButton',
     Extends: SessionButton,
 
@@ -190,7 +190,7 @@ const SuspendButton = new Lang.Class({
 });
 
 // Lock Screen Button
-const LockButton = new Lang.Class({
+var LockButton = new Lang.Class({
     Name: 'LockButton',
     Extends: SessionButton,
 
@@ -206,13 +206,13 @@ const LockButton = new Lang.Class({
 });
 
 // Menu item to go back to category view
-const BackMenuItem = new Lang.Class({
+var BackMenuItem = new Lang.Class({
     Name: 'BackMenuItem',
     Extends: BaseMenuItem,
 
     // Initialize the button
     _init: function(button) {
-	    this.parent();
+        this.parent();
         this._button = button;
         this._icon = new St.Icon({
             icon_name: 'go-previous-symbolic',
@@ -237,7 +237,7 @@ const BackMenuItem = new Lang.Class({
 });
 
 // Menu shortcut item class
-const ShortcutMenuItem = new Lang.Class({
+var ShortcutMenuItem = new Lang.Class({
     Name: 'ShortcutMenuItem',
     Extends: BaseMenuItem,
 
@@ -268,13 +268,13 @@ const ShortcutMenuItem = new Lang.Class({
 });
 
 // Menu item which displays the current user
-const UserMenuItem = new Lang.Class({
+var UserMenuItem = new Lang.Class({
     Name: 'UserMenuItem',
     Extends: BaseMenuItem,
 
     // Initialize the menu item
     _init: function(button) {
-	    this.parent();
+        this.parent();
         this._button = button;
         let username = GLib.get_user_name();
         this._user = AccountsService.UserManager.get_default().get_user(username);
@@ -328,14 +328,14 @@ const UserMenuItem = new Lang.Class({
 });
 
 // Menu application item class
-const ApplicationMenuItem = new Lang.Class({
+var ApplicationMenuItem = new Lang.Class({
     Name: 'ApplicationMenuItem',
     Extends: PopupMenu.PopupBaseMenuItem,
 
     // Initialize menu item
     _init: function(button, app) {
-	    this.parent();
-	    this._app = app;
+        this.parent();
+        this._app = app;
         this.app = app;
         this._button = button;
         this._iconBin = new St.Bin();
@@ -438,14 +438,14 @@ const ApplicationMenuItem = new Lang.Class({
 });
 
 // Menu Category item class
-const CategoryMenuItem = new Lang.Class({
+var CategoryMenuItem = new Lang.Class({
     Name: 'CategoryMenuItem',
     Extends: BaseMenuItem,
 
     // Initialize menu item
     _init: function(button, category) {
-	    this.parent();
-	    this._category = category;
+        this.parent();
+        this._category = category;
         this._button = button;
         let name;
         if (this._category) {
@@ -484,7 +484,7 @@ const CategoryMenuItem = new Lang.Class({
 });
 
 // Place Info class
-const PlaceInfo = new Lang.Class({
+var PlaceInfo = new Lang.Class({
     Name: 'PlaceInfo',
 
     // Initialize place info
@@ -527,15 +527,15 @@ const PlaceInfo = new Lang.Class({
 Signals.addSignalMethods(PlaceInfo.prototype);
 
 // Menu Place Shortcut item class
-const PlaceMenuItem = new Lang.Class({
+var PlaceMenuItem = new Lang.Class({
     Name: 'PlaceMenuItem',
     Extends: BaseMenuItem,
 
     // Initialize menu item
     _init: function(button, info) {
-	    this.parent();
-	    this._button = button;
-	    this._info = info;
+        this.parent();
+        this._button = button;
+        this._info = info;
         this._icon = new St.Icon({
             gicon: info.icon,
             icon_size: 16
@@ -577,7 +577,7 @@ const PlaceMenuItem = new Lang.Class({
 /**
  * This class represents a SearchBox.
  */
-const SearchBox = new Lang.Class({
+var SearchBox = new Lang.Class({
     Name: 'Class',
 
     _init: function() {
@@ -739,7 +739,7 @@ Signals.addSignalMethods(SearchBox.prototype);
 /**
  * This class is responsible for the appearance of the menu button.
  */
-const MenuButtonWidget = new Lang.Class({
+var MenuButtonWidget = new Lang.Class({
     Name: 'Class',
 
     _init: function() {
