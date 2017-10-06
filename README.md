@@ -87,7 +87,7 @@ Additional credits: This extension also leverages the work from [Giovanni Campag
 > Hi I'm LinxGem33 aka Andy and the founder of Arc menu, my role on the project is to manage and plan the technical and digital production and distribution of the Arc menu software, as you can imagine I’m a open source and Linux software enthusiast as well as a digital art designer and GTK3 theme developer,I also like to contribute to other projects where i can.  
 
 #### @[lexruee](https://github.com/lexruee) - **Lead Project Developer** - UI/UX Designer
-> Hi I’m lexruee aka Alex and the lead technical developer and UI/UX designer on the Arc menu project, my role on the project is to manage and develop the code base and software integrity of Arc menu I’m also responsible for the UI/UX design and implimentation of the Arc menu software, I'm also a passionate programmer, hacker, and tinkerer. But I'm also a single Board Computer and GNU/Linux enthusiast. Besides all that I also like mountainbiking and reading. 
+> Hi I’m lexruee aka Alex and the lead software developer and UI/UX designer on the Arc menu project, my role on the project is to manage and develop the code base and software integrity of Arc menu I’m also responsible for the UI/UX design and implimentation of the Arc menu software, I'm also a passionate programmer, hacker, and tinkerer. But I'm also a single Board Computer and GNU/Linux enthusiast. Besides all that I also like mountainbiking and reading. 
 
 ##
 ### Technical Advisors
