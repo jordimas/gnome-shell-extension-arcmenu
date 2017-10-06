@@ -11,7 +11,7 @@ Arc Menu is a Gnome shell extension designed to replace the standard menu found 
 ##
 ### What's next for Arc Menu?
 
-My first initial priority was to get this extension stable enough to upload to extensions.gnome.org as it had to be ported to work with the gnome shell eco system, now the first stage of development is over features are now being added and I'm pleased to announce a new member of the team ([lexruee](https://github.com/lexruee) and now a lead developer in the design and development of this extension hopefully more features are planned for future development and a lot has already been implemented.
+My first initial priority was to get this extension stable enough to upload to extensions.gnome.org as it had to be ported to work with the gnome shell eco system, now the first stage of development is over features are now being added and I'm pleased to announce a new member of the team [lexruee](https://github.com/lexruee) and now a lead developer in the design and development of this extension hopefully more features are planned for future development and a lot has already been implemented.
 
 ##
 |Arc Menu integrated with Dash-to-Dock|Arc Menu integrated with Dash-to-Panel|
