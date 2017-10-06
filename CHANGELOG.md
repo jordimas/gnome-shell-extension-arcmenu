@@ -4,12 +4,12 @@
 ##
 ### Changelog for v15
 ##
-#### [Oct 5, 2017]
+#### [Oct 5, 2017]()
 
 - menuWidgets.js: Fix formatting issues
 - menuWidgets.js: Define classes using var instead of const 
 
-#### [Oct 2, 2017]
+#### [Oct 2, 2017]()
 
 - SearchBox: Handle control key press events 
 - SearchBox: Reimplement the "type-away-feature" 
@@ -17,27 +17,27 @@
 - SearchBox: Reimplement basic functionality
 - menuWidgets.js: Add class SearchBox
 
-#### [Oct 1, 2017]
+#### [Oct 1, 2017]()
 
 - prefs.js: Comment temporarily the general settings page
 
-#### [Sep 23, 2017]
+#### [Sep 23, 2017]()
 
 - Remove dead code 
 
-#### [Sep 21, 2017]
+#### [Sep 21, 2017]()
 
 - menuWidgets.js: Refactor session buttons 
 
-#### [Sep 18, 2017]
+#### [Sep 18, 2017]()
 
 - stylesheet.css: ST.Entry to fix menu resize bug
 
-#### [Sep 17, 2017]
+#### [Sep 17, 2017]()
 
 - stylesheet.css: set max-width for ST.Entry to fix menu resize bug
 
-#### [Sep 16, 2017]
+#### [Sep 16, 2017]()
 
 - menu.js: move MenuWidgetButton class to menuWidgets.js 
 - update Makefile 
@@ -48,32 +48,32 @@
 - menu.js: add missing semicolon and reformat 
 - menu.js: refactor existing DnD code
 
-#### [Sep 14, 2017]
+#### [Sep 14, 2017]()
 
 - menu.js: remove space key support to launch apps
 
-#### [Sep 6, 2017]
+#### [Sep 6, 2017]()
 
 - Minor change to Gtk.LinkButton( label
 
-#### [Sep 4, 2017]
+#### [Sep 4, 2017]()
 
 - GNOME-Shell 3.25/26: Fix JS warnings 
 
-#### [Sep 3, 2017]
+#### [Sep 3, 2017]()
 
 - ArcMenuPreferencesWidget update for v15 
 
-#### [Sep 2, 2017]
+#### [Sep 2, 2017]()
 
 - helper.js: fix bug in method destroy
 
-#### [Sep 1, 2017]
+#### [Sep 1, 2017]()
 
 - Preparations for general features tab (PW.NotebookPage)
 - Migration for GNOME 3.25/3.26
 
-#### [Aug 18, 2017]
+#### [Aug 18, 2017]()
 
 - Makefile: create checksums when invoking the targets zip-file/tgz-file 
 - Makefile: fix name of the root folder in tar.gz and zip files
@@ -85,16 +85,16 @@
 - Makefile: improve versioning 
 - Makefile: ignore errors in enable/disable targets 
 
-#### [Aug 17, 2017]
+#### [Aug 17, 2017]()
 
 - Makefile: add support for system-wide installation 
 - Makefile: add help target
 
-#### [Aug 9, 2017]
+#### [Aug 9, 2017]()
 
 - menu.js: add _onKeyPressEvent handler to ApplicationMenuItem 
 
-#### [Aug 8, 2017]
+#### [Aug 8, 2017]()
 
 - prefs.js: define MenuButtonCustomizationWindow before AppearanceSetti…
 - prefs.js: define the class ArcMenuPreferencesWidget at the bottom
@@ -107,7 +107,7 @@
 - .jshintrc: remove '_' from predef list 
 - Makefile: add jshint and test targets 
 
-#### [Aug 6, 2017]
+#### [Aug 6, 2017]()
 
 - prefs.js: use the string 'unknown' for unknown versions
 - Makefile: use git hash for versioning development builds 
@@ -116,11 +116,11 @@
 - metadata.json: reformat json 
 - prefjs.js & prefsWidgets.js: refactor Notebook, NotebookPage, and Arc…
 
-#### [Aug 5, 2017]
+#### [Aug 5, 2017]()
 
 - updated patch for polish translation
 
-#### [Aug 2, 2017]
+#### [Aug 2, 2017]()
 
 - Added few translations and fixed some
 
