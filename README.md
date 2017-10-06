@@ -29,19 +29,14 @@ You can now install this extension from extensions.gnome.org as a one click inst
 ##
 ### Dependencies
 
-__Please note:__ For Arc-Menu to work properly, your GNOME Desktop must have 
-installed the following dependencies.
+__Please note:__ For Arc-Menu to work properly, your GNOME Desktop must have the
+following dependencies installed.
 
-On Ubuntu/Debian based systems:
-
- * gnome-shell-extensions
- * gnome-menus
- * gnome-tweak-tool
-
-On Arch based systems:
-
- * gnome-shell-extensions
- * gnome-tweak-tool
+|On Ubuntu/Debian based systems||On Arch based systems||
+|-----|:-----:|-----|:-----:|
+|gnome-shell-extensions|![ti](https://user-images.githubusercontent.com/19158615/27998683-9dd48cd0-650a-11e7-87c3-0ac3256ae574.png)|gnome-shell-extensions|![ti](https://user-images.githubusercontent.com/19158615/27998683-9dd48cd0-650a-11e7-87c3-0ac3256ae574.png)
+|gnome-tweak-tool|![ti](https://user-images.githubusercontent.com/19158615/27998683-9dd48cd0-650a-11e7-87c3-0ac3256ae574.png)|gnome-tweak-tool|![ti](https://user-images.githubusercontent.com/19158615/27998683-9dd48cd0-650a-11e7-87c3-0ac3256ae574.png)
+|gnome-menus|![ti](https://user-images.githubusercontent.com/19158615/27998683-9dd48cd0-650a-11e7-87c3-0ac3256ae574.png)
 
 ##
 ### Manual Installation
