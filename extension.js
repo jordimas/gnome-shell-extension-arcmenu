@@ -37,7 +37,6 @@ const AppDisplay = imports.ui.appDisplay;
 
 const Me = imports.misc.extensionUtils.getCurrentExtension();
 const Menu = Me.imports.menu;
-const MW = Me.imports.menuWidgets;
 const Controller = Me.imports.controller;
 const Convenience = Me.imports.convenience;
 
@@ -86,7 +85,7 @@ function disable() {
 function getAppFromSource(source) {
     if (source instanceof AppDisplay.AppIcon) {
         return source.app;
-    } else if (source instanceof MW.ApplicationMenuItem) {
+    } else if (source instanceof Menu.ApplicationMenuItem) {
         return source._app;
     } else {
         return null;
