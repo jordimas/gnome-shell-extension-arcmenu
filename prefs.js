@@ -419,9 +419,40 @@ const AppearanceSettingsPage = new Lang.Class({
         menuPositionRow.add(menuPositionCenterButton);
         menuPositionRow.add(menuPositionRightButton);
         menuPositionFrame.add(menuPositionRow);
-
-        // add the frames
         this.add(menuPositionFrame);
+
+        /*
+         * Menu Style Box
+         */
+        let menuStyleFrame = new PW.FrameBox();
+        let menuStyleRow = new PW.FrameBoxRow();
+        let menuStyleBoxLabel = new Gtk.Label({
+            label: _("Change menu style"),
+            use_markup: true,
+            xalign: 0,
+            hexpand: true
+        });
+        let menuStyleButton = new PW.IconButton({
+            circular: true,
+            icon_name: 'emblem-system-symbolic'
+        });
+        menuStyleButton.connect('clicked', Lang.bind(this, function() {
+            let menuStyleChooser = new PW.MenuStyleChooser(this, {
+                title: _("Menu style chooser"),
+                height: Constants.MENU_STYLE_CHOOSER.WindowHeight,
+                width: Constants.MENU_STYLE_CHOOSER.WindowWidth,
+                maxColumns: Constants.MENU_STYLE_CHOOSER.MaxColumns,
+                thumbnailHeight: Constants.MENU_STYLE_CHOOSER.ThumbnailHeight,
+                thumbnailWidth: Constants.MENU_STYLE_CHOOSER.ThumbnailWidth,
+                styles: Constants.MENU_STYLE_CHOOSER.Styles
+            });
+            menuStyleChooser.show_all();
+        }));
+
+        menuStyleRow.add(menuStyleBoxLabel);
+        menuStyleRow.add(menuStyleButton);
+        menuStyleFrame.add(menuStyleRow);
+        this.add(menuStyleFrame);
     }
 });
 

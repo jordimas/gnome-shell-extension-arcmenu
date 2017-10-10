@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Arc Menu\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-07-13 01:36+0300\n"
+"POT-Creation-Date: 2017-10-09 16:45+0100\n"
 "PO-Revision-Date: 2017-07-13 01:36+0300\n"
 "Last-Translator: Hüseyin Karacabey <neynefes@ubuntu-tr.net>\n"
 "Language: Turkish\n"
@@ -16,194 +16,214 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: prefs.js:76
+#: prefs.js:45
+msgid "General"
+msgstr ""
+
+#: prefs.js:59
 msgid "Behaviour"
 msgstr "Davranış"
 
-#: prefs.js:85
+#: prefs.js:68
 msgid "Disable activities hot corner"
 msgstr "Etkin köşeleri devre dışı bırak"
 
-#: prefs.js:107
+#: prefs.js:90
 msgid "Set menu hotkey"
 msgstr "Menü kısayolu ayarla"
 
-#: prefs.js:113
+#: prefs.js:96
 msgid "Undefined"
 msgstr "Tanımlanmamış"
 
-#: prefs.js:114
+#: prefs.js:97
 msgid "Left Super Key"
 msgstr "Sol Super Tuşu"
 
-#: prefs.js:115
+#: prefs.js:98
 msgid "Right Super Key"
 msgstr "Sağ Super Tuşu"
 
-#: prefs.js:127
+#: prefs.js:110
 msgid "Enable custom menu keybinding"
 msgstr "Özel kısayol belirle"
 
-#: prefs.js:134
+#: prefs.js:117
 msgid "Syntax: <Shift>, <Ctrl>, <Alt>, <Super>"
 msgstr ""
 
-#: prefs.js:175
-msgid "Appearance"
-msgstr "Görünüm"
-
-#: prefs.js:184
-msgid "Customize menu button appearance"
-msgstr "Menü buton görünümünü özelliştir"
-
-#: prefs.js:194
-msgid "Icon"
-msgstr "Simge"
-
-#: prefs.js:195
-msgid "Text"
-msgstr "Yazı"
-
-#: prefs.js:196
-msgid "Icon and Text"
-msgstr "Simge ve Metin"
-
-#: prefs.js:197
-msgid "Text and Icon"
-msgstr "Metin ve Simge"
-
-#: prefs.js:222
-msgid "Menu position in panel"
-msgstr "Menünün paneldeki konumu"
-
-#: prefs.js:229
-msgid "Left"
-msgstr "Sol"
-
-#: prefs.js:232
-msgid "Center"
-msgstr "Orta"
-
-#: prefs.js:236
-msgid "Right"
-msgstr "Sağ"
-
-#: prefs.js:279
+#: prefs.js:159
 msgid "Button appearance"
 msgstr "Buton görünümü"
 
-#: prefs.js:291
+#: prefs.js:171
 msgid "Text for the menu button"
 msgstr "Menü butonu için metin"
 
-#: prefs.js:297
+#: prefs.js:177
 msgid "System text"
 msgstr "Sistem metni"
 
-#: prefs.js:300
+#: prefs.js:180
 msgid "Custom text"
 msgstr "Özel metin"
 
-#: prefs.js:320
+#: prefs.js:204
 msgid "Set custom text for the menu button"
 msgstr "Menü butonu için özel metin ayarla"
 
-#: prefs.js:340
+#: prefs.js:224
 msgid "Enable the arrow icon beside the button text"
 msgstr "Buton metninin yanında ok simgesini etkinleştir"
 
-#: prefs.js:362
+#: prefs.js:246
 msgid "Select icon for the menu button"
 msgstr "Menü butonu için simge seç"
 
-#: prefs.js:372
+#: prefs.js:256
 msgid "Please select an image icon"
 msgstr "Lütfen bir resim simgesi seçin"
 
-#: prefs.js:387
+#: prefs.js:261
 msgid "Arc Menu Icon"
 msgstr "Arc Menü Simgesi"
 
-#: prefs.js:388
+#: prefs.js:262
 msgid "System Icon"
 msgstr "Sistem Simgesi"
 
-#: prefs.js:389
+#: prefs.js:263
 msgid "Custom Icon"
 msgstr "Özel Simge"
 
-#: prefs.js:404
+#: prefs.js:289
 msgid "Icon size"
 msgstr "Simge boyutu"
 
-#: prefs.js:404
+#: prefs.js:289
 msgid "default is"
 msgstr "varsayılan"
 
-#: prefs.js:448
+#: prefs.js:330
+msgid "Appearance"
+msgstr "Görünüm"
+
+#: prefs.js:339
+msgid "Customize menu button appearance"
+msgstr "Menü buton görünümünü özelliştir"
+
+#: prefs.js:349
+msgid "Icon"
+msgstr "Simge"
+
+#: prefs.js:350
+msgid "Text"
+msgstr "Yazı"
+
+#: prefs.js:351
+msgid "Icon and Text"
+msgstr "Simge ve Metin"
+
+#: prefs.js:352
+msgid "Text and Icon"
+msgstr "Metin ve Simge"
+
+#: prefs.js:377
+msgid "Menu position in panel"
+msgstr "Menünün paneldeki konumu"
+
+#: prefs.js:384
+msgid "Left"
+msgstr "Sol"
+
+#: prefs.js:387
+msgid "Center"
+msgstr "Orta"
+
+#: prefs.js:391
+msgid "Right"
+msgstr "Sağ"
+
+#: prefs.js:430
+msgid "Change menu style"
+msgstr ""
+
+#: prefs.js:441
+msgid "Menu style chooser"
+msgstr ""
+
+#: prefs.js:467
 msgid "About"
 msgstr "Hakkında"
 
-#: prefs.js:477
+#: prefs.js:496
 msgid "Arc-Menu"
 msgstr "Arc-Menu"
 
-#: prefs.js:482
+#: prefs.js:501
 msgid "version: "
 msgstr "sürüm: "
 
-#: prefs.js:490
-msgid "Webpage"
-msgstr "Web Sayfası"
+#: prefs.js:509
+msgid "Github Page"
+msgstr ""
 
-#: menu.js:130
-msgid "Activities Overview"
-msgstr "Pencerelere Genel Bakış"
-
-#: menu.js:154
-msgid "Power Off"
-msgstr "Kapat"
-
-#: menu.js:179
-msgid "Log Out"
-msgstr "Oturumu Kapat"
-
-#: menu.js:204
-msgid "Suspend"
-msgstr "Askıya Al"
-
-#: menu.js:235
-msgid "Lock"
-msgstr "Kilitle"
-
-#: menu.js:263
-msgid "Back"
-msgstr "Geri"
-
-#: menu.js:555
-msgid "Favorites"
-msgstr "Favoriler"
-
-#: menu.js:721
-msgid "Applications"
-msgstr "Uygulamalar"
-
-#: menu.js:976
+#: menu.js:276
 msgid "Home"
 msgstr "Ev"
 
-#: menu.js:1041
-msgid "Type to search…"
-msgstr "Aramak için yazın..."
-
-#: menu.js:1130
+#: menu.js:459
 msgid "Software"
 msgstr "Yazılımlar"
 
-#: menu.js:1134
+#: menu.js:462
 msgid "Settings"
 msgstr "Ayarlar"
 
-#: menu.js:1138
+#: menu.js:465
 msgid "Tweak Tool"
 msgstr "İnce Ayar Aracı"
+
+#: menu.js:468
+#, fuzzy
+msgid "Tweaks"
+msgstr "İnce Ayar Aracı"
+
+#: menuWidgets.js:89
+msgid "Activities Overview"
+msgstr "Pencerelere Genel Bakış"
+
+#: menuWidgets.js:146
+msgid "Power Off"
+msgstr "Kapat"
+
+#: menuWidgets.js:162
+msgid "Log Out"
+msgstr "Oturumu Kapat"
+
+#: menuWidgets.js:178
+msgid "Suspend"
+msgstr "Askıya Al"
+
+#: menuWidgets.js:199
+msgid "Lock"
+msgstr "Kilitle"
+
+#: menuWidgets.js:224
+msgid "Back"
+msgstr "Geri"
+
+#: menuWidgets.js:454
+msgid "Favorites"
+msgstr "Favoriler"
+
+#: menuWidgets.js:589
+msgid "Type to search…"
+msgstr "Aramak için yazın..."
+
+#: menuWidgets.js:756
+msgid "Applications"
+msgstr "Uygulamalar"
+
+#~ msgid "Webpage"
+#~ msgstr "Web Sayfası"

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Arc Menu\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-07-09 16:09+0200\n"
+"POT-Creation-Date: 2017-10-09 16:45+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: megasyl <megasyl20@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,194 +17,214 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: prefs.js:76
+#: prefs.js:45
+msgid "General"
+msgstr ""
+
+#: prefs.js:59
 msgid "Behaviour"
 msgstr "Comportement"
 
-#: prefs.js:85
+#: prefs.js:68
 msgid "Disable activities hot corner"
 msgstr "Désactiver hot corner"
 
-#: prefs.js:107
+#: prefs.js:90
 msgid "Set menu hotkey"
 msgstr "Attribuer un raccourcis"
 
-#: prefs.js:113
+#: prefs.js:96
 msgid "Undefined"
 msgstr "Non défini"
 
-#: prefs.js:114
+#: prefs.js:97
 msgid "Left Super Key"
 msgstr "Touche Super gauche"
 
-#: prefs.js:115
+#: prefs.js:98
 msgid "Right Super Key"
 msgstr "Touche Super droite"
 
-#: prefs.js:127
+#: prefs.js:110
 msgid "Enable custom menu keybinding"
 msgstr "Activer l'assignation de touches personnalisée"
 
-#: prefs.js:134
+#: prefs.js:117
 msgid "Syntax: <Shift>, <Ctrl>, <Alt>, <Super>"
 msgstr "Syntaxe : <Shift>, <Ctrl>, <Alt>, <Super>"
 
-#: prefs.js:175
-msgid "Appearance"
-msgstr "Apparence"
-
-#: prefs.js:184
-msgid "Customize menu button appearance"
-msgstr "Personnaliser l'apparence du bouton"
-
-#: prefs.js:194
-msgid "Icon"
-msgstr "Icône"
-
-#: prefs.js:195
-msgid "Text"
-msgstr "Texte"
-
-#: prefs.js:196
-msgid "Icon and Text"
-msgstr "Icône et Texte"
-
-#: prefs.js:197
-msgid "Text and Icon"
-msgstr "Texte et Icône"
-
-#: prefs.js:222
-msgid "Menu position in panel"
-msgstr "Position du menu"
-
-#: prefs.js:229
-msgid "Left"
-msgstr "Gauche"
-
-#: prefs.js:232
-msgid "Center"
-msgstr "Centré"
-
-#: prefs.js:236
-msgid "Right"
-msgstr "Droite"
-
-#: prefs.js:279
+#: prefs.js:159
 msgid "Button appearance"
 msgstr "Apparence du bouton"
 
-#: prefs.js:291
+#: prefs.js:171
 msgid "Text for the menu button"
 msgstr "Texte du bouton"
 
-#: prefs.js:297
+#: prefs.js:177
 msgid "System text"
 msgstr "Texte système"
 
-#: prefs.js:300
+#: prefs.js:180
 msgid "Custom text"
 msgstr "Texte personnalisé"
 
-#: prefs.js:320
+#: prefs.js:204
 msgid "Set custom text for the menu button"
 msgstr "Changer le texte du bouton"
 
-#: prefs.js:340
+#: prefs.js:224
 msgid "Enable the arrow icon beside the button text"
 msgstr "Afficher la flèche à côté du texte du bouton"
 
-#: prefs.js:362
+#: prefs.js:246
 msgid "Select icon for the menu button"
 msgstr "Selectionner l'icône du bouton"
 
-#: prefs.js:372
+#: prefs.js:256
 msgid "Please select an image icon"
 msgstr "Veuillez selectionner une icône"
 
-#: prefs.js:387
+#: prefs.js:261
 msgid "Arc Menu Icon"
 msgstr "Icône Arc Menu"
 
-#: prefs.js:388
+#: prefs.js:262
 msgid "System Icon"
 msgstr "Icône systeme"
 
-#: prefs.js:389
+#: prefs.js:263
 msgid "Custom Icon"
 msgstr "Icône personnalisé"
 
-#: prefs.js:404
+#: prefs.js:289
 msgid "Icon size"
 msgstr "Taille de l'icône"
 
-#: prefs.js:404
+#: prefs.js:289
 msgid "default is"
 msgstr "la valeur par défaut est"
 
-#: prefs.js:448
+#: prefs.js:330
+msgid "Appearance"
+msgstr "Apparence"
+
+#: prefs.js:339
+msgid "Customize menu button appearance"
+msgstr "Personnaliser l'apparence du bouton"
+
+#: prefs.js:349
+msgid "Icon"
+msgstr "Icône"
+
+#: prefs.js:350
+msgid "Text"
+msgstr "Texte"
+
+#: prefs.js:351
+msgid "Icon and Text"
+msgstr "Icône et Texte"
+
+#: prefs.js:352
+msgid "Text and Icon"
+msgstr "Texte et Icône"
+
+#: prefs.js:377
+msgid "Menu position in panel"
+msgstr "Position du menu"
+
+#: prefs.js:384
+msgid "Left"
+msgstr "Gauche"
+
+#: prefs.js:387
+msgid "Center"
+msgstr "Centré"
+
+#: prefs.js:391
+msgid "Right"
+msgstr "Droite"
+
+#: prefs.js:430
+msgid "Change menu style"
+msgstr ""
+
+#: prefs.js:441
+msgid "Menu style chooser"
+msgstr ""
+
+#: prefs.js:467
 msgid "About"
 msgstr "A propos"
 
-#: prefs.js:477
+#: prefs.js:496
 msgid "Arc-Menu"
 msgstr "Arc-Menu"
 
-#: prefs.js:482
+#: prefs.js:501
 msgid "version: "
 msgstr "version: "
 
-#: prefs.js:490
-msgid "Webpage"
-msgstr "Site web"
+#: prefs.js:509
+msgid "Github Page"
+msgstr ""
 
-#: menu.js:130
-msgid "Activities Overview"
-msgstr "Aperçu des activités"
-
-#: menu.js:154
-msgid "Power Off"
-msgstr "Eteindre"
-
-#: menu.js:179
-msgid "Log Out"
-msgstr "Déconnexion"
-
-#: menu.js:204
-msgid "Suspend"
-msgstr "Suspendre"
-
-#: menu.js:235
-msgid "Lock"
-msgstr "Verrouiller"
-
-#: menu.js:263
-msgid "Back"
-msgstr "Retour"
-
-#: menu.js:555
-msgid "Favorites"
-msgstr "Favoris"
-
-#: menu.js:721
-msgid "Applications"
-msgstr "Applications"
-
-#: menu.js:976
+#: menu.js:276
 msgid "Home"
 msgstr "Accueil"
 
-#: menu.js:1041
-msgid "Type to search…"
-msgstr "Ecrire pour chercher…"
-
-#: menu.js:1130
+#: menu.js:459
 msgid "Software"
 msgstr "Logiciel"
 
-#: menu.js:1134
+#: menu.js:462
 msgid "Settings"
 msgstr "Paramètres"
 
-#: menu.js:1138
+#: menu.js:465
 msgid "Tweak Tool"
 msgstr "Tweak Tool"
+
+#: menu.js:468
+#, fuzzy
+msgid "Tweaks"
+msgstr "Tweak Tool"
+
+#: menuWidgets.js:89
+msgid "Activities Overview"
+msgstr "Aperçu des activités"
+
+#: menuWidgets.js:146
+msgid "Power Off"
+msgstr "Eteindre"
+
+#: menuWidgets.js:162
+msgid "Log Out"
+msgstr "Déconnexion"
+
+#: menuWidgets.js:178
+msgid "Suspend"
+msgstr "Suspendre"
+
+#: menuWidgets.js:199
+msgid "Lock"
+msgstr "Verrouiller"
+
+#: menuWidgets.js:224
+msgid "Back"
+msgstr "Retour"
+
+#: menuWidgets.js:454
+msgid "Favorites"
+msgstr "Favoris"
+
+#: menuWidgets.js:589
+msgid "Type to search…"
+msgstr "Ecrire pour chercher…"
+
+#: menuWidgets.js:756
+msgid "Applications"
+msgstr "Applications"
+
+#~ msgid "Webpage"
+#~ msgstr "Site web"

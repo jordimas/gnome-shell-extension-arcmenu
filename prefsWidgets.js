@@ -187,3 +187,113 @@ const FrameBoxRow = new Lang.Class({
         this._grid.add(widget);
     }
 });
+
+/**
+ * Arc Menu Tile Grid
+ */
+var TileGrid = new Lang.Class({
+    Name: 'ArcMenu.TileGrid',
+    GTypeName: 'ArcMenuTileGrid',
+    Extends: Gtk.FlowBox,
+
+    _init: function(maxColumns) {
+        this.parent({
+            row_spacing: 5,
+            column_spacing: 5,
+            max_children_per_line: maxColumns,
+            vexpand: true,
+            valign: Gtk.Align.START
+        });
+    }
+});
+
+/**
+ * Arc Menu Tile Grid
+ */
+var Tile = new Lang.Class({
+    Name: 'ArcMenu.Tile',
+    GTypeName: 'ArcMenuTile',
+    Extends: Gtk.EventBox,
+
+     _init: function(params) {
+        this.parent();
+        this._params =  Params.parse(params, {
+            label: '',
+            file: null,
+            height: -1,
+            width: -1
+        });
+
+        let pixbuf = GdkPixbuf.Pixbuf.new_from_file_at_size(this._params.file, this._params.width, this._params.height);
+        this._image = new Gtk.Image({ pixbuf: pixbuf });
+        this._label = new Gtk.Label({ label: this._params.label });
+
+        this._vbox = new Gtk.Box({ orientation: Gtk.Orientation.VERTICAL });
+        this._vbox.add(this._image);
+        this._vbox.add(this._label);
+        this.add(this._vbox);
+    }
+});
+
+/**
+ * Arc Menu Style Chooser
+ */
+var MenuStyleChooser = new Lang.Class({
+    Name: 'ArcMenu.MenuStyleChooser',
+    GTypeName: 'ArcMenuStyleChooser',
+    Extends: Gtk.Dialog,
+
+    _init: function(parent, params) {
+        this._params = Params.parse(params, {
+            title: 'Menu style chooser',
+            height: 480,
+            width: 660,
+            thumbnailHeight: 200,
+            thumbnailWidth: 200,
+            maxColumns: 6,
+            styles: []
+        });
+        this.parent({
+            title: this._params.title,
+            transient_for: parent.get_toplevel(),
+            use_header_bar: true,
+            modal: true,
+            default_width: this._params.width,
+            default_height: this._params.height
+        });
+        this._createLayout();
+    },
+
+    _createLayout: function() {
+        this._vbox = new Gtk.Box({
+            orientation: Gtk.Orientation.VERTICAL,
+            spacing: 20,
+            homogeneous: false,
+            margin: 5
+        });
+        this._scrolled = new Gtk.ScrolledWindow();
+        this._scrolled.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC);
+        this._tileGrid = new TileGrid(this._params.maxColumns);
+
+        this._params.styles.forEach(Lang.bind(this, function(style) {
+            this._addStyle(style.name, style.thumbnail);
+        }));
+
+        this._scrolled.add(this._tileGrid);
+        this._vbox.add(this._scrolled);
+        this.get_content_area().add(this._vbox);
+    },
+
+    _addStyle: function(name, thumbnail) {
+        let tile = new Tile({
+            label: name,
+            file: thumbnail,
+            height: this._params.thumbnailHeight,
+            width: this._params.thumbnailWidth
+        });
+        this._tileGrid.add(tile);
+        tile.connect('button-press-event', Lang.bind(this, function() {
+            //TODO
+        }));
+    }
+});
