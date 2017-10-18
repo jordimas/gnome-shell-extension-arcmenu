@@ -1,0 +1,210 @@
+# Spanish translation file for Arc Menu.
+# Copyright (C) 2017 LinxGem33
+# This file is distributed under the same license as the Arc Menu package.
+# Marcelo J. Tullio <mjtullio@gmail.com>, 2017.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: Arc Menu\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2017-17-10 19∶02∶22-03\n"
+"PO-Revision-Date: 2017-17-10 19∶41∶00 -03\n"
+"Last-Translator: Marcelo J. Tullio <mjtullio@gmail.com>\n"
+"Language-Team: \n"
+"Language: es_ES\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: prefs.js:76
+msgid "Behaviour"
+msgstr "Comportamiento"
+
+#: prefs.js:85
+msgid "Disable activities hot corner"
+msgstr "Desactivar atajo menú actividades"
+
+#: prefs.js:107
+msgid "Set menu hotkey"
+msgstr "Definir tecla para abrir menú"
+
+#: prefs.js:113
+msgid "Undefinead"
+msgstr "Indefinido"
+
+#: prefs.js:114
+msgid "Left Super Key"
+msgstr "Tecla Super Izquierda"
+
+#: prefs.js:115
+msgid "Right Super Key"
+msgstr "Tecla Super Derecha"
+
+#: prefs.js:127
+msgid "Enable custom menu keybinding"
+msgstr "Habilitar atajo personalizado al menú"
+
+#: prefs.js:134
+msgid "Syntax: <Shift>, <Ctrl>, <Alt>, <Super>"
+msgstr "Sintaxis: <Shift>, <Ctrl>, <Alt>, <Super>"
+
+#: prefs.js:175
+msgid "Appearance"
+msgstr "Apariencia"
+
+#: prefs.js:184
+msgid "Customize menu button appearance"
+msgstr "Personalizar apariencia del botón menú"
+
+#: prefs.js:194
+msgid "Icon"
+msgstr "Icono"
+
+#: prefs.js:195
+msgid "Text"
+msgstr "Texto"
+
+#: prefs.js:196
+msgid "Icon and Text"
+msgstr "Icono y Texto"
+
+#: prefs.js:197
+msgid "Text and Icon"
+msgstr "Texto e Icono"
+
+#: prefs.js:222
+msgid "Menu position in panel"
+msgstr "Posición del menú en el panel"
+
+#: prefs.js:229
+msgid "Left"
+msgstr "Izquierda"
+
+#: prefs.js:232
+msgid "Center"
+msgstr "Medio"
+
+#: prefs.js:236
+msgid "Right"
+msgstr "Derecha"
+
+#: prefs.js:279
+msgid "Button appearance"
+msgstr "Apariencia del botón"
+
+#: prefs.js:291
+msgid "Text for the menu button"
+msgstr "Texto para el botón menú"
+
+#: prefs.js:297
+msgid "System text"
+msgstr "Texto del sistema"
+
+#: prefs.js:300
+msgid "Custom text"
+msgstr "Texto personalizado"
+
+#: prefs.js:320
+msgid "Set custom text for the menu button"
+msgstr "Personalizar texto para el botón menú"
+
+#: prefs.js:340
+msgid "Enable the arrow icon beside the button text"
+msgstr "Habilitar ícono de flacha al lado del texto del botón"
+
+#: prefs.js:362
+msgid "Select icon for the menu button"
+msgstr "Seleccionar ícono para el botón menú"
+
+#: prefs.js:372
+msgid "Please select an image icon"
+msgstr "Por favor, seleccione imagen como ícono"
+
+#: prefs.js:387
+msgid "Arc Menu Icon"
+msgstr "Icono de Arc Menu"
+
+#: prefs.js:388
+msgid "System Icon"
+msgstr "Icono de sistema"
+
+#: prefs.js:389
+msgid "Custom Icon"
+msgstr "Icono personalizado"
+
+#: prefs.js:404
+msgid "Icon size"
+msgstr "Tamaño del ícono"
+
+#: prefs.js:404
+msgid "default is"
+msgstr "por defecto es"
+
+#: prefs.js:448
+msgid "About"
+msgstr "Acerca"
+
+#: prefs.js:477
+msgid "Arc-Menu"
+msgstr "Arc-Menu"
+
+#: prefs.js:482
+msgid "version: "
+msgstr "versión: "
+
+#: prefs.js:490
+msgid "Webpage"
+msgstr "Página web"
+
+#: menu.js:130
+msgid "Activities Overview"
+msgstr "Vista de Actividades"
+
+#: menu.js:154
+msgid "Power Off"
+msgstr "Apagar"
+
+#: menu.js:179
+msgid "Log Out"
+msgstr "Cerrar Sesión"
+
+#: menu.js:204
+msgid "Suspend"
+msgstr "Suspender"
+
+#: menu.js:235
+msgid "Lock"
+msgstr "Bloquear"
+
+#: menu.js:263
+msgid "Back"
+msgstr "Volver"
+
+#: menu.js:555
+msgid "Favorites"
+msgstr "Favoritos"
+
+#: menu.js:721
+msgid "Applications"
+msgstr "Aplicaciones"
+
+#: menu.js:976
+msgid "Home"
+msgstr "Carpeta Personal"
+
+#: menu.js:1041
+msgid "Type to search…"
+msgstr "Escriba para buscar…"
+
+#: menu.js:1130
+msgid "Software"
+msgstr "Programas"
+
+#: menu.js:1134
+msgid "Settings"
+msgstr "Configuración"
+
+#: menu.js:1138
+msgid "Tweak Tool"
+msgstr "Herramienta de retoques"
