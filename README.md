@@ -37,6 +37,7 @@ following dependencies installed.
 |gnome-shell-extensions|![](https://github.com/LinxGem33/Neon/blob/master/artwork/done.svg.png?raw=true)|gnome-shell-extensions|![](https://github.com/LinxGem33/Neon/blob/master/artwork/done.svg.png?raw=true)
 |gnome-tweak-tool|![](https://github.com/LinxGem33/Neon/blob/master/artwork/done.svg.png?raw=true)|gnome-tweak-tool|![](https://github.com/LinxGem33/Neon/blob/master/artwork/done.svg.png?raw=true)
 |gnome-menus|![](https://github.com/LinxGem33/Neon/blob/master/artwork/done.svg.png?raw=true)
+|gnome-session|![](https://github.com/LinxGem33/Neon/blob/master/artwork/done.svg.png?raw=true)
 
 ##
 ### Manual Installation
