@@ -34,9 +34,9 @@ following dependencies installed.
 
 |On Ubuntu/Debian based systems||On Arch based systems||
 |-----|:-----:|-----|:-----:|
-|gnome-shell-extensions|![ti](https://user-images.githubusercontent.com/19158615/27998683-9dd48cd0-650a-11e7-87c3-0ac3256ae574.png)|gnome-shell-extensions|![ti](https://user-images.githubusercontent.com/19158615/27998683-9dd48cd0-650a-11e7-87c3-0ac3256ae574.png)
-|gnome-tweak-tool|![ti](https://user-images.githubusercontent.com/19158615/27998683-9dd48cd0-650a-11e7-87c3-0ac3256ae574.png)|gnome-tweak-tool|![ti](https://user-images.githubusercontent.com/19158615/27998683-9dd48cd0-650a-11e7-87c3-0ac3256ae574.png)
-|gnome-menus|![ti](https://user-images.githubusercontent.com/19158615/27998683-9dd48cd0-650a-11e7-87c3-0ac3256ae574.png)
+|gnome-shell-extensions|![](https://github.com/LinxGem33/Neon/blob/master/artwork/done.svg.png?raw=true)|gnome-shell-extensions|![](https://github.com/LinxGem33/Neon/blob/master/artwork/done.svg.png?raw=true)
+|gnome-tweak-tool|![](https://github.com/LinxGem33/Neon/blob/master/artwork/done.svg.png?raw=true)|gnome-tweak-tool|![](https://github.com/LinxGem33/Neon/blob/master/artwork/done.svg.png?raw=true)
+|gnome-menus|![](https://github.com/LinxGem33/Neon/blob/master/artwork/done.svg.png?raw=true)
 
 ##
 ### Manual Installation
@@ -112,17 +112,17 @@ Additional credits: This extension also leverages the work from [Giovanni Campag
 
 |Contributor|Language|Translated|Contributor|Language|Translated|
 |:-----|:-----|:-----:|:-----|:-----|:-----:|
-|@[h3r0n](https://github.com/h3r0n)|Italian|![ti](https://user-images.githubusercontent.com/19158615/27998683-9dd48cd0-650a-11e7-87c3-0ac3256ae574.png)|@[megasyl](https://github.com/megasyl)|French|![ti](https://user-images.githubusercontent.com/19158615/27998683-9dd48cd0-650a-11e7-87c3-0ac3256ae574.png)
-|@[pkomur](https://github.com/pkomur) > updated by @[Ixoos](https://github.com/Ixoos)|Polish|![ti](https://user-images.githubusercontent.com/19158615/27998683-9dd48cd0-650a-11e7-87c3-0ac3256ae574.png)|@[madaramost](https://github.com/madaramost)|Arabic|![ti](https://user-images.githubusercontent.com/19158615/27998683-9dd48cd0-650a-11e7-87c3-0ac3256ae574.png)
-|@[danielstuart14](https://github.com/danielstuart14)|Brazilian portuguese|![ti](https://user-images.githubusercontent.com/19158615/27998683-9dd48cd0-650a-11e7-87c3-0ac3256ae574.png)||Chinese|
-|@[zakkak](https://github.com/zakkak)|Greek|![ti](https://user-images.githubusercontent.com/19158615/27998683-9dd48cd0-650a-11e7-87c3-0ac3256ae574.png)|@[mjtullio](https://github.com/mjtullio)|Spanish|![ti](https://user-images.githubusercontent.com/19158615/27998683-9dd48cd0-650a-11e7-87c3-0ac3256ae574.png)
-|@[mrprobot](https://github.com/mrprobot)|German|![ti](https://user-images.githubusercontent.com/19158615/27998683-9dd48cd0-650a-11e7-87c3-0ac3256ae574.png)|@[saisasidhar](https://github.com/saisasidhar)|Hindi|![ti](https://user-images.githubusercontent.com/19158615/27998683-9dd48cd0-650a-11e7-87c3-0ac3256ae574.png)
+|@[h3r0n](https://github.com/h3r0n)|Italian|![](https://github.com/LinxGem33/Neon/blob/master/artwork/done.svg.png?raw=true)|@[megasyl](https://github.com/megasyl)|French|![](https://github.com/LinxGem33/Neon/blob/master/artwork/done.svg.png?raw=true)
+|@[pkomur](https://github.com/pkomur) > updated by @[Ixoos](https://github.com/Ixoos)|Polish|![](https://github.com/LinxGem33/Neon/blob/master/artwork/done.svg.png?raw=true)|@[madaramost](https://github.com/madaramost)|Arabic|![](https://github.com/LinxGem33/Neon/blob/master/artwork/done.svg.png?raw=true)
+|@[danielstuart14](https://github.com/danielstuart14)|Brazilian portuguese|![](https://github.com/LinxGem33/Neon/blob/master/artwork/done.svg.png?raw=true)||Chinese|
+|@[zakkak](https://github.com/zakkak)|Greek|![](https://github.com/LinxGem33/Neon/blob/master/artwork/done.svg.png?raw=true)|@[mjtullio](https://github.com/mjtullio)|Spanish|![](https://github.com/LinxGem33/Neon/blob/master/artwork/done.svg.png?raw=true)
+|@[mrprobot](https://github.com/mrprobot)|German|![](https://github.com/LinxGem33/Neon/blob/master/artwork/done.svg.png?raw=true)|@[saisasidhar](https://github.com/saisasidhar)|Hindi|![](https://github.com/LinxGem33/Neon/blob/master/artwork/done.svg.png?raw=true)
 ||Portuguese|||Bengali||
-|@[elsieholmes](https://github.com/elsieholmes)|Russian|![ti](https://user-images.githubusercontent.com/19158615/27998683-9dd48cd0-650a-11e7-87c3-0ac3256ae574.png)||Japanese||
+|@[elsieholmes](https://github.com/elsieholmes)|Russian|![](https://github.com/LinxGem33/Neon/blob/master/artwork/done.svg.png?raw=true)||Japanese||
 ||Swedish|||Dutch||
-|@[neynefes](https://github.com/neynefes)|Turkish|![ti](https://user-images.githubusercontent.com/19158615/27998683-9dd48cd0-650a-11e7-87c3-0ac3256ae574.png)||Javanese||
-|@[elsieholmes](https://github.com/elsieholmes)|Ukrainian|![ti](https://user-images.githubusercontent.com/19158615/27998683-9dd48cd0-650a-11e7-87c3-0ac3256ae574.png)|@[PSSGCSim](https://github.com/PSSGCSim)|Czech|![ti](https://user-images.githubusercontent.com/19158615/27998683-9dd48cd0-650a-11e7-87c3-0ac3256ae574.png)
-|@[ipanamski](https://github.com/ipanamski)|Bulgarian|![ti](https://user-images.githubusercontent.com/19158615/27998683-9dd48cd0-650a-11e7-87c3-0ac3256ae574.png)|@[muhfajar](https://github.com/muhfajar) > updated by @[emhaye](https://github.com/emhaye)|Indonesian|![ti](https://user-images.githubusercontent.com/19158615/27998683-9dd48cd0-650a-11e7-87c3-0ac3256ae574.png)|
+|@[neynefes](https://github.com/neynefes)|Turkish|![](https://github.com/LinxGem33/Neon/blob/master/artwork/done.svg.png?raw=true)||Javanese||
+|@[elsieholmes](https://github.com/elsieholmes)|Ukrainian|![](https://github.com/LinxGem33/Neon/blob/master/artwork/done.svg.png?raw=true)|@[PSSGCSim](https://github.com/PSSGCSim)|Czech|![](https://github.com/LinxGem33/Neon/blob/master/artwork/done.svg.png?raw=true)
+|@[ipanamski](https://github.com/ipanamski)|Bulgarian|![](https://github.com/LinxGem33/Neon/blob/master/artwork/done.svg.png?raw=true)|@[muhfajar](https://github.com/muhfajar) > updated by @[emhaye](https://github.com/emhaye)|Indonesian|![](https://github.com/LinxGem33/Neon/blob/master/artwork/done.svg.png?raw=true)
 
 ##
  ![](https://img.shields.io/badge/Language-JavaScript-yellow.svg) ![](https://img.shields.io/badge/Licence-GPL--2.0-blue.svg)
