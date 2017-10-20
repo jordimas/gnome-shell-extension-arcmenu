@@ -17,7 +17,7 @@ My first initial priority was to get this extension stable enough to upload to e
 
 If your interested to see the current development cycle of Arc menu or the current status of a particular feature in development then head over to the new Development Roadmap page which will give you a idea of what’s planned or what’s currently being developed by the Arc menu team the link is below.
 
-#### [Development Roadmap Page](https://github.com/LinxGem33/Arc-Menu/issues/42)
+Please see the: [**Development Roadmap Page**](https://github.com/LinxGem33/Arc-Menu/issues/42)
 ##
 |Arc Menu integrated with Dash-to-Dock|Arc Menu integrated with Dash-to-Panel|
 |:-----:|:-----:|
