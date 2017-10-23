@@ -118,7 +118,7 @@ Additional credits: This extension also leverages the work from [Giovanni Campag
 
 |Contributor|Language|Translated|Contributor|Language|Translated|
 |:-----|:-----|:-----:|:-----|:-----|:-----:|
-|@[h3r0n](https://github.com/h3r0n)|Italian|![](https://github.com/LinxGem33/Neon/blob/master/artwork/done.svg.png?raw=true)|@[megasyl](https://github.com/megasyl)|French|![](https://github.com/LinxGem33/Neon/blob/master/artwork/done.svg.png?raw=true)
+|@[h3r0n](https://github.com/h3r0n)|Italian|![](https://github.com/LinxGem33/Neon/blob/master/artwork/done.svg.png?raw=true)|@[megasyl](https://github.com/megasyl) > updated by @[16NoCo](https://github.com/16NoCo)|French|![](https://github.com/LinxGem33/Neon/blob/master/artwork/done.svg.png?raw=true)
 |@[pkomur](https://github.com/pkomur) > updated by @[Ixoos](https://github.com/Ixoos)|Polish|![](https://github.com/LinxGem33/Neon/blob/master/artwork/done.svg.png?raw=true)|@[madaramost](https://github.com/madaramost)|Arabic|![](https://github.com/LinxGem33/Neon/blob/master/artwork/done.svg.png?raw=true)
 |@[danielstuart14](https://github.com/danielstuart14)|Brazilian portuguese|![](https://github.com/LinxGem33/Neon/blob/master/artwork/done.svg.png?raw=true)||Chinese|
 |@[zakkak](https://github.com/zakkak)|Greek|![](https://github.com/LinxGem33/Neon/blob/master/artwork/done.svg.png?raw=true)|@[mjtullio](https://github.com/mjtullio)|Spanish|![](https://github.com/LinxGem33/Neon/blob/master/artwork/done.svg.png?raw=true)
