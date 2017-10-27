@@ -236,7 +236,7 @@ var ApplicationsButton = new Lang.Class({
                     continue;
                 }
                 let app = appSys.lookup_app(id);
-                if (app.get_app_info().should_show())
+                if (app && app.get_app_info().should_show())
                     this.applicationsByCategory[categoryId].push(app);
             } else if (nextType == GMenu.TreeItemType.DIRECTORY) {
                 let subdir = iter.get_directory();
