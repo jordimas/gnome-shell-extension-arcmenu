@@ -1,0 +1,211 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the Arc Menu package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Arc Menu\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2017-10-28 09:55+0300\n"
+"PO-Revision-Date: 2017-10-28 10:01+0300\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.8.7.1\n"
+"Last-Translator: Jiri Grönroos <jiri.gronroos+l10n@iki.fi>\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Language: fi\n"
+
+#: prefs.js:76
+msgid "Behaviour"
+msgstr "Toiminta"
+
+#: prefs.js:85
+msgid "Disable activities hot corner"
+msgstr "Poista Toiminnot-toimintokulma käytöstä"
+
+#: prefs.js:107
+msgid "Set menu hotkey"
+msgstr "Aseta valikon pikanäppäin"
+
+#: prefs.js:113
+msgid "Undefined"
+msgstr "Määrittämätön"
+
+#: prefs.js:114
+msgid "Left Super Key"
+msgstr "Vasen Super-näppäin"
+
+#: prefs.js:115
+msgid "Right Super Key"
+msgstr "Oikea Super-näppäin"
+
+#: prefs.js:127
+msgid "Enable custom menu keybinding"
+msgstr "Käytä mukautettua valikon pikanäppäintä"
+
+#: prefs.js:134
+msgid "Syntax: <Shift>, <Ctrl>, <Alt>, <Super>"
+msgstr "Syntaksi: <Shift>, <Ctrl>, <Alt>, <Super>"
+
+#: prefs.js:175
+msgid "Appearance"
+msgstr "Ulkoasu"
+
+#: prefs.js:184
+msgid "Customize menu button appearance"
+msgstr "Mukauta valikkopainikkeen ulkoasua"
+
+#: prefs.js:194
+msgid "Icon"
+msgstr "Kuvake"
+
+#: prefs.js:195
+msgid "Text"
+msgstr "Teksti"
+
+#: prefs.js:196
+msgid "Icon and Text"
+msgstr "Kuvake ja teksti"
+
+#: prefs.js:197
+msgid "Text and Icon"
+msgstr "Teksti ja kuvake"
+
+#: prefs.js:222
+msgid "Menu position in panel"
+msgstr "Valikon sijainti paneelissa"
+
+#: prefs.js:229
+msgid "Left"
+msgstr "Vasemmalla"
+
+#: prefs.js:232
+msgid "Center"
+msgstr "Keskellä"
+
+#: prefs.js:236
+msgid "Right"
+msgstr "Oikealla"
+
+#: prefs.js:279
+msgid "Button appearance"
+msgstr "Painikkeen ulkoasu"
+
+#: prefs.js:291
+msgid "Text for the menu button"
+msgstr "Valikkopainikkeen teksti"
+
+#: prefs.js:297
+msgid "System text"
+msgstr "Järjestelmäteksti"
+
+#: prefs.js:300
+msgid "Custom text"
+msgstr "Mukautettu teksti"
+
+#: prefs.js:320
+msgid "Set custom text for the menu button"
+msgstr "Aseta mukautettu teksti valikkopainikkeelle"
+
+#: prefs.js:340
+msgid "Enable the arrow icon beside the button text"
+msgstr "Käytä nuolipainiketta painiketekstin vieressä"
+
+#: prefs.js:362
+msgid "Select icon for the menu button"
+msgstr "Valitse kuvake valikkopainikkeelle"
+
+#: prefs.js:372
+msgid "Please select an image icon"
+msgstr "Valitse kuvakuvake"
+
+#: prefs.js:387
+msgid "Arc Menu Icon"
+msgstr "Arc Menu -kuvake"
+
+#: prefs.js:388
+msgid "System Icon"
+msgstr "Järjestelmäkuvake"
+
+#: prefs.js:389
+msgid "Custom Icon"
+msgstr "Mukautettu kuvake"
+
+#: prefs.js:404
+msgid "Icon size"
+msgstr "Kuvakkeen koko"
+
+#: prefs.js:404
+msgid "default is"
+msgstr "oletus on"
+
+#: prefs.js:448
+msgid "About"
+msgstr "Tietoja"
+
+#: prefs.js:477
+msgid "Arc-Menu"
+msgstr "Arc-Menu"
+
+#: prefs.js:482
+msgid "version: "
+msgstr "versio: "
+
+#: prefs.js:490
+msgid "Webpage"
+msgstr "Verkkosivusto"
+
+#: menu.js:130
+msgid "Activities Overview"
+msgstr "Toiminnot-yleisnäkymä"
+
+#: menu.js:154
+msgid "Power Off"
+msgstr "Sammuta"
+
+#: menu.js:179
+msgid "Log Out"
+msgstr "Kirjaudu ulos"
+
+#: menu.js:204
+msgid "Suspend"
+msgstr "Valmiustila"
+
+#: menu.js:235
+msgid "Lock"
+msgstr "Lukitse"
+
+#: menu.js:263
+msgid "Back"
+msgstr "Takaisin"
+
+#: menu.js:555
+msgid "Favorites"
+msgstr "Suosikit"
+
+#: menu.js:721
+msgid "Applications"
+msgstr "Sovellukset"
+
+#: menu.js:976
+msgid "Home"
+msgstr "Koti"
+
+#: menu.js:1041
+msgid "Type to search…"
+msgstr "Kirjoita hakeaksesi…"
+
+#: menu.js:1130
+msgid "Software"
+msgstr "Ohjelmistot"
+
+#: menu.js:1134
+msgid "Settings"
+msgstr "Asetukset"
+
+#: menu.js:1138
+msgid "Tweak Tool"
+msgstr "Lisäasetukset"
