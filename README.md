@@ -1,11 +1,11 @@
 ||
 |------|
 | ![](https://cdn2.iconfinder.com/data/icons/merry-christmas-1/100/christmas_tree-128.png)|
-# Development on hold for the Christmas  period will resume in New year.
+# Development and issue responses on hold for the Christmas period will resume in New year.
 
 # Thank you - LinxGem33
 
-##
+
 ![](https://github.com/LinxGem33/Neon/blob/master/artwork/arc-wide-banner-new.png?raw=true)
 
 ##
