@@ -710,9 +710,6 @@ var ApplicationsButton = new Lang.Class({
 
     // Destroy (deactivate) the menu
     destroy: function() {
-        this.menu.actor.get_children().forEach(function(c) {
-            c.destroy();
-        });
         if (this._searchBoxClearedId > 0) {
             this.searchBox.disconnect(this._searchBoxClearedId);
             this._searchBoxClearedId = 0;
