@@ -124,7 +124,7 @@ Additional credits: This extension also leverages the work from [Giovanni Campag
 
 - @[JasonLG1979](https://github.com/JasonLG1979) (1) menu style fix
 - @[lexruee](https://github.com/lexruee/Arc-Menu) (1) correctly restore the Activities button
-- @[charlesg99](https://github.com/charlesg99) (1) Disconnect height notification signal ,Prevent double destruction of the menu sections when disabling the extension
+- @[charlesg99](https://github.com/charlesg99) (1) Disconnect height notification signal ,Prevent duplicate destruction of the menu sections
 ##
 #### Please refer to the Wiki section for a [Translation Guide](https://github.com/LinxGem33/Arc-Menu/wiki/Translation-Guide)
 
