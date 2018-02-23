@@ -148,7 +148,7 @@ var ApplicationsButton = new Lang.Class({
                 this.reloadFlag = true;
             }
         }));
-        Main.panel.actor.connect('notify::height', Lang.bind(this, function() {
+        this._notifyHeightId = Main.panel.actor.connect('notify::height', Lang.bind(this, function() {
             this._redisplay();
         }));
     },
@@ -175,6 +175,7 @@ var ApplicationsButton = new Lang.Class({
     _onDestroy: function() {
         Main.overview.disconnect(this._showingId);
         Main.overview.disconnect(this._hidingId);
+        Main.panel.actor.disconnect(this._notifyHeightId);
         appSys.disconnect(this._installedChangedId);
     },
 
