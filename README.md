@@ -141,6 +141,8 @@ Additional credits: This extension also leverages the work from [Giovanni Campag
 |@[neynefes](https://github.com/neynefes)|Turkish|![](https://github.com/LinxGem33/Neon/blob/master/artwork/done.svg.png?raw=true)||Javanese||
 |@[elsieholmes](https://github.com/elsieholmes)|Ukrainian|![](https://github.com/LinxGem33/Neon/blob/master/artwork/done.svg.png?raw=true)|@[PSSGCSim](https://github.com/PSSGCSim)|Czech|![](https://github.com/LinxGem33/Neon/blob/master/artwork/done.svg.png?raw=true)
 |@[ipanamski](https://github.com/ipanamski)|Bulgarian|![](https://github.com/LinxGem33/Neon/blob/master/artwork/done.svg.png?raw=true)|@[muhfajar](https://github.com/muhfajar) > updated by @[emhaye](https://github.com/emhaye)|Indonesian|![](https://github.com/LinxGem33/Neon/blob/master/artwork/done.svg.png?raw=true)
-|@[artnay](https://github.com/artnay)|Finnish|![](https://github.com/LinxGem33/Neon/blob/master/artwork/done.svg.png?raw=true)|@[Lrss](https://github.com/Lrss)|Danish|![](https://github.com/LinxGem33/Neon/blob/master/artwork/done.svg.png?raw=true)|@[Faenriis](https://github.com/Faenriis)|Serbian|![](https://github.com/LinxGem33/Neon/blob/master/artwork/done.svg.png?raw=true)||||
+|@[artnay](https://github.com/artnay)|Finnish|![](https://github.com/LinxGem33/Neon/blob/master/artwork/done.svg.png?raw=true)|@[Lrss](https://github.com/Lrss)|Danish|![](https://github.com/LinxGem33/Neon/blob/master/artwork/done.svg.png?raw=true)|
+|@[Faenriis](https://github.com/Faenriis)|Serbian|![](https://github.com/LinxGem33/Neon/blob/master/artwork/done.svg.png?raw=true)||||
+
 ##
  ![](https://img.shields.io/badge/Language-JavaScript-yellow.svg) ![](https://img.shields.io/badge/Licence-GPL--2.0-blue.svg)
