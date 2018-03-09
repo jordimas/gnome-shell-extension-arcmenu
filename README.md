@@ -137,7 +137,7 @@ Additional credits: This extension also leverages the work from [Giovanni Campag
 |@[mrprobot](https://github.com/mrprobot)|German|![](https://github.com/LinxGem33/Neon/blob/master/artwork/done.svg.png?raw=true)|@[saisasidhar](https://github.com/saisasidhar)|Hindi|![](https://github.com/LinxGem33/Neon/blob/master/artwork/done.svg.png?raw=true)
 ||Portuguese|||Bengali||
 |@[elsieholmes](https://github.com/elsieholmes)|Russian|![](https://github.com/LinxGem33/Neon/blob/master/artwork/done.svg.png?raw=true)||Japanese||
-||Swedish|||Dutch||
+|@[MorganAntonsson](https://github.com/MorganAntonsson)|Swedish|![](https://github.com/LinxGem33/Neon/blob/master/artwork/done.svg.png?raw=true)||Dutch||
 |@[neynefes](https://github.com/neynefes)|Turkish|![](https://github.com/LinxGem33/Neon/blob/master/artwork/done.svg.png?raw=true)||Javanese||
 |@[elsieholmes](https://github.com/elsieholmes)|Ukrainian|![](https://github.com/LinxGem33/Neon/blob/master/artwork/done.svg.png?raw=true)|@[PSSGCSim](https://github.com/PSSGCSim)|Czech|![](https://github.com/LinxGem33/Neon/blob/master/artwork/done.svg.png?raw=true)
 |@[ipanamski](https://github.com/ipanamski)|Bulgarian|![](https://github.com/LinxGem33/Neon/blob/master/artwork/done.svg.png?raw=true)|@[muhfajar](https://github.com/muhfajar) > updated by @[emhaye](https://github.com/emhaye)|Indonesian|![](https://github.com/LinxGem33/Neon/blob/master/artwork/done.svg.png?raw=true)
