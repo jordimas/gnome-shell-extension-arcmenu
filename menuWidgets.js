@@ -309,7 +309,7 @@ var UserMenuItem = new Lang.Class({
             if (this._userIcon) {
                 let iconFileName = this._user.get_icon_file();
                 let iconFile = Gio.file_new_for_path(iconFileName);
-                setIconAsync(this._userIcon, iconFile, 'avatar-default-symbolic');
+                setIconAsync(this._userIcon, iconFile, 'avatar-default');
             }
         }
     },
