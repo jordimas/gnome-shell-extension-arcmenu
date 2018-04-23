@@ -86,9 +86,17 @@ Please note that without any information about your system, the Arc Menu Team ca
 So, please provide us information about your GNU/Linux distribution and the GNOME Shell version. Otherwise, we are not able to try and solve your problem.
 
 ##
+[![GNU GPL Image](https://www.gnu.org/graphics/slickgnu.tiny.png)](http://www.gnu.org/licenses/old-licenses/lgpl-2.0.html)  
+
 ### License & Terms ![](https://github.com/LinxGem33/IP-Finder/blob/master/screens/Copyleft-16.png?raw=true)
 
 Arc Menu is available under the terms of the GPL-2.0 license See [`COPYING`](https://github.com/LinxGem33/Arc-Menu/blob/master/COPYING) for details.
+
+Arc-Menu is Free Software: You can use, study share and improve it at your
+will. Specifically you can redistribute and/or modify it under the terms of the
+[GNU General Public License](https://www.gnu.org/licenses/gpl.html) as
+published by the Free Software Foundation, either version 2 of the License, or
+(at your option) any later version. 
 ##
 
 ### Credits
