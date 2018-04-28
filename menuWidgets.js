@@ -24,6 +24,7 @@ const Shell = imports.gi.Shell;
 const St = imports.gi.St;
 const Clutter = imports.gi.Clutter;
 const Main = imports.ui.main;
+const Tweener = imports.ui.tweener;
 const PopupMenu = imports.ui.popupMenu;
 const GLib = imports.gi.GLib;
 const Signals = imports.signals;
@@ -41,6 +42,8 @@ const LoginManager = imports.misc.loginManager;
 
 // Menu Size variables
 const APPLICATION_ICON_SIZE = 32;
+const TOOLTIP_LABEL_SHOW_TIME = 0.15;
+const TOOLTIP_LABEL_HIDE_TIME = 0.1;
 
 function setIconAsync(icon, gioFile, fallback_icon_name) {
     gioFile.load_contents_async(null, function(source, result) {
@@ -101,6 +104,54 @@ var ActivitiesMenuItem = new Lang.Class({
     },
 });
 
+/**
+ * A class representing a Tooltip.
+ */
+var Tooltip = new Lang.Class({
+    Name: 'Tooltip',
+
+    _init: function(sourceActor, text) {
+        this.sourceActor = sourceActor;
+        this.actor = new St.Label({
+            style_class: 'tooltip-label',
+            text: text,
+            opacity: 0
+        });
+        global.stage.add_actor(this.actor);
+        this.actor.show();
+        this.actor.connect('destroy', Lang.bind(this, this._onDestroy));
+    },
+
+    show: function() {
+        let [stageX, stageY] = this.sourceActor.get_transformed_position();
+        let [width, height] = this.sourceActor.get_transformed_size();
+        let y = stageY - height/1.25;
+        let x = stageX - Math.round((this.actor.get_width() - width)/2);
+
+        this.actor.show();
+        this.actor.set_position(x, y);
+        Tweener.addTween(this.actor, {
+            opacity: 255,
+            time: TOOLTIP_LABEL_SHOW_TIME,
+            transition: 'easeOutQuad'
+        });
+    },
+
+    hide: function() {
+        Tweener.addTween(this.actor, {
+            opacity: 0,
+            time: TOOLTIP_LABEL_HIDE_TIME,
+            transition: 'easeOutQuad',
+            onComplete: Lang.bind(this, function() {
+                this.actor.hide();
+            })
+        });
+    },
+
+    _onDestroy: function() {
+        global.stage.remove_actor(this.actor);
+    }
+});
 
 /**
  * A base class for custom session buttons.
@@ -117,11 +168,18 @@ var SessionButton = new Lang.Class({
             accessible_name: accessible_name,
             style_class: 'system-menu-action'
         });
+	this._useTooltips = true;
+        this.tooltip = new Tooltip(this.actor, accessible_name);
+        this.tooltip.hide();
         this.actor.child = new St.Icon({ icon_name: icon_name });
         this.actor.connect('clicked', Lang.bind(this, this._onClick));
         this.actor.connect('notify::hover', Lang.bind(this, this._onHover));
     },
 
+       useTooltips: function(useTooltips) {
+       this._useTooltips = useTooltips;
+    },
+	
     _onClick: function() {
         this._button.menu.toggle();
         this.activate();
@@ -133,6 +191,14 @@ var SessionButton = new Lang.Class({
 
     _onHover: function() {
         // TODO: implement tooltips
+	          if (!this._useTooltips)
+           return;
+
+        if (this.actor.hover) { // mouse pointer hovers over the button
+            this.tooltip.show();
+        } else { // mouse pointer leaves the button area
+            this.tooltip.hide();
+        }
     }
 });
 
