@@ -427,7 +427,7 @@ const AppearanceSettingsPage = new Lang.Class({
 
 /*
  * Fine Tune Settings Page
- */
+ *
 const FineTuneSettingsPage = new Lang.Class({
     Name: 'FineTuneSettingsPage',
     Extends: PW.NotebookPage,
@@ -438,7 +438,7 @@ const FineTuneSettingsPage = new Lang.Class({
 
         /*
          * Tooltips Box
-         */
+         *
         let toolTipsFrame = new PW.FrameBox();
         let toolTipsRow = new PW.FrameBoxRow();
         let toolTipsLabel = new Gtk.Label({
@@ -555,7 +555,7 @@ const ArcMenuPreferencesWidget= new GObject.Class({
         this.settings = Convenience.getSettings(Me.metadata['settings-schema']);
 
         let notebook = new PW.Notebook();
-        // Spoiler alert: There will be a general settings page in v16 ;-)
+        // Spoiler alert: There will be a general settings page in vXX ;-)
         //let generalSettingsPage = new GeneralSettingsPage(this.settings);
         //notebook.append_page(generalSettingsPage, generalSettingsPage.title);
 
@@ -565,8 +565,8 @@ const ArcMenuPreferencesWidget= new GObject.Class({
         let appearancePage = new AppearanceSettingsPage(this.settings);
         notebook.append_page(appearancePage);
      
-        let fineTunePage = new FineTuneSettingsPage(this.settings);
-        notebook.append_page(fineTunePage);
+       // let fineTunePage = new FineTuneSettingsPage(this.settings);
+       // notebook.append_page(fineTunePage);
 
         let aboutPage = new AboutPage(this.settings);
         notebook.append_page(aboutPage);
