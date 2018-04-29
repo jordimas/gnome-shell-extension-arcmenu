@@ -426,6 +426,42 @@ const AppearanceSettingsPage = new Lang.Class({
 });
 
 /*
+ * Fine Tune Settings Page
+ *
+const FineTuneSettingsPage = new Lang.Class({
+    Name: 'FineTuneSettingsPage',
+    Extends: PW.NotebookPage,
+
+    _init: function(settings) {
+        this.parent(_('Fine Tune'));
+        this.settings = settings;
+
+        /*
+         * Tooltips Box
+         *
+        let toolTipsFrame = new PW.FrameBox();
+        let toolTipsRow = new PW.FrameBoxRow();
+        let toolTipsLabel = new Gtk.Label({
+            label: _("Enable tooltips"),
+            use_markup: true,
+            xalign: 0,
+            hexpand: true
+        });
+        let toolTipsSwitch = new Gtk.Switch({ halign: Gtk.Align.END });
+        toolTipsSwitch.set_active(this.settings.get_boolean('enable-tooltips'));
+        toolTipsSwitch.connect('notify::active', Lang.bind(this, function(check) {
+            this.settings.set_boolean('enable-tooltips', check.get_active());
+        }));
+        toolTipsRow.add(toolTipsLabel);
+        toolTipsRow.add(toolTipsSwitch);
+        toolTipsFrame.add(toolTipsRow);
+
+        // add the frames
+        this.add(toolTipsFrame)
+    }
+});
+
+/*
  * About Page
  */
 const AboutPage = new Lang.Class({
@@ -519,7 +555,7 @@ const ArcMenuPreferencesWidget= new GObject.Class({
         this.settings = Convenience.getSettings(Me.metadata['settings-schema']);
 
         let notebook = new PW.Notebook();
-        // Spoiler alert: There will be a general settings page in v16 ;-)
+        // Spoiler alert: There will be a general settings page in vXX ;-)
         //let generalSettingsPage = new GeneralSettingsPage(this.settings);
         //notebook.append_page(generalSettingsPage, generalSettingsPage.title);
 
@@ -528,6 +564,9 @@ const ArcMenuPreferencesWidget= new GObject.Class({
 
         let appearancePage = new AppearanceSettingsPage(this.settings);
         notebook.append_page(appearancePage);
+     
+       // let fineTunePage = new FineTuneSettingsPage(this.settings);
+       // notebook.append_page(fineTunePage);
 
         let aboutPage = new AboutPage(this.settings);
         notebook.append_page(aboutPage);

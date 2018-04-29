@@ -35,6 +35,14 @@
     max-width: 17.667em;
 }
 
+.tooltip-label {
+    border-radius: 7px;
+    padding: 4px 8px;
+    color: #eeeeec;
+    background-color: rgba(46, 52, 54, 0.7);
+    text-align: center;
+}
+
 .search-box-padding {
     padding-top: 1em;
     padding-bottom: 0.25em;

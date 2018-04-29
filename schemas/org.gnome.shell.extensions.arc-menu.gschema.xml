@@ -36,6 +36,11 @@
       <summary>Visible menus</summary>
       <description>Which menus are visible within the Arc Menu popup.</description>
     </key>
+    <key type="b" name="enable-tooltips">
+     <default>false</default>
+      <summary>Enable tooltips</summary>
+      <description>Enable tooltips.</description>
+    </key>
     <key type="b" name="disable-activities-hotcorner">
       <default>false</default>
       <summary>Disable activities hotcorner</summary>
