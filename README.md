@@ -9,15 +9,19 @@
 Arc Menu is a Gnome shell extension designed to replace the standard menu found in Gnome 3 this application menu extension has  some added benefits over the standard menu found in Gnome 3, these include the long awaited search functionality as well as quick access to files on your system and also the current logged in user along with quick access to the software centre and system settings and other features which can be accessed from the settings menu.
 
 ##
-### What's next for Arc Menu?
 
-My first initial priority was to get this extension stable enough to upload to extensions.gnome.org as it had to be ported to work with the gnome shell eco system, now the first stage of development is over features are now being added and I'm pleased to announce a new member of the team [lexruee](https://github.com/lexruee) and now a lead developer in the design and development of this extension hopefully more features are planned for future development and a lot has already been implemented.
-##
 ### Development Roadmap !
 
 If your interested to see the current development cycle of Arc menu or the current status of a particular feature in development then head over to the new Development Roadmap page which will give you a idea of what’s planned or what’s currently being developed by the Arc menu team the link is below.
 
 Please see the: [Development Roadmap Page](https://github.com/LinxGem33/Arc-Menu/issues/42)
+
+##
+
+### Volunteers needed!
+
+This extension could be even better with your help! Any items in the issue tracker labelled `help wanted` or `good first issue` are open for contribution and help. For more info, see the [Contributing wiki page](https://github.com/LinxGem33/Arc-Menu/wiki/Contributions-&-Help) for more details on current issues or features which need your help.
+
 ##
 |Arc Menu integrated with Dash-to-Dock|Arc Menu integrated with Dash-to-Panel|
 |:-----:|:-----:|
@@ -41,7 +45,7 @@ following dependencies installed.
 |-----|:-----:|-----|:-----:|
 |gnome-shell-extensions|![](https://github.com/LinxGem33/Neon/blob/master/artwork/done.svg.png?raw=true)|gnome-shell-extensions|![](https://github.com/LinxGem33/Neon/blob/master/artwork/done.svg.png?raw=true)
 |gnome-tweak-tool|![](https://github.com/LinxGem33/Neon/blob/master/artwork/done.svg.png?raw=true)|gnome-tweak-tool|![](https://github.com/LinxGem33/Neon/blob/master/artwork/done.svg.png?raw=true)
-|gnome-menus|![](https://github.com/LinxGem33/Neon/blob/master/artwork/done.svg.png?raw=true)
+|gnome-menus|![](https://github.com/LinxGem33/Neon/blob/master/artwork/done.svg.png?raw=true)|gnome-menus|![](https://github.com/LinxGem33/Neon/blob/master/artwork/done.svg.png?raw=true)
 |gnome-session|![](https://github.com/LinxGem33/Neon/blob/master/artwork/done.svg.png?raw=true)
 
 ##
@@ -101,17 +105,20 @@ This extension leverages some of the work from [Zorin OS menu](https://zorinos.c
 Additional credits: This extension also leverages the work from [Giovanni Campagna ](https://git.gnome.org//browse/gnome-shell-extensions) gnome Application Menu used in [Gnome 3](https://www.gnome.org/) to allow the menu to be embedded in the Gnome main panel.
 ##
 
-### Project Developers
+### Current Active Developers
 
-#### @[LinxGem33](https://github.com/LinxGem33) - **Founder** - **Developer** - Digital Art Designer
-> Hi I'm LinxGem33 aka Andy and the founder of Arc menu, my role on the project is to manage and plan the technical and digital production and distribution of the Arc menu software, as you can imagine I’m a open source and Linux software enthusiast as well as a digital art designer and GTK3 theme developer,I also like to contribute to other projects where i can.  
+|Contributor|Development area|Active|
+|-----|-----|-----|
+|@[LinxGem33](https://github.com/LinxGem33)|Founder - Developer - Digital Art Designer|![](https://github.com/LinxGem33/Neon/blob/master/artwork/done.svg.png?raw=true)|
+||||
+
+
+### Top Project Contributors
 
 #### @[lexruee](https://github.com/lexruee) - **Project Developer** - UI/UX Designer
-> Hi I’m lexruee aka Alex and one the projects software developers and UI/UX designer on the Arc menu project, my role on the project is to help manage and develop the code base and software integrity of Arc menu I’m also responsible for the UI/UX design and implimentation of the Arc menu software, I'm also a passionate programmer, hacker, and tinkerer. But I'm also a single Board Computer and GNU/Linux enthusiast. Besides all that I also like mountainbiking and reading. 
 
 ##
 ### Technical Advisors
-
 
 ##
 
