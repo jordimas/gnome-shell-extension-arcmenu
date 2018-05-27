@@ -56,10 +56,7 @@ Please take a look at the [Manual Installation Guide](https://github.com/LinxGem
 on the Arc-Menu Wiki.
 
 ##
-### Packages
-Awaiting packagers
 
-##
 ### Wiki Guide
 
 If you have any issues with regard to Arc menu and your unsure of a certain feature or just want to know more about Arc menu, then the Arc menu wiki guide is a good place to start.
@@ -107,17 +104,21 @@ Additional credits: This extension also leverages the work from [Giovanni Campag
 
 ### Current Active Developers
 
-|Contributor|Development area|Active|
-|:-----:|:-----:|:-----:|
-|@[LinxGem33](https://github.com/LinxGem33)|Founder - Developer - Digital Art Designer|![](https://github.com/LinxGem33/Neon/blob/master/artwork/done.svg.png?raw=true)|
-||||
+|Developer|Development area|Active|Short/Bio|
+|:-----:|:-----:|:-----:|:-----:|
+|@[LinxGem33](https://github.com/LinxGem33)|Maintainer - Developer - Digital Art Designer|![](https://github.com/LinxGem33/Neon/blob/master/artwork/done.svg.png?raw=true)|Hi I'm LinxGem33 aka Andy and the founder of Arc menu, my role on the project is to manage and plan the technical and digital production and distribution of the Arc menu software, as you can imagine I’m a open source and Linux software enthusiast as well as a digital art designer and amateur GTK3 theme developer,I also like to contribute to other projects where i can. |
+|||||
 
 ##
+
 ### Top Project Contributors
 
 #### @[lexruee](https://github.com/lexruee) - **Project Developer** - UI/UX Designer
 
+- Full list : [Here](https://github.com/LinxGem33/Arc-Menu/graphs/contributors)
+
 ##
+
 ### Technical Advisors
 
 ##
