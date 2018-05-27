@@ -104,7 +104,7 @@ Additional credits: This extension also leverages the work from [Giovanni Campag
 
 ### Current Active Developers
 
-|Developer|Development area|Active|Short/Bio|
+|Developer|Current Task|Active|Short/Bio|
 |:-----:|:-----:|:-----:|:-----:|
 |@[LinxGem33](https://github.com/LinxGem33)|Maintainer - Developer - Digital Art Designer|![](https://github.com/LinxGem33/Neon/blob/master/artwork/done.svg.png?raw=true)|Hi I'm LinxGem33 aka Andy and the founder of Arc menu, my role on the project is to manage and plan the technical and digital production and distribution of the Arc menu software, as you can imagine I’m a open source and Linux software enthusiast as well as a digital art designer and amateur GTK3 theme developer,I also like to contribute to other projects where i can. |
 |||||
