@@ -20,7 +20,7 @@ Please see the: [Development Roadmap Page](https://github.com/LinxGem33/Arc-Menu
 
 ### Volunteers needed!
 
-This extension could be even better with your help! Any items in the issue tracker labelled `help wanted` or `good first issue` are open for contribution and help. For more info, see the [Contributing wiki page](https://github.com/LinxGem33/Arc-Menu/wiki/Contributions-&-Help) for more details on current issues or features which need your help.
+This extension could be even better with your help! Any items in the issue tracker labelled **help wanted** or **good first issue** are open for contribution and help. For more info, see the [Contributing wiki page](https://github.com/LinxGem33/Arc-Menu/wiki/Contributions-&-Help) for more details on current issues or features which need your help.
 
 ##
 |Arc Menu integrated with Dash-to-Dock|Arc Menu integrated with Dash-to-Panel|
@@ -108,11 +108,11 @@ Additional credits: This extension also leverages the work from [Giovanni Campag
 ### Current Active Developers
 
 |Contributor|Development area|Active|
-|-----|-----|-----|
+|:-----:|:-----:|:-----:|
 |@[LinxGem33](https://github.com/LinxGem33)|Founder - Developer - Digital Art Designer|![](https://github.com/LinxGem33/Neon/blob/master/artwork/done.svg.png?raw=true)|
 ||||
 
-
+##
 ### Top Project Contributors
 
 #### @[lexruee](https://github.com/lexruee) - **Project Developer** - UI/UX Designer
