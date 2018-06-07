@@ -1,7 +1,7 @@
 # Please be aware all my repositories will be migrating from Github to [GitLab](https://gitlab.com/) over the next month ill be updating all links so they point to this repo over the coming weeks so the landing page might look a mess for a little while https://extensions.gnome.org/extension/1228/arc-menu/ !!!!
 
 ##
-![](https://github.com/LinxGem33/Neon/blob/master/artwork/arc-wide-banner-new.png?raw=true)
+![](https://gitlab.com/LinxGem33/Neon/blob/master/artwork/arc-wide-banner-new.png?raw=true)
 
 ##
 ![](https://github.com/LinxGem33/Arc-Menu/blob/master/screenshots/browser.png?raw=true)
