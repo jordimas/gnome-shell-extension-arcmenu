@@ -1,5 +1,4 @@
 # Please be aware all my repositories will be migrating from Github to [GitLab](https://gitlab.com/) over the next month ill be updating all links so they point to this repo over the coming weeks so the landing page might look a mess for a little while and some links may point to Github which the account is now closed https://extensions.gnome.org/extension/1228/arc-menu/ !!!!
------
 
 ![](https://gitlab.com/LinxGem33/Neon/raw/master/artwork/arc-wide-banner-new.png)
 
