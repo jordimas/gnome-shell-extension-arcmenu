@@ -28,7 +28,7 @@ This extension could be even better with your help! Any items in the issue track
 -----
 
 <figure class="video_container">
-  <iframe width="560" height="315" src="https://www.youtube.com/embed/F-t1X96CVwg" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+  <iframe src="https://www.youtube.com/embed/enMumwvLAug" frameborder="0" allowfullscreen="true"> </iframe>
 </figure>
 
 -----
