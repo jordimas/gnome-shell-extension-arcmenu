@@ -27,12 +27,6 @@ This extension could be even better with your help! Any items in the issue track
 
 -----
 
-<figure class="video_container">
-  <iframe src="https://www.youtube.com/embed/enMumwvLAug" frameborder="0" allowfullscreen="true"> </iframe>
-</figure>
-
------
-
 |Arc Menu integrated with Dash-to-Dock|Arc Menu integrated with Dash-to-Panel|
 |:-----:|:-----:|
 |![](https://gitlab.com/LinxGem33/Arc-Menu/raw/master/screenshots/apm3.png)|![](https://gitlab.com/LinxGem33/Arc-Menu/raw/master/screenshots/apm5.png)|
