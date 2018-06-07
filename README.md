@@ -32,8 +32,6 @@ This extension could be even better with your help! Any items in the issue track
 |![](https://gitlab.com/LinxGem33/Arc-Menu/raw/master/screenshots/apm3.png)|![](https://gitlab.com/LinxGem33/Arc-Menu/raw/master/screenshots/apm5.png)|
 |Click image to enlarge|Click image to enlarge|
 
------
-
 ### Installation
 
 You can now install this extension from extensions.gnome.org as a one click install just click on the link below
