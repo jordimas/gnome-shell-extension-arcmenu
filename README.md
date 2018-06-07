@@ -48,10 +48,10 @@ following dependencies installed.
 
 |On Ubuntu/Debian based systems||On Arch based systems||
 |-----|:-----:|-----|:-----:|
-|gnome-shell-extensions|![](https://github.com/LinxGem33/Neon/blob/master/artwork/done.svg.png?raw=true)|gnome-shell-extensions|![](https://github.com/LinxGem33/Neon/blob/master/artwork/done.svg.png?raw=true)
-|gnome-tweak-tool|![](https://github.com/LinxGem33/Neon/blob/master/artwork/done.svg.png?raw=true)|gnome-tweak-tool|![](https://github.com/LinxGem33/Neon/blob/master/artwork/done.svg.png?raw=true)
-|gnome-menus|![](https://github.com/LinxGem33/Neon/blob/master/artwork/done.svg.png?raw=true)|gnome-menus|![](https://github.com/LinxGem33/Neon/blob/master/artwork/done.svg.png?raw=true)
-|gnome-session|![](https://github.com/LinxGem33/Neon/blob/master/artwork/done.svg.png?raw=true)
+|gnome-shell-extensions|![](https://gitlab.com/LinxGem33/Neon/raw/master/artwork/done.svg.png)|gnome-shell-extensions|![](https://gitlab.com/LinxGem33/Neon/raw/master/artwork/done.svg.png)
+|gnome-tweak-tool|![](https://gitlab.com/LinxGem33/Neon/raw/master/artwork/done.svg.png)|gnome-tweak-tool|![](https://gitlab.com/LinxGem33/Neon/raw/master/artwork/done.svg.png)
+|gnome-menus|![](https://gitlab.com/LinxGem33/Neon/raw/master/artwork/done.svg.png)|gnome-menus|![](https://gitlab.com/LinxGem33/Neon/raw/master/artwork/done.svg.png)
+|gnome-session|![](https://gitlab.com/LinxGem33/Neon/raw/master/artwork/done.svg.png)
 
 -----
 
@@ -73,7 +73,7 @@ Please refer to the Arc menu [Wiki Guide](https://github.com/LinxGem33/Arc-Menu/
 
 ### Bugs
 
-Bugs should be reported [here](https://github.com/LinxGem33/Arc-Menu/issues) on the Github issues page.
+Bugs should be reported [here](https://gitlab.com/LinxGem33/Arc-Menu/issues) on the Github issues page.
 
 -----
 
@@ -118,7 +118,7 @@ Additional credits: This extension also leverages the work from [Giovanni Campag
 
 |Developer|Current Task|Active|Short/Bio|
 |:-----:|:-----:|:-----:|:-----:|
-|@[LinxGem33](https://github.com/LinxGem33)|Maintainer - Developer - Digital Art Designer|![](https://github.com/LinxGem33/Neon/blob/master/artwork/done.svg.png?raw=true)|Hi I'm LinxGem33 aka Andy and the founder of Arc menu, my role on the project is to manage and plan the technical and digital production and distribution of the Arc menu software, as you can imagine I’m a open source and Linux software enthusiast as well as a digital art designer and amateur GTK3 theme developer,I also like to contribute to other projects where i can. |
+|@[LinxGem33](https://gitlab.com/LinxGem33)|Maintainer - Developer - Digital Art Designer|![](https://gitlab.com/LinxGem33/Neon/raw/master/artwork/done.svg.png)|Hi I'm LinxGem33 aka Andy and the founder of Arc menu, my role on the project is to manage and plan the technical and digital production and distribution of the Arc menu software, as you can imagine I’m a open source and Linux software enthusiast as well as a digital art designer and amateur GTK3 theme developer,I also like to contribute to other projects where i can. |
 |||||
 
 -----
@@ -127,7 +127,6 @@ Additional credits: This extension also leverages the work from [Giovanni Campag
 
 #### @[lexruee](https://github.com/lexruee) - **Project Developer** - UI/UX Designer
 
-- Full list : [Here](https://github.com/LinxGem33/Arc-Menu/graphs/contributors)
 
 -----
 
@@ -153,19 +152,19 @@ Additional credits: This extension also leverages the work from [Giovanni Campag
 
 |Contributor|Language|Translated|Contributor|Language|Translated|
 |:-----|:-----|:-----:|:-----|:-----|:-----:|
-|@[h3r0n](https://github.com/h3r0n)|Italian|![](https://github.com/LinxGem33/Neon/blob/master/artwork/done.svg.png?raw=true)|@[megasyl](https://github.com/megasyl) > updated by @[16NoCo](https://github.com/16NoCo)|French|![](https://github.com/LinxGem33/Neon/blob/master/artwork/done.svg.png?raw=true)
-|@[pkomur](https://github.com/pkomur) > updated by @[Ixoos](https://github.com/Ixoos)|Polish|![](https://github.com/LinxGem33/Neon/blob/master/artwork/done.svg.png?raw=true)|@[madaramost](https://github.com/madaramost)|Arabic|![](https://github.com/LinxGem33/Neon/blob/master/artwork/done.svg.png?raw=true)
-|@[danielstuart14](https://github.com/danielstuart14)|Brazilian portuguese|![](https://github.com/LinxGem33/Neon/blob/master/artwork/done.svg.png?raw=true)||Chinese|
-|@[zakkak](https://github.com/zakkak)|Greek|![](https://github.com/LinxGem33/Neon/blob/master/artwork/done.svg.png?raw=true)|@[mjtullio](https://github.com/mjtullio)|Spanish|![](https://github.com/LinxGem33/Neon/blob/master/artwork/done.svg.png?raw=true)
-|@[mrprobot](https://github.com/mrprobot)|German|![](https://github.com/LinxGem33/Neon/blob/master/artwork/done.svg.png?raw=true)|@[saisasidhar](https://github.com/saisasidhar)|Hindi|![](https://github.com/LinxGem33/Neon/blob/master/artwork/done.svg.png?raw=true)
+|@[h3r0n](https://github.com/h3r0n)|Italian|![](https://gitlab.com/LinxGem33/Neon/raw/master/artwork/done.svg.png)|@[megasyl](https://github.com/megasyl) > updated by @[16NoCo](https://github.com/16NoCo)|French|![](https://gitlab.com/LinxGem33/Neon/raw/master/artwork/done.svg.png)
+|@[pkomur](https://github.com/pkomur) > updated by @[Ixoos](https://github.com/Ixoos)|Polish|![](https://gitlab.com/LinxGem33/Neon/raw/master/artwork/done.svg.png)|@[madaramost](https://github.com/madaramost)|Arabic|![](https://gitlab.com/LinxGem33/Neon/raw/master/artwork/done.svg.png)
+|@[danielstuart14](https://github.com/danielstuart14)|Brazilian portuguese|![](https://gitlab.com/LinxGem33/Neon/raw/master/artwork/done.svg.png)||Chinese|
+|@[zakkak](https://github.com/zakkak)|Greek|![](https://gitlab.com/LinxGem33/Neon/raw/master/artwork/done.svg.png)|@[mjtullio](https://github.com/mjtullio)|Spanish|![](https://gitlab.com/LinxGem33/Neon/raw/master/artwork/done.svg.png)
+|@[mrprobot](https://github.com/mrprobot)|German|![](https://gitlab.com/LinxGem33/Neon/raw/master/artwork/done.svg.png)|@[saisasidhar](https://github.com/saisasidhar)|Hindi|![](https://gitlab.com/LinxGem33/Neon/raw/master/artwork/done.svg.png)
 ||Portuguese|||Bengali||
-|@[elsieholmes](https://github.com/elsieholmes)|Russian|![](https://github.com/LinxGem33/Neon/blob/master/artwork/done.svg.png?raw=true)||Japanese||
-|@[MorganAntonsson](https://github.com/MorganAntonsson)|Swedish|![](https://github.com/LinxGem33/Neon/blob/master/artwork/done.svg.png?raw=true)||Dutch||
-|@[neynefes](https://github.com/neynefes)|Turkish|![](https://github.com/LinxGem33/Neon/blob/master/artwork/done.svg.png?raw=true)||Javanese||
-|@[elsieholmes](https://github.com/elsieholmes)|Ukrainian|![](https://github.com/LinxGem33/Neon/blob/master/artwork/done.svg.png?raw=true)|@[PSSGCSim](https://github.com/PSSGCSim)|Czech|![](https://github.com/LinxGem33/Neon/blob/master/artwork/done.svg.png?raw=true)
-|@[ipanamski](https://github.com/ipanamski)|Bulgarian|![](https://github.com/LinxGem33/Neon/blob/master/artwork/done.svg.png?raw=true)|@[muhfajar](https://github.com/muhfajar) > updated by @[emhaye](https://github.com/emhaye)|Indonesian|![](https://github.com/LinxGem33/Neon/blob/master/artwork/done.svg.png?raw=true)
-|@[artnay](https://github.com/artnay)|Finnish|![](https://github.com/LinxGem33/Neon/blob/master/artwork/done.svg.png?raw=true)|@[Lrss](https://github.com/Lrss)|Danish|![](https://github.com/LinxGem33/Neon/blob/master/artwork/done.svg.png?raw=true)|
-|@[Faenriis](https://github.com/Faenriis)|Serbian|![](https://github.com/LinxGem33/Neon/blob/master/artwork/done.svg.png?raw=true)||||
+|@[elsieholmes](https://github.com/elsieholmes)|Russian|![](https://gitlab.com/LinxGem33/Neon/raw/master/artwork/done.svg.png)||Japanese||
+|@[MorganAntonsson](https://github.com/MorganAntonsson)|Swedish|![](https://gitlab.com/LinxGem33/Neon/raw/master/artwork/done.svg.png)||Dutch||
+|@[neynefes](https://github.com/neynefes)|Turkish|![](https://gitlab.com/LinxGem33/Neon/raw/master/artwork/done.svg.png)||Javanese||
+|@[elsieholmes](https://github.com/elsieholmes)|Ukrainian|![](https://gitlab.com/LinxGem33/Neon/raw/master/artwork/done.svg.png)|@[PSSGCSim](https://github.com/PSSGCSim)|Czech|![](https://gitlab.com/LinxGem33/Neon/raw/master/artwork/done.svg.png)
+|@[ipanamski](https://github.com/ipanamski)|Bulgarian|![](https://gitlab.com/LinxGem33/Neon/raw/master/artwork/done.svg.png)|@[muhfajar](https://github.com/muhfajar) > updated by @[emhaye](https://github.com/emhaye)|Indonesian|![](https://gitlab.com/LinxGem33/Neon/raw/master/artwork/done.svg.png)
+|@[artnay](https://github.com/artnay)|Finnish|![](https://gitlab.com/LinxGem33/Neon/raw/master/artwork/done.svg.png)|@[Lrss](https://github.com/Lrss)|Danish|![](https://gitlab.com/LinxGem33/Neon/raw/master/artwork/done.svg.png)|
+|@[Faenriis](https://github.com/Faenriis)|Serbian|![](https://gitlab.com/LinxGem33/Neon/raw/master/artwork/done.svg.png)||||
 
 -----
 
