@@ -98,7 +98,7 @@ So, please provide us information about your GNU/Linux distribution and the GNOM
 -----
 
 [![GNU GPL Image](https://www.gnu.org/graphics/slickgnu.tiny.png)](http://www.gnu.org/licenses/old-licenses/lgpl-2.0.html)  
-### License & Terms ![](https://github.com/LinxGem33/IP-Finder/blob/master/screens/Copyleft-16.png?raw=true)
+### License & Terms ![](https://gitlab.com/LinxGem33/IP-Finder/raw/master/screens/Copyleft-16.png)
 
 Arc Menu is available under the terms of the GPL-2.0 license See [`COPYING`](https://github.com/LinxGem33/Arc-Menu/blob/master/COPYING) for details.
 
@@ -147,7 +147,9 @@ Additional credits: This extension also leverages the work from [Giovanni Campag
 - @[JasonLG1979](https://github.com/JasonLG1979) (1) menu style fix
 - @[lexruee](https://github.com/lexruee/Arc-Menu) (1) correctly restore the Activities button
 - @[charlesg99](https://github.com/charlesg99) (1) Disconnect height notification signal ,(2) Prevent duplicate destruction of the menu sections
-##
+
+-----
+
 #### Please refer to the Wiki section for a [Translation Guide](https://github.com/LinxGem33/Arc-Menu/wiki/Translation-Guide)
 
 |Contributor|Language|Translated|Contributor|Language|Translated|
