@@ -65,7 +65,7 @@ on the Arc-Menu Wiki.
 
 If you have any issues with regard to Arc menu and your unsure of a certain feature or just want to know more about Arc menu, then the Arc menu wiki guide is a good place to start.
 
-Please refer to the Arc menu [Wiki Guide](https://github.com/LinxGem33/Arc-Menu/wiki) 
+Please refer to the Arc menu [Wiki Guide](https://gitlab.com/LinxGem33/Arc-Menu/wikis/home) 
 
 -----
 
