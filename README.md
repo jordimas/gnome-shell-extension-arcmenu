@@ -1,5 +1,3 @@
-# Please be aware all my repositories will be migrating from Github to [GitLab](https://gitlab.com/) over the next month ill be updating all links so they point to this repo over the coming weeks so the landing page might look a mess for a little while and some links may point to Github which the account is now closed https://extensions.gnome.org/extension/1228/arc-menu/ !!!!
-
 ![](https://gitlab.com/LinxGem33/Neon/raw/master/artwork/arc-wide-banner-new.png)
 
 -----
@@ -17,13 +15,13 @@ Arc Menu is a Gnome shell extension designed to replace the standard menu found 
 
 If your interested to see the current development cycle of Arc menu or the current status of a particular feature in development then head over to the new Development Roadmap page which will give you a idea of what’s planned or what’s currently being developed by the Arc menu team the link is below.
 
-Please see the: [Development Roadmap Page](https://github.com/LinxGem33/Arc-Menu/issues/42)
+Please see the: [Development Roadmap Page](https://gitlab.com/LinxGem33/Arc-Menu/wikis/home)
 
 -----
 
 ### Volunteers needed!
 
-This extension could be even better with your help! Any items in the issue tracker labelled **help wanted** or **good first issue** are open for contribution and help. For more info, see the [Contributing wiki page](https://github.com/LinxGem33/Arc-Menu/wiki/Contributions-&-Help) for more details on current issues or features which need your help.
+This extension could be even better with your help! Any items in the issue tracker labelled **help wanted** or **good first issue** are open for contribution and help. For more info, see the [Contributing wiki page](https://gitlab.com/LinxGem33/Arc-Menu/wikis/home) for more details on current issues or features which need your help.
 
 -----
 
@@ -58,7 +56,7 @@ following dependencies installed.
 ### Manual Installation
 For installing Arc-Menu manually from source;
 
-Please take a look at the [Manual Installation Guide](https://github.com/LinxGem33/Arc-Menu/wiki/Installing-from-extensions.gnome.org#manual-installuninstall-using-make) 
+Please take a look at the [Manual Installation Guide](https://gitlab.com/LinxGem33/Arc-Menu/wikis/home) 
 on the Arc-Menu Wiki.
 
 -----
@@ -90,7 +88,7 @@ There are basic rules of conduct that should be followed at all times by everyon
 
 -----
 
-Please refer to the Wiki section for a guide on: [Reporting Bugs](https://github.com/LinxGem33/Arc-Menu/wiki/Reporting-Bug's)
+Please refer to the Wiki section for a guide on: [Reporting Bugs](https://gitlab.com/LinxGem33/Arc-Menu/wikis/home)
 
 Please note that without any information about your system, the Arc Menu Team can only speculate what the problem is.
 So, please provide us information about your GNU/Linux distribution and the GNOME Shell version. Otherwise, we are not able to try and solve your problem.
