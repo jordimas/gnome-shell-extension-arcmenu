@@ -460,20 +460,20 @@ var ApplicationsButton = new Lang.Class({
                 {   label: _("Software"),
                     symbolic: "gnome-software-symbolic",
                     command: "gnome-software" },
-		{   label: _("Software"),
+                {   label: _("Software"),
                     symbolic: "gnome-software-symbolic",
                     command: "pamac-manager" },
                 {   label: _("Settings"),
                     symbolic: "preferences-system-symbolic",
                     command: "gnome-control-center" },
                 {   label: _("Tweak Tool"),
-                    symbolic: "gnome-tweak-tool-symbolic",
+                    symbolic: "org.gnome.tweaks-symbolic",
                     command: "gnome-tweak-tool" },
                 {   label: _("Tweaks"), // Tweak Tool is called Tweaks in GNOME 3.26
-                    symbolic: "gnome-tweak-tool-symbolic",
+                    symbolic: "org.gnome.tweaks-symbolic",
                     command: "gnome-tweaks" },
-		{   label: _("Terminal"),
-                    symbolic: "gnome-terminal-symbolic",
+                {   label: _("Terminal"),
+                    symbolic: "utilities-terminal-symbolic",
                     command: "gnome-terminal" }
             ];
             shortcuts.forEach(Lang.bind(this, function(shortcut) {
