@@ -571,11 +571,14 @@ var PlaceInfo = new Lang.Class({
         try {
             let info = this.file.query_info('standard::symbolic-icon', 0, null);
 	        return info.get_symbolic_icon();
-        } catch(e if e instanceof Gio.IOErrorEnum) {
-            if (!this.file.is_native()) {
-                return new Gio.ThemedIcon({ name: 'folder-remote-symbolic' });
-            } else {
-                return new Gio.ThemedIcon({ name: 'folder-symbolic' });
+        
+        } catch(e) {
+            if (e instanceof GioIOErrorEnum) {
+                if (!this.file.is_native()) {
+                    return new Gio.ThemedIcon({ name: 'folder-remote-symbolic' });
+                } else {
+                    return new Gio.ThemedIcon({ name: 'folder-symbolic' });
+                }
             }
         }
     },
@@ -585,8 +588,10 @@ var PlaceInfo = new Lang.Class({
         try {
             let info = this.file.query_info('standard::display-name', 0, null);
             return info.get_display_name();
-        } catch(e if e instanceof Gio.IOErrorEnum) {
-            return this.file.get_basename();
+        } catch(e) {
+            if (e instanceof Gio.IOErrorEnum) {
+                return this.file.get_basename();
+            }
         }
     },
 });
