@@ -148,7 +148,7 @@ Additional credits: This extension also leverages the work from [Giovanni Campag
 
 -----
 
-#### Please refer to the Wiki section for a [Translation Guide](https://github.com/LinxGem33/Arc-Menu/wiki/Translation-Guide)
+#### Please refer to the Wiki section for a [Translation Guide](https://gitlab.com/LinxGem33/Arc-Menu/wikis/home)
 
 |Contributor|Language|Translated|Contributor|Language|Translated|
 |:-----|:-----|:-----:|:-----|:-----|:-----:|
