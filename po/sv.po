@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Arc Menu\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-03-07 20:15+0100\n"
+"POT-Creation-Date: 2019-03-18 19:11+0100\n"
 "PO-Revision-Date: 2018-03-08 20:32+0100\n"
 "Last-Translator: Morgan Antonsson <morgan.antonsson@gmail.com>\n"
 "Language-Team: \n"
@@ -16,202 +16,207 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: prefs.js:45
+#: prefs.js:42
 msgid "General"
 msgstr "Allmänt"
 
-#: prefs.js:59
+#: prefs.js:54
 msgid "Behaviour"
 msgstr "Beteende"
 
-#: prefs.js:68
+#: prefs.js:63
 msgid "Disable activities hot corner"
 msgstr "Inaktivera aktivitetshörn"
 
-#: prefs.js:90
+#: prefs.js:85
 msgid "Set menu hotkey"
 msgstr "Välj tangentbordsgenväg"
 
-#: prefs.js:96
+#: prefs.js:91
 msgid "Undefined"
 msgstr "Odefinierad"
 
-#: prefs.js:97
+#: prefs.js:92
 msgid "Left Super Key"
 msgstr "Vänster super"
 
-#: prefs.js:98
+#: prefs.js:93
 msgid "Right Super Key"
 msgstr "Höger super"
 
-#: prefs.js:110
+#: prefs.js:105
 msgid "Enable custom menu keybinding"
 msgstr "Anpassa tangentbordsgenväg"
 
-#: prefs.js:117
+#: prefs.js:112
 msgid "Syntax: <Shift>, <Ctrl>, <Alt>, <Super>"
 msgstr "Syntax: <Shift>, <Ctrl>, <Alt>, <Super>"
 
-#: prefs.js:159
+#: prefs.js:152
 msgid "Button appearance"
 msgstr "Knappens utseende"
 
-#: prefs.js:171
+#: prefs.js:165
 msgid "Text for the menu button"
 msgstr "Menyknappens text"
 
-#: prefs.js:177
+#: prefs.js:171
 msgid "System text"
 msgstr "Systemtext"
 
-#: prefs.js:180
+#: prefs.js:174
 msgid "Custom text"
 msgstr "Anpassad text"
 
-#: prefs.js:204
+#: prefs.js:198
 msgid "Set custom text for the menu button"
 msgstr "Anpassa menyknappens text"
 
-#: prefs.js:224
+#: prefs.js:218
 msgid "Enable the arrow icon beside the button text"
 msgstr "Visa en pil bredvid knappens text"
 
-#: prefs.js:246
+#: prefs.js:240
 msgid "Select icon for the menu button"
 msgstr "Välj menyknappens ikon"
 
-#: prefs.js:256
+#: prefs.js:250
 msgid "Please select an image icon"
 msgstr "Välj ikonbild"
 
-#: prefs.js:261
+#: prefs.js:255
 msgid "Arc Menu Icon"
 msgstr "Arc Menu-ikon"
 
-#: prefs.js:262
+#: prefs.js:256
 msgid "System Icon"
 msgstr "Systemikon"
 
-#: prefs.js:263
+#: prefs.js:257
 msgid "Custom Icon"
 msgstr "Anpassad ikon"
 
-#: prefs.js:289
+#: prefs.js:283
 msgid "Icon size"
 msgstr "Ikonstorlek"
 
-#: prefs.js:289
+#: prefs.js:283
 msgid "default is"
 msgstr "förvalt värde: "
 
-#: prefs.js:330
+#: prefs.js:323
 msgid "Appearance"
 msgstr "Utseende"
 
-#: prefs.js:339
+#: prefs.js:332
 msgid "Customize menu button appearance"
 msgstr "Anpassa menyknappens utseende"
 
-#: prefs.js:349
+#: prefs.js:342
 msgid "Icon"
 msgstr "Ikon"
 
-#: prefs.js:350
+#: prefs.js:343
 msgid "Text"
 msgstr "Text"
 
-#: prefs.js:351
+#: prefs.js:344
 msgid "Icon and Text"
 msgstr "Ikon och text"
 
-#: prefs.js:352
+#: prefs.js:345
 msgid "Text and Icon"
 msgstr "Text och ikon"
 
-#: prefs.js:377
+#: prefs.js:370
 msgid "Menu position in panel"
 msgstr "Menyns placering i panelen"
 
-#: prefs.js:384
+#: prefs.js:377
 msgid "Left"
 msgstr "Vänster"
 
-#: prefs.js:387
+#: prefs.js:380
 msgid "Center"
 msgstr "Mitten"
 
-#: prefs.js:391
+#: prefs.js:384
 msgid "Right"
 msgstr "Höger"
 
-#: prefs.js:436
+#: prefs.js:461
 msgid "About"
 msgstr "Om"
 
-#: prefs.js:465
+#: prefs.js:490
 msgid "Arc-Menu"
 msgstr "Arc-Menu"
 
-#: prefs.js:470
+#: prefs.js:495
 msgid "version: "
 msgstr "version: "
 
-#: prefs.js:478
-msgid "Github Page"
+#: prefs.js:503
+#, fuzzy
+msgid "GitLab Page"
 msgstr "Github"
 
-#: menu.js:277
+#: menu.js:272
 msgid "Home"
 msgstr "Hem"
 
-#: menu.js:460
+#: menu.js:456 menu.js:461
 msgid "Software"
 msgstr "Programvara"
 
-#: menu.js:463
+#: menu.js:466
 msgid "Settings"
 msgstr "Inställningar"
 
-#: menu.js:466
+#: menu.js:471
 msgid "Tweak Tool"
 msgstr "Justeringsverktyg"
 
-#: menu.js:469
+#: menu.js:476
 msgid "Tweaks"
 msgstr "Justeringar"
 
-#: menuWidgets.js:89
+#: menu.js:481
+msgid "Terminal"
+msgstr ""
+
+#: menuWidgets.js:86
 msgid "Activities Overview"
 msgstr "Aktivitetsöversikt"
 
-#: menuWidgets.js:146
+#: menuWidgets.js:199
 msgid "Power Off"
 msgstr "Stäng av"
 
-#: menuWidgets.js:162
+#: menuWidgets.js:212
 msgid "Log Out"
 msgstr "Logga ut"
 
-#: menuWidgets.js:178
+#: menuWidgets.js:225
 msgid "Suspend"
 msgstr "Vänteläge"
 
-#: menuWidgets.js:199
+#: menuWidgets.js:243
 msgid "Lock"
 msgstr "Lås"
 
-#: menuWidgets.js:224
+#: menuWidgets.js:265
 msgid "Back"
 msgstr "Bakåt"
 
-#: menuWidgets.js:454
+#: menuWidgets.js:483
 msgid "Favorites"
 msgstr "Favoriter"
 
-#: menuWidgets.js:589
+#: menuWidgets.js:616
 msgid "Type to search…"
 msgstr "Skriv för att söka…"
 
-#: menuWidgets.js:756
+#: menuWidgets.js:781
 msgid "Applications"
 msgstr "Applikationer"

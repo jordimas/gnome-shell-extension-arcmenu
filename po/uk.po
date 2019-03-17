@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Arc Menu\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-12-04 20:05+0200\n"
+"POT-Creation-Date: 2019-03-18 19:11+0100\n"
 "PO-Revision-Date: 2017-12-04 20:03+0200\n"
 "Last-Translator: Alice Charlotte Liddell <e-liss@tuta.io>\n"
 "Language-Team: \n"
@@ -19,204 +19,208 @@ msgstr ""
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
 "%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 
-#: prefs.js:45
+#: prefs.js:42
 msgid "General"
 msgstr ""
 
-#: prefs.js:59
+#: prefs.js:54
 msgid "Behaviour"
 msgstr "Поведінка"
 
-#: prefs.js:68
+#: prefs.js:63
 msgid "Disable activities hot corner"
 msgstr "Вимкнути гарячий кут Діяльність"
 
-#: prefs.js:90
+#: prefs.js:85
 msgid "Set menu hotkey"
 msgstr "Гаряча клавіша меню"
 
-#: prefs.js:96
+#: prefs.js:91
 msgid "Undefined"
 msgstr "Невизначено"
 
-#: prefs.js:97
+#: prefs.js:92
 msgid "Left Super Key"
 msgstr "Ліва Super"
 
-#: prefs.js:98
+#: prefs.js:93
 msgid "Right Super Key"
 msgstr "Права Super"
 
-#: prefs.js:110
+#: prefs.js:105
 msgid "Enable custom menu keybinding"
 msgstr "Увімкнути власну комбінацію клавіш"
 
-#: prefs.js:117
+#: prefs.js:112
 msgid "Syntax: <Shift>, <Ctrl>, <Alt>, <Super>"
 msgstr "Синтаксис: <Shift>, <Ctrl>, <Alt>, <Super>"
 
-#: prefs.js:159
+#: prefs.js:152
 msgid "Button appearance"
 msgstr "Вигляд кнопки"
 
-#: prefs.js:171
+#: prefs.js:165
 msgid "Text for the menu button"
 msgstr "Текст кнопки меню"
 
-#: prefs.js:177
+#: prefs.js:171
 msgid "System text"
 msgstr "Системний текст"
 
-#: prefs.js:180
+#: prefs.js:174
 msgid "Custom text"
 msgstr "Власний текст"
 
-#: prefs.js:204
+#: prefs.js:198
 msgid "Set custom text for the menu button"
 msgstr "Встановити власний текст кнопки меню"
 
-#: prefs.js:224
+#: prefs.js:218
 msgid "Enable the arrow icon beside the button text"
 msgstr "Увімкнути стрілочку поруч з текстом кнопки"
 
-#: prefs.js:246
+#: prefs.js:240
 msgid "Select icon for the menu button"
 msgstr "Оберіть значок кнопки меню"
 
-#: prefs.js:256
+#: prefs.js:250
 msgid "Please select an image icon"
 msgstr "Будь ласка, оберіть файл значка"
 
-#: prefs.js:261
+#: prefs.js:255
 msgid "Arc Menu Icon"
 msgstr "Значок Arc Menu"
 
-#: prefs.js:262
+#: prefs.js:256
 msgid "System Icon"
 msgstr "Системний значок"
 
-#: prefs.js:263
+#: prefs.js:257
 msgid "Custom Icon"
 msgstr "Власний значок"
 
-#: prefs.js:289
+#: prefs.js:283
 msgid "Icon size"
 msgstr "Розмір значка"
 
-#: prefs.js:289
+#: prefs.js:283
 msgid "default is"
 msgstr "за замовчуванням"
 
-#: prefs.js:330
+#: prefs.js:323
 msgid "Appearance"
 msgstr "Вигляд"
 
-#: prefs.js:339
+#: prefs.js:332
 msgid "Customize menu button appearance"
 msgstr "Змінити вигляд кнопки меню"
 
-#: prefs.js:349
+#: prefs.js:342
 msgid "Icon"
 msgstr "Значок"
 
-#: prefs.js:350
+#: prefs.js:343
 msgid "Text"
 msgstr "Текст"
 
-#: prefs.js:351
+#: prefs.js:344
 msgid "Icon and Text"
 msgstr "Значок та Текст"
 
-#: prefs.js:352
+#: prefs.js:345
 msgid "Text and Icon"
 msgstr "Текст та Значок"
 
-#: prefs.js:377
+#: prefs.js:370
 msgid "Menu position in panel"
 msgstr "Розташування меню на панелі"
 
-#: prefs.js:384
+#: prefs.js:377
 msgid "Left"
 msgstr "Ліворуч"
 
-#: prefs.js:387
+#: prefs.js:380
 msgid "Center"
 msgstr "По центру"
 
-#: prefs.js:391
+#: prefs.js:384
 msgid "Right"
 msgstr "Праворуч"
 
-#: prefs.js:436
+#: prefs.js:461
 msgid "About"
 msgstr "Деталі"
 
-#: prefs.js:465
+#: prefs.js:490
 msgid "Arc-Menu"
 msgstr "Arc-Menu"
 
-#: prefs.js:470
+#: prefs.js:495
 msgid "version: "
 msgstr "версія: "
 
-#: prefs.js:478
-msgid "Github Page"
+#: prefs.js:503
+msgid "GitLab Page"
 msgstr ""
 
-#: menu.js:276
+#: menu.js:272
 msgid "Home"
 msgstr "Домашня тека"
 
-#: menu.js:459
+#: menu.js:456 menu.js:461
 msgid "Software"
 msgstr "Програмне Забезпечення"
 
-#: menu.js:462
+#: menu.js:466
 msgid "Settings"
 msgstr "Налаштування"
 
-#: menu.js:465
+#: menu.js:471
 msgid "Tweak Tool"
 msgstr "Tweak Tool"
 
-#: menu.js:468
+#: menu.js:476
 #, fuzzy
 msgid "Tweaks"
 msgstr "Tweak Tool"
 
-#: menuWidgets.js:89
+#: menu.js:481
+msgid "Terminal"
+msgstr ""
+
+#: menuWidgets.js:86
 msgid "Activities Overview"
 msgstr "Огляд Діяльності"
 
-#: menuWidgets.js:146
+#: menuWidgets.js:199
 msgid "Power Off"
 msgstr "Вимкнути"
 
-#: menuWidgets.js:162
+#: menuWidgets.js:212
 msgid "Log Out"
 msgstr "Вийти"
 
-#: menuWidgets.js:178
+#: menuWidgets.js:225
 msgid "Suspend"
 msgstr "Призупинити"
 
-#: menuWidgets.js:199
+#: menuWidgets.js:243
 msgid "Lock"
 msgstr "Заблокувати екран"
 
-#: menuWidgets.js:224
+#: menuWidgets.js:265
 msgid "Back"
 msgstr "Назад"
 
-#: menuWidgets.js:454
+#: menuWidgets.js:483
 msgid "Favorites"
 msgstr "Улюблені"
 
-#: menuWidgets.js:589
+#: menuWidgets.js:616
 msgid "Type to search…"
 msgstr "Пошук…"
 
-#: menuWidgets.js:756
+#: menuWidgets.js:781
 msgid "Applications"
 msgstr "Застосунки"
 

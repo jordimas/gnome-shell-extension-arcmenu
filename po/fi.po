@@ -7,205 +7,221 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Arc Menu\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-10-28 09:55+0300\n"
+"POT-Creation-Date: 2019-03-18 19:11+0100\n"
 "PO-Revision-Date: 2017-10-28 10:01+0300\n"
+"Last-Translator: Jiri Grönroos <jiri.gronroos+l10n@iki.fi>\n"
 "Language-Team: \n"
+"Language: fi\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Poedit 1.8.7.1\n"
-"Last-Translator: Jiri Grönroos <jiri.gronroos+l10n@iki.fi>\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"Language: fi\n"
 
-#: prefs.js:76
+#: prefs.js:42
+msgid "General"
+msgstr ""
+
+#: prefs.js:54
 msgid "Behaviour"
 msgstr "Toiminta"
 
-#: prefs.js:85
+#: prefs.js:63
 msgid "Disable activities hot corner"
 msgstr "Poista Toiminnot-toimintokulma käytöstä"
 
-#: prefs.js:107
+#: prefs.js:85
 msgid "Set menu hotkey"
 msgstr "Aseta valikon pikanäppäin"
 
-#: prefs.js:113
+#: prefs.js:91
 msgid "Undefined"
 msgstr "Määrittämätön"
 
-#: prefs.js:114
+#: prefs.js:92
 msgid "Left Super Key"
 msgstr "Vasen Super-näppäin"
 
-#: prefs.js:115
+#: prefs.js:93
 msgid "Right Super Key"
 msgstr "Oikea Super-näppäin"
 
-#: prefs.js:127
+#: prefs.js:105
 msgid "Enable custom menu keybinding"
 msgstr "Käytä mukautettua valikon pikanäppäintä"
 
-#: prefs.js:134
+#: prefs.js:112
 msgid "Syntax: <Shift>, <Ctrl>, <Alt>, <Super>"
 msgstr "Syntaksi: <Shift>, <Ctrl>, <Alt>, <Super>"
 
-#: prefs.js:175
-msgid "Appearance"
-msgstr "Ulkoasu"
-
-#: prefs.js:184
-msgid "Customize menu button appearance"
-msgstr "Mukauta valikkopainikkeen ulkoasua"
-
-#: prefs.js:194
-msgid "Icon"
-msgstr "Kuvake"
-
-#: prefs.js:195
-msgid "Text"
-msgstr "Teksti"
-
-#: prefs.js:196
-msgid "Icon and Text"
-msgstr "Kuvake ja teksti"
-
-#: prefs.js:197
-msgid "Text and Icon"
-msgstr "Teksti ja kuvake"
-
-#: prefs.js:222
-msgid "Menu position in panel"
-msgstr "Valikon sijainti paneelissa"
-
-#: prefs.js:229
-msgid "Left"
-msgstr "Vasemmalla"
-
-#: prefs.js:232
-msgid "Center"
-msgstr "Keskellä"
-
-#: prefs.js:236
-msgid "Right"
-msgstr "Oikealla"
-
-#: prefs.js:279
+#: prefs.js:152
 msgid "Button appearance"
 msgstr "Painikkeen ulkoasu"
 
-#: prefs.js:291
+#: prefs.js:165
 msgid "Text for the menu button"
 msgstr "Valikkopainikkeen teksti"
 
-#: prefs.js:297
+#: prefs.js:171
 msgid "System text"
 msgstr "Järjestelmäteksti"
 
-#: prefs.js:300
+#: prefs.js:174
 msgid "Custom text"
 msgstr "Mukautettu teksti"
 
-#: prefs.js:320
+#: prefs.js:198
 msgid "Set custom text for the menu button"
 msgstr "Aseta mukautettu teksti valikkopainikkeelle"
 
-#: prefs.js:340
+#: prefs.js:218
 msgid "Enable the arrow icon beside the button text"
 msgstr "Käytä nuolipainiketta painiketekstin vieressä"
 
-#: prefs.js:362
+#: prefs.js:240
 msgid "Select icon for the menu button"
 msgstr "Valitse kuvake valikkopainikkeelle"
 
-#: prefs.js:372
+#: prefs.js:250
 msgid "Please select an image icon"
 msgstr "Valitse kuvakuvake"
 
-#: prefs.js:387
+#: prefs.js:255
 msgid "Arc Menu Icon"
 msgstr "Arc Menu -kuvake"
 
-#: prefs.js:388
+#: prefs.js:256
 msgid "System Icon"
 msgstr "Järjestelmäkuvake"
 
-#: prefs.js:389
+#: prefs.js:257
 msgid "Custom Icon"
 msgstr "Mukautettu kuvake"
 
-#: prefs.js:404
+#: prefs.js:283
 msgid "Icon size"
 msgstr "Kuvakkeen koko"
 
-#: prefs.js:404
+#: prefs.js:283
 msgid "default is"
 msgstr "oletus on"
 
-#: prefs.js:448
+#: prefs.js:323
+msgid "Appearance"
+msgstr "Ulkoasu"
+
+#: prefs.js:332
+msgid "Customize menu button appearance"
+msgstr "Mukauta valikkopainikkeen ulkoasua"
+
+#: prefs.js:342
+msgid "Icon"
+msgstr "Kuvake"
+
+#: prefs.js:343
+msgid "Text"
+msgstr "Teksti"
+
+#: prefs.js:344
+msgid "Icon and Text"
+msgstr "Kuvake ja teksti"
+
+#: prefs.js:345
+msgid "Text and Icon"
+msgstr "Teksti ja kuvake"
+
+#: prefs.js:370
+msgid "Menu position in panel"
+msgstr "Valikon sijainti paneelissa"
+
+#: prefs.js:377
+msgid "Left"
+msgstr "Vasemmalla"
+
+#: prefs.js:380
+msgid "Center"
+msgstr "Keskellä"
+
+#: prefs.js:384
+msgid "Right"
+msgstr "Oikealla"
+
+#: prefs.js:461
 msgid "About"
 msgstr "Tietoja"
 
-#: prefs.js:477
+#: prefs.js:490
 msgid "Arc-Menu"
 msgstr "Arc-Menu"
 
-#: prefs.js:482
+#: prefs.js:495
 msgid "version: "
 msgstr "versio: "
 
-#: prefs.js:490
-msgid "Webpage"
-msgstr "Verkkosivusto"
+#: prefs.js:503
+msgid "GitLab Page"
+msgstr ""
 
-#: menu.js:130
-msgid "Activities Overview"
-msgstr "Toiminnot-yleisnäkymä"
-
-#: menu.js:154
-msgid "Power Off"
-msgstr "Sammuta"
-
-#: menu.js:179
-msgid "Log Out"
-msgstr "Kirjaudu ulos"
-
-#: menu.js:204
-msgid "Suspend"
-msgstr "Valmiustila"
-
-#: menu.js:235
-msgid "Lock"
-msgstr "Lukitse"
-
-#: menu.js:263
-msgid "Back"
-msgstr "Takaisin"
-
-#: menu.js:555
-msgid "Favorites"
-msgstr "Suosikit"
-
-#: menu.js:721
-msgid "Applications"
-msgstr "Sovellukset"
-
-#: menu.js:976
+#: menu.js:272
 msgid "Home"
 msgstr "Koti"
 
-#: menu.js:1041
-msgid "Type to search…"
-msgstr "Kirjoita hakeaksesi…"
-
-#: menu.js:1130
+#: menu.js:456 menu.js:461
 msgid "Software"
 msgstr "Ohjelmistot"
 
-#: menu.js:1134
+#: menu.js:466
 msgid "Settings"
 msgstr "Asetukset"
 
-#: menu.js:1138
+#: menu.js:471
 msgid "Tweak Tool"
 msgstr "Lisäasetukset"
+
+#: menu.js:476
+#, fuzzy
+msgid "Tweaks"
+msgstr "Lisäasetukset"
+
+#: menu.js:481
+msgid "Terminal"
+msgstr ""
+
+#: menuWidgets.js:86
+msgid "Activities Overview"
+msgstr "Toiminnot-yleisnäkymä"
+
+#: menuWidgets.js:199
+msgid "Power Off"
+msgstr "Sammuta"
+
+#: menuWidgets.js:212
+msgid "Log Out"
+msgstr "Kirjaudu ulos"
+
+#: menuWidgets.js:225
+msgid "Suspend"
+msgstr "Valmiustila"
+
+#: menuWidgets.js:243
+msgid "Lock"
+msgstr "Lukitse"
+
+#: menuWidgets.js:265
+msgid "Back"
+msgstr "Takaisin"
+
+#: menuWidgets.js:483
+msgid "Favorites"
+msgstr "Suosikit"
+
+#: menuWidgets.js:616
+msgid "Type to search…"
+msgstr "Kirjoita hakeaksesi…"
+
+#: menuWidgets.js:781
+msgid "Applications"
+msgstr "Sovellukset"
+
+#~ msgid "Webpage"
+#~ msgstr "Verkkosivusto"
