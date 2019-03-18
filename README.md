@@ -132,7 +132,7 @@ Additional credits: This extension also leverages the work from [Giovanni Campag
 
 #### @[lexruee](https://github.com/lexruee) - **Project Developer** - UI/UX Designer
 
-#### @[Thomas Ingvarsson](https://gitlab.com/tingvarsson) - **Project Contributorr** - Developer
+#### @[Thomas Ingvarsson](https://gitlab.com/tingvarsson) - **Project Contributor** - Developer
 -----
 
 ### Technical Advisors
