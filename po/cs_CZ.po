@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Arc Menu\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-08-16 23:26+0200\n"
+"POT-Creation-Date: 2019-03-18 19:11+0100\n"
 "PO-Revision-Date: 2017-08-16 23:41+0200\n"
 "Last-Translator: Jan Schwarzrock (PSSGCSim) <pssgcsim@psb1.org>\n"
 "Language-Team: \n"
@@ -17,198 +17,209 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: prefs.js:76
+#: prefs.js:42
+msgid "General"
+msgstr ""
+
+#: prefs.js:54
 msgid "Behaviour"
 msgstr "Chování"
 
-#: prefs.js:85
+#: prefs.js:63
 msgid "Disable activities hot corner"
 msgstr "Zakázat gesto aktivit v rohu"
 
-#: prefs.js:107
+#: prefs.js:85
 msgid "Set menu hotkey"
 msgstr "Nastavit klávesovou zkratku menu"
 
-#: prefs.js:113
+#: prefs.js:91
 msgid "Undefined"
 msgstr "Nedefinováno"
 
-#: prefs.js:114
+#: prefs.js:92
 msgid "Left Super Key"
 msgstr "Levá klávesa Super"
 
-#: prefs.js:115
+#: prefs.js:93
 msgid "Right Super Key"
 msgstr "Pravá klávesa Super"
 
-#: prefs.js:127
+#: prefs.js:105
 msgid "Enable custom menu keybinding"
 msgstr "Aktivovat jinou klávesovou zkratku"
 
-#: prefs.js:134
+#: prefs.js:112
 msgid "Syntax: <Shift>, <Ctrl>, <Alt>, <Super>"
 msgstr "Syntaxe: <Shift>, <Ctrl>, <Alt>, <Super>"
 
-#: prefs.js:175
-msgid "Appearance"
-msgstr "Vzhled"
-
-#: prefs.js:184
-msgid "Customize menu button appearance"
-msgstr "Přizpůsobit vzhled tlačítka menu"
-
-#: prefs.js:194
-msgid "Icon"
-msgstr "Ikona"
-
-#: prefs.js:195
-msgid "Text"
-msgstr "Text"
-
-#: prefs.js:196
-msgid "Icon and Text"
-msgstr "Ikona a text"
-
-#: prefs.js:197
-msgid "Text and Icon"
-msgstr "Text a ikona"
-
-#: prefs.js:222
-msgid "Menu position in panel"
-msgstr "Pozice menu na panelu"
-
-#: prefs.js:229
-msgid "Left"
-msgstr "Vlevo"
-
-#: prefs.js:232
-msgid "Center"
-msgstr "Uprostřed"
-
-#: prefs.js:236
-msgid "Right"
-msgstr "Vpravo"
-
-#: prefs.js:279
+#: prefs.js:152
 msgid "Button appearance"
 msgstr "Vzhled tlačítka"
 
-#: prefs.js:291
+#: prefs.js:165
 msgid "Text for the menu button"
 msgstr "Text tlačítka menu"
 
-#: prefs.js:297
+#: prefs.js:171
 msgid "System text"
 msgstr "Výchozí systémový text"
 
-#: prefs.js:300
+#: prefs.js:174
 msgid "Custom text"
 msgstr "Vlastní text"
 
-#: prefs.js:320
+#: prefs.js:198
 msgid "Set custom text for the menu button"
 msgstr "Zadejte vlastní text tlačítka menu"
 
-#: prefs.js:340
+#: prefs.js:218
 msgid "Enable the arrow icon beside the button text"
 msgstr "Povolit šipku vedle tlačítka menu"
 
-#: prefs.js:362
+#: prefs.js:240
 msgid "Select icon for the menu button"
 msgstr "Vybrat ikonu tlačítka menu"
 
-#: prefs.js:372
+#: prefs.js:250
 msgid "Please select an image icon"
 msgstr "Prosím vyberte obrázek ikony"
 
-#: prefs.js:387
+#: prefs.js:255
 msgid "Arc Menu Icon"
 msgstr "Ikona Arc Menu"
 
-#: prefs.js:388
+#: prefs.js:256
 msgid "System Icon"
 msgstr "Systémová ikona"
 
-#: prefs.js:389
+#: prefs.js:257
 msgid "Custom Icon"
 msgstr "Vlastní ikona"
 
-#: prefs.js:404
+#: prefs.js:283
 msgid "Icon size"
 msgstr "Velikost ikony"
 
-#: prefs.js:404
+#: prefs.js:283
 msgid "default is"
 msgstr "výchozí je"
 
-#: prefs.js:448
+#: prefs.js:323
+msgid "Appearance"
+msgstr "Vzhled"
+
+#: prefs.js:332
+msgid "Customize menu button appearance"
+msgstr "Přizpůsobit vzhled tlačítka menu"
+
+#: prefs.js:342
+msgid "Icon"
+msgstr "Ikona"
+
+#: prefs.js:343
+msgid "Text"
+msgstr "Text"
+
+#: prefs.js:344
+msgid "Icon and Text"
+msgstr "Ikona a text"
+
+#: prefs.js:345
+msgid "Text and Icon"
+msgstr "Text a ikona"
+
+#: prefs.js:370
+msgid "Menu position in panel"
+msgstr "Pozice menu na panelu"
+
+#: prefs.js:377
+msgid "Left"
+msgstr "Vlevo"
+
+#: prefs.js:380
+msgid "Center"
+msgstr "Uprostřed"
+
+#: prefs.js:384
+msgid "Right"
+msgstr "Vpravo"
+
+#: prefs.js:461
 msgid "About"
 msgstr "O"
 
-#: prefs.js:477
+#: prefs.js:490
 msgid "Arc-Menu"
 msgstr "Arc-Menu"
 
-#: prefs.js:482
+#: prefs.js:495
 msgid "version: "
 msgstr "verze: "
 
-#: prefs.js:490
-msgid "Webpage"
-msgstr "Webová stránka"
+#: prefs.js:503
+msgid "GitLab Page"
+msgstr ""
 
-#: menu.js:132
-msgid "Activities Overview"
-msgstr "Přehled Aktivit"
-
-#: menu.js:156
-msgid "Power Off"
-msgstr "Vypnout"
-
-#: menu.js:181
-msgid "Log Out"
-msgstr "Odhlásit se"
-
-#: menu.js:206
-msgid "Suspend"
-msgstr "Uspat"
-
-#: menu.js:237
-msgid "Lock"
-msgstr "Uzamknout"
-
-#: menu.js:265
-msgid "Back"
-msgstr "Zpět"
-
-#: menu.js:454
-msgid "Favorites"
-msgstr "Oblíbené"
-
-#: menu.js:619
-msgid "Applications"
-msgstr "Aplikace"
-
-#: menu.js:870
+#: menu.js:272
 msgid "Home"
 msgstr "Domov"
 
-#: menu.js:934
-msgid "Type to search…"
-msgstr "Pro vyhledávání začněte psát ..."
-
-#: menu.js:1024
+#: menu.js:456 menu.js:461
 msgid "Software"
 msgstr "Software"
 
-#: menu.js:1027
+#: menu.js:466
 msgid "Settings"
 msgstr "Nastavení"
 
-#: menu.js:1030
+#: menu.js:471
 msgid "Tweak Tool"
 msgstr "Tweak Tool"
 
-#: menu.js:1033
+#: menu.js:476
 msgid "Tweaks"
 msgstr "Vylepšení"
+
+#: menu.js:481
+msgid "Terminal"
+msgstr ""
+
+#: menuWidgets.js:86
+msgid "Activities Overview"
+msgstr "Přehled Aktivit"
+
+#: menuWidgets.js:199
+msgid "Power Off"
+msgstr "Vypnout"
+
+#: menuWidgets.js:212
+msgid "Log Out"
+msgstr "Odhlásit se"
+
+#: menuWidgets.js:225
+msgid "Suspend"
+msgstr "Uspat"
+
+#: menuWidgets.js:243
+msgid "Lock"
+msgstr "Uzamknout"
+
+#: menuWidgets.js:265
+msgid "Back"
+msgstr "Zpět"
+
+#: menuWidgets.js:483
+msgid "Favorites"
+msgstr "Oblíbené"
+
+#: menuWidgets.js:616
+msgid "Type to search…"
+msgstr "Pro vyhledávání začněte psát ..."
+
+#: menuWidgets.js:781
+msgid "Applications"
+msgstr "Aplikace"
+
+#~ msgid "Webpage"
+#~ msgstr "Webová stránka"

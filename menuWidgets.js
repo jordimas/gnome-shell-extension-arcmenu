@@ -19,7 +19,6 @@
  */
 
 // Import Libraries
-const Lang = imports.lang;
 const Shell = imports.gi.Shell;
 const St = imports.gi.St;
 const Clutter = imports.gi.Clutter;
@@ -30,6 +29,7 @@ const GLib = imports.gi.GLib;
 const Signals = imports.signals;
 const AccountsService = imports.gi.AccountsService;
 const Gio = imports.gi.Gio;
+const GObject = imports.gi.GObject;
 const Util = imports.misc.util;
 
 const ExtensionUtils = imports.misc.extensionUtils;
@@ -46,11 +46,11 @@ const TOOLTIP_LABEL_SHOW_TIME = 0.15;
 const TOOLTIP_LABEL_HIDE_TIME = 0.1;
 
 function setIconAsync(icon, gioFile, fallback_icon_name) {
-    gioFile.load_contents_async(null, function(source, result) {
+    gioFile.load_contents_async(null, function (source, result) {
         try {
             let bytes = source.load_contents_finish(result)[1];
             icon.gicon = Gio.BytesIcon.new(bytes);
-        } catch(err) {
+        } catch (err) {
             icon.icon_name = fallback_icon_name;
         }
     });
@@ -58,11 +58,8 @@ function setIconAsync(icon, gioFile, fallback_icon_name) {
 
 // Removing the default behaviour which selects a hovered item if the space key is pressed.
 // This avoids issues when searching for an app with a space character in its name.
-var BaseMenuItem = new Lang.Class({
-    Name: 'BaseMenuItem',
-    Extends: PopupMenu.PopupBaseMenuItem,
-
-    _onKeyPressEvent: function (actor, event) {
+var BaseMenuItem = class extends PopupMenu.PopupBaseMenuItem {
+    _onKeyPressEvent(actor, event) {
         let symbol = event.get_key_symbol();
         if (symbol == Clutter.KEY_Return ||
             symbol == Clutter.KEY_KP_Enter) {
@@ -71,16 +68,13 @@ var BaseMenuItem = new Lang.Class({
         }
         return Clutter.EVENT_PROPAGATE;
     }
-});
+};
 
 // Menu item to launch GNOME activities overview
-var ActivitiesMenuItem = new Lang.Class({
-    Name: 'ActivitiesMenuItem',
-    Extends: BaseMenuItem,
-
+var ActivitiesMenuItem = class extends BaseMenuItem {
     // Initialize the menu item
-    _init: function(button) {
-	    this.parent();
+    constructor(button) {
+        super();
         this._button = button;
         this._icon = new St.Icon({
             icon_name: 'view-fullscreen-symbolic',
@@ -94,23 +88,21 @@ var ActivitiesMenuItem = new Lang.Class({
             y_align: Clutter.ActorAlign.CENTER
         });
         this.actor.add_child(label);
-    },
+    }
 
     // Activate the menu item (Open activities overview)
-    activate: function(event) {
+    activate(event) {
         this._button.menu.toggle();
         Main.overview.toggle();
-	    this.parent(event);
-    },
-});
+        super.activate(event);
+    }
+};
 
 /**
  * A class representing a Tooltip.
  */
-var Tooltip = new Lang.Class({
-    Name: 'Tooltip',
-
-    _init: function(sourceActor, text) {
+var Tooltip = class {
+    constructor(sourceActor, text) {
         this.sourceActor = sourceActor;
         this.actor = new St.Label({
             style_class: 'tooltip-label',
@@ -119,14 +111,14 @@ var Tooltip = new Lang.Class({
         });
         global.stage.add_actor(this.actor);
         this.actor.show();
-        this.actor.connect('destroy', Lang.bind(this, this._onDestroy));
-    },
+        this.actor.connect('destroy', this._onDestroy.bind(this));
+    }
 
-    show: function() {
+    show() {
         let [stageX, stageY] = this.sourceActor.get_transformed_position();
         let [width, height] = this.sourceActor.get_transformed_size();
-        let y = stageY - height/1.25;
-        let x = stageX - Math.round((this.actor.get_width() - width)/2);
+        let y = stageY - height / 1.25;
+        let x = stageX - Math.round((this.actor.get_width() - width) / 2);
 
         this.actor.show();
         this.actor.set_position(x, y);
@@ -135,31 +127,29 @@ var Tooltip = new Lang.Class({
             time: TOOLTIP_LABEL_SHOW_TIME,
             transition: 'easeOutQuad'
         });
-    },
+    }
 
-    hide: function() {
+    hide() {
         Tweener.addTween(this.actor, {
             opacity: 0,
             time: TOOLTIP_LABEL_HIDE_TIME,
             transition: 'easeOutQuad',
-            onComplete: Lang.bind(this, function() {
+            onComplete: () => {
                 this.actor.hide();
-            })
+            }
         });
-    },
+    }
 
-    _onDestroy: function() {
+    _onDestroy() {
         global.stage.remove_actor(this.actor);
     }
-});
+};
 
 /**
  * A base class for custom session buttons.
  */
-var SessionButton = new Lang.Class({
-    Name: 'SessionButton',
-
-    _init: function(button, accessible_name, icon_name) {
+var SessionButton = class {
+    constructor(button, accessible_name, icon_name) {
         this._button = button;
         this.actor = new St.Button({
             reactive: true,
@@ -168,31 +158,31 @@ var SessionButton = new Lang.Class({
             accessible_name: accessible_name,
             style_class: 'system-menu-action'
         });
-	this._useTooltips = true;
+        this._useTooltips = true;
         this.tooltip = new Tooltip(this.actor, accessible_name);
         this.tooltip.hide();
         this.actor.child = new St.Icon({ icon_name: icon_name });
-        this.actor.connect('clicked', Lang.bind(this, this._onClick));
-        this.actor.connect('notify::hover', Lang.bind(this, this._onHover));
-    },
+        this.actor.connect('clicked', this._onClick.bind(this));
+        this.actor.connect('notify::hover', this._onHover.bind(this));
+    }
 
-       useTooltips: function(useTooltips) {
-       this._useTooltips = useTooltips;
-    },
-	
-    _onClick: function() {
+    useTooltips(useTooltips) {
+        this._useTooltips = useTooltips;
+    }
+
+    _onClick() {
         this._button.menu.toggle();
         this.activate();
-    },
+    }
 
-    activate: function() {
+    activate() {
         // Button specific action
-    },
+    }
 
-    _onHover: function() {
+    _onHover() {
         // TODO: implement tooltips
-	          if (!this._useTooltips)
-           return;
+        if (!this._useTooltips)
+            return;
 
         if (this.actor.hover) { // mouse pointer hovers over the button
             this.tooltip.show();
@@ -200,85 +190,70 @@ var SessionButton = new Lang.Class({
             this.tooltip.hide();
         }
     }
-});
+};
 
 // Power Button
-var PowerButton = new Lang.Class({
-    Name: 'PowerButton',
-    Extends: SessionButton,
-
+var PowerButton = class extends SessionButton {
     // Initialize the button
-    _init: function(button) {
-        this.parent(button, _("Power Off"), 'system-shutdown-symbolic');
-    },
+    constructor(button) {
+        super(button, _("Power Off"), 'system-shutdown-symbolic');
+    }
 
     // Activate the button (Shutdown)
-    activate: function() {
+    activate() {
         this._button._session.ShutdownRemote(0);
     }
-});
+};
 
 // Logout Button
-var LogoutButton = new Lang.Class({
-    Name: 'LogoutButton',
-    Extends: SessionButton,
-
+var LogoutButton = class extends SessionButton {
     // Initialize the button
-    _init: function(button) {
-        this.parent(button, _("Log Out"), 'application-exit-symbolic');
-    },
+    constructor(button) {
+        super(button, _("Log Out"), 'application-exit-symbolic');
+    }
 
     // Activate the button (Logout)
-    activate: function() {
+    activate() {
         this._button._session.LogoutRemote(0);
     }
-});
+};
 
 // Suspend Button
-var SuspendButton = new Lang.Class({
-    Name: 'SuspendButton',
-    Extends: SessionButton,
-
+var SuspendButton = class extends SessionButton {
     // Initialize the button
-    _init: function(button) {
-        this.parent(button, _("Suspend"), 'media-playback-pause-symbolic');
-    },
+    constructor(button) {
+        super(button, _("Suspend"), 'media-playback-pause-symbolic');
+    }
 
     // Activate the button (Suspend the system)
-    activate: function() {
+    activate() {
         let loginManager = LoginManager.getLoginManager();
-        loginManager.canSuspend(Lang.bind(this, function(result) {
+        loginManager.canSuspend(function (result) {
             if (result) {
                 loginManager.suspend();
             }
-        }));
+        }.bind(this));
     }
-});
+};
 
 // Lock Screen Button
-var LockButton = new Lang.Class({
-    Name: 'LockButton',
-    Extends: SessionButton,
-
+var LockButton = class extends SessionButton {
     // Initialize the button
-    _init: function(button) {
-        this.parent(button, _("Lock"), 'changes-prevent-symbolic');
-    },
+    constructor(button) {
+        super(button, _("Lock"), 'changes-prevent-symbolic');
+    }
 
     // Activate the button (Lock the screen)
-    activate: function() {
+    activate() {
         Main.screenShield.lock(true);
     }
-});
+};
 
 // Menu item to go back to category view
-var BackMenuItem = new Lang.Class({
-    Name: 'BackMenuItem',
-    Extends: BaseMenuItem,
-
+var BackMenuItem = class extends BaseMenuItem {
     // Initialize the button
-    _init: function(button) {
-        this.parent();
+    constructor(button) {
+        super();
         this._button = button;
         this._icon = new St.Icon({
             icon_name: 'go-previous-symbolic',
@@ -292,24 +267,21 @@ var BackMenuItem = new Lang.Class({
             y_align: Clutter.ActorAlign.CENTER
         });
         this.actor.add_child(backLabel);
-    },
+    }
 
     // Activate the button (go back to category view)
-    activate: function(event) {
+    activate(event) {
         this._button.selectCategory(null);
         if (this._button.searchActive) this._button.resetSearch();
-	    this.parent(event);
-    },
-});
+        super.activate(event);
+    }
+};
 
 // Menu shortcut item class
-var ShortcutMenuItem = new Lang.Class({
-    Name: 'ShortcutMenuItem',
-    Extends: BaseMenuItem,
-
+var ShortcutMenuItem = class extends BaseMenuItem {
     // Initialize the menu item
-    _init: function(button, name, icon, command) {
-        this.parent();
+    constructor(button, name, icon, command) {
+        super();
         this._button = button;
         this._command = command;
         this._icon = new St.Icon({
@@ -323,24 +295,21 @@ var ShortcutMenuItem = new Lang.Class({
             y_align: Clutter.ActorAlign.CENTER
         });
         this.actor.add_child(label);
-    },
+    }
 
     // Activate the menu item (Launch the shortcut)
-    activate: function(event) {
+    activate(event) {
         Util.spawnCommandLine(this._command);
         this._button.menu.toggle();
-	    this.parent(event);
+        super.activate(event);
     }
-});
+};
 
 // Menu item which displays the current user
-var UserMenuItem = new Lang.Class({
-    Name: 'UserMenuItem',
-    Extends: BaseMenuItem,
-
+var UserMenuItem = class extends BaseMenuItem {
     // Initialize the menu item
-    _init: function(button) {
-        this.parent();
+    constructor(button) {
+        super();
         this._button = button;
         let username = GLib.get_user_name();
         this._user = AccountsService.UserManager.get_default().get_user(username);
@@ -355,33 +324,33 @@ var UserMenuItem = new Lang.Class({
             y_align: Clutter.ActorAlign.CENTER
         });
         this.actor.add_child(this._userLabel);
-        this._userLoadedId = this._user.connect('notify::is_loaded', Lang.bind(this, this._onUserChanged));
-        this._userChangedId = this._user.connect('changed', Lang.bind(this, this._onUserChanged));
-        this.actor.connect('destroy', Lang.bind(this, this._onDestroy));
+        this._userLoadedId = this._user.connect('notify::is_loaded', this._onUserChanged.bind(this));
+        this._userChangedId = this._user.connect('changed', this._onUserChanged.bind(this));
+        this.actor.connect('destroy', this._onDestroy.bind(this));
         this._onUserChanged();
-    },
+    }
 
     // Activate the menu item (Open user account settings)
-    activate: function(event) {
+    activate(event) {
         Util.spawnCommandLine("gnome-control-center user-accounts");
         this._button.menu.toggle();
-	    this.parent(event);
-    },
+        super.activate(event);
+    }
 
     // Handle changes to user information (redisplay new info)
-    _onUserChanged: function() {
+    _onUserChanged() {
         if (this._user.is_loaded) {
-            this._userLabel.set_text (this._user.get_real_name());
+            this._userLabel.set_text(this._user.get_real_name());
             if (this._userIcon) {
                 let iconFileName = this._user.get_icon_file();
                 let iconFile = Gio.file_new_for_path(iconFileName);
                 setIconAsync(this._userIcon, iconFile, 'avatar-default-symbolic');
             }
         }
-    },
+    }
 
     // Destroy the menu item
-    _onDestroy: function() {
+    _onDestroy() {
         if (this._userLoadedId != 0) {
             this._user.disconnect(this._userLoadedId);
             this._userLoadedId = 0;
@@ -391,16 +360,13 @@ var UserMenuItem = new Lang.Class({
             this._userChangedId = 0;
         }
     }
-});
+};
 
 // Menu application item class
-var ApplicationMenuItem = new Lang.Class({
-    Name: 'ApplicationMenuItem',
-    Extends: PopupMenu.PopupBaseMenuItem,
-
+var ApplicationMenuItem = class extends PopupMenu.PopupBaseMenuItem {
     // Initialize menu item
-    _init: function(button, app) {
-        this.parent();
+    constructor(button, app) {
+        super();
         this._app = app;
         this.app = app;
         this._button = button;
@@ -417,32 +383,32 @@ var ApplicationMenuItem = new Lang.Class({
 
         let textureCache = St.TextureCache.get_default();
         let iconThemeChangedId = textureCache.connect('icon-theme-changed',
-                                                      Lang.bind(this, this._updateIcon));
-        this.actor.connect('destroy', Lang.bind(this, function() {
-                textureCache.disconnect(iconThemeChangedId);
-        }));
+            this._updateIcon.bind(this));
+        this.actor.connect('destroy', () => {
+            textureCache.disconnect(iconThemeChangedId);
+        });
         this._updateIcon();
 
         this._draggable = DND.makeDraggable(this.actor);
         this.isDraggableApp = true;
-        this._draggable.connect('drag-begin', Lang.bind(this, this._onDragBegin));
-        this._draggable.connect('drag-cancelled', Lang.bind(this, this._onDragCancelled));
-        this._draggable.connect('drag-end', Lang.bind(this, this._onDragEnd));
-    },
+        this._draggable.connect('drag-begin', this._onDragBegin.bind(this));
+        this._draggable.connect('drag-cancelled', this._onDragCancelled.bind(this));
+        this._draggable.connect('drag-end', this._onDragEnd.bind(this));
+    }
 
-    _onDragBegin: function() {
+    _onDragBegin() {
         Main.overview.beginItemDrag(this);
-    },
+    }
 
-    _onDragCancelled: function() {
+    _onDragCancelled() {
         Main.overview.cancelledItemDrag(this);
-    },
+    }
 
-    _onDragEnd: function() {
+    _onDragEnd() {
         Main.overview.endItemDrag(this);
-    },
+    }
 
-    _onKeyPressEvent: function (actor, event) {
+    _onKeyPressEvent(actor, event) {
         let symbol = event.get_key_symbol();
         if (symbol == Clutter.KEY_Return ||
             symbol == Clutter.KEY_KP_Enter) {
@@ -450,38 +416,38 @@ var ApplicationMenuItem = new Lang.Class({
             return Clutter.EVENT_STOP;
         }
         return Clutter.EVENT_PROPAGATE;
-    },
+    }
 
-    get_app_id: function() {
+    get_app_id() {
         return this._app.get_id();
-    },
+    }
 
-    getDragActor: function() {
-       return this._app.create_icon_texture(APPLICATION_ICON_SIZE);
-    },
+    getDragActor() {
+        return this._app.create_icon_texture(APPLICATION_ICON_SIZE);
+    }
 
     // Returns the original actor that should align with the actor
     // we show as the item is being dragged.
-    getDragActorSource: function() {
+    getDragActorSource() {
         return this.actor;
-    },
+    }
 
     // Activate menu item (Launch application)
-    activate: function(event) {
+    activate(event) {
         this._app.open_new_window(-1);
         this._button.menu.toggle();
-        this.parent(event);
-    },
+        super.activate(event);
+    }
 
     // Set button as active, scroll to the button
-    setActive: function(active, params) {
+    setActive(active, params) {
         if (active && !this.actor.hover)
             this._button.scrollToButton(this);
 
-        this.parent(active, params);
-    },
+        super.setActive(active, params);
+    }
 
-    setFakeActive: function(active) {
+    setFakeActive(active) {
         if (active) {
             this._button.scrollToButton(this);
             //this.actor.add_style_pseudo_class('active');
@@ -490,27 +456,24 @@ var ApplicationMenuItem = new Lang.Class({
             //this.actor.remove_style_pseudo_class('active');
             this.actor.remove_style_class_name('selected');
         }
-    },
+    }
 
     // Grab the key focus
-    grabKeyFocus: function() {
+    grabKeyFocus() {
         this.actor.grab_key_focus();
-    },
+    }
 
     // Update the app icon in the menu
-    _updateIcon: function() {
+    _updateIcon() {
         this._iconBin.set_child(this._app.create_icon_texture(APPLICATION_ICON_SIZE));
     }
-});
+};
 
 // Menu Category item class
-var CategoryMenuItem = new Lang.Class({
-    Name: 'CategoryMenuItem',
-    Extends: BaseMenuItem,
-
+var CategoryMenuItem = class extends BaseMenuItem {
     // Initialize menu item
-    _init: function(button, category) {
-        this.parent();
+    constructor(button, category) {
+        super();
         this._category = category;
         this._button = button;
         let name;
@@ -532,47 +495,45 @@ var CategoryMenuItem = new Lang.Class({
         });
         this.actor.add_child(categoryLabel);
         this.actor.label_actor = categoryLabel;
-    },
+    }
 
     // Activate menu item (Display applications in category)
-    activate: function(event) {
+    activate(event) {
         this._button.selectCategory(this._category);
-        this.parent(event);
-    },
+        super.activate(event);
+    }
 
     // Set button as active, scroll to the button
-    setActive: function(active, params) {
+    setActive(active, params) {
         if (active && !this.actor.hover) {
             this._button.scrollToButton(this);
         }
-        this.parent(active, params);
+        super.setActive(active, params);
     }
-});
+};
 
 // Place Info class
-var PlaceInfo = new Lang.Class({
-    Name: 'PlaceInfo',
-
+var PlaceInfo = class {
     // Initialize place info
-    _init: function(file, name, icon) {
+    constructor(file, name, icon) {
         this.file = file;
         this.name = name ? name : this._getFileName();
         this.icon = icon ? new Gio.ThemedIcon({ name: icon }) : this.getIcon();
-    },
+    }
 
     // Launch place with appropriate application
-    launch: function(timestamp) {
+    launch(timestamp) {
         let launchContext = global.create_app_launch_context(timestamp, -1);
         Gio.AppInfo.launch_default_for_uri(this.file.get_uri(), launchContext);
-    },
+    }
 
     // Get Icon for place
-    getIcon: function() {
+    getIcon() {
         try {
             let info = this.file.query_info('standard::symbolic-icon', 0, null);
-	        return info.get_symbolic_icon();
-        
-        } catch(e) {
+            return info.get_symbolic_icon();
+
+        } catch (e) {
             if (e instanceof GioIOErrorEnum) {
                 if (!this.file.is_native()) {
                     return new Gio.ThemedIcon({ name: 'folder-remote-symbolic' });
@@ -581,37 +542,34 @@ var PlaceInfo = new Lang.Class({
                 }
             }
         }
-    },
+    }
 
     // Get display name for place
-    _getFileName: function() {
+    _getFileName() {
         try {
             let info = this.file.query_info('standard::display-name', 0, null);
             return info.get_display_name();
-        } catch(e) {
+        } catch (e) {
             if (e instanceof Gio.IOErrorEnum) {
                 return this.file.get_basename();
             }
         }
-    },
-});
+    }
+};
 Signals.addSignalMethods(PlaceInfo.prototype);
 
 // Menu Place Shortcut item class
-var PlaceMenuItem = new Lang.Class({
-    Name: 'PlaceMenuItem',
-    Extends: BaseMenuItem,
-
+var PlaceMenuItem = class extends BaseMenuItem {
     // Initialize menu item
-    _init: function(button, info) {
-        this.parent();
+    constructor(button, info) {
+        super();
         this._button = button;
         this._info = info;
         this._icon = new St.Icon({
             gicon: info.icon,
             icon_size: 16
         });
-	    this.actor.add_child(this._icon);
+        this.actor.add_child(this._icon);
         this._label = new St.Label({
             text: info.name,
             y_expand: true,
@@ -619,39 +577,37 @@ var PlaceMenuItem = new Lang.Class({
         });
         this.actor.add_child(this._label);
         this._changedId = this._info.connect('changed',
-                                       Lang.bind(this, this._propertiesChanged));
-    },
+            this._propertiesChanged.bind(this));
+    }
 
     // Destroy menu item
-    destroy: function() {
+    destroy() {
         if (this._changedId) {
             this._info.disconnect(this._changedId);
             this._changedId = 0;
         }
-        this.parent();
-    },
+        super.destroy();
+    }
 
     // Activate (launch) the shortcut
-    activate: function(event) {
-	    this._info.launch(event.get_time());
+    activate(event) {
+        this._info.launch(event.get_time());
         this._button.menu.toggle();
-        this.parent(event);
-    },
+        super.activate(event);
+    }
 
     // Handle changes in place info (redisplay new info)
-    _propertiesChanged: function(info) {
+    _propertiesChanged(info) {
         this._icon.gicon = info.icon;
         this._label.text = info.name;
-    },
-});
+    }
+};
 
 /**
  * This class represents a SearchBox.
  */
-var SearchBox = new Lang.Class({
-    Name: 'Class',
-
-    _init: function() {
+var SearchBox = class {
+    constructor() {
         this.actor = new St.BoxLayout({
             style_class: 'search-box search-box-padding'
         });
@@ -679,86 +635,86 @@ var SearchBox = new Lang.Class({
         });
 
         this._text = this._stEntry.get_clutter_text();
-        this._textChangedId = this._text.connect('text-changed', Lang.bind(this, this._onTextChanged));
-        this._keyPressId = this._text.connect('key-press-event', Lang.bind(this, this._onKeyPress));
-        this._keyFocusInId = this._text.connect('key-focus-in', Lang.bind(this, this._onKeyFocusIn));
+        this._textChangedId = this._text.connect('text-changed', this._onTextChanged.bind(this));
+        this._keyPressId = this._text.connect('key-press-event', this._onKeyPress.bind(this));
+        this._keyFocusInId = this._text.connect('key-focus-in', this._onKeyFocusIn.bind(this));
         this._searchIconClickedId = 0;
         this._inputHistory = [];
         this._maxInputHistory = 5;
 
-        this.actor.connect('destroy', Lang.bind(this, this._onDestroy));
-    },
+        this.actor.connect('destroy', this._onDestroy.bind(this));
+    }
 
-    _pushInput: function(searchString) {
+    _pushInput(searchString) {
         if (this._inputHistory.length == this._maxInputHistory) {
             this._inputHistory.shift();
         }
         this._inputHistory.push(searchString);
-    },
+    }
 
-    _lastInput: function() {
+    _lastInput() {
         if (this._inputHistory.length != 0) {
-            return this._inputHistory[this._inputHistory.length-1];
+            return this._inputHistory[this._inputHistory.length - 1];
         }
         return '';
-    },
+    }
 
-    _previousInput: function() {
+    _previousInput() {
         if (this._inputHistory.length > 1) {
-            return this._inputHistory[this._inputHistory.length-2];
+            return this._inputHistory[this._inputHistory.length - 2];
         }
         return '';
-    },
+    }
 
-    getText: function() {
+    getText() {
         return this._stEntry.get_text();
-    },
+    }
 
-    setText: function(text) {
+    setText(text) {
         this._stEntry.set_text(text);
-    },
+    }
 
     // Grab the key focus
-    grabKeyFocus: function() {
+    grabKeyFocus() {
         this._stEntry.grab_key_focus();
-    },
+    }
 
-    hasKeyFocus: function() {
+    hasKeyFocus() {
         return this._stEntry.contains(global.stage.get_key_focus());
-    },
+    }
 
     // Clear the search box
-    clear: function() {
+    clear() {
         this._stEntry.set_text('');
         this._stEntry.grab_key_focus();
         this.emit('cleared');
-    },
+    }
 
-    isEmpty: function() {
+    isEmpty() {
         return this._stEntry.get_text() == '';
-    },
+    }
 
-    _isActivated: function() {
+    _isActivated() {
         return this._stEntry.get_text() != '';
-    },
+    }
 
-    _setClearIcon: function() {
-       this._stEntry.set_secondary_icon(this._clearIcon);
+    _setClearIcon() {
+        this._stEntry.set_secondary_icon(this._clearIcon);
         if (this._searchIconClickedId == 0) {
             this._searchIconClickedId = this._stEntry.connect('secondary-icon-clicked',
-                Lang.bind(this, this.clear));
+                this.clear.bind(this));
         }
-    },
+    }
 
-    _unsetClearIcon: function() {
-       if (this._searchIconClickedId > 0) {
+    _unsetClearIcon() {
+        if (this._searchIconClickedId > 0) {
             this._stEntry.disconnect(this._searchIconClickedId);
         }
         this._searchIconClickedId = 0;
         this._stEntry.set_secondary_icon(null);
-    },
+    }
 
-    _onTextChanged: function(entryText) {
+    _onTextChanged(entryText) {
         let searchString = this._stEntry.get_text();
         this._pushInput(searchString);
         if (this._isActivated()) {
@@ -770,27 +726,27 @@ var SearchBox = new Lang.Class({
             }
         }
         this.emit('changed', searchString);
-    },
+    }
 
-    _onKeyPress: function(actor, event) {
+    _onKeyPress(actor, event) {
         let symbol = event.get_key_symbol();
         if (symbol == Clutter.KEY_Return ||
             symbol == Clutter.KEY_KP_Enter) {
-             if (!this.isEmpty()) {
+            if (!this.isEmpty()) {
                 this.emit('activate');
             }
             return Clutter.EVENT_STOP;
         }
         this.emit('key-press-event', event);
         return Clutter.EVENT_PROPAGATE;
-    },
+    }
 
-    _onKeyFocusIn: function(actor) {
+    _onKeyFocusIn(actor) {
         this.emit('key-focus-in');
         return Clutter.EVENT_PROPAGATE;
-    },
+    }
 
-    _onDestroy: function() {
+    _onDestroy() {
         if (this._textChangedId > 0) {
             this._text.disconnect(this._textChangedId);
             this._textChangedId = 0;
@@ -804,16 +760,14 @@ var SearchBox = new Lang.Class({
             this._keyFocusInId = 0;
         }
     }
-});
+};
 Signals.addSignalMethods(SearchBox.prototype);
 
 /**
  * This class is responsible for the appearance of the menu button.
  */
-var MenuButtonWidget = new Lang.Class({
-    Name: 'Class',
-
-    _init: function() {
+var MenuButtonWidget = class {
+    constructor() {
         this.actor = new St.BoxLayout({
             style_class: 'panel-status-menu-box',
             pack_start: false
@@ -832,49 +786,49 @@ var MenuButtonWidget = new Lang.Class({
         this.actor.add_child(this._icon);
         this.actor.add_child(this._label);
         this.actor.add_child(this._arrowIcon);
-    },
+    }
 
-    getPanelLabel: function() {
+    getPanelLabel() {
         return this._label;
-    },
+    }
 
-    getPanelIcon: function() {
+    getPanelIcon() {
         return this._icon;
-    },
+    }
 
-    showArrowIcon: function() {
+    showArrowIcon() {
         if (!this.actor.contains(this._arrowIcon)) {
             this.actor.add_child(this._arrowIcon);
         }
-    },
+    }
 
-    hideArrowIcon: function() {
+    hideArrowIcon() {
         if (this.actor.contains(this._arrowIcon)) {
             this.actor.remove_child(this._arrowIcon);
         }
-    },
+    }
 
-    showPanelIcon: function() {
+    showPanelIcon() {
         if (!this.actor.contains(this._icon)) {
             this.actor.add_child(this._icon);
         }
-    },
+    }
 
-    hidePanelIcon: function() {
+    hidePanelIcon() {
         if (this.actor.contains(this._icon)) {
             this.actor.remove_child(this._icon);
         }
-    },
+    }
 
-    showPanelText: function() {
+    showPanelText() {
         if (!this.actor.contains(this._label)) {
             this.actor.add_child(this._label);
         }
-    },
+    }
 
-    hidePanelText: function() {
+    hidePanelText() {
         if (this.actor.contains(this._label)) {
             this.actor.remove_child(this._label);
         }
     }
-});
+};

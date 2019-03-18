@@ -25,7 +25,6 @@ const GObject = imports.gi.GObject;
 const Gio = imports.gi.Gio;
 const Gtk = imports.gi.Gtk;
 const GdkPixbuf = imports.gi.GdkPixbuf;
-const Lang = imports.lang;
 const Params = imports.misc.params;
 
 /**
@@ -43,14 +42,14 @@ const Notebook = new GObject.Class({
     GTypeName: 'ArcMenuNotebook',
     Extends: Gtk.Notebook,
 
-    _init: function() {
+    _init: function () {
         this.parent({
             margin_left: 6,
             margin_right: 6
         });
     },
 
-    append_page: function(notebookPage) {
+    append_page: function (notebookPage) {
         Gtk.Notebook.prototype.append_page.call(
             this,
             notebookPage,
@@ -67,7 +66,7 @@ const NotebookPage = new GObject.Class({
     GTypeName: 'ArcMenuNotebookPage',
     Extends: Gtk.Box,
 
-    _init: function(title) {
+    _init: function (title) {
         this.parent({
             orientation: Gtk.Orientation.VERTICAL,
             margin: 24,
@@ -81,7 +80,7 @@ const NotebookPage = new GObject.Class({
         });
     },
 
-    getTitleLabel: function() {
+    getTitleLabel: function () {
         return this._title;
     }
 });
@@ -94,7 +93,7 @@ const IconButton = new GObject.Class({
     GTypeName: 'ArcMenuIconButton',
     Extends: Gtk.Button,
 
-    _init: function(params) {
+    _init: function (params) {
         this.parent();
         this._params = Params.parse(params, {
             circular: true,
@@ -117,73 +116,64 @@ const IconButton = new GObject.Class({
 /**
  * Arc Menu Dialog Window
  */
-const DialogWindow = new Lang.Class({
-    Name: 'ArcMenu.DialogWindow',
-    GTypeName: 'ArcMenuDialogWindow',
-    Extends: Gtk.Dialog,
+const DialogWindow = GObject.registerClass(
+    class extends Gtk.Dialog {
+        _init(title, parent) {
+            super._init({
+                title: title,
+                transient_for: parent.get_toplevel(),
+                use_header_bar: true,
+                modal: true
+            });
+            let vbox = new Gtk.Box({
+                orientation: Gtk.Orientation.VERTICAL,
+                spacing: 20,
+                homogeneous: false,
+                margin: 5
+            });
 
-    _init: function(title, parent) {
-        this.parent({
-            title: title,
-            transient_for: parent.get_toplevel(),
-            use_header_bar: true,
-            modal: true
-        });
-        let vbox = new Gtk.Box({
-            orientation: Gtk.Orientation.VERTICAL,
-            spacing: 20,
-            homogeneous: false,
-            margin: 5
-        });
+            this._createLayout(vbox);
+            this.get_content_area().add(vbox);
+        }
 
-        this._createLayout(vbox);
-        this.get_content_area().add(vbox);
-    },
-
-    _createLayout: function(vbox) {
-        throw "Not implemented!";
-    }
-});
+        _createLayout(vbox) {
+            throw "Not implemented!";
+        }
+    });
 
 /**
  * Arc Menu Frame Box
  */
-const FrameBox = new Lang.Class({
-    Name: 'ArcMenu.FrameBox',
-    GTypeName: 'ArcMenuFrameBox',
-    Extends: Gtk.Frame,
+const FrameBox = GObject.registerClass(
+    class extends Gtk.Frame {
+        _init() {
+            super._init({ label_yalign: 0.50 });
+            this._listBox = new Gtk.ListBox();
+            this._listBox.set_selection_mode(Gtk.SelectionMode.NONE);
+            Gtk.Frame.prototype.add.call(this, this._listBox);
+        }
 
-    _init: function() {
-        this.parent({ label_yalign: 0.50 });
-        this._listBox = new Gtk.ListBox();
-        this._listBox.set_selection_mode(Gtk.SelectionMode.NONE);
-        Gtk.Frame.prototype.add.call(this, this._listBox);
-    },
-
-    add: function(boxRow) {
-        this._listBox.add(boxRow);
-    }
-});
+        add(boxRow) {
+            this._listBox.add(boxRow);
+        }
+    });
 
 /**
  * Arc Menu Frame Box Row
  */
-const FrameBoxRow = new Lang.Class({
-    Name: 'ArcMenu.FrameBoxRow',
-    GTypeName: 'ArcMenuFrameBoxRow',
-    Extends: Gtk.ListBoxRow,
+const FrameBoxRow = GObject.registerClass(
+    class extends Gtk.ListBoxRow {
+        _init() {
+            super._init({});
+            this._grid = new Gtk.Grid({
+                margin: 5,
+                column_spacing: 20,
+                row_spacing: 20
+            });
+            Gtk.ListBoxRow.prototype.add.call(this, this._grid);
+        }
 
-    _init: function() {
-        this.parent({});
-        this._grid = new Gtk.Grid({
-            margin: 5,
-            column_spacing: 20,
-            row_spacing: 20
-        });
-        Gtk.ListBoxRow.prototype.add.call(this, this._grid);
-    },
-
-    add: function(widget) {
-        this._grid.add(widget);
-    }
-});
+        add(widget) {
+            this._grid.add(widget);
+        }
+    });

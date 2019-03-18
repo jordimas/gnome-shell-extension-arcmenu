@@ -17,9 +17,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
- // Import Libraries
-const Lang = imports.lang;
-
 // Logging levels.
 var Level = {
     Off: 0x00,
@@ -33,32 +30,31 @@ var Level = {
 /**
  * A basic Logger class that supports multiple logging levels.
  */
-var Logger = new Lang.Class({
-    Name: 'ArcMenu.Logger',
+var Logger = class {
 
-    _init: function(params) {
+    constructor(params) {
         this._level = params['level'] | Level.All;
-    },
+    }
 
-    setLevel: function(level) {
+    setLevel(level) {
         this._level = level;
-    },
+    }
 
-    debug: function(msg) {
-        if(this._level & Level.Debug)
+    debug(msg) {
+        if (this._level & Level.Debug)
             global.log("DEBUG: " + msg);
-    },
+    }
 
-    info: function(msg) {
-        if(this._level & Level.Info)
+    info(msg) {
+        if (this._level & Level.Info)
             global.log("INFO: " + msg);
-    },
+    }
 
-    log: function(msg) {
-        if(this._level & Level.Log)
+    log(msg) {
+        if (this._level & Level.Log)
             global.log("LOG: " + msg);
     }
-});
+};
 
 var logger = new Logger({ level: Level.All });
 

@@ -17,9 +17,8 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
- 
+
 // Import Libraries
-const Lang = imports.lang;
 const Main = imports.ui.main;
 const Meta = imports.gi.Meta;
 const Gio = imports.gi.Gio;
@@ -38,69 +37,68 @@ const WM_KEYBINDINGS_SCHEMA = 'org.gnome.desktop.wm.keybindings';
  * The Menu HotKeybinder class helps us to bind and unbind a menu hotkey
  * to the Arc Menu. Currently, valid hotkeys are Super_L and Super_R.
  */
-var MenuHotKeybinder = new Lang.Class({
-    Name: 'ArcMenu.MenuHotKeybinder',
+var MenuHotKeybinder = class {
 
-    _init: function(menuToggler) {
+    constructor(menuToggler) {
         this._menuToggler = menuToggler;
         this._mutterSettings = new Gio.Settings({ 'schema': MUTTER_SCHEMA });
         this._wmKeybindings = new Gio.Settings({ 'schema': WM_KEYBINDINGS_SCHEMA });
         this._keybindingHandlerId = Main.layoutManager.connect('startup-complete',
-            Lang.bind(this, this._setKeybindingHandler));
+            this._setKeybindingHandler.bind(this));
         this._setKeybindingHandler();
-    },
+    }
 
     // Enable a hot key for opening the menu
-    enableHotKey: function(hotkey) {
+    enableHotKey(hotkey) {
         if (hotkey == Constants.SUPER_L) {
             this._disableOverlayKey();
         } else {
             this._enableOverlayKey();
         }
         this._wmKeybindings.set_strv('panel-main-menu', [hotkey]);
-    },
+    }
 
     // Disable the set hot key for opening the menu
-    disableHotKey: function() {
+    disableHotKey() {
         // Restore the default settings
         if (this._isOverlayKeyDisabled()) {
             this._enableOverlayKey();
         }
         let defaultPanelMainMenu = this._wmKeybindings.get_default_value('panel-main-menu');
         this._wmKeybindings.set_value('panel-main-menu', defaultPanelMainMenu);
-    },
+    }
 
     // Set the menu keybinding handler
-    _setKeybindingHandler: function() {
+    _setKeybindingHandler() {
         Main.wm.setCustomKeybindingHandler('panel-main-menu',
             Shell.ActionMode.NORMAL | Shell.ActionMode.OVERVIEW | Shell.ActionMode.POPUP,
-            Lang.bind(this, this._menuToggler));
-    },
+            this._menuToggler.bind(this));
+    }
 
-     // Check if the overlay keybinding is disabled in mutter
-    _isOverlayKeyDisabled: function() {
+    // Check if the overlay keybinding is disabled in mutter
+    _isOverlayKeyDisabled() {
         return this._mutterSettings.get_string('overlay-key') == Constants.EMPTY_STRING;
-    },
+    }
 
     // Disable the overlay keybinding in mutter
-    _disableOverlayKey: function() {
+    _disableOverlayKey() {
         // Simple hack to deactivate the overlay key by setting
         // the keybinding of the overlay key to an empty string
         this._mutterSettings.set_string('overlay-key', Constants.EMPTY_STRING);
-    },
+    }
 
     // Enable and restore the default settings of the overlay key in mutter
-    _enableOverlayKey: function() {
+    _enableOverlayKey() {
         this._mutterSettings.set_value('overlay-key', this._getDefaultOverlayKey());
-    },
+    }
 
     // Get the default overelay keybinding from mutter
-    _getDefaultOverlayKey: function() {
+    _getDefaultOverlayKey() {
         return this._mutterSettings.get_default_value('overlay-key');
-    },
+    }
 
     // Destroy this object
-    destroy: function() {
+    destroy() {
         // Clean up and restore the default behaviour
         this.disableHotKey();
         if (this._keybindingHandlerId) {
@@ -109,22 +107,20 @@ var MenuHotKeybinder = new Lang.Class({
             this._keybindingHandlerId = null;
         }
     }
-});
+};
 
 /**
  * The Keybinding Manager class allows us to bind and unbind keybindings
  * to a keybinding handler.
  */
-var KeybindingManager = new Lang.Class({
-    Name: 'ArcMenu.KeybindingManager',
-
-    _init: function(settings) {
+var KeybindingManager = class {
+    constructor(settings) {
         this._settings = settings;
         this._keybindings = new Map();
-    },
+    }
 
     // Bind a keybinding to a keybinding handler
-    bind: function(keybindingNameKey, keybindingValueKey, keybindingHandler) {
+    bind(keybindingNameKey, keybindingValueKey, keybindingHandler) {
         if (!this._keybindings.has(keybindingNameKey)) {
             this._keybindings.set(keybindingNameKey, keybindingValueKey);
             let keybinding = this._settings.get_string(keybindingNameKey);
@@ -133,15 +129,15 @@ var KeybindingManager = new Lang.Class({
             Main.wm.addKeybinding(keybindingValueKey, this._settings,
                 Meta.KeyBindingFlags.NONE,
                 Shell.ActionMode.NORMAL | Shell.ActionMode.OVERVIEW | Shell.ActionMode.POPUP,
-                Lang.bind(this, keybindingHandler));
+                keybindingHandler.bind(this));
 
             return true;
         }
         return false;
-    },
+    }
 
     // Set or update a keybinding in the Arc Menu settings
-    _setKeybinding: function(keybindingNameKey, keybinding) {
+    _setKeybinding(keybindingNameKey, keybinding) {
         if (this._keybindings.has(keybindingNameKey)) {
             let keybindingValueKey = this._keybindings.get(keybindingNameKey);
             let [key, mods] = Gtk.accelerator_parse(keybinding);
@@ -153,10 +149,10 @@ var KeybindingManager = new Lang.Class({
                 this._settings.set_strv(keybindingValueKey, []);
             }
         }
-    },
+    }
 
     // Unbind a keybinding
-    unbind: function(keybindingNameKey) {
+    unbind(keybindingNameKey) {
         if (this._keybindings.has(keybindingNameKey)) {
             let keybindingValueKey = this._keybindings.get(keybindingNameKey);
             Main.wm.removeKeybinding(keybindingValueKey);
@@ -164,61 +160,59 @@ var KeybindingManager = new Lang.Class({
             return true;
         }
         return false;
-    },
+    }
 
     // Destroy this object
-    destroy: function() {
+    destroy() {
         let keyIter = this._keybindings.keys();
         for (let i = 0; i < this._keybindings.size; i++) {
-	        let keybindingNameKey = keyIter.next().value;
-	        this.unbind(keybindingNameKey);
+            let keybindingNameKey = keyIter.next().value;
+            this.unbind(keybindingNameKey);
         }
     }
-});
+};
 
 /**
  * The Hot Corner Manager class allows us to disable and enable
  * the gnome-shell hot corners.
  */
-var HotCornerManager = new Lang.Class({
-    Name: 'ArcMenu.HotCornerManager',
-
-    _init: function(settings) {
+var HotCornerManager = class {
+    constructor(settings) {
         this._settings = settings;
-        this._hotCornersChangedId = Main.layoutManager.connect('hot-corners-changed', Lang.bind(this, this._redisableHotCorners));
-    },
+        this._hotCornersChangedId = Main.layoutManager.connect('hot-corners-changed', this._redisableHotCorners.bind(this));
+    }
 
-    _redisableHotCorners: function() {
+    _redisableHotCorners() {
         if (this._settings.get_boolean('disable-activities-hotcorner')) {
             this.disableHotCorners();
         }
-    },
+    }
 
     // Get all hot corners from the main layout manager
-    _getHotCorners: function() {
+    _getHotCorners() {
         return Main.layoutManager.hotCorners;
-    },
+    }
 
     // Enable all hot corners
-    enableHotCorners: function() {
+    enableHotCorners() {
         // Restore the default behaviour and recreate the hot corners
         Main.layoutManager._updateHotCorners();
-    },
+    }
 
     // Disable all hot corners
-    disableHotCorners: function() {
+    disableHotCorners() {
         let hotCorners = this._getHotCorners();
         // Monkey patch each hot corner
-        hotCorners.forEach(function(corner) {
+        hotCorners.forEach(function (corner) {
             if (corner) {
-                corner._toggleOverview = function() {};
-                corner._pressureBarrier._trigger = function() {};
+                corner._toggleOverview = () => { };
+                corner._pressureBarrier._trigger = () => { };
             }
         });
-    },
+    }
 
     // Destroy this object
-    destroy: function() {
+    destroy() {
         if (this._hotCornersChangedId) {
             Main.layoutManager.disconnect(this._hotCornersChangedId);
             this._hotCornersChangedId = null;
@@ -227,4 +221,4 @@ var HotCornerManager = new Lang.Class({
         // Clean up and restore the default behaviour
         this.enableHotCorners();
     }
-});
+};

@@ -8,204 +8,220 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Arc Menu\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-07-09 16:20+0200\n"
+"POT-Creation-Date: 2019-03-18 19:11+0100\n"
 "PO-Revision-Date: 2017-10-05 01:31+0700\n"
 "Last-Translator: Mahyuddin <yudi.al@gmail.com>\n"
+"Language-Team: Indonesian\n"
 "Language: id\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language-Team: Indonesian\n"
 "X-Generator: Poedit 1.8.11\n"
 
-#: prefs.js:76
+#: prefs.js:42
+msgid "General"
+msgstr ""
+
+#: prefs.js:54
 msgid "Behaviour"
 msgstr "Tingkah laku"
 
-#: prefs.js:85
+#: prefs.js:63
 msgid "Disable activities hot corner"
 msgstr "Nonaktifkan sudut aktif"
 
-#: prefs.js:107
+#: prefs.js:85
 msgid "Set menu hotkey"
 msgstr "Atur menu hotkey"
 
-#: prefs.js:113
+#: prefs.js:91
 msgid "Undefined"
 msgstr "Tidak didefinisikan"
 
-#: prefs.js:114
+#: prefs.js:92
 msgid "Left Super Key"
 msgstr "Tombol super kiri"
 
-#: prefs.js:115
+#: prefs.js:93
 msgid "Right Super Key"
 msgstr "Tombol super kanan"
 
-#: prefs.js:127
+#: prefs.js:105
 msgid "Enable custom menu keybinding"
 msgstr "Aktifkan pengikat tombol untuk menu kustom"
 
-#: prefs.js:134
+#: prefs.js:112
 msgid "Syntax: <Shift>, <Ctrl>, <Alt>, <Super>"
 msgstr "Sintaks: <Shift>, <Ctrl>, <Alt>, <Super>"
 
-#: prefs.js:175
-msgid "Appearance"
-msgstr "Tampilan"
-
-#: prefs.js:184
-msgid "Customize menu button appearance"
-msgstr "Kustomisasi tampilan tombol menu"
-
-#: prefs.js:194
-msgid "Icon"
-msgstr "Ikon"
-
-#: prefs.js:195
-msgid "Text"
-msgstr "Teks"
-
-#: prefs.js:196
-msgid "Icon and Text"
-msgstr "Ikon dan teks"
-
-#: prefs.js:197
-msgid "Text and Icon"
-msgstr "Teks dan ikon"
-
-#: prefs.js:222
-msgid "Menu position in panel"
-msgstr "Posisi menu didalam panel"
-
-#: prefs.js:229
-msgid "Left"
-msgstr "Kiri"
-
-#: prefs.js:232
-msgid "Center"
-msgstr "Tengah"
-
-#: prefs.js:236
-msgid "Right"
-msgstr "Kanan"
-
-#: prefs.js:279
+#: prefs.js:152
 msgid "Button appearance"
 msgstr "Tampilan tombol"
 
-#: prefs.js:291
+#: prefs.js:165
 msgid "Text for the menu button"
 msgstr "Teks untuk tombol menu"
 
-#: prefs.js:297
+#: prefs.js:171
 msgid "System text"
 msgstr "Teks sistem"
 
-#: prefs.js:300
+#: prefs.js:174
 msgid "Custom text"
 msgstr "Teks kustom"
 
-#: prefs.js:320
+#: prefs.js:198
 msgid "Set custom text for the menu button"
 msgstr "Atur teks kustom untuk tombol menu"
 
-#: prefs.js:340
+#: prefs.js:218
 msgid "Enable the arrow icon beside the button text"
 msgstr "Aktifkan ikon panah di samping tombol teks"
 
-#: prefs.js:362
+#: prefs.js:240
 msgid "Select icon for the menu button"
 msgstr "Pilih ikon untuk tombol menu"
 
-#: prefs.js:372
+#: prefs.js:250
 msgid "Please select an image icon"
 msgstr "Silahkan pilih gambar ikon"
 
-#: prefs.js:387
+#: prefs.js:255
 msgid "Arc Menu Icon"
 msgstr "Ikon Arc Menu"
 
-#: prefs.js:388
+#: prefs.js:256
 msgid "System Icon"
 msgstr "Ikon sistem"
 
-#: prefs.js:389
+#: prefs.js:257
 msgid "Custom Icon"
 msgstr "Ikon kustom"
 
-#: prefs.js:404
+#: prefs.js:283
 msgid "Icon size"
 msgstr "Ukuran Ikon"
 
-#: prefs.js:404
+#: prefs.js:283
 msgid "default is"
 msgstr "ukuran aslinya adalah"
 
-#: prefs.js:448
+#: prefs.js:323
+msgid "Appearance"
+msgstr "Tampilan"
+
+#: prefs.js:332
+msgid "Customize menu button appearance"
+msgstr "Kustomisasi tampilan tombol menu"
+
+#: prefs.js:342
+msgid "Icon"
+msgstr "Ikon"
+
+#: prefs.js:343
+msgid "Text"
+msgstr "Teks"
+
+#: prefs.js:344
+msgid "Icon and Text"
+msgstr "Ikon dan teks"
+
+#: prefs.js:345
+msgid "Text and Icon"
+msgstr "Teks dan ikon"
+
+#: prefs.js:370
+msgid "Menu position in panel"
+msgstr "Posisi menu didalam panel"
+
+#: prefs.js:377
+msgid "Left"
+msgstr "Kiri"
+
+#: prefs.js:380
+msgid "Center"
+msgstr "Tengah"
+
+#: prefs.js:384
+msgid "Right"
+msgstr "Kanan"
+
+#: prefs.js:461
 msgid "About"
 msgstr "Tentang"
 
-#: prefs.js:477
+#: prefs.js:490
 msgid "Arc-Menu"
 msgstr "Arc-Menu"
 
-#: prefs.js:482
+#: prefs.js:495
 msgid "version: "
 msgstr "versi: "
 
-#: prefs.js:490
-msgid "Webpage"
-msgstr "Halaman web"
+#: prefs.js:503
+msgid "GitLab Page"
+msgstr ""
 
-#: menu.js:130
-msgid "Activities Overview"
-msgstr "Ikhtisar Kegiatan"
-
-#: menu.js:154
-msgid "Power Off"
-msgstr "Matikan"
-
-#: menu.js:179
-msgid "Log Out"
-msgstr "Keluar"
-
-#: menu.js:204
-msgid "Suspend"
-msgstr "Menangguhkan"
-
-#: menu.js:235
-msgid "Lock"
-msgstr "Kunci"
-
-#: menu.js:263
-msgid "Back"
-msgstr "Kembali"
-
-#: menu.js:555
-msgid "Favorites"
-msgstr "Favorit"
-
-#: menu.js:721
-msgid "Applications"
-msgstr "Aplikasi"
-
-#: menu.js:976
+#: menu.js:272
 msgid "Home"
 msgstr "Beranda"
 
-#: menu.js:1041
-msgid "Type to search…"
-msgstr "Ketik untuk mencari…"
-
-#: menu.js:1130
+#: menu.js:456 menu.js:461
 msgid "Software"
 msgstr "Perangkat Lunak"
 
-#: menu.js:1134
+#: menu.js:466
 msgid "Settings"
 msgstr "Pengaturan"
 
-#: menu.js:1138
+#: menu.js:471
 msgid "Tweak Tool"
 msgstr "Alat Tweak"
+
+#: menu.js:476
+#, fuzzy
+msgid "Tweaks"
+msgstr "Alat Tweak"
+
+#: menu.js:481
+msgid "Terminal"
+msgstr ""
+
+#: menuWidgets.js:86
+msgid "Activities Overview"
+msgstr "Ikhtisar Kegiatan"
+
+#: menuWidgets.js:199
+msgid "Power Off"
+msgstr "Matikan"
+
+#: menuWidgets.js:212
+msgid "Log Out"
+msgstr "Keluar"
+
+#: menuWidgets.js:225
+msgid "Suspend"
+msgstr "Menangguhkan"
+
+#: menuWidgets.js:243
+msgid "Lock"
+msgstr "Kunci"
+
+#: menuWidgets.js:265
+msgid "Back"
+msgstr "Kembali"
+
+#: menuWidgets.js:483
+msgid "Favorites"
+msgstr "Favorit"
+
+#: menuWidgets.js:616
+msgid "Type to search…"
+msgstr "Ketik untuk mencari…"
+
+#: menuWidgets.js:781
+msgid "Applications"
+msgstr "Aplikasi"
+
+#~ msgid "Webpage"
+#~ msgstr "Halaman web"
