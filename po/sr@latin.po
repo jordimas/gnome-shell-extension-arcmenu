@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Arc Menu\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-03-18 19:11+0100\n"
+"POT-Creation-Date: 2019-03-19 15:14+0100\n"
 "PO-Revision-Date: 2018-02-24 16:01+0100\n"
 "Last-Translator: Slobodan Terzić  <slobodan.terzic@zoho.eu>\n"
 "Language-Team: \n"
@@ -55,7 +55,7 @@ msgstr "Koristi prilagođenu prečicu menija"
 msgid "Syntax: <Shift>, <Ctrl>, <Alt>, <Super>"
 msgstr "Sintaksa: <Shift>, <Ctrl>, <Alt>, <Super>"
 
-#: prefs.js:152
+#: prefs.js:153
 msgid "Button appearance"
 msgstr "Izgled dugmeta"
 

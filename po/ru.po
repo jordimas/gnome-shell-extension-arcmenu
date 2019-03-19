@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Arc Menu\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-03-18 19:11+0100\n"
+"POT-Creation-Date: 2019-03-19 15:14+0100\n"
 "PO-Revision-Date: 2017-07-15 02:09+0300\n"
 "Last-Translator: Alice Charlotte Liddell <e-liss@tuta.io>\n"
 "Language-Team: \n"
@@ -55,7 +55,7 @@ msgstr "Включить другое сочетание клавиш"
 msgid "Syntax: <Shift>, <Ctrl>, <Alt>, <Super>"
 msgstr "Синтаксис: <Shift>, <Ctrl>, <Alt>, <Super>"
 
-#: prefs.js:152
+#: prefs.js:153
 msgid "Button appearance"
 msgstr "Внешний вид кнопки"
 

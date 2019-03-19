@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Arc Menu\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-03-18 19:11+0100\n"
+"POT-Creation-Date: 2019-03-19 15:14+0100\n"
 "PO-Revision-Date: 2017-09-02 18:00+0200\n"
 "Last-Translator: Ivailo Momchilov Panamski <ipanamski@gmail.com>\n"
 "Language-Team: \n"
@@ -52,7 +52,7 @@ msgstr "Използване на персонализиран клавиш"
 msgid "Syntax: <Shift>, <Ctrl>, <Alt>, <Super>"
 msgstr "Синтаксис: <Shift>, <Ctrl>, <Alt>, <Super>"
 
-#: prefs.js:152
+#: prefs.js:153
 msgid "Button appearance"
 msgstr "Изглед на бутона"
 
