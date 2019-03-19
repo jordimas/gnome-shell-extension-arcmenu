@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Arc Menu\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-03-18 19:11+0100\n"
+"POT-Creation-Date: 2019-03-19 15:14+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Madaramost <madaramost@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -53,7 +53,7 @@ msgstr "تمكين إظهار القائمة بواسطة لوحة المفات�
 msgid "Syntax: <Shift>, <Ctrl>, <Alt>, <Super>"
 msgstr "<Shift>, <Ctrl>, <Alt>, <Super> :الرموز"
 
-#: prefs.js:152
+#: prefs.js:153
 msgid "Button appearance"
 msgstr "مظهر زر القائمة"
 

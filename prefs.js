@@ -149,8 +149,8 @@ const MenuButtonCustomizationWindow = GObject.registerClass(
     class MenuButtonCustomizationWindow extends PW.DialogWindow {
 
         _init(settings, parent) {
-            super._init(_('Button appearance'), parent);
             this._settings = settings;
+            super._init(_('Button appearance'), parent);
         }
 
         _createLayout(vbox) {

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Arc Menu\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-03-18 19:11+0100\n"
+"POT-Creation-Date: 2019-03-19 15:14+0100\n"
 "PO-Revision-Date: 2017-07-13 01:36+0300\n"
 "Last-Translator: Hüseyin Karacabey <neynefes@ubuntu-tr.net>\n"
 "Language: Turkish\n"
@@ -52,7 +52,7 @@ msgstr "Özel kısayol belirle"
 msgid "Syntax: <Shift>, <Ctrl>, <Alt>, <Super>"
 msgstr ""
 
-#: prefs.js:152
+#: prefs.js:153
 msgid "Button appearance"
 msgstr "Buton görünümü"
 

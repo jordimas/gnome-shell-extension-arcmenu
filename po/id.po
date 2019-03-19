@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Arc Menu\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-03-18 19:11+0100\n"
+"POT-Creation-Date: 2019-03-19 15:14+0100\n"
 "PO-Revision-Date: 2017-10-05 01:31+0700\n"
 "Last-Translator: Mahyuddin <yudi.al@gmail.com>\n"
 "Language-Team: Indonesian\n"
@@ -54,7 +54,7 @@ msgstr "Aktifkan pengikat tombol untuk menu kustom"
 msgid "Syntax: <Shift>, <Ctrl>, <Alt>, <Super>"
 msgstr "Sintaks: <Shift>, <Ctrl>, <Alt>, <Super>"
 
-#: prefs.js:152
+#: prefs.js:153
 msgid "Button appearance"
 msgstr "Tampilan tombol"
 
