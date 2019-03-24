@@ -335,6 +335,7 @@ var ApplicationsButton = GObject.registerClass(
                 style_class: 'main-box'
             });
             section.actor.add_actor(this.mainBox);
+            this.mainBox._delegate = this.mainBox;
             this._mainBoxKeyPressId = this.mainBox.connect('key-press-event', this._onMainBoxKeyPress.bind(this));
 
             // Left Box
