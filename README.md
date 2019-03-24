@@ -1,3 +1,14 @@
+24 Mar 2019 - Now officially no longer maintained. 
+-----------
+
+####  As stated before as my time has become limited i can no longer keep up with maintaining this project effectively therefor I'am now in search of a new maintainer (owner) of this project, its hard to believe that the project has been going for nearly 3 years but as with open source it never goes away rather its left for someone else to carry the torch, as always the source code is availible if you wish to carry on the project under a different name . 
+
+#### I apologise to anyone who feels disappointed about this decision, it was one that took a lot to think about.
+
+**kind regards - LinxGem33**
+
+-----
+
 ![](https://gitlab.com/LinxGem33/Neon/raw/master/artwork/arc-wide-banner-new.png)
 
 -----
