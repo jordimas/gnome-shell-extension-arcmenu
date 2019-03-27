@@ -111,7 +111,7 @@ var ApplicationsButton = GObject.registerClass(
     class ApplicationsButton extends PanelMenu.Button {
         // Initialize the menu
         _init(settings) {
-            super._init(1.0, null, false)
+            super._init(1.0, null, false);
             this._settings = settings;
             this._session = new GnomeSession.SessionManager();
 
@@ -168,10 +168,36 @@ var ApplicationsButton = GObject.registerClass(
 
         // Destroy the menu button
         _onDestroy() {
-            Main.overview.disconnect(this._showingId);
-            Main.overview.disconnect(this._hidingId);
-            Main.panel.actor.disconnect(this._notifyHeightId);
-            appSys.disconnect(this._installedChangedId);
+            if (this.menu) {
+                this.searchBox.disconnect(this._searchBoxClearedId);
+                this.searchBox.disconnect(this._searchBoxChangedId);
+                this.searchBox.disconnect(this._searchBoxActivateId);
+                this.searchBox.disconnect(this._searchBoxKeyPressId);
+                this.searchBox.disconnect(this._searchBoxKeyFocusInId);
+                this.mainBox.disconnect(this._mainBoxKeyPressId);
+
+                this.menu.destroy();
+                this.menu = null;
+            }
+
+            if (this._showingId > 0) {
+                Main.overview.disconnect(this._showingId);
+                this._showingId = 0;
+            }
+            if (this._hidingId > 0) {
+                Main.overview.disconnect(this._hidingId);
+                this._hidingId = 0;
+            }
+            if (this._notifyHeightId > 0) {
+                Main.panel.actor.disconnect(this._notifyHeightId);
+                this._notifyHeightId = 0;
+            }
+            if (this._installedChangedId > 0) {
+                appSys.disconnect(this._installedChangedId);
+                this._installedChangedId  = 0;
+            }
+
+            super._onDestroy();
         }
 
         // Handle captured event
@@ -309,6 +335,7 @@ var ApplicationsButton = GObject.registerClass(
                 style_class: 'main-box'
             });
             section.actor.add_actor(this.mainBox);
+            this.mainBox._delegate = this.mainBox;
             this._mainBoxKeyPressId = this.mainBox.connect('key-press-event', this._onMainBoxKeyPress.bind(this));
 
             // Left Box
@@ -720,34 +747,5 @@ var ApplicationsButton = GObject.registerClass(
                 res = applist;
             }
             return res;
-        }
-
-        // Destroy (deactivate) the menu
-        destroy() {
-            if (this._searchBoxClearedId > 0) {
-                this.searchBox.disconnect(this._searchBoxClearedId);
-                this._searchBoxClearedId = 0;
-            }
-            if (this._searchBoxChangedId > 0) {
-                this.searchBox.disconnect(this._searchBoxChangedId);
-                this._searchBoxChangedId = 0;
-            }
-            if (this._searchBoxActivateId > 0) {
-                this.searchBox.disconnect(this._searchBoxActivateId);
-                this._searchBoxActivateId = 0;
-            }
-            if (this._searchBoxKeyPressId > 0) {
-                this.searchBox.disconnect(this._searchBoxKeyPressId);
-                this._searchBoxKeyPressId = 0;
-            }
-            if (this._searchBoxKeyFocusInId > 0) {
-                this.searchBox.disconnect(this._searchBoxKeyFocusInId);
-                this._searchBoxKeyFocusInId = 0;
-            }
-            if (this._mainBoxKeyPressId > 0) {
-                this.mainBox.disconnect(this._mainBoxKeyPressId);
-                this._mainBoxKeyPressId = 0;
-            }
-            super.destroy();
         }
     });

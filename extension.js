@@ -71,7 +71,7 @@ function enable() {
 function disable() {
     settingsController.disableButton();
     settingsController.destroy();
-    appsMenuButton.destroy();
+    appsMenuButton._onDestroy();
     settings.run_dispose();
 
     settingsController =  null;
