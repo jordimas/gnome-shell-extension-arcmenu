@@ -34,8 +34,14 @@ This extension could be even better with your help! Any items in the issue track
 
 ### Installation
 
-You can now install this extension from extensions.gnome.org as a one click install just click on the link below
-> [One Click Install](https://extensions.gnome.org/extension/1228/arc-menu/)
+You can now install this extension from **extensions.gnome.org** as a one click install just click on the link below
+
+<p align="left">
+       <a href="https://extensions.gnome.org/extension/1228/arc-menu/" >
+    <img src="https://gitlab.com/LinxGem33/Neon/raw/master/artwork/get-it-ego.png" width="240" style="margin-left: 4px"/>
+    </a>
+</p>
+
 
 -----
 
