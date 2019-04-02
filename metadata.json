@@ -7,6 +7,7 @@
     "description": "The new applications menu for Gnome 3.",
     "version": -1,
     "shell-version": [
+        "3.31",
         "3.32"
     ],
     "url": "https://gitlab.com/LinxGem33/Arc-Menu"
