@@ -47,9 +47,10 @@ You can now install this extension from **extensions.gnome.org** as a one click 
 
 #### Please Read: 
 
-Because of the new update which has ported the previous source code to the new ES6 standards, means that any Gnome desktop using any version of gnome-shell below version 3.30 will not be able to install manually from the current master branch, so i have created a new branch called [legacy-version-3.30](https://gitlab.com/LinxGem33/Arc-Menu/tree/legacy-version-3.30) with a snapshot of the master branch just before the new updates was ported to the new ES6 standards, you can select from the branch drop down tab on the Arc menu landing page or alternatively download the source code via the [v22 tag](https://gitlab.com/LinxGem33/Arc-Menu/tags/v22).
+Legacy versions of Arc Menu can be obtained from the sources below;
 
-**kind regards - LinxGem33**
+[legacy-version-3.30](https://gitlab.com/LinxGem33/Arc-Menu/tree/legacy-version-3.30) repository branch alternatively download the source code via the [v22 tag](https://gitlab.com/LinxGem33/Arc-Menu/tags/v22).
+
 
 -----
 
