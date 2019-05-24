@@ -45,12 +45,11 @@ You can now install this extension from **extensions.gnome.org** as a one click 
 
 -----
 
-#### Please Read: 
+### Manual Installation
+For installing Arc-Menu manually from source;
 
-Legacy versions of Arc Menu can be obtained from the sources below;
-
-[legacy-version-3.30](https://gitlab.com/LinxGem33/Arc-Menu/tree/legacy-version-3.30) repository branch alternatively download the source code via the [v22 tag](https://gitlab.com/LinxGem33/Arc-Menu/tags/v22).
-
+Please take a look at the [Manual Installation Guide](https://gitlab.com/LinxGem33/Arc-Menu/wikis/Install-From-Source-Guide) 
+on the Arc-Menu Wiki.
 
 -----
 
@@ -66,13 +65,12 @@ following dependencies installed.
 |gnome-menus|![](https://gitlab.com/LinxGem33/Neon/raw/master/artwork/done.svg.png)|gnome-menus|![](https://gitlab.com/LinxGem33/Neon/raw/master/artwork/done.svg.png)
 |gnome-session|![](https://gitlab.com/LinxGem33/Neon/raw/master/artwork/done.svg.png)
 
------
+#### Please Read: 
 
-### Manual Installation
-For installing Arc-Menu manually from source;
+Legacy versions of Arc Menu can be obtained from the sources below;
 
-Please take a look at the [Manual Installation Guide](https://gitlab.com/LinxGem33/Arc-Menu/wikis/Install-From-Source-Guide) 
-on the Arc-Menu Wiki.
+[legacy-version-3.30](https://gitlab.com/LinxGem33/Arc-Menu/tree/legacy-version-3.30) repository branch alternatively download the source code via the [v22 tag](https://gitlab.com/LinxGem33/Arc-Menu/tags/v22).
+
 
 -----
 
