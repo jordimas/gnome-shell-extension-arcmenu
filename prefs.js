@@ -1,7 +1,7 @@
 /*
  * Arc Menu: The new applications menu for Gnome 3.
  *
- * Copyright (C) 2017 LinxGem33, Alexander Rüedlinger
+ * Copyright (C) 2017 LinxGem33, Alexander Rüedlinger.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
