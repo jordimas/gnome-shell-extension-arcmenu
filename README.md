@@ -84,7 +84,7 @@ Please refer to the Arc menu [Wiki Guide](https://gitlab.com/LinxGem33/Arc-Menu/
 
 ### Bugs
 
-Bugs should be reported [here](https://gitlab.com/LinxGem33/Arc-Menu/issues) on the Github issues page.
+Bugs should be reported [here](https://gitlab.com/LinxGem33/Arc-Menu/issues) on the GitLab issues page.
 
 -----
 
@@ -146,6 +146,9 @@ Additional credits: This extension also leverages the work from [Giovanni Campag
 #### @[lexruee](https://github.com/lexruee) - **Project Developer** - UI/UX Designer
 
 #### @[Thomas Ingvarsson](https://gitlab.com/tingvarsson) - **Project Contributor** - Developer
+
+#### @[Andrew Zaech](https://gitlab.com/AndrewZaech) - **Project Contributor** - Developer
+
 -----
 
 ### Technical Advisors
