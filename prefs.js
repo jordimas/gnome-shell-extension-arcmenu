@@ -276,7 +276,7 @@ const AddAppsToPinnedListWindow = GObject.registerClass(
 
         _init(settings, parent) {
             this._settings = settings;
-            super._init(_('Add a Custom Shortcut to Pinned Apps List'), parent);
+            super._init(_('Select Apps to add to Pinned Apps List'), parent);
             this.newPinnedAppsArray=[];
             this.addResponse = false;
         }
@@ -417,7 +417,7 @@ const AddCustomLinkDialogWindow = GObject.registerClass(
 
         _init(settings, parent) {
             this._settings = settings;
-            super._init(_('Button appearance'), parent);
+            super._init(_('Add a Custom Shortcut to Pinned Apps List'), parent);
             this.newPinnedAppsArray=[];
             this.addResponse = false;
         }
