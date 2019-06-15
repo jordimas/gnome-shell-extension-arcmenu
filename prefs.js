@@ -41,10 +41,470 @@ const GeneralSettingsPage = GObject.registerClass(
         _init(settings) {
             super._init(_('General'));
             this.settings = settings;
+            
+            //first row - label
+            let yourAppsLabel = new Gtk.Label({
+                label: _("Your Pinned Apps:"),
+                use_markup: true,
+                xalign: 0,
+                hexpand: true,
+                margin_bottom: 0
+             });
+            this.add(yourAppsLabel);
+            
+            //second row
+            //list of currently pinned apps attached to scroll window
+            this.pinnedAppsScrollWindow = new Gtk.ScrolledWindow();
+            this.pinnedAppsScrollWindow.set_policy(Gtk.PolicyType.AUTOMATIC, Gtk.PolicyType.AUTOMATIC);
+            this.pinnedAppsScrollWindow.set_max_content_height(300);
+            this.pinnedAppsScrollWindow.set_min_content_height(300);
+            this.frame = new PW.FrameBox();
+            //function to load all pinned apps
+            this._loadPinnedApps(this.frame,this.settings.get_strv('pinned-apps'));
+            this.pinnedAppsScrollWindow.add_with_viewport(this.frame);
+            this.add(this.pinnedAppsScrollWindow);
+            
+            //third row - add more apps to pinned apps list
+            let addPinnedAppsFrame = new PW.FrameBox();
+            let addPinnedAppsFrameRow = new PW.FrameBoxRow();
+            let addPinnedAppsFrameLabel = new Gtk.Label({
+                label: _("Add More Apps"),
+                use_markup: true,
+                xalign: 0,
+                hexpand: true
+            });
+            let addPinnedAppsButton = new PW.IconButton({
+                circular: false,
+                icon_name: 'list-add-symbolic'
+            });
+            addPinnedAppsButton.connect('clicked', ()=>
+            {
+                let dialog = new AddAppsToPinnedListWindow(this.settings, this);
+                dialog.show_all();
+                dialog.connect('response', ()=>
+                { 
+                    if(dialog.get_response())
+                    {
+                        //checked apps to add to pinned apps list - from dialog 'Add" button click event
+                        let newPinnedApps = dialog.get_newPinnedAppsArray();
+                        let array=[]; //how to store nested arrays in settings?
+                        for(let i = 0;i<newPinnedApps.length;i++)
+                        {
+                            array.push(newPinnedApps[i].name);
+                            array.push(newPinnedApps[i].icon);
+                            array.push(newPinnedApps[i].cmd);
+                        }
+                        this._loadPinnedApps(this.frame,array);
+                        dialog.destroy();
+                        this.frame.show();
+                    }
+                    else
+                        dialog.destroy();
+                }); 
+            });
+            addPinnedAppsFrameRow.add(addPinnedAppsFrameLabel);
+            addPinnedAppsFrameRow.add(addPinnedAppsButton);
+            addPinnedAppsFrame.add(addPinnedAppsFrameRow);
+            this.add(addPinnedAppsFrame);
+            
+            //fourth row - add custom app to pinned list
+            let addCustomAppFrame = new PW.FrameBox();
+            let addCustomAppFrameRow = new PW.FrameBoxRow();
+            let addCustomAppFrameLabel = new Gtk.Label({
+                label: _("Add Custom Shortcut"),
+                use_markup: true,
+                xalign: 0,
+                hexpand: true
+            });
+            let addCustomAppButton = new PW.IconButton({
+                 circular: false,
+                 icon_name: 'list-add-symbolic'
+            });
+            addCustomAppButton.connect('clicked', ()=>
+            {
+                let dialog = new AddCustomLinkDialogWindow(this.settings, this);
+                dialog.show_all();
+                dialog.connect('response', ()=>
+                { 
+                    if(dialog.get_response())
+                    {
+                        let newPinnedApps = dialog.get_newPinnedAppsArray();
+                        this._loadPinnedApps(this.frame,newPinnedApps);
+                        dialog.destroy();
+                        this.frame.show();
+                    }
+                    else
+                        dialog.destroy();
+                }); 
+            });
+            addCustomAppFrameRow.add(addCustomAppFrameLabel);
+            addCustomAppFrameRow.add(addCustomAppButton);
+            addCustomAppFrame.add(addCustomAppFrameRow);
+            this.add(addCustomAppFrame);
+            
+            //last row - save settings
+            let savePinnedAppsFrame = new PW.FrameBox();
+            let savePinnedAppsFrameRow = new PW.FrameBoxRow();
+            let savePinnedAppsFrameLabel = new Gtk.Label({
+                label: _("Save Changes"),
+                use_markup: true,
+                xalign: 0,
+                hexpand: true
+            });
+            let savePinnedAppsButton = new Gtk.Button({
+                label: "Save",
+            });
+            savePinnedAppsButton.connect('clicked', ()=>
+            {
+                //iterate through each frame row (containing apps to pin) to create an array to save in settings
+                let array = [];
+                for(let x = 0;x < this.frame.count; x++)
+                {
+                    array.push(this.frame.get_index(x).name);
+                    array.push(this.frame.get_index(x).icon);
+                    array.push(this.frame.get_index(x).cmd);
+                }
+
+                this.settings.set_strv('pinned-apps',array);
+            }); 
+            savePinnedAppsFrameRow.add(savePinnedAppsFrameLabel);
+            savePinnedAppsFrameRow.add(savePinnedAppsButton);
+            savePinnedAppsFrame.add(savePinnedAppsFrameRow);
+            this.add(savePinnedAppsFrame);
 
         }
-    });
+         
+        _loadPinnedApps(frame,test)
+        {
+            this.frame = frame;
+            for(let i = 0;i<test.length;i+=3)
+            {
+                let frameRow = new PW.FrameBoxRow();
+                frameRow.name = test[i];
+                frameRow.icon = test[i+1];
+                frameRow.cmd = test[i+2];
+                let arcMenuImage = new Gtk.Image(
+                {
+                  gicon: Gio.icon_new_for_string(test[i+1]),
+                  pixel_size: 22
+                });
 
+                let arcMenuImageBox = new Gtk.VBox({
+                    margin_left:5,
+                    expand: false
+                 });
+                arcMenuImageBox.add(arcMenuImage);
+                frameRow.add(arcMenuImageBox);
+
+                let frameLabel = new Gtk.Label(
+                {
+                    use_markup: false,
+                    xalign: 0,
+                    hexpand: true
+                });
+
+
+                frameLabel.label = test[i];
+                frameRow.add(frameLabel);
+                let buttonBox = new Gtk.Grid({
+                    margin_top:0,
+                    margin_bottom: 0,
+                    vexpand: false,
+                    hexpand: false,
+                    margin_right: 15,
+                    column_spacing: 2
+                });
+                //create the three buttons to handle the ordering of pinned apps
+                //and delete pinned apps
+                let upButton = new PW.IconButton({
+                  circular: false,
+                  icon_name: 'go-up-symbolic'
+                });
+                let downButton = new PW.IconButton({
+                  circular: false,
+                  icon_name: 'go-down-symbolic'
+                });
+                let deleteButton = new PW.IconButton({
+                  circular: false,
+                  icon_name: 'edit-delete-symbolic'
+                });
+
+                upButton.connect('clicked', ()=>
+                {
+                    //find index of frameRow in frame
+                    //remove and reinsert at new position
+                    let index = frameRow.get_index();
+                    if(index!=0)
+                    {
+                      this.frame.remove(frameRow);
+                      this.frame.insert(frameRow,index-1);
+                    }
+                    this.frame.show();
+                });
+
+                downButton.connect('clicked', ()=>
+                {
+                    //find index of frameRow in frame
+                    //remove and reinsert at new position
+                    let index = frameRow.get_index();
+                    if(index+1<this.frame.count)
+                    {
+                      this.frame.remove(frameRow);
+                      this.frame.insert(frameRow,index+1);
+                    }
+                    this.frame.show();
+                });
+
+                deleteButton.connect('clicked', ()=>
+                {
+                    //remove frameRow
+                    this.frame.remove(frameRow);
+                    this.frame.show();
+                });
+                //add everything to frame
+                buttonBox.add(upButton);
+                buttonBox.add(downButton);
+                buttonBox.add(deleteButton);
+                frameRow.add(deleteButton);
+                frameRow.add(buttonBox);
+                frame.add(frameRow);
+            }
+        }
+    });
+const AddAppsToPinnedListWindow = GObject.registerClass(
+    class AddAppsToPinnedListWindow extends PW.DialogWindow {
+
+        _init(settings, parent) {
+            this._settings = settings;
+            super._init(_('Select Apps to add to Pinned Apps List'), parent);
+            this.newPinnedAppsArray=[];
+            this.addResponse = false;
+        }
+
+        _createLayout(vbox) {
+            //create a scrolledwindow for list of all apps
+            let pinnedAppsScrollWindow = new Gtk.ScrolledWindow();
+            pinnedAppsScrollWindow.set_policy(Gtk.PolicyType.AUTOMATIC, Gtk.PolicyType.AUTOMATIC);
+            pinnedAppsScrollWindow.set_max_content_height(300);
+            pinnedAppsScrollWindow.set_min_content_height(300);
+            pinnedAppsScrollWindow.set_min_content_width(500);
+            pinnedAppsScrollWindow.set_min_content_width(500);
+            let appsFrame = new PW.FrameBox();
+
+            //first row
+            let appsFrameRow = new PW.FrameBoxRow();
+            let appsFrameLabel = new Gtk.Label({
+                label: 'List of Apps:',
+                use_markup: true,
+                xalign: 0,
+                hexpand: true
+            });
+
+            //last row - Label and button to add apps to list
+            let addAppsButton = new Gtk.Button({
+                label: "Add",
+            });
+
+            addAppsButton.connect('clicked', ()=>
+            {
+                this.addResponse = true;
+                this.response(-10);
+            });
+
+            let addAppsFrameRow = new PW.FrameBoxRow();
+            let addAppsFrameLabel = new Gtk.Label({
+                label: 'Add Selected Apps',
+                use_markup: true,
+                xalign: 0,
+                hexpand: true
+            });
+            addAppsFrameRow.add(addAppsFrameLabel);
+            addAppsFrameRow.add(addAppsButton);
+
+            // add the frames to the vbox
+
+            vbox.add(appsFrameLabel);
+
+            this._loadCategories(appsFrame);
+            pinnedAppsScrollWindow.add_with_viewport(appsFrame);
+            vbox.add(pinnedAppsScrollWindow);
+            vbox.add(addAppsFrameRow);
+        }
+        //function to get the array of apps to add to list
+        get_newPinnedAppsArray()
+        {
+          return this.newPinnedAppsArray;
+        }
+        get_response()
+        {
+          return this.addResponse;
+        }
+        _loadCategories(frame)
+        {
+            //get all apps, store in list
+            let allApps = Gio.app_info_get_all();
+            //sort apps by name alphabetically
+            allApps.sort(function(a, x)
+            {
+              let _a = a.get_display_name();
+              let _b = x.get_display_name();
+
+              return GLib.strcmp0(_a, _b);
+            });
+            //iterate through allApps and create the frameboxrows, labels, and checkbuttons
+            for(let i = 0;i<allApps.length;i++)
+            {
+                if(allApps[i].should_show())
+                {
+                    let frameRow = new PW.FrameBoxRow();
+                    frameRow.name = allApps[i].get_display_name();
+                    frameRow.icon = allApps[i].get_icon().to_string(); //stores icon as string
+                    frameRow.cmd = "gtk-launch " + allApps[i].get_id(); //string for command line to launch .desktop files
+                    let iconImage = new Gtk.Image(
+                    {
+                      gicon: allApps[i].get_icon(),
+                      pixel_size: 22
+                    });
+
+                    let iconImageBox = new Gtk.VBox(
+                    {
+                      margin_left: 5,
+                      expand: false
+                    });
+
+                    iconImageBox.add(iconImage);
+                    frameRow.add(iconImageBox);
+
+                    let frameLabel = new Gtk.Label(
+                    {
+                      use_markup: false,
+                      xalign: 0,
+                      hexpand: true
+                    });
+
+                    frameLabel.label = allApps[i].get_display_name();
+
+                    frameRow.add(frameLabel);
+
+                    let checkButton = new Gtk.CheckButton(
+                    {
+                      margin_right: 20
+                    });
+                    checkButton.connect('toggled', ()=>
+                    {
+                        //if checkbox is checked add the framerow to newPinnedAppsArray
+                        //else if unchecked remove it from the array
+                        if(checkButton.get_active())
+                        {
+                          this.newPinnedAppsArray.push(frameRow);
+                        }
+                        else
+                        {
+                          let index= this.newPinnedAppsArray.indexOf(frameRow);
+                          this.newPinnedAppsArray.splice(index,1);
+                        }
+                    });
+
+                    frameRow.add(checkButton);
+                    frame.add(frameRow);
+                }
+            }
+        }
+    });
+    
+const AddCustomLinkDialogWindow = GObject.registerClass(
+    class AddCustomLinkDialogWindow extends PW.DialogWindow {
+
+        _init(settings, parent) {
+            this._settings = settings;
+            super._init(_('Add a Custom Shortcut to Pinned Apps List'), parent);
+            this.newPinnedAppsArray=[];
+            this.addResponse = false;
+        }
+
+        _createLayout(vbox) {
+            let mainFrame = new PW.FrameBox();
+            //first row  - Name of Custom link
+            let nameFrameRow = new PW.FrameBoxRow();
+            let nameFrameLabel = new Gtk.Label({
+                label: _('Shortcut Name:'),
+                use_markup: true,
+                xalign: 0,
+                hexpand: true,
+                selectable: false
+            });
+            let nameEntry = new Gtk.Entry();
+            nameFrameRow.add(nameFrameLabel);
+            nameFrameRow.add(nameEntry);
+            nameEntry.grab_focus();
+            mainFrame.add(nameFrameRow);
+            //second row  - Icon of Custom link
+            let iconFrameRow = new PW.FrameBoxRow();
+            let iconFrameLabel = new Gtk.Label({
+                label: _("Icon Path/Icon Symbolic:"),
+                use_markup: true,
+                xalign: 0,
+                hexpand: true,
+                selectable: false
+            });
+            let iconEntry = new Gtk.Entry();
+            iconFrameRow.add(iconFrameLabel);
+            iconFrameRow.add(iconEntry);
+            mainFrame.add(iconFrameRow);
+
+            //third row  - Command of Custom link
+            let cmdFrameRow = new PW.FrameBoxRow();
+            let cmdFrameLabel = new Gtk.Label({
+                label: _('Terminal Command:'),
+                use_markup: true,
+                xalign: 0,
+                hexpand: true,
+                selectable: false
+            });
+            let cmdEntry = new Gtk.Entry();
+            cmdFrameRow.add(cmdFrameLabel);
+            cmdFrameRow.add(cmdEntry);
+             mainFrame.add(cmdFrameRow);
+            //last row - Label and button to add custom link to list
+            let addButton = new Gtk.Button({
+                label: "Add",
+            });
+
+            addButton.connect('clicked', ()=>
+            {
+               this.newPinnedAppsArray.push(nameEntry.get_text());
+               this.newPinnedAppsArray.push(iconEntry.get_text());
+               this.newPinnedAppsArray.push(cmdEntry.get_text());
+               this.addResponse = true;
+               this.response(-10);
+            });
+
+            let addFrameRow = new PW.FrameBoxRow();
+            let addFrameLabel = new Gtk.Label({
+                label: _('Add Cutsom Link'),
+                use_markup: true,
+                xalign: 0,
+                hexpand: true,
+                selectable: false
+            });
+            addFrameRow.add(addFrameLabel);
+            addFrameRow.add(addButton);
+            mainFrame.add(addFrameRow);
+
+
+            // add the frames to the vbox
+            vbox.add(mainFrame);
+        }
+        //function to get the array of apps to add to list
+        get_newPinnedAppsArray()
+        {
+          return this.newPinnedAppsArray;
+        }
+        get_response()
+        {
+          return this.addResponse;
+        }
+    });
 /*
  * Behaviour Settings Page
  */
@@ -545,8 +1005,8 @@ const ArcMenuPreferencesWidget = new GObject.Class({
 
         let notebook = new PW.Notebook();
         // Spoiler alert: There will be a general settings page in vXX ;-)
-        //let generalSettingsPage = new GeneralSettingsPage(this.settings);
-        //notebook.append_page(generalSettingsPage, generalSettingsPage.title);
+        let generalSettingsPage = new GeneralSettingsPage(this.settings);
+        notebook.append_page(generalSettingsPage, generalSettingsPage.title);
 
         let behaviourSettingsPage = new BehaviourSettingsPage(this.settings);
         notebook.append_page(behaviourSettingsPage);

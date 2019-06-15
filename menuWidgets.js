@@ -41,9 +41,14 @@ const DND = imports.ui.dnd;
 const LoginManager = imports.misc.loginManager;
 
 // Menu Size variables
-const APPLICATION_ICON_SIZE = 32;
+const APPLICATION_ICON_SIZE = 24;
 const TOOLTIP_LABEL_SHOW_TIME = 0.15;
 const TOOLTIP_LABEL_HIDE_TIME = 0.1;
+const currentMenu = {
+    FAVORITES: 0,
+    ALL_APPS: 1,
+    APP_SUBGROUP: 2
+};
 
 function setIconAsync(icon, gioFile, fallback_icon_name) {
     gioFile.load_contents_async(null, function (source, result) {
@@ -68,6 +73,16 @@ var BaseMenuItem = class extends PopupMenu.PopupBaseMenuItem {
         }
         return Clutter.EVENT_PROPAGATE;
     }
+    _onButtonPressEvent(actor, event) {
+        return Clutter.EVENT_PROPAGATE;
+    }
+
+    _onButtonReleaseEvent(actor, event) {
+        if(event.get_button()==1)
+          this.activate(event);
+        return Clutter.EVENT_STOP;
+    }
+
 };
 
 // Menu item to launch GNOME activities overview
@@ -272,11 +287,86 @@ var BackMenuItem = class extends BaseMenuItem {
     // Activate the button (go back to category view)
     activate(event) {
         this._button.selectCategory(null);
-        if (this._button.searchActive) this._button.resetSearch();
+        this._button._clearApplicationsBox();
+        if(this._button.searchActive)
+        {
+            this._button.resetSearch();
+            this._button._clearApplicationsBox();
+           this._button._loadFavorites;
+        }
+        else if(this._button.currentMenu == currentMenu.ALL_APPS)
+        { 
+            this._button.currentMenu = currentMenu.FAVORITES;
+            this._button._clearApplicationsBox();
+            this._button._loadFavorites();
+        }
+        else if(this._button.currentMenu == currentMenu.APP_SUBGROUP)
+        {
+            this._button.currentMenu = currentMenu.ALL_APPS;
+            this._button._clearApplicationsBox();
+            this._button._loadCategories();
+        }
         super.activate(event);
     }
 };
 
+// Menu item to view all apps
+var ViewAllPrograms = class extends BaseMenuItem {
+    // Initialize the button
+    constructor(button) {
+        super();
+        this._button = button;
+        this._icon = new St.Icon({
+            icon_name: 'go-next-symbolic',
+            style_class: 'popup-menu-icon',
+            icon_size: APPLICATION_ICON_SIZE
+        });
+        this.actor.add_child(this._icon);
+        let backLabel = new St.Label({
+            text: _("All Programs"),
+            y_expand: true,
+            y_align: Clutter.ActorAlign.CENTER
+        });
+        this.actor.add_child(backLabel);
+    }
+
+    // Activate the button (go back to category view)
+    activate(event) {
+      this._button._clearApplicationsBox();
+	    this._button._loadCategories();
+	    this._button.currentMenu = currentMenu.ALL_APPS;
+      if (this._button.searchActive)
+        this._button.resetSearch();
+      super.activate(event);
+    }
+};
+// Menu pinned apps/favorites item class
+var FavoritesMenuItem = class extends BaseMenuItem {
+    // Initialize the menu item
+    constructor(button, name, icon, command) {
+        super();
+        this._button = button;
+        this._command = command;
+        this._icon = new St.Icon({
+            gicon: Gio.icon_new_for_string(icon),
+            style_class: 'popup-menu-icon',
+            icon_size: APPLICATION_ICON_SIZE
+        });
+        this.actor.add_child(this._icon);
+        let label = new St.Label({
+            text: name, y_expand: true,
+            y_align: Clutter.ActorAlign.CENTER
+        });
+        this.actor.add_child(label);
+    }
+
+    // Activate the menu item (Launch the shortcut)
+    activate(event) {
+        Util.spawnCommandLine(this._command);
+        this._button.menu.toggle();
+        super.activate(event);
+    }
+};
 // Menu shortcut item class
 var ShortcutMenuItem = class extends BaseMenuItem {
     // Initialize the menu item

@@ -106,7 +106,7 @@ const IconButton = new GObject.Class({
         if (this._params.icon_name) {
             let image = new Gtk.Image({
                 icon_name: this._params.icon_name,
-                xalign: 0.46
+                xalign: 0.5
             });
             this.add(image);
         }
@@ -150,11 +150,30 @@ const FrameBox = GObject.registerClass(
             super._init({ label_yalign: 0.50 });
             this._listBox = new Gtk.ListBox();
             this._listBox.set_selection_mode(Gtk.SelectionMode.NONE);
+            this.count=0;
             Gtk.Frame.prototype.add.call(this, this._listBox);
         }
 
         add(boxRow) {
             this._listBox.add(boxRow);
+            this.count++;
+        }
+        show() {
+            this._listBox.show_all();
+        }
+        length() {
+            return this._listBox.length;
+        }
+        remove(boxRow) {
+            this._listBox.remove(boxRow);
+            this.count = this.count -1;
+        }
+        get_index(index){
+            return this._listBox.get_row_at_index(index);
+        }
+        insert(row,pos){
+            this._listBox.insert(row,pos);
+            this.count++;
         }
     });
 
