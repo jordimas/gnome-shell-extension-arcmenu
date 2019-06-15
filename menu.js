@@ -60,7 +60,11 @@ const visibleMenus = {
     APPS_ONLY: 1,
     SYSTEM_ONLY: 2
 };
-
+const currentMenu = {
+    FAVORITES: 0,
+    ALL_APPS: 1,
+    APP_SUBGROUP: 2
+};
 // User Home directories
 const DEFAULT_DIRECTORIES = [
     GLib.UserDirectory.DIRECTORY_DOCUMENTS,
@@ -98,7 +102,9 @@ const ApplicationsMenu = class extends PopupMenu.PopupMenu {
     close(animate) {
         let size = Main.layoutManager.panelBox.height;
         if (this._button.applicationsBox) {
-            this._button.selectCategory(null);
+            this._button._loadFavorites();
+            this._button.backButton.actor.hide();
+            this._button.viewProgramsButton.actor.show();
             let searchBox = this._button.searchBox;
             searchBox.clear();
         }
@@ -115,6 +121,7 @@ var ApplicationsButton = GObject.registerClass(
             this._settings = settings;
             this._session = new GnomeSession.SessionManager();
 
+            this.currentMenu = currentMenu.FAVORITES;
             this.setMenu(new ApplicationsMenu(this.actor, 1.0, St.Side.TOP, this, this._settings));
             Main.panel.menuManager.addMenu(this.menu);
             this.actor.accessible_role = Atk.Role.LABEL;
@@ -165,7 +172,20 @@ var ApplicationsButton = GObject.registerClass(
             separator.connect('repaint', this._onVertSepRepaint.bind(this));
             return separator;
         }
+        _onEvent(actor, event) {
+        if (event.type() == Clutter.EventType.BUTTON_PRESS)
+        {   
+            if(event.get_button()==1)
+              this.menu.toggle();
+            if(event.get_button()==3)
+              Util.spawnCommandLine('gnome-shell-extension-prefs arc-menu@linxgem33.com');
+        }
 
+        if(event.type() == Clutter.EventType.TOUCH_BEGIN)
+          this.menu.toggle();
+
+        return Clutter.EVENT_PROPAGATE;
+        }
         // Destroy the menu button
         _onDestroy() {
             if (this.menu) {
@@ -270,6 +290,8 @@ var ApplicationsButton = GObject.registerClass(
 
         // Load data for all menu categories
         _loadCategories() {
+        	  this.viewProgramsButton.actor.hide();
+	          this.backButton.actor.show();
             this.applicationsByCategory = {};
             let tree = new GMenu.Tree({ menu_basename: 'applications.menu' });
             tree.load_sync();
@@ -308,7 +330,28 @@ var ApplicationsButton = GObject.registerClass(
                 this.rightBox.add_actor(placeMenuItem.actor);
             }
         }
+        _loadFavorites() {
+            this._clearApplicationsBox();
+	          this.viewProgramsButton.actor.show();
+	          this.backButton.actor.hide();
+            /*
+            let shortcutT =["Firefox","firefox", "firefox",
+            "Terminal", "gnome-terminal", "gnome-terminal",
+            "Settings", "gnome-control-center", "gnome-control-center",
+            "Update Manager", "update-manager", "update-manager",
+            "System Monitor", "gnome-system-monitor", "gnome-system-monitor",
+            "Disks", "gnome-disks", "gnome-disks",
+            "Files", "system-file-manager-symbolic", "nautilus"];
+            //this._settings.reset('pinned-apps');
+            //this._settings.set_strv('pinned-apps', shortcutT);*/ //debug
 
+            let test = this._settings.get_strv('pinned-apps');
+            for(let i = 0;i<test.length;i+=3)
+            {
+                let favoritesMenuItem = new MW.FavoritesMenuItem(this, test[i], test[i+1], test[i+2]);
+                this.applicationsBox.add_actor(favoritesMenuItem.actor);
+            }
+        }
         // Scroll to a specific button (menu item) in the applications scroll view
         scrollToButton(button) {
             let appsScrollBoxAdj = this.applicationsScrollBox.get_vscroll_bar().get_adjustment();
@@ -384,7 +427,14 @@ var ApplicationsButton = GObject.registerClass(
                     y_fill: false,
                     y_align: St.Align.START
                 });
-
+  	            // Add view all programs button to menu
+                this.viewProgramsButton = new MW.ViewAllPrograms(this);
+                this.leftBox.add(this.viewProgramsButton.actor, {
+                    expand: false,
+                    x_fill: true,
+                    y_fill: false,
+                    y_align: St.Align.START
+                });
                 // Add search box to menu
                 this.leftBox.add(this.searchBox.actor, {
                     expand: false,
@@ -616,6 +666,7 @@ var ApplicationsButton = GObject.registerClass(
         }
 
         _onSearchBoxChanged(searchBox, searchString) {
+            this.currentMenu = currentMenu.ALL_APPS;
             // normalize search string
             let pattern = searchString.replace(/^\s+/g, '')
                 .replace(/\s+$/g, '')
@@ -638,11 +689,14 @@ var ApplicationsButton = GObject.registerClass(
                     this._firstAppItem.setFakeActive(true);
                 }
                 this.backButton.actor.show();
+	              this.viewProgramsButton.actor.hide();
             }
         }
 
         _onSearchBoxCleared() {
-            this.selectCategory(null);
+            this._loadFavorites();
+            this.backButton.actor.hide();
+            this.viewProgramsButton.actor.show();
         }
 
         _onSearchBoxActive() {
@@ -657,7 +711,7 @@ var ApplicationsButton = GObject.registerClass(
             this.mainBox.hide();
             if (this._settings.get_enum('visible-menus') != visibleMenus.SYSTEM_ONLY) {
                 this._applicationsButtons.clear();
-                this._loadCategories();
+                this._loadFavorites();
                 this.backButton.actor.hide();
             }
         }
@@ -677,11 +731,14 @@ var ApplicationsButton = GObject.registerClass(
             if (dir) {
                 this._displayButtons(this._listApplications(dir.get_menu_id()));
                 this.backButton.actor.show();
+                this.currentMenu = currentMenu.APP_SUBGROUP;
+                this.viewProgramsButton.actor.hide();
                 this.searchBox.grabKeyFocus();
             }
             else {
                 this._loadCategories();
                 this.backButton.actor.hide();
+                this.viewProgramsButton.actor.show();
                 this.searchBox.grabKeyFocus();
             }
         }

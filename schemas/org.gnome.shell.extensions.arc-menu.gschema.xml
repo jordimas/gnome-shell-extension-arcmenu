@@ -106,5 +106,12 @@
       <summary>Size of the icon in percentage.</summary>
       <description>Size of the icon in percentage.</description>
     </key>
+    <key name="pinned-apps" type="as">
+      <default>["Firefox","firefox", "firefox","Terminal", "gnome-terminal", "gnome-terminal","ArcMenu Settings", "emblem-system-symbolic", "gnome-shell-extension-prefs arc-menu@linxgem33.com"]</default>
+      <summary>List of Apps Pinned to Menu</summary>
+      <description>
+        List of Apps Pinned to Menu
+      </description>
+    </key>
   </schema>
 </schemalist>
