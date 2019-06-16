@@ -15,13 +15,13 @@ Arc Menu is a Gnome shell extension designed to replace the standard menu found 
 
 If your interested to see the current development cycle of Arc menu or the current status of a particular feature in development then head over to the new Development Roadmap page which will give you a idea of what’s planned or what’s currently being developed by the Arc menu team the link is below.
 
-Please see the: [Development Roadmap Page](https://gitlab.com/LinxGem33/Arc-Menu/wikis/home)
+Please see the: [Development Roadmap Page](https://gitlab.com/LinxGem33/Arc-Menu/issues/54)
 
 -----
 
 ### Volunteers needed!
 
-This extension could be even better with your help! Any items in the issue tracker labelled **help wanted** or **good first issue** are open for contribution and help. For more info, see the [Contributing wiki page](https://gitlab.com/LinxGem33/Arc-Menu/wikis/home) for more details on current issues or features which need your help.
+This extension could be even better with your help! Any items in the issue tracker labelled **help wanted** or **good first issue** are open for contribution and help. For more info, see the [Contributing Feature List](https://gitlab.com/LinxGem33/Arc-Menu/issues/54) for more details on current issues or features which need your help.
 
 -----
 
