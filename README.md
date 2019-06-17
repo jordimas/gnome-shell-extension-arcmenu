@@ -2,7 +2,7 @@
 
 -----
 
-![](https://gitlab.com/LinxGem33/Arc-Menu/raw/master/screenshots/browser.png)
+![](https://gitlab.com/LinxGem33/Neon/raw/master/artwork/browserAM.png)
 
 -----
 ### Introduction
