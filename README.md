@@ -25,10 +25,19 @@ This extension could be even better with your help! Any items in the issue track
 
 -----
 
-|Arc Menu integrated with Dash-to-Dock|Arc Menu integrated with Dash-to-Panel|
-|:-----:|:-----:|
-|![](https://gitlab.com/LinxGem33/Arc-Menu/raw/master/screenshots/apm3.png)|![](https://gitlab.com/LinxGem33/Arc-Menu/raw/master/screenshots/apm5.png)|
-|Click image to enlarge|Click image to enlarge|
+#### Arc Menu integrated with [Dash-to-Panel](https://extensions.gnome.org/extension/1160/dash-to-panel/)
+
+-----
+
+![](https://gitlab.com/LinxGem33/Neon/raw/master/artwork/amu3.png)
+
+-----
+
+#### Arc Menu integrated with [Dash-to-Dock](https://extensions.gnome.org/extension/307/dash-to-dock/)
+
+-----
+
+![](https://gitlab.com/LinxGem33/Neon/raw/master/artwork/amu33.png)
 
 -----
 
