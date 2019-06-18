@@ -87,7 +87,7 @@ Legacy versions of Arc Menu can be obtained from the sources below;
 
 If you have any issues with regard to Arc menu and your unsure of a certain feature or just want to know more about Arc menu, then the Arc menu wiki guide is a good place to start.
 
-Please refer to the Arc menu [Wiki Guide](https://gitlab.com/LinxGem33/Arc-Menu/wikis/home) 
+Please refer to the Arc menu [Wiki Guide](https://gitlab.com/LinxGem33/Arc-Menu/wikis/Introduction) 
 
 -----
 
@@ -110,7 +110,7 @@ There are basic rules of conduct that should be followed at all times by everyon
 
 -----
 
-Please refer to the Wiki section for a guide on: [Reporting Bugs](https://gitlab.com/LinxGem33/Arc-Menu/wikis/home)
+Please refer to the Wiki section for a guide on: [Reporting Bugs](https://gitlab.com/LinxGem33/Arc-Menu/wikis/Bug-Reporting)
 
 Please note that without any information about your system, the Arc Menu Team can only speculate what the problem is.
 So, please provide us information about your GNU/Linux distribution and the GNOME Shell version. Otherwise, we are not able to try and solve your problem.
@@ -180,7 +180,7 @@ Additional credits: This extension also leverages the work from [Giovanni Campag
 
 -----
 
-#### Please refer to the Wiki section for a [Translation Guide](https://gitlab.com/LinxGem33/Arc-Menu/wikis/home)
+#### Please refer to the Wiki section for a [Translation Guide](https://gitlab.com/LinxGem33/Arc-Menu/wikis/Translation-Guide)
 
 |Contributor|Language|Translated|Contributor|Language|Translated|
 |:-----|:-----|:-----:|:-----|:-----|:-----:|
