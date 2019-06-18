@@ -128,9 +128,8 @@ Arc-Menu is Free Software: You can use, study share and improve it at your will.
 
 ### Credits
 
-This extension leverages some of the work from [Zorin OS menu](https://zorinos.com/).
 
-Additional credits: This extension also leverages the work from [Giovanni Campagna ](https://git.gnome.org//browse/gnome-shell-extensions) gnome Application Menu used in [Gnome 3](https://www.gnome.org/) to allow the menu to be embedded in the Gnome main panel.
+Additional credits: This extension also leverages the work from [Giovanni Campagna ](https://git.gnome.org//browse/gnome-shell-extensions) gnome Application Menu used in [Gnome 3](https://www.gnome.org/) to allow the menu to be embedded in the Gnome main panel This extension also leverages some of the work from [Zorin OS menu](https://zorinos.com/)..
 
 -----
 
