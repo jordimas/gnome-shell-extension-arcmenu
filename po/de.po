@@ -2,24 +2,26 @@
 # Copyright (C) 2017
 # This file is distributed under the same license as the Arc Menu package.
 # Markus Neumeister <markus.neumeister@hotmail.com>, 2017.
+# Onno Giesmann <nutzer3105@gmail.com>, 2019.
 #
-#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: Arc Menu\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-03-19 15:14+0100\n"
-"PO-Revision-Date: 2017-07-17 16:31+0200\n"
-"Last-Translator: Markus Neumeister <markus.neumeister@hotmail.com>\n"
-"Language-Team: \n"
-"Language: German\n"
+"PO-Revision-Date: 2019-06-19 11:30+0200\n"
+"Last-Translator: Onno Giesmann <nutzer3105@gmail.com>\n"
+"Language-Team: German <>\n"
+"Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Poedit 2.2.3\n"
 
 #: prefs.js:42
 msgid "General"
-msgstr ""
+msgstr "Allgemein"
 
 #: prefs.js:54
 msgid "Behaviour"
@@ -27,23 +29,23 @@ msgstr "Verhalten"
 
 #: prefs.js:63
 msgid "Disable activities hot corner"
-msgstr "Aktive Ecke deaktivieren"
+msgstr "Aktive Ecke für Aktivitäten deaktivieren"
 
 #: prefs.js:85
 msgid "Set menu hotkey"
-msgstr "Menü Hotkey festlegen"
+msgstr "Taste für Menü festlegen"
 
 #: prefs.js:91
 msgid "Undefined"
-msgstr "Undefiniert"
+msgstr "Nicht festgelegt"
 
 #: prefs.js:92
 msgid "Left Super Key"
-msgstr "Linke Super Taste"
+msgstr "Linke Super-Taste"
 
 #: prefs.js:93
 msgid "Right Super Key"
-msgstr "Rechte Super Taste"
+msgstr "Rechte Super-Taste"
 
 #: prefs.js:105
 msgid "Enable custom menu keybinding"
@@ -55,15 +57,15 @@ msgstr "Syntax: <Shift>, <Strg>, <Alt>, <Super>"
 
 #: prefs.js:153
 msgid "Button appearance"
-msgstr "Button Erscheinungsbild"
+msgstr "Erscheinungsbild der Menüschaltfläche"
 
 #: prefs.js:165
 msgid "Text for the menu button"
-msgstr "Text des Menü Button"
+msgstr "Text der Menüschaltfläche"
 
 #: prefs.js:171
 msgid "System text"
-msgstr "System Text"
+msgstr "Systemtext"
 
 #: prefs.js:174
 msgid "Custom text"
@@ -71,35 +73,35 @@ msgstr "Benutzerdefinierter Text"
 
 #: prefs.js:198
 msgid "Set custom text for the menu button"
-msgstr "Benutzerdefinierter Text des Menü Button"
+msgstr "Benutzerdefinierten Text für Menüschaltfläche eingeben"
 
 #: prefs.js:218
 msgid "Enable the arrow icon beside the button text"
-msgstr "Pfeil neben dem Button Text aktivieren"
+msgstr "Pfeil neben dem Schaltflächentext zeigen"
 
 #: prefs.js:240
 msgid "Select icon for the menu button"
-msgstr "Icon für den Menü Button wählen"
+msgstr "Symbol für Menüschaltfläche wählen"
 
 #: prefs.js:250
 msgid "Please select an image icon"
-msgstr "Bitte wählen Sie ein Icon"
+msgstr "Bitte wählen Sie ein Symbol aus"
 
 #: prefs.js:255
 msgid "Arc Menu Icon"
-msgstr "Arc-Menü Icon"
+msgstr "Arc-Menü-Symbol"
 
 #: prefs.js:256
 msgid "System Icon"
-msgstr "System Icon"
+msgstr "Systemsymbol"
 
 #: prefs.js:257
 msgid "Custom Icon"
-msgstr "Benutzerdefiniertes Icon"
+msgstr "Benutzerdefiniertes Symbol"
 
 #: prefs.js:283
 msgid "Icon size"
-msgstr "Icon Größe"
+msgstr "Symbolgröße"
 
 #: prefs.js:283
 msgid "default is"
@@ -111,11 +113,11 @@ msgstr "Erscheinungsbild"
 
 #: prefs.js:332
 msgid "Customize menu button appearance"
-msgstr "Erscheinungsbild des Menü Button ändern"
+msgstr "Erscheinungsbild der Menüschaltfläche ändern"
 
 #: prefs.js:342
 msgid "Icon"
-msgstr "Icon"
+msgstr "Symbol"
 
 #: prefs.js:343
 msgid "Text"
@@ -123,11 +125,11 @@ msgstr "Text"
 
 #: prefs.js:344
 msgid "Icon and Text"
-msgstr "Icon und Text"
+msgstr "Symbol und Text"
 
 #: prefs.js:345
 msgid "Text and Icon"
-msgstr "Text und Icon"
+msgstr "Text und Symbol"
 
 #: prefs.js:370
 msgid "Menu position in panel"
@@ -151,7 +153,7 @@ msgstr "Über"
 
 #: prefs.js:490
 msgid "Arc-Menu"
-msgstr "Arc-Menu"
+msgstr "Arc-Menü"
 
 #: prefs.js:495
 msgid "version: "
@@ -159,7 +161,7 @@ msgstr "Version: "
 
 #: prefs.js:503
 msgid "GitLab Page"
-msgstr ""
+msgstr "GitLab-Seite"
 
 #: menu.js:272
 msgid "Home"
@@ -178,17 +180,16 @@ msgid "Tweak Tool"
 msgstr "Optimierungswerkzeug"
 
 #: menu.js:476
-#, fuzzy
 msgid "Tweaks"
-msgstr "Optimierungswerkzeug"
+msgstr "Optimierungen"
 
 #: menu.js:481
 msgid "Terminal"
-msgstr ""
+msgstr "Terminal"
 
 #: menuWidgets.js:86
 msgid "Activities Overview"
-msgstr "Aktivitäten-Übersicht"
+msgstr "Aktivitätenübersicht"
 
 #: menuWidgets.js:199
 msgid "Power Off"
@@ -216,7 +217,7 @@ msgstr "Favoriten"
 
 #: menuWidgets.js:616
 msgid "Type to search…"
-msgstr "Suchbegriff eingeben …"
+msgstr "Suchbegriff eingeben…"
 
 #: menuWidgets.js:781
 msgid "Applications"
