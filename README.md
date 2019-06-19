@@ -187,7 +187,7 @@ Additional credits: This extension also leverages the work from [Giovanni Campag
 |@[pkomur](https://github.com/pkomur) > updated by @[Ixoos](https://github.com/Ixoos)|Polish|![](https://gitlab.com/LinxGem33/Neon/raw/master/artwork/done.svg.png)|@[madaramost](https://github.com/madaramost)|Arabic|![](https://gitlab.com/LinxGem33/Neon/raw/master/artwork/done.svg.png)
 |@[danielstuart14](https://github.com/danielstuart14)|Brazilian portuguese|![](https://gitlab.com/LinxGem33/Neon/raw/master/artwork/done.svg.png)||Chinese|
 |@[zakkak](https://github.com/zakkak)|Greek|![](https://gitlab.com/LinxGem33/Neon/raw/master/artwork/done.svg.png)|@[mjtullio](https://github.com/mjtullio)|Spanish|![](https://gitlab.com/LinxGem33/Neon/raw/master/artwork/done.svg.png)
-|@[mrprobot](https://github.com/mrprobot) > updated by [Etamuk](https://gitlab.com/Etamuk)|German|![](https://gitlab.com/LinxGem33/Neon/raw/master/artwork/done.svg.png)|@[saisasidhar](https://github.com/saisasidhar)|Hindi|![](https://gitlab.com/LinxGem33/Neon/raw/master/artwork/done.svg.png)
+|@[mrprobot](https://github.com/mrprobot) > updated by @[Etamuk](https://gitlab.com/Etamuk)|German|![](https://gitlab.com/LinxGem33/Neon/raw/master/artwork/done.svg.png)|@[saisasidhar](https://github.com/saisasidhar)|Hindi|![](https://gitlab.com/LinxGem33/Neon/raw/master/artwork/done.svg.png)
 ||Portuguese|||Bengali||
 |@[elsieholmes](https://github.com/elsieholmes)|Russian|![](https://gitlab.com/LinxGem33/Neon/raw/master/artwork/done.svg.png)||Japanese||
 |@[MorganAntonsson](https://github.com/MorganAntonsson)|Swedish|![](https://gitlab.com/LinxGem33/Neon/raw/master/artwork/done.svg.png)||Dutch||
