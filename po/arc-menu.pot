@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Arc Menu\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-03-19 15:14+0100\n"
+"POT-Creation-Date: 2019-06-19 15:14+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -21,202 +21,246 @@ msgstr ""
 msgid "General"
 msgstr ""
 
-#: prefs.js:54
+#: prefs.js:47
+msgid "Your Pinned Apps:"
+msgstr ""
+
+#: prefs.js:71
+msgid "Add More Apps"
+msgstr ""
+
+#: prefs.js:114
+msgid "Add Custom Shortcut"
+msgstr ""
+
+#: prefs.js:149
+msgid "Save Changes"
+msgstr ""
+
+#: prefs.js:279
+msgid "Select Apps to add to Pinned Apps List"
+msgstr ""
+
+#: prefs.js:420
+msgid "Add a Custom Shortcut to Pinned Apps List"
+msgstr ""
+
+#: prefs.js:430
+msgid "Shortcut Name:"
+msgstr ""
+
+#: prefs.js:444
+msgid "Icon Path/Icon Symbolic:"
+msgstr ""
+
+#: prefs.js:458
+msgid "Terminal Command:"
+msgstr ""
+
+#: prefs.js:484
+msgid "Add Cutsom Link"
+msgstr ""
+
+#: prefs.js:514
 msgid "Behaviour"
 msgstr ""
 
-#: prefs.js:63
+#: prefs.js:523
 msgid "Disable activities hot corner"
 msgstr ""
 
-#: prefs.js:85
+#: prefs.js:545
 msgid "Set menu hotkey"
 msgstr ""
 
-#: prefs.js:91
+#: prefs.js:551
 msgid "Undefined"
 msgstr ""
 
-#: prefs.js:92
+#: prefs.js:552
 msgid "Left Super Key"
 msgstr ""
 
-#: prefs.js:93
+#: prefs.js:553
 msgid "Right Super Key"
 msgstr ""
 
-#: prefs.js:105
+#: prefs.js:565
 msgid "Enable custom menu keybinding"
 msgstr ""
 
-#: prefs.js:112
+#: prefs.js:572
 msgid "Syntax: <Shift>, <Ctrl>, <Alt>, <Super>"
 msgstr ""
 
-#: prefs.js:153
+#: prefs.js:613
 msgid "Button appearance"
 msgstr ""
 
-#: prefs.js:165
+#: prefs.js:625
 msgid "Text for the menu button"
 msgstr ""
 
-#: prefs.js:171
+#: prefs.js:631
 msgid "System text"
 msgstr ""
 
-#: prefs.js:174
+#: prefs.js:634
 msgid "Custom text"
 msgstr ""
 
-#: prefs.js:198
+#: prefs.js:658
 msgid "Set custom text for the menu button"
 msgstr ""
 
-#: prefs.js:218
+#: prefs.js:678
 msgid "Enable the arrow icon beside the button text"
 msgstr ""
 
-#: prefs.js:240
+#: prefs.js:700
 msgid "Select icon for the menu button"
 msgstr ""
 
-#: prefs.js:250
+#: prefs.js:710
 msgid "Please select an image icon"
 msgstr ""
 
-#: prefs.js:255
+#: prefs.js:715
 msgid "Arc Menu Icon"
 msgstr ""
 
-#: prefs.js:256
+#: prefs.js:716
 msgid "System Icon"
 msgstr ""
 
-#: prefs.js:257
+#: prefs.js:717
 msgid "Custom Icon"
 msgstr ""
 
-#: prefs.js:283
+#: prefs.js:743
 msgid "Icon size"
 msgstr ""
 
-#: prefs.js:283
+#: prefs.js:743
 msgid "default is"
 msgstr ""
 
-#: prefs.js:323
+#: prefs.js:783
 msgid "Appearance"
 msgstr ""
 
-#: prefs.js:332
+#: prefs.js:792
 msgid "Customize menu button appearance"
 msgstr ""
 
-#: prefs.js:342
+#: prefs.js:802
 msgid "Icon"
 msgstr ""
 
-#: prefs.js:343
+#: prefs.js:803
 msgid "Text"
 msgstr ""
 
-#: prefs.js:344
+#: prefs.js:804
 msgid "Icon and Text"
 msgstr ""
 
-#: prefs.js:345
+#: prefs.js:805
 msgid "Text and Icon"
 msgstr ""
 
-#: prefs.js:370
+#: prefs.js:830
 msgid "Menu position in panel"
 msgstr ""
 
-#: prefs.js:377
+#: prefs.js:837
 msgid "Left"
 msgstr ""
 
-#: prefs.js:380
+#: prefs.js:840
 msgid "Center"
 msgstr ""
 
-#: prefs.js:384
+#: prefs.js:844
 msgid "Right"
 msgstr ""
 
-#: prefs.js:461
+#: prefs.js:921
 msgid "About"
 msgstr ""
 
-#: prefs.js:490
+#: prefs.js:950
 msgid "Arc-Menu"
 msgstr ""
 
-#: prefs.js:495
+#: prefs.js:955
 msgid "version: "
 msgstr ""
 
-#: prefs.js:503
+#: prefs.js:963
 msgid "GitLab Page"
 msgstr ""
 
-#: menu.js:272
+#: menu.js:320
 msgid "Home"
 msgstr ""
 
-#: menu.js:456 menu.js:461
+#: menu.js:533 menu.js:538
 msgid "Software"
 msgstr ""
 
-#: menu.js:466
+#: menu.js:543
 msgid "Settings"
 msgstr ""
 
-#: menu.js:471
+#: menu.js:548
 msgid "Tweak Tool"
 msgstr ""
 
-#: menu.js:476
+#: menu.js:553
 msgid "Tweaks"
 msgstr ""
 
-#: menu.js:481
+#: menu.js:558
 msgid "Terminal"
 msgstr ""
 
-#: menuWidgets.js:86
+#: menuWidgets.js:101
 msgid "Activities Overview"
 msgstr ""
 
-#: menuWidgets.js:199
+#: menuWidgets.js:214
 msgid "Power Off"
 msgstr ""
 
-#: menuWidgets.js:212
+#: menuWidgets.js:227
 msgid "Log Out"
 msgstr ""
 
-#: menuWidgets.js:225
+#: menuWidgets.js:240
 msgid "Suspend"
 msgstr ""
 
-#: menuWidgets.js:243
+#: menuWidgets.js:258
 msgid "Lock"
 msgstr ""
 
-#: menuWidgets.js:265
+#: menuWidgets.js:280
 msgid "Back"
 msgstr ""
 
-#: menuWidgets.js:483
+#: menuWidgets.js:326
+msgid "All Programs"
+msgstr ""
+
+#: menuWidgets.js:573
 msgid "Favorites"
 msgstr ""
 
-#: menuWidgets.js:616
+#: menuWidgets.js:706
 msgid "Type to search…"
 msgstr ""
 
-#: menuWidgets.js:781
+#: menuWidgets.js:871
 msgid "Applications"
 msgstr ""
