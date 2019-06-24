@@ -20,6 +20,44 @@
  */
 
 // Common constants that are used in this extension
+var SHORTCUTS = [
+    {
+        label: ("Software"),
+        symbolic: "gnome-software-symbolic",
+        command: "gnome-software"
+    },
+    {
+        label: ("Software"),
+        symbolic: "gnome-software-symbolic",
+        command: "pamac-manager"
+    },
+    {
+        label: ("Settings"),
+        symbolic: "preferences-system-symbolic",
+        command: "gnome-control-center"
+    },
+    {
+        label: ("Tweaks"), // Tweak Tool is called Tweaks in GNOME 3.26
+        symbolic: "org.gnome.tweaks-symbolic",
+        command: "gnome-tweaks"
+    },
+    {
+        label: ("Terminal"),
+        symbolic: "utilities-terminal-symbolic",
+        command: "gnome-terminal"
+    }
+];
+
+var RIGHT_SIDE_SHORTCUTS = ["Home", "Documents","Downloads", "Music","Pictures","Videos","Software", 
+"Settings","Tweaks", "Terminal", "Activities-Overview"];
+
+
+var CURRENT_MENU = {
+    FAVORITES: 0,
+    ALL_APPS: 1,
+    APP_SUBGROUP: 2,
+    SEARCH_RESULTS: 3
+};
 var EMPTY_STRING = '';
 var SUPER_L = 'Super_L';
 var SUPER_R = 'Super_R';

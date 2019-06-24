@@ -189,6 +189,9 @@ const FrameBoxRow = GObject.registerClass(
                 column_spacing: 20,
                 row_spacing: 20
             });
+            this._name;
+            this._icon;
+            this._cmd;
             Gtk.ListBoxRow.prototype.add.call(this, this._grid);
         }
 

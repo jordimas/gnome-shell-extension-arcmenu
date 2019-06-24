@@ -31,24 +31,22 @@ const AccountsService = imports.gi.AccountsService;
 const Gio = imports.gi.Gio;
 const GObject = imports.gi.GObject;
 const Util = imports.misc.util;
-
 const ExtensionUtils = imports.misc.extensionUtils;
 const Me = ExtensionUtils.getCurrentExtension();
+const Constants = Me.imports.constants;
 const Gettext = imports.gettext.domain(Me.metadata['gettext-domain']);
 const _ = Gettext.gettext;
-
 const DND = imports.ui.dnd;
+const Dash = imports.ui.dash;
 const LoginManager = imports.misc.loginManager;
-
+const Gdk = imports.gi.Gdk;
+const Gtk = imports.gi.Gtk;
 // Menu Size variables
-const APPLICATION_ICON_SIZE = 24;
+const LARGE_ICON_SIZE = 34;
+const MEDIUM_ICON_SIZE = 25;
+const SMALL_ICON_SIZE = 16;
 const TOOLTIP_LABEL_SHOW_TIME = 0.15;
 const TOOLTIP_LABEL_HIDE_TIME = 0.1;
-const currentMenu = {
-    FAVORITES: 0,
-    ALL_APPS: 1,
-    APP_SUBGROUP: 2
-};
 
 function setIconAsync(icon, gioFile, fallback_icon_name) {
     gioFile.load_contents_async(null, function (source, result) {
@@ -64,6 +62,10 @@ function setIconAsync(icon, gioFile, fallback_icon_name) {
 // Removing the default behaviour which selects a hovered item if the space key is pressed.
 // This avoids issues when searching for an app with a space character in its name.
 var BaseMenuItem = class extends PopupMenu.PopupBaseMenuItem {
+    constructor(button){
+        super();
+            this.button = button;
+    }    
     _onKeyPressEvent(actor, event) {
         let symbol = event.get_key_symbol();
         if (symbol == Clutter.KEY_Return ||
@@ -74,12 +76,16 @@ var BaseMenuItem = class extends PopupMenu.PopupBaseMenuItem {
         return Clutter.EVENT_PROPAGATE;
     }
     _onButtonPressEvent(actor, event) {
+		
         return Clutter.EVENT_PROPAGATE;
     }
 
     _onButtonReleaseEvent(actor, event) {
-        if(event.get_button()==1)
-          this.activate(event);
+        if(event.get_button()==1){
+        	this.activate(event);
+        }
+  	if(event.get_button()==3){
+	}
         return Clutter.EVENT_STOP;
     }
 
@@ -89,12 +95,12 @@ var BaseMenuItem = class extends PopupMenu.PopupBaseMenuItem {
 var ActivitiesMenuItem = class extends BaseMenuItem {
     // Initialize the menu item
     constructor(button) {
-        super();
+        super(button);
         this._button = button;
         this._icon = new St.Icon({
             icon_name: 'view-fullscreen-symbolic',
             style_class: 'popup-menu-icon',
-            icon_size: 16
+            icon_size: SMALL_ICON_SIZE
         });
         this.actor.add_child(this._icon);
         let label = new St.Label({
@@ -107,7 +113,7 @@ var ActivitiesMenuItem = class extends BaseMenuItem {
 
     // Activate the menu item (Open activities overview)
     activate(event) {
-        this._button.menu.toggle();
+        this._button.leftClickMenu.toggle();
         Main.overview.toggle();
         super.activate(event);
     }
@@ -132,7 +138,7 @@ var Tooltip = class {
     show() {
         let [stageX, stageY] = this.sourceActor.get_transformed_position();
         let [width, height] = this.sourceActor.get_transformed_size();
-        let y = stageY - height / 1.25;
+        let y = stageY - height / 1.24;
         let x = stageX - Math.round((this.actor.get_width() - width) / 2);
 
         this.actor.show();
@@ -166,6 +172,7 @@ var Tooltip = class {
 var SessionButton = class {
     constructor(button, accessible_name, icon_name) {
         this._button = button;
+
         this.actor = new St.Button({
             reactive: true,
             can_focus: true,
@@ -176,7 +183,10 @@ var SessionButton = class {
         this._useTooltips = true;
         this.tooltip = new Tooltip(this.actor, accessible_name);
         this.tooltip.hide();
-        this.actor.child = new St.Icon({ icon_name: icon_name });
+        this.actor.child = new St.Icon({ 
+            icon_name: icon_name,
+            icon_size: SMALL_ICON_SIZE 
+        });
         this.actor.connect('clicked', this._onClick.bind(this));
         this.actor.connect('notify::hover', this._onHover.bind(this));
     }
@@ -186,7 +196,7 @@ var SessionButton = class {
     }
 
     _onClick() {
-        this._button.menu.toggle();
+        this._button.leftClickMenu.toggle();
         this.activate();
     }
 
@@ -268,12 +278,12 @@ var LockButton = class extends SessionButton {
 var BackMenuItem = class extends BaseMenuItem {
     // Initialize the button
     constructor(button) {
-        super();
+        super(button);
         this._button = button;
         this._icon = new St.Icon({
             icon_name: 'go-previous-symbolic',
             style_class: 'popup-menu-icon',
-            icon_size: APPLICATION_ICON_SIZE
+            icon_size: 24
         });
         this.actor.add_child(this._icon);
         let backLabel = new St.Label({
@@ -286,25 +296,23 @@ var BackMenuItem = class extends BaseMenuItem {
 
     // Activate the button (go back to category view)
     activate(event) {
-        this._button.selectCategory(null);
+        //this._button.selectCategory(null);
         this._button._clearApplicationsBox();
-        if(this._button.searchActive)
-        {
-            this._button.resetSearch();
-            this._button._clearApplicationsBox();
-           this._button._loadFavorites;
-        }
-        else if(this._button.currentMenu == currentMenu.ALL_APPS)
+        if(this._button.currentMenu == Constants.CURRENT_MENU.SEARCH_RESULTS)
         { 
-            this._button.currentMenu = currentMenu.FAVORITES;
-            this._button._clearApplicationsBox();
+            this._button.currentMenu = Constants.CURRENT_MENU.FAVORITES;
+            this._button.resetSearch();
             this._button._loadFavorites();
         }
-        else if(this._button.currentMenu == currentMenu.APP_SUBGROUP)
+        else if(this._button.currentMenu == Constants.CURRENT_MENU.ALL_APPS)
+        { 
+            this._button.currentMenu = Constants.CURRENT_MENU.FAVORITES;
+            this._button._loadFavorites();
+        }
+        else if(this._button.currentMenu == Constants.CURRENT_MENU.APP_SUBGROUP)
         {
-            this._button.currentMenu = currentMenu.ALL_APPS;
-            this._button._clearApplicationsBox();
-            this._button._loadCategories();
+            this._button.currentMenu = Constants.CURRENT_MENU.ALL_APPS;
+            this._button._displayCategories();
         }
         super.activate(event);
     }
@@ -314,12 +322,13 @@ var BackMenuItem = class extends BaseMenuItem {
 var ViewAllPrograms = class extends BaseMenuItem {
     // Initialize the button
     constructor(button) {
-        super();
+        super(button);
         this._button = button;
         this._icon = new St.Icon({
             icon_name: 'go-next-symbolic',
             style_class: 'popup-menu-icon',
-            icon_size: APPLICATION_ICON_SIZE
+            icon_size: 24,
+             x_align: St.Align.START
         });
         this.actor.add_child(this._icon);
         let backLabel = new St.Label({
@@ -333,51 +342,23 @@ var ViewAllPrograms = class extends BaseMenuItem {
     // Activate the button (go back to category view)
     activate(event) {
       this._button._clearApplicationsBox();
-	    this._button._loadCategories();
-	    this._button.currentMenu = currentMenu.ALL_APPS;
-      if (this._button.searchActive)
-        this._button.resetSearch();
+      this._button._displayCategories();
+      this._button.currentMenu = Constants.CURRENT_MENU.ALL_APPS;
       super.activate(event);
     }
 };
-// Menu pinned apps/favorites item class
-var FavoritesMenuItem = class extends BaseMenuItem {
-    // Initialize the menu item
-    constructor(button, name, icon, command) {
-        super();
-        this._button = button;
-        this._command = command;
-        this._icon = new St.Icon({
-            gicon: Gio.icon_new_for_string(icon),
-            style_class: 'popup-menu-icon',
-            icon_size: APPLICATION_ICON_SIZE
-        });
-        this.actor.add_child(this._icon);
-        let label = new St.Label({
-            text: name, y_expand: true,
-            y_align: Clutter.ActorAlign.CENTER
-        });
-        this.actor.add_child(label);
-    }
 
-    // Activate the menu item (Launch the shortcut)
-    activate(event) {
-        Util.spawnCommandLine(this._command);
-        this._button.menu.toggle();
-        super.activate(event);
-    }
-};
 // Menu shortcut item class
 var ShortcutMenuItem = class extends BaseMenuItem {
     // Initialize the menu item
     constructor(button, name, icon, command) {
-        super();
+        super(button);
         this._button = button;
         this._command = command;
         this._icon = new St.Icon({
             icon_name: icon,
             style_class: 'popup-menu-icon',
-            icon_size: 16
+            icon_size: SMALL_ICON_SIZE
         });
         this.actor.add_child(this._icon);
         let label = new St.Label({
@@ -390,7 +371,7 @@ var ShortcutMenuItem = class extends BaseMenuItem {
     // Activate the menu item (Launch the shortcut)
     activate(event) {
         Util.spawnCommandLine(this._command);
-        this._button.menu.toggle();
+        this._button.leftClickMenu.toggle();
         super.activate(event);
     }
 };
@@ -399,17 +380,17 @@ var ShortcutMenuItem = class extends BaseMenuItem {
 var UserMenuItem = class extends BaseMenuItem {
     // Initialize the menu item
     constructor(button) {
-        super();
+        super(button);
         this._button = button;
         let username = GLib.get_user_name();
         this._user = AccountsService.UserManager.get_default().get_user(username);
         this._userIcon = new St.Icon({
             style_class: 'popup-menu-icon',
-            icon_size: APPLICATION_ICON_SIZE
+            icon_size: MEDIUM_ICON_SIZE
         });
         this.actor.add_child(this._userIcon);
         this._userLabel = new St.Label({
-            text: username,
+            text: GLib.get_real_name(),
             y_expand: true,
             y_align: Clutter.ActorAlign.CENTER
         });
@@ -423,7 +404,7 @@ var UserMenuItem = class extends BaseMenuItem {
     // Activate the menu item (Open user account settings)
     activate(event) {
         Util.spawnCommandLine("gnome-control-center user-accounts");
-        this._button.menu.toggle();
+        this._button.leftClickMenu.toggle();
         super.activate(event);
     }
 
@@ -451,7 +432,123 @@ var UserMenuItem = class extends BaseMenuItem {
         }
     }
 };
+// Menu pinned apps/favorites item class
+var FavoritesMenuItem = class extends BaseMenuItem {
+    // Initialize the menu item
+    constructor(button, name, icon, command) {
+        super(button);
+        this._button = button;
+        this._command = command;
+        this._iconPath = icon;
+        this._name = name;
+        this._icon = new St.Icon({
+            gicon: Gio.icon_new_for_string(icon),
+            style_class: 'popup-menu-icon',
+            icon_size: MEDIUM_ICON_SIZE
+        })
+        this.actor.add_child(this._icon);
+ 
+        let label = new St.Label({
+            text: name, y_expand: true, x_expand: true,
+            y_align: Clutter.ActorAlign.CENTER
+        });
+        this.actor.add_child(label);
+        this._draggable = DND.makeDraggable(this.actor);
+        this.isDraggableApp = true;
+	this._draggable.connect('drag-begin', this._onDragBegin.bind(this));
+        this._draggable.connect('drag-cancelled', this._onDragCancelled.bind(this));
+        this._draggable.connect('drag-end', this._onDragEnd.bind(this));
+    }
 
+   _onDragBegin() {   
+        this._dragMonitor = {
+            dragMotion: (this, this._onDragMotion.bind(this))
+        };
+        DND.addDragMonitor(this._dragMonitor); 
+        DND.SNAP_BACK_ANIMATION_TIME = 0;
+        this.dragStartY = (this._draggable._dragStartY); 
+        this._emptyDropTarget = new Dash.EmptyDropTargetItem();
+        this._emptyDropTarget.setChild(new St.Bin({ style_class: 'arc-empty-dash-drop-target' }));  
+	this._button.applicationsBox.insert_child_at_index(this._emptyDropTarget, 0);
+ 	this._emptyDropTarget.show(false);
+        let p = this._button.applicationsBox.get_transformed_position();
+        this.posY= p[1];        
+        this.rowHeight = this._button.applicationsBox.get_child_at_index(1).height;
+        //global.log("Box Start Y: "+ p[1]);            
+        //global.log("Row Height: "+ this.rowHeight);    
+        //global.log("Drag Start Y: "+this.dragStartY); 
+
+         this.startIndex=0;
+         for(let i = 0; i< this._button.applicationsBox.get_children().length;i++)
+         {
+         	if(this.actor == this._button.applicationsBox.get_child_at_index(i))
+         	  this.startIndex=i;
+         }
+         //global.log(this.startIndex);
+         //global.log(this._draggable._dragStartY);
+            
+        Main.overview.beginItemDrag(this);  
+        this._emptyDropTarget.show(true); 
+
+    }
+    _onDragMotion(dragEvent) {
+    	let newIndex = Math.floor((this._draggable._dragY - this.posY) / (this.rowHeight));
+    	if(newIndex > this._button.applicationsBox.get_children().length -1)
+        	newIndex = this._button.applicationsBox.get_children().length -1;
+        if(newIndex < 0)
+        	newIndex = 0;	
+    	if(this._button.applicationsBox.get_child_at_index(newIndex) != this._emptyDropTarget)
+    	{
+    		//global.log("not equal");
+		this._button.applicationsBox.set_child_at_index(this._emptyDropTarget, newIndex);
+	}
+
+	return DND.DragMotionResult.CONTINUE;
+    }
+    _onDragCancelled() {
+       Main.overview.cancelledItemDrag(this);
+    }
+
+    _onDragEnd() {    
+ 	this._button.applicationsBox.remove_child(this._emptyDropTarget); 
+        let index = Math.floor((this._draggable._dragY - this.posY) / this.rowHeight);
+        //global.log("NEW INDEX: "+index);
+        if(index>=this.startIndex)
+        	index--;
+        if(index> this._button.applicationsBox.get_children().length -1)
+        	index= this._button.applicationsBox.get_children().length -1;
+         if(index < 0)
+        	index = 0;		
+    	this._button.applicationsBox.set_child_at_index(this.actor,index);    	
+    	let temp = this._button.favoritesArray[this.startIndex-1];
+    	this._button.favoritesArray.splice(this.startIndex-1,1);
+    	this._button.favoritesArray.splice(index,0,temp);
+        Main.overview.endItemDrag(this);
+        DND.removeDragMonitor(this._dragMonitor);
+        this.emit('saveSettings');	
+    }
+    
+    getDragActor() {
+        return new St.Icon({
+            gicon: Gio.icon_new_for_string(this._iconPath),
+            style_class: 'popup-menu-icon',
+            icon_size: 40
+        });
+    }
+
+    // Returns the original actor that should align with the actor
+    // we show as the item is being dragged.
+    getDragActorSource() {
+        return this.actor;
+    }
+
+    // Activate the menu item (Launch the shortcut)
+    activate(event) {
+        Util.spawnCommandLine(this._command);
+        this._button.leftClickMenu.toggle();
+        super.activate(event);
+    }
+};
 // Menu application item class
 var ApplicationMenuItem = class extends PopupMenu.PopupBaseMenuItem {
     // Initialize menu item
@@ -513,7 +610,7 @@ var ApplicationMenuItem = class extends PopupMenu.PopupBaseMenuItem {
     }
 
     getDragActor() {
-        return this._app.create_icon_texture(APPLICATION_ICON_SIZE);
+        return this._app.create_icon_texture(MEDIUM_ICON_SIZE);
     }
 
     // Returns the original actor that should align with the actor
@@ -525,7 +622,7 @@ var ApplicationMenuItem = class extends PopupMenu.PopupBaseMenuItem {
     // Activate menu item (Launch application)
     activate(event) {
         this._app.open_new_window(-1);
-        this._button.menu.toggle();
+        this._button.leftClickMenu.toggle();
         super.activate(event);
     }
 
@@ -540,10 +637,8 @@ var ApplicationMenuItem = class extends PopupMenu.PopupBaseMenuItem {
     setFakeActive(active) {
         if (active) {
             this._button.scrollToButton(this);
-            //this.actor.add_style_pseudo_class('active');
             this.actor.add_style_class_name('selected');
         } else {
-            //this.actor.remove_style_pseudo_class('active');
             this.actor.remove_style_class_name('selected');
         }
     }
@@ -555,7 +650,7 @@ var ApplicationMenuItem = class extends PopupMenu.PopupBaseMenuItem {
 
     // Update the app icon in the menu
     _updateIcon() {
-        this._iconBin.set_child(this._app.create_icon_texture(APPLICATION_ICON_SIZE));
+        this._iconBin.set_child(this._app.create_icon_texture(SMALL_ICON_SIZE));
     }
 };
 
@@ -563,7 +658,7 @@ var ApplicationMenuItem = class extends PopupMenu.PopupBaseMenuItem {
 var CategoryMenuItem = class extends BaseMenuItem {
     // Initialize menu item
     constructor(button, category) {
-        super();
+        super(button);
         this._category = category;
         this._button = button;
         let name;
@@ -575,15 +670,23 @@ var CategoryMenuItem = class extends BaseMenuItem {
         this._icon = new St.Icon({
             gicon: this._category.get_icon(),
             style_class: 'popup-menu-icon',
-            icon_size: APPLICATION_ICON_SIZE
+            icon_size: MEDIUM_ICON_SIZE
         });
         this.actor.add_child(this._icon);
         let categoryLabel = new St.Label({
             text: name,
             y_expand: true,
+            x_expand:true,
             y_align: Clutter.ActorAlign.CENTER
         });
         this.actor.add_child(categoryLabel);
+        this._arrowIcon = new St.Icon({
+            icon_name: 'go-next-symbolic',
+            style_class: 'popup-menu-icon',
+            x_align: St.Align.END,
+            icon_size: 12,
+        });
+        this.actor.add_child(this._arrowIcon);
         this.actor.label_actor = categoryLabel;
     }
 
@@ -652,12 +755,12 @@ Signals.addSignalMethods(PlaceInfo.prototype);
 var PlaceMenuItem = class extends BaseMenuItem {
     // Initialize menu item
     constructor(button, info) {
-        super();
+        super(button);
         this._button = button;
         this._info = info;
         this._icon = new St.Icon({
             gicon: info.icon,
-            icon_size: 16
+            icon_size: SMALL_ICON_SIZE
         });
         this.actor.add_child(this._icon);
         this._label = new St.Label({
@@ -682,7 +785,7 @@ var PlaceMenuItem = class extends BaseMenuItem {
     // Activate (launch) the shortcut
     activate(event) {
         this._info.launch(event.get_time());
-        this._button.menu.toggle();
+        this._button.leftClickMenu.toggle();
         super.activate(event);
     }
 
@@ -772,11 +875,9 @@ var SearchBox = class {
     hasKeyFocus() {
         return this._stEntry.contains(global.stage.get_key_focus());
     }
-
     // Clear the search box
     clear() {
         this._stEntry.set_text('');
-        this._stEntry.grab_key_focus();
         this.emit('cleared');
     }
 
