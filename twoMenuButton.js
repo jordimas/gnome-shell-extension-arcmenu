@@ -143,10 +143,6 @@ var TwoMenuButton = GObject.registerClass( class TwoMenuButton extends PanelMenu
     }        
 
     _onDestroy() {
-        this.leftClickMenu.destroy();
-        this.rightClickMenu.destroy();
         super._onDestroy();
- 	this.emit('destroy');
-
     }
 });

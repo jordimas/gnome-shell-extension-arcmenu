@@ -309,7 +309,7 @@ var ApplicationsButton = GObject.registerClass(
                     this.reloadFlag = false;
                 }
                 if(this.user._userIcon.get_gicon()==null)
-			 this.user._onUserChanged();
+			this.user._onUserChanged();
 			 
                 this.mainBox.show();  
             }

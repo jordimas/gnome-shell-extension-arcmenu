@@ -626,7 +626,7 @@ var ApplicationMenuItem = class extends PopupMenu.PopupBaseMenuItem {
         super.activate(event);
     }
 
-    // Set button as active, scroll to the button
+   // Set button as active, scroll to the button
     setActive(active, params) {
         if (active && !this.actor.hover)
             this._button.scrollToButton(this);
