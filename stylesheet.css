@@ -1,51 +1,92 @@
-/*
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
-
-.main-box {
-    height: 38em;
+.left-scroll-area{ 
+width:290px;
 }
-
-.left-scroll-area {
-    width: 20em;
+.arc-empty-dash-drop-target{
+width: 290px; 
+height: 2px; 
+background-color:rgb(63,62,64); 
+padding: 0 0; 
+margin:0;
 }
-
-/* Style to add padding to the menu's app section */
-.apps-menu:ltr {
-    padding-right: 0.1875em;
+.left-box{
+width:290px;
 }
-
-.apps-menu:rtl {
-    padding-left: 0.1875em;
+.vert-sep{
+width:11px;
 }
-/* workaround for the search entry box to limit character length */
-#search-entry {
-    max-width: 17.667em;
+#search-entry{
+max-width: 17.667em;
 }
-
-.tooltip-label {
-    border-radius: 7px;
-    padding: 4px 8px;
-    color: #eeeeec;
-    background-color: rgba(46, 52, 54, 0.7);
-    text-align: center;
+#search-entry:focus { 
+border-color:rgb(63,62,64);
 }
-
-.search-box-padding {
-    padding-top: 1em;
-    padding-bottom: 0.25em;
-    padding-left: 1em;
-    padding-right: 0.25em;
+#arc-search-entry{
+max-width: 17.667em;
+font-size:9pt;
+ border-color:rgb(63,62,64);
+ color:rgba(211, 218, 227, 1);
+ background-color:rgba(28, 28, 28, 0.98);
 }
+#arc-search-entry:focus { 
+border-color:rgba(127,126,128,1);
+}
+.arc-menu-action{
+color:rgba(211, 218, 227, 1);
+}
+.arc-menu-action:hover, .arc-menu-action:focus {
+color:rgba(255,255,255,1);
+ background-color:rgba(238, 238, 236, 0.1);
+}
+.tooltip-label{ 
+border-radius: 7px;
+ padding: 5px 8px;
+ color: #eeeeec;
+background-color: rgba(46, 52, 54, 0.7);
+ text-align: center;
+}
+.search-box-padding { 
+padding-top: 0.75em;
+padding-bottom: 0.25em;
+padding-left: 1em;
+ padding-right: 0.25em;
+ margin-right: .5em;
+}
+.arc-menu{
+min-width: 15em;
+color: #D3DAE3;
+border-image: none;
+box-shadow: none;
+font-size:9pt;
+}
+.arc-menu.popup-sub-menu {
+padding-bottom: 1px;
+background-color: #3a393b;
+box-shadow: inset 0 -1px 0px #323233;
+ }
+.arc-menu.popup-menu-content {padding: 1em 0em;}
+ .arc-menu.popup-menu-item {
+spacing: 12px; 
+border: 0;
+color:rgba(211, 218, 227, 1);
+ }
+.arc-menu.popup-menu-item:ltr {padding: .4em 1.75em .4em 0em; }
+.arc-menu.popup-menu-item:rtl {padding: .4em 0em .4em 1.75em;}
+.arc-menu.popup-menu-item:checked {
+background-color: #3a393b;
+ box-shadow: inset 0 1px 0px #323233;
+font-weight: bold;
+ }
+.arc-menu.popup-menu-item.selected, .arc-menu.popup-menu-item:active{
+background-color:rgba(238, 238, 236, 0.1); 
+color: rgba(255,255,255,1);
+ }
+.arc-menu.popup-menu-item:disabled {color: rgba(238, 238, 236, 0.5); }
+.arc-menu-boxpointer{ 
+-arrow-border-radius:0px;
+-arrow-background-color:rgba(28, 28, 28, 0.98);
+-arrow-border-color:rgba(28, 28, 28, 0.98);
+-arrow-border-width:0px;
+-arrow-base:0px;
+-arrow-rise:0px;
+-arrow-box-shadow: 0 1px 3px black;
+ }

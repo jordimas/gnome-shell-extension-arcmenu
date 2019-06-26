@@ -34,9 +34,12 @@
 const Main = imports.ui.main;
 const Dash = imports.ui.dash;
 const AppDisplay = imports.ui.appDisplay;
+const Gtk = imports.gi.Gtk;
+const Gdk = imports.gi.Gdk;
 
 const Me = imports.misc.extensionUtils.getCurrentExtension();
 const Menu = Me.imports.menu;
+const MW = Me.imports.menuWidgets;
 const Controller = Me.imports.controller;
 const Convenience = Me.imports.convenience;
 
@@ -49,7 +52,7 @@ let oldGetAppFromSource;
 
 // Initialize menu language translations
 function init(metadata) {
-    Convenience.initTranslations(Me.metadata['gettext-domain']);
+    Convenience.initTranslations(Me.metadata['gettext-domain']);      
 }
 
 // Enable the extension
@@ -85,7 +88,7 @@ function disable() {
 function getAppFromSource(source) {
     if (source instanceof AppDisplay.AppIcon) {
         return source.app;
-    } else if (source instanceof Menu.ApplicationMenuItem) {
+    } else if (source instanceof MW.ApplicationMenuItem) {
         return source._app;
     } else {
         return null;

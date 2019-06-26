@@ -39,16 +39,21 @@ const Main = imports.ui.main;
 const PanelMenu = imports.ui.panelMenu;
 const PopupMenu = imports.ui.popupMenu;
 const Gtk = imports.gi.Gtk;
+const Gdk = imports.gi.Gdk;
+
 const GLib = imports.gi.GLib;
 const AccountsService = imports.gi.AccountsService;
 const Gio = imports.gi.Gio;
 const GObject = imports.gi.GObject;
 const Util = imports.misc.util;
 const GnomeSession = imports.misc.gnomeSession;
+const BoxPointer = imports.ui.boxpointer;
 
 const ExtensionUtils = imports.misc.extensionUtils;
 const Me = ExtensionUtils.getCurrentExtension();
 const MW = Me.imports.menuWidgets;
+const Constants = Me.imports.constants;
+const TwoMenuButton = Me.imports.twoMenuButton;
 const Gettext = imports.gettext.domain(Me.metadata['gettext-domain']);
 const _ = Gettext.gettext;
 
@@ -60,11 +65,7 @@ const visibleMenus = {
     APPS_ONLY: 1,
     SYSTEM_ONLY: 2
 };
-const currentMenu = {
-    FAVORITES: 0,
-    ALL_APPS: 1,
-    APP_SUBGROUP: 2
-};
+
 // User Home directories
 const DEFAULT_DIRECTORIES = [
     GLib.UserDirectory.DIRECTORY_DOCUMENTS,
@@ -74,61 +75,27 @@ const DEFAULT_DIRECTORIES = [
     GLib.UserDirectory.DIRECTORY_VIDEOS
 ];
 
-
-// Aplication menu class
-const ApplicationsMenu = class extends PopupMenu.PopupMenu {
-    // Initialize the menu
-    constructor(sourceActor, arrowAlignment, arrowSide, button, settings) {
-        super(sourceActor, arrowAlignment, arrowSide);
-        this._settings = settings;
-        this._button = button;
-    }
-
-    // Return that the menu is not empty (used by parent class)
-    isEmpty() {
-        return false;
-    }
-
-    // Handle opening the menu
-    open(animate) {
-        super.open(animate);
-        if (this._settings.get_enum('visible-menus') != visibleMenus.SYSTEM_ONLY) {
-            let searchBox = this._button.searchBox;
-            searchBox.grabKeyFocus();
-        }
-    }
-
-    // Handle closing the menu
-    close(animate) {
-        let size = Main.layoutManager.panelBox.height;
-        if (this._button.applicationsBox) {
-            this._button._loadFavorites();
-            this._button.backButton.actor.hide();
-            this._button.viewProgramsButton.actor.show();
-            let searchBox = this._button.searchBox;
-            searchBox.clear();
-        }
-        super.close(animate);
-    }
-};
-
 // Application Menu Button class (most of the menu logic is here)
 var ApplicationsButton = GObject.registerClass(
-    class ApplicationsButton extends PanelMenu.Button {
+    class ApplicationsButton extends TwoMenuButton.TwoMenuButton {
         // Initialize the menu
         _init(settings) {
-            super._init(1.0, null, false);
+    	    super._init(settings);
             this._settings = settings;
             this._session = new GnomeSession.SessionManager();
-
-            this.currentMenu = currentMenu.FAVORITES;
-            this.setMenu(new ApplicationsMenu(this.actor, 1.0, St.Side.TOP, this, this._settings));
-            Main.panel.menuManager.addMenu(this.menu);
-            this.actor.accessible_role = Atk.Role.LABEL;
-
+            this.createMenu();   
+            if (this.sourceActor)
+            	this._keyReleaseId = this.sourceActor.connect('key-release-event',
+            this._onKeyRelease.bind(this));  
+           
+        }
+        createMenu(){
+            this.vertSep=null;
+            this.currentMenu = Constants.CURRENT_MENU.FAVORITES;            
+   
+            this.actor.accessible_role = Atk.Role.LABEL;            
             this._menuButtonWidget = new MW.MenuButtonWidget();
             this.actor.add_actor(this._menuButtonWidget.actor);
-
             this.actor.name = 'panelApplications';
             this.actor.connect('captured-event', this._onCapturedEvent.bind(this));
             this.actor.connect('destroy', this._onDestroy.bind(this));
@@ -143,7 +110,7 @@ var ApplicationsButton = GObject.registerClass(
             this._createLayout();
             this._display();
             this._installedChangedId = appSys.connect('installed-changed', () => {
-                if (this.menu.isOpen) {
+                if (this.leftClickMenu.isOpen) {
                     this._redisplay();
                     this.mainBox.show();
                 } else {
@@ -153,51 +120,99 @@ var ApplicationsButton = GObject.registerClass(
             this._notifyHeightId = Main.panel.actor.connect('notify::height', () => {
                 this._redisplay();
             });
-        }
+            this.updateStyle();
+            if(this.rightBox.get_height()>this.mainBox.get_height())
+                this.mainBox.set_height(this.rightBox.get_height()+35);   
+            if(this.leftBox.get_height()>this.mainBox.get_height())
+               this.mainBox.set_height(this.leftBox.get_height()+35); 
 
+        
+        }
         toggleMenu() {
-            this.menu.toggle();
+           if(this.rightClickMenu.isOpen)
+    		this.rightClickMenu.toggle();	            
+	   Main.panel.menuManager.removeMenu(this.rightClickMenu);              
+    	   Main.panel.menuManager.addMenu(this.leftClickMenu); 
+     	   this.leftClickMenu.toggle();
         }
-
         getWidget() {
             return this._menuButtonWidget;
         }
-
-        // Create a vertical separator
-        _createVertSeparator() {
-            let separator = new St.DrawingArea({
-                style_class: 'calendar-vertical-separator',
-                pseudo_class: 'highlighted'
-            });
-            separator.connect('repaint', this._onVertSepRepaint.bind(this));
-            return separator;
+        updateHeight(){
+            //set menu height
+            this.mainBox.set_height(this._settings.get_int('menu-height'));
+            this._redisplay();
+            this._redisplayRightSide();
+            //check to see if rightbox or leftbox is greater than mainBox              
+            if(this.rightBox.get_height()>this.mainBox.get_height())
+                this.mainBox.set_height(this.rightBox.get_height()+35);   
+            if(this.leftBox.get_height()>this.mainBox.get_height())
+               this.mainBox.set_height(this.leftBox.get_height()+35); 
         }
-        _onEvent(actor, event) {
-        if (event.type() == Clutter.EventType.BUTTON_PRESS)
-        {   
-            if(event.get_button()==1)
-              this.menu.toggle();
-            if(event.get_button()==3)
-              Util.spawnCommandLine('gnome-shell-extension-prefs arc-menu@linxgem33.com');
+        updateStyle(){
+            if(this._settings.get_boolean('enable-custom-arc-menu')){
+                this.actionsBox.actor.add_style_class_name('arc-menu');
+                this.leftClickMenu.actor.style_class = 'arc-menu-boxpointer popup-menu';
+               
+                this.actionsBox.actor.get_children().forEach(function (actor) {
+                    if(actor instanceof St.Button){
+                        actor.add_style_class_name('arc-menu-action');
+                    }
+                }.bind(this));
+                this.applicationsBox.get_children().forEach(function (actor) {
+                    if(actor instanceof St.BoxLayout){
+                        actor.add_style_class_name('arc-menu');
+                    }
+                }.bind(this));
+                this.rightBox.get_children().forEach(function (actor) {
+                    if(actor instanceof St.BoxLayout){
+                        actor.add_style_class_name('arc-menu');
+                    }
+                }.bind(this));
+                this.backButton.actor.add_style_class_name('arc-menu');
+                this.viewProgramsButton.actor.add_style_class_name('arc-menu');
+                this.searchBox._stEntry.set_name('arc-search-entry');
+            }
+            else
+            {             
+                this.actionsBox.actor.remove_style_class_name('arc-menu');              
+                this.leftClickMenu.actor.style_class = 'popup-menu-boxpointer popup-menu';
+                this.actionsBox.actor.get_children().forEach(function (actor) {
+                    if(actor instanceof St.Button){
+                        actor.remove_style_class_name('arc-menu-action');
+                    }
+                }.bind(this));
+                this.applicationsBox.get_children().forEach(function (actor) {
+                    if(actor instanceof St.BoxLayout){
+                        actor.remove_style_class_name('arc-menu');
+                    }
+                }.bind(this));
+               this.rightBox.get_children().forEach(function (actor) {
+                    if(actor instanceof St.BoxLayout){
+                        actor.remove_style_class_name('arc-menu');
+                    }
+                }.bind(this));
+                this.backButton.actor.remove_style_class_name('arc-menu');
+                this.viewProgramsButton.actor.remove_style_class_name('arc-menu');
+                this.searchBox._stEntry.set_name('search-entry');
+            }
         }
-
-        if(event.type() == Clutter.EventType.TOUCH_BEGIN)
-          this.menu.toggle();
-
-        return Clutter.EVENT_PROPAGATE;
-        }
+        
         // Destroy the menu button
         _onDestroy() {
-            if (this.menu) {
+            if (this.leftClickMenu) {
                 this.searchBox.disconnect(this._searchBoxClearedId);
                 this.searchBox.disconnect(this._searchBoxChangedId);
                 this.searchBox.disconnect(this._searchBoxActivateId);
                 this.searchBox.disconnect(this._searchBoxKeyPressId);
                 this.searchBox.disconnect(this._searchBoxKeyFocusInId);
                 this.mainBox.disconnect(this._mainBoxKeyPressId);
-
-                this.menu.destroy();
-                this.menu = null;
+                this.leftClickMenu.destroy();
+                this.leftClickMenu = null;
+            }
+               if (this.rightClickMenu) {
+                this.rightClickMenu.destroy();
+                this.rightClickMenu = null;
             }
 
             if (this._showingId > 0) {
@@ -228,23 +243,64 @@ var ApplicationsButton = GObject.registerClass(
             }
             return false;
         }
-
-        // Repaint vertical separator
-        _onVertSepRepaint(area) {
-            let cr = area.get_context();
-            let themeNode = area.get_theme_node();
-            let [width, height] = area.get_surface_size();
-            let stippleColor = themeNode.get_color('-stipple-color');
-            let stippleWidth = themeNode.get_length('-stipple-width');
-            let x = Math.floor(width / 2) + 0.5;
-            cr.moveTo(x, 0);
-            cr.lineTo(x, height);
-            Clutter.cairo_set_source_color(cr, stippleColor);
-            cr.setDash([1, 3], 1);
-            cr.setLineWidth(stippleWidth);
-            cr.stroke();
+        //Create a horizontal separator
+         _createHorizontalSeparator(rightSide){
+           let hSep = new St.DrawingArea({
+                x_expand:true,
+                y_expand:false
+            });
+            if(rightSide)
+              hSep.set_height(20); //increase height if on right side
+            else 
+              hSep.set_height(10);
+            hSep.connect('repaint', ()=> {
+                let cr = hSep.get_context();
+                let [width, height] = hSep.get_surface_size();                 
+                let b, stippleColor;                                                            
+                [b,stippleColor] = Clutter.Color.from_string(this._settings.get_string('separator-color'));           
+                if(rightSide){   
+                    cr.moveTo(width / 4, height-9.5);
+                    cr.lineTo(3 * width / 4, height-9.5);
+                }   
+                else{   
+                    cr.moveTo(25, height-4.5);
+                    cr.lineTo(width-25, height-4.5);
+                }
+                //adjust endpoints by 0.5 
+                //see https://www.cairographics.org/FAQ/#sharp_lines
+                Clutter.cairo_set_source_color(cr, stippleColor);
+                cr.setLineWidth(1);
+                cr.stroke();
+            });
+            hSep.queue_repaint();
+            return hSep;
         }
-
+        // Create a vertical separator
+        _createVertSeparator(){      
+            let vertSep = new St.DrawingArea({
+                x_expand:true,
+                y_expand:true,
+                style_class: 'vert-sep'
+            });
+            vertSep.connect('repaint', ()=> {
+                if(this._settings.get_boolean('vert-separator'))  {
+                    let cr = vertSep.get_context();
+                    let [width, height] = vertSep.get_surface_size();
+                    let b, stippleColor;   
+		    [b,stippleColor] = Clutter.Color.from_string(this._settings.get_string('separator-color'));   
+                    let stippleWidth = 1;
+                    let x = Math.floor(width / 2) + 0.5;
+                    cr.moveTo(x,  0.5);
+                    cr.lineTo(x, height - 0.5);
+                    Clutter.cairo_set_source_color(cr, stippleColor);
+                    cr.setLineWidth(stippleWidth);
+                    cr.stroke();
+                }
+            }); 
+            vertSep.queue_repaint();
+            return vertSep;
+        }
+        
         // Handle changes in menu open state
         _onOpenStateChanged(menu, open) {
             if (open) {
@@ -252,11 +308,18 @@ var ApplicationsButton = GObject.registerClass(
                     this._redisplay();
                     this.reloadFlag = false;
                 }
-                this.mainBox.show();
+                if(this.user._userIcon.get_gicon()==null)
+			this.user._onUserChanged();
+			 
+                this.mainBox.show();  
             }
             super._onOpenStateChanged(menu, open);
         }
-
+        _redisplayRightSide(){
+            this.rightBox.destroy_all_children();
+            this._createRightBox();
+            this.updateStyle();
+        }
         // Redisplay the menu
         _redisplay() {
             if (this.applicationsBox)
@@ -290,9 +353,8 @@ var ApplicationsButton = GObject.registerClass(
 
         // Load data for all menu categories
         _loadCategories() {
-        	  this.viewProgramsButton.actor.hide();
-	          this.backButton.actor.show();
             this.applicationsByCategory = {};
+            this.categoryDirectories=[];
             let tree = new GMenu.Tree({ menu_basename: 'applications.menu' });
             tree.load_sync();
             let root = tree.get_root_directory();
@@ -300,57 +362,79 @@ var ApplicationsButton = GObject.registerClass(
             let nextType;
             while ((nextType = iter.next()) != GMenu.TreeItemType.INVALID) {
                 if (nextType == GMenu.TreeItemType.DIRECTORY) {
-                    let dir = iter.get_directory();
+                    let dir = iter.get_directory();                  
                     if (!dir.get_is_nodisplay()) {
                         let categoryId = dir.get_menu_id();
                         this.applicationsByCategory[categoryId] = [];
                         this._loadCategory(categoryId, dir);
-                        if (this.applicationsByCategory[categoryId].length > 0) {
-                            let categoryMenuItem = new MW.CategoryMenuItem(this, dir);
-                            this.applicationsBox.add_actor(categoryMenuItem.actor);
-                        }
+                        this.categoryDirectories.push(dir);  
                     }
                 }
             }
+        }
+        _displayCategories(){
+         	this._clearApplicationsBox();
+	    	this.viewProgramsButton.actor.hide();
+	    	if(this._settings.get_boolean('enable-pinned-apps'))
+            		this.backButton.actor.show();
+            	else{
+            		this.viewProgramsButton.actor.show();
+            		this.backButton.actor.hide();
+            	}
+    		for(var categoryDir of this.categoryDirectories){
+			let categoryMenuItem = new MW.CategoryMenuItem(this, categoryDir);
+			this.applicationsBox.add_actor(categoryMenuItem.actor);	
+    		}
+        	 this.updateStyle();
         }
 
         // Load menu place shortcuts
         _loadPlaces() {
             let homePath = GLib.get_home_dir();
             let placeInfo = new MW.PlaceInfo(Gio.File.new_for_path(homePath), _("Home"));
-            let placeMenuItem = new MW.PlaceMenuItem(this, placeInfo);
-            this.rightBox.add_actor(placeMenuItem.actor);
+            let addToMenu = this.getShouldShowShortcut(placeInfo.name);
+            if(addToMenu){
+                let placeMenuItem = new MW.PlaceMenuItem(this, placeInfo);
+                this.rightBox.add_actor(placeMenuItem.actor);
+            }    
             let dirs = DEFAULT_DIRECTORIES.slice();
             for (let i = 0; i < dirs.length; i++) {
                 let path = GLib.get_user_special_dir(dirs[i]);
                 if (path == null || path == homePath)
                     continue;
                 let placeInfo = new MW.PlaceInfo(Gio.File.new_for_path(path));
-                let placeMenuItem = new MW.PlaceMenuItem(this, placeInfo);
-                this.rightBox.add_actor(placeMenuItem.actor);
+                addToMenu = this.getShouldShowShortcut(placeInfo.name);
+                if(addToMenu){
+                    let placeMenuItem = new MW.PlaceMenuItem(this, placeInfo);
+                    this.rightBox.add_actor(placeMenuItem.actor);
+                }
             }
         }
         _loadFavorites() {
             this._clearApplicationsBox();
-	          this.viewProgramsButton.actor.show();
-	          this.backButton.actor.hide();
-            /*
-            let shortcutT =["Firefox","firefox", "firefox",
-            "Terminal", "gnome-terminal", "gnome-terminal",
-            "Settings", "gnome-control-center", "gnome-control-center",
-            "Update Manager", "update-manager", "update-manager",
-            "System Monitor", "gnome-system-monitor", "gnome-system-monitor",
-            "Disks", "gnome-disks", "gnome-disks",
-            "Files", "system-file-manager-symbolic", "nautilus"];
-            //this._settings.reset('pinned-apps');
-            //this._settings.set_strv('pinned-apps', shortcutT);*/ //debug
-
-            let test = this._settings.get_strv('pinned-apps');
-            for(let i = 0;i<test.length;i+=3)
+            this.viewProgramsButton.actor.show();
+            this.backButton.actor.hide();
+            let pinnedApps = this._settings.get_strv('pinned-apps');
+            this.favoritesArray=[];
+            for(let i = 0;i<pinnedApps.length;i+=3)
             {
-                let favoritesMenuItem = new MW.FavoritesMenuItem(this, test[i], test[i+1], test[i+2]);
+                let favoritesMenuItem = new MW.FavoritesMenuItem(this, pinnedApps[i], pinnedApps[i+1], pinnedApps[i+2]);
+                favoritesMenuItem.connect('saveSettings', ()=>{
+                    	let array = [];
+			for(let i = 0;i < this.favoritesArray.length; i++)
+			{
+			    array.push(this.favoritesArray[i]._name);
+			    array.push(this.favoritesArray[i]._iconPath);
+			    array.push(this.favoritesArray[i]._command);			   
+			}
+			this._settings.set_strv('pinned-apps',array);
+                 	//global.log(array);
+                });
+                this.favoritesArray.push(favoritesMenuItem);
                 this.applicationsBox.add_actor(favoritesMenuItem.actor);
+
             }
+            this.updateStyle();
         }
         // Scroll to a specific button (menu item) in the applications scroll view
         scrollToButton(button) {
@@ -371,43 +455,70 @@ var ApplicationsButton = GObject.registerClass(
         // Create the menu layout
         _createLayout() {
             // Create main menu sections and scroll views
-            let section = new PopupMenu.PopupMenuSection();
-            this.menu.addMenuItem(section);
+            this.section = new PopupMenu.PopupMenuSection();
+            this.leftClickMenu.addMenuItem(this.section);            
             this.mainBox = new St.BoxLayout({
-                vertical: false,
-                style_class: 'main-box'
-            });
-            section.actor.add_actor(this.mainBox);
+                vertical: false
+            });            
+            this.mainBox.set_height(this._settings.get_int('menu-height'));               
+            this.section.actor.add_actor(this.mainBox);               
             this.mainBox._delegate = this.mainBox;
             this._mainBoxKeyPressId = this.mainBox.connect('key-press-event', this._onMainBoxKeyPress.bind(this));
-
             // Left Box
             if (this._settings.get_enum('visible-menus') == visibleMenus.ALL ||
                 this._settings.get_enum('visible-menus') == visibleMenus.APPS_ONLY) {
+                //Menus Left Box container
                 this.leftBox = new St.BoxLayout({
                     vertical: true,
                     style_class: 'left-box'
                 });
+                //Applications Box - Contains Favorites, Categories or programs
                 this.applicationsScrollBox = new St.ScrollView({
                     x_fill: true,
                     y_fill: false,
                     y_align: St.Align.START,
-                    style_class: 'apps-menu vfade left-scroll-area'
-                });
+                    style_class: 'apps-menu vfade left-scroll-area',
+                    overlay_scrollbars: true
+                });                
                 this.applicationsScrollBox.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC);
                 let vscroll = this.applicationsScrollBox.get_vscroll_bar();
                 vscroll.connect('scroll-start', () => {
-                    this.menu.passEvents = true;
+                    this.leftClickMenu.passEvents = true;
                 });
                 vscroll.connect('scroll-stop', () => {
-                    this.menu.passEvents = false;
+                    this.leftClickMenu.passEvents = false;
                 });
                 this.leftBox.add(this.applicationsScrollBox, {
                     expand: true,
                     x_fill: true, y_fill: true,
                     y_align: St.Align.START
                 });
-
+                this.applicationsBox = new St.BoxLayout({ vertical: true });
+                this.applicationsScrollBox.add_actor(this.applicationsBox);
+                //Add Horizontal Separator
+                this.leftBox.add(this._createHorizontalSeparator(false), {
+                    x_expand: true,
+                    x_fill: true,
+                    y_fill: false,
+                    y_align: St.Align.END
+                });
+                // Add back button to menu
+                this.backButton = new MW.BackMenuItem(this);
+                this.leftBox.add(this.backButton.actor, {
+                    expand: false,
+                    x_fill: true,
+                    y_fill: false,
+                    y_align: St.Align.End
+                });
+  	        // Add view all programs button to menu
+                this.viewProgramsButton = new MW.ViewAllPrograms(this);
+                this.leftBox.add(this.viewProgramsButton.actor, {
+                    expand: false,
+                    x_fill: true,
+                    y_fill: false,
+                    y_align: St.Align.START,
+                    margin_top:1,
+                });
                 // Create search box
                 this.searchBox = new MW.SearchBox();
                 this._firstAppItem = null;
@@ -418,160 +529,113 @@ var ApplicationsButton = GObject.registerClass(
                 this._searchBoxActivateId = this.searchBox.connect('activate', this._onSearchBoxActive.bind(this));
                 this._searchBoxKeyPressId = this.searchBox.connect('key-press-event', this._onSearchBoxKeyPress.bind(this));
                 this._searchBoxKeyFocusInId = this.searchBox.connect('key-focus-in', this._onSearchBoxKeyFocusIn.bind(this));
-
-                // Add back button to menu
-                this.backButton = new MW.BackMenuItem(this);
-                this.leftBox.add(this.backButton.actor, {
-                    expand: false,
-                    x_fill: true,
-                    y_fill: false,
-                    y_align: St.Align.START
-                });
-  	            // Add view all programs button to menu
-                this.viewProgramsButton = new MW.ViewAllPrograms(this);
-                this.leftBox.add(this.viewProgramsButton.actor, {
-                    expand: false,
-                    x_fill: true,
-                    y_fill: false,
-                    y_align: St.Align.START
-                });
-                // Add search box to menu
+                //Add search box to menu
                 this.leftBox.add(this.searchBox.actor, {
                     expand: false,
                     x_fill: true,
                     y_fill: false,
                     y_align: St.Align.START
                 });
-
-                this.applicationsBox = new St.BoxLayout({ vertical: true });
-                this.applicationsScrollBox.add_actor(this.applicationsBox);
+		//Add LeftBox to MainBox
                 this.mainBox.add(this.leftBox, {
                     expand: true,
                     x_fill: true,
                     y_fill: true
                 });
+                //Add Vert Separator to Main Box
+                this.mainBox.add(this._createVertSeparator(), {
+                    expand: true,
+                    x_fill: true,
+                    y_fill: true
+                });
+                
 
-                if (this._settings.get_enum('visible-menus') == visibleMenus.ALL) {
-                    this.mainBox.add(this._createVertSeparator(), {
-                        expand: false,
-                        x_fill: false,
-                        y_fill: true
-                    });
-                }
             }
 
             // Right Box
             if (this._settings.get_enum('visible-menus') == visibleMenus.ALL ||
                 this._settings.get_enum('visible-menus') == visibleMenus.SYSTEM_ONLY) {
+                //RightBox container
                 this.rightBox = new St.BoxLayout({
                     vertical: true,
                     style_class: 'right-box'
                 });
-                this.actionsBox = new PopupMenu.PopupBaseMenuItem({
-                    reactive: false,
-                    can_focus: false
-                });
+                //function to create rightBox children
+                this._createRightBox();
+                //Add rightbox to mainbox
+                this.mainBox.add(this.rightBox);   
+            }        
+        }
+        
+        _createRightBox(){
+            //add USER shortcut to top of right side menu
+            this.user = new MW.UserMenuItem(this);
+            this.rightBox.add(this.user.actor, {
+                expand: false,
+                x_fill: true,
+                y_fill: false,
+                y_align: St.Align.START
+            });
+     
+            //draw top right horizontal separator
+            this.rightBox.add(this._createHorizontalSeparator(true), {
+                x_expand: true,
+                x_fill: true,
+                y_fill: false,
+                y_align: St.Align.END
+            });
 
-                // Add session buttons to menu
-                let logout = new MW.LogoutButton(this);
-                this.actionsBox.actor.add(logout.actor, {
-                    expand: true,
-                    x_fill: false,
-                    y_align: St.Align.START
+            // Add place shortcuts to menu (Home,Documents,Downloads,Music,Pictures,Videos)
+            this._loadPlaces();
+            
+            //draw bottom right horizontal separator + logic to determine if should show
+            let shouldDraw = false;
+            let top = false;
+            let bot = false
+            for(let i=0;i<6;i++){
+                if(this.getShouldShowShortcut(Constants.RIGHT_SIDE_SHORTCUTS[i])){
+                  top=true;
+                  break;
+                }
+            }
+            for(let i =6;i<11;i++){
+                if(this.getShouldShowShortcut(Constants.RIGHT_SIDE_SHORTCUTS[i])){
+                  bot=true;
+                  break;
+                }
+            }
+            if(top && bot)
+              shouldDraw=true;       
+            if(shouldDraw){
+                this.rightBox.add(this._createHorizontalSeparator(true), {
+                x_expand: true,
+                y_expand:false,
+                x_fill: true,
+                y_fill: false,
+                y_align: St.Align.END
                 });
+            }
+            
 
-                let lock = new MW.LockButton(this);
-                this.actionsBox.actor.add(lock.actor, {
-                    expand: true,
-                    x_fill: false,
-                    y_align: St.Align.START
-                });
-
-                let suspend = new MW.SuspendButton(this);
-                this.actionsBox.actor.add(suspend.actor, {
-                    expand: true,
-                    x_fill: false,
-                    y_align: St.Align.START
-                });
-
-                let power = new MW.PowerButton(this);
-                this.actionsBox.actor.add(power.actor, {
-                    expand: true,
-                    x_fill: false,
-                    y_align: St.Align.START
-                });
-
-                let user = new MW.UserMenuItem(this);
-                this.rightBox.add(user.actor, {
-                    expand: false,
-                    x_fill: true,
-                    y_fill: false,
-                    y_align: St.Align.START
-                });
-
-                let separator = new PopupMenu.PopupSeparatorMenuItem();
-                this.rightBox.add(separator.actor, {
-                    expand: false,
-                    x_fill: true,
-                    y_fill: false,
-                    y_align: St.Align.START
-                });
-
-                // Add place shortcuts to menu
-                this._loadPlaces();
-                separator = new PopupMenu.PopupSeparatorMenuItem();
-                this.rightBox.add(separator.actor, {
-                    expand: false,
-                    x_fill: true,
-                    y_fill: false,
-                    y_align: St.Align.START
-                });
-
-                // List of shortcuts that will be added to the menu
-                let shortcuts = [
+            //Add Shortcuts to menu (Software, Settings, Tweaks, Terminal)
+            Constants.SHORTCUTS.forEach(function (shortcut) {
+                if (GLib.find_program_in_path(shortcut.command)) {
+                    let addToMenu = this.getShouldShowShortcut(shortcut.label);
+                    if(addToMenu)
                     {
-                        label: _("Software"),
-                        symbolic: "gnome-software-symbolic",
-                        command: "gnome-software"
-                    },
-                    {
-                        label: _("Software"),
-                        symbolic: "gnome-software-symbolic",
-                        command: "pamac-manager"
-                    },
-                    {
-                        label: _("Settings"),
-                        symbolic: "preferences-system-symbolic",
-                        command: "gnome-control-center"
-                    },
-                    {
-                        label: _("Tweak Tool"),
-                        symbolic: "org.gnome.tweaks-symbolic",
-                        command: "gnome-tweak-tool"
-                    },
-                    {
-                        label: _("Tweaks"), // Tweak Tool is called Tweaks in GNOME 3.26
-                        symbolic: "org.gnome.tweaks-symbolic",
-                        command: "gnome-tweaks"
-                    },
-                    {
-                        label: _("Terminal"),
-                        symbolic: "utilities-terminal-symbolic",
-                        command: "gnome-terminal"
-                    }
-                ];
-                shortcuts.forEach(function (shortcut) {
-                    if (GLib.find_program_in_path(shortcut.command)) {
                         let shortcutMenuItem = new MW.ShortcutMenuItem(this, shortcut.label, shortcut.symbolic, shortcut.command);
                         this.rightBox.add(shortcutMenuItem.actor, {
                             expand: false,
                             x_fill: true,
                             y_fill: false,
-                            y_align: St.Align.START
+                            y_align: St.Align.START,
                         });
                     }
-                }.bind(this));
-
+                }
+            }.bind(this));
+            
+            //Add Activities Overview to menu
+            if(this._settings.get_boolean('show-activities-overview-shortcut')){
                 let activities = new MW.ActivitiesMenuItem(this);
                 this.rightBox.add(activities.actor, {
                     expand: false,
@@ -579,23 +643,76 @@ var ApplicationsButton = GObject.registerClass(
                     y_fill: false,
                     y_align: St.Align.START
                 });
-                separator = new PopupMenu.PopupSeparatorMenuItem();
-                this.rightBox.add(separator.actor, {
-                    expand: false,
-                    x_fill: true,
-                    y_fill: false,
+            }
+            
+            //create new section for Power, Lock, Logout, Suspend Buttons
+            this.actionsBox = new PopupMenu.PopupBaseMenuItem({
+                reactive: false,
+                can_focus: false
+            });
+            //check if custom arc menu is enabled
+            if(this._settings.get_boolean('enable-custom-arc-menu'))
+                this.actionsBox.actor.add_style_class_name('arc-menu');
+            //Logout Button
+            if(this._settings.get_boolean('show-logout-button')){
+                let logout = new MW.LogoutButton(this);
+                this.actionsBox.actor.add(logout.actor, {
+                    expand: true,
+                    x_fill: false,
                     y_align: St.Align.START
                 });
-                this.rightBox.add(this.actionsBox.actor, {
+            }  
+            //LockButton
+            if(this._settings.get_boolean('show-lock-button')){
+                let lock = new MW.LockButton(this);
+                this.actionsBox.actor.add(lock.actor, {
                     expand: true,
-                    x_fill: true,
-                    y_fill: false,
-                    y_align: St.Align.END
+                    x_fill: false,
+                    y_align: St.Align.START
                 });
-                this.mainBox.add(this.rightBox);
             }
-        }
+            //Suspend Button
+            if(this._settings.get_boolean('show-suspend-button')){
+                let suspend = new MW.SuspendButton(this);
+                this.actionsBox.actor.add(suspend.actor, {
+                    expand: true,
+                    x_fill: false,
+                    y_align: St.Align.START
+                });
+            }
+            //Power Button
+            let power = new MW.PowerButton(this);
+            this.actionsBox.actor.add(power.actor, {
+                expand: true,
+                x_fill: false,
+                y_align: St.Align.START
+            });   
+            //add actionsbox to rightbox             
+            this.rightBox.add(this.actionsBox.actor, {
+                expand: true,
+                x_fill: true,
+                y_fill: false,
+                y_align: St.Align.END
+            });
 
+        }
+        //used to check if a shortcut should be displayed
+        getShouldShowShortcut(shortcutName){
+            let setting = 'show-'+shortcutName+'-shortcut';
+            let settingName = GLib.utf8_strdown(setting,setting.length);
+            let addToMenu =false;
+            try{
+                addToMenu = this._settings.get_boolean(settingName);
+            }
+            catch (err) {
+              
+            }
+            if(addToMenu)
+              return true;
+            else 
+              return false;
+        }
+        
         // Handle key press events on the mainBox to support the "type-away-feature"
         _onMainBoxKeyPress(mainBox, event) {
             if (!this.searchBox) {
@@ -637,7 +754,27 @@ var ApplicationsButton = GObject.registerClass(
             }
             return Clutter.EVENT_PROPAGATE;
         }
-
+        resetSearch()
+        {
+          this.searchBox.clear();
+        }
+        _onSearchBoxCleared() {
+            this._clearApplicationsBox();
+            if(this._settings.get_boolean('enable-pinned-apps')){
+             this.currentMenu = Constants.CURRENT_MENU.FAVORITES;
+             this._loadFavorites();
+            }
+            	
+            else{
+            this.currentMenu = Constants.CURRENT_MENU.CATEGORIES;
+            this._displayCategories();
+            
+            }
+        	
+           
+            this.backButton.actor.hide();
+            this.viewProgramsButton.actor.show();
+        }
         _onSearchBoxKeyPress(searchBox, event) {
             let symbol = event.get_key_symbol();
             if (!searchBox.isEmpty() && searchBox.hasKeyFocus()) {
@@ -656,6 +793,7 @@ var ApplicationsButton = GObject.registerClass(
                     return Clutter.EVENT_STOP;
                 }
             }
+
             return Clutter.EVENT_PROPAGATE;
         }
 
@@ -666,8 +804,13 @@ var ApplicationsButton = GObject.registerClass(
         }
 
         _onSearchBoxChanged(searchBox, searchString) {
-            this.currentMenu = currentMenu.ALL_APPS;
-            // normalize search string
+            // normalize search string            
+            if(this.currentMenu != Constants.CURRENT_MENU.SEARCH_RESULTS){              
+            	this.currentMenu = Constants.CURRENT_MENU.SEARCH_RESULTS;        
+            }
+            if(searchBox.isEmpty())
+            	this.searchBox.clear();
+
             let pattern = searchString.replace(/^\s+/g, '')
                 .replace(/\s+$/g, '')
                 .toLowerCase();
@@ -683,20 +826,15 @@ var ApplicationsButton = GObject.registerClass(
 
                 this._clearApplicationsBox();
                 this._displayButtons(appResults);
+                this.updateStyle();    
 
                 this._firstAppItem = this._applicationsButtons.get(this._firstApp);
                 if (this._firstAppItem) {
                     this._firstAppItem.setFakeActive(true);
                 }
                 this.backButton.actor.show();
-	              this.viewProgramsButton.actor.hide();
+	        this.viewProgramsButton.actor.hide();
             }
-        }
-
-        _onSearchBoxCleared() {
-            this._loadFavorites();
-            this.backButton.actor.hide();
-            this.viewProgramsButton.actor.show();
         }
 
         _onSearchBoxActive() {
@@ -711,8 +849,16 @@ var ApplicationsButton = GObject.registerClass(
             this.mainBox.hide();
             if (this._settings.get_enum('visible-menus') != visibleMenus.SYSTEM_ONLY) {
                 this._applicationsButtons.clear();
-                this._loadFavorites();
+                 this._loadCategories();
+                if(this._settings.get_boolean('enable-pinned-apps'))
+                	this._loadFavorites();
+                else
+                	this._displayCategories();
+               
                 this.backButton.actor.hide();
+                if(this.vertSep!=null)
+                  this.vertSep.queue_repaint();
+                
             }
         }
 
@@ -731,16 +877,14 @@ var ApplicationsButton = GObject.registerClass(
             if (dir) {
                 this._displayButtons(this._listApplications(dir.get_menu_id()));
                 this.backButton.actor.show();
-                this.currentMenu = currentMenu.APP_SUBGROUP;
+                this.currentMenu = Constants.CURRENT_MENU.CATEGORY_APPLIST;
                 this.viewProgramsButton.actor.hide();
-                this.searchBox.grabKeyFocus();
             }
             else {
-                this._loadCategories();
-                this.backButton.actor.hide();
+                this._displayCategories();
                 this.viewProgramsButton.actor.show();
-                this.searchBox.grabKeyFocus();
             }
+            this.updateStyle();
         }
 
         // Display application menu items
@@ -759,7 +903,20 @@ var ApplicationsButton = GObject.registerClass(
                 }
             }
         }
-
+	_displayAllApps(){
+		let appList=[];
+		for(let directory in this.applicationsByCategory){
+			appList = appList.concat(this.applicationsByCategory[directory]);
+		}
+		appList.sort(function (a, b) {
+                    return a.get_name().toLowerCase() > b.get_name().toLowerCase();
+                });
+                this._clearApplicationsBox();
+                this._displayButtons(appList);
+                this.updateStyle();   
+                this.backButton.actor.show();
+	        this.viewProgramsButton.actor.hide();
+	}
         // Get a list of applications for the specified category or search query
         _listApplications(category_menu_id, pattern) {
             let applist;
@@ -777,14 +934,18 @@ var ApplicationsButton = GObject.registerClass(
 
             // Get search results based on pattern (query)
             if (pattern) {
+                //this.currentMenu = Constants.CURRENT_MENU.SEARCH_RESULTS;
                 let searchResults = [];
                 for (let i in applist) {
                     let app = applist[i];
-                    let info = Gio.DesktopAppInfo.new(app.get_id());
-                    let match = app.get_name().toLowerCase() + " ";
-                    if (info.get_display_name()) match += info.get_display_name().toLowerCase() + " ";
-                    if (info.get_executable()) match += info.get_executable().toLowerCase() + " ";
-                    if (info.get_keywords()) match += info.get_keywords().toString().toLowerCase() + " ";
+              	    let match = app.get_name().toLowerCase() + " ";
+              	    //I believe certain Wine programs might cause search to break...added a check to see if app is a GDesktopApp
+                    if(app.get_id!=undefined){
+                    	let info = Gio.DesktopAppInfo.new(app.get_id());
+                    	if (info.get_executable()) match += info.get_executable().toLowerCase() + " ";
+                    	if (info.get_keywords()) match += info.get_keywords().toString().toLowerCase() + " ";
+                    	if (info.get_display_name()) match += info.get_display_name().toLowerCase() + " ";
+                    }
                     if (app.get_description()) match += app.get_description().toLowerCase();
                     let index = match.indexOf(pattern);
                     if (index != -1) {

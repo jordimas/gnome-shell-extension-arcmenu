@@ -41,6 +41,151 @@
       <summary>Enable tooltips</summary>
       <description>Enable tooltips.</description>
     </key>
+      <key type="b" name="enable-pinned-apps">
+     <default>true</default>
+      <summary>Enable Pinned Apps</summary>
+      <description>Enable Pinned Apps.</description>
+    </key>
+    <key type="b" name="vert-separator">
+     <default>false</default>
+      <summary>Enable a vertical separator</summary>
+      <description>Enable a vertical separator.</description>
+    </key>
+    <key type="s" name="separator-color">
+     <default>"rgb(63,62,64)"</default>
+      <summary>Separator Color</summary>
+      <description>Separator Color.</description>
+    </key>
+    <key type="s" name="menu-color">
+     <default>"rgba(28, 28, 28, 0.98)"</default>
+      <summary>Menu Color</summary>
+      <description>Menu Color.</description>
+    </key>
+    <key type="s" name="menu-foreground-color">
+     <default>"rgba(211, 218, 227, 1)"</default>
+      <summary>Menu Foreground Color</summary>
+      <description>Menu Foreground Color.</description>
+    </key>  
+    <key type="s" name="border-color">
+     <default>"rgba(28, 28, 28, 0.98)"</default>
+      <summary>Border Color</summary>
+      <description>Border Color.</description>
+    </key>
+    <key type="s" name="highlight-color">
+    <default>"rgba(238, 238, 236, 0.1)"</default>
+      <summary>Highlight Color</summary>
+      <description>Highlight Color.</description>
+    </key>
+    <key type="i" name="menu-font-size">
+    <default>9</default>
+      <summary>Menu font size</summary>
+      <description>Menu font size.</description>
+    </key>
+    <key type="i" name="menu-border-size">
+    <default>0</default>
+      <summary>Menu border size</summary>
+      <description>Menu border size.</description>
+    </key>
+    <key type="i" name="menu-corner-radius">
+    <default>0</default>
+      <summary>Menu corner radius</summary>
+      <description>Menu corner radius.</description>
+    </key>
+    <key type="i" name="menu-margin">
+    <default>0</default>
+      <summary>Menu margin</summary>
+      <description>Menu margin.</description>
+    </key>
+    <key type="i" name="menu-arrow-size">
+    <default>0</default>
+      <summary>Menu arrow size</summary>
+      <description>Menu arrow size.</description>
+    </key>
+    <key type="i" name="menu-height">
+     <default>550</default>
+      <summary>Menu Height</summary>
+      <description>Menu Height.</description>
+    </key>
+    <key type="i" name="menu-width">
+     <default>290</default>
+      <summary>Menu width</summary>
+      <description>Menu width.</description>
+    </key>
+    <key type="b" name="enable-custom-arc-menu">
+     <default>false</default>
+      <summary>Enable Custom Arc Menu Theme</summary>
+      <description>Enable Custom Arc Menu Theme.</description>
+    </key>
+    <key type="b" name="show-home-shortcut">
+     <default>true</default>
+      <summary>Show Home Shortcut</summary>
+      <description>Show Home Shortcut.</description>
+    </key>
+    <key type="b" name="show-documents-shortcut">
+     <default>true</default>
+      <summary>Show Documents Shortcut</summary>
+      <description>Show Documents Shortcut.</description>
+    </key>
+    <key type="b" name="show-downloads-shortcut">
+     <default>true</default>
+      <summary>Show Downloads Shortcut</summary>
+      <description>Show Downloads Shortcut.</description>
+    </key>
+    <key type="b" name="show-music-shortcut">
+     <default>true</default>
+      <summary>Show music Shortcut</summary>
+      <description>Show music Shortcut.</description>
+    </key>
+    <key type="b" name="show-pictures-shortcut">
+     <default>true</default>
+      <summary>Show pictures- Shortcut</summary>
+      <description>Show pictures- Shortcut.</description>
+    </key>
+    <key type="b" name="show-videos-shortcut">
+     <default>true</default>
+      <summary>Show videos Shortcut</summary>
+      <description>Show videos Shortcut.</description>
+    </key>
+    <key type="b" name="show-software-shortcut">
+     <default>true</default>
+      <summary>Show software Shortcut</summary>
+      <description>Show software Shortcut.</description>
+    </key>
+    <key type="b" name="show-settings-shortcut">
+     <default>true</default>
+      <summary>Show settings Shortcut</summary>
+      <description>Show settings Shortcut.</description>
+    </key>
+    <key type="b" name="show-tweaks-shortcut">
+     <default>true</default>
+      <summary>Show tweaks Shortcut</summary>
+      <description>Show tweaks Shortcut.</description>
+    </key>
+    <key type="b" name="show-terminal-shortcut">
+     <default>true</default>
+      <summary>Show terminal Shortcut</summary>
+      <description>Show terminal Shortcut.</description>
+    </key>
+    <key type="b" name="show-activities-overview-shortcut">
+     <default>true</default>
+      <summary>Show activities-overview Shortcut</summary>
+      <description>Show activities-overview Shortcut.</description>
+    </key>
+    <key type="b" name="show-logout-button">
+     <default>true</default>
+      <summary>Show logout button</summary>
+      <description>Show Show logout button.</description>
+    </key>
+    <key type="b" name="show-lock-button">
+     <default>true</default>
+      <summary>Show lock button</summary>
+      <description>Show Show lock button.</description>
+    </key>
+    <key type="b" name="show-suspend-button">
+     <default>true</default>
+      <summary>Show suspend button</summary>
+      <description>Show Show suspend button.</description>
+    </key>
     <key type="b" name="disable-activities-hotcorner">
       <default>false</default>
       <summary>Disable activities hotcorner</summary>
@@ -107,7 +252,7 @@
       <description>Size of the icon in percentage.</description>
     </key>
     <key name="pinned-apps" type="as">
-      <default>["Firefox","firefox", "firefox","Terminal", "gnome-terminal", "gnome-terminal","ArcMenu Settings", "emblem-system-symbolic", "gnome-shell-extension-prefs arc-menu@linxgem33.com"]</default>
+      <default>["Firefox","firefox", "firefox","Terminal", "gnome-terminal", "gnome-terminal","Arc Menu Settings", "emblem-system-symbolic", "gnome-shell-extension-prefs arc-menu@linxgem33.com"]</default>
       <summary>List of Apps Pinned to Menu</summary>
       <description>
         List of Apps Pinned to Menu

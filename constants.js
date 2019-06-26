@@ -20,6 +20,44 @@
  */
 
 // Common constants that are used in this extension
+var SHORTCUTS = [
+    {
+        label: ("Software"),
+        symbolic: "gnome-software-symbolic",
+        command: "gnome-software"
+    },
+    {
+        label: ("Software"),
+        symbolic: "gnome-software-symbolic",
+        command: "pamac-manager"
+    },
+    {
+        label: ("Settings"),
+        symbolic: "preferences-system-symbolic",
+        command: "gnome-control-center"
+    },
+    {
+        label: ("Tweaks"), // Tweak Tool is called Tweaks in GNOME 3.26
+        symbolic: "org.gnome.tweaks-symbolic",
+        command: "gnome-tweaks"
+    },
+    {
+        label: ("Terminal"),
+        symbolic: "utilities-terminal-symbolic",
+        command: "gnome-terminal"
+    }
+];
+
+var RIGHT_SIDE_SHORTCUTS = ["Home", "Documents","Downloads", "Music","Pictures","Videos","Software", 
+"Settings","Tweaks", "Terminal", "Activities-Overview"];
+
+
+var CURRENT_MENU = {
+    FAVORITES: 0,
+    CATEGORIES: 1,
+    CATEGORY_APPLIST: 2,
+    SEARCH_RESULTS: 3
+};
 var EMPTY_STRING = '';
 var SUPER_L = 'Super_L';
 var SUPER_R = 'Super_R';
@@ -66,3 +104,5 @@ var GNU_SOFTWARE = '<span size="small">' +
     'See the <a href="https://gnu.org/licenses/old-licenses/gpl-2.0.html">' +
 	'GNU General Public License, version 2 or later</a> for details.' +
 	'</span>';
+
+
