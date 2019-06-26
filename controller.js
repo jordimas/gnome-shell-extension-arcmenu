@@ -106,6 +106,7 @@ var MenuSettingsController = class {
     	this._settings.connect('changed::menu-margin',this._reloadExtension.bind(this));
     	this._settings.connect('changed::menu-arrow-size',this._reloadExtension.bind(this));
     	this._settings.connect('changed::menu-width',this._reloadExtension.bind(this));
+    	 this._settings.connect('changed::enable-pinned-apps',this._redisplayMenu.bind(this));
         
     }
     _reloadExtension(){

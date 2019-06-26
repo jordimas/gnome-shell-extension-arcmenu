@@ -34,12 +34,12 @@ const Gettext = imports.gettext.domain(Me.metadata['gettext-domain']);
 const _ = Gettext.gettext;
 
 /*
- * General Settings Page
+ * Pinned Apps Page
  */
-const GeneralSettingsPage = GObject.registerClass(
-    class GeneralSettingsPage extends PW.NotebookPage {
+const PinnedAppsPage = GObject.registerClass(
+    class PinnedAppsPage extends PW.NotebookPage {
         _init(settings) {
-            super._init(_('General'));
+            super._init(_('Pinned Apps'));
             this.settings = settings;
             
             //first row - label
@@ -514,13 +514,65 @@ const AddCustomLinkDialogWindow = GObject.registerClass(
         }
 });
 /*
- * Behaviour Settings Page
+ * General Settings Page
  */
-const BehaviourSettingsPage = GObject.registerClass(
-    class BehaviourSettingsPage extends PW.NotebookPage {
+const GeneralSettingsPage = GObject.registerClass(
+    class GeneralSettingsPage extends PW.NotebookPage {
         _init(settings) {
-            super._init(_('Behaviour'));
+            super._init(_('General'));
             this.settings = settings;
+
+          /*
+           * Menu Position Box
+           */
+          let menuPositionFrame = new PW.FrameBox();
+          let menuPositionRow = new PW.FrameBoxRow();
+          let menuPositionBoxLabel = new Gtk.Label({
+              label: _("Menu Button Position in Panel"),
+              use_markup: true,
+              xalign: 0,
+              hexpand: true
+          });
+
+          let menuPositionLeftButton = new Gtk.RadioButton({
+              label: _('Left')
+          });
+          let menuPositionCenterButton = new Gtk.RadioButton({
+              label: _('Center'),
+              group: menuPositionLeftButton
+          });
+          let menuPositionRightButton = new Gtk.RadioButton({
+              label: _('Right'),
+              group: menuPositionLeftButton
+          });
+          // callback handlers for the radio buttons
+          menuPositionLeftButton.connect('clicked', () => {
+              this.settings.set_enum('position-in-panel', Constants.MENU_POSITION.Left);
+          });
+          menuPositionCenterButton.connect('clicked', () => {
+              this.settings.set_enum('position-in-panel', Constants.MENU_POSITION.Center);
+          });
+          menuPositionRightButton.connect('clicked', () => {
+              this.settings.set_enum('position-in-panel', Constants.MENU_POSITION.Right);
+          });
+
+          switch (this.settings.get_enum('position-in-panel')) {
+              case Constants.MENU_POSITION.Left:
+                  menuPositionLeftButton.set_active(true);
+                  break;
+              case Constants.MENU_POSITION.Center:
+                  menuPositionCenterButton.set_active(true);
+                  break;
+              case Constants.MENU_POSITION.Right:
+                  menuPositionRightButton.set_active(true);
+                  break;
+          }
+
+          menuPositionRow.add(menuPositionBoxLabel);
+          menuPositionRow.add(menuPositionLeftButton);
+          menuPositionRow.add(menuPositionCenterButton);
+          menuPositionRow.add(menuPositionRightButton);
+          menuPositionFrame.add(menuPositionRow);
 
             /*
              * Hot Corner Box
@@ -541,6 +593,34 @@ const BehaviourSettingsPage = GObject.registerClass(
             disableHotCornerRow.add(disableHotCornerLabel);
             disableHotCornerRow.add(disableHotCornerSwitch);
             disableHotCornerFrame.add(disableHotCornerRow);
+            /*
+             * Pinned Apps / Categories Default View Toggle
+             */
+            let defaultLeftBoxFrame = new PW.FrameBox();
+            let defaultLeftBoxRow = new PW.FrameBoxRow();
+            let defaultLeftBoxLabel = new Gtk.Label({
+                label: _("Choose Arc Menus Default View"),
+                use_markup: true,
+                xalign: 0,
+                hexpand: true
+            });
+            let defaultLeftBoxCombo = new Gtk.ComboBoxText({ halign: Gtk.Align.END });
+            defaultLeftBoxCombo.append_text(_("Pinned Apps"));
+            defaultLeftBoxCombo.append_text(_("Categories List"));
+            if(this.settings.get_boolean('enable-pinned-apps'))
+            	defaultLeftBoxCombo.set_active(0);
+            else 
+        	defaultLeftBoxCombo.set_active(1);
+            defaultLeftBoxCombo.connect('changed', function (widget) {
+            	if(widget.get_active()==0)
+                	this.settings.set_boolean('enable-pinned-apps',true);
+        	if(widget.get_active()==1)
+                	this.settings.set_boolean('enable-pinned-apps',false);
+            }.bind(this));
+           
+            defaultLeftBoxRow.add(defaultLeftBoxLabel);
+            defaultLeftBoxRow.add(defaultLeftBoxCombo);
+            defaultLeftBoxFrame.add(defaultLeftBoxRow);
 
             /*
              * Menu Hotkey and Keybinding Frame Box
@@ -605,6 +685,8 @@ const BehaviourSettingsPage = GObject.registerClass(
             menuKeybindingFrame.add(menuKeybindingDescriptionRow);
 
             // add the frames
+            this.add(defaultLeftBoxFrame);
+            this.add(menuPositionFrame);
             this.add(disableHotCornerFrame);
             this.add(menuKeybindingFrame);
         }
@@ -795,7 +877,7 @@ const AppearanceSettingsPage = GObject.registerClass(
           let menuButtonAppearanceFrame = new PW.FrameBox();
           let menuButtonAppearanceRow = new PW.FrameBoxRow();
           let menuButtonAppearanceLabel = new Gtk.Label({
-              label: _("Customize menu button appearance"),
+              label: _("Customize Menu Button Appearance"),
               use_markup: true,
               xalign: 0,
               hexpand: true
@@ -826,61 +908,6 @@ const AppearanceSettingsPage = GObject.registerClass(
           menuButtonAppearanceRow.add(menuButtonAppearanceCombo);
           menuButtonAppearanceFrame.add(menuButtonAppearanceRow);
           this.add(menuButtonAppearanceFrame);
-
-          /*
-           * Menu Position Box
-           */
-          let menuPositionFrame = new PW.FrameBox();
-          let menuPositionRow = new PW.FrameBoxRow();
-          let menuPositionBoxLabel = new Gtk.Label({
-              label: _("Menu position in panel"),
-              use_markup: true,
-              xalign: 0,
-              hexpand: true
-          });
-
-          let menuPositionLeftButton = new Gtk.RadioButton({
-              label: _('Left')
-          });
-          let menuPositionCenterButton = new Gtk.RadioButton({
-              label: _('Center'),
-              group: menuPositionLeftButton
-          });
-          let menuPositionRightButton = new Gtk.RadioButton({
-              label: _('Right'),
-              group: menuPositionLeftButton
-          });
-          // callback handlers for the radio buttons
-          menuPositionLeftButton.connect('clicked', () => {
-              this.settings.set_enum('position-in-panel', Constants.MENU_POSITION.Left);
-          });
-          menuPositionCenterButton.connect('clicked', () => {
-              this.settings.set_enum('position-in-panel', Constants.MENU_POSITION.Center);
-          });
-          menuPositionRightButton.connect('clicked', () => {
-              this.settings.set_enum('position-in-panel', Constants.MENU_POSITION.Right);
-          });
-
-          switch (this.settings.get_enum('position-in-panel')) {
-              case Constants.MENU_POSITION.Left:
-                  menuPositionLeftButton.set_active(true);
-                  break;
-              case Constants.MENU_POSITION.Center:
-                  menuPositionCenterButton.set_active(true);
-                  break;
-              case Constants.MENU_POSITION.Right:
-                  menuPositionRightButton.set_active(true);
-                  break;
-          }
-
-          menuPositionRow.add(menuPositionBoxLabel);
-          menuPositionRow.add(menuPositionLeftButton);
-          menuPositionRow.add(menuPositionCenterButton);
-          menuPositionRow.add(menuPositionRightButton);
-          menuPositionFrame.add(menuPositionRow);
-
-          // add the frames
-          this.add(menuPositionFrame);
           
           //CUSTOMIZE ARC MENU FRAME
           let customArcMenuFrame = new PW.FrameBox();
@@ -902,7 +929,7 @@ const AppearanceSettingsPage = GObject.registerClass(
               { 
                   if(dialog.get_response())
                   {
-                      this.settings.set_int('menu-height', dialog.get_heightValue());
+                      this.settings.set_int('menu-height', dialog.heightValue);
                       this.settings.set_string('separator-color',dialog.separatorColor);
                       this.settings.set_boolean('vert-separator',dialog.verticalSeparator);
                       this.settings.set_boolean('enable-custom-arc-menu', dialog.customArcMenu); 
@@ -916,7 +943,7 @@ const AppearanceSettingsPage = GObject.registerClass(
                       this.settings.set_int('menu-margin',dialog.menuMargin);
                       this.settings.set_int('menu-arrow-size',dialog.menuArrowSize);
                       this.settings.set_int('menu-width', dialog.menuWidth);
-                      //global.log(dialog.menuWidth);
+                      saveCSS(this.settings);
                       dialog.destroy();
                   }
                   else
@@ -929,137 +956,63 @@ const AppearanceSettingsPage = GObject.registerClass(
           customArcMenuFrame.add(customArcMenuRow);
           this.add(customArcMenuFrame);
           
-          //WHICH SHORTCUTS ON RIGHT SIDE
-          let shortcutsFrame = new PW.FrameBox();
-          let shortcutsRow = new PW.FrameBoxRow();
-          let shortcutsLabel = new Gtk.Label({
-              label: _("Which shortcuts do you want on the right hand side?"),
+           //Override Arc Menu Theme
+          let overrideArcMenuFrame = new PW.FrameBox();
+          let overrideArcMenuRow = new PW.FrameBoxRow();
+          let overrideArcMenuLabel = new Gtk.Label({
+              label: _("Override Arc Menu Theme"),
               use_markup: true,
               xalign: 0,
               hexpand: true
           });
-          let pinnedAppsScrollWindow = new Gtk.ScrolledWindow();
-          pinnedAppsScrollWindow.set_policy(Gtk.PolicyType.AUTOMATIC, Gtk.PolicyType.AUTOMATIC);
-          pinnedAppsScrollWindow.set_max_content_height(150);
-          pinnedAppsScrollWindow.set_min_content_height(150);
-          pinnedAppsScrollWindow.add(shortcutsFrame);
-          Constants.RIGHT_SIDE_SHORTCUTS.forEach(function (shortcut){            
-              let shortcutsRow = new PW.FrameBoxRow();
-              let shortcutsLabel = new Gtk.Label({
-                  label: shortcut,
-                  use_markup: true,
-                  xalign: 0,
-                  hexpand: true
-              });
-              
-              let checkButton = new Gtk.CheckButton(
-              {
-                  margin_right: 20,
-                   label: "Display as Shortcut",
-              });
-              let setting = 'show-'+shortcut+'-shortcut';
-              let settingName = GLib.utf8_strdown(setting,setting.length);
-              if(this.settings.get_boolean(settingName))
-                  checkButton.set_active(true);
-              else
-                  checkButton.set_active(false);
-              checkButton.connect('toggled', function (check)
-              {
-                  this.settings.set_boolean(settingName, check.get_active());
-              }.bind(this));
-              shortcutsRow.add(shortcutsLabel);
-              shortcutsRow.add(checkButton);
-              shortcutsFrame.add(shortcutsRow);
-
-          }.bind(this));
-          this.add(shortcutsLabel);
-          this.add(pinnedAppsScrollWindow);
-          
-          //Session Buttons Enable/Disable
-          let sessionButtonsFrame = new PW.FrameBox();
-          let sessionButtonsLabel = new Gtk.Label({
-              label: _("Which buttons do you want on the lower right hand side?"),
-              use_markup: true,
-              xalign: 0,
-              hexpand: true
+          let overrideArcMenuButton = new PW.IconButton({
+              circular: true,
+              icon_name: 'emblem-system-symbolic'
           });
-          
-          //SUSPEND BUTTON
-          let suspendRow = new PW.FrameBoxRow();
-          let suspendLabel = new Gtk.Label({
-              label: _("Suspend"),
-              use_markup: true,
-              xalign: 0,
-              hexpand: true
+          overrideArcMenuButton.set_sensitive(this.settings.get_boolean('enable-custom-arc-menu'));
+          overrideArcMenuButton.connect('clicked', ()=>{
+              let dialog = new OverrideArcMenuThemeWindow(this.settings, this);
+              dialog.show_all();
+              dialog.connect('response', function(response)
+              { 
+                  if(dialog.get_response())
+                  {
+                      this.settings.set_int('menu-height', dialog.heightValue);
+                      this.settings.set_string('separator-color',dialog.separatorColor);
+                      this.settings.set_boolean('vert-separator',dialog.verticalSeparator);
+                      this.settings.set_boolean('enable-custom-arc-menu', dialog.customArcMenu); 
+                      this.settings.set_string('menu-color',dialog.menuColor);
+                      this.settings.set_string('menu-foreground-color',dialog.menuForegroundColor);
+                      this.settings.set_string('border-color',dialog.borderColor);
+                      this.settings.set_string('highlight-color',dialog.highlightColor );
+                      this.settings.set_int('menu-font-size',dialog.fontSize);
+                      this.settings.set_int('menu-border-size',dialog.borderSize);
+                      this.settings.set_int('menu-corner-radius',dialog.cornerRadius);
+                      this.settings.set_int('menu-margin',dialog.menuMargin);
+                      this.settings.set_int('menu-arrow-size',dialog.menuArrowSize);
+                      this.settings.set_int('menu-width', dialog.menuWidth);
+                      saveCSS(this.settings);
+                      dialog.destroy();
+                  }
+                  else
+                      dialog.destroy();
+              }.bind(this)); 
           });
-          let suspendButton = new Gtk.CheckButton(
-          {
-              margin_right: 30,
-              label: "Display as Button",
-          });
-          if(this.settings.get_boolean('show-suspend-button'))
-              suspendButton.set_active(true);
-          suspendButton.connect('toggled', function (check)
-          {
-              this.settings.set_boolean('show-suspend-button', check.get_active());
-          }.bind(this));
-          suspendRow.add(suspendLabel);
-          suspendRow.add(suspendButton);
-          
-          //LOCK BUTTON
-          let lockRow = new PW.FrameBoxRow();
-          let lockLabel = new Gtk.Label({
-              label: _("Lock"),
-              use_markup: true,
-              xalign: 0,
-              hexpand: true
-          });
-          let lockButton = new Gtk.CheckButton(
-          {
-              margin_right: 30,
-              label: "Display as Button",
-          });
-          if(this.settings.get_boolean('show-lock-button'))
-              lockButton.set_active(true);
-          lockButton.connect('toggled', function (check)
-          {
-              this.settings.set_boolean('show-lock-button', check.get_active());
-          }.bind(this));
-          lockRow.add(lockLabel);
-          lockRow.add(lockButton);
-          
-          //LOG OUT BUTTON
-          let logOffRow = new PW.FrameBoxRow();
-          let logOffLabel = new Gtk.Label({
-              label: _("Log Out"),
-              use_markup: true,
-              xalign: 0,
-              hexpand: true
-          });
-          let logOffButton = new Gtk.CheckButton(
-          {
-              margin_right: 30,
-              label: "Display as Button",
-          });
-          if(this.settings.get_boolean('show-logout-button'))
-              logOffButton.set_active(true);
-          logOffButton.connect('toggled', function (check)
-          {
-              this.settings.set_boolean('show-logout-button', check.get_active());
-          }.bind(this));   
-          logOffRow.add(logOffLabel);
-          logOffRow.add(logOffButton);
-          
+          let overrideArcMenuSwitch = new Gtk.Switch({ halign: Gtk.Align.END});
+          overrideArcMenuSwitch.set_active(this.settings.get_boolean('enable-custom-arc-menu'));
+          overrideArcMenuSwitch.connect('notify::active', function (check) {
+        	this.settings.set_boolean('enable-custom-arc-menu',check.get_active());
+        	overrideArcMenuButton.set_sensitive(check.get_active());
         
-          //ADD TO FRAME
-          sessionButtonsFrame.add(suspendRow);
-          sessionButtonsFrame.add(logOffRow);
-          sessionButtonsFrame.add(lockRow);
-          this.add(sessionButtonsLabel);
-          this.add(sessionButtonsFrame);
+          }.bind(this));
+          
+          overrideArcMenuRow.add(overrideArcMenuLabel);
+          overrideArcMenuRow.add(overrideArcMenuButton);
+          overrideArcMenuRow.add(overrideArcMenuSwitch);
+          overrideArcMenuFrame.add(overrideArcMenuRow);
+          this.add(overrideArcMenuFrame);
     }
 });
-
 //Dialog Window for Arc Menu Customization    
 const ArcMenuCustomizationWindow = GObject.registerClass(
     class ArcMenuCustomizationWindow extends PW.DialogWindow {
@@ -1071,7 +1024,6 @@ const ArcMenuCustomizationWindow = GObject.registerClass(
             this.separatorColor = this._settings.get_string('separator-color');
             this.verticalSeparator = this._settings.get_boolean('vert-separator');
             this.customArcMenu = this._settings.get_boolean('enable-custom-arc-menu');
-            
             this.menuColor = this._settings.get_string('menu-color');
             this.menuForegroundColor = this._settings.get_string('menu-foreground-color');
             this.borderColor = this._settings.get_string('border-color');
@@ -1083,11 +1035,12 @@ const ArcMenuCustomizationWindow = GObject.registerClass(
             this.menuArrowSize = this._settings.get_int('menu-arrow-size');
             this.menuWidth = this._settings.get_int('menu-width');
             super._init(_('Customize Arc Menu Appearance'), parent);
-
+	    this.resize(450,250);
         }
 
         _createLayout(vbox) {
             let mainFrame = new PW.FrameBox();
+
             //first row  - Name of Custom link
             let heightRow = new PW.FrameBoxRow();
             let heightLabel = new Gtk.Label({
@@ -1179,44 +1132,69 @@ const ArcMenuCustomizationWindow = GObject.registerClass(
             separatorColorRow.add(separatorColorLabel);            
             separatorColorRow.add(colorChooser);             
             mainFrame.add(separatorColorRow);
+            
+            //last row - Label and button to add custom link to list
+            let applyButton = new Gtk.Button({
+                label: "Apply"
+            });
+            applyButton.connect('clicked', ()=> {
+               this.addResponse = true;
+               this.response(-10);
+            });
+
+            applyButton.set_halign(Gtk.Align.END);
+            applyButton.set_sensitive(false);
+            
+            // add the frames to the vbox
+            vbox.add(mainFrame);
+            vbox.add(applyButton);
+        }
+        get_response(){
+            return this.addResponse;
+        }
+
+   
+});
+
+//Dialog Window for Arc Menu Customization    
+const OverrideArcMenuThemeWindow = GObject.registerClass(
+    class OverrideArcMenuThemeWindow extends PW.DialogWindow {
+
+        _init(settings, parent) {
+            this._settings = settings;
+            this.addResponse = false;
+            this.heightValue = this._settings.get_int('menu-height');
+            this.separatorColor = this._settings.get_string('separator-color');
+            this.verticalSeparator = this._settings.get_boolean('vert-separator');
+            this.customArcMenu = this._settings.get_boolean('enable-custom-arc-menu');
+            
+            this.menuColor = this._settings.get_string('menu-color');
+            this.menuForegroundColor = this._settings.get_string('menu-foreground-color');
+            this.borderColor = this._settings.get_string('border-color');
+            this.highlightColor = this._settings.get_string('highlight-color');
+            this.fontSize = this._settings.get_int('menu-font-size');
+            this.borderSize = this._settings.get_int('menu-border-size');
+            this.cornerRadius = this._settings.get_int('menu-corner-radius');
+            this.menuMargin = this._settings.get_int('menu-margin');
+            this.menuArrowSize = this._settings.get_int('menu-arrow-size');
+            this.menuWidth = this._settings.get_int('menu-width');
+            super._init(_('Override Arc Menu Theme'), parent);
+
+        }
+
+        _createLayout(vbox) {         
             //OVERRIDE ARC MENUS THEME-----------------------------
             let overrideArcMenuFrame = new PW.FrameBox();
-            let overrideArcMenuRow = new PW.FrameBoxRow();
-            let overrideArcMenuLabel = new Gtk.Label({
-                label: "Override Arc Menu Theme",
-                use_markup: true,
-                xalign: 0,
-                hexpand: true,
-                selectable: false,
-                margin_right: 200
-             });               
-            let overrideArcMenuSwitch = new Gtk.Switch({ halign: Gtk.Align.END});
-            overrideArcMenuSwitch.set_active(this.customArcMenu);
-            overrideArcMenuSwitch.connect('notify::active', function (check) {
-                this.customArcMenu = check.get_active();
-                applyButton.set_sensitive(true);
-                if(check.get_active())
-                    customArcMenuOptionsFrame.set_sensitive(true);
-                else
-                    customArcMenuOptionsFrame.set_sensitive(false);
-            }.bind(this));
-          
-            overrideArcMenuRow.add(overrideArcMenuLabel);
-            overrideArcMenuRow.add(overrideArcMenuSwitch);
-            overrideArcMenuFrame.add(overrideArcMenuRow);
-            //-----------------------------------------------
-            
+
             //OVERRIDE OPTIONS--------------------------------
             let customArcMenuOptionsFrame = new PW.FrameBox();
             let restartMessageLabel = new Gtk.Label({
-                label: "\n Changes made here require GNOME restart \n            (Press ALT + F2, type 'r' then Enter)\n"
+                label: "\n\t\t\tChanges made here require GNOME restart\t\t\t\n\t\t\t\t  (Press ALT + F2, type 'r' then Enter)  \n",
+                hexpand:true
             });       
             restartMessageLabel.set_selectable(false);      
             customArcMenuOptionsFrame.add(restartMessageLabel);
-            if(overrideArcMenuSwitch.get_active())
-                customArcMenuOptionsFrame.set_sensitive(true);
-            else 
-                customArcMenuOptionsFrame.set_sensitive(false);
+  
              
             //ROW 1 - MENU BACKGROUND COLOR--------------------------------------   
             let menuBackgroudColorRow = new PW.FrameBoxRow();
@@ -1225,7 +1203,8 @@ const ArcMenuCustomizationWindow = GObject.registerClass(
                 xalign:0,
                 hexpand: true,
              });   
-            let menuBackgroudColorChooser = new Gtk.ColorButton({use_alpha:true});     
+            let menuBackgroudColorChooser = new Gtk.ColorButton({use_alpha:true});   
+            let color = new Gdk.RGBA();
             color.parse(this.menuColor);
             menuBackgroudColorChooser.set_rgba(color);            
             menuBackgroudColorChooser.connect('color-set', ()=>{
@@ -1406,7 +1385,7 @@ const ArcMenuCustomizationWindow = GObject.registerClass(
             
             
             
-            overrideArcMenuFrame.add(customArcMenuOptionsFrame);
+            //overrideArcMenuFrame.add(customArcMenuOptionsFrame);
 
             //--------------------------------------------------------------
             
@@ -1415,99 +1394,191 @@ const ArcMenuCustomizationWindow = GObject.registerClass(
                 label: "Apply"
             });
             applyButton.connect('clicked', ()=> {
-               this.saveCSS();
                this.addResponse = true;
                this.response(-10);
             });
 
             applyButton.set_halign(Gtk.Align.END);
             applyButton.set_sensitive(false);
-            
-            // add the frames to the vbox
-            vbox.add(mainFrame);
-            vbox.add(overrideArcMenuFrame);
+            vbox.add(customArcMenuOptionsFrame);
             vbox.add(applyButton);
         }
         get_response(){
             return this.addResponse;
         }
-        get_heightValue(){
-            return this.heightValue;
-        }
-        lighten_rgb(colorString, percent) // implemented from https://stackoverflow.com/a/141943
-	{
-		//creates a nice effect when items are selected
-		if(colorString.includes('rgba'))
-			colorString = colorString.replace('rgba(','');
-		if(colorString.includes('rgb'))
-			colorString = colorString.replace('rgb(','');
-		colorString = colorString.replace(')','');
-		//global.log(colorString);
-		let rgbaColor = colorString.split(",");
-		let r = parseFloat(rgbaColor[0]) + 255 * percent;
-		let g = parseFloat(rgbaColor[1]) + 255 * percent;
-		let b = parseFloat(rgbaColor[2]) + 255 * percent;
-		let a;
-		if(rgbaColor[3] != undefined)
-			a = parseFloat(rgbaColor[3]); 
-		else
-			a =1;
-		let m = Math.max(r,g,b);
-		let threshold = 255.9999;
-		r = Math.round(r);
-		g = Math.round(g);
-		b = Math.round(b);
-		if(m<=threshold){
-			return "rgba("+r+","+g+","+b+","+a+")";
-		}
-		let total = r + g + b;
-		if(total >= 3 * threshold){
-			return "rgba(255,255,255,"+a+")";
-		}
-		let x = (3 * threshold - total) / (3 * m - total);
-		let gray = threshold - x * m;
-		r = gray + x * r;
-		g = gray + x * g;
-		b = gray + x * b;
-		r = Math.round(r);
-		g = Math.round(g);
-		b = Math.round(b);
-		return "rgba("+r+","+g+","+b+","+a+")";
-
-	}
-        saveCSS(){
-            //there has to be a better way to do this
-            let file = Gio.File.new_for_path(Me.path+"/stylesheet.css");
-            let css =".left-scroll-area{ \nwidth:"+ this.menuWidth+"px;\n}\n"   
-            +".arc-empty-dash-drop-target{\nwidth: "+ this.menuWidth+"px; \nheight: 2px; \nbackground-color:"+ this.separatorColor+"; \npadding: 0 0; \nmargin:0;\n}\n"     
-            	  +".left-box{\nwidth:"+ this.menuWidth+"px;\n}" + "\n.vert-sep{\nwidth:11px;\n}\n"
-                  +"#search-entry{\nmax-width: 17.667em;\n}\n#search-entry:focus { \nborder-color:"+ this.separatorColor+";\n}\n"
-                  +"#arc-search-entry{\nmax-width: 17.667em;\nfont-size:" +this.fontSize+"pt;\n border-color:"+ this.separatorColor+";\n"
-                  	+" color:"+ this.menuForegroundColor+";\n background-color:" + this.menuColor + ";\n}\n"
-                  +"#arc-search-entry:focus { \nborder-color:"+ this.lighten_rgb(this.separatorColor,0.25)+";\n}\n"
-                  +".arc-menu-action{\ncolor:"+ this.menuForegroundColor+";\n}\n"
-                  +".arc-menu-action:hover, .arc-menu-action:focus {\ncolor:"+ this.lighten_rgb(this.menuForegroundColor,0.15)+";\n background-color:"+ this.highlightColor+";\n}\n"
-                  +".tooltip-label{ \nborder-radius: 7px;\n padding: 5px 8px;\n color: #eeeeec;\n"
-                  +"background-color: rgba(46, 52, 54, 0.7);\n text-align: center;\n}\n.search-box-padding { \npadding-top: 0.75em;\n"
-                  +"padding-bottom: 0.25em;\npadding-left: 1em;\n padding-right: 0.25em;\n margin-right: .5em;\n}\n"
-                  +".arc-menu{\nmin-width: 15em;\ncolor: #D3DAE3;\nborder-image: none;\nbox-shadow: none;\nfont-size:" +this.fontSize+"pt;\n}\n"
-                  +".arc-menu.popup-sub-menu {\npadding-bottom: 1px;\nbackground-color: #3a393b;\nbox-shadow: inset 0 -1px 0px #323233;\n }\n"
-                  +".arc-menu.popup-menu-content {padding: 1em 0em;}\n .arc-menu.popup-menu-item {\nspacing: 12px; \nborder: 0;\ncolor:"+ this.menuForegroundColor+";\n }\n" 
-                  +".arc-menu.popup-menu-item:ltr {padding: .4em 1.75em .4em 0em; }\n.arc-menu.popup-menu-item:rtl {padding: .4em 0em .4em 1.75em;}\n"
-                  +".arc-menu.popup-menu-item:checked {\nbackground-color: #3a393b;\n box-shadow: inset 0 1px 0px #323233;\nfont-weight: bold;\n }\n"
-                  +".arc-menu.popup-menu-item.selected, .arc-menu.popup-menu-item:active{\nbackground-color:"+ this.highlightColor+"; \ncolor: "+ this.lighten_rgb(this.menuForegroundColor,0.15)+";\n }\n" 
-                  +".arc-menu.popup-menu-item:disabled {color: rgba(238, 238, 236, 0.5); }\n"
-                  +".arc-menu-boxpointer{ \n-arrow-border-radius:"+ this.cornerRadius+"px;\n"
-                  +"-arrow-background-color:" + this.menuColor + ";\n"
-                  +"-arrow-border-color:"+ this.borderColor+ ";\n"
-                  +"-arrow-border-width:"+ this.borderSize+"px;\n"
-                  +"-arrow-base:"+ this.menuMargin+"px;\n"
-                  +"-arrow-rise:"+ this.menuArrowSize+"px;\n"
-                  +"-arrow-box-shadow: 0 1px 3px black;\n }";
-            file.replace_contents(css,null,false,Gio.FileCreateFlags.REPLACE_DESTINATION,null);
-        }       
 });
 
+const ConfigureSettingsPage = GObject.registerClass(
+    class ConfigureSettingsPage extends PW.NotebookPage {
+    _init(settings) {
+        super._init(_('Configure'));
+        this.settings = settings;
+           
+          //WHICH SHORTCUTS ON RIGHT SIDE
+          let shortcutsFrame = new PW.FrameBox();
+          let shortcutsRow = new PW.FrameBoxRow();
+          let shortcutsLabel = new Gtk.Label({
+              label: _("Which shortcuts do you want on the right hand side?"),
+              use_markup: true,
+              xalign: 0,
+              hexpand: true
+          });
+          let pinnedAppsScrollWindow = new Gtk.ScrolledWindow();
+          pinnedAppsScrollWindow.set_policy(Gtk.PolicyType.AUTOMATIC, Gtk.PolicyType.AUTOMATIC);
+          pinnedAppsScrollWindow.set_max_content_height(150);
+          pinnedAppsScrollWindow.set_min_content_height(150);
+          pinnedAppsScrollWindow.add(shortcutsFrame);
+          Constants.RIGHT_SIDE_SHORTCUTS.forEach(function (shortcut){            
+              let shortcutsRow = new PW.FrameBoxRow();
+              let shortcutsLabel = new Gtk.Label({
+                  label: shortcut,
+                  use_markup: true,
+                  xalign: 0,
+                  hexpand: true
+              });
+              
+              let checkButton = new Gtk.CheckButton(
+              {
+                  margin_right: 20,
+                   label: "Display as Shortcut",
+              });
+              let setting = 'show-'+shortcut+'-shortcut';
+              let settingName = GLib.utf8_strdown(setting,setting.length);
+              if(this.settings.get_boolean(settingName))
+                  checkButton.set_active(true);
+              else
+                  checkButton.set_active(false);
+              checkButton.connect('toggled', function (check)
+              {
+                  this.settings.set_boolean(settingName, check.get_active());
+              }.bind(this));
+              shortcutsRow.add(shortcutsLabel);
+              shortcutsRow.add(checkButton);
+              shortcutsFrame.add(shortcutsRow);
+
+          }.bind(this));
+          this.add(shortcutsLabel);
+          this.add(pinnedAppsScrollWindow);
+          
+          //Session Buttons Enable/Disable
+          let sessionButtonsFrame = new PW.FrameBox();
+          let sessionButtonsLabel = new Gtk.Label({
+              label: _("Which buttons do you want on the lower right hand side?"),
+              use_markup: true,
+              xalign: 0,
+              hexpand: true
+          });
+          
+          //SUSPEND BUTTON
+          let suspendRow = new PW.FrameBoxRow();
+          let suspendLabel = new Gtk.Label({
+              label: _("Suspend"),
+              use_markup: true,
+              xalign: 0,
+              hexpand: true
+          });
+          let suspendButton = new Gtk.CheckButton(
+          {
+              margin_right: 30,
+              label: "Display as Button",
+          });
+          if(this.settings.get_boolean('show-suspend-button'))
+              suspendButton.set_active(true);
+          suspendButton.connect('toggled', function (check)
+          {
+              this.settings.set_boolean('show-suspend-button', check.get_active());
+          }.bind(this));
+          suspendRow.add(suspendLabel);
+          suspendRow.add(suspendButton);
+          
+          //LOCK BUTTON
+          let lockRow = new PW.FrameBoxRow();
+          let lockLabel = new Gtk.Label({
+              label: _("Lock"),
+              use_markup: true,
+              xalign: 0,
+              hexpand: true
+          });
+          let lockButton = new Gtk.CheckButton(
+          {
+              margin_right: 30,
+              label: "Display as Button",
+          });
+          if(this.settings.get_boolean('show-lock-button'))
+              lockButton.set_active(true);
+          lockButton.connect('toggled', function (check)
+          {
+              this.settings.set_boolean('show-lock-button', check.get_active());
+          }.bind(this));
+          lockRow.add(lockLabel);
+          lockRow.add(lockButton);
+          
+          //LOG OUT BUTTON
+          let logOffRow = new PW.FrameBoxRow();
+          let logOffLabel = new Gtk.Label({
+              label: _("Log Out"),
+              use_markup: true,
+              xalign: 0,
+              hexpand: true
+          });
+          let logOffButton = new Gtk.CheckButton(
+          {
+              margin_right: 30,
+              label: "Display as Button",
+          });
+          if(this.settings.get_boolean('show-logout-button'))
+              logOffButton.set_active(true);
+          logOffButton.connect('toggled', function (check)
+          {
+              this.settings.set_boolean('show-logout-button', check.get_active());
+          }.bind(this));   
+          logOffRow.add(logOffLabel);
+          logOffRow.add(logOffButton);
+          //ADD TO FRAME
+          sessionButtonsFrame.add(suspendRow);
+          sessionButtonsFrame.add(logOffRow);
+          sessionButtonsFrame.add(lockRow);
+          this.add(sessionButtonsLabel);
+          this.add(sessionButtonsFrame);
+          
+          //EXTERNAL DEVICES LIST
+          //Session Buttons Enable/Disable
+          let externalDevicesLabel = new Gtk.Label({
+              label: _("Which external device shortcuts do you want on the right hand side?"),
+              use_markup: true,
+              xalign: 0,
+              hexpand: true
+          });
+          
+          //SUSPEND BUTTON
+          let externalDeviceFrame = new PW.FrameBox();
+          let externalDeviceRow = new PW.FrameBoxRow();
+          let externalDeviceLabel = new Gtk.Label({
+              label: _("PlaceHolder"),
+              use_markup: true,
+              xalign: 0,
+              hexpand: true
+          });
+          let externalDeviceButton = new Gtk.CheckButton(
+          {
+              margin_right: 30,
+              label: "Display as Shortcut",
+          });
+          //if(this.settings.get_boolean('show-suspend-button'))
+          externalDeviceButton.set_active(true);
+          externalDeviceButton.connect('toggled', function (check)
+          {
+              //this.settings.set_boolean('show-suspend-button', check.get_active());
+          }.bind(this));
+          externalDeviceRow.add(externalDeviceLabel);
+          externalDeviceRow.add(externalDeviceButton);
+
+          //ADD TO FRAME
+          externalDeviceFrame.add(externalDeviceRow);
+          this.add(externalDevicesLabel);
+          this.add(externalDeviceFrame);
+    }
+});
 /*
  * Fine Tune Settings Page
  *
@@ -1635,15 +1706,18 @@ const ArcMenuPreferencesWidget = new GObject.Class({
 
         let notebook = new PW.Notebook();
         // Spoiler alert: There will be a general settings page in vXX ;-)
-        let generalSettingsPage = new GeneralSettingsPage(this.settings);
-        notebook.append_page(generalSettingsPage, generalSettingsPage.title);
 
-        let behaviourSettingsPage = new BehaviourSettingsPage(this.settings);
-        notebook.append_page(behaviourSettingsPage);
+
+        let generalSettingsPage = new GeneralSettingsPage(this.settings);
+        notebook.append_page(generalSettingsPage);
 
         let appearancePage = new AppearanceSettingsPage(this.settings);
         notebook.append_page(appearancePage);
-
+        let configurePage = new ConfigureSettingsPage(this.settings);
+        notebook.append_page(configurePage);
+        let pinnedAppsPage = new PinnedAppsPage(this.settings);
+        notebook.append_page(pinnedAppsPage, pinnedAppsPage.title);
+        
         // let fineTunePage = new FineTuneSettingsPage(this.settings);
         // notebook.append_page(fineTunePage);
 
@@ -1664,4 +1738,89 @@ function buildPrefsWidget() {
     widget.show_all();
     return widget;
 }
-
+function lighten_rgb(colorString, percent) // implemented from https://stackoverflow.com/a/141943
+{
+	//creates a nice effect when items are selected
+	if(colorString.includes('rgba'))
+		colorString = colorString.replace('rgba(','');
+	if(colorString.includes('rgb'))
+		colorString = colorString.replace('rgb(','');
+	colorString = colorString.replace(')','');
+	//global.log(colorString);
+	let rgbaColor = colorString.split(",");
+	let r = parseFloat(rgbaColor[0]) + 255 * percent;
+	let g = parseFloat(rgbaColor[1]) + 255 * percent;
+	let b = parseFloat(rgbaColor[2]) + 255 * percent;
+	let a;
+	if(rgbaColor[3] != undefined)
+		a = parseFloat(rgbaColor[3]); 
+	else
+		a =1;
+	let m = Math.max(r,g,b);
+	let threshold = 255.9999;
+	r = Math.round(r);
+	g = Math.round(g);
+	b = Math.round(b);
+	if(m<=threshold){
+		return "rgba("+r+","+g+","+b+","+a+")";
+	}
+	let total = r + g + b;
+	if(total >= 3 * threshold){
+		return "rgba(255,255,255,"+a+")";
+	}
+	let x = (3 * threshold - total) / (3 * m - total);
+	let gray = threshold - x * m;
+	r = gray + x * r;
+	g = gray + x * g;
+	b = gray + x * b;
+	r = Math.round(r);
+	g = Math.round(g);
+	b = Math.round(b);
+	return "rgba("+r+","+g+","+b+","+a+")";
+};
+function saveCSS(settings){
+    this._settings= settings;
+    let heightValue = this._settings.get_int('menu-height');
+    let separatorColor = this._settings.get_string('separator-color');
+    let verticalSeparator = this._settings.get_boolean('vert-separator');
+    let customArcMenu = this._settings.get_boolean('enable-custom-arc-menu');
+    let menuColor = this._settings.get_string('menu-color');
+    let menuForegroundColor = this._settings.get_string('menu-foreground-color');
+    let borderColor = this._settings.get_string('border-color');
+    let highlightColor = this._settings.get_string('highlight-color');
+    let fontSize = this._settings.get_int('menu-font-size');
+    let borderSize = this._settings.get_int('menu-border-size');
+    let cornerRadius = this._settings.get_int('menu-corner-radius');
+    let menuMargin = this._settings.get_int('menu-margin');
+    let menuArrowSize = this._settings.get_int('menu-arrow-size');
+    let menuWidth = this._settings.get_int('menu-width');
+    //there has to be a better way to do this
+    let file = Gio.File.new_for_path(Me.path+"/stylesheet.css");
+    let css =".left-scroll-area{ \nwidth:"+  menuWidth+"px;\n}\n"   
+    +".arc-empty-dash-drop-target{\nwidth: "+  menuWidth+"px; \nheight: 2px; \nbackground-color:"+  separatorColor+"; \npadding: 0 0; \nmargin:0;\n}\n"     
+    	  +".left-box{\nwidth:"+  menuWidth+"px;\n}" + "\n.vert-sep{\nwidth:11px;\n}\n"
+	  +"#search-entry{\nmax-width: 17.667em;\n}\n#search-entry:focus { \nborder-color:"+  separatorColor+";\n}\n"
+	  +"#arc-search-entry{\nmax-width: 17.667em;\nfont-size:" + fontSize+"pt;\n border-color:"+  separatorColor+";\n"
+	  	+" color:"+  menuForegroundColor+";\n background-color:" +  menuColor + ";\n}\n"
+	  +"#arc-search-entry:focus { \nborder-color:"+ lighten_rgb( separatorColor,0.25)+";\n}\n"
+	  +".arc-menu-action{\ncolor:"+  menuForegroundColor+";\n}\n"
+	  +".arc-menu-action:hover, .arc-menu-action:focus {\ncolor:"+ lighten_rgb( menuForegroundColor,0.15)+";\n background-color:"+  highlightColor+";\n}\n"
+	  +".tooltip-label{ \nborder-radius: 7px;\n padding: 5px 8px;\n color: #eeeeec;\n"
+	  +"background-color: rgba(46, 52, 54, 0.7);\n text-align: center;\n}\n.search-box-padding { \npadding-top: 0.75em;\n"
+	  +"padding-bottom: 0.25em;\npadding-left: 1em;\n padding-right: 0.25em;\n margin-right: .5em;\n}\n"
+	  +".arc-menu{\nmin-width: 15em;\ncolor: #D3DAE3;\nborder-image: none;\nbox-shadow: none;\nfont-size:" + fontSize+"pt;\n}\n"
+	  +".arc-menu.popup-sub-menu {\npadding-bottom: 1px;\nbackground-color: #3a393b;\nbox-shadow: inset 0 -1px 0px #323233;\n }\n"
+	  +".arc-menu.popup-menu-content {padding: 1em 0em;}\n .arc-menu.popup-menu-item {\nspacing: 12px; \nborder: 0;\ncolor:"+  menuForegroundColor+";\n }\n" 
+	  +".arc-menu.popup-menu-item:ltr {padding: .4em 1.75em .4em 0em; }\n.arc-menu.popup-menu-item:rtl {padding: .4em 0em .4em 1.75em;}\n"
+	  +".arc-menu.popup-menu-item:checked {\nbackground-color: #3a393b;\n box-shadow: inset 0 1px 0px #323233;\nfont-weight: bold;\n }\n"
+	  +".arc-menu.popup-menu-item.selected, .arc-menu.popup-menu-item:active{\nbackground-color:"+  highlightColor+"; \ncolor: "+ lighten_rgb( menuForegroundColor,0.15)+";\n }\n" 
+	  +".arc-menu.popup-menu-item:disabled {color: rgba(238, 238, 236, 0.5); }\n"
+	  +".arc-menu-boxpointer{ \n-arrow-border-radius:"+  cornerRadius+"px;\n"
+	  +"-arrow-background-color:" +  menuColor + ";\n"
+	  +"-arrow-border-color:"+  borderColor+ ";\n"
+	  +"-arrow-border-width:"+  borderSize+"px;\n"
+	  +"-arrow-base:"+  menuMargin+"px;\n"
+	  +"-arrow-rise:"+  menuArrowSize+"px;\n"
+	  +"-arrow-box-shadow: 0 1px 3px black;\n }";
+    file.replace_contents(css,null,false,Gio.FileCreateFlags.REPLACE_DESTINATION,null);
+}
