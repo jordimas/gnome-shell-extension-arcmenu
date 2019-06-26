@@ -373,8 +373,14 @@ var ApplicationsButton = GObject.registerClass(
             }
         }
         _displayCategories(){
+         	this._clearApplicationsBox();
 	    	this.viewProgramsButton.actor.hide();
-            	this.backButton.actor.show();
+	    	if(this._settings.get_boolean('enable-pinned-apps'))
+            		this.backButton.actor.show();
+            	else{
+            		this.viewProgramsButton.actor.show();
+            		this.backButton.actor.hide();
+            	}
     		for(var categoryDir of this.categoryDirectories){
 			let categoryMenuItem = new MW.CategoryMenuItem(this, categoryDir);
 			this.applicationsBox.add_actor(categoryMenuItem.actor);	
@@ -754,8 +760,18 @@ var ApplicationsButton = GObject.registerClass(
         }
         _onSearchBoxCleared() {
             this._clearApplicationsBox();
-            this._loadFavorites();
-            this.currentMenu = Constants.CURRENT_MENU.FAVORITES;
+            if(this._settings.get_boolean('enable-pinned-apps')){
+             this.currentMenu = Constants.CURRENT_MENU.FAVORITES;
+             this._loadFavorites();
+            }
+            	
+            else{
+            this.currentMenu = Constants.CURRENT_MENU.CATEGORIES;
+            this._displayCategories();
+            
+            }
+        	
+           
             this.backButton.actor.hide();
             this.viewProgramsButton.actor.show();
         }
@@ -833,8 +849,12 @@ var ApplicationsButton = GObject.registerClass(
             this.mainBox.hide();
             if (this._settings.get_enum('visible-menus') != visibleMenus.SYSTEM_ONLY) {
                 this._applicationsButtons.clear();
-                this._loadFavorites();
-                this._loadCategories();
+                 this._loadCategories();
+                if(this._settings.get_boolean('enable-pinned-apps'))
+                	this._loadFavorites();
+                else
+                	this._displayCategories();
+               
                 this.backButton.actor.hide();
                 if(this.vertSep!=null)
                   this.vertSep.queue_repaint();
@@ -857,7 +877,7 @@ var ApplicationsButton = GObject.registerClass(
             if (dir) {
                 this._displayButtons(this._listApplications(dir.get_menu_id()));
                 this.backButton.actor.show();
-                this.currentMenu = Constants.CURRENT_MENU.APP_SUBGROUP;
+                this.currentMenu = Constants.CURRENT_MENU.CATEGORY_APPLIST;
                 this.viewProgramsButton.actor.hide();
             }
             else {
@@ -883,7 +903,20 @@ var ApplicationsButton = GObject.registerClass(
                 }
             }
         }
-
+	_displayAllApps(){
+		let appList=[];
+		for(let directory in this.applicationsByCategory){
+			appList = appList.concat(this.applicationsByCategory[directory]);
+		}
+		appList.sort(function (a, b) {
+                    return a.get_name().toLowerCase() > b.get_name().toLowerCase();
+                });
+                this._clearApplicationsBox();
+                this._displayButtons(appList);
+                this.updateStyle();   
+                this.backButton.actor.show();
+	        this.viewProgramsButton.actor.hide();
+	}
         // Get a list of applications for the specified category or search query
         _listApplications(category_menu_id, pattern) {
             let applist;
@@ -905,12 +938,14 @@ var ApplicationsButton = GObject.registerClass(
                 let searchResults = [];
                 for (let i in applist) {
                     let app = applist[i];
-                    //global.log(typeof app);
-                    let info = Gio.DesktopAppInfo.new(app.get_id());
-                    let match = app.get_name().toLowerCase() + " ";
-                    if (info.get_display_name()) match += info.get_display_name().toLowerCase() + " ";
-                    if (info.get_executable()) match += info.get_executable().toLowerCase() + " ";
-                    if (info.get_keywords()) match += info.get_keywords().toString().toLowerCase() + " ";
+              	    let match = app.get_name().toLowerCase() + " ";
+              	    //I believe certain Wine programs might cause search to break...added a check to see if app is a GDesktopApp
+                    if(app.get_id!=undefined){
+                    	let info = Gio.DesktopAppInfo.new(app.get_id());
+                    	if (info.get_executable()) match += info.get_executable().toLowerCase() + " ";
+                    	if (info.get_keywords()) match += info.get_keywords().toString().toLowerCase() + " ";
+                    	if (info.get_display_name()) match += info.get_display_name().toLowerCase() + " ";
+                    }
                     if (app.get_description()) match += app.get_description().toLowerCase();
                     let index = match.indexOf(pattern);
                     if (index != -1) {

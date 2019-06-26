@@ -54,8 +54,8 @@ var RIGHT_SIDE_SHORTCUTS = ["Home", "Documents","Downloads", "Music","Pictures",
 
 var CURRENT_MENU = {
     FAVORITES: 0,
-    ALL_APPS: 1,
-    APP_SUBGROUP: 2,
+    CATEGORIES: 1,
+    CATEGORY_APPLIST: 2,
     SEARCH_RESULTS: 3
 };
 var EMPTY_STRING = '';
@@ -104,3 +104,5 @@ var GNU_SOFTWARE = '<span size="small">' +
     'See the <a href="https://gnu.org/licenses/old-licenses/gpl-2.0.html">' +
 	'GNU General Public License, version 2 or later</a> for details.' +
 	'</span>';
+
+

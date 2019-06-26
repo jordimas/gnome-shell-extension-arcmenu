@@ -41,6 +41,11 @@
       <summary>Enable tooltips</summary>
       <description>Enable tooltips.</description>
     </key>
+      <key type="b" name="enable-pinned-apps">
+     <default>true</default>
+      <summary>Enable Pinned Apps</summary>
+      <description>Enable Pinned Apps.</description>
+    </key>
     <key type="b" name="vert-separator">
      <default>false</default>
       <summary>Enable a vertical separator</summary>

@@ -300,18 +300,29 @@ var BackMenuItem = class extends BaseMenuItem {
         this._button._clearApplicationsBox();
         if(this._button.currentMenu == Constants.CURRENT_MENU.SEARCH_RESULTS)
         { 
-            this._button.currentMenu = Constants.CURRENT_MENU.FAVORITES;
-            this._button.resetSearch();
-            this._button._loadFavorites();
+        	if(this._button._settings.get_boolean('enable-pinned-apps')){
+         		this._button.currentMenu = Constants.CURRENT_MENU.FAVORITES;
+            		this._button.resetSearch();
+            		this._button._loadFavorites();
+        	}
+        	else {
+        		this._button.currentMenu = Constants.CURRENT_MENU.CATEGORIES;
+            		this._button.resetSearch();
+            		this._button._displayCategories();
+        	}
+           
         }
-        else if(this._button.currentMenu == Constants.CURRENT_MENU.ALL_APPS)
+        else if(this._button.currentMenu == Constants.CURRENT_MENU.CATEGORIES)
         { 
-            this._button.currentMenu = Constants.CURRENT_MENU.FAVORITES;
-            this._button._loadFavorites();
+ 	    if(this._button._settings.get_boolean('enable-pinned-apps')){
+            	this._button.currentMenu = Constants.CURRENT_MENU.FAVORITES;
+            	this._button._loadFavorites();
+            }
+            
         }
-        else if(this._button.currentMenu == Constants.CURRENT_MENU.APP_SUBGROUP)
+        else if(this._button.currentMenu == Constants.CURRENT_MENU.CATEGORY_APPLIST)
         {
-            this._button.currentMenu = Constants.CURRENT_MENU.ALL_APPS;
+            this._button.currentMenu = Constants.CURRENT_MENU.CATEGORIES;
             this._button._displayCategories();
         }
         super.activate(event);
@@ -342,8 +353,14 @@ var ViewAllPrograms = class extends BaseMenuItem {
     // Activate the button (go back to category view)
     activate(event) {
       this._button._clearApplicationsBox();
-      this._button._displayCategories();
-      this._button.currentMenu = Constants.CURRENT_MENU.ALL_APPS;
+      if(this._button._settings.get_boolean('enable-pinned-apps')){
+	      this._button._displayCategories();
+	      this._button.currentMenu = Constants.CURRENT_MENU.CATEGORIES;
+      }
+      else{ 
+       	  this._button._displayAllApps();
+          this._button.currentMenu = Constants.CURRENT_MENU.SEARCH_RESULTS;
+      }
       super.activate(event);
     }
 };
