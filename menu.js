@@ -905,12 +905,14 @@ var ApplicationsButton = GObject.registerClass(
                 let searchResults = [];
                 for (let i in applist) {
                     let app = applist[i];
-                    //global.log(typeof app);
-                    let info = Gio.DesktopAppInfo.new(app.get_id());
-                    let match = app.get_name().toLowerCase() + " ";
-                    if (info.get_display_name()) match += info.get_display_name().toLowerCase() + " ";
-                    if (info.get_executable()) match += info.get_executable().toLowerCase() + " ";
-                    if (info.get_keywords()) match += info.get_keywords().toString().toLowerCase() + " ";
+              	    let match = app.get_name().toLowerCase() + " ";
+              	    //I believe certain Wine programs might cause search to break...added a check to see if app is a GDesktopApp
+                    if(app.get_id!=undefined){
+                    	let info = Gio.DesktopAppInfo.new(app.get_id());
+                    	if (info.get_executable()) match += info.get_executable().toLowerCase() + " ";
+                    	if (info.get_keywords()) match += info.get_keywords().toString().toLowerCase() + " ";
+                    	if (info.get_display_name()) match += info.get_display_name().toLowerCase() + " ";
+                    }
                     if (app.get_description()) match += app.get_description().toLowerCase();
                     let index = match.indexOf(pattern);
                     if (index != -1) {
