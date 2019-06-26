@@ -56,6 +56,11 @@
       <summary>Menu Color</summary>
       <description>Menu Color.</description>
     </key>
+    <key type="s" name="menu-foreground-color">
+     <default>"rgba(211, 218, 227, 1)"</default>
+      <summary>Menu Foreground Color</summary>
+      <description>Menu Foreground Color.</description>
+    </key>  
     <key type="s" name="border-color">
      <default>"rgba(28, 28, 28, 0.98)"</default>
       <summary>Border Color</summary>

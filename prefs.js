@@ -907,6 +907,7 @@ const AppearanceSettingsPage = GObject.registerClass(
                       this.settings.set_boolean('vert-separator',dialog.verticalSeparator);
                       this.settings.set_boolean('enable-custom-arc-menu', dialog.customArcMenu); 
                       this.settings.set_string('menu-color',dialog.menuColor);
+                      this.settings.set_string('menu-foreground-color',dialog.menuForegroundColor);
                       this.settings.set_string('border-color',dialog.borderColor);
                       this.settings.set_string('highlight-color',dialog.highlightColor );
                       this.settings.set_int('menu-font-size',dialog.fontSize);
@@ -1072,6 +1073,7 @@ const ArcMenuCustomizationWindow = GObject.registerClass(
             this.customArcMenu = this._settings.get_boolean('enable-custom-arc-menu');
             
             this.menuColor = this._settings.get_string('menu-color');
+            this.menuForegroundColor = this._settings.get_string('menu-foreground-color');
             this.borderColor = this._settings.get_string('border-color');
             this.highlightColor = this._settings.get_string('highlight-color');
             this.fontSize = this._settings.get_int('menu-font-size');
@@ -1169,7 +1171,7 @@ const ArcMenuCustomizationWindow = GObject.registerClass(
             let colorChooser = new Gtk.ColorButton({use_alpha:true});     
             let color = new Gdk.RGBA();
             color.parse(this.separatorColor);
-            colorChooser.set_rgba(color);            
+            colorChooser.set_rgba(color);    
             colorChooser.connect('color-set', ()=>{
                 this.separatorColor = colorChooser.get_rgba().to_string();
                 applyButton.set_sensitive(true);
@@ -1233,6 +1235,23 @@ const ArcMenuCustomizationWindow = GObject.registerClass(
             menuBackgroudColorRow.add(menuBackgroudColorLabel);
             menuBackgroudColorRow.add(menuBackgroudColorChooser);
             customArcMenuOptionsFrame.add(menuBackgroudColorRow);
+            //ROW 2 - MENU FOREGROUND COLOR--------------------------------------   
+            let menuForegroundColorRow = new PW.FrameBoxRow();
+            let menuForegroundColorLabel = new Gtk.Label({
+                label: _('Menu Foreground Color'),
+                xalign:0,
+                hexpand: true,
+             });   
+            let menuForegroundColorChooser = new Gtk.ColorButton({use_alpha:false});     
+            color.parse(this.menuForegroundColor);
+            menuForegroundColorChooser.set_rgba(color);            
+            menuForegroundColorChooser.connect('color-set', ()=>{
+                this.menuForegroundColor = menuForegroundColorChooser.get_rgba().to_string();
+                applyButton.set_sensitive(true);
+            });
+            menuForegroundColorRow.add(menuForegroundColorLabel);
+            menuForegroundColorRow.add(menuForegroundColorChooser);
+            customArcMenuOptionsFrame.add(menuForegroundColorRow);
             //ROW 2 - FONT SIZE--------------------------------------------------   
             let fontSizeRow = new PW.FrameBoxRow();
             let fontSizeLabel = new Gtk.Label({
@@ -1415,33 +1434,76 @@ const ArcMenuCustomizationWindow = GObject.registerClass(
         get_heightValue(){
             return this.heightValue;
         }
+        lighten_rgb(colorString, percent) // implemented from https://stackoverflow.com/a/141943
+	{
+		//creates a nice effect when items are selected
+		if(colorString.includes('rgba'))
+			colorString = colorString.replace('rgba(','');
+		if(colorString.includes('rgb'))
+			colorString = colorString.replace('rgb(','');
+		colorString = colorString.replace(')','');
+		//global.log(colorString);
+		let rgbaColor = colorString.split(",");
+		let r = parseFloat(rgbaColor[0]) + 255 * percent;
+		let g = parseFloat(rgbaColor[1]) + 255 * percent;
+		let b = parseFloat(rgbaColor[2]) + 255 * percent;
+		let a;
+		if(rgbaColor[3] != undefined)
+			a = parseFloat(rgbaColor[3]); 
+		else
+			a =1;
+		let m = Math.max(r,g,b);
+		let threshold = 255.9999;
+		r = Math.round(r);
+		g = Math.round(g);
+		b = Math.round(b);
+		if(m<=threshold){
+			return "rgba("+r+","+g+","+b+","+a+")";
+		}
+		let total = r + g + b;
+		if(total >= 3 * threshold){
+			return "rgba(255,255,255,"+a+")";
+		}
+		let x = (3 * threshold - total) / (3 * m - total);
+		let gray = threshold - x * m;
+		r = gray + x * r;
+		g = gray + x * g;
+		b = gray + x * b;
+		r = Math.round(r);
+		g = Math.round(g);
+		b = Math.round(b);
+		return "rgba("+r+","+g+","+b+","+a+")";
+
+	}
         saveCSS(){
             //there has to be a better way to do this
             let file = Gio.File.new_for_path(Me.path+"/stylesheet.css");
-            let css =".left-scroll-area { width:"+ this.menuWidth+"px;}"   
-            +".arc-empty-dash-drop-target { width: "+ this.menuWidth+"px; height: 2px; background-color:"+ this.separatorColor+"; padding: 0 0; margin:0;} "     
-            	  +".left-box{width:"+ this.menuWidth+"px;}" + ".vert-sep{width:11px;}"
-                  +"#search-entry {max-width: 17.667em;}#search-entry:focus { border-color:"+ this.separatorColor+";}"
-                  +"#arc-search-entry {max-width: 17.667em;font-size:" +this.fontSize+"pt;}#arc-search-entry:focus { border-color:"+ this.separatorColor+";}"
-                  +" .arc-menu-action:hover, .arc-menu-action:focus { background-color:"+ this.highlightColor+";}"
-                  +".tooltip-label { border-radius: 7px; padding: 5px 8px; color: #eeeeec;"
-                  +"background-color: rgba(46, 52, 54, 0.7); text-align: center;}.search-box-padding { padding-top: 0.75em;"
-                  +"padding-bottom: 0.25em;padding-left: 1em; padding-right: 0.25em; margin-right: .5em;}"
-                  +".arc-menu{min-width: 15em;color: #D3DAE3;border-image: none;box-shadow: none;font-size:" +this.fontSize+"pt;}"
-                  +".arc-menu.popup-sub-menu {padding-bottom: 1px;background-color: #3a393b;box-shadow: inset 0 -1px 0px #323233; }"
-                  +".arc-menu.popup-menu-content {padding: 1em 0em; } .arc-menu.popup-menu-item {spacing: 12px; }"
-                  +".arc-menu.popup-menu-item:ltr { padding: .4em 1.75em .4em 0em; }.arc-menu.popup-menu-item:rtl {padding: .4em 0em .4em 1.75em;}"
-                  +".arc-menu.popup-menu-item:checked {background-color: #3a393b; box-shadow: inset 0 1px 0px #323233;font-weight: bold; }"
-                  +".arc-menu.popup-menu-item.selected {background-color:"+ this.highlightColor+"; color: #eeeeec; }"
-                  +".arc-menu.popup-menu-item:active {background-color: #15539e;color: #ffffff; }"
-                  +".arc-menu.popup-menu-item:disabled {color: rgba(238, 238, 236, 0.5); }"
-                  +".arc-menu-boxpointer{ -arrow-border-radius:"+ this.cornerRadius+"px;"
-                  +"-arrow-background-color:" + this.menuColor + ";"
-                  +"-arrow-border-color:"+ this.borderColor+ ";"
-                  +"-arrow-border-width:"+ this.borderSize+"px;"
-                  +"-arrow-base:"+ this.menuMargin+"px;"
-                  +"-arrow-rise:"+ this.menuArrowSize+"px;"
-                  +"-arrow-box-shadow: 0 1px 3px black; }";
+            let css =".left-scroll-area{ \nwidth:"+ this.menuWidth+"px;\n}\n"   
+            +".arc-empty-dash-drop-target{\nwidth: "+ this.menuWidth+"px; \nheight: 2px; \nbackground-color:"+ this.separatorColor+"; \npadding: 0 0; \nmargin:0;\n}\n"     
+            	  +".left-box{\nwidth:"+ this.menuWidth+"px;\n}" + "\n.vert-sep{\nwidth:11px;\n}\n"
+                  +"#search-entry{\nmax-width: 17.667em;\n}\n#search-entry:focus { \nborder-color:"+ this.separatorColor+";\n}\n"
+                  +"#arc-search-entry{\nmax-width: 17.667em;\nfont-size:" +this.fontSize+"pt;\n border-color:"+ this.separatorColor+";\n"
+                  	+" color:"+ this.menuForegroundColor+";\n background-color:" + this.menuColor + ";\n}\n"
+                  +"#arc-search-entry:focus { \nborder-color:"+ this.lighten_rgb(this.separatorColor,0.25)+";\n}\n"
+                  +".arc-menu-action{\ncolor:"+ this.menuForegroundColor+";\n}\n"
+                  +".arc-menu-action:hover, .arc-menu-action:focus {\ncolor:"+ this.lighten_rgb(this.menuForegroundColor,0.15)+";\n background-color:"+ this.highlightColor+";\n}\n"
+                  +".tooltip-label{ \nborder-radius: 7px;\n padding: 5px 8px;\n color: #eeeeec;\n"
+                  +"background-color: rgba(46, 52, 54, 0.7);\n text-align: center;\n}\n.search-box-padding { \npadding-top: 0.75em;\n"
+                  +"padding-bottom: 0.25em;\npadding-left: 1em;\n padding-right: 0.25em;\n margin-right: .5em;\n}\n"
+                  +".arc-menu{\nmin-width: 15em;\ncolor: #D3DAE3;\nborder-image: none;\nbox-shadow: none;\nfont-size:" +this.fontSize+"pt;\n}\n"
+                  +".arc-menu.popup-sub-menu {\npadding-bottom: 1px;\nbackground-color: #3a393b;\nbox-shadow: inset 0 -1px 0px #323233;\n }\n"
+                  +".arc-menu.popup-menu-content {padding: 1em 0em;}\n .arc-menu.popup-menu-item {\nspacing: 12px; \nborder: 0;\ncolor:"+ this.menuForegroundColor+";\n }\n" 
+                  +".arc-menu.popup-menu-item:ltr {padding: .4em 1.75em .4em 0em; }\n.arc-menu.popup-menu-item:rtl {padding: .4em 0em .4em 1.75em;}\n"
+                  +".arc-menu.popup-menu-item:checked {\nbackground-color: #3a393b;\n box-shadow: inset 0 1px 0px #323233;\nfont-weight: bold;\n }\n"
+                  +".arc-menu.popup-menu-item.selected, .arc-menu.popup-menu-item:active{\nbackground-color:"+ this.highlightColor+"; \ncolor: "+ this.lighten_rgb(this.menuForegroundColor,0.15)+";\n }\n" 
+                  +".arc-menu.popup-menu-item:disabled {color: rgba(238, 238, 236, 0.5); }\n"
+                  +".arc-menu-boxpointer{ \n-arrow-border-radius:"+ this.cornerRadius+"px;\n"
+                  +"-arrow-background-color:" + this.menuColor + ";\n"
+                  +"-arrow-border-color:"+ this.borderColor+ ";\n"
+                  +"-arrow-border-width:"+ this.borderSize+"px;\n"
+                  +"-arrow-base:"+ this.menuMargin+"px;\n"
+                  +"-arrow-rise:"+ this.menuArrowSize+"px;\n"
+                  +"-arrow-box-shadow: 0 1px 3px black;\n }";
             file.replace_contents(css,null,false,Gio.FileCreateFlags.REPLACE_DESTINATION,null);
         }       
 });
@@ -1602,3 +1664,4 @@ function buildPrefsWidget() {
     widget.show_all();
     return widget;
 }
+
