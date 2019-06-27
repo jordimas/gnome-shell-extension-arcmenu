@@ -97,7 +97,7 @@ var ICON_SIZES = [ 16, 24, 32, 40, 48 ];
 var DEFAULT_ICON_SIZE = 22;
 var ARC_MENU_LOGO = {
     Path: '/media/logo.png',
-    Size: [216, 229] // width, height
+    Size: [150, 150] // width, height
 };
 var GNU_SOFTWARE = '<span size="small">' +
     'This program comes with absolutely no warranty.\n' +
