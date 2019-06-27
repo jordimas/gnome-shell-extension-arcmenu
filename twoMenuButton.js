@@ -100,6 +100,8 @@ var TwoMenuButton = GObject.registerClass( class TwoMenuButton extends PanelMenu
         	Main.panel.menuManager.removeMenu(this.rightClickMenu);              
 	    	Main.panel.menuManager.addMenu(this.leftClickMenu); 
 	     	this.leftClickMenu.toggle();
+                if(this.leftClickMenu.isOpen)
+                   this.mainBox.grab_key_focus();
             }
                 
         return Clutter.EVENT_PROPAGATE;
