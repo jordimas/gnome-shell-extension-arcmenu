@@ -1636,14 +1636,14 @@ const AboutPage = GObject.registerClass(
             let arcMenuImage = new Gtk.Image({ pixbuf: pixbuf });
             let arcMenuImageBox = new Gtk.VBox({
                 margin_top: 5,
-                margin_bottom: 5,
+                margin_bottom: 0,
                 expand: false
             });
             arcMenuImageBox.add(arcMenuImage);
 
             // Create the info box
             let arcMenuInfoBox = new Gtk.VBox({
-                margin_top: 5,
+                margin_top: 0,
                 margin_bottom: 5,
                 expand: false
             });
@@ -1665,10 +1665,26 @@ const AboutPage = GObject.registerClass(
                 uri: projectUrl,
                 expand: false
             });
+            this.creditsScrollWindow = new Gtk.ScrolledWindow();
+            this.creditsScrollWindow.set_policy(Gtk.PolicyType.AUTOMATIC, Gtk.PolicyType.AUTOMATIC);
+            this.creditsScrollWindow.set_max_content_height(150);
+            this.creditsScrollWindow.set_min_content_height(150);
+            this.creditsFrame = new Gtk.Frame();
+            this.creditsFrame.set_shadow_type(Gtk.ShadowType.NONE);
+            this.creditsScrollWindow.add_with_viewport(this.creditsFrame);
+  	        let creditsLabel = new Gtk.Label({
+		        label: Constants.CREDITS,
+		        use_markup: true,
+		        justify: Gtk.Justification.CENTER,
+		        expand: false
+            });
+            this.creditsFrame.add(creditsLabel);
+            
             arcMenuInfoBox.add(arcMenuLabel);
             arcMenuInfoBox.add(versionLabel);
             arcMenuInfoBox.add(projectDescriptionLabel);
             arcMenuInfoBox.add(projectLinkButton);
+            arcMenuInfoBox.add(this.creditsScrollWindow);
 
             // Create the GNU software box
             let gnuSofwareLabel = new Gtk.Label({

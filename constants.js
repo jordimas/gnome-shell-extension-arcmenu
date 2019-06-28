@@ -99,6 +99,21 @@ var ARC_MENU_LOGO = {
     Path: '/media/logo.png',
     Size: [216, 229] // width, height
 };
+var CREDITS = '\n<b>Credits:</b>'+
+		'\n\nCurrent Developers'+
+		'\n <a href="https://gitlab.com/LinxGem33">@LinxGem33</a>  (Founder/Manager)'+
+		'\n<a href="https://gitlab.com/AndrewZaech">@AndrewZaech</a>  (Developer)'+
+		'\n\nPast Developers'+
+		'\n <a href="https://gitlab.com/LinxGem33">@PLACEHOLDER</a>  (Developer)'+
+		'\n<a href="https://gitlab.com/LinxGem33">@PLACEHOLDER</a>  (Developer)'+
+		'\n\n\n<b>A Special Thanks To:</b>'+
+		'\n\nTranslators'+
+		'\nPLACEHOLDER'+
+		'\nPLACEHOLDER'+
+		'\n\nOther'+
+		'\nPLACEHOLDER'+
+		'\nPLACEHOLDER'+
+		'\n';
 var GNU_SOFTWARE = '<span size="small">' +
     'This program comes with absolutely no warranty.\n' +
     'See the <a href="https://gnu.org/licenses/old-licenses/gpl-2.0.html">' +
