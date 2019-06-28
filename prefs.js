@@ -430,7 +430,7 @@ const AddCustomLinkDialogWindow = GObject.registerClass(
 
         _init(settings, parent) {
             this._settings = settings;
-            super._init(_('Add a Custom Shortcut to Pinned Apps List'), parent);
+            super._init(_('Add a Custom Shortcut'), parent);
             this.newPinnedAppsArray=[];
             this.addResponse = false;
         }
