@@ -1,7 +1,11 @@
 /*
  * Arc Menu: The new applications menu for Gnome 3.
  *
- * Copyright (C) 2017 LinxGem33, Alexander Rüedlinger. Andrew Zaech
+ * Copyright (C) 2017 Alexander Rüedlinger
+ *
+ * Copyright (C) 2017-2019 LinxGem33 
+ *
+ * Copyright (C) 2019 Andrew Zaech
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -298,7 +302,7 @@ const AddAppsToPinnedListWindow = GObject.registerClass(
             //first row
             let appsFrameRow = new PW.FrameBoxRow();
             let appsFrameLabel = new Gtk.Label({
-                label: 'List of Apps:',
+                label: '',
                 use_markup: true,
                 xalign: 0,
                 hexpand: true
@@ -317,7 +321,7 @@ const AddAppsToPinnedListWindow = GObject.registerClass(
 
             let addAppsFrameRow = new PW.FrameBoxRow();
             let addAppsFrameLabel = new Gtk.Label({
-                label: 'Add Selected Apps',
+                label: '',
                 use_markup: true,
                 xalign: 0,
                 hexpand: true
@@ -490,7 +494,7 @@ const AddCustomLinkDialogWindow = GObject.registerClass(
 
             let addFrameRow = new PW.FrameBoxRow();
             let addFrameLabel = new Gtk.Label({
-                label: _('Add Cutsom Link'),
+                label: _(''),
                 use_markup: true,
                 xalign: 0,
                 hexpand: true,
@@ -1418,7 +1422,7 @@ const ConfigureSettingsPage = GObject.registerClass(
           let shortcutsFrame = new PW.FrameBox();
           let shortcutsRow = new PW.FrameBoxRow();
           let shortcutsLabel = new Gtk.Label({
-              label: _("Which shortcuts do you want on the right hand side?"),
+              label: _("Enable/Disable shortcuts"),
               use_markup: true,
               xalign: 0,
               hexpand: true
@@ -1440,7 +1444,7 @@ const ConfigureSettingsPage = GObject.registerClass(
               let checkButton = new Gtk.CheckButton(
               {
                   margin_right: 20,
-                   label: "Display as Shortcut",
+                   label: "",
               });
               let setting = 'show-'+shortcut+'-shortcut';
               let settingName = GLib.utf8_strdown(setting,setting.length);
@@ -1463,7 +1467,7 @@ const ConfigureSettingsPage = GObject.registerClass(
           //Session Buttons Enable/Disable
           let sessionButtonsFrame = new PW.FrameBox();
           let sessionButtonsLabel = new Gtk.Label({
-              label: _("Which buttons do you want on the lower right hand side?"),
+              label: _("Enable/Disable session buttons"),
               use_markup: true,
               xalign: 0,
               hexpand: true
@@ -1480,7 +1484,7 @@ const ConfigureSettingsPage = GObject.registerClass(
           let suspendButton = new Gtk.CheckButton(
           {
               margin_right: 30,
-              label: "Display as Button",
+              label: "",
           });
           if(this.settings.get_boolean('show-suspend-button'))
               suspendButton.set_active(true);
@@ -1502,7 +1506,7 @@ const ConfigureSettingsPage = GObject.registerClass(
           let lockButton = new Gtk.CheckButton(
           {
               margin_right: 30,
-              label: "Display as Button",
+              label: "",
           });
           if(this.settings.get_boolean('show-lock-button'))
               lockButton.set_active(true);
@@ -1524,7 +1528,7 @@ const ConfigureSettingsPage = GObject.registerClass(
           let logOffButton = new Gtk.CheckButton(
           {
               margin_right: 30,
-              label: "Display as Button",
+              label: "",
           });
           if(this.settings.get_boolean('show-logout-button'))
               logOffButton.set_active(true);
@@ -1544,7 +1548,7 @@ const ConfigureSettingsPage = GObject.registerClass(
           //EXTERNAL DEVICES LIST
           //Session Buttons Enable/Disable
           let externalDevicesLabel = new Gtk.Label({
-              label: _("Which external device shortcuts do you want on the right hand side?"),
+              label: _("Enable/Disable external device shortcuts"),
               use_markup: true,
               xalign: 0,
               hexpand: true
@@ -1562,7 +1566,7 @@ const ConfigureSettingsPage = GObject.registerClass(
           let externalDeviceButton = new Gtk.CheckButton(
           {
               margin_right: 30,
-              label: "Display as Shortcut",
+              label: "",
           });
           //if(this.settings.get_boolean('show-suspend-button'))
           externalDeviceButton.set_active(true);
