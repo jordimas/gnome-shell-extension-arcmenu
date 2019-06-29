@@ -1,7 +1,9 @@
 /*
  * Arc Menu: The new applications menu for Gnome 3.
  *
- * Copyright (C) 2017 LinxGem33, 
+ * Copyright (C) 2017-2019 LinxGem33 
+ *
+ * Copyright (C) 2019 Andrew Zaech 
  * 
  * Copyright (C) 2017 Alexander Rüedlinger
  *
@@ -97,12 +99,27 @@ var ICON_SIZES = [ 16, 24, 32, 40, 48 ];
 var DEFAULT_ICON_SIZE = 22;
 var ARC_MENU_LOGO = {
     Path: '/media/logo.png',
-    Size: [150, 150] // width, height
+    Size: [175, 175] // width, height
 };
+var CREDITS = '\n<b>Credits:</b>'+
+		'\n\nCurrent Developers'+
+		'\n <a href="https://gitlab.com/LinxGem33">@LinxGem33</a>  (Founder/Maintainer)'+
+		'\n<a href="https://gitlab.com/AndrewZaech">@AndrewZaech</a>  (Developer)'+
+		'\n\nPast Developers'+
+		'\n <a href="https://github.com/lexruee">@lexruee</a>  (Developer)'+
+		'\n\n\n<b>A Special Thanks To:</b>'+
+		'\n\nTranslators'+
+		'\n<a href="https://gitlab.com/LinxGem33/Arc-Menu#please-refer-to-the-wiki-section-for-a-translation-guide">Full List</a>'+
+		'\nPlease See Details'+
+		'\n\nOther'+
+		'\n<a href="https://gitlab.com/tingvarsson">@Thomas Ingvarsson</a>  (Contributor)'+
+		'\n<a href="https://github.com/charlesg99">@charlesg99</a>  (Contributor)'+
+		'\n<a href="https://github.com/JasonLG1979">@JasonLG1979</a>  (Contributor)'+
+		'\n<a href="https://github.com/fishears/Arc-Menu">@fishears</a>  (Contributor)'+
+		'\n';
 var GNU_SOFTWARE = '<span size="small">' +
     'This program comes with absolutely no warranty.\n' +
     'See the <a href="https://gnu.org/licenses/old-licenses/gpl-2.0.html">' +
 	'GNU General Public License, version 2 or later</a> for details.' +
 	'</span>';
-
 

@@ -130,12 +130,12 @@ var ApplicationsButton = GObject.registerClass(
         }
         toggleMenu() {
            if(this.rightClickMenu.isOpen)
-    		this.rightClickMenu.toggle();	            
-            Main.panel.menuManager.removeMenu(this.rightClickMenu);              
+    	        this.rightClickMenu.toggle();	            
+	       Main.panel.menuManager.removeMenu(this.rightClickMenu);              
     	   Main.panel.menuManager.addMenu(this.leftClickMenu); 
      	   this.leftClickMenu.toggle();
            if(this.leftClickMenu.isOpen)
-                this.mainBox.grab_key_focus();
+     	    	this.mainBox.grab_key_focus();
         }
         getWidget() {
             return this._menuButtonWidget;
