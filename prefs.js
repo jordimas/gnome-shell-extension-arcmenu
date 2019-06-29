@@ -1418,7 +1418,7 @@ const ConfigureSettingsPage = GObject.registerClass(
         super._init(_('Configure'));
         this.settings = settings;
            
-          //WHICH SHORTCUTS ON RIGHT SIDE
+               //WHICH SHORTCUTS ON RIGHT SIDE
           let shortcutsFrame = new PW.FrameBox();
           let shortcutsRow = new PW.FrameBoxRow();
           let shortcutsLabel = new Gtk.Label({
@@ -1427,11 +1427,11 @@ const ConfigureSettingsPage = GObject.registerClass(
               xalign: 0,
               hexpand: true
           });
-          let pinnedAppsScrollWindow = new Gtk.ScrolledWindow();
-          pinnedAppsScrollWindow.set_policy(Gtk.PolicyType.AUTOMATIC, Gtk.PolicyType.AUTOMATIC);
-          pinnedAppsScrollWindow.set_max_content_height(150);
-          pinnedAppsScrollWindow.set_min_content_height(150);
-          pinnedAppsScrollWindow.add(shortcutsFrame);
+          let shortcutsScrollWindow = new Gtk.ScrolledWindow();
+          shortcutsScrollWindow.set_policy(Gtk.PolicyType.AUTOMATIC, Gtk.PolicyType.AUTOMATIC);
+          shortcutsScrollWindow.set_max_content_height(150);
+          shortcutsScrollWindow.set_min_content_height(150);
+          shortcutsScrollWindow.add(shortcutsFrame);
           Constants.RIGHT_SIDE_SHORTCUTS.forEach(function (shortcut){            
               let shortcutsRow = new PW.FrameBoxRow();
               let shortcutsLabel = new Gtk.Label({
@@ -1441,10 +1441,9 @@ const ConfigureSettingsPage = GObject.registerClass(
                   hexpand: true
               });
               
-              let checkButton = new Gtk.CheckButton(
+              let checkButton = new Gtk.Switch(
               {
                   margin_right: 20,
-                   label: "",
               });
               let setting = 'show-'+shortcut+'-shortcut';
               let settingName = GLib.utf8_strdown(setting,setting.length);
@@ -1452,7 +1451,7 @@ const ConfigureSettingsPage = GObject.registerClass(
                   checkButton.set_active(true);
               else
                   checkButton.set_active(false);
-              checkButton.connect('toggled', function (check)
+              checkButton.connect('notify::active', function (check)
               {
                   this.settings.set_boolean(settingName, check.get_active());
               }.bind(this));
@@ -1462,7 +1461,7 @@ const ConfigureSettingsPage = GObject.registerClass(
 
           }.bind(this));
           this.add(shortcutsLabel);
-          this.add(pinnedAppsScrollWindow);
+          this.add(shortcutsScrollWindow);
           
           //Session Buttons Enable/Disable
           let sessionButtonsFrame = new PW.FrameBox();
@@ -1481,14 +1480,10 @@ const ConfigureSettingsPage = GObject.registerClass(
               xalign: 0,
               hexpand: true
           });
-          let suspendButton = new Gtk.CheckButton(
-          {
-              margin_right: 30,
-              label: "",
-          });
+          let suspendButton = new Gtk.Switch({margin_right: 20});
           if(this.settings.get_boolean('show-suspend-button'))
               suspendButton.set_active(true);
-          suspendButton.connect('toggled', function (check)
+          suspendButton.connect('notify::active', function (check)
           {
               this.settings.set_boolean('show-suspend-button', check.get_active());
           }.bind(this));
@@ -1503,14 +1498,10 @@ const ConfigureSettingsPage = GObject.registerClass(
               xalign: 0,
               hexpand: true
           });
-          let lockButton = new Gtk.CheckButton(
-          {
-              margin_right: 30,
-              label: "",
-          });
+          let lockButton = new Gtk.Switch({margin_right: 20});
           if(this.settings.get_boolean('show-lock-button'))
               lockButton.set_active(true);
-          lockButton.connect('toggled', function (check)
+          lockButton.connect('notify::active', function (check)
           {
               this.settings.set_boolean('show-lock-button', check.get_active());
           }.bind(this));
@@ -1525,14 +1516,10 @@ const ConfigureSettingsPage = GObject.registerClass(
               xalign: 0,
               hexpand: true
           });
-          let logOffButton = new Gtk.CheckButton(
-          {
-              margin_right: 30,
-              label: "",
-          });
+          let logOffButton = new Gtk.Switch({margin_right: 20});
           if(this.settings.get_boolean('show-logout-button'))
               logOffButton.set_active(true);
-          logOffButton.connect('toggled', function (check)
+          logOffButton.connect('notify::active', function (check)
           {
               this.settings.set_boolean('show-logout-button', check.get_active());
           }.bind(this));   
@@ -1544,17 +1531,18 @@ const ConfigureSettingsPage = GObject.registerClass(
           sessionButtonsFrame.add(lockRow);
           this.add(sessionButtonsLabel);
           this.add(sessionButtonsFrame);
+
           
           //EXTERNAL DEVICES LIST
-          //Session Buttons Enable/Disable
+		/*
           let externalDevicesLabel = new Gtk.Label({
-              label: _("Enable/Disable external device shortcuts"),
+              label: _("Which external device shortcuts do you want on the right hand side?"),
               use_markup: true,
               xalign: 0,
               hexpand: true
           });
           
-          //SUSPEND BUTTON
+          
           let externalDeviceFrame = new PW.FrameBox();
           let externalDeviceRow = new PW.FrameBoxRow();
           let externalDeviceLabel = new Gtk.Label({
@@ -1566,21 +1554,21 @@ const ConfigureSettingsPage = GObject.registerClass(
           let externalDeviceButton = new Gtk.CheckButton(
           {
               margin_right: 30,
-              label: "",
+              label: "Display as Shortcut",
           });
-          //if(this.settings.get_boolean('show-suspend-button'))
+          
           externalDeviceButton.set_active(true);
           externalDeviceButton.connect('toggled', function (check)
           {
-              //this.settings.set_boolean('show-suspend-button', check.get_active());
+             
           }.bind(this));
           externalDeviceRow.add(externalDeviceLabel);
           externalDeviceRow.add(externalDeviceButton);
 
           //ADD TO FRAME
-          //externalDeviceFrame.add(externalDeviceRow);
-          //this.add(externalDevicesLabel);
-          //this.add(externalDeviceFrame);
+          externalDeviceFrame.add(externalDeviceRow);
+          this.add(externalDevicesLabel);
+          this.add(externalDeviceFrame);*/
     }
 });
 /*
