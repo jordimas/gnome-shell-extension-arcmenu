@@ -40,7 +40,7 @@ const _ = Gettext.gettext;
 /*
  * Pinned Apps Page
  */
-const PinnedAppsPage = GObject.registerClass(
+var PinnedAppsPage = GObject.registerClass(
     class PinnedAppsPage extends PW.NotebookPage {
         _init(settings) {
             super._init(_('Pinned Apps'));
@@ -149,14 +149,6 @@ const PinnedAppsPage = GObject.registerClass(
             this.add(addCustomAppFrame);
             
             //last row - save settings
-            let savePinnedAppsFrame = new PW.FrameBox();
-            let savePinnedAppsFrameRow = new PW.FrameBoxRow();
-            let savePinnedAppsFrameLabel = new Gtk.Label({
-                label: _("Save Changes"),
-                use_markup: true,
-                xalign: 0,
-                hexpand: true
-            });
             this.savePinnedAppsButton = new Gtk.Button({
                 label: "Save",
             });
@@ -272,14 +264,13 @@ const PinnedAppsPage = GObject.registerClass(
                 buttonBox.add(upButton);
                 buttonBox.add(downButton);
                 buttonBox.add(deleteButton);
-                frameRow.add(deleteButton);
                 frameRow.add(buttonBox);
                 this.frame.add(frameRow);
             }
         }
 });
 //Dialog Window for Adding Apps to Pinned Apps List   
-const AddAppsToPinnedListWindow = GObject.registerClass(
+var AddAppsToPinnedListWindow = GObject.registerClass(
     class AddAppsToPinnedListWindow extends PW.DialogWindow {
 
         _init(settings, parent) {
@@ -300,17 +291,12 @@ const AddAppsToPinnedListWindow = GObject.registerClass(
             this.appsFrame = new PW.FrameBox();
 
             //first row
-            let appsFrameRow = new PW.FrameBoxRow();
-            let appsFrameLabel = new Gtk.Label({
-                label: '',
-                use_markup: true,
-                xalign: 0,
-                hexpand: true
-            });
+
 
             //last row - Label and button to add apps to list
             let addAppsButton = new Gtk.Button({
                 label: "Add",
+                xalign:1
             });
 
             addAppsButton.connect('clicked', ()=>
@@ -318,25 +304,13 @@ const AddAppsToPinnedListWindow = GObject.registerClass(
                 this.addResponse = true;
                 this.response(-10);
             });
-
-            let addAppsFrameRow = new PW.FrameBoxRow();
-            let addAppsFrameLabel = new Gtk.Label({
-                label: '',
-                use_markup: true,
-                xalign: 0,
-                hexpand: true
-            });
-            addAppsFrameRow.add(addAppsFrameLabel);
-            addAppsFrameRow.add(addAppsButton);
+	    addAppsButton.set_halign(Gtk.Align.END);
 
             // add the frames to the vbox
-
-            vbox.add(appsFrameLabel);
-
             this._loadCategories();
             pinnedAppsScrollWindow.add_with_viewport(this.appsFrame);
             vbox.add(pinnedAppsScrollWindow);
-            vbox.add(addAppsFrameRow);
+            vbox.add(addAppsButton);
         }
         //function to get the array of apps to add to list
         get_newPinnedAppsArray(){
@@ -425,7 +399,7 @@ const AddAppsToPinnedListWindow = GObject.registerClass(
 });
     
 //Dialog Window for Adding Custom Links to Pinned Apps List    
-const AddCustomLinkDialogWindow = GObject.registerClass(
+var AddCustomLinkDialogWindow = GObject.registerClass(
     class AddCustomLinkDialogWindow extends PW.DialogWindow {
 
         _init(settings, parent) {
@@ -479,8 +453,9 @@ const AddCustomLinkDialogWindow = GObject.registerClass(
             cmdFrameRow.add(cmdEntry);
              mainFrame.add(cmdFrameRow);
             //last row - Label and button to add custom link to list
+
             let addButton = new Gtk.Button({
-                label: "Add",
+                label: "Add"
             });
 
             addButton.connect('clicked', ()=>
@@ -491,21 +466,12 @@ const AddCustomLinkDialogWindow = GObject.registerClass(
                this.addResponse = true;
                this.response(-10);
             });
-
-            let addFrameRow = new PW.FrameBoxRow();
-            let addFrameLabel = new Gtk.Label({
-                label: _(''),
-                use_markup: true,
-                xalign: 0,
-                hexpand: true,
-                selectable: false
-            });
-            addFrameRow.add(addFrameLabel);
-            addFrameRow.add(addButton);
+            addButton.set_halign(Gtk.Align.END);
 
             // add the frames to the vbox
             vbox.add(mainFrame);
-            vbox.add(addFrameRow);
+            vbox.add(addButton);
+           
         }
         //function to get the array of apps to add to list
         get_newPinnedAppsArray()
@@ -520,7 +486,7 @@ const AddCustomLinkDialogWindow = GObject.registerClass(
 /*
  * General Settings Page
  */
-const GeneralSettingsPage = GObject.registerClass(
+var GeneralSettingsPage = GObject.registerClass(
     class GeneralSettingsPage extends PW.NotebookPage {
         _init(settings) {
             super._init(_('General'));
@@ -697,7 +663,7 @@ const GeneralSettingsPage = GObject.registerClass(
 });
     
 //DialogWindow for Menu Button Customization
-const MenuButtonCustomizationWindow = GObject.registerClass(
+var MenuButtonCustomizationWindow = GObject.registerClass(
     class MenuButtonCustomizationWindow extends PW.DialogWindow {
 
         _init(settings, parent) {
@@ -868,7 +834,7 @@ const MenuButtonCustomizationWindow = GObject.registerClass(
         }
 });
 //Appearance Page
-const AppearanceSettingsPage = GObject.registerClass(
+var  AppearanceSettingsPage = GObject.registerClass(
     class AppearanceSettingsPage extends PW.NotebookPage {
 
       _init(settings) {
@@ -1018,7 +984,7 @@ const AppearanceSettingsPage = GObject.registerClass(
     }
 });
 //Dialog Window for Arc Menu Customization    
-const ArcMenuCustomizationWindow = GObject.registerClass(
+var ArcMenuCustomizationWindow = GObject.registerClass(
     class ArcMenuCustomizationWindow extends PW.DialogWindow {
 
         _init(settings, parent) {
@@ -1161,7 +1127,7 @@ const ArcMenuCustomizationWindow = GObject.registerClass(
 });
 
 //Dialog Window for Arc Menu Customization    
-const OverrideArcMenuThemeWindow = GObject.registerClass(
+var OverrideArcMenuThemeWindow = GObject.registerClass(
     class OverrideArcMenuThemeWindow extends PW.DialogWindow {
 
         _init(settings, parent) {
@@ -1412,7 +1378,7 @@ const OverrideArcMenuThemeWindow = GObject.registerClass(
         }
 });
 
-const ConfigureSettingsPage = GObject.registerClass(
+var ConfigureSettingsPage = GObject.registerClass(
     class ConfigureSettingsPage extends PW.NotebookPage {
     _init(settings) {
         super._init(_('Configure'));
@@ -1574,7 +1540,7 @@ const ConfigureSettingsPage = GObject.registerClass(
 /*
  * Fine Tune Settings Page
  *
-const FineTuneSettingsPage = GObject.registerClass(
+var  FineTuneSettingsPage = GObject.registerClass(
     class FineTuneSettingsPage extends PW.NotebookPage {
     _init(settings) {
         super._init(_('Fine Tune'));
@@ -1608,7 +1574,7 @@ const FineTuneSettingsPage = GObject.registerClass(
 /*
  * About Page
  */
-const AboutPage = GObject.registerClass(
+var AboutPage = GObject.registerClass(
     class AboutPage extends PW.NotebookPage {
         _init(settings) {
             super._init(_('About'));
@@ -1696,16 +1662,16 @@ const AboutPage = GObject.registerClass(
         }
     });
 
+
 /*
  * Arc Menu Preferences Widget
  */
-const ArcMenuPreferencesWidget = new GObject.Class({
-    Name: 'ArcMenu.ArcMenuPreferencesWidget',
-    GTypeName: 'ArcMenuPreferencesWidget',
-    Extends: Gtk.Box,
+var ArcMenuPreferencesWidget = GObject.registerClass(
+class ArcMenuPreferencesWidget extends Gtk.Box{
 
-    _init: function () {
-        this.parent({
+
+    _init() {
+        super._init({
             orientation: Gtk.Orientation.VERTICAL,
             spacing: 5,
             border_width: 5
@@ -1724,7 +1690,7 @@ const ArcMenuPreferencesWidget = new GObject.Class({
         let configurePage = new ConfigureSettingsPage(this.settings);
         notebook.append_page(configurePage);
         let pinnedAppsPage = new PinnedAppsPage(this.settings);
-        notebook.append_page(pinnedAppsPage, pinnedAppsPage.title);
+        notebook.append_page(pinnedAppsPage);
         
         // let fineTunePage = new FineTuneSettingsPage(this.settings);
         // notebook.append_page(fineTunePage);

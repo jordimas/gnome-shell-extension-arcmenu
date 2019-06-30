@@ -37,19 +37,17 @@ const Params = imports.misc.params;
 /**
  * Arc Menu Notebook
  */
-const Notebook = new GObject.Class({
-    Name: 'ArcMenu.ArcMenuNotebook',
-    GTypeName: 'ArcMenuNotebook',
-    Extends: Gtk.Notebook,
+var Notebook = GObject.registerClass(
+    class ArcMenuNotebook extends Gtk.Notebook{
 
-    _init: function () {
-        this.parent({
+    _init() {
+        super._init({
             margin_left: 6,
             margin_right: 6
         });
-    },
+    }
 
-    append_page: function (notebookPage) {
+    append_page(notebookPage) {
         Gtk.Notebook.prototype.append_page.call(
             this,
             notebookPage,
@@ -61,13 +59,11 @@ const Notebook = new GObject.Class({
 /**
  * Arc Menu Notebook Page
  */
-const NotebookPage = new GObject.Class({
-    Name: 'ArcMenu.ArcMenuNotebookPage',
-    GTypeName: 'ArcMenuNotebookPage',
-    Extends: Gtk.Box,
+var NotebookPage =GObject.registerClass(
+    class ArcMenuNotebookPage extends Gtk.Box {
 
-    _init: function (title) {
-        this.parent({
+    _init(title) {
+        super._init({
             orientation: Gtk.Orientation.VERTICAL,
             margin: 24,
             spacing: 20,
@@ -78,9 +74,9 @@ const NotebookPage = new GObject.Class({
             use_markup: true,
             xalign: 0
         });
-    },
+    }
 
-    getTitleLabel: function () {
+    getTitleLabel() {
         return this._title;
     }
 });
@@ -88,13 +84,11 @@ const NotebookPage = new GObject.Class({
 /**
  * Arc Menu icon Button
  */
-const IconButton = new GObject.Class({
-    Name: 'ArcMenu.ArcMenuIconButton',
-    GTypeName: 'ArcMenuIconButton',
-    Extends: Gtk.Button,
+var IconButton = GObject.registerClass(
+    class extends Gtk.Button {
 
-    _init: function (params) {
-        this.parent();
+    _init(params) {
+        super._init();
         this._params = Params.parse(params, {
             circular: true,
             icon_name: ''
@@ -116,7 +110,7 @@ const IconButton = new GObject.Class({
 /**
  * Arc Menu Dialog Window
  */
-const DialogWindow = GObject.registerClass(
+var DialogWindow = GObject.registerClass(
     class extends Gtk.Dialog {
         _init(title, parent) {
             super._init({
@@ -144,7 +138,7 @@ const DialogWindow = GObject.registerClass(
 /**
  * Arc Menu Frame Box
  */
-const FrameBox = GObject.registerClass(
+var FrameBox = GObject.registerClass(
     class extends Gtk.Frame {
         _init() {
             super._init({ label_yalign: 0.50 });
@@ -180,7 +174,7 @@ const FrameBox = GObject.registerClass(
 /**
  * Arc Menu Frame Box Row
  */
-const FrameBoxRow = GObject.registerClass(
+var FrameBoxRow = GObject.registerClass(
     class extends Gtk.ListBoxRow {
         _init() {
             super._init({});
@@ -189,9 +183,6 @@ const FrameBoxRow = GObject.registerClass(
                 column_spacing: 20,
                 row_spacing: 20
             });
-            this._name;
-            this._icon;
-            this._cmd;
             Gtk.ListBoxRow.prototype.add.call(this, this._grid);
         }
 
