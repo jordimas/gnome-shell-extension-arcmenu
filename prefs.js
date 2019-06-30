@@ -1401,7 +1401,7 @@ var ConfigureSettingsPage = GObject.registerClass(
           Constants.RIGHT_SIDE_SHORTCUTS.forEach(function (shortcut){            
               let shortcutsRow = new PW.FrameBoxRow();
               let shortcutsLabel = new Gtk.Label({
-                  label: shortcut,
+                  label: _(shortcut),
                   use_markup: true,
                   xalign: 0,
                   hexpand: true
