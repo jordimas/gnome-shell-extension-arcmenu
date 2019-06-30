@@ -5,6 +5,7 @@
  * Modified work: Copyright (C) 2016-2017 Zorin OS Technologies Ltd.
  * Modified work: Copyright (C) 2017 LinxGem33
  * Modified work: Copyright (C) 2017 Alexander Rüedlinger
+ * Modified work: Copyright (C) 2019 Andrew Zaech
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -394,7 +395,7 @@ var ApplicationsButton = GObject.registerClass(
         _loadPlaces() {
             let homePath = GLib.get_home_dir();
             let placeInfo = new MW.PlaceInfo(Gio.File.new_for_path(homePath), _("Home"));
-            let addToMenu = this.getShouldShowShortcut(placeInfo.name);
+            let addToMenu = this._settings.get_boolean('show-home-shortcut');
             if(addToMenu){
                 let placeMenuItem = new MW.PlaceMenuItem(this, placeInfo);
                 this.rightBox.add_actor(placeMenuItem.actor);
@@ -404,8 +405,9 @@ var ApplicationsButton = GObject.registerClass(
                 let path = GLib.get_user_special_dir(dirs[i]);
                 if (path == null || path == homePath)
                     continue;
-                let placeInfo = new MW.PlaceInfo(Gio.File.new_for_path(path));
-                addToMenu = this.getShouldShowShortcut(placeInfo.name);
+                let placeInfo = new MW.PlaceInfo(Gio.File.new_for_path(_(path)));
+                //TODO
+                addToMenu = this.getShouldShowShortcut(Constants.RIGHT_SIDE_SHORTCUTS[i+1]);
                 if(addToMenu){
                     let placeMenuItem = new MW.PlaceMenuItem(this, placeInfo);
                     this.rightBox.add_actor(placeMenuItem.actor);
@@ -709,10 +711,7 @@ var ApplicationsButton = GObject.registerClass(
             catch (err) {
               
             }
-            if(addToMenu)
-              return true;
-            else 
-              return false;
+      	    return addToMenu;
         }
         
         // Handle key press events on the mainBox to support the "type-away-feature"
