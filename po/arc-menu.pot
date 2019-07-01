@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Arc Menu\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-06-19 15:14+0100\n"
+"POT-Creation-Date: 2019-07-01 05:41+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,250 +17,316 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: prefs.js:42
-msgid "General"
+#: prefs.js:46 prefs.js:578
+msgid "Pinned Apps"
 msgstr ""
 
-#: prefs.js:47
+#: prefs.js:51
 msgid "Your Pinned Apps:"
 msgstr ""
 
-#: prefs.js:71
+#: prefs.js:75
 msgid "Add More Apps"
 msgstr ""
 
-#: prefs.js:114
+#: prefs.js:119
 msgid "Add Custom Shortcut"
 msgstr ""
 
-#: prefs.js:149
-msgid "Save Changes"
+#: prefs.js:153
+msgid "Save"
 msgstr ""
 
-#: prefs.js:279
+#: prefs.js:278
 msgid "Select Apps to add to Pinned Apps List"
 msgstr ""
 
-#: prefs.js:420
-msgid "Add a Custom Shortcut to Pinned Apps List"
+#: prefs.js:298 prefs.js:458
+msgid "Add"
 msgstr ""
 
-#: prefs.js:430
+#: prefs.js:407
+msgid "Add a Custom Shortcut"
+msgstr ""
+
+#: prefs.js:417
 msgid "Shortcut Name:"
 msgstr ""
 
-#: prefs.js:444
+#: prefs.js:431
 msgid "Icon Path/Icon Symbolic:"
 msgstr ""
 
-#: prefs.js:458
+#: prefs.js:445
 msgid "Terminal Command:"
 msgstr ""
 
-#: prefs.js:484
-msgid "Add Cutsom Link"
+#: prefs.js:492
+msgid "General"
 msgstr ""
 
-#: prefs.js:514
-msgid "Behaviour"
+#: prefs.js:501
+msgid "Menu Button Position in Panel"
 msgstr ""
 
-#: prefs.js:523
-msgid "Disable activities hot corner"
-msgstr ""
-
-#: prefs.js:545
-msgid "Set menu hotkey"
-msgstr ""
-
-#: prefs.js:551
-msgid "Undefined"
-msgstr ""
-
-#: prefs.js:552
-msgid "Left Super Key"
-msgstr ""
-
-#: prefs.js:553
-msgid "Right Super Key"
-msgstr ""
-
-#: prefs.js:565
-msgid "Enable custom menu keybinding"
-msgstr ""
-
-#: prefs.js:572
-msgid "Syntax: <Shift>, <Ctrl>, <Alt>, <Super>"
-msgstr ""
-
-#: prefs.js:613
-msgid "Button appearance"
-msgstr ""
-
-#: prefs.js:625
-msgid "Text for the menu button"
-msgstr ""
-
-#: prefs.js:631
-msgid "System text"
-msgstr ""
-
-#: prefs.js:634
-msgid "Custom text"
-msgstr ""
-
-#: prefs.js:658
-msgid "Set custom text for the menu button"
-msgstr ""
-
-#: prefs.js:678
-msgid "Enable the arrow icon beside the button text"
-msgstr ""
-
-#: prefs.js:700
-msgid "Select icon for the menu button"
-msgstr ""
-
-#: prefs.js:710
-msgid "Please select an image icon"
-msgstr ""
-
-#: prefs.js:715
-msgid "Arc Menu Icon"
-msgstr ""
-
-#: prefs.js:716
-msgid "System Icon"
-msgstr ""
-
-#: prefs.js:717
-msgid "Custom Icon"
-msgstr ""
-
-#: prefs.js:743
-msgid "Icon size"
-msgstr ""
-
-#: prefs.js:743
-msgid "default is"
-msgstr ""
-
-#: prefs.js:783
-msgid "Appearance"
-msgstr ""
-
-#: prefs.js:792
-msgid "Customize menu button appearance"
-msgstr ""
-
-#: prefs.js:802
-msgid "Icon"
-msgstr ""
-
-#: prefs.js:803
-msgid "Text"
-msgstr ""
-
-#: prefs.js:804
-msgid "Icon and Text"
-msgstr ""
-
-#: prefs.js:805
-msgid "Text and Icon"
-msgstr ""
-
-#: prefs.js:830
-msgid "Menu position in panel"
-msgstr ""
-
-#: prefs.js:837
+#: prefs.js:508
 msgid "Left"
 msgstr ""
 
-#: prefs.js:840
+#: prefs.js:511
 msgid "Center"
 msgstr ""
 
-#: prefs.js:844
+#: prefs.js:515
 msgid "Right"
 msgstr ""
 
-#: prefs.js:921
-msgid "About"
+#: prefs.js:553
+msgid "Disable activities hot corner"
 msgstr ""
 
-#: prefs.js:950
-msgid "Arc-Menu"
+#: prefs.js:572
+msgid "Choose Arc Menus Default View"
 msgstr ""
 
-#: prefs.js:955
-msgid "version: "
+#: prefs.js:579
+msgid "Categories List"
 msgstr ""
 
-#: prefs.js:963
-msgid "GitLab Page"
+#: prefs.js:603
+msgid "Set menu hotkey"
 msgstr ""
 
-#: menu.js:320
-msgid "Home"
+#: prefs.js:609
+msgid "Undefined"
 msgstr ""
 
-#: menu.js:533 menu.js:538
-msgid "Software"
+#: prefs.js:610
+msgid "Left Super Key"
 msgstr ""
 
-#: menu.js:543
-msgid "Settings"
+#: prefs.js:611
+msgid "Right Super Key"
 msgstr ""
 
-#: menu.js:548
-msgid "Tweak Tool"
+#: prefs.js:623
+msgid "Enable custom menu keybinding"
 msgstr ""
 
-#: menu.js:553
-msgid "Tweaks"
+#: prefs.js:630
+msgid "Syntax: <Shift>, <Ctrl>, <Alt>, <Super>"
 msgstr ""
 
-#: menu.js:558
-msgid "Terminal"
+#: prefs.js:671
+msgid "Button appearance"
 msgstr ""
 
-#: menuWidgets.js:101
-msgid "Activities Overview"
+#: prefs.js:683
+msgid "Text for the menu button"
 msgstr ""
 
-#: menuWidgets.js:214
-msgid "Power Off"
+#: prefs.js:689
+msgid "System text"
 msgstr ""
 
-#: menuWidgets.js:227
-msgid "Log Out"
+#: prefs.js:692
+msgid "Custom text"
 msgstr ""
 
-#: menuWidgets.js:240
+#: prefs.js:716
+msgid "Set custom text for the menu button"
+msgstr ""
+
+#: prefs.js:736
+msgid "Enable the arrow icon beside the button text"
+msgstr ""
+
+#: prefs.js:758
+msgid "Select icon for the menu button"
+msgstr ""
+
+#: prefs.js:768
+msgid "Please select an image icon"
+msgstr ""
+
+#: prefs.js:773
+msgid "Arc Menu Icon"
+msgstr ""
+
+#: prefs.js:774
+msgid "System Icon"
+msgstr ""
+
+#: prefs.js:775
+msgid "Custom Icon"
+msgstr ""
+
+#: prefs.js:801
+msgid "Icon size"
+msgstr ""
+
+#: prefs.js:801
+msgid "default is"
+msgstr ""
+
+#: prefs.js:841
+msgid "Appearance"
+msgstr ""
+
+#: prefs.js:850
+msgid "Customize Menu Button Appearance"
+msgstr ""
+
+#: prefs.js:860
+msgid "Icon"
+msgstr ""
+
+#: prefs.js:861
+msgid "Text"
+msgstr ""
+
+#: prefs.js:862
+msgid "Icon and Text"
+msgstr ""
+
+#: prefs.js:863
+msgid "Text and Icon"
+msgstr ""
+
+#: prefs.js:886 prefs.js:1007
+msgid "Customize Arc Menu Appearance"
+msgstr ""
+
+#: prefs.js:933 prefs.js:1151
+msgid "Override Arc Menu Theme"
+msgstr ""
+
+#: prefs.js:1017
+msgid "Menu Height"
+msgstr ""
+
+#: prefs.js:1048
+msgid ""
+"Left-Panel Width \n"
+"(Requires GNOME restart)"
+msgstr ""
+
+#: prefs.js:1070
+msgid "Enable Vertical Separator"
+msgstr ""
+
+#: prefs.js:1088
+msgid "Separator Color"
+msgstr ""
+
+#: prefs.js:1108 prefs.js:1364
+msgid "Apply"
+msgstr ""
+
+#: prefs.js:1172
+msgid "Menu Background Color"
+msgstr ""
+
+#: prefs.js:1190
+msgid "Menu Foreground Color"
+msgstr ""
+
+#: prefs.js:1207
+msgid "Font Size"
+msgstr ""
+
+#: prefs.js:1230
+msgid "Border Color"
+msgstr ""
+
+#: prefs.js:1248
+msgid "Border Size"
+msgstr ""
+
+#: prefs.js:1271
+msgid "Highlighted Item Color"
+msgstr ""
+
+#: prefs.js:1289
+msgid "Corner Radius"
+msgstr ""
+
+#: prefs.js:1312
+msgid "Menu Arrow Size"
+msgstr ""
+
+#: prefs.js:1335
+msgid "Menu Displacement"
+msgstr ""
+
+#: prefs.js:1384
+msgid "Configure"
+msgstr ""
+
+#: prefs.js:1391
+msgid "Enable/Disable shortcuts"
+msgstr ""
+
+#: prefs.js:1435
+msgid "Enable/Disable session buttons"
+msgstr ""
+
+#: prefs.js:1444 menuWidgets.js:250
 msgid "Suspend"
 msgstr ""
 
-#: menuWidgets.js:258
+#: prefs.js:1462 menuWidgets.js:268
 msgid "Lock"
 msgstr ""
 
-#: menuWidgets.js:280
+#: prefs.js:1480 menuWidgets.js:237
+msgid "Log Out"
+msgstr ""
+
+#: prefs.js:1580
+msgid "About"
+msgstr ""
+
+#: prefs.js:1609
+msgid "Arc-Menu"
+msgstr ""
+
+#: prefs.js:1614
+msgid "version: "
+msgstr ""
+
+#: prefs.js:1622
+msgid "GitLab Page"
+msgstr ""
+
+#: menu.js:397
+msgid "Home"
+msgstr ""
+
+#: menuWidgets.js:107
+msgid "Activities Overview"
+msgstr ""
+
+#: menuWidgets.js:224
+msgid "Power Off"
+msgstr ""
+
+#: menuWidgets.js:290
 msgid "Back"
 msgstr ""
 
-#: menuWidgets.js:326
+#: menuWidgets.js:346
 msgid "All Programs"
 msgstr ""
 
-#: menuWidgets.js:573
+#: menuWidgets.js:685
 msgid "Favorites"
 msgstr ""
 
-#: menuWidgets.js:706
+#: menuWidgets.js:826
 msgid "Type to search…"
 msgstr ""
 
-#: menuWidgets.js:871
+#: menuWidgets.js:989
 msgid "Applications"
 msgstr ""
