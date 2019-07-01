@@ -3,23 +3,23 @@
 # This file is distributed under the same license as the Arc Menu package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
-#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: Arc Menu\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-03-19 15:14+0100\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: megasyl <megasyl20@gmail.com>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
-"Language: \n"
+"PO-Revision-Date: 2019-07-01 19:30+0200\n"
+"Last-Translator: Guillaume Fayard <guillaume.fayard@pycolore.fr>\n"
+"Language: fr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language-Team: \n"
+"X-Generator: Poedit 2.2.3\n"
 
 #: prefs.js:42
 msgid "General"
-msgstr ""
+msgstr "Général"
 
 #: prefs.js:54
 msgid "Behaviour"
@@ -27,11 +27,11 @@ msgstr "Comportement"
 
 #: prefs.js:63
 msgid "Disable activities hot corner"
-msgstr "Désactiver hot corner"
+msgstr "Désactiver le coin des activités"
 
 #: prefs.js:85
 msgid "Set menu hotkey"
-msgstr "Attribuer un raccourcis"
+msgstr "Attribuer un raccourci"
 
 #: prefs.js:91
 msgid "Undefined"
@@ -47,7 +47,7 @@ msgstr "Touche Super droite"
 
 #: prefs.js:105
 msgid "Enable custom menu keybinding"
-msgstr "Activer l'assignation de touches personnalisée"
+msgstr "Activer l'assignation de touches personnalisées"
 
 #: prefs.js:112
 msgid "Syntax: <Shift>, <Ctrl>, <Alt>, <Super>"
@@ -71,7 +71,7 @@ msgstr "Texte personnalisé"
 
 #: prefs.js:198
 msgid "Set custom text for the menu button"
-msgstr "Changer le texte du bouton"
+msgstr "Modifier le texte du bouton"
 
 #: prefs.js:218
 msgid "Enable the arrow icon beside the button text"
@@ -91,11 +91,11 @@ msgstr "Icône Arc Menu"
 
 #: prefs.js:256
 msgid "System Icon"
-msgstr "Icône systeme"
+msgstr "Icône système"
 
 #: prefs.js:257
 msgid "Custom Icon"
-msgstr "Icône personnalisé"
+msgstr "Icône personnalisée"
 
 #: prefs.js:283
 msgid "Icon size"
@@ -123,15 +123,15 @@ msgstr "Texte"
 
 #: prefs.js:344
 msgid "Icon and Text"
-msgstr "Icône et Texte"
+msgstr "Icône et texte"
 
 #: prefs.js:345
 msgid "Text and Icon"
-msgstr "Texte et Icône"
+msgstr "Texte et icône"
 
 #: prefs.js:370
 msgid "Menu position in panel"
-msgstr "Position du menu"
+msgstr "Position du menu dans le panneau"
 
 #: prefs.js:377
 msgid "Left"
@@ -155,11 +155,11 @@ msgstr "Arc-Menu"
 
 #: prefs.js:495
 msgid "version: "
-msgstr "version: "
+msgstr "version : "
 
 #: prefs.js:503
 msgid "GitLab Page"
-msgstr ""
+msgstr "Dépôt GitLab"
 
 #: menu.js:272
 msgid "Home"
@@ -167,7 +167,7 @@ msgstr "Accueil"
 
 #: menu.js:456 menu.js:461
 msgid "Software"
-msgstr "Logiciel"
+msgstr "Programmes"
 
 #: menu.js:466
 msgid "Settings"
@@ -178,13 +178,12 @@ msgid "Tweak Tool"
 msgstr "Tweak Tool"
 
 #: menu.js:476
-#, fuzzy
 msgid "Tweaks"
-msgstr "Tweak Tool"
+msgstr "Ajustements"
 
 #: menu.js:481
 msgid "Terminal"
-msgstr ""
+msgstr "Terminal"
 
 #: menuWidgets.js:86
 msgid "Activities Overview"
@@ -192,19 +191,19 @@ msgstr "Aperçu des activités"
 
 #: menuWidgets.js:199
 msgid "Power Off"
-msgstr "Eteindre"
+msgstr "Arrêter"
 
 #: menuWidgets.js:212
 msgid "Log Out"
-msgstr "Déconnexion"
+msgstr "Fermer la session"
 
 #: menuWidgets.js:225
 msgid "Suspend"
-msgstr "Suspendre"
+msgstr "Mettre en veille"
 
 #: menuWidgets.js:243
 msgid "Lock"
-msgstr "Verrouiller"
+msgstr "Verrouiller la session"
 
 #: menuWidgets.js:265
 msgid "Back"
@@ -216,7 +215,7 @@ msgstr "Favoris"
 
 #: menuWidgets.js:616
 msgid "Type to search…"
-msgstr "Ecrire pour chercher…"
+msgstr "Ecrire pour rechercher…"
 
 #: menuWidgets.js:781
 msgid "Applications"
