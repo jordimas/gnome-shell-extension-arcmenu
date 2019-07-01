@@ -150,7 +150,7 @@ var PinnedAppsPage = GObject.registerClass(
             
             //last row - save settings
             this.savePinnedAppsButton = new Gtk.Button({
-                label: "Save",
+                label: _("Save"),
             });
             this.savePinnedAppsButton.connect('clicked', ()=>
             {
@@ -295,7 +295,7 @@ var AddAppsToPinnedListWindow = GObject.registerClass(
 
             //last row - Label and button to add apps to list
             let addAppsButton = new Gtk.Button({
-                label: "Add",
+                label: _("Add"),
                 xalign:1
             });
 
@@ -455,7 +455,7 @@ var AddCustomLinkDialogWindow = GObject.registerClass(
             //last row - Label and button to add custom link to list
 
             let addButton = new Gtk.Button({
-                label: "Add"
+                label: _("Add"),
             });
 
             addButton.connect('clicked', ()=>
@@ -1105,7 +1105,7 @@ var ArcMenuCustomizationWindow = GObject.registerClass(
             
             //last row - Label and button to add custom link to list
             let applyButton = new Gtk.Button({
-                label: "Apply"
+                label: _("Apply"),
             });
             applyButton.connect('clicked', ()=> {
                this.addResponse = true;
@@ -1361,7 +1361,7 @@ var OverrideArcMenuThemeWindow = GObject.registerClass(
             
             //last row - Label and button to add custom link to list
             let applyButton = new Gtk.Button({
-                label: "Apply"
+                label: _("Apply"),
             });
             applyButton.connect('clicked', ()=> {
                this.addResponse = true;
