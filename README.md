@@ -21,7 +21,7 @@ Please see the: [Development Roadmap Page](https://gitlab.com/LinxGem33/Arc-Menu
 
 ### Volunteers needed!
 
-This extension could be even better with your help! Any items in the issue tracker labelled ![](https://gitlab.com/LinxGem33/Neon/raw/master/wiki%20screens/Screenshot_2019-06-18_Labels___Andy_C_Arc-Menu.png) or ![](https://gitlab.com/LinxGem33/Neon/raw/master/wiki%20screens/Screenshot_2019-06-18_Labels___Andy_C_Arc-Menu_1_.png) are open for contribution and help. For more info, see the [Contributing Feature List](https://gitlab.com/LinxGem33/Arc-Menu/issues/54) for more details on current issues or features which need your help.
+This extension could be even better with your help! Any items in the issue tracker labelled ![image](/uploads/85b3cf3baea40163ffc5c115b7d7306e/image.png) or ![image](/uploads/d5b2fb82db8d2955923d327caef8e4aa/image.png) are open for contribution and help. For more info, see the [Contributing Feature List](https://gitlab.com/LinxGem33/Arc-Menu/issues/54) for more details on current issues or features which need your help.
 
 -----
 
