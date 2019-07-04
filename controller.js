@@ -86,6 +86,8 @@ var MenuSettingsController = class {
         this._settings.connect('changed::show-music-shortcut', this._redisplayRightSide.bind(this));
         this._settings.connect('changed::show-pictures-shortcut', this._redisplayRightSide.bind(this));
         this._settings.connect('changed::show-videos-shortcut', this._redisplayRightSide.bind(this));
+        this._settings.connect('changed::show-computer-shortcut', this._redisplayRightSide.bind(this));
+        this._settings.connect('changed::show-network-shortcut', this._redisplayRightSide.bind(this));
         this._settings.connect('changed::show-software-shortcut', this._redisplayRightSide.bind(this));
         this._settings.connect('changed::show-tweaks-shortcut', this._redisplayRightSide.bind(this));
         this._settings.connect('changed::show-terminal-shortcut', this._redisplayRightSide.bind(this));
@@ -93,6 +95,8 @@ var MenuSettingsController = class {
         this._settings.connect('changed::show-activities-overview-shortcut', this._redisplayRightSide.bind(this));
         this._settings.connect('changed::show-logout-button', this._redisplayRightSide.bind(this));
         this._settings.connect('changed::show-lock-button', this._redisplayRightSide.bind(this));
+        this._settings.connect('changed::show-external-devices', this._redisplayRightSide.bind(this));
+        this._settings.connect('changed::show-bookmarks', this._redisplayRightSide.bind(this));
         this._settings.connect('changed::show-suspend-button', this._redisplayRightSide.bind(this));
         this._settings.connect('changed::menu-height', this._updateMenuHeight.bind(this));
         this._settings.connect('changed::pinned-apps',this._redisplayMenu.bind(this));
