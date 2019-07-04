@@ -116,6 +116,16 @@
       <summary>Enable Custom Arc Menu Theme</summary>
       <description>Enable Custom Arc Menu Theme.</description>
     </key>
+	<key type="b" name="show-computer-shortcut">
+     <default>false</default>
+      <summary>Show Computer Shortcut</summary>
+      <description>Show ComputerShortcut.</description>
+    </key>
+      <key type="b" name="show-network-shortcut">
+     <default>false</default>
+      <summary>Show Network Shortcut</summary>
+      <description>Show Network Shortcut.</description>
+    </key>
     <key type="b" name="show-home-shortcut">
      <default>true</default>
       <summary>Show Home Shortcut</summary>
@@ -171,6 +181,16 @@
       <summary>Show activities-overview Shortcut</summary>
       <description>Show activities-overview Shortcut.</description>
     </key>
+      <key type="b" name="show-external-devices">
+     <default>false</default>
+      <summary>Show External Devices</summary>
+      <description>Show External Devices.</description>
+    </key>
+	<key type="b" name="show-bookmarks">
+     <default>false</default>
+      <summary>Show Bookmarks</summary>
+      <description>Show Bookmarks.</description>
+    </key>
     <key type="b" name="show-logout-button">
      <default>true</default>
       <summary>Show logout button</summary>
@@ -182,7 +202,7 @@
       <description>Show Show lock button.</description>
     </key>
     <key type="b" name="show-suspend-button">
-     <default>true</default>
+     <default>false</default>
       <summary>Show suspend button</summary>
       <description>Show Show suspend button.</description>
     </key>
@@ -227,7 +247,7 @@
       <description>Text of the menu button.</description>
     </key>
     <key type="b" name="enable-menu-button-arrow">
-      <default>true</default>
+      <default>false</default>
       <summary>Enables the default menu button arrow.</summary>
       <description>Enables the default menu button arrow.</description>
     </key>

@@ -455,7 +455,7 @@ var AddCustomLinkDialogWindow = GObject.registerClass(
             //last row - Label and button to add custom link to list
 
             let addButton = new Gtk.Button({
-                label: _("Add"),
+                label: _("Add")
             });
 
             addButton.connect('clicked', ()=>
@@ -1105,7 +1105,7 @@ var ArcMenuCustomizationWindow = GObject.registerClass(
             
             //last row - Label and button to add custom link to list
             let applyButton = new Gtk.Button({
-                label: _("Apply"),
+                label:_("Apply")
             });
             applyButton.connect('clicked', ()=> {
                this.addResponse = true;
@@ -1149,7 +1149,7 @@ var OverrideArcMenuThemeWindow = GObject.registerClass(
             this.menuArrowSize = this._settings.get_int('menu-arrow-size');
             this.menuWidth = this._settings.get_int('menu-width');
             super._init(_('Override Arc Menu Theme'), parent);
-
+		this.resize(450,250);
         }
 
         _createLayout(vbox) {         
@@ -1159,9 +1159,10 @@ var OverrideArcMenuThemeWindow = GObject.registerClass(
             //OVERRIDE OPTIONS--------------------------------
             let customArcMenuOptionsFrame = new PW.FrameBox();
             let restartMessageLabel = new Gtk.Label({
-                label: "\n\t\t\tChanges made here require GNOME restart\t\t\t\n\t\t\t\t  (Press ALT + F2, type 'r' then Enter)  \n",
-                hexpand:true
+                label: _("\nChanges made here require GNOME restart\n(Press ALT + F2, type 'r' then Enter)\n"),
+                hexpand:true,xalign:.5
             });       
+            restartMessageLabel.set_justify(2);
             restartMessageLabel.set_selectable(false);      
             customArcMenuOptionsFrame.add(restartMessageLabel);
   
@@ -1361,7 +1362,7 @@ var OverrideArcMenuThemeWindow = GObject.registerClass(
             
             //last row - Label and button to add custom link to list
             let applyButton = new Gtk.Button({
-                label: _("Apply"),
+                label: _("Apply")
             });
             applyButton.connect('clicked', ()=> {
                this.addResponse = true;
@@ -1384,7 +1385,7 @@ var ConfigureSettingsPage = GObject.registerClass(
         super._init(_('Configure'));
         this.settings = settings;
            
-               //WHICH SHORTCUTS ON RIGHT SIDE
+          //WHICH SHORTCUTS ON RIGHT SIDE
           let shortcutsFrame = new PW.FrameBox();
           let shortcutsRow = new PW.FrameBoxRow();
           let shortcutsLabel = new Gtk.Label({
@@ -1398,7 +1399,14 @@ var ConfigureSettingsPage = GObject.registerClass(
           shortcutsScrollWindow.set_max_content_height(150);
           shortcutsScrollWindow.set_min_content_height(150);
           shortcutsScrollWindow.add(shortcutsFrame);
-          Constants.RIGHT_SIDE_SHORTCUTS.forEach(function (shortcut){            
+          for(let i = 0;i<8;i++){
+          	let shortcut; 
+              if(i<6)
+                 shortcut = Constants.RIGHT_SIDE_SHORTCUTS[i]; 
+              else if(i==6)  
+              	 shortcut = 'Computer';  
+      	      else if(i==7)  
+              	 shortcut = 'Network';            
               let shortcutsRow = new PW.FrameBoxRow();
               let shortcutsLabel = new Gtk.Label({
                   label: _(shortcut),
@@ -1425,20 +1433,101 @@ var ConfigureSettingsPage = GObject.registerClass(
               shortcutsRow.add(checkButton);
               shortcutsFrame.add(shortcutsRow);
 
-          }.bind(this));
+          };
           this.add(shortcutsLabel);
           this.add(shortcutsScrollWindow);
+          //---------------------------------------------------------------------------------------
           
-          //Session Buttons Enable/Disable
-          let sessionButtonsFrame = new PW.FrameBox();
-          let sessionButtonsLabel = new Gtk.Label({
-              label: _("Enable/Disable session buttons"),
+          //EXTERNAL DEVICES/BOOKMARKS--------------------------------------------------------------
+          let placesFrame = new PW.FrameBox();
+          let externalDeviceRow = new PW.FrameBoxRow();
+          let externalDeviceLabel = new Gtk.Label({
+              label: _("External Devices"),
               use_markup: true,
               xalign: 0,
               hexpand: true
           });
+     	  
+     	  let externalDeviceButton = new Gtk.Switch({margin_right: 20});
+          if(this.settings.get_boolean('show-external-devices'))
+              externalDeviceButton.set_active(true);
+          externalDeviceButton.connect('notify::active', function (check)
+          {
+              this.settings.set_boolean('show-external-devices', check.get_active());
+          }.bind(this));   
+          externalDeviceRow.add(externalDeviceLabel);
+          externalDeviceRow.add(externalDeviceButton);
+
+          //ADD TO FRAME
+          placesFrame.add(externalDeviceRow);
+          this.add(placesFrame);
           
+           //BOOKMARKS LIST       
+          let bookmarksRow = new PW.FrameBoxRow();
+          let bookmarksLabel = new Gtk.Label({
+              label: _("Bookmarks"),
+              use_markup: true,
+              xalign: 0,
+              hexpand: true
+          });
+     	  
+     	  let bookmarksButton = new Gtk.Switch({margin_right: 20});
+          if(this.settings.get_boolean('show-bookmarks'))
+              bookmarksButton.set_active(true);
+          bookmarksButton.connect('notify::active', function (check)
+          {
+              this.settings.set_boolean('show-bookmarks', check.get_active());
+          }.bind(this));   
+          bookmarksRow.add(bookmarksLabel);
+         bookmarksRow.add(bookmarksButton);
+
+          //ADD TO FRAME
+          placesFrame.add(bookmarksRow);
+          //---------------------------------------------------------------------------------
+          
+          //Software Shortcuts------------------------------------------------------------------------
+          let softwareShortcutsFrame = new PW.FrameBox();
+          let softwareShortcutsRow = new PW.FrameBoxRow();
+          let softwareShortcutsScrollWindow = new Gtk.ScrolledWindow();
+          softwareShortcutsScrollWindow.set_policy(Gtk.PolicyType.AUTOMATIC, Gtk.PolicyType.AUTOMATIC);
+          softwareShortcutsScrollWindow.set_max_content_height(115);
+          softwareShortcutsScrollWindow.set_min_content_height(115);
+          softwareShortcutsScrollWindow.add(softwareShortcutsFrame);
+          for(let i = 6; i<11;i++){
+              let shortcut = Constants.RIGHT_SIDE_SHORTCUTS[i];
+              let softwareShortcutsRow = new PW.FrameBoxRow();
+              let softwareShortcutsLabel = new Gtk.Label({
+                  label: _(shortcut),
+                  use_markup: true,
+                  xalign: 0,
+                  hexpand: true
+              });
+              
+              let softwareCheckButton = new Gtk.Switch(
+              {
+                  margin_right: 20,
+              });
+              let softwareSetting = 'show-'+shortcut+'-shortcut';
+              let softwareSettingName = GLib.utf8_strdown(softwareSetting,softwareSetting.length);
+              if(this.settings.get_boolean(softwareSettingName))
+                  softwareCheckButton.set_active(true);
+              else
+                  softwareCheckButton.set_active(false);
+              softwareCheckButton.connect('notify::active', function (check)
+              {
+                  this.settings.set_boolean(softwareSettingName, check.get_active());
+              }.bind(this));
+              softwareShortcutsRow.add(softwareShortcutsLabel);
+              softwareShortcutsRow.add(softwareCheckButton);
+              softwareShortcutsFrame.add(softwareShortcutsRow);
+          }
+          this.add(softwareShortcutsScrollWindow);
+          
+          //-----------------------------------------------------------------------------------------
+          
+          //Session Buttons Enable/Disable----------------------------------------------------          
           //SUSPEND BUTTON
+          let sessionButtonsFrame = new PW.FrameBox();
           let suspendRow = new PW.FrameBoxRow();
           let suspendLabel = new Gtk.Label({
               label: _("Suspend"),
@@ -1495,46 +1584,11 @@ var ConfigureSettingsPage = GObject.registerClass(
           sessionButtonsFrame.add(suspendRow);
           sessionButtonsFrame.add(logOffRow);
           sessionButtonsFrame.add(lockRow);
-          this.add(sessionButtonsLabel);
           this.add(sessionButtonsFrame);
+	  //------------------------------------------------------------------------------------------
+          
 
-          
-          //EXTERNAL DEVICES LIST
-		/*
-          let externalDevicesLabel = new Gtk.Label({
-              label: _("Which external device shortcuts do you want on the right hand side?"),
-              use_markup: true,
-              xalign: 0,
-              hexpand: true
-          });
-          
-          
-          let externalDeviceFrame = new PW.FrameBox();
-          let externalDeviceRow = new PW.FrameBoxRow();
-          let externalDeviceLabel = new Gtk.Label({
-              label: _("PlaceHolder"),
-              use_markup: true,
-              xalign: 0,
-              hexpand: true
-          });
-          let externalDeviceButton = new Gtk.CheckButton(
-          {
-              margin_right: 30,
-              label: "Display as Shortcut",
-          });
-          
-          externalDeviceButton.set_active(true);
-          externalDeviceButton.connect('toggled', function (check)
-          {
-             
-          }.bind(this));
-          externalDeviceRow.add(externalDeviceLabel);
-          externalDeviceRow.add(externalDeviceButton);
-
-          //ADD TO FRAME
-          externalDeviceFrame.add(externalDeviceRow);
-          this.add(externalDevicesLabel);
-          this.add(externalDeviceFrame);*/
+        
     }
 });
 /*
@@ -1631,7 +1685,7 @@ var AboutPage = GObject.registerClass(
             this.creditsFrame.set_shadow_type(Gtk.ShadowType.NONE);
             this.creditsScrollWindow.add_with_viewport(this.creditsFrame);
   	        let creditsLabel = new Gtk.Label({
-		        label: Constants.CREDITS,
+		        label: _(Constants.CREDITS),
 		        use_markup: true,
 		        justify: Gtk.Justification.CENTER,
 		        expand: false
@@ -1646,7 +1700,7 @@ var AboutPage = GObject.registerClass(
 
             // Create the GNU software box
             let gnuSofwareLabel = new Gtk.Label({
-                label: Constants.GNU_SOFTWARE,
+                label: _(Constants.GNU_SOFTWARE),
                 use_markup: true,
                 justify: Gtk.Justification.CENTER,
                 expand: true
@@ -1770,8 +1824,10 @@ function saveCSS(settings){
     let menuWidth = this._settings.get_int('menu-width');
     //there has to be a better way to do this
     let file = Gio.File.new_for_path(Me.path+"/stylesheet.css");
-    let css =".left-scroll-area{ \nwidth:"+  menuWidth+"px;\n}\n"   
-    +".arc-empty-dash-drop-target{\nwidth: "+  menuWidth+"px; \nheight: 2px; \nbackground-color:"+  separatorColor+"; \npadding: 0 0; \nmargin:0;\n}\n"     
+    let css ="#arc-search{width: "+  menuWidth+"px;} \n.arc-menu-status-text{\ncolor:"+  menuForegroundColor+";\nfont-size:" + fontSize+"pt;\n}\n "+                                                      
+	".search-statustext {font-size:11pt;}\n "+    
+    	".left-scroll-area{ \nwidth:"+  menuWidth+"px;\n}\n"   
+    	+".arc-empty-dash-drop-target{\nwidth: "+  menuWidth+"px; \nheight: 2px; \nbackground-color:"+  separatorColor+"; \npadding: 0 0; \nmargin:0;\n}\n"     
     	  +".left-box{\nwidth:"+  menuWidth+"px;\n}" + "\n.vert-sep{\nwidth:11px;\n}\n"
 	  +"#search-entry{\nmax-width: 17.667em;\n}\n#search-entry:focus { \nborder-color:"+  separatorColor+";\n}\n"
 	  +"#arc-search-entry{\nmax-width: 17.667em;\nfont-size:" + fontSize+"pt;\n border-color:"+  separatorColor+";\n"

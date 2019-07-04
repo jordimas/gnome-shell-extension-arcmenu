@@ -19,7 +19,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-.left-scroll-area{ 
+#arc-search{width: 290px;} 
+.arc-menu-status-text{
+color:rgba(211, 218, 227, 1);
+font-size:9pt;
+}
+ .search-statustext {font-size:11pt;}
+ .left-scroll-area{ 
 width:290px;
 }
 .arc-empty-dash-drop-target{
