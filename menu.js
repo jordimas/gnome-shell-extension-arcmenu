@@ -37,21 +37,13 @@ const Shell = imports.gi.Shell;
 const St = imports.gi.St;
 const Clutter = imports.gi.Clutter;
 const Main = imports.ui.main;
-const PanelMenu = imports.ui.panelMenu;
 const PopupMenu = imports.ui.popupMenu;
 const Gtk = imports.gi.Gtk;
-const Gdk = imports.gi.Gdk;
-
-
-
 const GLib = imports.gi.GLib;
-const AccountsService = imports.gi.AccountsService;
 const Gio = imports.gi.Gio;
 const GObject = imports.gi.GObject;
 const Util = imports.misc.util;
 const GnomeSession = imports.misc.gnomeSession;
-const BoxPointer = imports.ui.boxpointer;
-
 const ExtensionUtils = imports.misc.extensionUtils;
 const Me = ExtensionUtils.getCurrentExtension();
 const PlaceDisplay = Me.imports.placeDisplay;
@@ -61,7 +53,6 @@ const Constants = Me.imports.constants;
 const TwoMenuButton = Me.imports.twoMenuButton;
 const Gettext = imports.gettext.domain(Me.metadata['gettext-domain']);
 const _ = Gettext.gettext;
-const N_ = x => x;
 const appSys = Shell.AppSystem.get_default();
 
 
@@ -216,9 +207,7 @@ var ApplicationsButton = GObject.registerClass(
             if (this.leftClickMenu) {
                 this.searchBox.disconnect(this._searchBoxClearedId);
                 this.searchBox.disconnect(this._searchBoxChangedId);
-                this.searchBox.disconnect(this._searchBoxActivateId);
                 this.searchBox.disconnect(this._searchBoxKeyPressId);
-                this.searchBox.disconnect(this._searchBoxKeyFocusInId);
                 this.mainBox.disconnect(this._mainBoxKeyPressId);
                 this.leftClickMenu.destroy();
                 this.leftClickMenu = null;
@@ -539,9 +528,7 @@ var ApplicationsButton = GObject.registerClass(
                 this._tabbedOnce = false;
                 this._searchBoxChangedId = this.searchBox.connect('changed', this._onSearchBoxChanged.bind(this));
                 this._searchBoxClearedId = this.searchBox.connect('cleared', this._onSearchBoxCleared.bind(this));
-                this._searchBoxActivateId = this.searchBox.connect('activate', this._onSearchBoxActive.bind(this));
                 this._searchBoxKeyPressId = this.searchBox.connect('key-press-event', this._onSearchBoxKeyPress.bind(this));
-                this._searchBoxKeyFocusInId = this.searchBox.connect('key-focus-in', this._onSearchBoxKeyFocusIn.bind(this));
                 //Add search box to menu
                 this.leftBox.add(this.searchBox.actor, {
                     expand: false,
@@ -594,38 +581,37 @@ var ApplicationsButton = GObject.registerClass(
                 y_align: St.Align.START
             });
      
-            //draw top right horizontal separator
+            //draw top right horizontal separator under User Name
             this.rightBox.add(this._createHorizontalSeparator(true), {
                 x_expand: true,
                 x_fill: true,
                 y_fill: false,
                 y_align: St.Align.END
             });
-                this.shorcutsBox = new St.BoxLayout({
-                    vertical: true
-                });
-
-                this.shortcutsScrollBox = new St.ScrollView({
-                    x_fill: true,
-                    y_fill: false,
-                    y_align: St.Align.START,
-                    overlay_scrollbars: true
-                });     
-         
-                this.shortcutsScrollBox.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC);
-                let vscroll2 = this.shortcutsScrollBox.get_vscroll_bar();
-                vscroll2.connect('scroll-start', () => {
-                    this.leftClickMenu.passEvents = true;
-                });
-                vscroll2.connect('scroll-stop', () => {
-                    this.leftClickMenu.passEvents = false;
-                });
-		//TODO    
-		 this.shortcutsScrollBox.add_actor(this.shorcutsBox);
-		 this.rightBox.add(this.shortcutsScrollBox);
+            //Shortcuts Box
+            this.shorcutsBox = new St.BoxLayout({
+                vertical: true
+            });
+            this.shortcutsScrollBox = new St.ScrollView({
+                x_fill: true,
+                y_fill: false,
+                y_align: St.Align.START,
+                overlay_scrollbars: true
+            });     
+            this.shortcutsScrollBox.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC);
+            let vscroll2 = this.shortcutsScrollBox.get_vscroll_bar();
+            vscroll2.connect('scroll-start', () => {
+                this.leftClickMenu.passEvents = true;
+            });
+            vscroll2.connect('scroll-stop', () => {
+                this.leftClickMenu.passEvents = false;
+            }); 
+	    this.shortcutsScrollBox.add_actor(this.shorcutsBox);
+	    this.rightBox.add(this.shortcutsScrollBox);
             // Add place shortcuts to menu (Home,Documents,Downloads,Music,Pictures,Videos)
             this._loadPlaces();
-                        
+            
+            // add Home and Network shortcuts           
             if(this._settings.get_boolean('show-computer-shortcut')){
       		this.placesShortcuts=true;      
         	var computer = new PlaceDisplay.RootInfo();
@@ -638,8 +624,6 @@ var ApplicationsButton = GObject.registerClass(
             }
             //draw bottom right horizontal separator + logic to determine if should show
             let shouldDraw = false;
-            let top = false;
-            let bot = false
             for(let i=0;i<6;i++){
                 if(this.getShouldShowShortcut(Constants.RIGHT_SIDE_SHORTCUTS[i])){
                    this.placesShortcuts=true;
@@ -652,9 +636,9 @@ var ApplicationsButton = GObject.registerClass(
                   break;
                 }
             }
+            //check to see if should draw separator
             if(this.placesShortcuts && (this._settings.get_boolean('show-external-devices') || this.softwareShortcuts || this._settings.get_boolean('show-bookmarks'))  )
               shouldDraw=true;  
- 
             if(shouldDraw){
                 this.shorcutsBox.add(this._createHorizontalSeparator(true), {
                 x_expand: true,
@@ -664,41 +648,25 @@ var ApplicationsButton = GObject.registerClass(
                 y_align: St.Align.END
                 });
             }
-           //test-------------------------------------------------------
-		this.externalDevicesBox = new St.BoxLayout({
-	    		vertical: true
-		});
-	
-		   
-			
-		    this.shorcutsBox.add( this.externalDevicesBox, {
-				x_fill: true,
-				y_fill: false,
-				expand:false
-		      });          
-			this.placesManager = new PlaceDisplay.PlacesManager();
+            //External Devices and Bookmarks Shortcuts
+	    this.externalDevicesBox = new St.BoxLayout({
+    		vertical: true
+	    });	
+	    this.shorcutsBox.add( this.externalDevicesBox, {
+		x_fill: true,
+		y_fill: false,
+		expand:false
+	    });          
+  	    this.placesManager = new PlaceDisplay.PlacesManager();
+	    for (let i = 0; i < Constants.SECTIONS.length; i++) {
+   		let id = Constants.SECTIONS[i];
+    		this.placesManager.connect(`${id}-updated`, () => {
+			this._redisplayPlaces();
+ 		});
+    	    	this._createPlaces(id);
+	    }
 
-			for (let i = 0; i < Constants.SECTIONS.length; i++) {
-		   		 let id = Constants.SECTIONS[i];
-		    		this.placesManager.connect(`${id}-updated`, () => {
-				this._redisplayPlaces();
-		   	 	});
-
-		    	this._createPlaces(id);
-			 }
-		  
-            //--------------------------------------------------------------
-                /* if(bot&&this._settings.get_boolean('show-external-devices')){
-				this.shorcutsBox.add(this._createHorizontalSeparator(true), {
-				x_expand: true,
-				y_expand:false,
-				x_fill: true,
-				y_fill: false,
-				y_align: St.Align.END
-                		});  
-                	}    */ 
-
-            //Add Shortcuts to menu (Software, Settings, Tweaks, Terminal)
+            //Add Software Shortcuts to menu (Software, Settings, Tweaks, Terminal)
             Constants.SHORTCUTS.forEach(function (shortcut) {
                 if (GLib.find_program_in_path(shortcut.command)) {
                     let addToMenu = this.getShouldShowShortcut(shortcut.label);
@@ -725,8 +693,7 @@ var ApplicationsButton = GObject.registerClass(
                     y_align: St.Align.START
                 });
             }
-            
-     
+          
             //create new section for Power, Lock, Logout, Suspend Buttons
             this.actionsBox = new PopupMenu.PopupBaseMenuItem({
                 reactive: false,
@@ -837,8 +804,6 @@ var ApplicationsButton = GObject.registerClass(
                 		}
                 	}
                 }
-        //this.externalDevicesBox.visible = places.length > 0;
-   
     	}
 
         //used to check if a shortcut should be displayed
@@ -920,29 +885,11 @@ var ApplicationsButton = GObject.registerClass(
         _onSearchBoxKeyPress(searchBox, event) {
             let symbol = event.get_key_symbol();
             if (!searchBox.isEmpty() && searchBox.hasKeyFocus()) {
-                if (symbol == Clutter.Tab && !this._tabbedOnce) {
-                    this._firstAppItem.setFakeActive(false);
-                    this._firstAppItem.grabKeyFocus();
-                    this._tabbedOnce = true;
-                    return Clutter.EVENT_STOP;
-                } else if (symbol == Clutter.ISO_Left_Tab) {
-                    this._firstAppItem.setFakeActive(false);
-                } else if (symbol == Clutter.Up) {
-                    this._firstAppItem.setFakeActive(false);
-                } else if (symbol == Clutter.Down) {
-                    this._firstAppItem.setFakeActive(false);
-                    this._firstAppItem.grabKeyFocus();
-                    return Clutter.EVENT_STOP;
-                }
-            }
-
+               if (symbol == Clutter.Up) {
+                    this.newSearch.getTopResult().actor.grab_key_focus();
+            	}
+    	    }
             return Clutter.EVENT_PROPAGATE;
-        }
-
-        _onSearchBoxKeyFocusIn(searchBox) {
-            if (!searchBox.isEmpty() && this._firstAppItem && !this._tabbedOnce) {
-                this._firstAppItem.setFakeActive(true);
-            }
         }
 
         _onSearchBoxChanged(searchBox, searchString) {
@@ -958,52 +905,17 @@ var ApplicationsButton = GObject.registerClass(
             	this.newSearch._reset();               	
             	this.newSearch._clearDisplay();              	
             	this.newSearch.actor.hide();
-            	//this.rightBox.show();
-    	        //this.hideForSearch(false);
+
             }            
             else{        
             	this._clearApplicationsBox(); 
-            	//this.leftBox.set_width(500);
-            	//this.hideForSearch(true);
-                /*let pattern = searchString.replace(/^\s+/g, '')
-                	.replace(/\s+$/g, '')
-                	.toLowerCase();
-               this._tabbedOnce = false;
-               if (pattern.length > 0) {
-		        let appResults = this._listApplications(null, pattern);
-		        if (appResults.length) {
-		            this._firstApp = appResults[0];
-		        }
-		        if (this._firstAppItem) {
-		            this._firstAppItem.setFakeActive(false);
-		        }
-
-		        this._displayButtons(appResults.slice(0,10));
-		        this.updateStyle();    
-
-		        this._firstAppItem = this._applicationsButtons.get(this._firstApp);
-		        if (this._firstAppItem) {
-		            this._firstAppItem.setFakeActive(true);
-		        }
-            	}*/
-            	
 		this.newSearch = new ArcSearch.SearchResults(this);
              	this.applicationsBox.add(this.newSearch.actor);      
  		this.newSearch.actor.show();         
     	    	this.newSearch.setTerms([searchString]);   
                 this.backButton.actor.show();
 	        this.viewProgramsButton.actor.hide();             	    
-            }
-            	
-
-
-        }
-
-        _onSearchBoxActive() {
-            if (this._firstApp) {
-                let item = this._applicationsButtons.get(this._firstApp);
-                item.activate();
-            }
+            }            	
         }
 
         // Display the menu
@@ -1011,16 +923,14 @@ var ApplicationsButton = GObject.registerClass(
             this.mainBox.hide();
             if (this._settings.get_enum('visible-menus') != Constants.visibleMenus.SYSTEM_ONLY) {
                 this._applicationsButtons.clear();
-                 this._loadCategories();
+                this._loadCategories();
                 if(this._settings.get_boolean('enable-pinned-apps'))
                 	this._loadFavorites();
                 else
                 	this._displayCategories();
-               
                 this.backButton.actor.hide();
                 if(this.vertSep!=null)
-                  this.vertSep.queue_repaint();
-                
+                    this.vertSep.queue_repaint(); 
             }
         }
 
