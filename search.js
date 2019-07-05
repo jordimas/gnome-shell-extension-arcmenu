@@ -35,7 +35,7 @@ const ExtensionUtils = imports.misc.extensionUtils;
 const Me = ExtensionUtils.getCurrentExtension();
 
 var MAX_LIST_SEARCH_RESULTS_ROWS = 30;
-var MAX_GRID_SEARCH_RESULTS_ROWS = 30;
+var MAX_APPS_SEARCH_RESULTS_ROWS = 10;
 
 
 var ArcSearchMaxWidthBin = GObject.registerClass(
@@ -63,14 +63,11 @@ var SearchResult = class {
         this.metaInfo = metaInfo;
         this._resultsView = resultsView;
 
-        this.actor = new St.Button({ reactive: true,
-                                     can_focus: true,
-                                     track_hover: true,
-                                     x_align: St.Align.START,
-                                     y_fill: true,x_fill:true});
-
-        this.actor._delegate = this;
-        this.actor.connect('clicked', this.activate.bind(this));
+        this.menuItem = new PopupMenu.PopupBaseMenuItem();
+        if(this._button._settings.get_boolean('enable-custom-arc-menu'))
+            this.menuItem.actor.add_style_class_name('arc-menu');
+       	this.menuItem._delegate = this;
+        this.menuItem.connect('activate', this.activate.bind(this));
   
     }
 
@@ -86,35 +83,30 @@ var ListSearchResult = class extends SearchResult {
     constructor(provider, metaInfo, resultsView) {
         super(provider, metaInfo, resultsView);
         let button = resultsView._button;
-        this.actor.style_class = 'arc-search';
 
 
 
         this._termsChangedId = 0;
 
         let titleBox = new PopupMenu.PopupBaseMenuItem ();
-        if(button._settings.get_boolean('enable-custom-arc-menu'))
-            titleBox.actor.add_style_class_name('arc-menu');
 
 
         // An icon for, or thumbnail of, content
         let icon = this.metaInfo['createIcon'](this.ICON_SIZE);
         if (icon) {
-             titleBox.actor.add_child(icon);
+             this.menuItem.actor.add_child(icon);
         }
 
         let title = new St.Label({ text: this.metaInfo['name'],        x_expand: true });
-        titleBox.actor.add_child(title);
+        this.menuItem.actor.add_child(title);
 
-        this.actor.label_actor = title;
 
         if (this.metaInfo['description']&&  this.provider.appInfo.get_name() == "Calculator") {
 
             title.text = this.metaInfo['name'] + "   " + this.metaInfo['description'];
 
         }
-        this.actor.set_child(titleBox.actor);
-        this.actor.connect('destroy', this._onDestroy.bind(this));
+        this.menuItem.connect('destroy', this._onDestroy.bind(this));
     }
 
     get ICON_SIZE() {
@@ -138,11 +130,10 @@ var AppSearchResult = class extends SearchResult {
         super(provider, metaInfo, resultsView);
         let button = resultsView._button;
         let popup = new PopupMenu.PopupBaseMenuItem();
-        if(button._settings.get_boolean('enable-custom-arc-menu'))
-                popup.actor.add_style_class_name('arc-menu');
+ 
         this.icon = this.metaInfo['createIcon'](16);
         if (this.icon) {
-              popup.actor.add_child(this.icon);
+              this.menuItem.actor.add_child(this.icon);
         }             
         let label = new St.Label({
             text: this.metaInfo['name'],
@@ -151,10 +142,9 @@ var AppSearchResult = class extends SearchResult {
             y_align: Clutter.ActorAlign.CENTER
         });
 
-        this.actor.set_child(popup.actor);
-   
+     
        
-           popup.actor.add_child(label);
+           this.menuItem.actor.add_child(label);
 
 
     }
@@ -195,7 +185,7 @@ var SearchResultsBase = class {
     clear() {
         this._cancellable.cancel();
         for (let resultId in this._resultDisplays)
-            this._resultDisplays[resultId].actor.destroy();
+            this._resultDisplays[resultId].menuItem.destroy();
         this._resultDisplays = {};
         this._clearResultDisplay();
         this.actor.hide();
@@ -257,7 +247,7 @@ var SearchResultsBase = class {
                     let meta = metas[i];                    
                     let display = this._createResultDisplay(meta);
                     display.connect('activate', this._activateResult.bind(this));
-                    display.actor.connect('key-focus-in', this._keyFocusIn.bind(this));
+                    display.menuItem.connect('key-focus-in', this._keyFocusIn.bind(this));
                     this._resultDisplays[resultId] = display;
                 });
                 callback(true);
@@ -311,7 +301,7 @@ var ListSearchResults = class extends SearchResultsBase {
             provider.launchSearch(this._terms);
             this._button.leftClickMenu.toggle();
         });
-        this._container.add(this.providerInfo, { x_fill: true,
+        this._container.add(this.providerInfo.actor, { x_fill: true,
                                                  y_fill: false,
                                                  x_align: St.Align.START,
                                                  y_align: St.Align.START,
@@ -322,7 +312,6 @@ var ListSearchResults = class extends SearchResultsBase {
         this._container.add(this._content, { expand: true});
 
         this._resultDisplayBin.set_child(this._container);
-         //this._button.applicationsBox.add(this._container.get_children());
     }
 
     _setMoreCount(count) {
@@ -344,7 +333,7 @@ var ListSearchResults = class extends SearchResultsBase {
 
     _addItem(display) {
         //global.log(display.actor);
-        this._content.add_actor(display.actor);
+        this._content.add_actor(display.menuItem.actor);
         //this._button.applicationsBox.add(display.actor);
     }
 
@@ -366,7 +355,7 @@ var AppSearchResults = class extends SearchResultsBase {
     }
 
     _getMaxDisplayedResults() {
-         return 10;
+         return MAX_APPS_SEARCH_RESULTS_ROWS;
     }
 
     _clearResultDisplay() {
@@ -378,7 +367,7 @@ var AppSearchResults = class extends SearchResultsBase {
     }
 
     _addItem(display) {
-      this._grid.add_actor(display.actor);
+      this._grid.add_actor(display.menuItem.actor);
     }
 
     getFirstResult() {
@@ -647,51 +636,22 @@ var SearchResults = class {
         });
     }
 
-    activateDefault() {
-        // If we have a search queued up, force the search now.
-        if (this._searchTimeoutId > 0)
-            this._doSearch();
-
-        if (this._defaultResult)
-            this._defaultResult.activate();
-    }
-
     highlightDefault(highlight) {
         this._highlightDefault = highlight;
         this._setSelected(this._defaultResult, highlight);
     }
 
-    popupMenuDefault() {
-        // If we have a search queued up, force the search now.
-        if (this._searchTimeoutId > 0)
-            this._doSearch();
-
-        if (this._defaultResult)
-            this._defaultResult.actor.popup_menu();
+    getTopResult(){
+        return this._defaultResult;
     }
-
-    navigateFocus(direction) {
-        let rtl = this.actor.get_text_direction() == Clutter.TextDirection.RTL;
-        if (direction == St.DirectionType.TAB_BACKWARD ||
-            direction == (rtl ? St.DirectionType.RIGHT
-                              : St.DirectionType.LEFT) ||
-            direction == St.DirectionType.UP) {
-            this.actor.navigate_focus(null, direction, false);
-            return;
-        }
-
-        let from = this._defaultResult ? this._defaultResult.actor : null;
-        this.actor.navigate_focus(from, direction, false);
-    }
-
+    
     _setSelected(result, selected) {
         if (!result)
             return;
-
         if (selected) {
-            result.actor.add_style_pseudo_class('selected');
+            result.actor.add_style_pseudo_class('active');
         } else {
-            result.actor.remove_style_pseudo_class('selected');
+            result.actor.remove_style_pseudo_class('active');
         }
     }
 
@@ -707,34 +667,18 @@ var SearchResults = class {
 };
 Signals.addSignalMethods(SearchResults.prototype);
 
-var ArcSearchProviderInfo = GObject.registerClass(
-class ArcSearchProviderInfo extends St.Button {
-    _init(provider,button) {
+var ArcSearchProviderInfo = 
+class ArcSearchProviderInfo extends PopupMenu.PopupBaseMenuItem {
+    constructor(provider,button) {
+            super();
         this.provider = provider;
         this._button = button;
-        super._init({ style_class: 'arc-search',
-                      reactive: true,
-                      can_focus: true,
-                      accessible_name: provider.appInfo.get_name(),
-                      track_hover: true,x_fill:true });
-
-        let icon = new St.Icon({ icon_size: 20,
-                                 gicon: provider.appInfo.get_icon()
-                                 });
-
-        let detailsBox = new PopupMenu.PopupBaseMenuItem ();
         if(button._settings.get_boolean('enable-custom-arc-menu'))
-                detailsBox.actor.add_style_class_name('arc-menu');
+             this.actor.add_style_class_name('arc-menu');
         this.nameLabel = new St.Label({ text: provider.appInfo.get_name() + ":",
                                        x_align: Clutter.ActorAlign.START,x_expand: true});
         this._moreText="";
-        detailsBox.actor.add_child(this.nameLabel);
-        
-         this.set_child(detailsBox.actor);
-    }
-
-    get PROVIDER_ICON_SIZE() {
-        return 22;
+        this.actor.add_child(this.nameLabel);
     }
 
     animateLaunch() {
@@ -746,8 +690,6 @@ class ArcSearchProviderInfo extends St.Button {
         this._moreText= ngettext("%d more", "%d more", count).format(count);
         if(count>0)
             this.nameLabel.text = this.provider.appInfo.get_name() + "  ("+ this._moreText+")";
-        //this._moreLabel.text = ngettext("%d more", "%d more", count).format(count);
-        //this._moreLabel.visible = count > 0;
     }
-});
+};
 
