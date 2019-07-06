@@ -60,11 +60,10 @@ const appSys = Shell.AppSystem.get_default();
 var ApplicationsButton = GObject.registerClass(
     class ApplicationsButton extends TwoMenuButton.TwoMenuButton {
         // Initialize the menu
-        _init(settings, panel) {
+        _init(settings) {
     	    super._init(settings);
             this._settings = settings;
             this._session = new GnomeSession.SessionManager();
-            this._panel = panel;
             this.createMenu();   
             if (this.sourceActor)
             	this._keyReleaseId = this.sourceActor.connect('key-release-event',
@@ -98,7 +97,7 @@ var ApplicationsButton = GObject.registerClass(
                     this.reloadFlag = true;
                 }
             });
-            this._notifyHeightId = this._panel.actor.connect('notify::height', () => {
+            this._notifyHeightId = Main.panel.actor.connect('notify::height', () => {
                 this._redisplay();
             });
             this.updateStyle();
@@ -106,8 +105,8 @@ var ApplicationsButton = GObject.registerClass(
         toggleMenu() {
            if(this.rightClickMenu.isOpen)
     	        this.rightClickMenu.toggle();	            
-	       this._panel.menuManager.removeMenu(this.rightClickMenu);              
-    	   this._panel.menuManager.addMenu(this.leftClickMenu); 
+	       Main.panel.menuManager.removeMenu(this.rightClickMenu);              
+    	   Main.panel.menuManager.addMenu(this.leftClickMenu); 
      	   this.leftClickMenu.toggle();
            if(this.leftClickMenu.isOpen)
      	    	this.mainBox.grab_key_focus();
@@ -215,7 +214,7 @@ var ApplicationsButton = GObject.registerClass(
                 this._hidingId = 0;
             }
             if (this._notifyHeightId > 0) {
-                this._panel.actor.disconnect(this._notifyHeightId);
+                Main.panel.actor.disconnect(this._notifyHeightId);
                 this._notifyHeightId = 0;
             }
             if (this._installedChangedId > 0) {
@@ -307,12 +306,6 @@ var ApplicationsButton = GObject.registerClass(
             super._onOpenStateChanged(menu, open);
         }
         _redisplayRightSide(){
-     	    if(this.network!=null)
-     		this.network.destroy();
-     	    if(this.computer!=null)
-     		this.computer.destroy();
-	    if(this.placesManager!=null){
-	        this.placesManager.destroy();} 
             this.rightBox.destroy_all_children();
             this._createRightBox();
             this.updateStyle();
@@ -635,14 +628,22 @@ var ApplicationsButton = GObject.registerClass(
 		x_fill: true,
 		y_fill: false,
 		expand:false
-	    });      
+        });      
+        
+        this._sections = { };
+       
   	    this.placesManager = new PlaceDisplay.PlacesManager();
 	    for (let i = 0; i < Constants.SECTIONS.length; i++) {
-   		let id = Constants.SECTIONS[i];
-    		this.placesManager.connect(`${id}-updated`, () => {
-			this._redisplayRightSide();
- 		});
-    	    	this._createPlaces(id);
+            let id = Constants.SECTIONS[i];
+            this._sections[id] = new St.BoxLayout({
+                vertical: true
+            });	
+            this.placesManager.connect(`${id}-updated`, () => {
+                this._redisplayPlaces(id);
+ 		    });
+
+            this._createPlaces(id);
+            this.externalDevicesBox.add(this._sections[id]);
 	    }
 
             //Add Software Shortcuts to menu (Software, Settings, Tweaks, Terminal)
@@ -724,50 +725,51 @@ var ApplicationsButton = GObject.registerClass(
             });
 
         }
-
+        _redisplayPlaces(id) {
+            this._sections[id].destroy_all_children();
+            this._createPlaces(id);
+        }
     	_createPlaces(id) {
 	      	let places = this.placesManager.get(id);
-                if (this._settings.get_boolean('show-bookmarks'))
-                {
-			if(this.placesManager.get('bookmarks').length>0)
-				this.bookmarksShorctus = true;
+                if (this._settings.get_boolean('show-bookmarks')){
+			        if(this.placesManager.get('bookmarks').length>0)
+				        this.bookmarksShorctus = true;
                 	if(id=='bookmarks' && places.length>0){
-
-        			for (let i = 0; i < places.length; i++){
-				let item = new PlaceDisplay.PlaceMenuItem(places[i],this);
-			    	this.externalDevicesBox.add(item.actor); 
-			    	} 
-			    	if(this.bookmarksShorctus && this.softwareShortcuts){
-			     		this.externalDevicesBox.add(this._createHorizontalSeparator(true), {
-						x_expand: true,
-						y_expand:false,
-						x_fill: true,
-						y_fill: false,
-						y_align: St.Align.END
-					});  
+                        for (let i = 0; i < places.length; i++){
+                            let item = new PlaceDisplay.PlaceMenuItem(places[i],this);
+                            this._sections[id].add(item.actor); 
+                        } 
+                        if(this.bookmarksShorctus && this.softwareShortcuts){
+                            this._sections[id].add(this._createHorizontalSeparator(true), {
+                                x_expand: true,
+                                y_expand:false,
+                                x_fill: true,
+                                y_fill: false,
+                                y_align: St.Align.END
+                            });  
                 		}
                 	}
-
                 }
                 if (this._settings.get_boolean('show-external-devices')){
                 	if(id!='bookmarks'){
-		        	for (let i = 0; i < places.length; i++){
-				let item = new PlaceDisplay.PlaceMenuItem(places[i],this);
-			    	this.externalDevicesBox.add(item.actor); 
-			    	this.externalDevicesShorctus=true; }
+                        for (let i = 0; i < places.length; i++){
+                            let item = new PlaceDisplay.PlaceMenuItem(places[i],this);
+                            this._sections[id].add(item.actor); 
+                            this.externalDevicesShorctus=true; 
+                        }
 			    	if(id=='network'){ 
-					if(this.externalDevicesShorctus &&  (this.bookmarksShorctus || this.softwareShortcuts)){
-		    		     		this.externalDevicesBox.add(this._createHorizontalSeparator(true), {
-							x_expand: true,
-							y_expand:false,
-							x_fill: true,
-							y_fill: false,
-							y_align: St.Align.END
-						});  
-					}
-                		}
-                	}
+                        if(this.externalDevicesShorctus &&  (this.bookmarksShorctus || this.softwareShortcuts)){
+                            this._sections[id].add(this._createHorizontalSeparator(true), {
+                                x_expand: true,
+                                y_expand:false,
+                                x_fill: true,
+                                y_fill: false,
+                                y_align: St.Align.END
+                            });  
+                        }
+                    }
                 }
+            }
     	}
 
         //used to check if a shortcut should be displayed

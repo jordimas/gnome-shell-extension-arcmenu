@@ -33,13 +33,12 @@
 // Import Libraries
 const Main = imports.ui.main;
 const Dash = imports.ui.dash;
-const ExtensionSystem = imports.ui.extensionSystem;
-const ExtensionUtils = imports.misc.extensionUtils;
 const AppDisplay = imports.ui.appDisplay;
 const Gtk = imports.gi.Gtk;
 const Gdk = imports.gi.Gdk;
 
 const Me = imports.misc.extensionUtils.getCurrentExtension();
+const Menu = Me.imports.menu;
 const MW = Me.imports.menuWidgets;
 const Controller = Me.imports.controller;
 const Convenience = Me.imports.convenience;
@@ -48,7 +47,6 @@ const Convenience = Me.imports.convenience;
 let settings;
 let settingsControllers;
 let oldGetAppFromSource;
-let extensionChangedId;
 
 // Initialize menu language translations
 function init(metadata) {
@@ -58,8 +56,13 @@ function init(metadata) {
 // Enable the extension
 function enable() {
     settings = Convenience.getSettings(Me.metadata['settings-schema']);
-    settings.connect('changed::multi-monitor', () => _onMultiMonitorChange());
-    settingsControllers = [];
+    appsMenuButton = new Menu.ApplicationsButton(settings);
+
+    // Create a Menu Controller that is responsible for controlling
+    // and managing the menu as well as the menu button.
+    settingsController = new Controller.MenuSettingsController(settings, appsMenuButton);
+    settingsController.enableButton();
+    settingsController.bindSettingsChanges();
 
     oldGetAppFromSource = Dash.getAppFromSource;
     Dash.getAppFromSource = getAppFromSource;
@@ -91,8 +94,11 @@ function disable() {
     settingsControllers = null;
 
     settings.run_dispose();
+
+    settingsController =  null;
     settings = null;
-    
+    appsMenuButton = null;
+    activitiesButton = null;
     Dash.getAppFromSource = oldGetAppFromSource;
     oldGetAppFromSource = null;
 }
