@@ -29,6 +29,7 @@ const ExtensionUtils = imports.misc.extensionUtils;
 const Me = ExtensionUtils.getCurrentExtension();
 const Constants = Me.imports.constants;
 const Helper = Me.imports.helper;
+const Menu = Me.imports.menu;
 const ExtensionSystem = imports.ui.extensionSystem;
 const Gettext = imports.gettext.domain(Me.metadata['gettext-domain']);
 const _ = Gettext.gettext;
@@ -39,12 +40,13 @@ const Gdk = imports.gi.Gdk;
  * the settings changes of the Arc Menu.
  */
 var MenuSettingsController = class {
-    constructor(settings, menuButton) {
+    constructor(settings, panel) {
         this._settings = settings;
-        this._menuButton = menuButton;
-        this._activitiesButton = Main.panel.statusArea.activities;
+        this.panel = panel;
+        this._activitiesButton = this.panel.statusArea.activities;
 
-        // Create a Hot Corner Manager, a Menu Keybinder as well as a Keybinding Manager
+        // Create the button, a Hot Corner Manager, a Menu Keybinder as well as a Keybinding Manager
+        this._menuButton = new Menu.ApplicationsButton(settings, panel);
         this._hotCornerManager = new Helper.HotCornerManager(this._settings);
         this._menuHotKeybinder = new Helper.MenuHotKeybinder(() => {
             this._menuButton.toggleMenu();        
@@ -278,36 +280,36 @@ var MenuSettingsController = class {
         // Thanks to lestcape @github.com for the refinement of this method.
         return (this._activitiesButton &&
             this._activitiesButton.container &&
-            Main.panel._leftBox.contains(this._activitiesButton.container));
+            this.panel._leftBox.contains(this._activitiesButton.container));
     }
 
     // Remove the activities button from the main panel
     _removeActivitiesButtonFromMainPanel() {
         if (this._isActivitiesButtonPresent()) {
-            Main.panel._leftBox.remove_child(this._activitiesButton.container);
+            this.panel._leftBox.remove_child(this._activitiesButton.container);
         }
     }
 
     // Add or restore the activities button on the main panel
     _addActivitiesButtonToMainPanel() {
-        if (!this._isActivitiesButtonPresent()) {
+        if (this.panel == Main.panel && !this._isActivitiesButtonPresent()) {
             // Retsore the activities button at the default position
-            Main.panel._leftBox.add_child(this._activitiesButton.container);
-            Main.panel._leftBox.set_child_at_index(this._activitiesButton.container, 0);
+            this.panel._leftBox.add_child(this._activitiesButton.container);
+            this.panel._leftBox.set_child_at_index(this._activitiesButton.container, 0);
         }
     }
 
     // Add the menu button to the main panel
     _addMenuButtonToMainPanel() {
         let [menuPosition, order] = this._getMenuPositionTuple();
-        Main.panel.addToStatusArea('arc-menu', this._menuButton, order, menuPosition);
+        this.panel.addToStatusArea('arc-menu', this._menuButton, order, menuPosition);
     }
 
     // Remove the menu button from the main panel
     _removeMenuButtonFromMainPanel() {
-        Main.panel.menuManager.removeMenu(this._menuButton.leftClickMenu);
-        Main.panel.menuManager.removeMenu(this._menuButton.rightClickMenu);
-        Main.panel.statusArea['arc-menu'] = null;
+        this.panel.menuManager.removeMenu(this._menuButton.leftClickMenu);
+        this.panel.menuManager.removeMenu(this._menuButton.rightClickMenu);
+        this.panel.statusArea['arc-menu'] = null;
     }
 
     // Enable the menu button
@@ -317,13 +319,14 @@ var MenuSettingsController = class {
     }
 
     // Disable the menu button
-    disableButton() {
+    _disableButton() {
         this._removeMenuButtonFromMainPanel();
         this._addActivitiesButtonToMainPanel(); // restore the activities button
+        this._menuButton._onDestroy();
     }
 
     _isButtonEnabled() {
-        return Main.panel.statusArea['arc-menu'] !== null;
+        return this.panel.statusArea['arc-menu'] !== null;
     }
 
     // Destroy this object
