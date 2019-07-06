@@ -51,6 +51,7 @@ class PlaceMenuItem extends PopupMenu.PopupBaseMenuItem {
         this.actor.add_child(this._icon);
         if(info.name.length>=20)
             info.name = info.name.slice(0,20) + "...";
+            
         this._label = new St.Label({ text: info.name, x_expand: true });
         this.actor.add_child(this._label);
 
