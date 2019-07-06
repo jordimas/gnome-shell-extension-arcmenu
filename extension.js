@@ -57,15 +57,6 @@ function init(metadata) {
 
 // Enable the extension
 function enable() {
-    // The dash to panel extension might get enabled after this extension
-    extensionChangedId = ExtensionSystem.connect('extension-state-changed', (data, extension) => {
-        if (extension.uuid === 'dash-to-panel@jderose9.github.com') {
-            if (extension.state === 1) {
-                _enableButtons(settings);
-            }
-        }
-    });
-
     settings = Convenience.getSettings(Me.metadata['settings-schema']);
     settings.connect('changed::multi-monitor', () => _onMultiMonitorChange());
     settingsControllers = [];
@@ -73,13 +64,28 @@ function enable() {
     oldGetAppFromSource = Dash.getAppFromSource;
     Dash.getAppFromSource = getAppFromSource;
 
-    _enableButtons(settings);
+    _enableButtons();
+    
+    // dash to panel might get enabled after Arc-Menu
+    extensionChangedId = ExtensionSystem.connect('extension-state-changed', (data, extension) => {
+        if (extension.uuid === 'dash-to-panel@jderose9.github.com' && extension.state === 1) {
+            _connectDtpSignals();
+            _enableButtons();
+        }
+    });
+
+    // dash to panel has already been enabled
+    if (global.dashToPanel) {
+        _connectDtpSignals();
+    }
 }
 
 // Disable the extension
 function disable() {
     ExtensionSystem.disconnect(extensionChangedId);
     extensionChangedId = 0;
+
+    _disconnectDtpSignals();
     
     settingsControllers.forEach(sc => _disableButton(sc));
     settingsControllers = null;
@@ -101,6 +107,17 @@ function getAppFromSource(source) {
     }
 }
 
+function _connectDtpSignals() {
+    global.dashToPanel._amPanelsResetId = global.dashToPanel.connect('panel-reset', () => _enableButtons());
+}
+
+function _disconnectDtpSignals() {
+    if (global.dashToPanel && global.dashToPanel._amPanelsResetId) {
+        global.dashToPanel.disconnect(global.dashToPanel._amPanelsResetId);
+        delete global.dashToPanel._amPanelsResetId;
+    }
+}
+
 function _onMultiMonitorChange() {
     if (!settings.get_boolean('multi-monitor')) {
         for (let i = settingsControllers.length - 1; i >= 0; --i) {
@@ -112,12 +129,12 @@ function _onMultiMonitorChange() {
         }
     }
 
-    _enableButtons(settings);
+    _enableButtons();
 }
 
-function _enableButtons(settings) {
+function _enableButtons() {
     (settings.get_boolean('multi-monitor') && global.dashToPanel ? 
-     global.dashToPanel.panels : 
+     global.dashToPanel.panels.map(pw => pw.panel) : 
      [Main.panel]).forEach(panel => {
         if (settingsControllers.filter(sc => sc.panel == panel).length)
             return;
