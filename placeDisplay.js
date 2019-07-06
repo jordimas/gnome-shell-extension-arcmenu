@@ -39,7 +39,7 @@ const Hostname1Iface = '<node> \
 </node>';
 const Hostname1 = Gio.DBusProxy.makeProxyWrapper(Hostname1Iface);
 
-class PlaceMenuItem extends PopupMenu.PopupBaseMenuItem {
+var PlaceMenuItem = class PlaceMenuItem extends PopupMenu.PopupBaseMenuItem {
     constructor(info,button) {
         super();
         this._info = info;
@@ -51,8 +51,7 @@ class PlaceMenuItem extends PopupMenu.PopupBaseMenuItem {
         this.actor.add_child(this._icon);
         if(info.name.length>=20)
             info.name = info.name.slice(0,20) + "...";
-            
-        this._label = new St.Label({ text: info.name, x_expand: true });
+        this._label = new St.Label({ text: info.name, x_expand: true});
         this.actor.add_child(this._label);
 
         if (info.isRemovable()) {
@@ -90,7 +89,7 @@ class PlaceMenuItem extends PopupMenu.PopupBaseMenuItem {
     }
 }
 
-class PlaceInfo {
+var PlaceInfo = class PlaceInfo {
     constructor() {
         this._init.apply(this, arguments);
     }
@@ -211,7 +210,7 @@ class PlaceInfo {
 }
 Signals.addSignalMethods(PlaceInfo.prototype);
 
-class RootInfo extends PlaceInfo {
+var RootInfo = class RootInfo extends PlaceInfo {
     _init() {
         super._init('devices', Gio.File.new_for_path('/'), _('Computer'));
 
@@ -251,7 +250,7 @@ class RootInfo extends PlaceInfo {
 }
 
 
-class PlaceDeviceInfo extends PlaceInfo {
+var PlaceDeviceInfo = class PlaceDeviceInfo extends PlaceInfo {
     _init(kind, mount) {
         this._mount = mount;
         super._init(kind, mount.get_root(), mount.get_name());
@@ -302,7 +301,7 @@ class PlaceDeviceInfo extends PlaceInfo {
     }
 }
 
-class PlaceVolumeInfo extends PlaceInfo {
+var PlaceVolumeInfo = class PlaceVolumeInfo extends PlaceInfo {
     _init(kind, volume) {
         this._volume = volume;
         super._init(kind, volume.get_activation_root(), volume.get_name());

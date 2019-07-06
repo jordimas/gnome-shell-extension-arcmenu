@@ -72,11 +72,7 @@ var ApplicationsButton = GObject.registerClass(
         }
         createMenu(){
             this.vertSep=null;
-            this.currentMenu = Constants.CURRENT_MENU.FAVORITES;                
-                                
-            
-                                
-                                
+            this.currentMenu = Constants.CURRENT_MENU.FAVORITES;                          
             this.actor.accessible_role = Atk.Role.LABEL;            
             this._menuButtonWidget = new MW.MenuButtonWidget();
             this.actor.add_actor(this._menuButtonWidget.actor);
@@ -105,9 +101,6 @@ var ApplicationsButton = GObject.registerClass(
                 this._redisplay();
             });
             this.updateStyle();
- 
-
-        
         }
         toggleMenu() {
            if(this.rightClickMenu.isOpen)
@@ -126,11 +119,6 @@ var ApplicationsButton = GObject.registerClass(
             this.mainBox.set_height(this._settings.get_int('menu-height'));
             this._redisplay();
             this._redisplayRightSide();
-            //check to see if rightbox or leftbox is greater than mainBox              
-            /*if(this.rightBox.get_height()>this.mainBox.get_height())
-                this.mainBox.set_height(this.rightBox.get_height()+35);   
-            if(this.leftBox.get_height()>this.mainBox.get_height())
-               this.mainBox.set_height(this.leftBox.get_height()+35); */
         }
         updateStyle(){
             if(this._settings.get_boolean('enable-custom-arc-menu')){
@@ -318,6 +306,12 @@ var ApplicationsButton = GObject.registerClass(
             super._onOpenStateChanged(menu, open);
         }
         _redisplayRightSide(){
+     	    if(this.network!=null)
+     		this.network.destroy();
+     	    if(this.computer!=null)
+     		this.computer.destroy();
+	    if(this.placesManager!=null){
+	        this.placesManager.destroy();} 
             this.rightBox.destroy_all_children();
             this._createRightBox();
             this.updateStyle();
@@ -437,21 +431,6 @@ var ApplicationsButton = GObject.registerClass(
 
             }
             this.updateStyle();
-        }
-        // Scroll to a specific button (menu item) in the applications scroll view
-        scrollToButton(button) {
-            let appsScrollBoxAdj = this.applicationsScrollBox.get_vscroll_bar().get_adjustment();
-            let appsScrollBoxAlloc = this.applicationsScrollBox.get_allocation_box();
-            let currentScrollValue = appsScrollBoxAdj.get_value();
-            let boxHeight = appsScrollBoxAlloc.y2 - appsScrollBoxAlloc.y1;
-            let buttonAlloc = button.actor.get_allocation_box();
-            let newScrollValue = currentScrollValue;
-            if (currentScrollValue > buttonAlloc.y1 - 10)
-                newScrollValue = buttonAlloc.y1 - 10;
-            if (boxHeight + currentScrollValue < buttonAlloc.y2 + 10)
-                newScrollValue = buttonAlloc.y2 - boxHeight + 10;
-            if (newScrollValue != currentScrollValue)
-                appsScrollBoxAdj.set_value(newScrollValue);
         }
 
         // Create the menu layout
@@ -610,17 +589,16 @@ var ApplicationsButton = GObject.registerClass(
 	    this.rightBox.add(this.shortcutsScrollBox);
             // Add place shortcuts to menu (Home,Documents,Downloads,Music,Pictures,Videos)
             this._loadPlaces();
-            
             // add Home and Network shortcuts           
             if(this._settings.get_boolean('show-computer-shortcut')){
-      		this.placesShortcuts=true;      
-        	var computer = new PlaceDisplay.RootInfo();
-            	this.shorcutsBox.add_actor(new PlaceDisplay.PlaceMenuItem(computer,this).actor);
+      		this.placesShortcuts=true;  
+        	this.computer = new PlaceDisplay.RootInfo();
+            	this.shorcutsBox.add_actor(new PlaceDisplay.PlaceMenuItem(this.computer,this).actor);
              }
              if(this._settings.get_boolean('show-network-shortcut')){
              	this.placesShortcuts=true;
-            	var network = new PlaceDisplay.PlaceInfo('network',Gio.File.new_for_uri('network:///'), _('Network'),'network-workgroup-symbolic');
-             	this.shorcutsBox.add_actor(new PlaceDisplay.PlaceMenuItem(network,this).actor);
+            	this.network = new PlaceDisplay.PlaceInfo('network',Gio.File.new_for_uri('network:///'), _('Network'),'network-workgroup-symbolic');
+             	this.shorcutsBox.add_actor(new PlaceDisplay.PlaceMenuItem(this.network,this).actor);
             }
             //draw bottom right horizontal separator + logic to determine if should show
             let shouldDraw = false;
@@ -656,12 +634,12 @@ var ApplicationsButton = GObject.registerClass(
 		x_fill: true,
 		y_fill: false,
 		expand:false
-	    });          
+	    });      
   	    this.placesManager = new PlaceDisplay.PlacesManager();
 	    for (let i = 0; i < Constants.SECTIONS.length; i++) {
    		let id = Constants.SECTIONS[i];
     		this.placesManager.connect(`${id}-updated`, () => {
-			this._redisplayPlaces();
+			this._redisplayRightSide();
  		});
     	    	this._createPlaces(id);
 	    }
@@ -745,21 +723,6 @@ var ApplicationsButton = GObject.registerClass(
             });
 
         }
-        
-    	_redisplayPlaces() {
-		this.externalDevicesBox.destroy_all_children();
-		this.externalDeviceCount=0;
-		this.placesManager = new PlaceDisplay.PlacesManager();
-		for (let i = 0; i < Constants.SECTIONS.length; i++) {
-	   		 let id = Constants.SECTIONS[i];
-	    		this.placesManager.connect(`${id}-updated`, () => {
-			this._redisplayPlaces(id);
-	   	 	});
-
-	    		this._createPlaces(id);
-	 	}
-	 	this.updateStyle();
-    	}
 
     	_createPlaces(id) {
 	      	let places = this.placesManager.get(id);
@@ -819,6 +782,21 @@ var ApplicationsButton = GObject.registerClass(
             }
       	    return addToMenu;
         }
+        // Scroll to a specific button (menu item) in the applications scroll view
+        scrollToButton(button) {
+            let appsScrollBoxAdj = this.applicationsScrollBox.get_vscroll_bar().get_adjustment();
+            let appsScrollBoxAlloc = this.applicationsScrollBox.get_allocation_box();
+            let currentScrollValue = appsScrollBoxAdj.get_value();
+            let boxHeight = appsScrollBoxAlloc.y2 - appsScrollBoxAlloc.y1;
+            let buttonAlloc = button.actor.get_allocation_box();
+            let newScrollValue = currentScrollValue;
+            if (currentScrollValue > buttonAlloc.y1 - 10)
+                newScrollValue = buttonAlloc.y1 - 10;
+            if (boxHeight + currentScrollValue < buttonAlloc.y2 + 10)
+                newScrollValue = buttonAlloc.y2 - boxHeight + 10;
+            if (newScrollValue != currentScrollValue)
+                appsScrollBoxAdj.set_value(newScrollValue);
+        }
         
         // Handle key press events on the mainBox to support the "type-away-feature"
         _onMainBoxKeyPress(mainBox, event) {
@@ -868,17 +846,13 @@ var ApplicationsButton = GObject.registerClass(
         _onSearchBoxCleared() {
             this._clearApplicationsBox();
             if(this._settings.get_boolean('enable-pinned-apps')){
-             this.currentMenu = Constants.CURRENT_MENU.FAVORITES;
-             this._loadFavorites();
-            }
-            	
+               this.currentMenu = Constants.CURRENT_MENU.FAVORITES;
+               this._loadFavorites();
+            }	
             else{
-            this.currentMenu = Constants.CURRENT_MENU.CATEGORIES;
-            this._displayCategories();
-            
+               this.currentMenu = Constants.CURRENT_MENU.CATEGORIES;
+               this._displayCategories();
             }
-        	
-           
             this.backButton.actor.hide();
             this.viewProgramsButton.actor.show();
         }
@@ -897,15 +871,11 @@ var ApplicationsButton = GObject.registerClass(
             if(this.currentMenu != Constants.CURRENT_MENU.SEARCH_RESULTS){              
             	this.currentMenu = Constants.CURRENT_MENU.SEARCH_RESULTS;        
             }
-            if(searchBox.isEmpty()){   
-               	this._clearApplicationsBox();
-                this._loadFavorites();
-                this.updateStyle();                
+            if(searchBox.isEmpty()){          
             	this.searchBox.clear();                 	
             	this.newSearch._reset();               	
             	this.newSearch._clearDisplay();              	
             	this.newSearch.actor.hide();
-
             }            
             else{        
             	this._clearApplicationsBox(); 
@@ -990,7 +960,7 @@ var ApplicationsButton = GObject.registerClass(
 	        this.viewProgramsButton.actor.hide();
 	}
         // Get a list of applications for the specified category or search query
-        _listApplications(category_menu_id, pattern) {
+        _listApplications(category_menu_id) {
             let applist;
 
             // Get applications in a category or all categories
@@ -1001,43 +971,10 @@ var ApplicationsButton = GObject.registerClass(
                 for (let directory in this.applicationsByCategory)
                     applist = applist.concat(this.applicationsByCategory[directory]);
             }
-
-            let res; //Results array
-
-            // Get search results based on pattern (query)
-            if (pattern) {
-                //this.currentMenu = Constants.CURRENT_MENU.SEARCH_RESULTS;
-                let searchResults = [];
-                for (let i in applist) {
-                    let app = applist[i];
-                    if (app.get_name != undefined) {
-		      	    let match = app.get_name().toLowerCase() + " ";
-		      	    //I believe certain Wine programs might cause search to break...added a check to see if app is a GDesktopApp
-			    if(app.get_id!=undefined){
-			    	let info = Gio.DesktopAppInfo.new(app.get_id());
-			    	if (info.get_executable()) match += info.get_executable().toLowerCase() + " ";
-			    	if (info.get_keywords()) match += info.get_keywords().toString().toLowerCase() + " ";
-			    	if (info.get_display_name()) match += info.get_display_name().toLowerCase() + " ";
-			    }
-			    if (app.get_description()) match += app.get_description().toLowerCase();
-			    let index = match.indexOf(pattern);
-			    if (index != -1) {
-			        searchResults.push([index, app]);
-			    }
-		    }
-                }
-
-                // Sort results by relevance score
-                searchResults.sort(function (a, b) {
-                    return a[0] > b[0];
-                });
-                res = searchResults.map(function (value, index) { return value[1]; });
-            } else {
-                applist.sort(function (a, b) {
-                    return a.get_name().toLowerCase() > b.get_name().toLowerCase();
-                });
-                res = applist;
-            }
-            return res;
+            applist.sort(function (a, b) {
+                return a.get_name().toLowerCase() > b.get_name().toLowerCase();
+            });
+            
+            return applist;
         }
     });
