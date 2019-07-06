@@ -296,7 +296,7 @@ var ListSearchResults = class extends SearchResultsBase {
         this._container = new St.BoxLayout({ style_class: 'arc-search',vertical: true,x_align: St.Align.START });
         this.providerInfo = new ArcSearchProviderInfo(provider,this._button);
         this.providerInfo.connect('key-focus-in', this._keyFocusIn.bind(this));
-        this.providerInfo.connect('clicked', () => {
+        this.providerInfo.connect('activate', () => {
             this.providerInfo.animateLaunch();
             provider.launchSearch(this._terms);
             this._button.leftClickMenu.toggle();
