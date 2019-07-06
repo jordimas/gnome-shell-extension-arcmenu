@@ -70,50 +70,51 @@ var MenuSettingsController = class {
     // Bind the callbacks for handling the settings changes to the event signals
     bindSettingsChanges() {
         //settings.connect('changed::visible-menus', function() { appsMenuButton.updateMenu(); });
-        this._settings.connect('changed::disable-activities-hotcorner', this._updateHotCornerManager.bind(this));
-        this._settings.connect('changed::menu-hotkey', this._updateHotKeyBinder.bind(this));
-        this._settings.connect('changed::enable-menu-keybinding', this._setMenuKeybinding.bind(this));
-        this._settings.connect('changed::position-in-panel', this._setButtonPosition.bind(this));
-        this._settings.connect('changed::menu-button-appearance', this._setButtonAppearance.bind(this));
-        this._settings.connect('changed::menu-button-text', this._setButtonText.bind(this));
-        this._settings.connect('changed::custom-menu-button-text', this._setButtonText.bind(this));
-        this._settings.connect('changed::menu-button-icon', this._setButtonIcon.bind(this));
-        this._settings.connect('changed::custom-menu-button-icon', this._setButtonIcon.bind(this));
-        this._settings.connect('changed::custom-menu-button-icon-size', this._setButtonIconSize.bind(this));
-        this._settings.connect('changed::enable-menu-button-arrow', this._setMenuButtonArrow.bind(this));
-        this._settings.connect('changed::enable-custom-arc-menu', this._enableCustomArcMenu.bind(this));
-        this._settings.connect('changed::show-home-shortcut', this._redisplayRightSide.bind(this));
-        this._settings.connect('changed::show-documents-shortcut', this._redisplayRightSide.bind(this));
-        this._settings.connect('changed::show-downloads-shortcut', this._redisplayRightSide.bind(this));
-        this._settings.connect('changed::show-music-shortcut', this._redisplayRightSide.bind(this));
-        this._settings.connect('changed::show-pictures-shortcut', this._redisplayRightSide.bind(this));
-        this._settings.connect('changed::show-videos-shortcut', this._redisplayRightSide.bind(this));
-        this._settings.connect('changed::show-computer-shortcut', this._redisplayRightSide.bind(this));
-        this._settings.connect('changed::show-network-shortcut', this._redisplayRightSide.bind(this));
-        this._settings.connect('changed::show-software-shortcut', this._redisplayRightSide.bind(this));
-        this._settings.connect('changed::show-tweaks-shortcut', this._redisplayRightSide.bind(this));
-        this._settings.connect('changed::show-terminal-shortcut', this._redisplayRightSide.bind(this));
-        this._settings.connect('changed::show-settings-shortcut', this._redisplayRightSide.bind(this));
-        this._settings.connect('changed::show-activities-overview-shortcut', this._redisplayRightSide.bind(this));
-        this._settings.connect('changed::show-logout-button', this._redisplayRightSide.bind(this));
-        this._settings.connect('changed::show-lock-button', this._redisplayRightSide.bind(this));
-        this._settings.connect('changed::show-external-devices', this._redisplayRightSide.bind(this));
-        this._settings.connect('changed::show-bookmarks', this._redisplayRightSide.bind(this));
-        this._settings.connect('changed::show-suspend-button', this._redisplayRightSide.bind(this));
-        this._settings.connect('changed::menu-height', this._updateMenuHeight.bind(this));
-        this._settings.connect('changed::pinned-apps',this._redisplayMenu.bind(this));
-        this._settings.connect('changed::separator-color',this._reloadExtension.bind(this));
-       	this._settings.connect('changed::menu-color',this._reloadExtension.bind(this));
-    	this._settings.connect('changed::border-color',this._reloadExtension.bind(this));
-    	this._settings.connect('changed::highlight-color',this._reloadExtension.bind(this));
-    	this._settings.connect('changed::menu-font-size',this._reloadExtension.bind(this));
-    	this._settings.connect('changed::menu-border-size',this._reloadExtension.bind(this));
-    	this._settings.connect('changed::menu-corner-radius',this._reloadExtension.bind(this));
-    	this._settings.connect('changed::menu-margin',this._reloadExtension.bind(this));
-    	this._settings.connect('changed::menu-arrow-size',this._reloadExtension.bind(this));
-    	this._settings.connect('changed::menu-width',this._reloadExtension.bind(this));
-    	 this._settings.connect('changed::enable-pinned-apps',this._redisplayMenu.bind(this));
-        
+        this.settingsChangeIds = [
+            this._settings.connect('changed::disable-activities-hotcorner', this._updateHotCornerManager.bind(this)),
+            this._settings.connect('changed::menu-hotkey', this._updateHotKeyBinder.bind(this)),
+            this._settings.connect('changed::enable-menu-keybinding', this._setMenuKeybinding.bind(this)),
+            this._settings.connect('changed::position-in-panel', this._setButtonPosition.bind(this)),
+            this._settings.connect('changed::menu-button-appearance', this._setButtonAppearance.bind(this)),
+            this._settings.connect('changed::menu-button-text', this._setButtonText.bind(this)),
+            this._settings.connect('changed::custom-menu-button-text', this._setButtonText.bind(this)),
+            this._settings.connect('changed::menu-button-icon', this._setButtonIcon.bind(this)),
+            this._settings.connect('changed::custom-menu-button-icon', this._setButtonIcon.bind(this)),
+            this._settings.connect('changed::custom-menu-button-icon-size', this._setButtonIconSize.bind(this)),
+            this._settings.connect('changed::enable-menu-button-arrow', this._setMenuButtonArrow.bind(this)),
+            this._settings.connect('changed::enable-custom-arc-menu', this._enableCustomArcMenu.bind(this)),
+            this._settings.connect('changed::show-home-shortcut', this._redisplayRightSide.bind(this)),
+            this._settings.connect('changed::show-documents-shortcut', this._redisplayRightSide.bind(this)),
+            this._settings.connect('changed::show-downloads-shortcut', this._redisplayRightSide.bind(this)),
+            this._settings.connect('changed::show-music-shortcut', this._redisplayRightSide.bind(this)),
+            this._settings.connect('changed::show-pictures-shortcut', this._redisplayRightSide.bind(this)),
+            this._settings.connect('changed::show-videos-shortcut', this._redisplayRightSide.bind(this)),
+            this._settings.connect('changed::show-computer-shortcut', this._redisplayRightSide.bind(this)),
+            this._settings.connect('changed::show-network-shortcut', this._redisplayRightSide.bind(this)),
+            this._settings.connect('changed::show-software-shortcut', this._redisplayRightSide.bind(this)),
+            this._settings.connect('changed::show-tweaks-shortcut', this._redisplayRightSide.bind(this)),
+            this._settings.connect('changed::show-terminal-shortcut', this._redisplayRightSide.bind(this)),
+            this._settings.connect('changed::show-settings-shortcut', this._redisplayRightSide.bind(this)),
+            this._settings.connect('changed::show-activities-overview-shortcut', this._redisplayRightSide.bind(this)),
+            this._settings.connect('changed::show-logout-button', this._redisplayRightSide.bind(this)),
+            this._settings.connect('changed::show-lock-button', this._redisplayRightSide.bind(this)),
+            this._settings.connect('changed::show-external-devices', this._redisplayRightSide.bind(this)),
+            this._settings.connect('changed::show-bookmarks', this._redisplayRightSide.bind(this)),
+            this._settings.connect('changed::show-suspend-button', this._redisplayRightSide.bind(this)),
+            this._settings.connect('changed::menu-height', this._updateMenuHeight.bind(this)),
+            this._settings.connect('changed::pinned-apps',this._redisplayMenu.bind(this)),
+            this._settings.connect('changed::separator-color',this._reloadExtension.bind(this)),
+            this._settings.connect('changed::menu-color',this._reloadExtension.bind(this)),
+            this._settings.connect('changed::border-color',this._reloadExtension.bind(this)),
+            this._settings.connect('changed::highlight-color',this._reloadExtension.bind(this)),
+            this._settings.connect('changed::menu-font-size',this._reloadExtension.bind(this)),
+            this._settings.connect('changed::menu-border-size',this._reloadExtension.bind(this)),
+            this._settings.connect('changed::menu-corner-radius',this._reloadExtension.bind(this)),
+            this._settings.connect('changed::menu-margin',this._reloadExtension.bind(this)),
+            this._settings.connect('changed::menu-arrow-size',this._reloadExtension.bind(this)),
+            this._settings.connect('changed::menu-width',this._reloadExtension.bind(this)),
+            this._settings.connect('changed::enable-pinned-apps',this._redisplayMenu.bind(this)),
+        ];
     }
     _reloadExtension(){
     	//ExtensionSystem.reloadExtension(Me);
@@ -330,6 +331,8 @@ var MenuSettingsController = class {
 
     // Destroy this object
     destroy() {
+        this.settingsChangeIds.forEach(id => this._settings.disconnect(id));
+        
         // Clean up and restore the default behaviour
         if (this._isButtonEnabled()) {
             this._disableButton();

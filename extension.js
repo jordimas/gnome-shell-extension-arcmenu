@@ -46,7 +46,6 @@ const Convenience = Me.imports.convenience;
 
 // Initialize panel button variables
 let settings;
-let multiMonitorChangeId;
 let settingsControllers;
 let oldGetAppFromSource;
 let extensionChangedId;
