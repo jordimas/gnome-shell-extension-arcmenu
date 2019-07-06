@@ -544,28 +544,6 @@ var GeneralSettingsPage = GObject.registerClass(
           menuPositionRow.add(menuPositionRightButton);
           menuPositionFrame.add(menuPositionRow);
 
-          /*
-           * Multi-monitor
-           */
-          let multiMonitorFrame = new PW.FrameBox();
-          let multiMonitorRow = new PW.FrameBoxRow();
-          let multiMonitorLabel = new Gtk.Label({
-              label: _("Display on all monitors when using Dash to Panel"),
-              use_markup: true,
-              xalign: 0,
-              hexpand: true
-          });
-
-          let multiMonitorSwitch = new Gtk.Switch({ halign: Gtk.Align.END });
-          multiMonitorSwitch.set_active(this.settings.get_boolean('multi-monitor'));
-          multiMonitorSwitch.connect('notify::active', function (check) {
-              this.settings.set_boolean('multi-monitor', check.get_active());
-          }.bind(this));
-
-          multiMonitorRow.add(multiMonitorLabel);
-          multiMonitorRow.add(multiMonitorSwitch);
-          multiMonitorFrame.add(multiMonitorRow);
-
             /*
              * Hot Corner Box
              */
@@ -679,7 +657,6 @@ var GeneralSettingsPage = GObject.registerClass(
             // add the frames
             this.add(defaultLeftBoxFrame);
             this.add(menuPositionFrame);
-            this.add(multiMonitorFrame);
             this.add(disableHotCornerFrame);
             this.add(menuKeybindingFrame);
         }

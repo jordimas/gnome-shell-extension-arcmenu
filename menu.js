@@ -60,11 +60,10 @@ const appSys = Shell.AppSystem.get_default();
 var ApplicationsButton = GObject.registerClass(
     class ApplicationsButton extends TwoMenuButton.TwoMenuButton {
         // Initialize the menu
-        _init(settings, panel) {
+        _init(settings) {
     	    super._init(settings);
             this._settings = settings;
             this._session = new GnomeSession.SessionManager();
-            this._panel = panel;
             this.createMenu();   
             if (this.sourceActor)
             	this._keyReleaseId = this.sourceActor.connect('key-release-event',
@@ -98,7 +97,7 @@ var ApplicationsButton = GObject.registerClass(
                     this.reloadFlag = true;
                 }
             });
-            this._notifyHeightId = this._panel.actor.connect('notify::height', () => {
+            this._notifyHeightId = Main.panel.actor.connect('notify::height', () => {
                 this._redisplay();
             });
             this.updateStyle();
@@ -106,8 +105,8 @@ var ApplicationsButton = GObject.registerClass(
         toggleMenu() {
            if(this.rightClickMenu.isOpen)
     	        this.rightClickMenu.toggle();	            
-	       this._panel.menuManager.removeMenu(this.rightClickMenu);              
-    	   this._panel.menuManager.addMenu(this.leftClickMenu); 
+	       Main.panel.menuManager.removeMenu(this.rightClickMenu);              
+    	   Main.panel.menuManager.addMenu(this.leftClickMenu); 
      	   this.leftClickMenu.toggle();
            if(this.leftClickMenu.isOpen)
      	    	this.mainBox.grab_key_focus();
@@ -215,7 +214,7 @@ var ApplicationsButton = GObject.registerClass(
                 this._hidingId = 0;
             }
             if (this._notifyHeightId > 0) {
-                this._panel.actor.disconnect(this._notifyHeightId);
+                Main.panel.actor.disconnect(this._notifyHeightId);
                 this._notifyHeightId = 0;
             }
             if (this._installedChangedId > 0) {
