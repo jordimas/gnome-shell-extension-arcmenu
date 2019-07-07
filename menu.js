@@ -194,6 +194,12 @@ var ApplicationsButton = GObject.registerClass(
         // Destroy the menu button
         _onDestroy() {
             if (this.leftClickMenu) {
+                if(this.network!=null)
+                    this.network.destroy();
+                if(this.computer!=null)
+                    this.computer.destroy();
+                if(this.placesManager!=null)
+                    this.placesManager.destroy();
                 this.searchBox.disconnect(this._searchBoxClearedId);
                 this.searchBox.disconnect(this._searchBoxChangedId);
                 this.searchBox.disconnect(this._searchBoxKeyPressId);
