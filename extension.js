@@ -57,15 +57,6 @@ function init(metadata) {
 
 // Enable the extension
 function enable() {
-    // The dash to panel extension might get enabled after this extension
-    extensionChangedId = ExtensionSystem.connect('extension-state-changed', (data, extension) => {
-        if (extension.uuid === 'dash-to-panel@jderose9.github.com') {
-            if (extension.state === 1) {
-                _enableButtons(settings);
-            }
-        }
-    });
-
     settings = Convenience.getSettings(Me.metadata['settings-schema']);
     settings.connect('changed::multi-monitor', () => _onMultiMonitorChange());
     settingsControllers = [];
@@ -119,13 +110,13 @@ function getAppFromSource(source) {
 }
 
 function _connectDtpSignals() {
-    global.dashToPanel._amPanelsResetId = global.dashToPanel.connect('panel-reset', () => _enableButtons());
+    global.dashToPanel._amPanelsCreatedId = global.dashToPanel.connect('panels-created', () => _enableButtons());
 }
 
 function _disconnectDtpSignals() {
-    if (global.dashToPanel && global.dashToPanel._amPanelsResetId) {
-        global.dashToPanel.disconnect(global.dashToPanel._amPanelsResetId);
-        delete global.dashToPanel._amPanelsResetId;
+    if (global.dashToPanel && global.dashToPanel._amPanelsCreatedId) {
+        global.dashToPanel.disconnect(global.dashToPanel._amPanelsCreatedId);
+        delete global.dashToPanel._amPanelsCreatedId;
     }
 }
 
