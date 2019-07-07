@@ -74,10 +74,8 @@ function enable() {
         }
     });
 
-    // dash to panel has already been enabled
-    if (global.dashToPanel) {
-        _connectDtpSignals();
-    }
+    // listen to dash to panel if it is compatible and already enabled
+    _connectDtpSignals();
 }
 
 // Disable the extension
@@ -89,8 +87,6 @@ function disable() {
     
     settingsControllers.forEach(sc => _disableButton(sc));
     settingsControllers = null;
-
-    settings.run_dispose();
 
     settings.run_dispose();
     settings = null;
@@ -110,7 +106,9 @@ function getAppFromSource(source) {
 }
 
 function _connectDtpSignals() {
-    global.dashToPanel._amPanelsCreatedId = global.dashToPanel.connect('panels-created', () => _enableButtons());
+    if (global.dashToPanel) {
+        global.dashToPanel._amPanelsCreatedId = global.dashToPanel.connect('panels-created', () => _enableButtons());
+    }
 }
 
 function _disconnectDtpSignals() {
@@ -140,14 +138,13 @@ function _enableButtons() {
      [Main.panel]).forEach(panel => {
         if (settingsControllers.filter(sc => sc.panel == panel).length)
             return;
-        let settingsController;
+
         // Create a Menu Controller that is responsible for controlling
         // and managing the menu as well as the menu button.
-        if(panel == Main.panel)
-            settingsController = new Controller.MenuSettingsController(settings, panel, true);
+        let isMainPanel = panel == Main.panel;
+        let settingsController = new Controller.MenuSettingsController(settings, panel, isMainPanel);
         
-        if (panel != Main.panel) {
-            settingsController = new Controller.MenuSettingsController(settings, panel, false);
+        if (!isMainPanel) {
             panel._amDestroyId = panel.connect('destroy', () => extensionChangedId ? _disableButton(settingsController, 1) : null);
         }
 
