@@ -140,12 +140,14 @@ function _enableButtons() {
      [Main.panel]).forEach(panel => {
         if (settingsControllers.filter(sc => sc.panel == panel).length)
             return;
-
+        let settingsController;
         // Create a Menu Controller that is responsible for controlling
         // and managing the menu as well as the menu button.
-        let settingsController = new Controller.MenuSettingsController(settings, panel);
+        if(panel == Main.panel)
+            settingsController = new Controller.MenuSettingsController(settings, panel, true);
         
         if (panel != Main.panel) {
+            settingsController = new Controller.MenuSettingsController(settings, panel, false);
             panel._amDestroyId = panel.connect('destroy', () => extensionChangedId ? _disableButton(settingsController, 1) : null);
         }
 

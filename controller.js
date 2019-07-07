@@ -40,17 +40,20 @@ const Gdk = imports.gi.Gdk;
  * the settings changes of the Arc Menu.
  */
 var MenuSettingsController = class {
-    constructor(settings, panel) {
+    constructor(settings, panel, enableHotKey) {
         this._settings = settings;
         this.panel = panel;
+        this.enableHotKey= enableHotKey;
         this._activitiesButton = this.panel.statusArea.activities;
 
         // Create the button, a Hot Corner Manager, a Menu Keybinder as well as a Keybinding Manager
         this._menuButton = new Menu.ApplicationsButton(settings, panel);
         this._hotCornerManager = new Helper.HotCornerManager(this._settings);
-        this._menuHotKeybinder = new Helper.MenuHotKeybinder(() => {
-            this._menuButton.toggleMenu();        
-        });
+        if(this.enableHotKey){
+            this._menuHotKeybinder = new Helper.MenuHotKeybinder(() => {
+                this._menuButton.toggleMenu();        
+            });
+        }
         this._keybindingManager = new Helper.KeybindingManager(this._settings);
 
         this._applySettings();
@@ -144,12 +147,14 @@ var MenuSettingsController = class {
     }
 
     _updateHotKeyBinder() {
-        let hotKeyPos = this._settings.get_enum('menu-hotkey');
-        if (hotKeyPos !== Constants.HOT_KEY.Undefined) {
-            let hotKey = Constants.HOT_KEY[hotKeyPos];
-            this._menuHotKeybinder.enableHotKey(hotKey);
-        } else {
-            this._menuHotKeybinder.disableHotKey();
+        if(this.enableHotKey){
+            let hotKeyPos = this._settings.get_enum('menu-hotkey');
+            if (hotKeyPos !== Constants.HOT_KEY.Undefined) {
+                let hotKey = Constants.HOT_KEY[hotKeyPos];
+                this._menuHotKeybinder.enableHotKey(hotKey);
+            } else {
+                this._menuHotKeybinder.disableHotKey();
+            }
         }
     }
 
@@ -338,7 +343,8 @@ var MenuSettingsController = class {
             this._disableButton();
         }
         this._hotCornerManager.destroy();
-        this._menuHotKeybinder.destroy();
+        if(this.enableHotKey)
+            this._menuHotKeybinder.destroy();
         this._keybindingManager.destroy();
 
         this._settings = null;
