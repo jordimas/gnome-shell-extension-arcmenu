@@ -82,6 +82,7 @@ Legacy versions of Arc Menu can be obtained from the sources below;
 
 [legacy-version-3.30](https://gitlab.com/LinxGem33/Arc-Menu/tree/legacy-version-3.30) repository branch alternatively download the source code via the [v22 tag](https://gitlab.com/LinxGem33/Arc-Menu/tags/v22).
 
+- **Please Note:** the legacy version branch will not include the new features and updates found in the gnome-shell 3.32 and above builds.
 
 -----
 
