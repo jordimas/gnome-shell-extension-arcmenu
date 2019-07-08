@@ -53,9 +53,8 @@ var MenuSettingsController = class {
             this._menuHotKeybinder = new Helper.MenuHotKeybinder(() => {
                 this._menuButton.toggleMenu();        
             });
+            this._keybindingManager = new Helper.KeybindingManager(this._settings); 
         }
-        this._keybindingManager = new Helper.KeybindingManager(this._settings);
-
         this._applySettings();
     }
 
@@ -159,13 +158,15 @@ var MenuSettingsController = class {
     }
 
     _setMenuKeybinding() {
-        if (this._settings.get_boolean('enable-menu-keybinding')) {
-            this._keybindingManager.bind('menu-keybinding-text', 'menu-keybinding',
-                () => {
-                    this._menuButton.toggleMenu();
-                });
-        } else {
-            this._keybindingManager.unbind('menu-keybinding-text');
+        if(this.enableHotKey){
+            if (this._settings.get_boolean('enable-menu-keybinding')) {
+                this._keybindingManager.bind('menu-keybinding-text', 'menu-keybinding',
+                    () => {
+                        this._menuButton.toggleMenu();
+                    });
+            } else {
+                this._keybindingManager.unbind('menu-keybinding-text');
+            }
         }
     }
 
@@ -259,7 +260,8 @@ var MenuSettingsController = class {
 
     // Update the icon of the menu button as specified in the settings
     _setButtonIconSize() {
-        let scaleFactor = St.ThemeContext.get_for_stage(global.stage).scale_factor;
+        let scaleFactor = Gdk.Display.get_default().get_primary_monitor().get_scale_factor();
+        //let scaleFactor = St.ThemeContext.get_for_stage(global.stage).scale_factor;
         let menuButtonWidget = this._menuButton.getWidget();
         let stIcon = menuButtonWidget.getPanelIcon();
         let iconSize = this._settings.get_double('custom-menu-button-icon-size');
@@ -343,9 +345,10 @@ var MenuSettingsController = class {
             this._disableButton();
         }
         this._hotCornerManager.destroy();
-        if(this.enableHotKey)
+        if(this.enableHotKey){
             this._menuHotKeybinder.destroy();
-        this._keybindingManager.destroy();
+            this._keybindingManager.destroy();
+        }
 
         this._settings = null;
         this._activitiesButton = null;
