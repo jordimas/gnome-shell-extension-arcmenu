@@ -260,7 +260,9 @@ var MenuSettingsController = class {
 
     // Update the icon of the menu button as specified in the settings
     _setButtonIconSize() {
-        let scaleFactor = Gdk.Display.get_default().get_primary_monitor().get_scale_factor();
+        let display = Gdk.Display.get_default();
+        let primaryMonitor =display.get_monitor(0);
+        let scaleFactor = primaryMonitor.get_scale_factor();
         //let scaleFactor = St.ThemeContext.get_for_stage(global.stage).scale_factor;
         let menuButtonWidget = this._menuButton.getWidget();
         let stIcon = menuButtonWidget.getPanelIcon();

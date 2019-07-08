@@ -1033,8 +1033,12 @@ var ArcMenuCustomizationWindow = GObject.registerClass(
 
         _createLayout(vbox) {
             let mainFrame = new PW.FrameBox();
-            let screenHeight = Gdk.Display.get_default().get_primary_monitor().get_geometry().height;
-            let scaleFactor = Gdk.Display.get_default().get_primary_monitor().get_scale_factor();
+            //let screenHeight = Gdk.Display.get_default().get_primary_monitor().get_geometry().height;
+            //let scaleFactor = Gdk.Display.get_default().get_primary_monitor().get_scale_factor();
+            let display = Gdk.Display.get_default();
+            let primaryMonitor =display.get_monitor(0);
+            let screenHeight = primaryMonitor.get_geometry().height;
+            let scaleFactor = primaryMonitor.get_scale_factor();
             screenHeight = screenHeight * scaleFactor;
             //global.log(scaleFactor);
             //global.log(screenHeight);
