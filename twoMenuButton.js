@@ -81,9 +81,9 @@ var TwoMenuButton = GObject.registerClass( class TwoMenuButton extends PanelMenu
         	Util.spawnCommandLine('xdg-open https://gitlab.com/LinxGem33/Arc-Menu');
         });     
         this.rightClickMenu.addMenuItem(item);  
-        item = new PopupMenu.PopupMenuItem(_("About Arc Menu"));          
+        item = new PopupMenu.PopupMenuItem(_("Arc Menu Wiki"));          
         item.connect('activate', ()=>{
-        	Util.spawnCommandLine('xdg-open https://gitlab.com/LinxGem33/Arc-Menu/blob/master/README.md');
+        	Util.spawnCommandLine('xdg-open https://gitlab.com/LinxGem33/Arc-Menu/wikis/Introduction');
         });      
         this.rightClickMenu.addMenuItem(item);
       
