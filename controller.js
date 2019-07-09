@@ -105,25 +105,16 @@ var MenuSettingsController = class {
             this._settings.connect('changed::show-suspend-button', this._redisplayRightSide.bind(this)),
             this._settings.connect('changed::menu-height', this._updateMenuHeight.bind(this)),
             this._settings.connect('changed::pinned-apps',this._redisplayMenu.bind(this)),
-            this._settings.connect('changed::separator-color',this._reloadExtension.bind(this)),
-            this._settings.connect('changed::menu-color',this._reloadExtension.bind(this)),
-            this._settings.connect('changed::border-color',this._reloadExtension.bind(this)),
-            this._settings.connect('changed::highlight-color',this._reloadExtension.bind(this)),
-            this._settings.connect('changed::menu-font-size',this._reloadExtension.bind(this)),
-            this._settings.connect('changed::menu-border-size',this._reloadExtension.bind(this)),
-            this._settings.connect('changed::menu-corner-radius',this._reloadExtension.bind(this)),
-            this._settings.connect('changed::menu-margin',this._reloadExtension.bind(this)),
-            this._settings.connect('changed::menu-arrow-size',this._reloadExtension.bind(this)),
-            this._settings.connect('changed::menu-width',this._reloadExtension.bind(this)),
+            this._settings.connect('changed::reload-theme',this._reloadExtension.bind(this)),
             this._settings.connect('changed::enable-pinned-apps',this._redisplayMenu.bind(this)),
         ];
     }
     _reloadExtension(){
-    	//ExtensionSystem.reloadExtension(Me);
-    	/*let styleContext = new Gtk.StyleContext();
-    	let cssProvider = new Gtk.CssProvider();
-    	cssProvider.load_from_file(Gio.File.new_for_path(Me.path+"/stylesheet.css"));
-    	styleContext.add_provider_for_screen(Gdk.Screen.get_default(),cssProvider,800);*/
+        if(this._settings.get_boolean('reload-theme') == true){
+            Main.loadTheme();
+            this._settings.set_boolean('reload-theme',false);
+        }
+
     }
     _enableCustomArcMenu() {
         this._menuButton.updateStyle();
@@ -135,6 +126,7 @@ var MenuSettingsController = class {
         this._menuButton.reloadFlag =true;
     }
     _redisplayRightSide(){
+
         this._menuButton._redisplayRightSide();
     }
     _updateHotCornerManager() {
