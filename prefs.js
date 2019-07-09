@@ -936,8 +936,8 @@ var  AppearanceSettingsPage = GObject.registerClass(
                       this.settings.set_int('menu-margin',dialog.menuMargin);
                       this.settings.set_int('menu-arrow-size',dialog.menuArrowSize);
                       this.settings.set_int('menu-width', dialog.menuWidth);
-                      this.settings.set_boolean('reload-theme',true);
                       saveCSS(this.settings);
+                      this.settings.set_boolean('reload-theme',true);
                       dialog.destroy();
                   }
                   else
@@ -985,8 +985,8 @@ var  AppearanceSettingsPage = GObject.registerClass(
                       this.settings.set_int('menu-margin',dialog.menuMargin);
                       this.settings.set_int('menu-arrow-size',dialog.menuArrowSize);
                       this.settings.set_int('menu-width', dialog.menuWidth);
-                      this.settings.set_boolean('reload-theme',true);
                       saveCSS(this.settings);
+                      this.settings.set_boolean('reload-theme',true);
                       dialog.destroy();
                   }
                   else
@@ -1006,6 +1006,42 @@ var  AppearanceSettingsPage = GObject.registerClass(
           overrideArcMenuRow.add(overrideArcMenuSwitch);
           overrideArcMenuFrame.add(overrideArcMenuRow);
           this.add(overrideArcMenuFrame);
+
+
+          /*let defaultButtonFrame = new PW.FrameBox();
+          let defaultButtonRow = new PW.FrameBoxRow();
+          let defaultButtonLabel = new Gtk.Label({
+              label: _('Reset Appearance to Default'),
+              xalign:0,
+              hexpand: true,
+           });   
+          let defaultButton = new Gtk.Button({
+              label: _("Reset")
+          });
+          defaultButton.connect('clicked', ()=> {
+            this.settings.set_int('menu-height', 550);
+            this.settings.set_string('separator-color',"rgb(63,62,64)");
+            this.settings.set_boolean('vert-separator',false);
+            this.settings.set_boolean('enable-custom-arc-menu', false); 
+            overrideArcMenuSwitch.set_active(false);
+            overrideArcMenuButton.set_sensitive(false);
+            this.settings.set_string('menu-color',"rgba(28, 28, 28, 0.98)");
+            this.settings.set_string('menu-foreground-color',"rgba(211, 218, 227, 1)");
+            this.settings.set_string('border-color',"rgba(28, 28, 28, 0.98)");
+            this.settings.set_string('highlight-color',"rgba(238, 238, 236, 0.1)" );
+            this.settings.set_int('menu-font-size',9);
+            this.settings.set_int('menu-border-size',0);
+            this.settings.set_int('menu-corner-radius',0);
+            this.settings.set_int('menu-margin',0);
+            this.settings.set_int('menu-arrow-size',0);
+            this.settings.set_int('menu-width', 290);
+            saveCSS(this.settings);
+            this.settings.set_boolean('reload-theme',true);
+          });
+          defaultButtonRow.add(defaultButtonLabel);
+          defaultButtonRow.add(defaultButton);
+          defaultButtonFrame.add(defaultButtonRow);
+          this.add(defaultButtonFrame);*/
     }
 });
 //Dialog Window for Arc Menu Customization    
@@ -1016,6 +1052,7 @@ var ArcMenuCustomizationWindow = GObject.registerClass(
             this._settings = settings;
             this.addResponse = false;
             this.heightValue = this._settings.get_int('menu-height');
+            this.menuWidth = this._settings.get_int('menu-width');
             this.separatorColor = this._settings.get_string('separator-color');
             this.verticalSeparator = this._settings.get_boolean('vert-separator');
             this.customArcMenu = this._settings.get_boolean('enable-custom-arc-menu');
@@ -1028,7 +1065,7 @@ var ArcMenuCustomizationWindow = GObject.registerClass(
             this.cornerRadius = this._settings.get_int('menu-corner-radius');
             this.menuMargin = this._settings.get_int('menu-margin');
             this.menuArrowSize = this._settings.get_int('menu-arrow-size');
-            this.menuWidth = this._settings.get_int('menu-width');
+
             super._init(_('Customize Arc Menu Appearance'), parent);
 	        this.resize(450,250);
         }
@@ -1071,6 +1108,7 @@ var ArcMenuCustomizationWindow = GObject.registerClass(
             hscale.connect('value-changed', () => {
                 this.heightValue = hscale.get_value();
                 applyButton.set_sensitive(true);
+                resetButton.set_sensitive(true);
             });
             heightRow.add(heightLabel);
             heightRow.add(hscale);
@@ -1094,6 +1132,7 @@ var ArcMenuCustomizationWindow = GObject.registerClass(
             menuWidthScale.connect('value-changed', () => {
                 this.menuWidth = menuWidthScale.get_value();
                 applyButton.set_sensitive(true);
+                resetButton.set_sensitive(true);
             });
             menuWidthRow.add(menuWidthLabel);
             menuWidthRow.add(menuWidthScale);
@@ -1111,6 +1150,7 @@ var ArcMenuCustomizationWindow = GObject.registerClass(
             vertSeparatorSwitch.connect('notify::active', function (check) {
                  this.verticalSeparator = check.get_active();
                  applyButton.set_sensitive(true);
+                 resetButton.set_sensitive(true);
             }.bind(this));
             vertSeparatorRow.add(vertSeparatorLabel);            
             vertSeparatorRow.add(vertSeparatorSwitch);             
@@ -1131,31 +1171,69 @@ var ArcMenuCustomizationWindow = GObject.registerClass(
             colorChooser.connect('color-set', ()=>{
                 this.separatorColor = colorChooser.get_rgba().to_string();
                 applyButton.set_sensitive(true);
+                resetButton.set_sensitive(true);
             });
             separatorColorRow.add(separatorColorLabel);            
             separatorColorRow.add(colorChooser);             
             mainFrame.add(separatorColorRow);
             
-            //last row - Label and button to add custom link to list
-            let applyButton = new Gtk.Button({
-                label:_("Apply")
-            });
-            applyButton.connect('clicked', ()=> {
-               this.addResponse = true;
-               this.response(-10);
-            });
+           // Button Row -------------------------------------------------------
+           let buttonRow = new PW.FrameBoxRow();
+           let resetButton = new Gtk.Button({
+               label: _("Reset"),
+               xalign:0
+           });   
+           resetButton.set_sensitive( this.checkIfResetButtonSensitive());
+           resetButton.connect('clicked', ()=> {
+               
+                this.heightValue = 550;
+                this.menuWidth = 290;
+                this.separatorColor = "rgb(63,62,64)";
+                this.verticalSeparator = false;
+                hscale.set_value(this.heightValue);
+                menuWidthScale.set_value(this.menuWidth);
+                vertSeparatorSwitch.set_active(this.verticalSeparator);
+                color.parse(this.separatorColor);
+                colorChooser.set_rgba(color);    
 
-            applyButton.set_halign(Gtk.Align.END);
-            applyButton.set_sensitive(false);
-            
-            // add the frames to the vbox
-            vbox.add(mainFrame);
-            vbox.add(applyButton);
+                resetButton.set_sensitive(false);
+                applyButton.set_sensitive(true);               
+           });
+
+           buttonRow.add(resetButton);
+          
+           let fillerLabel = new Gtk.Label({
+               label: _(''),
+               xalign:0,
+               hexpand: true,
+           });   
+           buttonRow.add(fillerLabel);
+
+           let applyButton = new Gtk.Button({
+               label: _("Apply"),
+               xalign:1
+           });
+           applyButton.connect('clicked', ()=> {
+              this.addResponse = true;
+              this.response(-10);
+           });
+           applyButton.set_halign(Gtk.Align.END);
+           applyButton.set_sensitive(false);
+           buttonRow.add(applyButton);
+
+           vbox.add(mainFrame);
+           vbox.add(buttonRow);
         }
         get_response(){
             return this.addResponse;
         }
-
+        checkIfResetButtonSensitive(){
+            return (this.heightValue != 550 ||
+                this.menuWidth != 290 ||
+                this.separatorColor != "rgb(63,62,64)"||
+                this.verticalSeparator != false) ? true : false
+            
+        }
    
 });
 
@@ -1204,6 +1282,7 @@ var OverrideArcMenuThemeWindow = GObject.registerClass(
             menuBackgroudColorChooser.connect('color-set', ()=>{
                 this.menuColor = menuBackgroudColorChooser.get_rgba().to_string();
                 applyButton.set_sensitive(true);
+                resetButton.set_sensitive(true);
             });
             menuBackgroudColorRow.add(menuBackgroudColorLabel);
             menuBackgroudColorRow.add(menuBackgroudColorChooser);
@@ -1221,6 +1300,7 @@ var OverrideArcMenuThemeWindow = GObject.registerClass(
             menuForegroundColorChooser.connect('color-set', ()=>{
                 this.menuForegroundColor = menuForegroundColorChooser.get_rgba().to_string();
                 applyButton.set_sensitive(true);
+                resetButton.set_sensitive(true);
             });
             menuForegroundColorRow.add(menuForegroundColorLabel);
             menuForegroundColorRow.add(menuForegroundColorChooser);
@@ -1244,6 +1324,7 @@ var OverrideArcMenuThemeWindow = GObject.registerClass(
             fontScale.connect('value-changed', () => {
                 this.fontSize = fontScale.get_value();
                 applyButton.set_sensitive(true);
+                resetButton.set_sensitive(true);
             });
             fontSizeRow.add(fontSizeLabel);
             fontSizeRow.add(fontScale);
@@ -1262,6 +1343,7 @@ var OverrideArcMenuThemeWindow = GObject.registerClass(
             borderColorChooser.connect('color-set', ()=>{
                 this.borderColor = borderColorChooser.get_rgba().to_string();
                 applyButton.set_sensitive(true);
+                resetButton.set_sensitive(true);
             });
             borderColorRow.add(borderColorLabel);
             borderColorRow.add(borderColorChooser);
@@ -1285,6 +1367,7 @@ var OverrideArcMenuThemeWindow = GObject.registerClass(
             borderScale.connect('value-changed', () => {
                 this.borderSize = borderScale.get_value();
                 applyButton.set_sensitive(true);
+                resetButton.set_sensitive(true);
             }); 
             borderSizeRow.add(borderSizeLabel);
             borderSizeRow.add(borderScale);
@@ -1303,6 +1386,7 @@ var OverrideArcMenuThemeWindow = GObject.registerClass(
             itemColorChooser.connect('color-set', ()=>{
                 this.highlightColor = itemColorChooser.get_rgba().to_string();
                 applyButton.set_sensitive(true);
+                resetButton.set_sensitive(true);
             });
             itemColorRow.add(itemColorLabel);
             itemColorRow.add(itemColorChooser);
@@ -1326,6 +1410,7 @@ var OverrideArcMenuThemeWindow = GObject.registerClass(
             cornerScale.connect('value-changed', () => {
                 this.cornerRadius = cornerScale.get_value();
                 applyButton.set_sensitive(true);
+                resetButton.set_sensitive(true);
             });   
             cornerRadiusRow.add(cornerRadiusLabel);
             cornerRadiusRow.add(cornerScale);
@@ -1349,6 +1434,7 @@ var OverrideArcMenuThemeWindow = GObject.registerClass(
             marginScale.connect('value-changed', () => {
                 this.menuMargin = marginScale.get_value();
                 applyButton.set_sensitive(true);
+                resetButton.set_sensitive(true);
             });   
             menuMarginRow.add(menuMarginLabel);
             menuMarginRow.add(marginScale);
@@ -1360,7 +1446,7 @@ var OverrideArcMenuThemeWindow = GObject.registerClass(
                 xalign:0,
                 hexpand: true,
              });   
-           let arrowScale = new Gtk.HScale({
+            let arrowScale = new Gtk.HScale({
                 adjustment: new Gtk.Adjustment({
                     lower: 0,upper: 20, step_increment: 1, page_increment: 1, page_size: 0
                 }),
@@ -1372,33 +1458,91 @@ var OverrideArcMenuThemeWindow = GObject.registerClass(
             arrowScale.connect('value-changed', () => {
                 this.menuArrowSize = arrowScale.get_value();
                 applyButton.set_sensitive(true);
+                resetButton.set_sensitive(true);
             });   
             menuArrowRow.add(menuArrowLabel);
             menuArrowRow.add(arrowScale);
             customArcMenuOptionsFrame.add(menuArrowRow);
-            
-            
-            
-            //overrideArcMenuFrame.add(customArcMenuOptionsFrame);
 
-            //--------------------------------------------------------------
-            
-            //last row - Label and button to add custom link to list
+            // Button Row -------------------------------------------------------
+            let buttonRow = new PW.FrameBoxRow();
+            let resetButton = new Gtk.Button({
+                label: _("Reset"),
+                xalign:0
+            });   
+            resetButton.set_sensitive( this.checkIfResetButtonSensitive());
+            resetButton.connect('clicked', ()=> {
+                
+                this.menuColor = "rgba(28, 28, 28, 0.98)";
+                this.menuForegroundColor = "rgba(211, 218, 227, 1)";
+                this.borderColor = "rgba(28, 28, 28, 0.98)";
+                this.highlightColor = "rgba(238, 238, 236, 0.1)";
+                this.fontSize = 9;
+                this.borderSize = 0;
+                this.cornerRadius = 0;
+                this.menuMargin = 0;
+                this.menuArrowSize = 0;
+                color.parse(this.menuColor);
+                menuBackgroudColorChooser.set_rgba(color);
+
+                color.parse(this.menuForegroundColor);
+                menuForegroundColorChooser.set_rgba(color); 
+
+                fontScale.set_value(this.fontSize); 
+
+                color.parse(this.borderColor);
+                borderColorChooser.set_rgba(color); 
+
+                borderScale.set_value(this.borderSize);
+
+                color.parse("rgba(238, 238, 236, 0.1)");
+                itemColorChooser.set_rgba(color);
+
+                cornerScale.set_value(this.cornerRadius);
+                marginScale.set_value(this.menuMargin);
+                arrowScale.set_value(this.menuArrowSize);
+                resetButton.set_sensitive(false);
+                applyButton.set_sensitive(true);               
+            });
+
+            buttonRow.add(resetButton);
+           
+            let fillerLabel = new Gtk.Label({
+                label: _(''),
+                xalign:0,
+                hexpand: true,
+            });   
+            buttonRow.add(fillerLabel);
+
             let applyButton = new Gtk.Button({
-                label: _("Apply")
+                label: _("Apply"),
+                xalign:1
             });
             applyButton.connect('clicked', ()=> {
                this.addResponse = true;
                this.response(-10);
             });
-
             applyButton.set_halign(Gtk.Align.END);
             applyButton.set_sensitive(false);
+            buttonRow.add(applyButton);
+
             vbox.add(customArcMenuOptionsFrame);
-            vbox.add(applyButton);
+            vbox.add(buttonRow);
+            
         }
         get_response(){
             return this.addResponse;
+        }
+        checkIfResetButtonSensitive(){
+            return (this.menuColor != "rgba(28, 28, 28, 0.98)"||
+            this.menuForegroundColor != "rgba(211, 218, 227, 1)"||
+            this.borderColor != "rgba(28, 28, 28, 0.98)"||
+            this.highlightColor != "rgba(238, 238, 236, 0.1)"||
+            this.fontSize != 9||
+            this.borderSize != 0||
+            this.cornerRadius != 0||
+            this.menuMargin != 0||
+            this.menuArrowSize != 0) ? true : false
         }
 });
 
