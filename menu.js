@@ -45,6 +45,7 @@ const GObject = imports.gi.GObject;
 const Util = imports.misc.util;
 const GnomeSession = imports.misc.gnomeSession;
 const ExtensionUtils = imports.misc.extensionUtils;
+const ExtensionSystem = imports.ui.extensionSystem;
 const Me = ExtensionUtils.getCurrentExtension();
 const PlaceDisplay = Me.imports.placeDisplay;
 const MW = Me.imports.menuWidgets;
@@ -65,6 +66,14 @@ var ApplicationsButton = GObject.registerClass(
             this._settings = settings;
             this._session = new GnomeSession.SessionManager();
             this._panel = panel;
+            this.extensionChangedId = ExtensionSystem.connect('extension-state-changed', (data, extension) => {
+                if (extension.uuid === 'dash-to-panel@jderose9.github.com' && extension.state === 1) 
+                    this.addDTPSettings();
+                if (extension.uuid === 'dash-to-panel@jderose9.github.com' && extension.state === 2) 
+                    this.removeDTPSettings();
+            });
+            if(global.dashToPanel)
+                this.addDTPSettings();
             this.createMenu();   
             if (this.sourceActor)
             	this._keyReleaseId = this.sourceActor.connect('key-release-event',
@@ -195,6 +204,8 @@ var ApplicationsButton = GObject.registerClass(
         
         // Destroy the menu button
         _onDestroy() {
+            ExtensionSystem.disconnect(this.extensionChangedId);
+            this.extensionChangedId = 0;
             if (this.leftClickMenu) {
                 if(this.network!=null)
                     this.network.destroy();
@@ -229,6 +240,7 @@ var ApplicationsButton = GObject.registerClass(
                 appSys.disconnect(this._installedChangedId);
                 this._installedChangedId  = 0;
             }
+
             super._onDestroy();
         }
 
@@ -247,7 +259,7 @@ var ApplicationsButton = GObject.registerClass(
                 y_expand:false
             });
             if(rightSide)
-                hSep.set_height(20); //increase height if on right side
+                hSep.set_height(15); //increase height if on right side
             else 
                 hSep.set_height(10);
             hSep.connect('repaint', ()=> {
@@ -256,8 +268,8 @@ var ApplicationsButton = GObject.registerClass(
                 let b, stippleColor;                                                            
                 [b,stippleColor] = Clutter.Color.from_string(this._settings.get_string('separator-color'));           
                 if(rightSide){   
-                    cr.moveTo(width / 4, height-9.5);
-                    cr.lineTo(3 * width / 4, height-9.5);
+                    cr.moveTo(width / 4, height-7.5);
+                    cr.lineTo(3 * width / 4, height-7.5);
                 }   
                 else{   
                     cr.moveTo(25, height-4.5);

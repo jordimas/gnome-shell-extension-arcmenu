@@ -936,6 +936,7 @@ var  AppearanceSettingsPage = GObject.registerClass(
                       this.settings.set_int('menu-margin',dialog.menuMargin);
                       this.settings.set_int('menu-arrow-size',dialog.menuArrowSize);
                       this.settings.set_int('menu-width', dialog.menuWidth);
+                      this.settings.set_boolean('reload-theme',true);
                       saveCSS(this.settings);
                       dialog.destroy();
                   }
@@ -984,6 +985,7 @@ var  AppearanceSettingsPage = GObject.registerClass(
                       this.settings.set_int('menu-margin',dialog.menuMargin);
                       this.settings.set_int('menu-arrow-size',dialog.menuArrowSize);
                       this.settings.set_int('menu-width', dialog.menuWidth);
+                      this.settings.set_boolean('reload-theme',true);
                       saveCSS(this.settings);
                       dialog.destroy();
                   }
@@ -1028,7 +1030,7 @@ var ArcMenuCustomizationWindow = GObject.registerClass(
             this.menuArrowSize = this._settings.get_int('menu-arrow-size');
             this.menuWidth = this._settings.get_int('menu-width');
             super._init(_('Customize Arc Menu Appearance'), parent);
-	    this.resize(450,250);
+	        this.resize(450,250);
         }
 
         _createLayout(vbox) {
@@ -1076,7 +1078,7 @@ var ArcMenuCustomizationWindow = GObject.registerClass(
             //ROW 3 - MENU WIDTH--------------------------------------------------   
             let menuWidthRow = new PW.FrameBoxRow();
             let menuWidthLabel = new Gtk.Label({
-                label: _('Left-Panel Width \n(Requires GNOME restart)'),
+                label: _('Left-Panel Width'),
                 xalign:0,
                 hexpand: false,
              });   
@@ -1180,24 +1182,14 @@ var OverrideArcMenuThemeWindow = GObject.registerClass(
             this.menuArrowSize = this._settings.get_int('menu-arrow-size');
             this.menuWidth = this._settings.get_int('menu-width');
             super._init(_('Override Arc Menu Theme'), parent);
-		this.resize(450,250);
+		    this.resize(450,250);
         }
 
         _createLayout(vbox) {         
             //OVERRIDE ARC MENUS THEME-----------------------------
-            let overrideArcMenuFrame = new PW.FrameBox();
-
             //OVERRIDE OPTIONS--------------------------------
             let customArcMenuOptionsFrame = new PW.FrameBox();
-            let restartMessageLabel = new Gtk.Label({
-                label: _("\nChanges made here require GNOME restart\n(Press ALT + F2, type 'r' then Enter)\n"),
-                hexpand:true,xalign:.5
-            });       
-            restartMessageLabel.set_justify(2);
-            restartMessageLabel.set_selectable(false);      
-            customArcMenuOptionsFrame.add(restartMessageLabel);
-  
-             
+ 
             //ROW 1 - MENU BACKGROUND COLOR--------------------------------------   
             let menuBackgroudColorRow = new PW.FrameBoxRow();
             let menuBackgroudColorLabel = new Gtk.Label({

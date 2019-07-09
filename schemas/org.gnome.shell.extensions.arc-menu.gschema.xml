@@ -46,6 +46,11 @@
       <summary>Enable Pinned Apps</summary>
       <description>Enable Pinned Apps.</description>
     </key>
+    <key type="b" name="reload-theme">
+     <default>false</default>
+      <summary>Used to reload theme</summary>
+      <description>Used to reload theme.</description>
+    </key>
     <key type="b" name="vert-separator">
      <default>false</default>
       <summary>Enable a vertical separator</summary>
