@@ -936,8 +936,8 @@ var  AppearanceSettingsPage = GObject.registerClass(
                       this.settings.set_int('menu-margin',dialog.menuMargin);
                       this.settings.set_int('menu-arrow-size',dialog.menuArrowSize);
                       this.settings.set_int('menu-width', dialog.menuWidth);
-                      this.settings.set_boolean('reload-theme',true);
                       saveCSS(this.settings);
+                      this.settings.set_boolean('reload-theme',true);
                       dialog.destroy();
                   }
                   else
@@ -985,8 +985,8 @@ var  AppearanceSettingsPage = GObject.registerClass(
                       this.settings.set_int('menu-margin',dialog.menuMargin);
                       this.settings.set_int('menu-arrow-size',dialog.menuArrowSize);
                       this.settings.set_int('menu-width', dialog.menuWidth);
-                      this.settings.set_boolean('reload-theme',true);
                       saveCSS(this.settings);
+                      this.settings.set_boolean('reload-theme',true);
                       dialog.destroy();
                   }
                   else
@@ -1006,6 +1006,42 @@ var  AppearanceSettingsPage = GObject.registerClass(
           overrideArcMenuRow.add(overrideArcMenuSwitch);
           overrideArcMenuFrame.add(overrideArcMenuRow);
           this.add(overrideArcMenuFrame);
+
+
+          let defaultButtonFrame = new PW.FrameBox();
+          let defaultButtonRow = new PW.FrameBoxRow();
+          let defaultButtonLabel = new Gtk.Label({
+              label: _('Reset Appearance to Default'),
+              xalign:0,
+              hexpand: true,
+           });   
+          let defaultButton = new Gtk.Button({
+              label: _("Reset")
+          });
+          defaultButton.connect('clicked', ()=> {
+            this.settings.set_int('menu-height', 550);
+            this.settings.set_string('separator-color',"rgb(63,62,64)");
+            this.settings.set_boolean('vert-separator',false);
+            this.settings.set_boolean('enable-custom-arc-menu', false); 
+            overrideArcMenuSwitch.set_active(false);
+            overrideArcMenuButton.set_sensitive(false);
+            this.settings.set_string('menu-color',"rgba(28, 28, 28, 0.98)");
+            this.settings.set_string('menu-foreground-color',"rgba(211, 218, 227, 1)");
+            this.settings.set_string('border-color',"rgba(28, 28, 28, 0.98)");
+            this.settings.set_string('highlight-color',"rgba(238, 238, 236, 0.1)" );
+            this.settings.set_int('menu-font-size',9);
+            this.settings.set_int('menu-border-size',0);
+            this.settings.set_int('menu-corner-radius',0);
+            this.settings.set_int('menu-margin',0);
+            this.settings.set_int('menu-arrow-size',0);
+            this.settings.set_int('menu-width', 290);
+            saveCSS(this.settings);
+            this.settings.set_boolean('reload-theme',true);
+          });
+          defaultButtonRow.add(defaultButtonLabel);
+          defaultButtonRow.add(defaultButton);
+          defaultButtonFrame.add(defaultButtonRow);
+          this.add(defaultButtonFrame);
     }
 });
 //Dialog Window for Arc Menu Customization    
@@ -1377,13 +1413,7 @@ var OverrideArcMenuThemeWindow = GObject.registerClass(
             menuArrowRow.add(arrowScale);
             customArcMenuOptionsFrame.add(menuArrowRow);
             
-            
-            
-            //overrideArcMenuFrame.add(customArcMenuOptionsFrame);
-
-            //--------------------------------------------------------------
-            
-            //last row - Label and button to add custom link to list
+            //last row Apply
             let applyButton = new Gtk.Button({
                 label: _("Apply")
             });
@@ -1391,7 +1421,6 @@ var OverrideArcMenuThemeWindow = GObject.registerClass(
                this.addResponse = true;
                this.response(-10);
             });
-
             applyButton.set_halign(Gtk.Align.END);
             applyButton.set_sensitive(false);
             vbox.add(customArcMenuOptionsFrame);
