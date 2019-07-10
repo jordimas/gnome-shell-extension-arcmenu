@@ -565,6 +565,27 @@ var GeneralSettingsPage = GObject.registerClass(
           multiMonitorRow.add(multiMonitorLabel);
           multiMonitorRow.add(multiMonitorSwitch);
           multiMonitorFrame.add(multiMonitorRow);
+          /*
+           * Tool-tips
+           */
+          let tooltipFrame = new PW.FrameBox();
+          let tooltipRow = new PW.FrameBoxRow();
+          let tooltipLabel = new Gtk.Label({
+              label: _("Disable Tooltips"),
+              use_markup: true,
+              xalign: 0,
+              hexpand: true
+          });
+
+          let tooltipSwitch = new Gtk.Switch({ halign: Gtk.Align.END });
+          tooltipSwitch.set_active(this.settings.get_boolean('disable-tooltips'));
+          tooltipSwitch.connect('notify::active', function (check) {
+              this.settings.set_boolean('disable-tooltips', check.get_active());
+          }.bind(this));
+
+          tooltipRow.add(tooltipLabel);
+          tooltipRow.add(tooltipSwitch);
+          tooltipFrame.add(tooltipRow);
 
             /*
              * Hot Corner Box
@@ -680,6 +701,7 @@ var GeneralSettingsPage = GObject.registerClass(
             this.add(defaultLeftBoxFrame);
             this.add(menuPositionFrame);
             this.add(multiMonitorFrame);
+            this.add(tooltipFrame);
             this.add(disableHotCornerFrame);
             this.add(menuKeybindingFrame);
         }
