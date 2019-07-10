@@ -155,7 +155,7 @@ var ApplicationsButton = GObject.registerClass(
                     }
                 }.bind(this));
                 for(let id in this._sections){
-                    this._sections[id].get_children().forEach(function (actor) {
+                    this._sections[id].box.get_children().forEach(function (actor) {
                         if(actor instanceof St.BoxLayout){
                             actor.add_style_class_name('arc-menu');
                         }
@@ -190,7 +190,7 @@ var ApplicationsButton = GObject.registerClass(
                     }
                 }.bind(this));
                 for(let id in this._sections){
-                    this._sections[id].get_children().forEach(function (actor) {
+                    this._sections[id].box.get_children().forEach(function (actor) {
                         if(actor instanceof St.BoxLayout){
                             actor.remove_style_class_name('arc-menu');
                         }
@@ -207,10 +207,14 @@ var ApplicationsButton = GObject.registerClass(
             ExtensionSystem.disconnect(this.extensionChangedId);
             this.extensionChangedId = 0;
             if (this.leftClickMenu) {
-                if(this.network!=null)
+                if(this.network!=null){
                     this.network.destroy();
-                if(this.computer!=null)
+                    this.networkMenuItem.destroy();
+                }
+                if(this.computer!=null){
                     this.computer.destroy();
+                    this.computerMenuItem.destroy();
+                }
                 if(this.placesManager!=null)
                     this.placesManager.destroy();
                 this.searchBox.disconnect(this._searchBoxClearedId);
@@ -324,6 +328,7 @@ var ApplicationsButton = GObject.registerClass(
             super._onOpenStateChanged(menu, open);
         }
         _redisplayRightSide(){
+
             this.rightBox.destroy_all_children();
             this._createRightBox();
             this.updateStyle();
@@ -560,7 +565,8 @@ var ApplicationsButton = GObject.registerClass(
         
         _createRightBox(){
             this.placesShortcuts=false
-	        this.externalDevicesShorctus = false;  
+            this.externalDevicesShorctus = false;  
+            this.networkDevicesShorctus = false;  
 	        this.bookmarksShorctus = false;  
             this.softwareShortcuts = false;
             //add USER shortcut to top of right side menu
@@ -603,14 +609,16 @@ var ApplicationsButton = GObject.registerClass(
             this._loadPlaces();
             // add Home and Network shortcuts           
             if(this._settings.get_boolean('show-computer-shortcut')){
-      		this.placesShortcuts=true;  
-        	this.computer = new PlaceDisplay.RootInfo();
-            	this.shorcutsBox.add_actor(new PlaceDisplay.PlaceMenuItem(this.computer,this).actor);
-             }
-             if(this._settings.get_boolean('show-network-shortcut')){
+      		    this.placesShortcuts=true;  
+                this.computer = new PlaceDisplay.RootInfo();
+                this.computerMenuItem = new PlaceDisplay.PlaceMenuItem(this.computer,this);
+            	this.shorcutsBox.add_actor(this.computerMenuItem.actor);
+            }
+            if(this._settings.get_boolean('show-network-shortcut')){
              	this.placesShortcuts=true;
-            	this.network = new PlaceDisplay.PlaceInfo('network',Gio.File.new_for_uri('network:///'), _('Network'),'network-workgroup-symbolic');
-             	this.shorcutsBox.add_actor(new PlaceDisplay.PlaceMenuItem(this.network,this).actor);
+                this.network = new PlaceDisplay.PlaceInfo('network',Gio.File.new_for_uri('network:///'), _('Network'),'network-workgroup-symbolic');
+                this.networkMenuItem = new PlaceDisplay.PlaceMenuItem(this.network,this);
+             	this.shorcutsBox.add_actor(this.networkMenuItem.actor);
             }
             //draw bottom right horizontal separator + logic to determine if should show
             let shouldDraw = false;
@@ -651,7 +659,7 @@ var ApplicationsButton = GObject.registerClass(
   	        this.placesManager = new PlaceDisplay.PlacesManager();
 	        for (let i = 0; i < Constants.SECTIONS.length; i++) {
                 let id = Constants.SECTIONS[i];
-                this._sections[id] = new St.BoxLayout({
+                this._sections[id] =  new PopupMenu.PopupMenuSection({
                     vertical: true
                 });	
                 this.placesManager.connect(`${id}-updated`, () => {
@@ -659,7 +667,7 @@ var ApplicationsButton = GObject.registerClass(
  		        });
 
                 this._createPlaces(id);
-                this.externalDevicesBox.add(this._sections[id]);
+                this.externalDevicesBox.add(this._sections[id].actor);
 	        }
 
             //Add Software Shortcuts to menu (Software, Settings, Tweaks, Terminal)
@@ -741,51 +749,62 @@ var ApplicationsButton = GObject.registerClass(
             });
 
         }
+        placesAddSeparator(id){
+            this._sections[id].box.add(this._createHorizontalSeparator(true), {
+                x_expand: true,
+                y_expand:false,
+                x_fill: true,
+                y_fill: false,
+                y_align: St.Align.END
+            });  
+        }
         _redisplayPlaces(id) {
-            this._sections[id].destroy_all_children();
+            if(this._sections[id].length>0){
+                this._sections[id].removeAll();
+                this._sections[id].box.destroy_all_children();
+            }
             this._createPlaces(id);
         }
     	_createPlaces(id) {
-	      	let places = this.placesManager.get(id);
-                if (this._settings.get_boolean('show-bookmarks')){
-			        if(this.placesManager.get('bookmarks').length>0)
-				        this.bookmarksShorctus = true;
-                	if(id=='bookmarks' && places.length>0){
-                        for (let i = 0; i < places.length; i++){
-                            let item = new PlaceDisplay.PlaceMenuItem(places[i],this);
-                            this._sections[id].add(item.actor); 
-                        } 
-                        if(this.bookmarksShorctus && this.softwareShortcuts){
-                            this._sections[id].add(this._createHorizontalSeparator(true), {
-                                x_expand: true,
-                                y_expand:false,
-                                x_fill: true,
-                                y_fill: false,
-                                y_align: St.Align.END
-                            });  
-                		}
-                	}
-                }
-                if (this._settings.get_boolean('show-external-devices')){
-                	if(id!='bookmarks'){
-                        for (let i = 0; i < places.length; i++){
-                            let item = new PlaceDisplay.PlaceMenuItem(places[i],this);
-                            this._sections[id].add(item.actor); 
-                            this.externalDevicesShorctus=true; 
-                        }
-			    	    if(id=='network'){ 
-                            if(this.externalDevicesShorctus &&  (this.bookmarksShorctus || this.softwareShortcuts)){
-                                this._sections[id].add(this._createHorizontalSeparator(true), {
-                                    x_expand: true,
-                                    y_expand:false,
-                                    x_fill: true,
-                                    y_fill: false,
-                                    y_align: St.Align.END
-                                });  
-                            }
-                        }
+            let places = this.placesManager.get(id);
+            if(this.placesManager.get('network').length>0)
+                this.networkDevicesShorctus = true; 
+            if(this.placesManager.get('devices').length>0)
+                this.externalDevicesShorctus=true;  
+            if(this.placesManager.get('bookmarks').length>0)
+                this.bookmarksShorctus = true;
+
+            if (this._settings.get_boolean('show-bookmarks')){
+                if(id=='bookmarks' && places.length>0){
+                    for (let i = 0; i < places.length; i++){
+                        let item = new PlaceDisplay.PlaceMenuItem(places[i],this);
+                        this._sections[id].addMenuItem(item); 
+                    } 
+                    //create a separator if bookmark and software shortcut are both shown
+                    if(this.bookmarksShorctus && this.softwareShortcuts){
+                        this.placesAddSeparator(id);
                     }
                 }
+            }
+            if (this._settings.get_boolean('show-external-devices')){
+                if(id== 'devices'){
+                    for (let i = 0; i < places.length; i++){
+                        let item = new PlaceDisplay.PlaceMenuItem(places[i],this);
+                        this._sections[id].addMenuItem(item); 
+                    }
+                    if((this.externalDevicesShorctus &&  !this.networkDevicesShorctus)  
+                        &&  (this.bookmarksShorctus || this.softwareShortcuts))
+                            this.placesAddSeparator(id);
+                }
+                if(id== 'network'){
+                    for (let i = 0; i < places.length; i++){
+                        let item = new PlaceDisplay.PlaceMenuItem(places[i],this);
+                        this._sections[id].addMenuItem(item); 
+                    }
+                    if(this.networkDevicesShorctus &&  (this.bookmarksShorctus || this.softwareShortcuts))
+                            this.placesAddSeparator(id);                        
+                }
+            }
     	}
 
         //used to check if a shortcut should be displayed
