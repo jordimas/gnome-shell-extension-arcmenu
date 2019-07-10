@@ -760,6 +760,9 @@ var ApplicationsButton = GObject.registerClass(
         }
         _redisplayPlaces(id) {
             if(this._sections[id].length>0){
+                this.bookmarksShorctus = false;
+                this.externalDevicesShorctus = false;
+                this.networkDevicesShorctus = false;
                 this._sections[id].removeAll();
                 this._sections[id].box.destroy_all_children();
             }
