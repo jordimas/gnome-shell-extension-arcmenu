@@ -180,7 +180,7 @@ var SessionButton = class {
             accessible_name: accessible_name,
             style_class: 'system-menu-action'
         });
-        this._useTooltips = true;
+        this._useTooltips = ! this._button._settings.get_boolean('disable-tooltips');
         this.tooltip = new Tooltip(this.actor, accessible_name);
         this.tooltip.hide();
         this.actor.child = new St.Icon({ 

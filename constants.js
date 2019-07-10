@@ -53,7 +53,27 @@ var SHORTCUTS = [
 var RIGHT_SIDE_SHORTCUTS = ["Home", "Documents","Downloads", "Music","Pictures","Videos","Software", 
 "Settings","Tweaks", "Terminal", "Activities-Overview"];
 
+// User Home directories
+var DEFAULT_DIRECTORIES = [
+    imports.gi.GLib.UserDirectory.DIRECTORY_DOCUMENTS,
+    imports.gi.GLib.UserDirectory.DIRECTORY_DOWNLOAD,
+    imports.gi.GLib.UserDirectory.DIRECTORY_MUSIC,
+    imports.gi.GLib.UserDirectory.DIRECTORY_PICTURES,
+    imports.gi.GLib.UserDirectory.DIRECTORY_VIDEOS
+];
+var SECTIONS = [
+    'devices',
+    'network',
+    'bookmarks',
+];
 
+
+// Menu Layout Enum
+var visibleMenus = {
+    ALL: 0,
+    APPS_ONLY: 1,
+    SYSTEM_ONLY: 2
+};
 var CURRENT_MENU = {
     FAVORITES: 0,
     CATEGORIES: 1,
