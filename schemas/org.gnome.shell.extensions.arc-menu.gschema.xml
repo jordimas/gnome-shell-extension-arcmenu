@@ -36,10 +36,10 @@
       <summary>Visible menus</summary>
       <description>Which menus are visible within the Arc Menu popup.</description>
     </key>
-    <key type="b" name="enable-tooltips">
+    <key type="b" name="disable-tooltips">
      <default>false</default>
-      <summary>Enable tooltips</summary>
-      <description>Enable tooltips.</description>
+      <summary>disable tooltips</summary>
+      <description>disable tooltips.</description>
     </key>
       <key type="b" name="enable-pinned-apps">
      <default>true</default>

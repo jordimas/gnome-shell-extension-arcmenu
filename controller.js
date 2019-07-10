@@ -85,6 +85,7 @@ var MenuSettingsController = class {
             this._settings.connect('changed::custom-menu-button-icon-size', this._setButtonIconSize.bind(this)),
             this._settings.connect('changed::enable-menu-button-arrow', this._setMenuButtonArrow.bind(this)),
             this._settings.connect('changed::enable-custom-arc-menu', this._enableCustomArcMenu.bind(this)),
+            this._settings.connect('changed::disable-tooltips', this._redisplayRightSide.bind(this)),
             this._settings.connect('changed::show-home-shortcut', this._redisplayRightSide.bind(this)),
             this._settings.connect('changed::show-documents-shortcut', this._redisplayRightSide.bind(this)),
             this._settings.connect('changed::show-downloads-shortcut', this._redisplayRightSide.bind(this)),
