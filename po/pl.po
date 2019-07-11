@@ -275,15 +275,15 @@ msgstr ""
 
 #: prefs.js:1444 menuWidgets.js:250
 msgid "Suspend"
-msgstr ""
+msgstr "Wstrzymaj komputer"
 
 #: prefs.js:1462 menuWidgets.js:268
 msgid "Lock"
-msgstr ""
+msgstr "Zablokuj ekran"
 
 #: prefs.js:1480 menuWidgets.js:237
 msgid "Log Out"
-msgstr ""
+msgstr "Wyloguj się"
 
 #: prefs.js:1580
 msgid "About"
@@ -311,7 +311,7 @@ msgstr "Ekran podglądu"
 
 #: menuWidgets.js:224
 msgid "Power Off"
-msgstr ""
+msgstr "Wyłącz komputer"
 
 #: menuWidgets.js:290
 msgid "Back"
