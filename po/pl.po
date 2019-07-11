@@ -6,61 +6,62 @@
 # Alex <rylatgl@gmail.com>, 2019
 msgid ""
 msgstr ""
-"Project-Id-Version:  Arc Menu\n"
+"Project-Id-Version: Arc Menu\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-03-19 15:14+0100\n"
-"PO-Revision-Date: 2017-08-11 15:35+0200\n"
-"Last-Translator: Igor Serwin <serwinigor@gmail.com>\n"
+"PO-Revision-Date: 2019-07-11 18:57+0200\n"
+"Last-Translator: Alex <rylatgl@gmail.com>\n"
 "Language-Team: \n"
 "Language: pl\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 2.0.2\n"
+"X-Generator: Poedit 2.2.1\n"
 
 #: prefs.js:46 prefs.js:578
 msgid "Pinned Apps"
-msgstr ""
+msgstr "Przypięte programy"
 
 #: prefs.js:51
 msgid "Your Pinned Apps:"
-msgstr ""
+msgstr "Twoje przypięte programy:"
 
 #: prefs.js:75
 msgid "Add More Apps"
-msgstr ""
+msgstr "Dodaj więcej programów"
 
 #: prefs.js:119
 msgid "Add Custom Shortcut"
-msgstr ""
+msgstr "Dodaj własny skrót"
 
 #: prefs.js:153
 msgid "Save"
-msgstr ""
+msgstr "Zapisz"
 
 #: prefs.js:278
 msgid "Select Apps to add to Pinned Apps List"
-msgstr ""
+msgstr "Wybierz programy, które chcesz przypiąć"
 
 #: prefs.js:298 prefs.js:458
 msgid "Add"
-msgstr ""
+msgstr "Dodaj"
 
 #: prefs.js:407
 msgid "Add a Custom Shortcut"
-msgstr ""
+msgstr "Dodaj własny skrót"
 
 #: prefs.js:417
 msgid "Shortcut Name:"
-msgstr ""
+msgstr "Nazwa skrótu:"
 
 #: prefs.js:431
+#, fuzzy
 msgid "Icon Path/Icon Symbolic:"
-msgstr ""
+msgstr "Ścieżka do ikony"
 
 #: prefs.js:445
 msgid "Terminal Command:"
-msgstr ""
+msgstr "Komenda terminala:"
 
 #: prefs.js:492
 msgid "General"
@@ -68,7 +69,7 @@ msgstr "Ogólne"
 
 #: prefs.js:501
 msgid "Menu Button Position in Panel"
-msgstr ""
+msgstr "Umieszczenie przycisku menu w panelu"
 
 #: prefs.js:508
 msgid "Left"
@@ -84,11 +85,12 @@ msgstr "Z prawej"
 
 #: prefs.js:553
 msgid "Display on all monitors when using Dash to Panel"
-msgstr ""
+msgstr "Wyświetlaj na wszystkich monitorach, kiedy Dash to Panel jest włączony"
 
 #: prefs.js:574
+#, fuzzy
 msgid "Disable Tooltips"
-msgstr ""
+msgstr "Wyłącz podpowiedzi"
 
 #: prefs.js:596
 msgid "Disable activities hot corner"
@@ -96,11 +98,11 @@ msgstr "Wyłącz aktywny narożnik podglądu"
 
 #: prefs.js:615
 msgid "Choose Arc Menus Default View"
-msgstr ""
+msgstr "Wybierz domyślny widok Arc Menu"
 
 #: prefs.js:622
 msgid "Categories List"
-msgstr ""
+msgstr "Lista kategorii"
 
 #: prefs.js:646
 msgid "Set menu hotkey"
@@ -205,35 +207,35 @@ msgstr "Tekst i ikona"
 
 #: prefs.js:931 prefs.js:1091
 msgid "Customize Arc Menu Appearance"
-msgstr ""
+msgstr "Dostosuj wygląd Arc Menu"
 
 #: prefs.js:979 prefs.js:1284
 msgid "Override Arc Menu Theme"
-msgstr ""
+msgstr "Nadpisz motyw Arc Menu"
 
 #: prefs.js:1109
 msgid "Menu Height"
-msgstr ""
+msgstr "Wysokość menu"
 
 #: prefs.js:1141
 msgid "Left-Panel Width"
-msgstr ""
+msgstr "Szerokość panelu po lewej"
 
 #: prefs.js:1164
 msgid "Enable Vertical Separator"
-msgstr ""
+msgstr "Włącz pionowy separator"
 
 #: prefs.js:1183
 msgid "Separator Color"
-msgstr ""
+msgstr "Kolor separatora"
 
 #: prefs.js:1205 prefs.js:1492
 msgid "Reset"
-msgstr ""
+msgstr "Reset"
 
 #: prefs.js:1235 prefs.js:1540
 msgid "Apply"
-msgstr ""
+msgstr "Zastosuj"
 
 #: prefs.js:1296
 msgid "Menu Background Color"
@@ -245,7 +247,7 @@ msgstr ""
 
 #: prefs.js:1333
 msgid "Font Size"
-msgstr ""
+msgstr "Wielkość czcionki"
 
 #: prefs.js:1357
 msgid "Border Color"
@@ -261,7 +263,7 @@ msgstr ""
 
 #: prefs.js:1419
 msgid "Corner Radius"
-msgstr ""
+msgstr "Zaokrąglenie rogów"
 
 #: prefs.js:1443
 msgid "Menu Arrow Size"
@@ -273,19 +275,19 @@ msgstr ""
 
 #: prefs.js:1574
 msgid "Configure"
-msgstr ""
+msgstr "Konfiguruj"
 
 #: prefs.js:1581
 msgid "Enable/Disable shortcuts"
-msgstr ""
+msgstr "Włącz/Wyłącz skróty"
 
 #: prefs.js:1634
 msgid "External Devices"
-msgstr ""
+msgstr "Zewnętrzne urządzenia"
 
 #: prefs.js:1657
 msgid "Bookmarks"
-msgstr ""
+msgstr "Ulubione"
 
 #: prefs.js:1722
 msgid "Suspend"
@@ -305,7 +307,7 @@ msgstr "Informacje"
 
 #: prefs.js:1852
 msgid "Arc-Menu"
-msgstr ""
+msgstr "Arc-Menu"
 
 #: prefs.js:1857
 msgid "version: "
@@ -313,20 +315,20 @@ msgstr "wersja: "
 
 #: prefs.js:1865
 msgid "GitLab Page"
-msgstr ""
+msgstr "Strona na GitLab"
 
 #: twoMenuButton.js:75
 msgid "Arc Menu Settings"
-msgstr ""
+msgstr "Ustawienia Arc Menu"
 
 #: twoMenuButton.js:83
 msgid "Arc Menu on GitLab"
-msgstr ""
+msgstr "Arc Menu na GitLab"
 
 #: twoMenuButton.js:88
 msgid "About Arc Menu"
-msgstr ""
+msgstr "O Arc Menu"
 
 #: twoMenuButton.js:104
 msgid "Dash to Panel Settings"
-msgstr ""
+msgstr "Ustawienia Dash to Panel"
