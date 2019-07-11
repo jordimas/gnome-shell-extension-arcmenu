@@ -64,7 +64,7 @@ msgstr ""
 
 #: prefs.js:492
 msgid "General"
-msgstr ""
+msgstr "Ogólne"
 
 #: prefs.js:501
 msgid "Menu Button Position in Panel"
@@ -72,11 +72,11 @@ msgstr ""
 
 #: prefs.js:508
 msgid "Left"
-msgstr ""
+msgstr "Z lewej"
 
 #: prefs.js:511
 msgid "Center"
-msgstr ""
+msgstr "W środku"
 
 #: prefs.js:515
 msgid "Right"
@@ -273,15 +273,15 @@ msgstr ""
 msgid "Enable/Disable session buttons"
 msgstr ""
 
-#: prefs.js:1444 menuWidgets.js:250
+#: prefs.js:1444
 msgid "Suspend"
 msgstr "Wstrzymaj komputer"
 
-#: prefs.js:1462 menuWidgets.js:268
+#: prefs.js:1462
 msgid "Lock"
 msgstr "Zablokuj ekran"
 
-#: prefs.js:1480 menuWidgets.js:237
+#: prefs.js:1480a
 msgid "Log Out"
 msgstr "Wyloguj się"
 
@@ -301,34 +301,14 @@ msgstr "wersja: "
 msgid "GitLab Page"
 msgstr ""
 
-#: menu.js:397
-msgid "Home"
-msgstr "Katalog domowy"
-
-#: menuWidgets.js:107
-msgid "Activities Overview"
-msgstr "Ekran podglądu"
-
-#: menuWidgets.js:224
-msgid "Power Off"
-msgstr "Wyłącz komputer"
-
-#: menuWidgets.js:290
-msgid "Back"
-msgstr "Wstecz"
-
-#: menuWidgets.js:346
-msgid "All Programs"
+#: twoMenuButton.js:72
+msgid "Arc Menu Settings"
 msgstr ""
 
-#: menuWidgets.js:685
-msgid "Favorites"
-msgstr "Ulubione"
+#: twoMenuButton.js:79
+msgid "Arc Menu on GitLab"
+msgstr ""
 
-#: menuWidgets.js:826
-msgid "Type to search…"
-msgstr "Szukaj…"
-
-#: menuWidgets.js:989
-msgid "Applications"
-msgstr "Programy"
+#: twoMenuButton.js:84
+msgid "About Arc Menu"
+msgstr ""
