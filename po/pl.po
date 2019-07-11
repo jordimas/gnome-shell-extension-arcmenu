@@ -3,6 +3,7 @@
 # This file is distributed under the same license as the Arc Menu package.
 # Piotr Komur <pkomur@gmail.com>, 2017.
 # Igor Serwin <serwinigor@gmail.com>, 2017.
+# Alex <rylatgl@gmail.com>, 2019
 msgid ""
 msgstr ""
 "Project-Id-Version:  Arc Menu\n"
@@ -21,207 +22,248 @@ msgstr ""
 msgid "General"
 msgstr ""
 
-#: prefs.js:54
+#: prefs.js:47
+msgid "Your Pinned Apps:"
+msgstr ""
+
+#: prefs.js:71
+msgid "Add More Apps"
+msgstr ""
+
+#: prefs.js:114
+msgid "Add Custom Shortcut"
+msgstr ""
+
+#: prefs.js:149
+msgid "Save Changes"
+msgstr ""
+
+#: prefs.js:279
+msgid "Select Apps to add to Pinned Apps List"
+msgstr ""
+
+#: prefs.js:420
+msgid "Add a Custom Shortcut to Pinned Apps List"
+msgstr ""
+
+#: prefs.js:430
+msgid "Shortcut Name:"
+msgstr ""
+
+#: prefs.js:444
+msgid "Icon Path/Icon Symbolic:"
+msgstr ""
+
+#: prefs.js:458
+msgid "Terminal Command:"
+msgstr ""
+
+#: prefs.js:484
+msgid "Add Cutsom Link"
+msgstr ""
+
+#: prefs.js:514
 msgid "Behaviour"
 msgstr "Zachowanie"
 
-#: prefs.js:63
+#: prefs.js:523
 msgid "Disable activities hot corner"
 msgstr "Wyłącz aktywny narożnik podglądu"
 
-#: prefs.js:85
+#: prefs.js:545
 msgid "Set menu hotkey"
 msgstr "Klawisz aktywowania menu"
 
-#: prefs.js:91
+#: prefs.js:551
 msgid "Undefined"
 msgstr "Nieokreślony"
 
-#: prefs.js:92
+#: prefs.js:552
 msgid "Left Super Key"
 msgstr "Lewy Super (Meta)"
 
-#: prefs.js:93
+#: prefs.js:553
 msgid "Right Super Key"
 msgstr "Prawy Super (Meta)"
 
-#: prefs.js:105
+#: prefs.js:565
 msgid "Enable custom menu keybinding"
 msgstr "Włącz własny skrót klawiszowy"
 
-#: prefs.js:112
+#: prefs.js:572
 msgid "Syntax: <Shift>, <Ctrl>, <Alt>, <Super>"
 msgstr "Składnia: <Shift>, <Ctrl>, <Alt>, <Super>"
 
-#: prefs.js:153
+#: prefs.js:613
 msgid "Button appearance"
 msgstr "Wygląd przycisku"
 
-#: prefs.js:165
+#: prefs.js:625
 msgid "Text for the menu button"
 msgstr "Tekst dla przycisku menu"
 
-#: prefs.js:171
+#: prefs.js:631
 msgid "System text"
 msgstr "Domyślny tekst"
 
-#: prefs.js:174
+#: prefs.js:634
 #, fuzzy
 msgid "Custom text"
 msgstr "Własny tekst"
 
-#: prefs.js:198
+#: prefs.js:658
 msgid "Set custom text for the menu button"
 msgstr "Ustaw własny tekst dla przycisku menu"
 
-#: prefs.js:218
+#: prefs.js:678
 msgid "Enable the arrow icon beside the button text"
 msgstr "Włącz ikonę strzałki obok tekstu przycisku"
 
-#: prefs.js:240
+#: prefs.js:700
 msgid "Select icon for the menu button"
 msgstr "Wybierz ikone dla przycisku menu"
 
-#: prefs.js:250
+#: prefs.js:710
 msgid "Please select an image icon"
 msgstr "Wybierz obraz ikony"
 
-#: prefs.js:255
+#: prefs.js:715
 msgid "Arc Menu Icon"
 msgstr "Ikona Arc Menu"
 
-#: prefs.js:256
+#: prefs.js:716
 msgid "System Icon"
 msgstr "Ikona Systemowa"
 
-#: prefs.js:257
+#: prefs.js:717
 msgid "Custom Icon"
 msgstr "Własna Ikona"
 
-#: prefs.js:283
+#: prefs.js:743
 msgid "Icon size"
 msgstr "Rozmiar ikony"
 
-#: prefs.js:283
+#: prefs.js:743
 msgid "default is"
 msgstr "Domyślny wynosi"
 
-#: prefs.js:323
+#: prefs.js:783
 msgid "Appearance"
 msgstr "Wygląd"
 
-#: prefs.js:332
+#: prefs.js:792
 msgid "Customize menu button appearance"
 msgstr "Spersonalizuj wygląd przycisku menu"
 
-#: prefs.js:342
+#: prefs.js:802
 msgid "Icon"
 msgstr "Ikona"
 
-#: prefs.js:343
+#: prefs.js:803
 msgid "Text"
 msgstr "Tekst"
 
-#: prefs.js:344
+#: prefs.js:804
 msgid "Icon and Text"
 msgstr "Ikona i tekst"
 
-#: prefs.js:345
+#: prefs.js:805
 msgid "Text and Icon"
 msgstr "Tekst i ikona"
 
-#: prefs.js:370
+#: prefs.js:830
 msgid "Menu position in panel"
 msgstr "Pozycja menu na pasku"
 
-#: prefs.js:377
+#: prefs.js:837
 msgid "Left"
 msgstr "Z lewej"
 
-#: prefs.js:380
+#: prefs.js:840
 msgid "Center"
 msgstr "Na środku"
 
-#: prefs.js:384
+#: prefs.js:844
 msgid "Right"
 msgstr "Z prawej"
 
-#: prefs.js:461
+#: prefs.js:921
 msgid "About"
 msgstr "Informacje"
 
-#: prefs.js:490
+#: prefs.js:950
 msgid "Arc-Menu"
 msgstr ""
 
-#: prefs.js:495
+#: prefs.js:955
 msgid "version: "
 msgstr "wersja: "
 
-#: prefs.js:503
+#: prefs.js:963
 msgid "GitLab Page"
 msgstr ""
 
-#: menu.js:272
+#: menu.js:320
 msgid "Home"
 msgstr "Katalog domowy"
 
-#: menu.js:456 menu.js:461
+#: menu.js:533 menu.js:538
 msgid "Software"
 msgstr "Oprogramowanie"
 
-#: menu.js:466
+#: menu.js:543
 msgid "Settings"
 msgstr "Ustawienia"
 
-#: menu.js:471
+#: menu.js:548
 msgid "Tweak Tool"
 msgstr "Dostrajanie"
 
-#: menu.js:476
+#: menu.js:533
 #, fuzzy
 msgid "Tweaks"
 msgstr "Dostrajanie"
 
-#: menu.js:481
+#: menu.js:558
 msgid "Terminal"
 msgstr ""
 
-#: menuWidgets.js:86
+#: menuWidgets.js:101
 msgid "Activities Overview"
 msgstr "Ekran podglądu"
 
-#: menuWidgets.js:199
+#: menuWidgets.js:214
 msgid "Power Off"
 msgstr "Wyłącz komputer"
 
-#: menuWidgets.js:212
+#: menuWidgets.js:227
 msgid "Log Out"
 msgstr "Wyloguj się"
 
-#: menuWidgets.js:225
+#: menuWidgets.js:240
 msgid "Suspend"
 msgstr "Wstrzymaj komputer"
 
-#: menuWidgets.js:243
+#: menuWidgets.js:258
 msgid "Lock"
 msgstr "Zablokuj ekran"
 
-#: menuWidgets.js:265
+#: menuWidgets.js:280
 msgid "Back"
 msgstr "Wstecz"
 
-#: menuWidgets.js:483
+#: menuWidgets.js:326
+msgid "All Programs"
+msgstr ""
+
+#: menuWidgets.js:573
 msgid "Favorites"
 msgstr "Ulubione"
 
-#: menuWidgets.js:616
+#: menuWidgets.js:706
 msgid "Type to search…"
 msgstr "Szukaj…"
 
-#: menuWidgets.js:781
+#: menuWidgets.js:871
 msgid "Applications"
 msgstr "Programy"
-
-#~ msgid "Webpage"
-#~ msgstr "Witryna internetowa"
