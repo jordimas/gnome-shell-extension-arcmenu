@@ -1225,7 +1225,7 @@ var ArcMenuCustomizationWindow = GObject.registerClass(
            buttonRow.add(resetButton);
           
            let fillerLabel = new Gtk.Label({
-               label: _(''),
+               label: '',
                xalign:0,
                hexpand: true,
            });   
@@ -1530,7 +1530,7 @@ var OverrideArcMenuThemeWindow = GObject.registerClass(
             buttonRow.add(resetButton);
            
             let fillerLabel = new Gtk.Label({
-                label: _(''),
+                label: '',
                 xalign:0,
                 hexpand: true,
             });   
