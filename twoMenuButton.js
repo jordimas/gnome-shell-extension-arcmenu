@@ -65,6 +65,7 @@ var TwoMenuButton = GObject.registerClass( class TwoMenuButton extends PanelMenu
     _init(settings) {
         super._init(1.0, null, false);
         this._settings = settings;
+        this.DTPSettings=false;
         //create right click menu
         this.rightClickMenu = new PopupMenu.PopupMenu(this,1.0,St.Side.TOP);	
         this.rightClickMenu.actor.add_style_class_name('panel-menu');
@@ -101,16 +102,20 @@ var TwoMenuButton = GObject.registerClass( class TwoMenuButton extends PanelMenu
 	    this.leftClickMenu.actor.hide();	
     }
     addDTPSettings(){
-        let item = new PopupMenu.PopupMenuItem(_("Dash to Panel Settings"));
-        item.connect('activate', ()=>{
-            Util.spawnCommandLine('gnome-shell-extension-prefs dash-to-panel@jderose9.github.com');
-        });
-        this.rightClickMenu.addMenuItem(item,1);   
+        if(this.DTPSettings==false){
+            let item = new PopupMenu.PopupMenuItem(_("Dash to Panel Settings"));
+            item.connect('activate', ()=>{
+                Util.spawnCommandLine('gnome-shell-extension-prefs dash-to-panel@jderose9.github.com');
+            });
+            this.rightClickMenu.addMenuItem(item,1);   
+            this.DTPSettings=true;
+        } 
     }
     removeDTPSettings(){
         let children = this.rightClickMenu._getMenuItems();
         if(children[1] instanceof PopupMenu.PopupMenuItem)
             children[1].destroy();
+        this.DTPSettings=false;
     }
     _onEvent(actor, event) {
     
