@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: Arc Menu\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-03-19 15:14+0100\n"
-"PO-Revision-Date: 2019-07-12 18:34+0200\n"
+"PO-Revision-Date: 2019-07-12 19:13+0200\n"
 "Last-Translator: Alex <rylatgl@gmail.com>\n"
 "Language-Team: \n"
 "Language: pl\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Poedit 2.2.1\n"
 
-#: prefs.js:46 prefs.js:578
+#: prefs.js:46 prefs.js:621
 msgid "Pinned Apps"
 msgstr "Przypięte programy"
 
