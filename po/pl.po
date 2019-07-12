@@ -332,3 +332,43 @@ msgstr "O Arc Menu"
 #: twoMenuButton.js:104
 msgid "Dash to Panel Settings"
 msgstr "Ustawienia Dash to Panel"
+
+#~ msgid "Behaviour"
+#~ msgstr "Zachowanie"
+
+#~ msgid "Home"
+#~ msgstr "Katalog domowy"
+
+#~ msgid "Software"
+#~ msgstr "Oprogramowanie"
+
+#~ msgid "Settings"
+#~ msgstr "Ustawienia"
+
+#~ msgid "Tweak Tool"
+#~ msgstr "Dostrajanie"
+
+#, fuzzy
+#~ msgid "Tweaks"
+#~ msgstr "Dostrajanie"
+
+#~ msgid "Activities Overview"
+#~ msgstr "Ekran podglądu"
+
+#~ msgid "Power Off"
+#~ msgstr "Wyłącz komputer"
+
+#~ msgid "Back"
+#~ msgstr "Wstecz"
+
+#~ msgid "Favorites"
+#~ msgstr "Ulubione"
+
+#~ msgid "Type to search…"
+#~ msgstr "Szukaj…"
+
+#~ msgid "Applications"
+#~ msgstr "Programy"
+
+#~ msgid "Webpage"
+#~ msgstr "Witryna internetowa"
