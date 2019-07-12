@@ -1,226 +1,374 @@
 # Brazilian Portuguese translation file for Arc Menu.
-# Copyright (C) 2017 LinxGem33
+# Copyright (C) 2019.
 # This file is distributed under the same license as the Arc Menu package.
 # Daniel Stuart <daniel.stuart14@gmail.com>, 2017.
+# Vinícius Malta, 2019.
 #
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: Arc Menu\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-03-19 15:14+0100\n"
-"PO-Revision-Date: 2017-07-09 15:00+0300\n"
-"Last-Translator: Daniel Stuart <daniel.stuart14@gmail.com>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
+"POT-Creation-Date: 2019-07-10 12:18+0100\n"
+"PO-Revision-Date: 2019-07-12 12:00-0300\n"
+"Last-Translator: Vinícius Malta <daniel.stuart14@gmail.com>\n"
+"Language-Team: \n"
 "Language: pt_BR\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 2.2.1\n"
+"X-Poedit-Basepath: ..\n"
+"X-Poedit-SearchPath-0: prefs.js\n"
+"X-Poedit-SearchPath-1: twoMenuButton.js\n"
 
-#: prefs.js:42
-msgid "General"
-msgstr ""
+#: prefs.js:46 prefs.js:621
+msgid "Pinned Apps"
+msgstr "Aplicativos fixados"
 
-#: prefs.js:54
-msgid "Behaviour"
-msgstr "Comportamento"
+#: prefs.js:51
+msgid "Your Pinned Apps:"
+msgstr "Seus aplicativos fixados:"
 
-#: prefs.js:63
-msgid "Disable activities hot corner"
-msgstr "Desativar menu atividades no canto da tela"
+#: prefs.js:75
+msgid "Add More Apps"
+msgstr "Adicionar mais aplicativos"
 
-#: prefs.js:85
-msgid "Set menu hotkey"
-msgstr "Definir tecla para abrir o menu"
-
-#: prefs.js:91
-msgid "Undefined"
-msgstr "Indefinido"
-
-#: prefs.js:92
-msgid "Left Super Key"
-msgstr "Tecla Super esquerda"
-
-#: prefs.js:93
-msgid "Right Super Key"
-msgstr "Tecla Super direita"
-
-#: prefs.js:105
-msgid "Enable custom menu keybinding"
-msgstr "Habilitar customização das teclas menu"
-
-#: prefs.js:112
-msgid "Syntax: <Shift>, <Ctrl>, <Alt>, <Super>"
-msgstr "Sintaxe: <Shift>, <Ctrl>, <Alt>, <Super>"
+#: prefs.js:119
+msgid "Add Custom Shortcut"
+msgstr "Adicionar atalho personalizado"
 
 #: prefs.js:153
-msgid "Button appearance"
-msgstr "Aparência do botão"
+msgid "Save"
+msgstr "Salvar"
 
-#: prefs.js:165
-msgid "Text for the menu button"
-msgstr "Texto para o botão menu"
+#: prefs.js:278
+msgid "Select Apps to add to Pinned Apps List"
+msgstr "Selecionar aplicativos para adicionar a lista de aplicativos fixados"
 
-#: prefs.js:171
-msgid "System text"
-msgstr "Texto do sistema"
+#: prefs.js:298 prefs.js:458
+msgid "Add"
+msgstr "Adicionar"
 
-#: prefs.js:174
-msgid "Custom text"
-msgstr "Texto customizado"
+#: prefs.js:407
+msgid "Add a Custom Shortcut"
+msgstr "Adicionar um atalho personalizado"
 
-#: prefs.js:198
-msgid "Set custom text for the menu button"
-msgstr "Definir texto customizado para o botão menu"
+#: prefs.js:417
+msgid "Shortcut Name:"
+msgstr "Nome do atalho:"
 
-#: prefs.js:218
-msgid "Enable the arrow icon beside the button text"
-msgstr "Habilitar o ícone de seta ao lado do botão de texto"
+#: prefs.js:431
+msgid "Icon Path/Icon Symbolic:"
+msgstr "Caminho do Ícone/Ícone Simbólico:"
 
-#: prefs.js:240
-msgid "Select icon for the menu button"
-msgstr "Selecionar ícone para o botão menu"
+#: prefs.js:445
+msgid "Terminal Command:"
+msgstr "Comando do Terminal:"
 
-#: prefs.js:250
-msgid "Please select an image icon"
-msgstr "Por favor, selecione uma imagem para ser o ícone"
+#: prefs.js:492
+msgid "General"
+msgstr "Geral"
 
-#: prefs.js:255
-msgid "Arc Menu Icon"
-msgstr "Ícone do Arc Menu"
+#: prefs.js:501
+msgid "Menu Button Position in Panel"
+msgstr "Posição do botão Menu no Painel"
 
-#: prefs.js:256
-msgid "System Icon"
-msgstr "Ícone do sistema"
-
-#: prefs.js:257
-msgid "Custom Icon"
-msgstr "Ícone customizado"
-
-#: prefs.js:283
-msgid "Icon size"
-msgstr "Tamanho do ícone"
-
-#: prefs.js:283
-msgid "default is"
-msgstr "O padrão é"
-
-#: prefs.js:323
-msgid "Appearance"
-msgstr "Aparência"
-
-#: prefs.js:332
-msgid "Customize menu button appearance"
-msgstr "Customizar aparência do botão menu"
-
-#: prefs.js:342
-msgid "Icon"
-msgstr "Ícone"
-
-#: prefs.js:343
-msgid "Text"
-msgstr "Texto"
-
-#: prefs.js:344
-msgid "Icon and Text"
-msgstr "Ícone e texto"
-
-#: prefs.js:345
-msgid "Text and Icon"
-msgstr "Texto e ícone"
-
-#: prefs.js:370
-msgid "Menu position in panel"
-msgstr "Posição do menu no painel"
-
-#: prefs.js:377
+#: prefs.js:508
 msgid "Left"
 msgstr "Esquerda"
 
-#: prefs.js:380
+#: prefs.js:511
 msgid "Center"
 msgstr "Centro"
 
-#: prefs.js:384
+#: prefs.js:515
 msgid "Right"
 msgstr "Direita"
 
-#: prefs.js:461
-msgid "About"
-msgstr "Sobre"
+#: prefs.js:553
+msgid "Display on all monitors when using Dash to Panel"
+msgstr "Exibir em todos os monitores ao usar o Dash to Panel"
 
-#: prefs.js:490
-msgid "Arc-Menu"
-msgstr "Arc-Menu"
+#: prefs.js:574
+msgid "Disable Tooltips"
+msgstr "Desativar dicas de ferramentas"
 
-#: prefs.js:495
-msgid "version: "
-msgstr "versão: "
+#: prefs.js:596
+msgid "Disable activities hot corner"
+msgstr "Desativar menu Atividades no canto da tela"
 
-#: prefs.js:503
-msgid "GitLab Page"
-msgstr ""
+#: prefs.js:615
+msgid "Choose Arc Menus Default View"
+msgstr "Escolha a visualização padrão do Arc Menu"
 
-#: menu.js:272
-msgid "Home"
-msgstr "Pasta pessoal"
+#: prefs.js:622
+msgid "Categories List"
+msgstr "Lista de categorias"
 
-#: menu.js:456 menu.js:461
-msgid "Software"
-msgstr "Programas"
+#: prefs.js:646
+msgid "Set menu hotkey"
+msgstr "Definir tecla para abrir o menu"
 
-#: menu.js:466
-msgid "Settings"
-msgstr "Configurações"
+#: prefs.js:652
+msgid "Undefined"
+msgstr "Indefinido"
 
-#: menu.js:471
-msgid "Tweak Tool"
-msgstr "Ferramenta de ajustes"
+#: prefs.js:653
+msgid "Left Super Key"
+msgstr "Tecla Super esquerda"
 
-#: menu.js:476
-#, fuzzy
-msgid "Tweaks"
-msgstr "Ferramenta de ajustes"
+#: prefs.js:654
+msgid "Right Super Key"
+msgstr "Tecla Super direita"
 
-#: menu.js:481
-msgid "Terminal"
-msgstr ""
+#: prefs.js:666
+msgid "Enable custom menu keybinding"
+msgstr "Habilitar combinação de teclas personalizada para o menu"
 
-#: menuWidgets.js:86
-msgid "Activities Overview"
-msgstr "Panorama de atividades"
+#: prefs.js:673
+msgid "Syntax: <Shift>, <Ctrl>, <Alt>, <Super>"
+msgstr "Sintaxe: <Shift>, <Ctrl>, <Alt>, <Super>"
 
-#: menuWidgets.js:199
-msgid "Power Off"
-msgstr "Desligar"
+#: prefs.js:716
+msgid "Button appearance"
+msgstr "Aparência do botão"
 
-#: menuWidgets.js:212
-msgid "Log Out"
-msgstr "Encerrar sessão"
+#: prefs.js:728
+msgid "Text for the menu button"
+msgstr "Texto do botão menu"
 
-#: menuWidgets.js:225
+#: prefs.js:734
+msgid "System text"
+msgstr "Texto do sistema"
+
+#: prefs.js:737
+msgid "Custom text"
+msgstr "Texto personalizado"
+
+#: prefs.js:761
+msgid "Set custom text for the menu button"
+msgstr "Definir o texto personalizado do botão menu"
+
+#: prefs.js:781
+msgid "Enable the arrow icon beside the button text"
+msgstr "Habilitar o ícone de seta ao lado do menu"
+
+#: prefs.js:803
+msgid "Select icon for the menu button"
+msgstr "Selecionar ícone para o botão de menu"
+
+#: prefs.js:813
+msgid "Please select an image icon"
+msgstr "Por favor, selecione uma imagem para o ícone"
+
+#: prefs.js:818
+msgid "Arc Menu Icon"
+msgstr "Ícone do Arc Menu"
+
+#: prefs.js:819
+msgid "System Icon"
+msgstr "Ícone do sistema"
+
+#: prefs.js:820
+msgid "Custom Icon"
+msgstr "Ícone personalizado"
+
+#: prefs.js:846
+msgid "Icon size"
+msgstr "Tamanho do Ícone"
+
+#: prefs.js:846
+msgid "default is"
+msgstr "o padrão é"
+
+#: prefs.js:886
+msgid "Appearance"
+msgstr "Aparência"
+
+#: prefs.js:895
+msgid "Customize Menu Button Appearance"
+msgstr "Personalizar aparência do botão menu"
+
+#: prefs.js:905
+msgid "Icon"
+msgstr "Ícone"
+
+#: prefs.js:906
+msgid "Text"
+msgstr "Texto"
+
+#: prefs.js:907
+msgid "Icon and Text"
+msgstr "Ícone e Texto"
+
+#: prefs.js:908
+msgid "Text and Icon"
+msgstr "Texto e Ícone"
+
+#: prefs.js:931 prefs.js:1091
+msgid "Customize Arc Menu Appearance"
+msgstr "Personalizar aparência do Arc Menu"
+
+#: prefs.js:979 prefs.js:1284
+msgid "Override Arc Menu Theme"
+msgstr "Sobrepor tema do Arc Menu"
+
+#: prefs.js:1109
+msgid "Menu Height"
+msgstr "Altura do menu"
+
+#: prefs.js:1141
+msgid "Left-Panel Width"
+msgstr "Largura do painel esquerdo"
+
+#: prefs.js:1164
+msgid "Enable Vertical Separator"
+msgstr "Habilitar separador vertical"
+
+#: prefs.js:1183
+msgid "Separator Color"
+msgstr "Cor do separador"
+
+#: prefs.js:1205 prefs.js:1492
+msgid "Reset"
+msgstr "Redefinir"
+
+#: prefs.js:1235 prefs.js:1540
+msgid "Apply"
+msgstr "Aplicar"
+
+#: prefs.js:1296
+msgid "Menu Background Color"
+msgstr "Cor de fundo do menu"
+
+#: prefs.js:1315
+msgid "Menu Foreground Color"
+msgstr "Cor do primeiro plano do menu"
+
+#: prefs.js:1333
+msgid "Font Size"
+msgstr "Tamanho da Fonte"
+
+#: prefs.js:1357
+msgid "Border Color"
+msgstr "Cor da Borda"
+
+#: prefs.js:1376
+msgid "Border Size"
+msgstr "Tamanho da Borda"
+
+#: prefs.js:1400
+msgid "Highlighted Item Color"
+msgstr "Cor de realce do item"
+
+#: prefs.js:1419
+msgid "Corner Radius"
+msgstr "Raio do Canto"
+
+#: prefs.js:1443
+msgid "Menu Arrow Size"
+msgstr "Tamanho da seta do menu"
+
+#: prefs.js:1467
+msgid "Menu Displacement"
+msgstr "Deslocamento do menu"
+
+#: prefs.js:1574
+msgid "Configure"
+msgstr "Configurar"
+
+#: prefs.js:1581
+msgid "Enable/Disable shortcuts"
+msgstr "Habilitar/Desabilitar Atalhos"
+
+#: prefs.js:1634
+msgid "External Devices"
+msgstr "Dispositivos externos"
+
+#: prefs.js:1657
+msgid "Bookmarks"
+msgstr "Favoritos"
+
+#: prefs.js:1722
 msgid "Suspend"
 msgstr "Suspender"
 
-#: menuWidgets.js:243
+#: prefs.js:1740
 msgid "Lock"
 msgstr "Bloquear"
 
-#: menuWidgets.js:265
-msgid "Back"
-msgstr "Voltar"
+#: prefs.js:1758
+msgid "Log Out"
+msgstr "Encerrar sessão"
 
-#: menuWidgets.js:483
-msgid "Favorites"
-msgstr "Favoritos"
+#: prefs.js:1823
+msgid "About"
+msgstr "Sobre"
 
-#: menuWidgets.js:616
-msgid "Type to search…"
-msgstr "Escreva para pesquisar..."
+#: prefs.js:1852
+msgid "Arc-Menu"
+msgstr "Arc-Menu"
 
-#: menuWidgets.js:781
-msgid "Applications"
-msgstr "Aplicações"
+#: prefs.js:1857
+msgid "version: "
+msgstr "versão:"
+
+#: prefs.js:1865
+msgid "GitLab Page"
+msgstr "Página do GitLab"
+
+#: twoMenuButton.js:75
+msgid "Arc Menu Settings"
+msgstr "Configurações do Arc Menu"
+
+#: twoMenuButton.js:83
+msgid "Arc Menu on GitLab"
+msgstr "Arc Menu no GitLab"
+
+#: twoMenuButton.js:88
+msgid "About Arc Menu"
+msgstr "Sobre o Arc Menu"
+
+#: twoMenuButton.js:104
+msgid "Dash to Panel Settings"
+msgstr "Configurações do Dash to Panel"
+
+#~ msgid "Behaviour"
+#~ msgstr "Comportamento"
+
+#~ msgid "Home"
+#~ msgstr "Pasta pessoal"
+
+#~ msgid "Software"
+#~ msgstr "Programas"
+
+#~ msgid "Settings"
+#~ msgstr "Configurações"
+
+#~ msgid "Tweak Tool"
+#~ msgstr "Ferramenta de Ajustes"
+
+#~ msgid "Tweaks"
+#~ msgstr "Ajustes"
+
+#~ msgid "Activities Overview"
+#~ msgstr "Panorama de atividades"
+
+#~ msgid "Power Off"
+#~ msgstr "Desligar"
+
+#~ msgid "Back"
+#~ msgstr "Voltar"
+
+#~ msgid "Favorites"
+#~ msgstr "Favoritos"
+
+#~ msgid "Type to search…"
+#~ msgstr "Escreva para pesquisar..."
+
+#~ msgid "Applications"
+#~ msgstr "Aplicações"
 
 #~ msgid "Webpage"
 #~ msgstr "Página da web"
