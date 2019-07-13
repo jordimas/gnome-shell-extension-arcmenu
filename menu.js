@@ -2,8 +2,7 @@
  * Arc Menu: The new applications menu for Gnome 3.
  *
  * Original work: Copyright (C) 2015 Giovanni Campagna
- * Modified work: Copyright (C) 2016-2017 Zorin OS Technologies Ltd.
- * Modified work: Copyright (C) 2017 LinxGem33
+ * Modified work: Copyright (C) 2017-2019 LinxGem33
  * Modified work: Copyright (C) 2017 Alexander Rüedlinger
  * Modified work: Copyright (C) 2019 Andrew Zaech
  *
