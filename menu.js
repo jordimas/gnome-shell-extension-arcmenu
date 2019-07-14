@@ -106,9 +106,11 @@ var ApplicationsButton = GObject.registerClass(
             this._display();
             this._installedChangedId = appSys.connect('installed-changed', () => {
                 if (this.leftClickMenu.isOpen) {
+                    this._loadCategories();
                     this._redisplay();
                     this.mainBox.show();
                 } else {
+                    this._loadCategories();
                     this.reloadFlag = true;
                 }
             });
@@ -143,6 +145,12 @@ var ApplicationsButton = GObject.registerClass(
                 this.rightClickMenu.actor.style_class = 'arc-menu-boxpointer';
                 this.rightClickMenu.actor.add_style_class_name('arc-menu');
                 this.searchBox._stEntry.set_name('arc-search-entry');
+                this.actionsBox.actor.get_children().forEach(function (actor) {
+                    if(actor instanceof St.Button){
+                        actor.add_style_class_name('arc-menu-action');
+                    }
+                }.bind(this));
+
             }
             else
             {         
@@ -152,6 +160,11 @@ var ApplicationsButton = GObject.registerClass(
                 this.rightClickMenu.actor.style_class = 'popup-menu-boxpointer';
                 this.rightClickMenu.actor.add_style_class_name('popup-menu');
                 this.searchBox._stEntry.set_name('search-entry');
+                this.actionsBox.actor.get_children().forEach(function (actor) {
+                    if(actor instanceof St.Button){
+                        actor.remove_style_class_name('arc-menu-action');
+                    }
+                }.bind(this));
             }
         }
         // Destroy the menu button
@@ -272,8 +285,6 @@ var ApplicationsButton = GObject.registerClass(
                     this._redisplay();
                     this.reloadFlag = false;
                 }
-                //if(this.user._userIcon.get_gicon()==null)
-			       this.user._onUserChanged();
                 this.mainBox.show();  
             }
             super._onOpenStateChanged(menu, open);
@@ -348,7 +359,7 @@ var ApplicationsButton = GObject.registerClass(
 
         }
         _displayCategories(){
-            this._loadCategories();
+            
          	this._clearApplicationsBox();
             this.viewProgramsButton.actor.hide();
 	    	if(this._settings.get_boolean('enable-pinned-apps'))

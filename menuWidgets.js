@@ -42,6 +42,11 @@ const LoginManager = imports.misc.loginManager;
 const Gdk = imports.gi.Gdk;
 const Gtk = imports.gi.Gtk;
 const AppFavorites = imports.ui.appFavorites;
+const { loadInterfaceXML } = imports.misc.fileUtils;
+const SWITCHEROO_BUS_NAME = 'net.hadess.SwitcherooControl';
+const SWITCHEROO_OBJECT_PATH = '/net/hadess/SwitcherooControl';
+const SwitcherooProxyInterface = loadInterfaceXML('net.hadess.SwitcherooControl');
+const SwitcherooProxy = Gio.DBusProxy.makeProxyWrapper(SwitcherooProxyInterface);
 // Menu Size variables
 const LARGE_ICON_SIZE = 34;
 const MEDIUM_ICON_SIZE = 25;
@@ -70,8 +75,32 @@ var AppRightClickMenu = class extends PopupMenu.PopupMenu {
         this.actor.style_class = 'app-right-click-boxpointer';
         this.actor.add_style_class_name('app-right-click');
         this.redisplay();
+        this.discreteGpuAvailable = false;
+        Gio.DBus.system.watch_name(SWITCHEROO_BUS_NAME,
+            Gio.BusNameWatcherFlags.NONE,
+            this._switcherooProxyAppeared.bind(this),
+            () => {
+                this._switcherooProxy = null;
+                this._updateDiscreteGpuAvailable();
+            });
+    }
+    _updateDiscreteGpuAvailable() {
+        if (!this._switcherooProxy)
+            this.discreteGpuAvailable = false;
+        else
+            this.discreteGpuAvailable = this._switcherooProxy.HasDualGpu;
     }
 
+    _switcherooProxyAppeared() {
+        this._switcherooProxy = new SwitcherooProxy(Gio.DBus.system, SWITCHEROO_BUS_NAME, SWITCHEROO_OBJECT_PATH,
+            (proxy, error) => {
+                if (error) {
+                    log(error.message);
+                    return;
+                }
+                this._updateDiscreteGpuAvailable();
+            });
+    }
     redisplay(){
         this.removeAll();
         if(this._app instanceof Shell.App){
@@ -116,7 +145,19 @@ var AppRightClickMenu = class extends PopupMenu.PopupMenu {
                     });
                    
                 }
-
+                if (this.discreteGpuAvailable &&
+                    this._app.state == Shell.AppState.STOPPED &&
+                    !actions.includes('activate-discrete-gpu')) {
+                    this._onDiscreteGpuMenuItem = this._appendMenuItem(_("Launch using Dedicated Graphics Card"));
+                    this._onDiscreteGpuMenuItem.connect('activate', () => {
+                        
+    
+                        this._app.launch(0, -1, true);
+                        this.emit('activate-window', null);
+                        this._button.leftClickMenu.toggle();
+                    });
+                }
+    
                 for (let i = 0; i < actions.length; i++) {
                     let action = actions[i];
                     let item = this._appendMenuItem(this.appInfo.get_action_name(action));
@@ -233,6 +274,7 @@ var AppRightClickMenu = class extends PopupMenu.PopupMenu {
 
     _appendSeparator() {
         let separator = new PopupMenu.PopupSeparatorMenuItem();
+        //separator.actor.set_height(1);
         separator.actor.style_class='app-right-click-sep';
         separator._separator.style_class='';
         this.addMenuItem(separator);
@@ -433,7 +475,6 @@ var SessionButton = class {
         this.actor.connect('clicked', this._onClick.bind(this));
         this.actor.connect('notify::hover', this._onHover.bind(this));
     }
-
     useTooltips(useTooltips) {
         this._useTooltips = useTooltips;
     }
@@ -645,11 +686,6 @@ var UserMenuItem = class extends BaseMenuItem {
         this._button = button;
         let username = GLib.get_user_name();
         this._user = AccountsService.UserManager.get_default().get_user(username);
-        /*this._userIcon = new St.Icon({
-            style_class: 'popup-menu-icon',
-            icon_size: MEDIUM_ICON_SIZE
-        });*/
-        //this.actor.add_child(this._userIcon);
         this.iconBin =  new St.Bin({ style_class: 'menu-user-avatar',
             width: USER_AVATAR_SIZE,
             height: USER_AVATAR_SIZE });
@@ -660,7 +696,7 @@ var UserMenuItem = class extends BaseMenuItem {
             y_align: Clutter.ActorAlign.CENTER
         });
         this.actor.add_child(this._userLabel);
-        this._userLoadedId = this._user.connect('notify::is_loaded', this._onUserChanged.bind(this));
+        this._userLoadedId = this._user.connect('notify::is-loaded', this._onUserChanged.bind(this));
         this._userChangedId = this._user.connect('changed', this._onUserChanged.bind(this));
         this.actor.connect('destroy', this._onDestroy.bind(this));
         this._onUserChanged();

@@ -57,10 +57,10 @@ font-size:9pt;
 #arc-search-entry:focus { 
 border-color:rgba(127,126,128,1);
 }
-.arc-menu StButton{
+.arc-menu-action{
 color:rgba(211, 218, 227, 1);
 }
-.arc-menu StButton:hover, .arc-menu StButton:focus {
+.arc-menu-action:hover, .arc-menu-action:focus {
 color:rgba(255,255,255,1);
  background-color:rgba(238, 238, 236, 0.1);
 }
