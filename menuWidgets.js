@@ -233,6 +233,7 @@ var AppRightClickMenu = class extends PopupMenu.PopupMenu {
 
     _appendSeparator() {
         let separator = new PopupMenu.PopupSeparatorMenuItem();
+        //separator.actor.set_height(1);
         separator.actor.style_class='app-right-click-sep';
         separator._separator.style_class='';
         this.addMenuItem(separator);
@@ -433,7 +434,7 @@ var SessionButton = class {
         this.actor.connect('clicked', this._onClick.bind(this));
         this.actor.connect('notify::hover', this._onHover.bind(this));
     }
-
+  
     useTooltips(useTooltips) {
         this._useTooltips = useTooltips;
     }
@@ -645,11 +646,6 @@ var UserMenuItem = class extends BaseMenuItem {
         this._button = button;
         let username = GLib.get_user_name();
         this._user = AccountsService.UserManager.get_default().get_user(username);
-        /*this._userIcon = new St.Icon({
-            style_class: 'popup-menu-icon',
-            icon_size: MEDIUM_ICON_SIZE
-        });*/
-        //this.actor.add_child(this._userIcon);
         this.iconBin =  new St.Bin({ style_class: 'menu-user-avatar',
             width: USER_AVATAR_SIZE,
             height: USER_AVATAR_SIZE });
@@ -660,7 +656,7 @@ var UserMenuItem = class extends BaseMenuItem {
             y_align: Clutter.ActorAlign.CENTER
         });
         this.actor.add_child(this._userLabel);
-        this._userLoadedId = this._user.connect('notify::is_loaded', this._onUserChanged.bind(this));
+        this._userLoadedId = this._user.connect('notify::is-loaded', this._onUserChanged.bind(this));
         this._userChangedId = this._user.connect('changed', this._onUserChanged.bind(this));
         this.actor.connect('destroy', this._onDestroy.bind(this));
         this._onUserChanged();

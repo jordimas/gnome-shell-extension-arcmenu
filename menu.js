@@ -106,9 +106,11 @@ var ApplicationsButton = GObject.registerClass(
             this._display();
             this._installedChangedId = appSys.connect('installed-changed', () => {
                 if (this.leftClickMenu.isOpen) {
+                    this._loadCategories();
                     this._redisplay();
                     this.mainBox.show();
                 } else {
+                    this._loadCategories();
                     this.reloadFlag = true;
                 }
             });
@@ -283,8 +285,6 @@ var ApplicationsButton = GObject.registerClass(
                     this._redisplay();
                     this.reloadFlag = false;
                 }
-                //if(this.user._userIcon.get_gicon()==null)
-			       this.user._onUserChanged();
                 this.mainBox.show();  
             }
             super._onOpenStateChanged(menu, open);
@@ -359,7 +359,7 @@ var ApplicationsButton = GObject.registerClass(
 
         }
         _displayCategories(){
-            this._loadCategories();
+            
          	this._clearApplicationsBox();
             this.viewProgramsButton.actor.hide();
 	    	if(this._settings.get_boolean('enable-pinned-apps'))
