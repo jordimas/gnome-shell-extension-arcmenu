@@ -405,9 +405,10 @@ var ActivitiesMenuItem = class extends BaseMenuItem {
  * A class representing a Tooltip.
  */
 var Tooltip = class {
-    constructor(sourceActor, text, isMenuItem=false) {
+    constructor(sourceActor, text, isMenuItem=false, settings) {
         this.sourceActor = sourceActor;
         this.isMenuItem = isMenuItem;
+        this._settings = settings;
         this.actor = new St.Label({
             style_class: isMenuItem ? 'tooltip-menu-item' : 'tooltip-session-button',
             text: text,
@@ -416,37 +417,48 @@ var Tooltip = class {
         global.stage.add_actor(this.actor);
         this.actor.show();
         this.actor.connect('destroy', this._onDestroy.bind(this));
+        this._useTooltips = ! this._settings.get_boolean('disable-tooltips');
+        this.toggleID = this._settings.connect('changed::disable-tooltips', this.disableTooltips.bind(this));
     }
+    disableTooltips() {
+        this._useTooltips = ! this._settings.get_boolean('disable-tooltips');
+    }
+    
 
     show() {
-        let [stageX, stageY] = this.sourceActor.get_transformed_position();
-        let [width, height] = this.sourceActor.get_transformed_size();
-        let y = this.isMenuItem ? stageY + height: stageY - height / 1.24;
-        
-        let x = this.isMenuItem ? stageX + Math.round(width / 2)  : stageX - Math.round((this.actor.get_width() - width) / 2);
+        if(this._useTooltips){
+            let [stageX, stageY] = this.sourceActor.get_transformed_position();
+            let [width, height] = this.sourceActor.get_transformed_size();
+            let y = this.isMenuItem ? stageY + height: stageY - height / 1.24;
+            
+            let x = this.isMenuItem ? stageX + Math.round(width / 2)  : stageX - Math.round((this.actor.get_width() - width) / 2);
 
-        this.actor.show();
-        this.actor.set_position(x, y);
-        Tweener.addTween(this.actor, {
-            opacity: 255,
-            time: TOOLTIP_LABEL_SHOW_TIME,
-            transition: 'easeOutQuad'
-        });
+            this.actor.show();
+            this.actor.set_position(x, y);
+            Tweener.addTween(this.actor, {
+                opacity: 255,
+                time: TOOLTIP_LABEL_SHOW_TIME,
+                transition: 'easeOutQuad'
+            });
+        }
     }
 
     hide() {
-        Tweener.addTween(this.actor, {
-            opacity: 0,
-            time: TOOLTIP_LABEL_HIDE_TIME,
-            transition: 'easeOutQuad',
-            onComplete: () => {
-                this.actor.hide();
-            }
-        });
+        if(this._useTooltips){
+            Tweener.addTween(this.actor, {
+                opacity: 0,
+                time: TOOLTIP_LABEL_HIDE_TIME,
+                transition: 'easeOutQuad',
+                onComplete: () => {
+                    this.actor.hide();
+                }
+            });
+        }
     }
 
     _onDestroy() {
         global.stage.remove_actor(this.actor);
+        this._settings.disconnect(this.toggleID);
     }
 };
 
@@ -465,8 +477,8 @@ var SessionButton = class {
             accessible_name: accessible_name,
             style_class: 'system-menu-action'
         });
-        this._useTooltips = ! this._button._settings.get_boolean('disable-tooltips');
-        this.tooltip = new Tooltip(this.actor, accessible_name);
+
+        this.tooltip = new Tooltip(this.actor, accessible_name, false, this._button._settings);
         this.tooltip.hide();
         this.actor.child = new St.Icon({ 
             icon_name: icon_name,
@@ -475,9 +487,7 @@ var SessionButton = class {
         this.actor.connect('clicked', this._onClick.bind(this));
         this.actor.connect('notify::hover', this._onHover.bind(this));
     }
-    useTooltips(useTooltips) {
-        this._useTooltips = useTooltips;
-    }
+
 
     _onClick() {
         this._button.leftClickMenu.toggle();
@@ -489,11 +499,6 @@ var SessionButton = class {
     }
 
     _onHover() {
-     
-
-        if (!this._useTooltips)
-            return;
-
         if (this.actor.hover) { // mouse pointer hovers over the button
             this.tooltip.show();
         } else { // mouse pointer leaves the button area
@@ -926,11 +931,10 @@ var ApplicationMenuItem = class extends PopupMenu.PopupBaseMenuItem {
             textureCache.disconnect(iconThemeChangedId);
         });
         this._updateIcon();
-        this._useTooltips = ! this._button._settings.get_boolean('disable-tooltips');
 
         let isMenuItem=true;
         if( app.get_description()){
-            this.tooltip = new Tooltip(this.actor, app.get_description(),isMenuItem);
+            this.tooltip = new Tooltip(this.actor, app.get_description(),isMenuItem,this._button._settings);
             this.tooltip.hide();
             this.actor.connect('notify::hover', this._onHover.bind(this));
         }
@@ -945,9 +949,7 @@ var ApplicationMenuItem = class extends PopupMenu.PopupBaseMenuItem {
         this.rightClickMenu.actor.hide();
         Main.uiGroup.add_actor(this.rightClickMenu.actor);
     }
-    useTooltips(useTooltips) {
-        this._useTooltips = useTooltips;
-    }
+
     _onButtonReleaseEvent(actor, event) {
         if(event.get_button()==1){
             this.activate(event);
@@ -961,8 +963,7 @@ var ApplicationMenuItem = class extends PopupMenu.PopupBaseMenuItem {
         return Clutter.EVENT_STOP;
     }
     _onHover() {
-        if(!this._useTooltips)
-            return;
+
         if ( this.actor.hover) { // mouse pointer hovers over the button
             this.tooltip.show();
         } else { // mouse pointer leaves the button area
