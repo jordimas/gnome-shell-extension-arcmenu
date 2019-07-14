@@ -637,89 +637,21 @@ var GeneralSettingsPage = GObject.registerClass(
             /*
              * Menu Hotkey and Keybinding Frame Box
              */
-            let menuKeybindingFrame = new PW.FrameBox();
+
+            this.menuKeybindingFrame = new PW.FrameBox();
 
             // first row: hot key
-            let menuHotkeyRow = new PW.FrameBoxRow();
+            let menuHotkeyLabelRow = new PW.FrameBoxRow();
             let menuHotkeyLabel = new Gtk.Label({
-                label: _("Set menu hotkey"),
-                use_markup: true,
-                xalign: 0,
-                hexpand: true
-            });
-            let menuHotkeyCombo = new Gtk.ComboBoxText({ halign: Gtk.Align.END });
-            menuHotkeyCombo.append_text(_("Undefined"));
-            menuHotkeyCombo.append_text(_("Left Super Key"));
-            menuHotkeyCombo.append_text(_("Right Super Key"));
-            menuHotkeyCombo.set_active(this.settings.get_enum('menu-hotkey'));
-            menuHotkeyCombo.connect('changed', function (widget) {
-                this.settings.set_enum('menu-hotkey', widget.get_active());
-            }.bind(this));
-            menuHotkeyRow.add(menuHotkeyLabel);
-            menuHotkeyRow.add(menuHotkeyCombo);
-            menuKeybindingFrame.add(menuHotkeyRow);
-
-            // second row: custom Keybinding
-            let menuKeybindingRow = new PW.FrameBoxRow();
-            let menuKeybindingLabel = new Gtk.Label({
-                label: _("Enable custom menu keybinding"),
-                use_markup: true,
-                xalign: 0,
-                hexpand: true
-            });
-            let menuKeybindingDescriptionRow = new PW.FrameBoxRow();
-            let menuKeybindingDescriptionLabel = new Gtk.Label({
-                label: _("Syntax: <Shift>, <Ctrl>, <Alt>, <Super>")
-            });
-
-            let menuKeybindingSwitch = new Gtk.Switch({ halign: Gtk.Align.END });
-            menuKeybindingSwitch.set_active(this.settings.get_boolean('enable-menu-keybinding'));
-            menuKeybindingSwitch.connect('notify::active', function (check) {
-                this.settings.set_boolean('enable-menu-keybinding', check.get_active());
-            }.bind(this));
-            let menuKeybindingEntry = new Gtk.Entry({ halign: Gtk.Align.END });
-            menuKeybindingEntry.set_width_chars(15);
-            menuKeybindingEntry.set_text(this.settings.get_string('menu-keybinding-text'));
-            menuKeybindingEntry.connect('changed', function (entry) {
-                let _menuKeybinding = entry.get_text();
-                //TODO: catch possible user mistakes
-                this.settings.set_string('menu-keybinding-text', _menuKeybinding);
-                // Always deactivate the menu keybinding after it has been changed.
-                // By that we avoid pssible "UX" or sync bugs.
-                menuKeybindingSwitch.set_active(false);
-            }.bind(this));
-            menuKeybindingRow.add(menuKeybindingLabel);
-            menuKeybindingRow.add(menuKeybindingEntry);
-            menuKeybindingRow.add(menuKeybindingSwitch);
-            menuKeybindingDescriptionRow.add(menuKeybindingDescriptionLabel);
-
-            menuKeybindingFrame.add(menuKeybindingRow);
-            menuKeybindingFrame.add(menuKeybindingDescriptionRow);
-
-            // add the frames
-            this.add(defaultLeftBoxFrame);
-            this.add(menuPositionFrame);
-            this.add(multiMonitorFrame);
-            this.add(tooltipFrame);
-            this.add(disableHotCornerFrame);
-            this.add(menuKeybindingFrame);
-
-
-            //TEST-----------------------------------------------------------
-            this.newMenuKeybindingFrame = new PW.FrameBox();
-
-            // first row: hot key
-            let newMenuHotkeyLabelRow = new PW.FrameBoxRow();
-            let newMenuHotkeyLabel = new Gtk.Label({
                 label: _("Set Menu Hotkey"),
                 use_markup: true,
-                xalign: .5,
+                xalign: 0,
                 hexpand: true
             });
-            newMenuHotkeyLabelRow.add(newMenuHotkeyLabel);
-            this.newMenuKeybindingFrame.add(newMenuHotkeyLabelRow);
+            menuHotkeyLabelRow.add(menuHotkeyLabel);
+            
 
-            let newMenuHotkeyButtonRow = new PW.FrameBoxRow();
+            let menuHotkeyButtonRow = new PW.FrameBoxRow();
             let leftButton = new Gtk.RadioButton({
                 label: _("Left Super Key"),
                 xalign:.5,
@@ -736,46 +668,85 @@ var GeneralSettingsPage = GObject.registerClass(
                 group: leftButton,
                 draw_indicator: false
             });   
-            let undefinedButton = new Gtk.RadioButton({
+            this.undefinedButton = new Gtk.RadioButton({
                 label: _("None"),
                 group: leftButton,
                 draw_indicator: false
             });  
+            switch (this.settings.get_enum('menu-hotkey')) {
+                case 0:
+                    this.undefinedButton.set_active(true);
+                    break;
+                case 1:
+                    leftButton.set_active(true);
+                    break;
+                case 2:
+                    rightButton.set_active(true);
+                    break;
+                case 3:
+                    customButton.set_active(true);
+                    break;
+            }
+            this.undefinedButton.connect('clicked', ()=>{
+                this.settings.set_enum('menu-hotkey', 0);
+            });
             leftButton.connect('clicked', ()=>{
-             
+                this.settings.set_enum('menu-hotkey', 1);
             });
             rightButton.connect('clicked', ()=>{
-            
+                this.settings.set_enum('menu-hotkey', 2);
             });
             customButton.connect('clicked', ()=>{
-             
+                this.settings.set_enum('menu-hotkey', 3);
             });
-            undefinedButton.connect('clicked', ()=>{
-              
-            });
-            newMenuHotkeyButtonRow.add(undefinedButton);
-            newMenuHotkeyButtonRow.add(leftButton);
-            newMenuHotkeyButtonRow.add(rightButton);
-            newMenuHotkeyButtonRow.add(customButton);
-            
-            this.newMenuKeybindingFrame.add(newMenuHotkeyButtonRow);
-                  // second row: custom Keybinding
-                  this.menuKeybindingRow1 = new PW.FrameBoxRow();      
 
-                  let menuKeybindingEntry1 = new Gtk.Entry({ halign: .5 });
-                 
-                  menuKeybindingEntry1.set_width_chars(50);
-                  menuKeybindingEntry1.set_text(this.settings.get_string('menu-keybinding-text'));
-                  menuKeybindingEntry1.connect('changed', function (entry) {
-                      let _menuKeybinding = entry.get_text();
-                      this.settings.set_string('menu-keybinding-text', _menuKeybinding);
-                  }.bind(this));
-                  //menuKeybindingRow1.add(menuKeybindingLabel1);
-                  this.menuKeybindingRow1.add(menuKeybindingEntry1);
-                  this.newMenuKeybindingFrame.add(this.menuKeybindingRow1);
+            menuHotkeyButtonRow.add(this.undefinedButton);
+            menuHotkeyButtonRow.add(leftButton);
+            menuHotkeyButtonRow.add(rightButton);
+            menuHotkeyButtonRow.add(customButton);
+
+            let fillerLabel = new Gtk.Label({
+                label: _("Custom Hotkey"),
+                use_markup: true,
+                xalign: 0,
+                hexpand: true
+            });
+            let applyButton = new Gtk.Button({
+                label: _("Apply")
+            });   
+            applyButton.set_sensitive(false);
+            applyButton.connect('clicked', ()=>{
+                let _menuKeybinding =  this.customKeyBind;
+                this.settings.set_string('menu-keybinding-text', _menuKeybinding);
+                this.settings.set_enum('menu-hotkey', 3);
+                applyButton.set_sensitive(false);
+            });
+         
+            this.menuKeybindingRow = new PW.FrameBoxRow();      
+
+            let menuKeybindingEntry = new Gtk.Entry({ halign: .5 });
+            menuKeybindingEntry.set_width_chars(30);
+            menuKeybindingEntry.set_text(this.settings.get_string('menu-keybinding-text'));
+            menuKeybindingEntry.connect('changed', function (entry) {
+                this.customKeyBind = entry.get_text();
+                applyButton.set_sensitive(true);
+            }.bind(this));
             
+            this.menuKeybindingRow.add(fillerLabel);
+         
+            this.menuKeybindingRow.add(menuKeybindingEntry);
+            this.menuKeybindingRow.add(applyButton);
+            this.menuKeybindingFrame.add(menuHotkeyLabelRow);
+            this.menuKeybindingFrame.add(menuHotkeyButtonRow);
+            this.menuKeybindingFrame.add(this.menuKeybindingRow);
             
-            this.add(this.newMenuKeybindingFrame);
+            // add the frames
+            this.add(defaultLeftBoxFrame);
+            this.add(menuPositionFrame);
+            this.add(multiMonitorFrame);
+            this.add(tooltipFrame);
+            this.add(disableHotCornerFrame);
+            this.add(this.menuKeybindingFrame);
             //-----------------------------------------------------------------
         }
 });
@@ -2085,12 +2056,12 @@ function saveCSS(settings){
         +"#arc-search-entry{\nmax-width: 17.667em;\nfont-size:" + fontSize+"pt;\n border-color:"+  separatorColor+";\n"
         +" color:"+  menuForegroundColor+";\n background-color:" +  menuColor + ";\n}\n"
         +"#arc-search-entry:focus { \nborder-color:"+ lighten_rgb( separatorColor,0.25)+";\n}\n"
-        +".arc-menu StButton{\ncolor:"+  menuForegroundColor+";\n}\n"
-        +".arc-menu StButton:hover, .arc-menu StButton:focus {\ncolor:"+ lighten_rgb( menuForegroundColor,0.15)+";\n background-color:"+  highlightColor+";\n}\n"
+        +".arc-menu-action{\ncolor:"+  menuForegroundColor+";\n}\n"
+        +".arc-menu-action:hover, .arc-menu-action:focus {\ncolor:"+ lighten_rgb( menuForegroundColor,0.15)+";\n background-color:"+  highlightColor+";\n}\n"
         +".tooltip-session-button{\n border-radius: 7px;\n padding: 5px 8px;\ncolor: #eeeeec;\nbackground-color: rgba(46, 52, 54, 0.7);"
         +"\ntext-align: center;" + tooltipFontSize +"\n}"
         +".tooltip-menu-item{border-color:rgb(0,0,0);\n border: 1px;\nfont-size:9pt;\n border-radius: 0px;\n padding: 2px 5px;"
-         +"\n color :rgb(63,62,64);\n background-color:rgb(255, 255, 255);\nbox-shadow: 1px 1px 4px rgb(53, 52, 52);\nmax-width:300px;\nheight:15px;\n}"
+         +"\n color :rgb(63,62,64);\n background-color:rgb(242, 242, 242);\nbox-shadow: 1px 1px 4px rgb(53, 52, 52);\nmax-width:300px;\nheight:15px;\n}"
         +".search-box-padding { \npadding-top: 0.75em;\n"
         +"padding-bottom: 0.25em;\npadding-left: 1em;\n padding-right: 0.25em;\n margin-right: .5em;\n}\n"
         +".arc-menu{\nmin-width: 15em;\ncolor: #D3DAE3;\nborder-image: none;\nbox-shadow: none;\nfont-size:" + fontSize+"pt;\n}\n"
@@ -2119,10 +2090,10 @@ function saveCSS(settings){
         +"\n.app-right-click .popup-menu-item:rtl {padding: .4em 0em .4em 1.75em;}\n"
         +"\n.app-right-click .popup-menu-item:checked {\nbackground-color: #3a393b;\nbox-shadow: inset 0 1px 0px #323233;\nfont-weight: bold;\n}"
         +"\n.app-right-click .popup-menu-item.selected, .app-right-click .popup-menu-item:active{\n"
-        +"background-color:rgba(19, 19, 19, 0.1);\ncolor:rgb(72, 70, 73);\n}"
+        +"background-color:rgba(145, 201, 247, 0.6);\ncolor:rgb(63,62,64);\n}"
         +"\n .app-right-click .popup-menu-item:disabled {color: rgba(238, 238, 236, 0.5); }"
         +"\n.app-right-click .test StLabel{font-weight: bold;}"
-        +"\n .app-right-click-boxpointer{\n-arrow-border-radius:0px;\n-arrow-background-color:rgb(255, 255, 255);"
+        +"\n .app-right-click-boxpointer{\n-arrow-border-radius:0px;\n-arrow-background-color:rgb(242, 242, 242);"
         +"\n -arrow-border-color:rgb(63,62,64);\n-arrow-border-width:1px;\n-arrow-base:0px;\n-arrow-rise:0px;"
         +"\n-arrow-box-shadow: 1px 1px 4px rgb(53, 52, 52);\n}"
         +"\n.app-right-click-sep {\nheight: 1px;\nmargin: 2px 25px;\nbackground-color: transparent;"
