@@ -465,7 +465,7 @@ var SessionButton = class {
             accessible_name: accessible_name,
             style_class: 'system-menu-action'
         });
-        this._useTooltips = ! this._button._settings.get_boolean('disable-tooltips');
+
         this.tooltip = new Tooltip(this.actor, accessible_name);
         this.tooltip.hide();
         this.actor.child = new St.Icon({ 
@@ -474,9 +474,11 @@ var SessionButton = class {
         });
         this.actor.connect('clicked', this._onClick.bind(this));
         this.actor.connect('notify::hover', this._onHover.bind(this));
+        this._useTooltips = ! this._button._settings.get_boolean('disable-tooltips');
+        this._button._settings.connect('changed::disable-tooltips', this.disableTooltips.bind(this));
     }
-    useTooltips(useTooltips) {
-        this._useTooltips = useTooltips;
+    disableTooltips() {
+        this._useTooltips = ! this._button._settings.get_boolean('disable-tooltips');
     }
 
     _onClick() {
@@ -489,8 +491,6 @@ var SessionButton = class {
     }
 
     _onHover() {
-     
-
         if (!this._useTooltips)
             return;
 
@@ -927,6 +927,7 @@ var ApplicationMenuItem = class extends PopupMenu.PopupBaseMenuItem {
         });
         this._updateIcon();
         this._useTooltips = ! this._button._settings.get_boolean('disable-tooltips');
+        this._button._settings.connect('changed::disable-tooltips', this.disableTooltips.bind(this));
 
         let isMenuItem=true;
         if( app.get_description()){
@@ -945,8 +946,8 @@ var ApplicationMenuItem = class extends PopupMenu.PopupBaseMenuItem {
         this.rightClickMenu.actor.hide();
         Main.uiGroup.add_actor(this.rightClickMenu.actor);
     }
-    useTooltips(useTooltips) {
-        this._useTooltips = useTooltips;
+    disableTooltips() {
+        this._useTooltips = ! this._button._settings.get_boolean('disable-tooltips');
     }
     _onButtonReleaseEvent(actor, event) {
         if(event.get_button()==1){

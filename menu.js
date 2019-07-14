@@ -960,7 +960,6 @@ var ApplicationsButton = GObject.registerClass(
                     if (!item.actor.get_parent()) {
                         this.applicationsBox.add_actor(item.actor);
                     }
-                    item.useTooltips(! this._settings.get_boolean('disable-tooltips'));
                 }
             }
         }

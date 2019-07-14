@@ -39,7 +39,6 @@ const appSys = Shell.AppSystem.get_default();
 var MAX_LIST_SEARCH_RESULTS_ROWS = 30;
 var MAX_APPS_SEARCH_RESULTS_ROWS = 10;
 
-
 var ArcSearchMaxWidthBin = GObject.registerClass(
 class ArcSearchMaxWidthBin extends St.Bin {
     vfunc_allocate(box, flags) {
@@ -69,32 +68,28 @@ var SearchResult = class {
             this.menuItem = new MW.SearchResultItem(this._button,app); 
         }
         else {
-            //app = sys.lookup_app(this.provider.appInfo.get_id());
-            //global.log(app.get_app_info().get_commandline());
-            //this.menuItem = new MW.SearchResultItem(this._button,app); 
             this.menuItem = new MW.BaseMenuItem(this._button);
         }
        	this.menuItem._delegate = this;
         this.menuItem.connect('activate', this.activate.bind(this));
 
-        this._useTooltips = ! this._button._settings.get_boolean('disable-tooltips');
-
         let isMenuItem=true;
-        if(this.metaInfo['description'] || app.get_description())
+        if(this.metaInfo['description'] || ((app!=undefined) ? app.get_description() : false))
         {
           this.tooltip = new MW.Tooltip(this.menuItem.actor, this.metaInfo['description'] ? this.metaInfo['description']:  app.get_description(),isMenuItem);
           this.tooltip.hide();
           this.menuItem.actor.connect('notify::hover', this._onHover.bind(this));
         }
-          
+        this._useTooltips = ! this._button._settings.get_boolean('disable-tooltips');
+        this._button._settings.connect('changed::disable-tooltips', this.disableTooltips.bind(this));
     }
-    useTooltips(useTooltips) {
-        this._useTooltips = useTooltips;
+    disableTooltips() {
+        this._useTooltips = ! this._button._settings.get_boolean('disable-tooltips');
     }
     _onHover() {
         if(!this._useTooltips)
             return;
-        if ( this.menuItem.actor.hover) { // mouse pointer hovers over the button
+        if (this.menuItem.actor.hover) { // mouse pointer hovers over the button
             this.tooltip.show();
         } else { // mouse pointer leaves the button area
             this.tooltip.hide();
@@ -403,7 +398,6 @@ var SearchResults = class {
                                              x_fill: true,
                                              y_fill: true,
                                              child: this._content, });
-
         let scrollChild = new St.BoxLayout();
         scrollChild.add(this._contentBin, { expand: true,x_align: St.Align.START });
         this.actor.add(scrollChild);
@@ -446,6 +440,7 @@ var SearchResults = class {
     setStyle(style){
         this._statusText.style_class = style;
     }
+
     _reloadRemoteProviders() {
         let remoteProviders = this._providers.filter(p => p.isRemoteProvider);
         remoteProviders.forEach(provider => {
@@ -700,12 +695,15 @@ class ArcSearchProviderInfo extends MW.BaseMenuItem {
             this.actor.connect('notify::hover', this._onHover.bind(this));
         }
         this._useTooltips = ! this._button._settings.get_boolean('disable-tooltips');
+        this._button._settings.connect('changed::disable-tooltips', this.disableTooltips.bind(this));
     }
-    useTooltips(useTooltips) {
-        this._useTooltips = useTooltips;
+    disableTooltips() {
+        this._useTooltips = ! this._button._settings.get_boolean('disable-tooltips');
     }
+    
+
     _onHover() {
-        if(!this._useTooltips)
+        if(! this._useTooltips)
             return;
         if ( this.actor.hover) { // mouse pointer hovers over the button
             this.tooltip.show();
