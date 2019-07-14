@@ -143,6 +143,12 @@ var ApplicationsButton = GObject.registerClass(
                 this.rightClickMenu.actor.style_class = 'arc-menu-boxpointer';
                 this.rightClickMenu.actor.add_style_class_name('arc-menu');
                 this.searchBox._stEntry.set_name('arc-search-entry');
+                this.actionsBox.actor.get_children().forEach(function (actor) {
+                    if(actor instanceof St.Button){
+                        actor.add_style_class_name('arc-menu-action');
+                    }
+                }.bind(this));
+
             }
             else
             {         
@@ -152,6 +158,11 @@ var ApplicationsButton = GObject.registerClass(
                 this.rightClickMenu.actor.style_class = 'popup-menu-boxpointer';
                 this.rightClickMenu.actor.add_style_class_name('popup-menu');
                 this.searchBox._stEntry.set_name('search-entry');
+                this.actionsBox.actor.get_children().forEach(function (actor) {
+                    if(actor instanceof St.Button){
+                        actor.remove_style_class_name('arc-menu-action');
+                    }
+                }.bind(this));
             }
         }
         // Destroy the menu button
