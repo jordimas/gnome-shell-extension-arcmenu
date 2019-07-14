@@ -33,6 +33,8 @@ const PopupMenu = imports.ui.popupMenu;
 const SEARCH_PROVIDERS_SCHEMA = 'org.gnome.desktop.search-providers';
 const ExtensionUtils = imports.misc.extensionUtils;
 const Me = ExtensionUtils.getCurrentExtension();
+const MW = Me.imports.menuWidgets;
+const appSys = Shell.AppSystem.get_default();
 
 var MAX_LIST_SEARCH_RESULTS_ROWS = 30;
 var MAX_APPS_SEARCH_RESULTS_ROWS = 10;
@@ -51,7 +53,6 @@ class ArcSearchMaxWidthBin extends St.Bin {
             adjustedBox.x1 += Math.floor(excessWidth / 2);
             adjustedBox.x2 -= Math.floor(excessWidth / 2);
         }
-
         super.vfunc_allocate(adjustedBox, flags);
     }
 });
@@ -63,33 +64,55 @@ var SearchResult = class {
         this.metaInfo = metaInfo;
         this._resultsView = resultsView;
 
-        this.menuItem = new PopupMenu.PopupBaseMenuItem();
-        if(this._button._settings.get_boolean('enable-custom-arc-menu'))
-            this.menuItem.actor.add_style_class_name('arc-menu');
+        let app = appSys.lookup_app(this.metaInfo['id']);
+        if(app){
+            this.menuItem = new MW.SearchResultItem(this._button,app); 
+        }
+        else {
+            //app = sys.lookup_app(this.provider.appInfo.get_id());
+            //global.log(app.get_app_info().get_commandline());
+            //this.menuItem = new MW.SearchResultItem(this._button,app); 
+            this.menuItem = new MW.BaseMenuItem(this._button);
+        }
        	this.menuItem._delegate = this;
         this.menuItem.connect('activate', this.activate.bind(this));
-  
-    }
 
+        this._useTooltips = ! this._button._settings.get_boolean('disable-tooltips');
+
+        let isMenuItem=true;
+        if(this.metaInfo['description'] || app.get_description())
+        {
+          this.tooltip = new MW.Tooltip(this.menuItem.actor, this.metaInfo['description'] ? this.metaInfo['description']:  app.get_description(),isMenuItem);
+          this.tooltip.hide();
+          this.menuItem.actor.connect('notify::hover', this._onHover.bind(this));
+        }
+          
+    }
+    useTooltips(useTooltips) {
+        this._useTooltips = useTooltips;
+    }
+    _onHover() {
+        if(!this._useTooltips)
+            return;
+        if ( this.menuItem.actor.hover) { // mouse pointer hovers over the button
+            this.tooltip.show();
+        } else { // mouse pointer leaves the button area
+            this.tooltip.hide();
+        }
+    }
     activate() {
+        global.log('activate');
         this.emit('activate', this.metaInfo.id);
     }
-
 };
 Signals.addSignalMethods(SearchResult.prototype);
 
 var ListSearchResult = class extends SearchResult {
-
     constructor(provider, metaInfo, resultsView) {
         super(provider, metaInfo, resultsView);
         let button = resultsView._button;
 
-
-
         this._termsChangedId = 0;
-
-        let titleBox = new PopupMenu.PopupBaseMenuItem ();
-
 
         // An icon for, or thumbnail of, content
         let icon = this.metaInfo['createIcon'](this.ICON_SIZE);
@@ -97,18 +120,15 @@ var ListSearchResult = class extends SearchResult {
              this.menuItem.actor.add_child(icon);
         }
 
-        let title = new St.Label({ text: this.metaInfo['name'],        x_expand: true });
+        let title = new St.Label({ text: this.metaInfo['name'],x_expand: true,y_align: Clutter.ActorAlign.CENTER });
         this.menuItem.actor.add_child(title);
 
-
         if (this.metaInfo['description']&&  this.provider.appInfo.get_name() == "Calculator") {
-
             title.text = this.metaInfo['name'] + "   " + this.metaInfo['description'];
-
         }
         this.menuItem.connect('destroy', this._onDestroy.bind(this));
     }
-
+  
     get ICON_SIZE() {
         return 16;
     }
@@ -128,9 +148,8 @@ var ListSearchResult = class extends SearchResult {
 var AppSearchResult = class extends SearchResult {
     constructor(provider, metaInfo, resultsView) {
         super(provider, metaInfo, resultsView);
-        let button = resultsView._button;
-        let popup = new PopupMenu.PopupBaseMenuItem();
- 
+        this._button = resultsView._button;
+         
         this.icon = this.metaInfo['createIcon'](16);
         if (this.icon) {
               this.menuItem.actor.add_child(this.icon);
@@ -141,12 +160,7 @@ var AppSearchResult = class extends SearchResult {
             x_expand: true,
             y_align: Clutter.ActorAlign.CENTER
         });
-
-     
-       
-           this.menuItem.actor.add_child(label);
-
-
+        this.menuItem.actor.add_child(label);
     }
 };
 var SearchResultsBase = class {
@@ -202,10 +216,10 @@ var SearchResultsBase = class {
                 this._clipboard.set_text(St.ClipboardType.CLIPBOARD, result.metaInfo.clipboardText);
         }
         else{
-           let temp = this.provider.createResultObject(result.metaInfo, this._resultsView);
+            let temp = this.provider.createResultObject(result.metaInfo, this._resultsView);
             this.actor.add(temp.actor);
+            temp.actor.hide();
             temp.activate();
-            //Util.spawnCommandLine("gtk-launch " + id);
         }
         this._button.leftClickMenu.toggle();
     }
@@ -351,7 +365,6 @@ var AppSearchResults = class extends SearchResultsBase {
         this._parentContainer = resultsView.actor;
         this._grid = new St.BoxLayout({vertical: true });
         this._resultDisplayBin.set_child(this._grid);
- 
     }
 
     _getMaxDisplayedResults() {
@@ -399,7 +412,7 @@ var SearchResults = class {
         this._statusBin = new St.Bin({ x_align: St.Align.MIDDLE,
                                        y_align: St.Align.MIDDLE });
         if(button._settings.get_boolean('enable-custom-arc-menu'))
-                this._statusText.add_style_class_name('arc-menu-status-text');
+            this._statusText.add_style_class_name('arc-menu-status-text');
         else
             this._statusText.add_style_class_name('search-statustext');
         this.actor.add(this._statusBin, { expand: true });
@@ -427,11 +440,12 @@ var SearchResults = class {
 
         this._registerProvider(new AppDisplay.AppSearchProvider());
 
-        let appSystem = Shell.AppSystem.get_default();
-        appSystem.connect('installed-changed', this._reloadRemoteProviders.bind(this));
+        appSys.connect('installed-changed', this._reloadRemoteProviders.bind(this));
         this._reloadRemoteProviders();
     }
-
+    setStyle(style){
+        this._statusText.style_class = style;
+    }
     _reloadRemoteProviders() {
         let remoteProviders = this._providers.filter(p => p.isRemoteProvider);
         remoteProviders.forEach(provider => {
@@ -668,21 +682,38 @@ var SearchResults = class {
 Signals.addSignalMethods(SearchResults.prototype);
 
 var ArcSearchProviderInfo = 
-class ArcSearchProviderInfo extends PopupMenu.PopupBaseMenuItem {
+class ArcSearchProviderInfo extends MW.BaseMenuItem {
     constructor(provider,button) {
-            super();
+            super(button);
         this.provider = provider;
         this._button = button;
-        if(button._settings.get_boolean('enable-custom-arc-menu'))
-             this.actor.add_style_class_name('arc-menu');
+
         this.nameLabel = new St.Label({ text: provider.appInfo.get_name() + ":",
                                        x_align: Clutter.ActorAlign.START,x_expand: true});
         this._moreText="";
         this.actor.add_child(this.nameLabel);
-    }
 
+        let isMenuItem = true;
+        if(provider.appInfo.get_description()!=null){
+            this.tooltip = new MW.Tooltip(this.actor, provider.appInfo.get_description(),isMenuItem);
+            this.tooltip.hide();
+            this.actor.connect('notify::hover', this._onHover.bind(this));
+        }
+        this._useTooltips = ! this._button._settings.get_boolean('disable-tooltips');
+    }
+    useTooltips(useTooltips) {
+        this._useTooltips = useTooltips;
+    }
+    _onHover() {
+        if(!this._useTooltips)
+            return;
+        if ( this.actor.hover) { // mouse pointer hovers over the button
+            this.tooltip.show();
+        } else { // mouse pointer leaves the button area
+            this.tooltip.hide();
+        }
+    }
     animateLaunch() {
-        let appSys = Shell.AppSystem.get_default();
         let app = appSys.lookup_app(this.provider.appInfo.get_id());
     }
 

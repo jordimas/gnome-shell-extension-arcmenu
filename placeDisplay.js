@@ -23,7 +23,7 @@
 
 const {St, Gio, GLib, Shell } = imports.gi;
 const Signals = imports.signals;
-
+const Clutter = imports.gi.Clutter;
 const Main = imports.ui.main;
 const ShellMountOperation = imports.ui.shellMountOperation;
 const PopupMenu = imports.ui.popupMenu;
@@ -75,6 +75,28 @@ var PlaceMenuItem = class PlaceMenuItem extends PopupMenu.PopupBaseMenuItem {
         }
 
         super.destroy();
+    }
+    _onKeyPressEvent(actor, event) {
+        let symbol = event.get_key_symbol();
+        if (symbol == Clutter.KEY_Return ||
+            symbol == Clutter.KEY_KP_Enter) {
+            this.activate(event);
+            return Clutter.EVENT_STOP;
+        }
+        return Clutter.EVENT_PROPAGATE;
+    }
+    _onButtonPressEvent(actor, event) {
+		
+        return Clutter.EVENT_PROPAGATE;
+    }
+
+    _onButtonReleaseEvent(actor, event) {
+        if(event.get_button()==1){
+            this.activate(event);
+        }
+  	    if(event.get_button()==3){
+	    }   
+        return Clutter.EVENT_STOP;
     }
 
     activate(event) {

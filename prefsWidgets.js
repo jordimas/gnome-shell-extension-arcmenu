@@ -3,9 +3,7 @@
  * 
  * Copyright (C) 2017 Alexander Rüedlinger
  *
- * Copyright (C) 2017-2019 LinxGem33
- *
- * Copyright (C) 2019 Andrew Zaech
+ * Copyright (C) 2017-2018 LinxGem33
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by

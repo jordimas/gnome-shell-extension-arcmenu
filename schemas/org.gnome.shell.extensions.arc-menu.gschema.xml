@@ -21,6 +21,10 @@
     <value value="2" nick="Icon_Text"/>
     <value value="3" nick="Text_Icon"/>
   </enum>
+    <enum id='org.gnome.shell.extensions.arc-menu.avatar-style'>
+    <value value="0" nick="Circular"/>
+    <value value="1" nick="Square"/>
+  </enum>
   <enum id='org.gnome.shell.extensions.arc-menu.menu-button-text'>
     <value value="0" nick="System_Text"/>
     <value value="1" nick="Custom_Text"/>
@@ -251,6 +255,11 @@
       <summary>Appearance of the menu button.</summary>
       <description>Appearance of the menu button.</description>
     </key>
+      <key name="avatar-style" enum="org.gnome.shell.extensions.arc-menu.avatar-style">
+      <default>'Circular'</default>
+      <summary>Appearance of the avatar icon.</summary>
+      <description>Appearance of the avatar icon.</description>
+    </key>
     <key name="menu-button-text" enum="org.gnome.shell.extensions.arc-menu.menu-button-text">
       <default>'System_Text'</default>
       <summary>Text of the menu button.</summary>
@@ -281,8 +290,8 @@
       <summary>Size of the icon in percentage.</summary>
       <description>Size of the icon in percentage.</description>
     </key>
-    <key name="pinned-apps" type="as">
-      <default>["Firefox","firefox", "firefox","Terminal", "gnome-terminal", "gnome-terminal","Arc Menu Settings", "emblem-system-symbolic", "gnome-shell-extension-prefs arc-menu@linxgem33.com"]</default>
+    <key name="pinned-app-list" type="as">
+      <default>["Firefox","firefox", "firefox.desktop","Terminal", "gnome-terminal", "org.gnome.Terminal.desktop","Arc Menu Settings", "emblem-system-symbolic", "gnome-shell-extension-prefs arc-menu@linxgem33.com"]</default>
       <summary>List of Apps Pinned to Menu</summary>
       <description>
         List of Apps Pinned to Menu

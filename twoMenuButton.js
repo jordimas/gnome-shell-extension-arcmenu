@@ -65,7 +65,11 @@ var TwoMenuButton = GObject.registerClass( class TwoMenuButton extends PanelMenu
     _init(settings) {
         super._init(1.0, null, false);
         this._settings = settings;
+        this.DTPSettings=false;
         //create right click menu
+        this.menuManager = new PopupMenu.PopupMenuManager(this);
+        this.menuManager._changeMenu = (menu) => {
+        };
         this.rightClickMenu = new PopupMenu.PopupMenu(this,1.0,St.Side.TOP);	
         this.rightClickMenu.actor.add_style_class_name('panel-menu');
         this.rightClickMenu.connect('open-state-changed', this._onOpenStateChanged.bind(this));
@@ -77,7 +81,8 @@ var TwoMenuButton = GObject.registerClass( class TwoMenuButton extends PanelMenu
             Util.spawnCommandLine('gnome-shell-extension-prefs arc-menu@linxgem33.com');
         });
         this.rightClickMenu.addMenuItem(item);        
-        item = new PopupMenu.PopupSeparatorMenuItem();           
+        item = new PopupMenu.PopupSeparatorMenuItem();     
+        item._separator.style_class='arc-menu-sep';     
         this.rightClickMenu.addMenuItem(item);      
         
         item = new PopupMenu.PopupMenuItem(_("Arc Menu on GitLab"));        
@@ -94,53 +99,49 @@ var TwoMenuButton = GObject.registerClass( class TwoMenuButton extends PanelMenu
                 
         //intiate left click menu
         this.leftClickMenu = new ApplicationsMenu(this, 1.0, St.Side.TOP, this, this._settings);
-	    this.leftClickMenu.actor.add_style_class_name('panel-menu');
-	    this.leftClickMenu.connect('open-state-changed', this._onOpenStateChanged.bind(this));
+        this.leftClickMenu.actor.add_style_class_name('panel-menu');
+        this.leftClickMenu.connect('open-state-changed', this._onOpenStateChanged.bind(this));
 	    this.leftClickMenu.actor.connect('key-press-event', this._onMenuKeyPress.bind(this));
 	    Main.uiGroup.add_actor(this.leftClickMenu.actor);
-	    this.leftClickMenu.actor.hide();	
+        this.leftClickMenu.actor.hide();
+        this.menuManager.addMenu(this.rightClickMenu); 	
+        this.menuManager.addMenu(this.leftClickMenu); 
+        
     }
+
     addDTPSettings(){
-        let item = new PopupMenu.PopupMenuItem(_("Dash to Panel Settings"));
-        item.connect('activate', ()=>{
-            Util.spawnCommandLine('gnome-shell-extension-prefs dash-to-panel@jderose9.github.com');
-        });
-        this.rightClickMenu.addMenuItem(item,1);   
+        if(this.DTPSettings==false){
+            let item = new PopupMenu.PopupMenuItem(_("Dash to Panel Settings"));
+            item.connect('activate', ()=>{
+                Util.spawnCommandLine('gnome-shell-extension-prefs dash-to-panel@jderose9.github.com');
+            });
+            this.rightClickMenu.addMenuItem(item,1);   
+            this.DTPSettings=true;
+        }
     }
     removeDTPSettings(){
         let children = this.rightClickMenu._getMenuItems();
         if(children[1] instanceof PopupMenu.PopupMenuItem)
             children[1].destroy();
+        this.DTPSettings=false;
     }
     _onEvent(actor, event) {
     
     	if (event.type() == Clutter.EventType.BUTTON_PRESS){   
-                if(event.get_button()==1){       
-                 	if(this.rightClickMenu.isOpen)
-                    		this.rightClickMenu.toggle();	            
-                	Main.panel.menuManager.removeMenu(this.rightClickMenu);              
-    		    	Main.panel.menuManager.addMenu(this.leftClickMenu); 
-		     	    this.leftClickMenu.toggle();	
-                    if(this.leftClickMenu.isOpen)
-		     		    this.mainBox.grab_key_focus();	
-                }     
-                else if(event.get_button()==3){  
-                	if(this.leftClickMenu.isOpen)
-                    		this.leftClickMenu.toggle();                     
-                 	Main.panel.menuManager.removeMenu(this.leftClickMenu);          
-            		Main.panel.menuManager.addMenu(this.rightClickMenu); 	
-                	this.rightClickMenu.toggle();	                	
-                }    
-            }
-            else if(event.type() == Clutter.EventType.TOUCH_BEGIN){
-            	if(this.rightClickMenu.isOpen)
-            		this.rightClickMenu.toggle();	            
-        	Main.panel.menuManager.removeMenu(this.rightClickMenu);              
-	    	Main.panel.menuManager.addMenu(this.leftClickMenu); 
-	     	this.leftClickMenu.toggle();
+            if(event.get_button()==1){                   
+                this.leftClickMenu.toggle();	
                 if(this.leftClickMenu.isOpen)
-                   this.mainBox.grab_key_focus();
-            }
+                    this.mainBox.grab_key_focus();	
+            }     
+            else if(event.get_button()==3){                      
+                this.rightClickMenu.toggle();	                	
+            }    
+        }
+        else if(event.type() == Clutter.EventType.TOUCH_BEGIN){         
+            this.leftClickMenu.toggle();
+            if(this.leftClickMenu.isOpen)
+                this.mainBox.grab_key_focus();
+        }
                 
         return Clutter.EVENT_PROPAGATE;
     }
@@ -158,9 +159,10 @@ var TwoMenuButton = GObject.registerClass( class TwoMenuButton extends PanelMenu
     _onMenuKeyPress(actor, event) {
         if (global.focus_manager.navigate_from_event(event))
             return Clutter.EVENT_STOP;
-
+        
         let symbol = event.get_key_symbol();
         if (symbol == Clutter.KEY_Left || symbol == Clutter.KEY_Right) {
+
             let group = global.focus_manager.get_group(this);
             if (group) {
                 let direction = (symbol == Clutter.KEY_Left) ? St.DirectionType.LEFT : St.DirectionType.RIGHT;
