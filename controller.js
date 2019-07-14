@@ -61,7 +61,6 @@ var MenuSettingsController = class {
     // Load and apply the settings from the arc-menu settings
     _applySettings() {
         this._updateHotCornerManager();
-        this._setMenuKeybinding();
         this._updateHotKeyBinder();
         this._setButtonAppearance();
         this._setButtonText();
@@ -75,7 +74,6 @@ var MenuSettingsController = class {
         this.settingsChangeIds = [
             this._settings.connect('changed::disable-activities-hotcorner', this._updateHotCornerManager.bind(this)),
             this._settings.connect('changed::menu-hotkey', this._updateHotKeyBinder.bind(this)),
-            this._settings.connect('changed::enable-menu-keybinding', this._setMenuKeybinding.bind(this)),
             this._settings.connect('changed::position-in-panel', this._setButtonPosition.bind(this)),
             this._settings.connect('changed::menu-button-appearance', this._setButtonAppearance.bind(this)),
             this._settings.connect('changed::menu-button-text', this._setButtonText.bind(this)),
@@ -140,26 +138,21 @@ var MenuSettingsController = class {
 
     _updateHotKeyBinder() {
         if(this.enableHotKey){
+            this._keybindingManager.unbind('menu-keybinding-text');
+            this._menuHotKeybinder.disableHotKey();
             let hotKeyPos = this._settings.get_enum('menu-hotkey');
-            if (hotKeyPos !== Constants.HOT_KEY.Undefined) {
-                let hotKey = Constants.HOT_KEY[hotKeyPos];
-                this._menuHotKeybinder.enableHotKey(hotKey);
-            } else {
-                this._menuHotKeybinder.disableHotKey();
-            }
-        }
-    }
 
-    _setMenuKeybinding() {
-        if(this.enableHotKey){
-            if (this._settings.get_boolean('enable-menu-keybinding')) {
+            if (hotKeyPos==3) {
                 this._keybindingManager.bind('menu-keybinding-text', 'menu-keybinding',
                     () => {
                         this._menuButton.toggleMenu();
                     });
-            } else {
-                this._keybindingManager.unbind('menu-keybinding-text');
             }
+            else if (hotKeyPos !== Constants.HOT_KEY.Undefined ) {
+                let hotKey = Constants.HOT_KEY[hotKeyPos];
+                this._menuHotKeybinder.enableHotKey(hotKey);
+            } 
+        
         }
     }
 

@@ -9,6 +9,7 @@
     <value value='0' nick='Undefined'/>
     <value value='1' nick='Super_L'/>
     <value value='2' nick='Super_R'/>
+    <value value='3' nick='Custom'/>
   </enum>
   <enum id='org.gnome.shell.extensions.arc-menu.menu-position'>
     <value value="0" nick="Left"/>
