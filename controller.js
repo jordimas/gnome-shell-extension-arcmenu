@@ -1,11 +1,9 @@
 /*
  * Arc Menu: The new applications menu for Gnome 3.
  *
- * Copyright (C) 2017-2019 LinxGem33
+ * Copyright (C) 2017 LinxGem33
  *
  * Copyright (C) 2017 Alexander Rüedlinger
- *
- * Copyright (C) 2019 Andrew Zaech
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -107,7 +105,7 @@ var MenuSettingsController = class {
             this._settings.connect('changed::show-bookmarks', this._redisplayRightSide.bind(this)),
             this._settings.connect('changed::show-suspend-button', this._redisplayRightSide.bind(this)),
             this._settings.connect('changed::menu-height', this._updateMenuHeight.bind(this)),
-            this._settings.connect('changed::pinned-apps',this._redisplayMenu.bind(this)),
+            this._settings.connect('changed::pinned-app-list',this._redisplayMenu.bind(this)),
             this._settings.connect('changed::reload-theme',this._reloadExtension.bind(this)),
             this._settings.connect('changed::enable-pinned-apps',this._redisplayMenu.bind(this)),
         ];

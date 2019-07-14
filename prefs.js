@@ -64,7 +64,7 @@ var PinnedAppsPage = GObject.registerClass(
             this.pinnedAppsScrollWindow.set_min_content_height(300);
             this.frame = new PW.FrameBox();
             //function to load all pinned apps
-            this._loadPinnedApps(this.settings.get_strv('pinned-apps'));
+            this._loadPinnedApps(this.settings.get_strv('pinned-app-list'));
             this.pinnedAppsScrollWindow.add_with_viewport(this.frame);
             this.add(this.pinnedAppsScrollWindow);
             
@@ -162,7 +162,7 @@ var PinnedAppsPage = GObject.registerClass(
                     array.push(this.frame.get_index(x)._icon);
                     array.push(this.frame.get_index(x)._cmd);
                 }
-                this.settings.set_strv('pinned-apps',array);
+                this.settings.set_strv('pinned-app-list',array);
                 this.savePinnedAppsButton.set_sensitive(false);
             }); 
             this.savePinnedAppsButton.set_halign(Gtk.Align.END);
@@ -341,11 +341,10 @@ var AddAppsToPinnedListWindow = GObject.registerClass(
                     if(allApps[i].get_icon())
                     	frameRow._icon = allApps[i].get_icon().to_string(); //stores icon as string
                     else{
-                   // global.log(frameRow._name);
+                        //global.log(frameRow._name);
                     	frameRow._icon= "dialog-information";
                     }
-                        
-                    frameRow._cmd = "gtk-launch " + allApps[i].get_id(); //string for command line to launch .desktop files
+                    frameRow._cmd =  allApps[i].get_id(); //string for command line to launch .desktop files
                     let iconImage = new Gtk.Image(
                     {
                       gicon: Gio.icon_new_for_string(frameRow._icon),
@@ -451,7 +450,7 @@ var AddCustomLinkDialogWindow = GObject.registerClass(
             let cmdEntry = new Gtk.Entry();
             cmdFrameRow.add(cmdFrameLabel);
             cmdFrameRow.add(cmdEntry);
-             mainFrame.add(cmdFrameRow);
+            mainFrame.add(cmdFrameRow);
             //last row - Label and button to add custom link to list
 
             let addButton = new Gtk.Button({
@@ -704,6 +703,80 @@ var GeneralSettingsPage = GObject.registerClass(
             this.add(tooltipFrame);
             this.add(disableHotCornerFrame);
             this.add(menuKeybindingFrame);
+
+
+            //TEST-----------------------------------------------------------
+            this.newMenuKeybindingFrame = new PW.FrameBox();
+
+            // first row: hot key
+            let newMenuHotkeyLabelRow = new PW.FrameBoxRow();
+            let newMenuHotkeyLabel = new Gtk.Label({
+                label: _("Set Menu Hotkey"),
+                use_markup: true,
+                xalign: .5,
+                hexpand: true
+            });
+            newMenuHotkeyLabelRow.add(newMenuHotkeyLabel);
+            this.newMenuKeybindingFrame.add(newMenuHotkeyLabelRow);
+
+            let newMenuHotkeyButtonRow = new PW.FrameBoxRow();
+            let leftButton = new Gtk.RadioButton({
+                label: _("Left Super Key"),
+                xalign:.5,
+                draw_indicator: false
+            });   
+       
+            let rightButton = new Gtk.RadioButton({
+                label: _("Right Super Key"),
+                group: leftButton,
+                draw_indicator: false
+            });   
+            let customButton = new Gtk.RadioButton({
+                label: _("Custom"),
+                group: leftButton,
+                draw_indicator: false
+            });   
+            let undefinedButton = new Gtk.RadioButton({
+                label: _("None"),
+                group: leftButton,
+                draw_indicator: false
+            });  
+            leftButton.connect('clicked', ()=>{
+             
+            });
+            rightButton.connect('clicked', ()=>{
+            
+            });
+            customButton.connect('clicked', ()=>{
+             
+            });
+            undefinedButton.connect('clicked', ()=>{
+              
+            });
+            newMenuHotkeyButtonRow.add(undefinedButton);
+            newMenuHotkeyButtonRow.add(leftButton);
+            newMenuHotkeyButtonRow.add(rightButton);
+            newMenuHotkeyButtonRow.add(customButton);
+            
+            this.newMenuKeybindingFrame.add(newMenuHotkeyButtonRow);
+                  // second row: custom Keybinding
+                  this.menuKeybindingRow1 = new PW.FrameBoxRow();      
+
+                  let menuKeybindingEntry1 = new Gtk.Entry({ halign: .5 });
+                 
+                  menuKeybindingEntry1.set_width_chars(50);
+                  menuKeybindingEntry1.set_text(this.settings.get_string('menu-keybinding-text'));
+                  menuKeybindingEntry1.connect('changed', function (entry) {
+                      let _menuKeybinding = entry.get_text();
+                      this.settings.set_string('menu-keybinding-text', _menuKeybinding);
+                  }.bind(this));
+                  //menuKeybindingRow1.add(menuKeybindingLabel1);
+                  this.menuKeybindingRow1.add(menuKeybindingEntry1);
+                  this.newMenuKeybindingFrame.add(this.menuKeybindingRow1);
+            
+            
+            this.add(this.newMenuKeybindingFrame);
+            //-----------------------------------------------------------------
         }
 });
     
@@ -1019,7 +1092,9 @@ var  AppearanceSettingsPage = GObject.registerClass(
           overrideArcMenuSwitch.set_active(this.settings.get_boolean('enable-custom-arc-menu'));
           overrideArcMenuSwitch.connect('notify::active', function (check) {
         	this.settings.set_boolean('enable-custom-arc-menu',check.get_active());
-        	overrideArcMenuButton.set_sensitive(check.get_active());
+            overrideArcMenuButton.set_sensitive(check.get_active());
+            saveCSS(this.settings);
+            this.settings.set_boolean('reload-theme',true);
         
           }.bind(this));
           
@@ -1029,41 +1104,26 @@ var  AppearanceSettingsPage = GObject.registerClass(
           overrideArcMenuFrame.add(overrideArcMenuRow);
           this.add(overrideArcMenuFrame);
 
-
-          /*let defaultButtonFrame = new PW.FrameBox();
-          let defaultButtonRow = new PW.FrameBoxRow();
-          let defaultButtonLabel = new Gtk.Label({
-              label: _('Reset Appearance to Default'),
+          let avatarStyleFrame = new PW.FrameBox();
+          let avatarStyleRow = new PW.FrameBoxRow();
+          let avatarStyleLabel = new Gtk.Label({
+              label: _('Choose Avatar Icon Shape'),
               xalign:0,
               hexpand: true,
            });   
-          let defaultButton = new Gtk.Button({
-              label: _("Reset")
-          });
-          defaultButton.connect('clicked', ()=> {
-            this.settings.set_int('menu-height', 550);
-            this.settings.set_string('separator-color',"rgb(63,62,64)");
-            this.settings.set_boolean('vert-separator',false);
-            this.settings.set_boolean('enable-custom-arc-menu', false); 
-            overrideArcMenuSwitch.set_active(false);
-            overrideArcMenuButton.set_sensitive(false);
-            this.settings.set_string('menu-color',"rgba(28, 28, 28, 0.98)");
-            this.settings.set_string('menu-foreground-color',"rgba(211, 218, 227, 1)");
-            this.settings.set_string('border-color',"rgba(28, 28, 28, 0.98)");
-            this.settings.set_string('highlight-color',"rgba(238, 238, 236, 0.1)" );
-            this.settings.set_int('menu-font-size',9);
-            this.settings.set_int('menu-border-size',0);
-            this.settings.set_int('menu-corner-radius',0);
-            this.settings.set_int('menu-margin',0);
-            this.settings.set_int('menu-arrow-size',0);
-            this.settings.set_int('menu-width', 290);
-            saveCSS(this.settings);
-            this.settings.set_boolean('reload-theme',true);
-          });
-          defaultButtonRow.add(defaultButtonLabel);
-          defaultButtonRow.add(defaultButton);
-          defaultButtonFrame.add(defaultButtonRow);
-          this.add(defaultButtonFrame);*/
+           let avatarStyleCombo = new Gtk.ComboBoxText({ halign: Gtk.Align.END });
+           avatarStyleCombo.append_text(_("Circular"));
+           avatarStyleCombo.append_text(_("Square"));
+           avatarStyleCombo.set_active(this.settings.get_enum('avatar-style'));
+           avatarStyleCombo.connect('changed', function (widget) {
+               this.settings.set_enum('avatar-style', widget.get_active());
+               saveCSS(this.settings);
+               this.settings.set_boolean('reload-theme',true);
+           }.bind(this));
+          avatarStyleRow.add(avatarStyleLabel);
+          avatarStyleRow.add(avatarStyleCombo);
+          avatarStyleFrame.add(avatarStyleRow);
+          this.add(avatarStyleFrame);
     }
 });
 //Dialog Window for Arc Menu Customization    
@@ -1225,7 +1285,7 @@ var ArcMenuCustomizationWindow = GObject.registerClass(
            buttonRow.add(resetButton);
           
            let fillerLabel = new Gtk.Label({
-               label: _(''),
+               label: '',
                xalign:0,
                hexpand: true,
            });   
@@ -1530,7 +1590,7 @@ var OverrideArcMenuThemeWindow = GObject.registerClass(
             buttonRow.add(resetButton);
            
             let fillerLabel = new Gtk.Label({
-                label: _(''),
+                label: '',
                 xalign:0,
                 hexpand: true,
             });   
@@ -2011,35 +2071,62 @@ function saveCSS(settings){
     let menuMargin = this._settings.get_int('menu-margin');
     let menuArrowSize = this._settings.get_int('menu-arrow-size');
     let menuWidth = this._settings.get_int('menu-width');
-    //there has to be a better way to do this
+    let avatarStyle =  this._settings.get_enum('avatar-style');
+    let avatarRadius = avatarStyle == 0 ? 999 : 0;
+    let tooltipFontSize = customArcMenu ? ("font-size:" + fontSize+"pt;") : " ";
+
     let file = Gio.File.new_for_path(Me.path+"/stylesheet.css");
     let css ="#arc-search{width: "+  menuWidth+"px;} \n.arc-menu-status-text{\ncolor:"+  menuForegroundColor+";\nfont-size:" + fontSize+"pt;\n}\n "+                                                      
-	".search-statustext {font-size:11pt;}\n "+    
+        ".search-statustext {font-size:11pt;}\n "+    
     	".left-scroll-area{ \nwidth:"+  menuWidth+"px;\n}\n"   
     	+".arc-empty-dash-drop-target{\nwidth: "+  menuWidth+"px; \nheight: 2px; \nbackground-color:"+  separatorColor+"; \npadding: 0 0; \nmargin:0;\n}\n"     
-    	  +".left-box{\nwidth:"+  menuWidth+"px;\n}" + "\n.vert-sep{\nwidth:11px;\n}\n"
-	  +"#search-entry{\nmax-width: 17.667em;\n}\n#search-entry:focus { \nborder-color:"+  separatorColor+";\n}\n"
-	  +"#arc-search-entry{\nmax-width: 17.667em;\nfont-size:" + fontSize+"pt;\n border-color:"+  separatorColor+";\n"
-	  	+" color:"+  menuForegroundColor+";\n background-color:" +  menuColor + ";\n}\n"
-	  +"#arc-search-entry:focus { \nborder-color:"+ lighten_rgb( separatorColor,0.25)+";\n}\n"
-	  +".arc-menu-action{\ncolor:"+  menuForegroundColor+";\n}\n"
-	  +".arc-menu-action:hover, .arc-menu-action:focus {\ncolor:"+ lighten_rgb( menuForegroundColor,0.15)+";\n background-color:"+  highlightColor+";\n}\n"
-	  +".tooltip-label{ \nborder-radius: 7px;\n padding: 5px 8px;\n color: #eeeeec;\n"
-	  +"background-color: rgba(46, 52, 54, 0.7);\n text-align: center;\n}\n.search-box-padding { \npadding-top: 0.75em;\n"
-	  +"padding-bottom: 0.25em;\npadding-left: 1em;\n padding-right: 0.25em;\n margin-right: .5em;\n}\n"
-	  +".arc-menu{\nmin-width: 15em;\ncolor: #D3DAE3;\nborder-image: none;\nbox-shadow: none;\nfont-size:" + fontSize+"pt;\n}\n"
-	  +".arc-menu.popup-sub-menu {\npadding-bottom: 1px;\nbackground-color: #3a393b;\nbox-shadow: inset 0 -1px 0px #323233;\n }\n"
-	  +".arc-menu.popup-menu-content {padding: 1em 0em;}\n .arc-menu.popup-menu-item {\nspacing: 12px; \nborder: 0;\ncolor:"+  menuForegroundColor+";\n }\n" 
-	  +".arc-menu.popup-menu-item:ltr {padding: .4em 1.75em .4em 0em; }\n.arc-menu.popup-menu-item:rtl {padding: .4em 0em .4em 1.75em;}\n"
-	  +".arc-menu.popup-menu-item:checked {\nbackground-color: #3a393b;\n box-shadow: inset 0 1px 0px #323233;\nfont-weight: bold;\n }\n"
-	  +".arc-menu.popup-menu-item.selected, .arc-menu.popup-menu-item:active{\nbackground-color:"+  highlightColor+"; \ncolor: "+ lighten_rgb( menuForegroundColor,0.15)+";\n }\n" 
-	  +".arc-menu.popup-menu-item:disabled {color: rgba(238, 238, 236, 0.5); }\n"
-	  +".arc-menu-boxpointer{ \n-arrow-border-radius:"+  cornerRadius+"px;\n"
-	  +"-arrow-background-color:" +  menuColor + ";\n"
-	  +"-arrow-border-color:"+  borderColor+ ";\n"
-	  +"-arrow-border-width:"+  borderSize+"px;\n"
-	  +"-arrow-base:"+  menuMargin+"px;\n"
-	  +"-arrow-rise:"+  menuArrowSize+"px;\n"
-	  +"-arrow-box-shadow: 0 1px 3px black;\n }";
+        +".left-box{\nwidth:"+  menuWidth+"px;\n}" + "\n.vert-sep{\nwidth:11px;\n}\n"
+        +"#search-entry{\nmax-width: 17.667em;\n}\n#search-entry:focus { \nborder-color:"+  separatorColor+";\n}\n"
+        +"#arc-search-entry{\nmax-width: 17.667em;\nfont-size:" + fontSize+"pt;\n border-color:"+  separatorColor+";\n"
+        +" color:"+  menuForegroundColor+";\n background-color:" +  menuColor + ";\n}\n"
+        +"#arc-search-entry:focus { \nborder-color:"+ lighten_rgb( separatorColor,0.25)+";\n}\n"
+        +".arc-menu StButton{\ncolor:"+  menuForegroundColor+";\n}\n"
+        +".arc-menu StButton:hover, .arc-menu StButton:focus {\ncolor:"+ lighten_rgb( menuForegroundColor,0.15)+";\n background-color:"+  highlightColor+";\n}\n"
+        +".tooltip-session-button{\n border-radius: 7px;\n padding: 5px 8px;\ncolor: #eeeeec;\nbackground-color: rgba(46, 52, 54, 0.7);"
+        +"\ntext-align: center;" + tooltipFontSize +"\n}"
+        +".tooltip-menu-item{border-color:rgb(0,0,0);\n border: 1px;\nfont-size:9pt;\n border-radius: 0px;\n padding: 2px 5px;"
+         +"\n color :rgb(63,62,64);\n background-color:rgb(255, 255, 255);\nbox-shadow: 1px 1px 4px rgb(53, 52, 52);\nmax-width:300px;\nheight:15px;\n}"
+        +".search-box-padding { \npadding-top: 0.75em;\n"
+        +"padding-bottom: 0.25em;\npadding-left: 1em;\n padding-right: 0.25em;\n margin-right: .5em;\n}\n"
+        +".arc-menu{\nmin-width: 15em;\ncolor: #D3DAE3;\nborder-image: none;\nbox-shadow: none;\nfont-size:" + fontSize+"pt;\n}\n"
+        +".arc-menu .popup-sub-menu {\npadding-bottom: 1px;\nbackground-color: #3a393b;\nbox-shadow: inset 0 -1px 0px #323233;\n }\n"
+        +".arc-menu .popup-menu-content {padding: 1em 0em;}\n .arc-menu .popup-menu-item {\nspacing: 12px; \nborder: 0;\ncolor:"+  menuForegroundColor+";\n }\n" 
+        +".arc-menu .popup-menu-item:ltr {padding: .4em 1.75em .4em 0em; }\n.arc-menu .popup-menu-item:rtl {padding: .4em 0em .4em 1.75em;}\n"
+        +".arc-menu .popup-menu-item:checked {\nbackground-color: #3a393b;\n box-shadow: inset 0 1px 0px #323233;\nfont-weight: bold;\n }\n"
+        +".arc-menu .popup-menu-item.selected, .arc-menu .popup-menu-item:active{\nbackground-color:"+  highlightColor+"; \ncolor: "+ lighten_rgb( menuForegroundColor,0.15)+";\n }\n" 
+        +".arc-menu .popup-menu-item:disabled {color: rgba(238, 238, 236, 0.5); }\n"
+        +".arc-menu-boxpointer{ \n-arrow-border-radius:"+  cornerRadius+"px;\n"
+        +"-arrow-background-color:" +  menuColor + ";\n"
+        +"-arrow-border-color:"+  borderColor+ ";\n"
+        +"-arrow-border-width:"+  borderSize+"px;\n"
+        +"-arrow-base:"+  menuMargin+"px;\n"
+        +"-arrow-rise:"+  menuArrowSize+"px;\n"
+        +"-arrow-box-shadow: 0 1px 3px black;\n }"
+        +"\n.arc-menu-sep {\nheight: 1px;\nmargin: 5px 20px;\nbackground-color: transparent;"
+        +"\nborder-color:"+  separatorColor+";\n border-bottom-width: 1px;\nborder-bottom-style: solid;\n }"
+        +".menu-user-avatar {\n background-size: contain; \n border: none;\n border-radius: "+avatarRadius+"px;\n }"
+        +"\n.app-right-click{\nwidth: 225px;\nmax-width:200px;\nfont-size:9pt;\nmargin:2px;\npadding:2px;"
+        +"\nspacing:2px;\nbox-shadow: 1px 1px 4px rgb(53, 52, 52);\n}"
+        +"\n.app-right-click .popup-sub-menu{\npadding-bottom: 1px;\nbackground-color: #3a393b;\nbox-shadow: inset 0 -1px 0px #323233;\n}"
+        +"\n.app-right-click .popup-menu-content {padding: 2px;box-shadow: inset 0 -1px 0px #323233;}"
+        +".app-right-click .popup-menu-item {\nspacing: 12px;\nborder: 0;\ncolor:rgb(63,62,64);\n}"
+        +"\n.app-right-click .popup-menu-item:ltr {padding: .4em 1.75em .4em 0em; }\n"
+        +"\n.app-right-click .popup-menu-item:rtl {padding: .4em 0em .4em 1.75em;}\n"
+        +"\n.app-right-click .popup-menu-item:checked {\nbackground-color: #3a393b;\nbox-shadow: inset 0 1px 0px #323233;\nfont-weight: bold;\n}"
+        +"\n.app-right-click .popup-menu-item.selected, .app-right-click .popup-menu-item:active{\n"
+        +"background-color:rgba(19, 19, 19, 0.1);\ncolor:rgb(72, 70, 73);\n}"
+        +"\n .app-right-click .popup-menu-item:disabled {color: rgba(238, 238, 236, 0.5); }"
+        +"\n.app-right-click .test StLabel{font-weight: bold;}"
+        +"\n .app-right-click-boxpointer{\n-arrow-border-radius:0px;\n-arrow-background-color:rgb(255, 255, 255);"
+        +"\n -arrow-border-color:rgb(63,62,64);\n-arrow-border-width:1px;\n-arrow-base:0px;\n-arrow-rise:0px;"
+        +"\n-arrow-box-shadow: 1px 1px 4px rgb(53, 52, 52);\n}"
+        +"\n.app-right-click-sep {\nheight: 1px;\nmargin: 2px 25px;\nbackground-color: transparent;"
+        +"\n border-color: rgba(63, 63, 64, 0.2);\nborder-bottom-width: 1px;\nborder-bottom-style: solid; \n}";
     file.replace_contents(css,null,false,Gio.FileCreateFlags.REPLACE_DESTINATION,null);
 }
+

@@ -2,7 +2,8 @@
  * Arc Menu: The new applications menu for Gnome 3.
  *
  * Original work: Copyright (C) 2015 Giovanni Campagna
- * Modified work: Copyright (C) 2017-2019 LinxGem33
+ * Modified work: Copyright (C) 2016-2017 Zorin OS Technologies Ltd.
+ * Modified work: Copyright (C) 2017 LinxGem33
  * Modified work: Copyright (C) 2017 Alexander Rüedlinger
  * Modified work: Copyright (C) 2019 Andrew Zaech
  *
@@ -65,6 +66,9 @@ var ApplicationsButton = GObject.registerClass(
             this._settings = settings;
             this._session = new GnomeSession.SessionManager();
             this._panel = panel;
+            this.appMenuManager = new PopupMenu.PopupMenuManager(this);
+            this.appMenuManager._changeMenu = (menu) => {
+            };
             this.extensionChangedId = ExtensionSystem.connect('extension-state-changed', (data, extension) => {
                 if (extension.uuid === 'dash-to-panel@jderose9.github.com' && extension.state === 1) 
                     this.addDTPSettings();
@@ -73,6 +77,7 @@ var ApplicationsButton = GObject.registerClass(
             });
             if(global.dashToPanel)
                 this.addDTPSettings();
+            this._loadCategories();
             this.createMenu();   
             if (this.sourceActor)
             	this._keyReleaseId = this.sourceActor.connect('key-release-event',
@@ -80,6 +85,7 @@ var ApplicationsButton = GObject.registerClass(
            
         }
         createMenu(){
+            
             this.vertSep=null;
             this.currentMenu = Constants.CURRENT_MENU.FAVORITES;                          
             this.actor.accessible_role = Atk.Role.LABEL;            
@@ -112,13 +118,11 @@ var ApplicationsButton = GObject.registerClass(
             this.updateStyle();
         }
         toggleMenu() {
-           if(this.rightClickMenu.isOpen)
-    	        this.rightClickMenu.toggle();	            
-	       this._panel.menuManager.removeMenu(this.rightClickMenu);              
-    	   this._panel.menuManager.addMenu(this.leftClickMenu); 
-     	   this.leftClickMenu.toggle();
-           if(this.leftClickMenu.isOpen)
-     	    	this.mainBox.grab_key_focus();
+            if(this.appMenuManager.activeMenu)
+                this.appMenuManager.activeMenu.toggle();	         
+     	    this.leftClickMenu.toggle();
+            if(this.leftClickMenu.isOpen)
+                this.mainBox.grab_key_focus();
         }
         getWidget() {
             return this._menuButtonWidget;
@@ -130,77 +134,26 @@ var ApplicationsButton = GObject.registerClass(
             this._redisplayRightSide();
         }
         updateStyle(){
-            if(this._settings.get_boolean('enable-custom-arc-menu')){
-                this.actionsBox.actor.add_style_class_name('arc-menu');
-                this.leftClickMenu.actor.style_class = 'arc-menu-boxpointer popup-menu';
-                this.actionsBox.actor.get_children().forEach(function (actor) {
-                    if(actor instanceof St.Button){
-                        actor.add_style_class_name('arc-menu-action');
-                    }
-                }.bind(this));
-                this.applicationsBox.get_children().forEach(function (actor) {
-                    if(actor instanceof St.BoxLayout){
-                        actor.add_style_class_name('arc-menu');
-                    }
-                }.bind(this));
-                this.shorcutsBox.get_children().forEach(function (actor) {
-                    if(actor instanceof St.BoxLayout){
-                        actor.add_style_class_name('arc-menu');
-                    }
-                }.bind(this));
-                this.rightBox.get_children().forEach(function (actor) {
-                    if(actor instanceof St.BoxLayout){
-                        actor.add_style_class_name('arc-menu');
-                    }
-                }.bind(this));
-                for(let id in this._sections){
-                    this._sections[id].box.get_children().forEach(function (actor) {
-                        if(actor instanceof St.BoxLayout){
-                            actor.add_style_class_name('arc-menu');
-                        }
-                    }.bind(this));
-                }
-                this.backButton.actor.add_style_class_name('arc-menu');
-                this.viewProgramsButton.actor.add_style_class_name('arc-menu');
+            let addStyle=this._settings.get_boolean('enable-custom-arc-menu');
+  
+            if(addStyle){
+                this.newSearch.setStyle('arc-menu-status-text');
+                this.leftClickMenu.actor.style_class = 'arc-menu-boxpointer';
+                this.leftClickMenu.actor.add_style_class_name('arc-menu');
+                this.rightClickMenu.actor.style_class = 'arc-menu-boxpointer';
+                this.rightClickMenu.actor.add_style_class_name('arc-menu');
                 this.searchBox._stEntry.set_name('arc-search-entry');
             }
             else
-            {             
-                this.actionsBox.actor.remove_style_class_name('arc-menu');              
-                this.leftClickMenu.actor.style_class = 'popup-menu-boxpointer popup-menu';
-                this.actionsBox.actor.get_children().forEach(function (actor) {
-                    if(actor instanceof St.Button){
-                        actor.remove_style_class_name('arc-menu-action');
-                    }
-                }.bind(this));
-                this.applicationsBox.get_children().forEach(function (actor) {
-                    if(actor instanceof St.BoxLayout){
-                        actor.remove_style_class_name('arc-menu');
-                    }
-                }.bind(this));
-                this.shorcutsBox.get_children().forEach(function (actor) {
-                    if(actor instanceof St.BoxLayout){
-                        actor.remove_style_class_name('arc-menu');
-                    }
-                }.bind(this));
-            	this.rightBox.get_children().forEach(function (actor) {
-                    if(actor instanceof St.BoxLayout){
-                        actor.remove_style_class_name('arc-menu');
-                    }
-                }.bind(this));
-                for(let id in this._sections){
-                    this._sections[id].box.get_children().forEach(function (actor) {
-                        if(actor instanceof St.BoxLayout){
-                            actor.remove_style_class_name('arc-menu');
-                        }
-                    }.bind(this));
-                }
-                this.backButton.actor.remove_style_class_name('arc-menu');
-                this.viewProgramsButton.actor.remove_style_class_name('arc-menu');
+            {         
+                this.newSearch.setStyle('search-statustext');            
+                this.leftClickMenu.actor.style_class = 'popup-menu-boxpointer';
+                this.leftClickMenu.actor.add_style_class_name('popup-menu');
+                this.rightClickMenu.actor.style_class = 'popup-menu-boxpointer';
+                this.rightClickMenu.actor.add_style_class_name('popup-menu');
                 this.searchBox._stEntry.set_name('search-entry');
             }
         }
-        
         // Destroy the menu button
         _onDestroy() {
             ExtensionSystem.disconnect(this.extensionChangedId);
@@ -243,7 +196,6 @@ var ApplicationsButton = GObject.registerClass(
                 appSys.disconnect(this._installedChangedId);
                 this._installedChangedId  = 0;
             }
-
             super._onDestroy();
         }
 
@@ -320,8 +272,8 @@ var ApplicationsButton = GObject.registerClass(
                     this._redisplay();
                     this.reloadFlag = false;
                 }
-                if(this.user._userIcon.get_gicon()==null)
-			        this.user._onUserChanged();
+                //if(this.user._userIcon.get_gicon()==null)
+			       this.user._onUserChanged();
                 this.mainBox.show();  
             }
             super._onOpenStateChanged(menu, open);
@@ -367,6 +319,15 @@ var ApplicationsButton = GObject.registerClass(
         _loadCategories() {
             this.applicationsByCategory = {};
             this.categoryDirectories=[];
+            this.categoryDirectories.push("");
+            this.applicationsByCategory["Frequent Apps"] = [];
+       
+            this._usage = Shell.AppUsage.get_default();
+            let mostUsed = this._usage.get_most_used();
+            for (let i = 0; i < mostUsed.length; i++) {
+                if (mostUsed[i] && mostUsed[i].get_app_info().should_show())
+                    this.applicationsByCategory["Frequent Apps"].push(mostUsed[i]);
+            }
             let tree = new GMenu.Tree({ menu_basename: 'applications.menu' });
             tree.load_sync();
             let root = tree.get_root_directory();
@@ -383,10 +344,13 @@ var ApplicationsButton = GObject.registerClass(
                     }
                 }
             }
+
+
         }
         _displayCategories(){
+            this._loadCategories();
          	this._clearApplicationsBox();
-	    	this.viewProgramsButton.actor.hide();
+            this.viewProgramsButton.actor.hide();
 	    	if(this._settings.get_boolean('enable-pinned-apps'))
                 this.backButton.actor.show();
             else{
@@ -394,9 +358,9 @@ var ApplicationsButton = GObject.registerClass(
                 this.backButton.actor.hide();
             }
     		for(var categoryDir of this.categoryDirectories){
-			let categoryMenuItem = new MW.CategoryMenuItem(this, categoryDir);
-			this.applicationsBox.add_actor(categoryMenuItem.actor);	
-    		}
+			    let categoryMenuItem = new MW.CategoryMenuItem(this, categoryDir);
+			    this.applicationsBox.add_actor(categoryMenuItem.actor);	
+            }
             this.updateStyle();
         }
 
@@ -426,21 +390,20 @@ var ApplicationsButton = GObject.registerClass(
             this._clearApplicationsBox();
             this.viewProgramsButton.actor.show();
             this.backButton.actor.hide();
-            let pinnedApps = this._settings.get_strv('pinned-apps');
+            let pinnedApps = this._settings.get_strv('pinned-app-list');
             this.favoritesArray=[];
             for(let i = 0;i<pinnedApps.length;i+=3)
             {
                 let favoritesMenuItem = new MW.FavoritesMenuItem(this, pinnedApps[i], pinnedApps[i+1], pinnedApps[i+2]);
                 favoritesMenuItem.connect('saveSettings', ()=>{
-                    	let array = [];
-			for(let i = 0;i < this.favoritesArray.length; i++)
-			{
-			    array.push(this.favoritesArray[i]._name);
-			    array.push(this.favoritesArray[i]._iconPath);
-			    array.push(this.favoritesArray[i]._command);			   
-			}
-			this._settings.set_strv('pinned-apps',array);
-                 	//global.log(array);
+                    let array = [];
+                    for(let i = 0;i < this.favoritesArray.length; i++)
+                    {
+                        array.push(this.favoritesArray[i]._name);
+                        array.push(this.favoritesArray[i]._iconPath);
+                        array.push(this.favoritesArray[i]._command);		   
+                    }
+                    this._settings.set_strv('pinned-app-list',array);
                 });
                 this.favoritesArray.push(favoritesMenuItem);
                 this.applicationsBox.add_actor(favoritesMenuItem.actor);
@@ -456,7 +419,8 @@ var ApplicationsButton = GObject.registerClass(
             this.leftClickMenu.addMenuItem(this.section);            
             this.mainBox = new St.BoxLayout({
                 vertical: false
-            });            
+            });      
+            this.newSearch = new ArcSearch.SearchResults(this);      
             this.mainBox.set_height(this._settings.get_int('menu-height'));               
             this.section.actor.add_actor(this.mainBox);               
             this.mainBox._delegate = this.mainBox;
@@ -912,14 +876,11 @@ var ApplicationsButton = GObject.registerClass(
             	this.currentMenu = Constants.CURRENT_MENU.SEARCH_RESULTS;        
             }
             if(searchBox.isEmpty()){          
-            	this.searchBox.clear();                 	
-            	this.newSearch._reset();               	
-            	this.newSearch._clearDisplay();              	
+            	this.searchBox.clear();                 	          	
             	this.newSearch.actor.hide();
             }            
             else{        
             	this._clearApplicationsBox(); 
-		        this.newSearch = new ArcSearch.SearchResults(this);
              	this.applicationsBox.add(this.newSearch.actor);      
  		        this.newSearch.actor.show();         
     	    	this.newSearch.setTerms([searchString]);   
@@ -933,7 +894,7 @@ var ApplicationsButton = GObject.registerClass(
             this.mainBox.hide();
             if (this._settings.get_enum('visible-menus') != Constants.visibleMenus.SYSTEM_ONLY) {
                 this._applicationsButtons.clear();
-                this._loadCategories();
+                //this._loadCategories();
                 if(this._settings.get_boolean('enable-pinned-apps'))
                 	this._loadFavorites();
                 else
@@ -956,8 +917,14 @@ var ApplicationsButton = GObject.registerClass(
         // Select a category or show category overview if no category specified
         selectCategory(dir) {
             this._clearApplicationsBox();
-            if (dir) {
+            if (dir!="Frequent Apps") {
                 this._displayButtons(this._listApplications(dir.get_menu_id()));
+                this.backButton.actor.show();
+                this.currentMenu = Constants.CURRENT_MENU.CATEGORY_APPLIST;
+                this.viewProgramsButton.actor.hide();
+            }
+            else if(dir=="Frequent Apps") {
+                this._displayButtons(this._listApplications("Frequent Apps"));
                 this.backButton.actor.show();
                 this.currentMenu = Constants.CURRENT_MENU.CATEGORY_APPLIST;
                 this.viewProgramsButton.actor.hide();
@@ -982,6 +949,7 @@ var ApplicationsButton = GObject.registerClass(
                     if (!item.actor.get_parent()) {
                         this.applicationsBox.add_actor(item.actor);
                     }
+                    item.useTooltips(! this._settings.get_boolean('disable-tooltips'));
                 }
             }
         }
@@ -1011,9 +979,11 @@ var ApplicationsButton = GObject.registerClass(
                 for (let directory in this.applicationsByCategory)
                     applist = applist.concat(this.applicationsByCategory[directory]);
             }
-            applist.sort(function (a, b) {
-                return a.get_name().toLowerCase() > b.get_name().toLowerCase();
-            });
+            if(category_menu_id != "Frequent Apps"){
+                applist.sort(function (a, b) {
+                    return a.get_name().toLowerCase() > b.get_name().toLowerCase();
+                });
+            }
             
             return applist;
         }
