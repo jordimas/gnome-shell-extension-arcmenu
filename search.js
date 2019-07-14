@@ -76,19 +76,15 @@ var SearchResult = class {
         let isMenuItem=true;
         if(this.metaInfo['description'] || ((app!=undefined) ? app.get_description() : false))
         {
-          this.tooltip = new MW.Tooltip(this.menuItem.actor, this.metaInfo['description'] ? this.metaInfo['description']:  app.get_description(),isMenuItem);
+          this.tooltip = new MW.Tooltip(this.menuItem.actor, this.metaInfo['description'] ? this.metaInfo['description']:  app.get_description(),isMenuItem,this._button._settings);
           this.tooltip.hide();
           this.menuItem.actor.connect('notify::hover', this._onHover.bind(this));
         }
-        this._useTooltips = ! this._button._settings.get_boolean('disable-tooltips');
-        this._button._settings.connect('changed::disable-tooltips', this.disableTooltips.bind(this));
+
     }
-    disableTooltips() {
-        this._useTooltips = ! this._button._settings.get_boolean('disable-tooltips');
-    }
+
     _onHover() {
-        if(!this._useTooltips)
-            return;
+
         if (this.menuItem.actor.hover) { // mouse pointer hovers over the button
             this.tooltip.show();
         } else { // mouse pointer leaves the button area
@@ -690,21 +686,12 @@ class ArcSearchProviderInfo extends MW.BaseMenuItem {
 
         let isMenuItem = true;
         if(provider.appInfo.get_description()!=null){
-            this.tooltip = new MW.Tooltip(this.actor, provider.appInfo.get_description(),isMenuItem);
+            this.tooltip = new MW.Tooltip(this.actor, provider.appInfo.get_description(),isMenuItem,this._button._settings);
             this.tooltip.hide();
             this.actor.connect('notify::hover', this._onHover.bind(this));
         }
-        this._useTooltips = ! this._button._settings.get_boolean('disable-tooltips');
-        this._button._settings.connect('changed::disable-tooltips', this.disableTooltips.bind(this));
     }
-    disableTooltips() {
-        this._useTooltips = ! this._button._settings.get_boolean('disable-tooltips');
-    }
-    
-
     _onHover() {
-        if(! this._useTooltips)
-            return;
         if ( this.actor.hover) { // mouse pointer hovers over the button
             this.tooltip.show();
         } else { // mouse pointer leaves the button area
