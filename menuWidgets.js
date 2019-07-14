@@ -234,6 +234,7 @@ var AppRightClickMenu = class extends PopupMenu.PopupMenu {
     _appendSeparator() {
         let separator = new PopupMenu.PopupSeparatorMenuItem();
         separator.actor.style_class='app-right-click-sep';
+        separator._separator.style_class='';
         this.addMenuItem(separator);
     }
 
