@@ -368,7 +368,7 @@ var ApplicationsButton = GObject.registerClass(
          
         }
         _displayFavorites() {
-            global.log('display favs');
+            //global.log('display favs');
             this._clearApplicationsBox();
             this.viewProgramsButton.actor.show();
             this.backButton.actor.hide();
