@@ -52,7 +52,8 @@ const ApplicationsMenu = class extends PopupMenu.PopupMenu {
     close(animate) {
         if (this._button.applicationsBox) {
             let searchBox = this._button.searchBox;
-            searchBox.clear();
+            if(!searchBox.isEmpty())
+                searchBox.clear();
         }
         super.close(animate);
     }

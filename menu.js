@@ -107,13 +107,9 @@ var ApplicationsButton = GObject.registerClass(
             this._loadFavorites();
             this._display();
             this._installedChangedId = appSys.connect('installed-changed', () => {
+                this._loadCategories();
                 if (this.leftClickMenu.isOpen) {
-                    this._loadCategories();
-                    this._redisplay();
                     this.mainBox.show();
-                } else {
-                    this._loadCategories();
-                    this.reloadFlag = true;
                 }
             });
             this._notifyHeightId = this._panel.actor.connect('notify::height', () => {
@@ -229,6 +225,7 @@ var ApplicationsButton = GObject.registerClass(
                     this._redisplay();
                     this.reloadFlag = false;
                 }
+                this.setDefaultMenuView();
                 this.mainBox.show();  
             }
             super._onOpenStateChanged(menu, open);
@@ -371,6 +368,7 @@ var ApplicationsButton = GObject.registerClass(
          
         }
         _displayFavorites() {
+            global.log('display favs');
             this._clearApplicationsBox();
             this.viewProgramsButton.actor.show();
             this.backButton.actor.hide();
@@ -800,11 +798,11 @@ var ApplicationsButton = GObject.registerClass(
             }
             return Clutter.EVENT_PROPAGATE;
         }
-        resetSearch()
-        {
-          this.searchBox.clear();
-        }
         _onSearchBoxCleared() {
+            this.setDefaultMenuView();
+        }
+        setDefaultMenuView()
+        {
             this._clearApplicationsBox();
             if(this._settings.get_boolean('enable-pinned-apps')){
                 this.currentMenu = Constants.CURRENT_MENU.FAVORITES;
@@ -831,8 +829,7 @@ var ApplicationsButton = GObject.registerClass(
             if(this.currentMenu != Constants.CURRENT_MENU.SEARCH_RESULTS){              
             	this.currentMenu = Constants.CURRENT_MENU.SEARCH_RESULTS;        
             }
-            if(searchBox.isEmpty()){          
-            	this.searchBox.clear();                 	          	
+            if(searchBox.isEmpty()){                       	          	
             	this.newSearch.actor.hide();
             }            
             else{        
