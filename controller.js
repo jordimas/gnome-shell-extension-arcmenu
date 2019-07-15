@@ -107,11 +107,12 @@ var MenuSettingsController = class {
         ];
     }
     toggleMenus(){
-        let display = Gdk.Display.get_default();
-        let pointer= display.get_pointer();
-        let currentMonitor = display.get_monitor_at_point(pointer[1],pointer[2]);
-        for(let i = 0;i<display.get_n_monitors();i++){
-            if(display.get_monitor(i)==currentMonitor)
+        let screen = Gdk.Screen.get_default();
+        //global.log( global.get_pointer());
+        let pointer = global.get_pointer();
+        let currentMonitor = screen.get_monitor_at_point(pointer[0],pointer[1]);
+        for(let i = 0;i<screen.get_n_monitors();i++){
+            if(i==currentMonitor)
                 this.currentMonitorIndex=i;
         }
         //close current menus that are open on monitors other than current monitor
