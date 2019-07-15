@@ -203,7 +203,7 @@ var AppRightClickMenu = class extends PopupMenu.PopupMenu {
                                 pinnedApps.splice(i,3);
                                 //global.log( i / 3 );
                                 this._button.applicationsBox.remove_actor(this._button.favoritesArray[ i / 3 ].actor)
-                                this._button.favoritesArray.splice(i / 3, 1);
+                                //this._button.favoritesArray.splice(i / 3, 1);
                                 this._settings.set_strv('pinned-app-list',pinnedApps);
                                 //this._button.applicationsBox.show();
                                 break;

@@ -180,7 +180,6 @@ var ApplicationsButton = GObject.registerClass(
                 }
                 if(this.placesManager!=null)
                     this.placesManager.destroy();
-                this.searchBox.disconnect(this._searchBoxClearedId);
                 this.searchBox.disconnect(this._searchBoxChangedId);
                 this.searchBox.disconnect(this._searchBoxKeyPressId);
                 this.mainBox.disconnect(this._mainBoxKeyPressId);
@@ -376,7 +375,7 @@ var ApplicationsButton = GObject.registerClass(
             {
                 this.applicationsBox.add_actor(this.favoritesArray[i].actor);		   
             }
-            this.updateStyle();
+            this.updateStyle();  
         }
         // Create the menu layout
         _createLayout() {
@@ -451,7 +450,6 @@ var ApplicationsButton = GObject.registerClass(
             this._firstApp = null;
             this._tabbedOnce = false;
             this._searchBoxChangedId = this.searchBox.connect('changed', this._onSearchBoxChanged.bind(this));
-            this._searchBoxClearedId = this.searchBox.connect('cleared', this._onSearchBoxCleared.bind(this));
             this._searchBoxKeyPressId = this.searchBox.connect('key-press-event', this._onSearchBoxKeyPress.bind(this));
             //Add search box to menu
             this.leftBox.add(this.searchBox.actor, {
@@ -798,9 +796,6 @@ var ApplicationsButton = GObject.registerClass(
             }
             return Clutter.EVENT_PROPAGATE;
         }
-        _onSearchBoxCleared() {
-            this.setDefaultMenuView();
-        }
         setDefaultMenuView()
         {
             this._clearApplicationsBox();
@@ -825,11 +820,15 @@ var ApplicationsButton = GObject.registerClass(
             return Clutter.EVENT_PROPAGATE;
         }
 
+        resetSearch(){ //used by back button to clear results
+            this.searchBox.clear();
+        }
         _onSearchBoxChanged(searchBox, searchString) {        
             if(this.currentMenu != Constants.CURRENT_MENU.SEARCH_RESULTS){              
             	this.currentMenu = Constants.CURRENT_MENU.SEARCH_RESULTS;        
             }
-            if(searchBox.isEmpty()){                       	          	
+            if(searchBox.isEmpty()){  
+                this.setDefaultMenuView();                     	          	
             	this.newSearch.actor.hide();
             }            
             else{        

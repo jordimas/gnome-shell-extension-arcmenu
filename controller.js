@@ -120,6 +120,8 @@ var MenuSettingsController = class {
     }
     _updateFavorites(){
         this._menuButton._loadFavorites();
+        if(this._menuButton.currentMenu == Constants.CURRENT_MENU.FAVORITES)
+           this._menuButton._displayFavorites();
     }
     _updateMenuDefaultView(){
         if(this._settings.get_boolean('enable-pinned-apps'))
