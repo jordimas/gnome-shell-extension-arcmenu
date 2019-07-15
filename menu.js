@@ -78,6 +78,7 @@ var ApplicationsButton = GObject.registerClass(
             if(global.dashToPanel)
                 this.addDTPSettings();
             this._loadCategories();
+          
             this.createMenu();   
             if (this.sourceActor)
             	this._keyReleaseId = this.sourceActor.connect('key-release-event',
@@ -103,19 +104,16 @@ var ApplicationsButton = GObject.registerClass(
             this._applicationsButtons = new Map();
             this.reloadFlag = false;
             this._createLayout();
+            this._loadFavorites();
             this._display();
             this._installedChangedId = appSys.connect('installed-changed', () => {
+                this._loadCategories();
                 if (this.leftClickMenu.isOpen) {
-                    this._loadCategories();
-                    this._redisplay();
                     this.mainBox.show();
-                } else {
-                    this._loadCategories();
-                    this.reloadFlag = true;
                 }
             });
             this._notifyHeightId = this._panel.actor.connect('notify::height', () => {
-                this._redisplay();
+                //this._redisplay();
             });
             this.updateStyle();
         }
@@ -182,7 +180,6 @@ var ApplicationsButton = GObject.registerClass(
                 }
                 if(this.placesManager!=null)
                     this.placesManager.destroy();
-                this.searchBox.disconnect(this._searchBoxClearedId);
                 this.searchBox.disconnect(this._searchBoxChangedId);
                 this.searchBox.disconnect(this._searchBoxKeyPressId);
                 this.mainBox.disconnect(this._mainBoxKeyPressId);
@@ -220,64 +217,6 @@ var ApplicationsButton = GObject.registerClass(
             }
             return false;
         }
-        //Create a horizontal separator
-         _createHorizontalSeparator(rightSide){
-           let hSep = new St.DrawingArea({
-                x_expand:true,
-                y_expand:false
-            });
-            if(rightSide)
-                hSep.set_height(15); //increase height if on right side
-            else 
-                hSep.set_height(10);
-            hSep.connect('repaint', ()=> {
-                let cr = hSep.get_context();
-                let [width, height] = hSep.get_surface_size();                 
-                let b, stippleColor;                                                            
-                [b,stippleColor] = Clutter.Color.from_string(this._settings.get_string('separator-color'));           
-                if(rightSide){   
-                    cr.moveTo(width / 4, height-7.5);
-                    cr.lineTo(3 * width / 4, height-7.5);
-                }   
-                else{   
-                    cr.moveTo(25, height-4.5);
-                    cr.lineTo(width-25, height-4.5);
-                }
-                //adjust endpoints by 0.5 
-                //see https://www.cairographics.org/FAQ/#sharp_lines
-                Clutter.cairo_set_source_color(cr, stippleColor);
-                cr.setLineWidth(1);
-                cr.stroke();
-            });
-            hSep.queue_repaint();
-            return hSep;
-        }
-        // Create a vertical separator
-        _createVertSeparator(){      
-            let vertSep = new St.DrawingArea({
-                x_expand:true,
-                y_expand:true,
-                style_class: 'vert-sep'
-            });
-            vertSep.connect('repaint', ()=> {
-                if(this._settings.get_boolean('vert-separator'))  {
-                    let cr = vertSep.get_context();
-                    let [width, height] = vertSep.get_surface_size();
-                    let b, stippleColor;   
-		            [b,stippleColor] = Clutter.Color.from_string(this._settings.get_string('separator-color'));   
-                    let stippleWidth = 1;
-                    let x = Math.floor(width / 2) + 0.5;
-                    cr.moveTo(x,  0.5);
-                    cr.lineTo(x, height - 0.5);
-                    Clutter.cairo_set_source_color(cr, stippleColor);
-                    cr.setLineWidth(stippleWidth);
-                    cr.stroke();
-                }
-            }); 
-            vertSep.queue_repaint();
-            return vertSep;
-        }
-        
         // Handle changes in menu open state
         _onOpenStateChanged(menu, open) {
             if (open) {
@@ -285,12 +224,12 @@ var ApplicationsButton = GObject.registerClass(
                     this._redisplay();
                     this.reloadFlag = false;
                 }
+                this.setDefaultMenuView();
                 this.mainBox.show();  
             }
             super._onOpenStateChanged(menu, open);
         }
         _redisplayRightSide(){
-
             this.rightBox.destroy_all_children();
             this._createRightBox();
             this.updateStyle();
@@ -298,10 +237,22 @@ var ApplicationsButton = GObject.registerClass(
         // Redisplay the menu
         _redisplay() {
             if (this.applicationsBox)
-                this.applicationsBox.destroy_all_children();
+                this._clearApplicationsBox();
             this._display();
         }
-
+        // Display the menu
+        _display() {
+            this.mainBox.hide();
+            this._applicationsButtons.clear();
+            if(this._settings.get_boolean('enable-pinned-apps'))
+                this._displayFavorites();
+            else
+                this._displayCategories();
+            this.backButton.actor.hide();
+            if(this.vertSep!=null)
+                this.vertSep.queue_repaint(); 
+            
+        }
         // Load menu category data for a single category
         _loadCategory(categoryId, dir) {
             let iter = dir.iter();
@@ -355,8 +306,6 @@ var ApplicationsButton = GObject.registerClass(
                     }
                 }
             }
-
-
         }
         _displayCategories(){
             
@@ -376,7 +325,7 @@ var ApplicationsButton = GObject.registerClass(
         }
 
         // Load menu place shortcuts
-        _loadPlaces() {
+        _displayPlaces() {
             let homePath = GLib.get_home_dir();
             let placeInfo = new MW.PlaceInfo(Gio.File.new_for_path(homePath), _("Home"));
             let addToMenu = this._settings.get_boolean('show-home-shortcut');
@@ -398,9 +347,6 @@ var ApplicationsButton = GObject.registerClass(
             }
         }
         _loadFavorites() {
-            this._clearApplicationsBox();
-            this.viewProgramsButton.actor.show();
-            this.backButton.actor.hide();
             let pinnedApps = this._settings.get_strv('pinned-app-list');
             this.favoritesArray=[];
             for(let i = 0;i<pinnedApps.length;i+=3)
@@ -417,12 +363,20 @@ var ApplicationsButton = GObject.registerClass(
                     this._settings.set_strv('pinned-app-list',array);
                 });
                 this.favoritesArray.push(favoritesMenuItem);
-                this.applicationsBox.add_actor(favoritesMenuItem.actor);
-
             }
-            this.updateStyle();
+         
         }
-
+        _displayFavorites() {
+            //global.log('display favs');
+            this._clearApplicationsBox();
+            this.viewProgramsButton.actor.show();
+            this.backButton.actor.hide();
+            for(let i = 0;i < this.favoritesArray.length; i++)
+            {
+                this.applicationsBox.add_actor(this.favoritesArray[i].actor);		   
+            }
+            this.updateStyle();  
+        }
         // Create the menu layout
         _createLayout() {
             // Create main menu sections and scroll views
@@ -436,105 +390,94 @@ var ApplicationsButton = GObject.registerClass(
             this.section.actor.add_actor(this.mainBox);               
             this.mainBox._delegate = this.mainBox;
             this._mainBoxKeyPressId = this.mainBox.connect('key-press-event', this._onMainBoxKeyPress.bind(this));
+            
             // Left Box
-            if (this._settings.get_enum('visible-menus') == Constants.visibleMenus.ALL ||
-                this._settings.get_enum('visible-menus') == Constants.visibleMenus.APPS_ONLY) {
-                //Menus Left Box container
-                this.leftBox = new St.BoxLayout({
-                    vertical: true,
-                    style_class: 'left-box'
-                });
-                //Applications Box - Contains Favorites, Categories or programs
-                this.applicationsScrollBox = new St.ScrollView({
-                    x_fill: true,
-                    y_fill: false,
-                    y_align: St.Align.START,
-                    style_class: 'apps-menu vfade left-scroll-area',
-                    overlay_scrollbars: true
-                });                
-                this.applicationsScrollBox.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC);
-                let vscroll = this.applicationsScrollBox.get_vscroll_bar();
-                vscroll.connect('scroll-start', () => {
-                    this.leftClickMenu.passEvents = true;
-                });
-                vscroll.connect('scroll-stop', () => {
-                    this.leftClickMenu.passEvents = false;
-                });
-                this.leftBox.add(this.applicationsScrollBox, {
-                    expand: true,
-                    x_fill: true, y_fill: true,
-                    y_align: St.Align.START
-                });
-                this.applicationsBox = new St.BoxLayout({ vertical: true });
-                this.applicationsScrollBox.add_actor(this.applicationsBox);
-                //Add Horizontal Separator
-                this.leftBox.add(this._createHorizontalSeparator(false), {
-                    x_expand: true,
-                    x_fill: true,
-                    y_fill: false,
-                    y_align: St.Align.END
-                });
-                // Add back button to menu
-                this.backButton = new MW.BackMenuItem(this);
-                this.leftBox.add(this.backButton.actor, {
-                    expand: false,
-                    x_fill: true,
-                    y_fill: false,
-                    y_align: St.Align.End
-                });
-  	            // Add view all programs button to menu
-                this.viewProgramsButton = new MW.ViewAllPrograms(this);
-                this.leftBox.add(this.viewProgramsButton.actor, {
-                    expand: false,
-                    x_fill: true,
-                    y_fill: false,
-                    y_align: St.Align.START,
-                    margin_top:1,
-                });
-                // Create search box
-                this.searchBox = new MW.SearchBox();
-                this._firstAppItem = null;
-                this._firstApp = null;
-                this._tabbedOnce = false;
-                this._searchBoxChangedId = this.searchBox.connect('changed', this._onSearchBoxChanged.bind(this));
-                this._searchBoxClearedId = this.searchBox.connect('cleared', this._onSearchBoxCleared.bind(this));
-                this._searchBoxKeyPressId = this.searchBox.connect('key-press-event', this._onSearchBoxKeyPress.bind(this));
-                //Add search box to menu
-                this.leftBox.add(this.searchBox.actor, {
-                    expand: false,
-                    x_fill: true,
-                    y_fill: false,
-                    y_align: St.Align.START
-                });
-		        //Add LeftBox to MainBox
-                this.mainBox.add(this.leftBox, {
-                    expand: true,
-                    x_fill: true,
-                    y_fill: true
-                });
-                //Add Vert Separator to Main Box
-                this.mainBox.add(this._createVertSeparator(), {
-                    expand: true,
-                    x_fill: true,
-                    y_fill: true
-                });
+            //Menus Left Box container
+            this.leftBox = new St.BoxLayout({
+                vertical: true,
+                style_class: 'left-box'
+            });
+            //Applications Box - Contains Favorites, Categories or programs
+            this.applicationsScrollBox = new St.ScrollView({
+                x_fill: true,
+                y_fill: false,
+                y_align: St.Align.START,
+                style_class: 'apps-menu vfade left-scroll-area',
+                overlay_scrollbars: true
+            });                
+            this.applicationsScrollBox.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC);
+            let vscroll = this.applicationsScrollBox.get_vscroll_bar();
+            vscroll.connect('scroll-start', () => {
+                this.leftClickMenu.passEvents = true;
+            });
+            vscroll.connect('scroll-stop', () => {
+                this.leftClickMenu.passEvents = false;
+            });
+            this.leftBox.add(this.applicationsScrollBox, {
+                expand: true,
+                x_fill: true, y_fill: true,
+                y_align: St.Align.START
+            });
+            this.applicationsBox = new St.BoxLayout({ vertical: true });
+            this.applicationsScrollBox.add_actor(this.applicationsBox);
+            //Add Horizontal Separator
+            this.leftBox.add(this._createHorizontalSeparator(false), {
+                x_expand: true,
+                x_fill: true,
+                y_fill: false,
+                y_align: St.Align.END
+            });
+            //Add back button to menu
+            this.backButton = new MW.BackMenuItem(this);
+            this.leftBox.add(this.backButton.actor, {
+                expand: false,
+                x_fill: true,
+                y_fill: false,
+                y_align: St.Align.End
+            });
+            //Add view all programs button to menu
+            this.viewProgramsButton = new MW.ViewAllPrograms(this);
+            this.leftBox.add(this.viewProgramsButton.actor, {
+                expand: false,
+                x_fill: true,
+                y_fill: false,
+                y_align: St.Align.START,
+                margin_top:1,
+            });
+            // Create search box
+            this.searchBox = new MW.SearchBox();
+            this._firstAppItem = null;
+            this._firstApp = null;
+            this._tabbedOnce = false;
+            this._searchBoxChangedId = this.searchBox.connect('changed', this._onSearchBoxChanged.bind(this));
+            this._searchBoxKeyPressId = this.searchBox.connect('key-press-event', this._onSearchBoxKeyPress.bind(this));
+            //Add search box to menu
+            this.leftBox.add(this.searchBox.actor, {
+                expand: false,
+                x_fill: true,
+                y_fill: false,
+                y_align: St.Align.START
+            });
+            //Add LeftBox to MainBox
+            this.mainBox.add(this.leftBox, {
+                expand: true,
+                x_fill: true,
+                y_fill: true
+            });
+            //Add Vert Separator to Main Box
+            this.mainBox.add(this._createVertSeparator(), {
+                expand: true,
+                x_fill: true,
+                y_fill: true
+            });
 
-            }
-
-            // Right Box
-            if (this._settings.get_enum('visible-menus') == Constants.visibleMenus.ALL ||
-                this._settings.get_enum('visible-menus') ==Constants.visibleMenus.SYSTEM_ONLY) {
-                //RightBox container
-                this.rightBox = new St.BoxLayout({
-                    vertical: true,
-                    style_class: 'right-box'
-                });
-                //function to create rightBox children
-                this._createRightBox();
-                //Add rightbox to mainbox
-                this.mainBox.add(this.rightBox); 
-
-            }        
+            //Right Box
+            this.rightBox = new St.BoxLayout({
+                vertical: true,
+                style_class: 'right-box'
+            });
+            this._createRightBox();
+            this.mainBox.add(this.rightBox);   
         }
         
         _createRightBox(){
@@ -580,7 +523,7 @@ var ApplicationsButton = GObject.registerClass(
 	        this.shortcutsScrollBox.add_actor(this.shorcutsBox);
 	        this.rightBox.add(this.shortcutsScrollBox);
             // Add place shortcuts to menu (Home,Documents,Downloads,Music,Pictures,Videos)
-            this._loadPlaces();
+            this._displayPlaces();
             // add Home and Network shortcuts           
             if(this._settings.get_boolean('show-computer-shortcut')){
       		    this.placesShortcuts=true;  
@@ -721,7 +664,6 @@ var ApplicationsButton = GObject.registerClass(
                 y_fill: false,
                 y_align: St.Align.END
             });
-
         }
         placesAddSeparator(id){
             this._sections[id].box.add(this._createHorizontalSeparator(true), {
@@ -854,15 +796,12 @@ var ApplicationsButton = GObject.registerClass(
             }
             return Clutter.EVENT_PROPAGATE;
         }
-        resetSearch()
+        setDefaultMenuView()
         {
-          this.searchBox.clear();
-        }
-        _onSearchBoxCleared() {
             this._clearApplicationsBox();
             if(this._settings.get_boolean('enable-pinned-apps')){
                 this.currentMenu = Constants.CURRENT_MENU.FAVORITES;
-                this._loadFavorites();
+                this._displayFavorites();
             }	
             else{
                 this.currentMenu = Constants.CURRENT_MENU.CATEGORIES;
@@ -881,13 +820,15 @@ var ApplicationsButton = GObject.registerClass(
             return Clutter.EVENT_PROPAGATE;
         }
 
-        _onSearchBoxChanged(searchBox, searchString) {
-            // normalize search string            
+        resetSearch(){ //used by back button to clear results
+            this.searchBox.clear();
+        }
+        _onSearchBoxChanged(searchBox, searchString) {        
             if(this.currentMenu != Constants.CURRENT_MENU.SEARCH_RESULTS){              
             	this.currentMenu = Constants.CURRENT_MENU.SEARCH_RESULTS;        
             }
-            if(searchBox.isEmpty()){          
-            	this.searchBox.clear();                 	          	
+            if(searchBox.isEmpty()){  
+                this.setDefaultMenuView();                     	          	
             	this.newSearch.actor.hide();
             }            
             else{        
@@ -899,23 +840,6 @@ var ApplicationsButton = GObject.registerClass(
 	            this.viewProgramsButton.actor.hide();             	    
             }            	
         }
-
-        // Display the menu
-        _display() {
-            this.mainBox.hide();
-            if (this._settings.get_enum('visible-menus') != Constants.visibleMenus.SYSTEM_ONLY) {
-                this._applicationsButtons.clear();
-                //this._loadCategories();
-                if(this._settings.get_boolean('enable-pinned-apps'))
-                	this._loadFavorites();
-                else
-                	this._displayCategories();
-                this.backButton.actor.hide();
-                if(this.vertSep!=null)
-                    this.vertSep.queue_repaint(); 
-            }
-        }
-
         // Clear the applications menu box
         _clearApplicationsBox() {
             let actors = this.applicationsBox.get_children();
@@ -997,4 +921,61 @@ var ApplicationsButton = GObject.registerClass(
             
             return applist;
         }
+        //Create a horizontal separator
+        _createHorizontalSeparator(rightSide){
+            let hSep = new St.DrawingArea({
+                 x_expand:true,
+                 y_expand:false
+             });
+             if(rightSide)
+                 hSep.set_height(15); //increase height if on right side
+             else 
+                 hSep.set_height(10);
+             hSep.connect('repaint', ()=> {
+                 let cr = hSep.get_context();
+                 let [width, height] = hSep.get_surface_size();                 
+                 let b, stippleColor;                                                            
+                 [b,stippleColor] = Clutter.Color.from_string(this._settings.get_string('separator-color'));           
+                 if(rightSide){   
+                     cr.moveTo(width / 4, height-7.5);
+                     cr.lineTo(3 * width / 4, height-7.5);
+                 }   
+                 else{   
+                     cr.moveTo(25, height-4.5);
+                     cr.lineTo(width-25, height-4.5);
+                 }
+                 //adjust endpoints by 0.5 
+                 //see https://www.cairographics.org/FAQ/#sharp_lines
+                 Clutter.cairo_set_source_color(cr, stippleColor);
+                 cr.setLineWidth(1);
+                 cr.stroke();
+             });
+             hSep.queue_repaint();
+             return hSep;
+         }
+         // Create a vertical separator
+         _createVertSeparator(){      
+             let vertSep = new St.DrawingArea({
+                 x_expand:true,
+                 y_expand:true,
+                 style_class: 'vert-sep'
+             });
+             vertSep.connect('repaint', ()=> {
+                 if(this._settings.get_boolean('vert-separator'))  {
+                     let cr = vertSep.get_context();
+                     let [width, height] = vertSep.get_surface_size();
+                     let b, stippleColor;   
+                     [b,stippleColor] = Clutter.Color.from_string(this._settings.get_string('separator-color'));   
+                     let stippleWidth = 1;
+                     let x = Math.floor(width / 2) + 0.5;
+                     cr.moveTo(x,  0.5);
+                     cr.lineTo(x, height - 0.5);
+                     Clutter.cairo_set_source_color(cr, stippleColor);
+                     cr.setLineWidth(stippleWidth);
+                     cr.stroke();
+                 }
+             }); 
+             vertSep.queue_repaint();
+             return vertSep;
+         }
     });
