@@ -51,9 +51,6 @@ const ApplicationsMenu = class extends PopupMenu.PopupMenu {
     // Handle closing the menu
     close(animate) {
         if (this._button.applicationsBox) {
-            this._button._loadFavorites();
-            this._button.backButton.actor.hide();
-            this._button.viewProgramsButton.actor.show();
             let searchBox = this._button.searchBox;
             searchBox.clear();
         }

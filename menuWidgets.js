@@ -216,9 +216,9 @@ var AppRightClickMenu = class extends PopupMenu.PopupMenu {
                     let item = new PopupMenu.PopupMenuItem(_("Pin to Arc Menu"));   
                     item.connect('activate', ()=>{
                         let pinnedApps = this._settings.get_strv('pinned-app-list');
-                        global.log(this.appInfo.get_display_name());
-                        global.log(this.appInfo.get_icon().to_string());
-                        global.log(this._app.get_id());
+                        //global.log(this.appInfo.get_display_name());
+                        //global.log(this.appInfo.get_icon().to_string());
+                        //global.log(this._app.get_id());
                         pinnedApps.push(this.appInfo.get_display_name());
                         pinnedApps.push(this.appInfo.get_icon().to_string());
                         pinnedApps.push(this._app.get_id());
@@ -593,7 +593,7 @@ var BackMenuItem = class extends BaseMenuItem {
         	if(this._button._settings.get_boolean('enable-pinned-apps')){
          		this._button.currentMenu = Constants.CURRENT_MENU.FAVORITES;
             		this._button.resetSearch();
-            		this._button._loadFavorites();
+            		this._button._displayFavorites();
         	}
         	else {
         		this._button.currentMenu = Constants.CURRENT_MENU.CATEGORIES;
@@ -606,7 +606,7 @@ var BackMenuItem = class extends BaseMenuItem {
         { 
  	    if(this._button._settings.get_boolean('enable-pinned-apps')){
             	this._button.currentMenu = Constants.CURRENT_MENU.FAVORITES;
-            	this._button._loadFavorites();
+            	this._button._displayFavorites();
             }
             
         }

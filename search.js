@@ -92,7 +92,7 @@ var SearchResult = class {
         }
     }
     activate() {
-        global.log('activate');
+        //global.log('activate');
         this.emit('activate', this.metaInfo.id);
     }
 };

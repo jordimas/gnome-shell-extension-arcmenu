@@ -70,7 +70,6 @@ var MenuSettingsController = class {
 
     // Bind the callbacks for handling the settings changes to the event signals
     bindSettingsChanges() {
-        //settings.connect('changed::visible-menus', function() { appsMenuButton.updateMenu(); });
         this.settingsChangeIds = [
             this._settings.connect('changed::disable-activities-hotcorner', this._updateHotCornerManager.bind(this)),
             this._settings.connect('changed::menu-hotkey', this._updateHotKeyBinder.bind(this)),
@@ -102,9 +101,9 @@ var MenuSettingsController = class {
             this._settings.connect('changed::show-bookmarks', this._redisplayRightSide.bind(this)),
             this._settings.connect('changed::show-suspend-button', this._redisplayRightSide.bind(this)),
             this._settings.connect('changed::menu-height', this._updateMenuHeight.bind(this)),
-            this._settings.connect('changed::pinned-app-list',this._redisplayMenu.bind(this)),
             this._settings.connect('changed::reload-theme',this._reloadExtension.bind(this)),
-            this._settings.connect('changed::enable-pinned-apps',this._redisplayMenu.bind(this)),
+            this._settings.connect('changed::pinned-app-list',this._updateFavorites.bind(this)),
+            this._settings.connect('changed::enable-pinned-apps',this._updateMenuDefaultView.bind(this)),
         ];
     }
     _reloadExtension(){
@@ -112,7 +111,6 @@ var MenuSettingsController = class {
             Main.loadTheme();
             this._settings.set_boolean('reload-theme',false);
         }
-
     }
     _enableCustomArcMenu() {
         this._menuButton.updateStyle();
@@ -120,11 +118,16 @@ var MenuSettingsController = class {
     _updateMenuHeight(){
         this._menuButton.updateHeight();
     }
-    _redisplayMenu(){
-        this._menuButton.reloadFlag =true;
+    _updateFavorites(){
+        this._menuButton._loadFavorites();
+    }
+    _updateMenuDefaultView(){
+        if(this._settings.get_boolean('enable-pinned-apps'))
+            this._menuButton._displayFavorites();
+        else
+            this._menuButton._displayCategories();
     }
     _redisplayRightSide(){
-
         this._menuButton._redisplayRightSide();
     }
     _updateHotCornerManager() {

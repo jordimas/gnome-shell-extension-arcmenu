@@ -67,13 +67,6 @@ var SECTIONS = [
     'bookmarks',
 ];
 
-
-// Menu Layout Enum
-var visibleMenus = {
-    ALL: 0,
-    APPS_ONLY: 1,
-    SYSTEM_ONLY: 2
-};
 var CURRENT_MENU = {
     FAVORITES: 0,
     CATEGORIES: 1,
