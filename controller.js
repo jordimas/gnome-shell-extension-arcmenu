@@ -111,7 +111,7 @@ var MenuSettingsController = class {
     toggleMenus(){
         if(this._settings.get_boolean('multi-monitor')){
             let screen = Gdk.Screen.get_default();
-            global.log( global.get_pointer());
+            //global.log( global.get_pointer());
             let pointer = global.get_pointer();
             let currentMonitor = screen.get_monitor_at_point(pointer[0],pointer[1]);
             for(let i = 0;i<screen.get_n_monitors();i++){
