@@ -142,7 +142,7 @@ function _enableButtons() {
         // Create a Menu Controller that is responsible for controlling
         // and managing the menu as well as the menu button.
         let isMainPanel = panel == Main.panel;
-        let settingsController = new Controller.MenuSettingsController(settings, settingsControllers, panel);
+        let settingsController = new Controller.MenuSettingsController(settings, settingsControllers, panel, isMainPanel);
         
         if (!isMainPanel) {
             panel._amDestroyId = panel.connect('destroy', () => extensionChangedId ? _disableButton(settingsController, 1) : null);
