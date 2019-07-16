@@ -2054,9 +2054,9 @@ function saveCSS(settings){
     let tooltipForegroundColor= customArcMenu ? "\n color:"+  menuForegroundColor+";\n" : "";
     let tooltipBackgroundColor= customArcMenu ? "\n background-color:"+lighten_rgb( menuColor,0.05)+";\n" : "";
     let tooltipStyle = customArcMenu ?   
-        ("#tooltip-menu-item{border-color:"+  lighten_rgb(separatorColor,0.05)+ ";\n border: 1px;\nfont-size:9pt;\n padding: 2px 5px;"
-        + tooltipForegroundColor + tooltipBackgroundColor+"\nmax-width:300px;\nheight:15px;\n}") 
-        : ("#tooltip-menu-item{\nfont-size:9pt;\n padding: 2px 5px;\nmax-width:300px;\nheight:15px;\n}")
+        ("#tooltip-menu-item{border-color:"+  lighten_rgb(separatorColor,0.05)+ ";\n border: 1px;\nfont-size:"+fontSize+"pt;\n padding: 2px 5px;"
+        + tooltipForegroundColor + tooltipBackgroundColor+"\nmax-width:325px;\n}") 
+        : ("#tooltip-menu-item{\n padding: 2px 5px;\nmax-width:325px;\n}")
 
     let file = Gio.File.new_for_path(Me.path+"/stylesheet.css");
     let css ="#arc-search{width: "+  menuWidth+"px;} \n.arc-menu-status-text{\ncolor:"+  menuForegroundColor+";\nfont-size:" + fontSize+"pt;\n}\n "+                                                      

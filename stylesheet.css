@@ -64,16 +64,9 @@ color:rgba(211, 218, 227, 1);
 color:rgba(255,255,255,1);
  background-color:rgba(238, 238, 236, 0.1);
 }
-#tooltip-menu-item{border-color:rgba(76,75,77,1);
- border: 1px;
-font-size:9pt;
+#tooltip-menu-item{
  padding: 2px 5px;
- color:rgba(211, 218, 227, 1);
-
- background-color:rgba(41,41,41,0.98);
-
-max-width:300px;
-height:15px;
+max-width:325px;
 }.search-box-padding { 
 padding-top: 0.75em;
 padding-bottom: 0.25em;
