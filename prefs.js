@@ -1986,7 +1986,7 @@ function buildPrefsWidget() {
     widget.show_all();
     return widget;
 }
-function lighten_rgb(colorString, percent) // implemented from https://stackoverflow.com/a/141943
+function lighten_rgb(colorString, percent, modifyAlpha) // implemented from https://stackoverflow.com/a/141943
 {
 	//creates a nice effect when items are selected
 	if(colorString.includes('rgba'))
@@ -1995,20 +1995,26 @@ function lighten_rgb(colorString, percent) // implemented from https://stackover
 		colorString = colorString.replace('rgb(','');
 	colorString = colorString.replace(')','');
 	//global.log(colorString);
-	let rgbaColor = colorString.split(",");
-	let r = parseFloat(rgbaColor[0]) + 255 * percent;
-	let g = parseFloat(rgbaColor[1]) + 255 * percent;
-	let b = parseFloat(rgbaColor[2]) + 255 * percent;
+    let rgbaColor = colorString.split(",");
+
+    let r = parseFloat(rgbaColor[0]) + 255 * percent;
+    let g = parseFloat(rgbaColor[1]) + 255 * percent;
+    let b = parseFloat(rgbaColor[2]) + 255 * percent;
 	let a;
 	if(rgbaColor[3] != undefined)
 		a = parseFloat(rgbaColor[3]); 
 	else
-		a =1;
+        a =1;
+    if(modifyAlpha)
+        a=0.4;
 	let m = Math.max(r,g,b);
 	let threshold = 255.9999;
 	r = Math.round(r);
 	g = Math.round(g);
-	b = Math.round(b);
+    b = Math.round(b);
+    if(r<0) r=0;
+    if(g<0) g=0;
+    if(b<0) b=0;
 	if(m<=threshold){
 		return "rgba("+r+","+g+","+b+","+a+")";
 	}
@@ -2044,7 +2050,13 @@ function saveCSS(settings){
     let menuWidth = this._settings.get_int('menu-width');
     let avatarStyle =  this._settings.get_enum('avatar-style');
     let avatarRadius = avatarStyle == 0 ? 999 : 0;
-    let tooltipFontSize = customArcMenu ? ("font-size:" + fontSize+"pt;") : " ";
+
+    let tooltipForegroundColor= customArcMenu ? "\n color:"+  menuForegroundColor+";\n" : "";
+    let tooltipBackgroundColor= customArcMenu ? "\n background-color:"+lighten_rgb( menuColor,0.05)+";\n" : "";
+    let tooltipStyle = customArcMenu ?   
+        ("#tooltip-menu-item{border-color:"+  lighten_rgb(separatorColor,0.05)+ ";\n border: 1px;\nfont-size:9pt;\n padding: 2px 5px;"
+        + tooltipForegroundColor + tooltipBackgroundColor+"\nmax-width:300px;\nheight:15px;\n}") 
+        : ("#tooltip-menu-item{\nfont-size:9pt;\n padding: 2px 5px;\nmax-width:300px;\nheight:15px;\n}")
 
     let file = Gio.File.new_for_path(Me.path+"/stylesheet.css");
     let css ="#arc-search{width: "+  menuWidth+"px;} \n.arc-menu-status-text{\ncolor:"+  menuForegroundColor+";\nfont-size:" + fontSize+"pt;\n}\n "+                                                      
@@ -2056,16 +2068,16 @@ function saveCSS(settings){
         +"#arc-search-entry{\nmax-width: 17.667em;\nfont-size:" + fontSize+"pt;\n border-color:"+  separatorColor+";\n"
         +" color:"+  menuForegroundColor+";\n background-color:" +  menuColor + ";\n}\n"
         +"#arc-search-entry:focus { \nborder-color:"+ lighten_rgb( separatorColor,0.25)+";\n}\n"
+       
         +".arc-menu-action{\ncolor:"+  menuForegroundColor+";\n}\n"
         +".arc-menu-action:hover, .arc-menu-action:focus {\ncolor:"+ lighten_rgb( menuForegroundColor,0.15)+";\n background-color:"+  highlightColor+";\n}\n"
-        +".tooltip-session-button{\n border-radius: 7px;\n padding: 5px 8px;\ncolor: #eeeeec;\nbackground-color: rgba(46, 52, 54, 0.7);"
-        +"\ntext-align: center;" + tooltipFontSize +"\n}"
-        +".tooltip-menu-item{border-color:rgb(0,0,0);\n border: 1px;\nfont-size:9pt;\n border-radius: 0px;\n padding: 2px 5px;"
-         +"\n color :rgb(63,62,64);\n background-color:rgb(242, 242, 242);\nbox-shadow: 1px 1px 4px rgb(53, 52, 52);\nmax-width:300px;\nheight:15px;\n}"
-        +".search-box-padding { \npadding-top: 0.75em;\n"
-        +"padding-bottom: 0.25em;\npadding-left: 1em;\n padding-right: 0.25em;\n margin-right: .5em;\n}\n"
+
+        +tooltipStyle
+
+        +".search-box-padding { \npadding-top: 0.75em;\n"+"padding-bottom: 0.25em;\npadding-left: 1em;\n padding-right: 0.25em;\n margin-right: .5em;\n}\n"
+        
         +".arc-menu{\nmin-width: 15em;\ncolor: #D3DAE3;\nborder-image: none;\nbox-shadow: none;\nfont-size:" + fontSize+"pt;\n}\n"
-        +".arc-menu .popup-sub-menu {\npadding-bottom: 1px;\nbackground-color: #3a393b;\nbox-shadow: inset 0 -1px 0px #323233;\n }\n"
+        +".arc-menu .popup-sub-menu {\npadding-bottom: 1px;\nbackground-color: #3a393b;\n }\n"
         +".arc-menu .popup-menu-content {padding: 1em 0em;}\n .arc-menu .popup-menu-item {\nspacing: 12px; \nborder: 0;\ncolor:"+  menuForegroundColor+";\n }\n" 
         +".arc-menu .popup-menu-item:ltr {padding: .4em 1.75em .4em 0em; }\n.arc-menu .popup-menu-item:rtl {padding: .4em 0em .4em 1.75em;}\n"
         +".arc-menu .popup-menu-item:checked {\nbackground-color: #3a393b;\n box-shadow: inset 0 1px 0px #323233;\nfont-weight: bold;\n }\n"
@@ -2078,26 +2090,31 @@ function saveCSS(settings){
         +"-arrow-base:"+  menuMargin+"px;\n"
         +"-arrow-rise:"+  menuArrowSize+"px;\n"
         +"-arrow-box-shadow: 0 1px 3px black;\n }"
+
         +"\n.arc-menu-sep {\nheight: 1px;\nmargin: 5px 20px;\nbackground-color: transparent;"
         +"\nborder-color:"+  separatorColor+";\n border-bottom-width: 1px;\nborder-bottom-style: solid;\n }"
+
         +".menu-user-avatar {\n background-size: contain; \n border: none;\n border-radius: "+avatarRadius+"px;\n }"
-        +"\n.app-right-click{\nwidth: 225px;\nmax-width:200px;\nfont-size:9pt;\nmargin:2px;\npadding:2px;"
-        +"\nspacing:2px;\nbox-shadow: 1px 1px 4px rgb(53, 52, 52);\n}"
-        +"\n.app-right-click .popup-sub-menu{\npadding-bottom: 1px;\nbackground-color: #3a393b;\nbox-shadow: inset 0 -1px 0px #323233;\n}"
-        +"\n.app-right-click .popup-menu-content {padding: 2px;box-shadow: inset 0 -1px 0px #323233;}"
-        +".app-right-click .popup-menu-item {\nspacing: 12px;\nborder: 0;\ncolor:rgb(63,62,64);\n}"
-        +"\n.app-right-click .popup-menu-item:ltr {padding: .4em 1.75em .4em 0em; }\n"
-        +"\n.app-right-click .popup-menu-item:rtl {padding: .4em 0em .4em 1.75em;}\n"
-        +"\n.app-right-click .popup-menu-item:checked {\nbackground-color: #3a393b;\nbox-shadow: inset 0 1px 0px #323233;\nfont-weight: bold;\n}"
-        +"\n.app-right-click .popup-menu-item.selected, .app-right-click .popup-menu-item:active{\n"
-        +"background-color:rgba(145, 201, 247, 0.6);\ncolor:rgb(63,62,64);\n}"
-        +"\n .app-right-click .popup-menu-item:disabled {color: rgba(238, 238, 236, 0.5); }"
-        +"\n.app-right-click .test StLabel{font-weight: bold;}"
-        +"\n .app-right-click-boxpointer{\n-arrow-border-radius:0px;\n-arrow-background-color:rgb(242, 242, 242);"
-        +"\n -arrow-border-color:rgb(63,62,64);\n-arrow-border-width:1px;\n-arrow-base:0px;\n-arrow-rise:0px;"
-        +"\n-arrow-box-shadow: 1px 1px 4px rgb(53, 52, 52);\n}"
-        +"\n.app-right-click-sep {\nheight: 1px;\nmargin: 2px 25px;\nbackground-color: transparent;"
-        +"\n border-color: rgba(63, 63, 64, 0.2);\nborder-bottom-width: 1px;\nborder-bottom-style: solid; \n}";
+
+        +".arc-right-click{\nmin-width: 15em;\ncolor: #D3DAE3;\nborder-image: none;\nfont-size:" + fontSize+"pt;\nmargin:2px;\npadding:2px;"
+        +"\nspacing:2px;\nbox-shadow: 1px 1px 4px rgb(53, 52, 52);\n}\n"
+        +".arc-right-click .popup-sub-menu {\npadding-bottom: 1px;\nbackground-color: #3a393b;\nbox-shadow: inset 0 -1px 0px #323233;\n }\n"
+        +".arc-right-click .popup-menu-content {padding: 2px;}\n .arc-right-click .popup-menu-item {\nspacing: 12px; \nborder: 0;\ncolor:"+  menuForegroundColor+";\n }\n" 
+        +".arc-right-click .popup-menu-item:ltr {padding: .4em 1.75em .4em 0em; }\n.arc-right-click .popup-menu-item:rtl {padding: .4em 0em .4em 1.75em;}\n"
+        +".arc-right-click .popup-menu-item:checked {\nbackground-color: #3a393b;\n box-shadow: inset 0 1px 0px #323233;\nfont-weight: bold;\n }\n"
+        +".arc-right-click .popup-menu-item.selected, .arc-right-click .popup-menu-item:active{\nbackground-color:"+  highlightColor+"; \ncolor: "+ lighten_rgb( menuForegroundColor,0.15)+";\n }\n" 
+        +".arc-right-click .popup-menu-item:disabled {color: rgba(238, 238, 236, 0.5); }\n"
+        +".arc-right-click .popup-menu-item:insensitive {color:" +  lighten_rgb( menuForegroundColor,-0.30) + "; }\n"
+        +".arc-right-click-boxpointer{ \n-arrow-border-radius:"+  cornerRadius+"px;\n"
+        +"-arrow-background-color:" +  lighten_rgb( menuColor,0.05) + ";\n"
+        +"-arrow-border-color:"+  lighten_rgb(separatorColor,0.05)+ ";\n"
+        +"-arrow-border-width:"+  "1px;\n"
+        +"-arrow-base:"+  menuMargin+"px;\n"
+        +"-arrow-rise:"+  menuArrowSize+"px;\n"
+        +"-arrow-box-shadow: 0 1px 3px black;\n }"
+        
+        +"\n.app-right-click-sep {\nheight: 1px;\nmargin: 2px 35px;\nbackground-color: transparent;"
+        +"\nborder-color:"+  lighten_rgb(separatorColor,0.05) +";\nborder-bottom-width: 1px;\nborder-bottom-style: solid; \n}";
     file.replace_contents(css,null,false,Gio.FileCreateFlags.REPLACE_DESTINATION,null);
 }
 

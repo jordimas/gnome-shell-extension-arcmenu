@@ -2,7 +2,8 @@
  * Arc Menu: The new applications menu for Gnome 3.
  *
  * Copyright (C) 2017 Alexander Rüedlinger
- * Copyright (C) 2017-2018 LinxGem33
+ * Copyright (C) 2017-2019 LinxGem33
+ * Copyright (C) 2019 Andrew Zaech
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -72,8 +73,9 @@ var AppRightClickMenu = class extends PopupMenu.PopupMenu {
         this._settings = this._button._settings;
         this._app = app;
         this.isPinnedApp = isPinnedApp;
-        this.actor.style_class = 'app-right-click-boxpointer';
-        this.actor.add_style_class_name('app-right-click');
+        //this.actor.style_class = 'app-right-click-boxpointer';
+        //this.actor.add_style_class_name('app-right-click');
+        this.actor.width=250;
         this.redisplay();
         this.discreteGpuAvailable = false;
         Gio.DBus.system.watch_name(SWITCHEROO_BUS_NAME,
@@ -103,6 +105,18 @@ var AppRightClickMenu = class extends PopupMenu.PopupMenu {
     }
     redisplay(){
         this.removeAll();
+        let addStyle = this._settings.get_boolean('enable-custom-arc-menu');
+        if(addStyle){
+            //this.actor.style_class = 'app-right-click-boxpointer';
+            //this.actor.add_style_class_name('app-right-click');
+            this.actor.style_class = 'arc-right-click-boxpointer';
+           this.actor.add_style_class_name('arc-right-click');
+           
+        }
+        else{
+            this.actor.style_class = 'popup-menu-boxpointer';
+            this.actor.add_style_class_name('popup-menu');   
+        }
         if(this._app instanceof Shell.App){
             this.appInfo = this._app.get_app_info();
             let actions = this.appInfo.list_actions();
@@ -113,7 +127,7 @@ var AppRightClickMenu = class extends PopupMenu.PopupMenu {
 
             if (windows.length > 0){    
                 let item = new PopupMenu.PopupMenuItem(_("Current Windows:"),{reactive:false,can_focus:false});
-                item.actor.add_style_class_name('test');  
+                item.actor.add_style_class_name('inactive');  
                 this.addMenuItem(item);
             }
 
@@ -410,10 +424,11 @@ var Tooltip = class {
         this.isMenuItem = isMenuItem;
         this._settings = settings;
         this.actor = new St.Label({
-            style_class: isMenuItem ? 'tooltip-menu-item' : 'tooltip-session-button',
+            style_class: 'dash-label',
             text: text,
             opacity: 0
         });
+        this.actor.set_name('tooltip-menu-item');
         global.stage.add_actor(this.actor);
         this.actor.show();
         this.actor.connect('destroy', this._onDestroy.bind(this));
