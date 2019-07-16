@@ -68,7 +68,7 @@ function setIconAsync(icon, gioFile, fallback_icon_name) {
 }
 var AppRightClickMenu = class extends PopupMenu.PopupMenu {
     constructor(actor,app,button, isPinnedApp){
-        super(actor,.5,St.Side.TOP);
+        super(actor,.45,St.Side.TOP);
         this._button = button;
         this._settings = this._button._settings;
         this._app = app;
