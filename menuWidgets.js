@@ -444,7 +444,7 @@ var Tooltip = class {
         if(this._useTooltips){
             let [stageX, stageY] = this.sourceActor.get_transformed_position();
             let [width, height] = this.sourceActor.get_transformed_size();
-            let y = this.isMenuItem ? stageY + height: stageY - height / 1.24;
+            let y = this.isMenuItem ? stageY + height: stageY -Math.round(height / 1.24);
             
             let x = this.isMenuItem ? stageX + Math.round(width / 2)  : stageX - Math.round((this.actor.get_width() - width) / 2);
 
