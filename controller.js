@@ -40,21 +40,21 @@ const Gdk = imports.gi.Gdk;
  * the settings changes of the Arc Menu.
  */
 var MenuSettingsController = class {
-    constructor(settings, panel, enableHotKey) {
+    constructor(settings, settingsControllers, panel) {
         this._settings = settings;
         this.panel = panel;
-        this.enableHotKey= enableHotKey;
+        this.currentMonitorIndex;
         this._activitiesButton = this.panel.statusArea.activities;
-
+        this._settingsControllers = settingsControllers
         // Create the button, a Hot Corner Manager, a Menu Keybinder as well as a Keybinding Manager
         this._menuButton = new Menu.ApplicationsButton(settings, panel);
         this._hotCornerManager = new Helper.HotCornerManager(this._settings);
-        if(this.enableHotKey){
-            this._menuHotKeybinder = new Helper.MenuHotKeybinder(() => {
-                this._menuButton.toggleMenu();        
-            });
-            this._keybindingManager = new Helper.KeybindingManager(this._settings); 
-        }
+  
+        this._menuHotKeybinder = new Helper.MenuHotKeybinder(() => {
+            this.toggleMenus();   
+        });
+        this._keybindingManager = new Helper.KeybindingManager(this._settings); 
+        
         this._applySettings();
     }
 
@@ -106,6 +106,30 @@ var MenuSettingsController = class {
             this._settings.connect('changed::enable-pinned-apps',this._updateMenuDefaultView.bind(this)),
         ];
     }
+    toggleMenus(){
+        let screen = Gdk.Screen.get_default();
+        //global.log( global.get_pointer());
+        let pointer = global.get_pointer();
+        let currentMonitor = screen.get_monitor_at_point(pointer[0],pointer[1]);
+        for(let i = 0;i<screen.get_n_monitors();i++){
+            if(i==currentMonitor)
+                this.currentMonitorIndex=i;
+        }
+        //close current menus that are open on monitors other than current monitor
+        for (let i = 0; i < this._settingsControllers.length; i++) {
+            if(i!=this.currentMonitorIndex){
+            if(this._settingsControllers[i]._menuButton.leftClickMenu.isOpen)
+                this._settingsControllers[i]._menuButton.toggleMenu();
+            if(this._settingsControllers[i]._menuButton.rightClickMenu.isOpen)
+                this._settingsControllers[i]._menuButton.toggleRightClickMenu();
+            }
+        }  
+        //toggle menu on current monitor
+        for (let i = 0; i < this._settingsControllers.length; i++) {
+            if(i==this.currentMonitorIndex)
+                this._settingsControllers[i]._menuButton.toggleMenu();
+        }   
+    }
     _reloadExtension(){
         if(this._settings.get_boolean('reload-theme') == true){
             Main.loadTheme();
@@ -141,23 +165,20 @@ var MenuSettingsController = class {
     }
 
     _updateHotKeyBinder() {
-        if(this.enableHotKey){
-            this._keybindingManager.unbind('menu-keybinding-text');
-            this._menuHotKeybinder.disableHotKey();
-            let hotKeyPos = this._settings.get_enum('menu-hotkey');
+        this._keybindingManager.unbind('menu-keybinding-text');
+        this._menuHotKeybinder.disableHotKey();
+        let hotKeyPos = this._settings.get_enum('menu-hotkey');
 
-            if (hotKeyPos==3) {
-                this._keybindingManager.bind('menu-keybinding-text', 'menu-keybinding',
-                    () => {
-                        this._menuButton.toggleMenu();
-                    });
-            }
-            else if (hotKeyPos !== Constants.HOT_KEY.Undefined ) {
-                let hotKey = Constants.HOT_KEY[hotKeyPos];
-                this._menuHotKeybinder.enableHotKey(hotKey);
-            } 
-        
+        if (hotKeyPos==3) {
+            this._keybindingManager.bind('menu-keybinding-text', 'menu-keybinding',
+                () => {
+                    this.toggleMenus();    
+                });
         }
+        else if (hotKeyPos !== Constants.HOT_KEY.Undefined ) {
+            let hotKey = Constants.HOT_KEY[hotKeyPos];
+            this._menuHotKeybinder.enableHotKey(hotKey);
+        }         
     }
 
     // Place the menu button to main panel as specified in the settings
@@ -337,11 +358,8 @@ var MenuSettingsController = class {
             this._disableButton();
         }
         this._hotCornerManager.destroy();
-        if(this.enableHotKey){
-            this._menuHotKeybinder.destroy();
-            this._keybindingManager.destroy();
-        }
-
+        this._menuHotKeybinder.destroy();
+        this._keybindingManager.destroy();
         this._settings = null;
         this._activitiesButton = null;
         this._menuButton = null;
