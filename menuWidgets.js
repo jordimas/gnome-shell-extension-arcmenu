@@ -110,8 +110,8 @@ var AppRightClickMenu = class extends PopupMenu.PopupMenu {
             //this.actor.style_class = 'app-right-click-boxpointer';
             //this.actor.add_style_class_name('app-right-click');
             this.actor.style_class = 'arc-right-click-boxpointer';
-           this.actor.add_style_class_name('arc-right-click');
-           this.actor.set_name('rightClickMenu');
+            this.actor.add_style_class_name('arc-right-click');
+            this.actor.set_name('rightClickMenu');
         }
         else{
             this.actor.style_class = 'popup-menu-boxpointer';
@@ -782,7 +782,7 @@ var FavoritesMenuItem = class extends BaseMenuItem {
         this.actor.add_child(this._icon);
  
         let label = new St.Label({
-            text: this._name, y_expand: true, x_expand: true,
+            text: _(this._name), y_expand: true, x_expand: true,
             y_align: Clutter.ActorAlign.CENTER
         });
         this.actor.add_child(label);
