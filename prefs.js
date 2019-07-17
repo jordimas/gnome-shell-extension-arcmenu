@@ -200,7 +200,7 @@ var PinnedAppsPage = GObject.registerClass(
                 });
 
 
-                frameLabel.label = frameRow._name;
+                frameLabel.label = _(frameRow._name);
                 frameRow.add(frameLabel);
                 let buttonBox = new Gtk.Grid({
                     margin_top:0,
