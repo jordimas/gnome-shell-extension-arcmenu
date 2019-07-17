@@ -1223,7 +1223,7 @@ var PlaceMenuItem = class extends BaseMenuItem {
         });
         this.actor.add_child(this._icon);
         this._label = new St.Label({
-            text: info.name,
+            text: _(info.name),
             y_expand: true,
             y_align: Clutter.ActorAlign.CENTER
         });

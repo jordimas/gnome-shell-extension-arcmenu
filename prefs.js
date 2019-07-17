@@ -1619,6 +1619,8 @@ var ConfigureSettingsPage = GObject.registerClass(
           shortcutsScrollWindow.set_max_content_height(150);
           shortcutsScrollWindow.set_min_content_height(150);
           shortcutsScrollWindow.add(shortcutsFrame);
+          var SHORTCUT_TRANSLATIONS = [_("Home"), _("Documents"),_("Downloads"), _("Music"),_("Pictures"),_("Videos"),_("Computer"), 
+          _("Network")];
           for(let i = 0;i<8;i++){
           	let shortcut; 
               if(i<6)
@@ -1629,7 +1631,7 @@ var ConfigureSettingsPage = GObject.registerClass(
               	 shortcut = 'Network';            
               let shortcutsRow = new PW.FrameBoxRow();
               let shortcutsLabel = new Gtk.Label({
-                  label: _(shortcut),
+                  label: SHORTCUT_TRANSLATIONS[i],
                   use_markup: true,
                   xalign: 0,
                   hexpand: true
@@ -1713,11 +1715,12 @@ var ConfigureSettingsPage = GObject.registerClass(
           softwareShortcutsScrollWindow.set_max_content_height(115);
           softwareShortcutsScrollWindow.set_min_content_height(115);
           softwareShortcutsScrollWindow.add(softwareShortcutsFrame);
-          for(let i = 6; i<11;i++){
-              let shortcut = Constants.RIGHT_SIDE_SHORTCUTS[i];
+          let SOFTWARE_TRANSLATIONS = [_("Software"), _("Settings"), _("Tweaks"), _("Terminal"), _("Activities Overview")];
+          for(let i = 0; i<Constants.SOFTWARE_SHORTCUTS.length;i++){
+              let shortcut = Constants.SOFTWARE_SHORTCUTS[i];
               let softwareShortcutsRow = new PW.FrameBoxRow();
               let softwareShortcutsLabel = new Gtk.Label({
-                  label: _(shortcut),
+                  label: SOFTWARE_TRANSLATIONS[i],
                   use_markup: true,
                   xalign: 0,
                   hexpand: true
