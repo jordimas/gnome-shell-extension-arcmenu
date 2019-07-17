@@ -75,7 +75,7 @@ var AppRightClickMenu = class extends PopupMenu.PopupMenu {
         this.isPinnedApp = isPinnedApp;
         //this.actor.style_class = 'app-right-click-boxpointer';
         //this.actor.add_style_class_name('app-right-click');
-        this.actor.width=250;
+        //this.actor.width=250;
         this.redisplay();
         this.discreteGpuAvailable = false;
         Gio.DBus.system.watch_name(SWITCHEROO_BUS_NAME,
@@ -111,7 +111,7 @@ var AppRightClickMenu = class extends PopupMenu.PopupMenu {
             //this.actor.add_style_class_name('app-right-click');
             this.actor.style_class = 'arc-right-click-boxpointer';
            this.actor.add_style_class_name('arc-right-click');
-           
+           this.actor.set_name('rightClickMenu');
         }
         else{
             this.actor.style_class = 'popup-menu-boxpointer';
