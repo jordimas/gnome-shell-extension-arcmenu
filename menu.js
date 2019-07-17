@@ -62,7 +62,6 @@ var ApplicationsButton = GObject.registerClass(
     class ApplicationsButton extends TwoMenuButton.TwoMenuButton {
         // Initialize the menu
         _init(settings, panel) {
-            //tes
     	    super._init(settings);
             this._settings = settings;
             this._session = new GnomeSession.SessionManager();
