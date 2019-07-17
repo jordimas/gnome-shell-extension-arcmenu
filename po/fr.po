@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Arc Menu\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-07-17 19:15+0200\n"
-"PO-Revision-Date: 2019-07-17 19:14+0200\n"
+"POT-Creation-Date: 2019-07-17 10:42-0400\n"
+"PO-Revision-Date: 2019-07-17 19:47+0200\n"
 "Last-Translator: Nicolas Auffray <nicolasauffray@aol.fr>\n"
 "Language-Team: \n"
 "Language: fr\n"
@@ -17,6 +17,141 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Poedit 2.2.1\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#: controller.js:253 menuWidgets.js:1431
+msgid "Applications"
+msgstr "Applications"
+
+#: menu.js:334 placeDisplay.js:447 prefs.js:1622
+msgid "Home"
+msgstr "Accueil"
+
+#: menu.js:341 prefs.js:1622
+msgid "Documents"
+msgstr "Documents"
+
+#: menu.js:341 prefs.js:1622
+msgid "Downloads"
+msgstr "Téléchargements"
+
+#: menu.js:341 prefs.js:1622
+msgid "Music"
+msgstr "Musique"
+
+#: menu.js:341 prefs.js:1622
+msgid "Pictures"
+msgstr "Images"
+
+#: menu.js:341 prefs.js:1622
+msgid "Videos"
+msgstr "Vidéos"
+
+#: menu.js:541 prefs.js:1623
+msgid "Network"
+msgstr "Réseau"
+
+#: menu.js:596 prefs.js:1718
+msgid "Software"
+msgstr "Logiciel"
+
+#: menu.js:596 prefs.js:1718
+msgid "Settings"
+msgstr "Paramètres"
+
+#: menu.js:596 prefs.js:1718
+msgid "Tweaks"
+msgstr "Ajustements"
+
+#: menu.js:596 prefs.js:1718
+msgid "Terminal"
+msgstr "Terminal"
+
+#: menuWidgets.js:129
+msgid "Current Windows:"
+msgstr "Fenêtres actuelles :"
+
+#: menuWidgets.js:150
+msgid "New Window"
+msgstr "Nouvelle fenêtre"
+
+#: menuWidgets.js:165
+msgid "Launch using Dedicated Graphics Card"
+msgstr "Lancer via la carte graphique dédiée"
+
+#: menuWidgets.js:195
+msgid "Remove from Favorites"
+msgstr "Supprimer des favoris"
+
+#: menuWidgets.js:201
+msgid "Add to Favorites"
+msgstr "Ajouter aux favoris"
+
+#: menuWidgets.js:209 menuWidgets.js:266
+msgid "Unpin from Arc Menu"
+msgstr "Détacher du menu Arc"
+
+#: menuWidgets.js:230
+msgid "Pin to Arc Menu"
+msgstr "Attacher au menu Arc"
+
+#: menuWidgets.js:245
+msgid "Show Details"
+msgstr "Afficher les détails"
+
+#: menuWidgets.js:403 prefs.js:1718
+msgid "Activities Overview"
+msgstr "Aperçu des activités"
+
+#: menuWidgets.js:529
+msgid "Power Off"
+msgstr "Éteindre"
+
+#: menuWidgets.js:542 prefs.js:1792
+msgid "Log Out"
+msgstr "Déconnexion"
+
+#: menuWidgets.js:555 prefs.js:1756
+msgid "Suspend"
+msgstr "Suspendre"
+
+#: menuWidgets.js:573 prefs.js:1774
+msgid "Lock"
+msgstr "Verrouiller"
+
+#: menuWidgets.js:595
+msgid "Back"
+msgstr "Retour"
+
+#: menuWidgets.js:651
+msgid "All Programs"
+msgstr "Tous les programmes"
+
+#: menuWidgets.js:1118
+msgid "Frequent Apps"
+msgstr "Applications fréquentes"
+
+#: menuWidgets.js:1268
+msgid "Type to search…"
+msgstr "Ecrire pour chercher…"
+
+#: placeDisplay.js:138
+#, javascript-format
+msgid "Failed to launch “%s”"
+msgstr "Échec de lancement de “%s”"
+
+#: placeDisplay.js:153
+#, javascript-format
+msgid "Failed to mount volume for “%s”"
+msgstr "Échec au montage du périphérique “%s”"
+
+#: placeDisplay.js:237 placeDisplay.js:260 prefs.js:1622
+msgid "Computer"
+msgstr "Ordinateur"
+
+#: placeDisplay.js:321
+#, javascript-format
+msgid "Ejecting drive “%s” failed:"
+msgstr "Échec à l'éjection du périphérique “%s” :"
 
 #: prefs.js:46 prefs.js:620
 msgid "Pinned Apps"
@@ -290,38 +425,6 @@ msgstr "Configurer"
 msgid "Enable/Disable shortcuts"
 msgstr "Activer/désactiver les raccourcis"
 
-#: prefs.js:1622 menu.js:334
-msgid "Home"
-msgstr "Accueil"
-
-#: prefs.js:1622 menu.js:341
-msgid "Documents"
-msgstr "Documents"
-
-#: prefs.js:1622 menu.js:341
-msgid "Downloads"
-msgstr "Téléchargements"
-
-#: prefs.js:1622 menu.js:341
-msgid "Music"
-msgstr "Musique"
-
-#: prefs.js:1622 menu.js:341
-msgid "Pictures"
-msgstr "Images"
-
-#: prefs.js:1622 menu.js:341
-msgid "Videos"
-msgstr "Vidéos"
-
-#: prefs.js:1622
-msgid "Computer"
-msgstr "Ordinateur"
-
-#: prefs.js:1623 menu.js:541
-msgid "Network"
-msgstr "Réseau\"Échec à l'éjection du périphérique “%s” "
-
 #: prefs.js:1667
 msgid "External Devices"
 msgstr "Périphériques externes"
@@ -329,38 +432,6 @@ msgstr "Périphériques externes"
 #: prefs.js:1690
 msgid "Bookmarks"
 msgstr "Favoris"
-
-#: prefs.js:1718 menu.js:596
-msgid "Software"
-msgstr "Logiciel"
-
-#: prefs.js:1718 menu.js:596
-msgid "Settings"
-msgstr "Paramètres"
-
-#: prefs.js:1718 menu.js:596
-msgid "Tweaks"
-msgstr "Ajustements"
-
-#: prefs.js:1718 menu.js:596
-msgid "Terminal"
-msgstr "Terminal"
-
-#: prefs.js:1718 menuWidgets.js:403
-msgid "Activities Overview"
-msgstr "Aperçu des activités"
-
-#: prefs.js:1756 menuWidgets.js:555
-msgid "Suspend"
-msgstr "Suspendre"
-
-#: prefs.js:1774 menuWidgets.js:573
-msgid "Lock"
-msgstr "Verrouiller"
-
-#: prefs.js:1792 menuWidgets.js:542
-msgid "Log Out"
-msgstr "Déconnexion"
 
 #: prefs.js:1857
 msgid "About"
@@ -378,87 +449,29 @@ msgstr "version : "
 msgid "GitLab Page"
 msgstr "Page GitLab"
 
-#: menuWidgets.js:129
-msgid "Current Windows:"
-msgstr "Fenêtres actuelles :"
+#: search.js:628
+msgid "No results."
+msgstr "Aucun résultats."
 
-#: menuWidgets.js:150
-msgid "New Window"
-msgstr "Nouvelle fenêtre"
+#: search.js:706
+#, javascript-format
+msgid "%d more"
+msgid_plural "%d more"
+msgstr[0] "%d en plus"
+msgstr[1] "%d en plus"
 
-#: menuWidgets.js:165
-msgid "Launch using Dedicated Graphics Card"
-msgstr "Lancer via la carte graphique dédiée"
+#: twoMenuButton.js:77
+msgid "Arc Menu Settings"
+msgstr "Paramètres du menu Arc"
 
-#: menuWidgets.js:195
-msgid "Remove from Favorites"
-msgstr "Supprimer des favoris"
+#: twoMenuButton.js:86
+msgid "Arc Menu on GitLab"
+msgstr "Menu Arc sur GitLab"
 
-#: menuWidgets.js:201
-msgid "Add to Favorites"
-msgstr "Ajouter aux favoris"
+#: twoMenuButton.js:91
+msgid "About Arc Menu"
+msgstr "À propos du menu Arc"
 
-#: menuWidgets.js:209 menuWidgets.js:266
-msgid "Unpin from Arc Menu"
-msgstr "Détacher du menu Arc"
-
-#: menuWidgets.js:230
-msgid "Pin to Arc Menu"
-msgstr "Attacher au menu Arc"
-
-#: menuWidgets.js:245
-msgid "Show Details"
-msgstr "Afficher les détails"
-
-#: menuWidgets.js:529
-msgid "Power Off"
-msgstr "Éteindre"
-
-#: menuWidgets.js:595
-msgid "Back"
-msgstr "Retour"
-
-#: menuWidgets.js:651
-msgid "All Programs"
-msgstr "Tous les programmes"
-
-#: menuWidgets.js:1118
-msgid "Frequent Apps"
-msgstr "Applications fréquentes"
-
-#: menuWidgets.js:1268
-msgid "Type to search…"
-msgstr "Ecrire pour chercher…"
-
-#: menuWidgets.js:1431
-msgid "Applications"
-msgstr "Applications"
-
-#~ msgid "Failed to launch “%s”"
-#~ msgstr "Échec de lancement de “%s”"
-
-#~ msgid "Failed to mount volume for “%s”"
-#~ msgstr "Échec au montage du périphérique “%s”"
-
-#~ msgid "Ejecting drive “%s” failed:"
-#~ msgstr "Échec à l'éjection du périphérique “%s” :"
-
-#~ msgid "No results."
-#~ msgstr "Aucun résultats."
-
-#~ msgid "%d more"
-#~ msgid_plural "%d more"
-#~ msgstr[0] "%d en plus"
-#~ msgstr[1] "%d en plus"
-
-#~ msgid "Arc Menu Settings"
-#~ msgstr "Paramètres du menu Arc"
-
-#~ msgid "Arc Menu on GitLab"
-#~ msgstr "Menu Arc sur GitLab"
-
-#~ msgid "About Arc Menu"
-#~ msgstr "À propos du menu Arc"
-
-#~ msgid "Dash to Panel Settings"
-#~ msgstr "Paramètres Dash to Panel"
+#: twoMenuButton.js:112
+msgid "Dash to Panel Settings"
+msgstr "Paramètres Dash to Panel"
