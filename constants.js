@@ -52,6 +52,7 @@ var SHORTCUTS = [
 
 var RIGHT_SIDE_SHORTCUTS = ["Home", "Documents","Downloads", "Music","Pictures","Videos","Software", 
 "Settings","Tweaks", "Terminal", "Activities-Overview"];
+var SOFTWARE_SHORTCUTS = ["Software", "Settings","Tweaks", "Terminal", "Activities-Overview"];
 
 // User Home directories
 var DEFAULT_DIRECTORIES = [

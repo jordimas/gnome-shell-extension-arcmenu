@@ -338,11 +338,12 @@ var ApplicationsButton = GObject.registerClass(
                 this.shorcutsBox.add_actor(placeMenuItem.actor);
             }    
             let dirs = Constants.DEFAULT_DIRECTORIES.slice();
+            var SHORTCUT_TRANSLATIONS = [_("Documents"),_("Downloads"), _("Music"),_("Pictures"),_("Videos")];
             for (let i = 0; i < dirs.length; i++) {
                 let path = GLib.get_user_special_dir(dirs[i]);
                 if (path == null || path == homePath)
                     continue;
-                let placeInfo = new MW.PlaceInfo(Gio.File.new_for_path(_(path)));
+                let placeInfo = new MW.PlaceInfo(Gio.File.new_for_path(path), _(SHORTCUT_TRANSLATIONS[i]));
                 addToMenu = this.getShouldShowShortcut(Constants.RIGHT_SIDE_SHORTCUTS[i+1]);
                 if(addToMenu){
                     let placeMenuItem = new MW.PlaceMenuItem(this, placeInfo);
@@ -592,12 +593,14 @@ var ApplicationsButton = GObject.registerClass(
 	        }
 
             //Add Software Shortcuts to menu (Software, Settings, Tweaks, Terminal)
+            var SHORTCUT_TRANSLATIONS = [_("Software"),_("Software"), _("Settings"),_("Tweaks"), _("Terminal")];
+            let i = 0;
             Constants.SHORTCUTS.forEach(function (shortcut) {
                 if (GLib.find_program_in_path(shortcut.command)) {
                     let addToMenu = this.getShouldShowShortcut(shortcut.label);
                     if(addToMenu)
                     {
-                        let shortcutMenuItem = new MW.ShortcutMenuItem(this, shortcut.label, shortcut.symbolic, shortcut.command);
+                        let shortcutMenuItem = new MW.ShortcutMenuItem(this, SHORTCUT_TRANSLATIONS[i], shortcut.symbolic, shortcut.command);
                         this.shorcutsBox.add(shortcutMenuItem.actor, {
                             expand: false,
                             x_fill: true,
@@ -606,6 +609,7 @@ var ApplicationsButton = GObject.registerClass(
                         });
                     }
                 }
+                i++;
             }.bind(this));
             
             //Add Activities Overview to menu
