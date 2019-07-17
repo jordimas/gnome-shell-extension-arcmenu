@@ -155,11 +155,11 @@ Additional credits: This extension also leverages the work from [Giovanni Campag
 
 ### Top Project Contributors
 
-#### @[lexruee](https://github.com/lexruee) - **Project Developer** - UI/UX Designer
+#### @[Andrew Zaech](https://gitlab.com/AndrewZaech) - **Project Developer** - Developer
+
+#### @[lexruee](https://github.com/lexruee) - **Project Contributor** - UI/UX Designer
 
 #### @[Thomas Ingvarsson](https://gitlab.com/tingvarsson) - **Project Contributor** - Developer
-
-#### @[Andrew Zaech](https://gitlab.com/AndrewZaech) - **Project Contributor** - Developer
 
 -----
 

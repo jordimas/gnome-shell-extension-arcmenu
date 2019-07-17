@@ -33,22 +33,22 @@
 // Import Libraries
 const Main = imports.ui.main;
 const Dash = imports.ui.dash;
+const ExtensionSystem = imports.ui.extensionSystem;
+const ExtensionUtils = imports.misc.extensionUtils;
 const AppDisplay = imports.ui.appDisplay;
 const Gtk = imports.gi.Gtk;
 const Gdk = imports.gi.Gdk;
 
 const Me = imports.misc.extensionUtils.getCurrentExtension();
-const Menu = Me.imports.menu;
 const MW = Me.imports.menuWidgets;
 const Controller = Me.imports.controller;
 const Convenience = Me.imports.convenience;
 
 // Initialize panel button variables
 let settings;
-let settingsController;
-let appsMenuButton;
-let activitiesButton;
+let settingsControllers;
 let oldGetAppFromSource;
+let extensionChangedId;
 
 // Initialize menu language translations
 function init(metadata) {
@@ -58,29 +58,39 @@ function init(metadata) {
 // Enable the extension
 function enable() {
     settings = Convenience.getSettings(Me.metadata['settings-schema']);
-    appsMenuButton = new Menu.ApplicationsButton(settings);
-
-    // Create a Menu Controller that is responsible for controlling
-    // and managing the menu as well as the menu button.
-    settingsController = new Controller.MenuSettingsController(settings, appsMenuButton);
-    settingsController.enableButton();
-    settingsController.bindSettingsChanges();
+    settings.connect('changed::multi-monitor', () => _onMultiMonitorChange());
+    settingsControllers = [];
 
     oldGetAppFromSource = Dash.getAppFromSource;
     Dash.getAppFromSource = getAppFromSource;
+
+    _enableButtons();
+    
+    // dash to panel might get enabled after Arc-Menu
+    extensionChangedId = ExtensionSystem.connect('extension-state-changed', (data, extension) => {
+        if (extension.uuid === 'dash-to-panel@jderose9.github.com' && extension.state === 1) {
+            _connectDtpSignals();
+            _enableButtons();
+        }
+    });
+
+    // listen to dash to panel if it is compatible and already enabled
+    _connectDtpSignals();
 }
 
 // Disable the extension
 function disable() {
-    settingsController.disableButton();
-    settingsController.destroy();
-    appsMenuButton._onDestroy();
-    settings.run_dispose();
+    ExtensionSystem.disconnect(extensionChangedId);
+    extensionChangedId = 0;
 
-    settingsController =  null;
+    _disconnectDtpSignals();
+    
+    settingsControllers.forEach(sc => _disableButton(sc));
+    settingsControllers = null;
+
+    settings.run_dispose();
     settings = null;
-    appsMenuButton = null;
-    activitiesButton = null;
+    
     Dash.getAppFromSource = oldGetAppFromSource;
     oldGetAppFromSource = null;
 }
@@ -92,5 +102,67 @@ function getAppFromSource(source) {
         return source._app;
     } else {
         return null;
+    }
+}
+
+function _connectDtpSignals() {
+    if (global.dashToPanel) {
+        global.dashToPanel._amPanelsCreatedId = global.dashToPanel.connect('panels-created', () => _enableButtons());
+    }
+}
+
+function _disconnectDtpSignals() {
+    if (global.dashToPanel && global.dashToPanel._amPanelsCreatedId) {
+        global.dashToPanel.disconnect(global.dashToPanel._amPanelsCreatedId);
+        delete global.dashToPanel._amPanelsCreatedId;
+    }
+}
+
+function _onMultiMonitorChange() {
+    if (!settings.get_boolean('multi-monitor')) {
+        for (let i = settingsControllers.length - 1; i >= 0; --i) {
+            let sc = settingsControllers[i];
+
+            if (sc.panel != Main.panel) {
+                _disableButton(sc, 1);
+            }
+        }
+    }
+
+    _enableButtons();
+}
+
+function _enableButtons() {
+    (settings.get_boolean('multi-monitor') && global.dashToPanel ? 
+     global.dashToPanel.panels.map(pw => pw.panel) : 
+     [Main.panel]).forEach(panel => {
+        if (settingsControllers.filter(sc => sc.panel == panel).length)
+            return;
+
+        // Create a Menu Controller that is responsible for controlling
+        // and managing the menu as well as the menu button.
+        let isMainPanel = panel == Main.panel;
+        let settingsController = new Controller.MenuSettingsController(settings, settingsControllers, panel, isMainPanel);
+        
+        if (!isMainPanel) {
+            panel._amDestroyId = panel.connect('destroy', () => extensionChangedId ? _disableButton(settingsController, 1) : null);
+        }
+
+        settingsController.enableButton();
+        settingsController.bindSettingsChanges();
+        settingsControllers.push(settingsController);
+    });
+}
+
+function _disableButton(controller, remove) {
+    if (controller.panel._amDestroyId) {
+        controller.panel.disconnect(controller.panel._amDestroyId);
+        delete controller.panel._amDestroyId;
+    }
+
+    controller.destroy();
+    
+    if (remove) {
+        settingsControllers.splice(settingsControllers.indexOf(controller), 1);
     }
 }

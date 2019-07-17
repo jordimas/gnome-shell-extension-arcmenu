@@ -9,6 +9,7 @@
     <value value='0' nick='Undefined'/>
     <value value='1' nick='Super_L'/>
     <value value='2' nick='Super_R'/>
+    <value value='3' nick='Custom'/>
   </enum>
   <enum id='org.gnome.shell.extensions.arc-menu.menu-position'>
     <value value="0" nick="Left"/>
@@ -20,6 +21,10 @@
     <value value="1" nick="Text"/>
     <value value="2" nick="Icon_Text"/>
     <value value="3" nick="Text_Icon"/>
+  </enum>
+    <enum id='org.gnome.shell.extensions.arc-menu.avatar-style'>
+    <value value="0" nick="Circular"/>
+    <value value="1" nick="Square"/>
   </enum>
   <enum id='org.gnome.shell.extensions.arc-menu.menu-button-text'>
     <value value="0" nick="System_Text"/>
@@ -36,15 +41,20 @@
       <summary>Visible menus</summary>
       <description>Which menus are visible within the Arc Menu popup.</description>
     </key>
-    <key type="b" name="enable-tooltips">
+    <key type="b" name="disable-tooltips">
      <default>false</default>
-      <summary>Enable tooltips</summary>
-      <description>Enable tooltips.</description>
+      <summary>disable tooltips</summary>
+      <description>disable tooltips.</description>
     </key>
       <key type="b" name="enable-pinned-apps">
      <default>true</default>
       <summary>Enable Pinned Apps</summary>
       <description>Enable Pinned Apps.</description>
+    </key>
+    <key type="b" name="reload-theme">
+     <default>false</default>
+      <summary>Used to reload theme</summary>
+      <description>Used to reload theme.</description>
     </key>
     <key type="b" name="vert-separator">
      <default>false</default>
@@ -116,6 +126,16 @@
       <summary>Enable Custom Arc Menu Theme</summary>
       <description>Enable Custom Arc Menu Theme.</description>
     </key>
+	<key type="b" name="show-computer-shortcut">
+     <default>false</default>
+      <summary>Show Computer Shortcut</summary>
+      <description>Show ComputerShortcut.</description>
+    </key>
+      <key type="b" name="show-network-shortcut">
+     <default>false</default>
+      <summary>Show Network Shortcut</summary>
+      <description>Show Network Shortcut.</description>
+    </key>
     <key type="b" name="show-home-shortcut">
      <default>true</default>
       <summary>Show Home Shortcut</summary>
@@ -171,6 +191,16 @@
       <summary>Show activities-overview Shortcut</summary>
       <description>Show activities-overview Shortcut.</description>
     </key>
+      <key type="b" name="show-external-devices">
+     <default>false</default>
+      <summary>Show External Devices</summary>
+      <description>Show External Devices.</description>
+    </key>
+	<key type="b" name="show-bookmarks">
+     <default>false</default>
+      <summary>Show Bookmarks</summary>
+      <description>Show Bookmarks.</description>
+    </key>
     <key type="b" name="show-logout-button">
      <default>true</default>
       <summary>Show logout button</summary>
@@ -182,9 +212,14 @@
       <description>Show Show lock button.</description>
     </key>
     <key type="b" name="show-suspend-button">
-     <default>true</default>
+     <default>false</default>
       <summary>Show suspend button</summary>
       <description>Show Show suspend button.</description>
+    </key>
+    <key type="b" name="multi-monitor">
+      <default>false</default>
+      <summary>Display on all monitors</summary>
+      <description>Display the menu on all monitors when using Dash to Panel.</description>
     </key>
     <key type="b" name="disable-activities-hotcorner">
       <default>false</default>
@@ -221,13 +256,18 @@
       <summary>Appearance of the menu button.</summary>
       <description>Appearance of the menu button.</description>
     </key>
+      <key name="avatar-style" enum="org.gnome.shell.extensions.arc-menu.avatar-style">
+      <default>'Circular'</default>
+      <summary>Appearance of the avatar icon.</summary>
+      <description>Appearance of the avatar icon.</description>
+    </key>
     <key name="menu-button-text" enum="org.gnome.shell.extensions.arc-menu.menu-button-text">
       <default>'System_Text'</default>
       <summary>Text of the menu button.</summary>
       <description>Text of the menu button.</description>
     </key>
     <key type="b" name="enable-menu-button-arrow">
-      <default>true</default>
+      <default>false</default>
       <summary>Enables the default menu button arrow.</summary>
       <description>Enables the default menu button arrow.</description>
     </key>
@@ -251,8 +291,8 @@
       <summary>Size of the icon in percentage.</summary>
       <description>Size of the icon in percentage.</description>
     </key>
-    <key name="pinned-apps" type="as">
-      <default>["Firefox","firefox", "firefox","Terminal", "gnome-terminal", "gnome-terminal","Arc Menu Settings", "emblem-system-symbolic", "gnome-shell-extension-prefs arc-menu@linxgem33.com"]</default>
+    <key name="pinned-app-list" type="as">
+      <default>["Firefox","firefox", "firefox.desktop","Terminal", "gnome-terminal", "org.gnome.Terminal.desktop","Arc Menu Settings", "emblem-system-symbolic", "gnome-shell-extension-prefs arc-menu@linxgem33.com"]</default>
       <summary>List of Apps Pinned to Menu</summary>
       <description>
         List of Apps Pinned to Menu

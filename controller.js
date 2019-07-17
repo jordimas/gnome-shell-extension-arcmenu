@@ -1,9 +1,9 @@
 /*
  * Arc Menu: The new applications menu for Gnome 3.
  *
- * Copyright (C) 2017 LinxGem33
- *
  * Copyright (C) 2017 Alexander Rüedlinger
+ * Copyright (C) 2017-2019 LinxGem33
+ * Copyright (C) 2019 Andrew Zaech
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -29,6 +29,7 @@ const ExtensionUtils = imports.misc.extensionUtils;
 const Me = ExtensionUtils.getCurrentExtension();
 const Constants = Me.imports.constants;
 const Helper = Me.imports.helper;
+const Menu = Me.imports.menu;
 const ExtensionSystem = imports.ui.extensionSystem;
 const Gettext = imports.gettext.domain(Me.metadata['gettext-domain']);
 const _ = Gettext.gettext;
@@ -39,26 +40,30 @@ const Gdk = imports.gi.Gdk;
  * the settings changes of the Arc Menu.
  */
 var MenuSettingsController = class {
-    constructor(settings, menuButton) {
+    constructor(settings, settingsControllers, panel, isMainPanel) {
         this._settings = settings;
-        this._menuButton = menuButton;
-        this._activitiesButton = Main.panel.statusArea.activities;
-
-        // Create a Hot Corner Manager, a Menu Keybinder as well as a Keybinding Manager
+        this.panel = panel;
+        this.currentMonitorIndex;
+        this.isMainPanel = isMainPanel;
+        this._activitiesButton = this.panel.statusArea.activities;
+        this._settingsControllers = settingsControllers
+        // Create the button, a Hot Corner Manager, a Menu Keybinder as well as a Keybinding Manager
+        this._menuButton = new Menu.ApplicationsButton(settings, panel);
         this._hotCornerManager = new Helper.HotCornerManager(this._settings);
-        this._menuHotKeybinder = new Helper.MenuHotKeybinder(() => {
-            this._menuButton.toggleMenu();        
-        });
-        this._keybindingManager = new Helper.KeybindingManager(this._settings);
-
+        if(this.isMainPanel){
+            this._menuHotKeybinder = new Helper.MenuHotKeybinder(() => {
+                this.toggleMenus();   
+            });
+            this._keybindingManager = new Helper.KeybindingManager(this._settings); 
+        }
         this._applySettings();
     }
 
     // Load and apply the settings from the arc-menu settings
     _applySettings() {
         this._updateHotCornerManager();
-        this._setMenuKeybinding();
-        this._updateHotKeyBinder();
+        if(this.isMainPanel)
+            this._updateHotKeyBinder();
         this._setButtonAppearance();
         this._setButtonText();
         this._setButtonIcon();
@@ -67,54 +72,77 @@ var MenuSettingsController = class {
 
     // Bind the callbacks for handling the settings changes to the event signals
     bindSettingsChanges() {
-        //settings.connect('changed::visible-menus', function() { appsMenuButton.updateMenu(); });
-        this._settings.connect('changed::disable-activities-hotcorner', this._updateHotCornerManager.bind(this));
-        this._settings.connect('changed::menu-hotkey', this._updateHotKeyBinder.bind(this));
-        this._settings.connect('changed::enable-menu-keybinding', this._setMenuKeybinding.bind(this));
-        this._settings.connect('changed::position-in-panel', this._setButtonPosition.bind(this));
-        this._settings.connect('changed::menu-button-appearance', this._setButtonAppearance.bind(this));
-        this._settings.connect('changed::menu-button-text', this._setButtonText.bind(this));
-        this._settings.connect('changed::custom-menu-button-text', this._setButtonText.bind(this));
-        this._settings.connect('changed::menu-button-icon', this._setButtonIcon.bind(this));
-        this._settings.connect('changed::custom-menu-button-icon', this._setButtonIcon.bind(this));
-        this._settings.connect('changed::custom-menu-button-icon-size', this._setButtonIconSize.bind(this));
-        this._settings.connect('changed::enable-menu-button-arrow', this._setMenuButtonArrow.bind(this));
-        this._settings.connect('changed::enable-custom-arc-menu', this._enableCustomArcMenu.bind(this));
-        this._settings.connect('changed::show-home-shortcut', this._redisplayRightSide.bind(this));
-        this._settings.connect('changed::show-documents-shortcut', this._redisplayRightSide.bind(this));
-        this._settings.connect('changed::show-downloads-shortcut', this._redisplayRightSide.bind(this));
-        this._settings.connect('changed::show-music-shortcut', this._redisplayRightSide.bind(this));
-        this._settings.connect('changed::show-pictures-shortcut', this._redisplayRightSide.bind(this));
-        this._settings.connect('changed::show-videos-shortcut', this._redisplayRightSide.bind(this));
-        this._settings.connect('changed::show-software-shortcut', this._redisplayRightSide.bind(this));
-        this._settings.connect('changed::show-tweaks-shortcut', this._redisplayRightSide.bind(this));
-        this._settings.connect('changed::show-terminal-shortcut', this._redisplayRightSide.bind(this));
-        this._settings.connect('changed::show-settings-shortcut', this._redisplayRightSide.bind(this));
-        this._settings.connect('changed::show-activities-overview-shortcut', this._redisplayRightSide.bind(this));
-        this._settings.connect('changed::show-logout-button', this._redisplayRightSide.bind(this));
-        this._settings.connect('changed::show-lock-button', this._redisplayRightSide.bind(this));
-        this._settings.connect('changed::show-suspend-button', this._redisplayRightSide.bind(this));
-        this._settings.connect('changed::menu-height', this._updateMenuHeight.bind(this));
-        this._settings.connect('changed::pinned-apps',this._redisplayMenu.bind(this));
-        this._settings.connect('changed::separator-color',this._reloadExtension.bind(this));
-       	this._settings.connect('changed::menu-color',this._reloadExtension.bind(this));
-    	this._settings.connect('changed::border-color',this._reloadExtension.bind(this));
-    	this._settings.connect('changed::highlight-color',this._reloadExtension.bind(this));
-    	this._settings.connect('changed::menu-font-size',this._reloadExtension.bind(this));
-    	this._settings.connect('changed::menu-border-size',this._reloadExtension.bind(this));
-    	this._settings.connect('changed::menu-corner-radius',this._reloadExtension.bind(this));
-    	this._settings.connect('changed::menu-margin',this._reloadExtension.bind(this));
-    	this._settings.connect('changed::menu-arrow-size',this._reloadExtension.bind(this));
-    	this._settings.connect('changed::menu-width',this._reloadExtension.bind(this));
-    	 this._settings.connect('changed::enable-pinned-apps',this._redisplayMenu.bind(this));
-        
+        this.settingsChangeIds = [
+            this._settings.connect('changed::disable-activities-hotcorner', this._updateHotCornerManager.bind(this)),
+            this._settings.connect('changed::menu-hotkey', this._updateHotKeyBinder.bind(this)),
+            this._settings.connect('changed::position-in-panel', this._setButtonPosition.bind(this)),
+            this._settings.connect('changed::menu-button-appearance', this._setButtonAppearance.bind(this)),
+            this._settings.connect('changed::menu-button-text', this._setButtonText.bind(this)),
+            this._settings.connect('changed::custom-menu-button-text', this._setButtonText.bind(this)),
+            this._settings.connect('changed::menu-button-icon', this._setButtonIcon.bind(this)),
+            this._settings.connect('changed::custom-menu-button-icon', this._setButtonIcon.bind(this)),
+            this._settings.connect('changed::custom-menu-button-icon-size', this._setButtonIconSize.bind(this)),
+            this._settings.connect('changed::enable-menu-button-arrow', this._setMenuButtonArrow.bind(this)),
+            this._settings.connect('changed::enable-custom-arc-menu', this._enableCustomArcMenu.bind(this)),
+            this._settings.connect('changed::show-home-shortcut', this._redisplayRightSide.bind(this)),
+            this._settings.connect('changed::show-documents-shortcut', this._redisplayRightSide.bind(this)),
+            this._settings.connect('changed::show-downloads-shortcut', this._redisplayRightSide.bind(this)),
+            this._settings.connect('changed::show-music-shortcut', this._redisplayRightSide.bind(this)),
+            this._settings.connect('changed::show-pictures-shortcut', this._redisplayRightSide.bind(this)),
+            this._settings.connect('changed::show-videos-shortcut', this._redisplayRightSide.bind(this)),
+            this._settings.connect('changed::show-computer-shortcut', this._redisplayRightSide.bind(this)),
+            this._settings.connect('changed::show-network-shortcut', this._redisplayRightSide.bind(this)),
+            this._settings.connect('changed::show-software-shortcut', this._redisplayRightSide.bind(this)),
+            this._settings.connect('changed::show-tweaks-shortcut', this._redisplayRightSide.bind(this)),
+            this._settings.connect('changed::show-terminal-shortcut', this._redisplayRightSide.bind(this)),
+            this._settings.connect('changed::show-settings-shortcut', this._redisplayRightSide.bind(this)),
+            this._settings.connect('changed::show-activities-overview-shortcut', this._redisplayRightSide.bind(this)),
+            this._settings.connect('changed::show-logout-button', this._redisplayRightSide.bind(this)),
+            this._settings.connect('changed::show-lock-button', this._redisplayRightSide.bind(this)),
+            this._settings.connect('changed::show-external-devices', this._redisplayRightSide.bind(this)),
+            this._settings.connect('changed::show-bookmarks', this._redisplayRightSide.bind(this)),
+            this._settings.connect('changed::show-suspend-button', this._redisplayRightSide.bind(this)),
+            this._settings.connect('changed::menu-height', this._updateMenuHeight.bind(this)),
+            this._settings.connect('changed::reload-theme',this._reloadExtension.bind(this)),
+            this._settings.connect('changed::pinned-app-list',this._updateFavorites.bind(this)),
+            this._settings.connect('changed::enable-pinned-apps',this._updateMenuDefaultView.bind(this)),
+        ];
+    }
+    toggleMenus(){
+        if(this._settings.get_boolean('multi-monitor')){
+            let screen = Gdk.Screen.get_default();
+            //global.log( global.get_pointer());
+            let pointer = global.get_pointer();
+            let currentMonitor = screen.get_monitor_at_point(pointer[0],pointer[1]);
+            for(let i = 0;i<screen.get_n_monitors();i++){
+                if(i==currentMonitor)
+                    this.currentMonitorIndex=i;
+            }
+            //close current menus that are open on monitors other than current monitor
+            for (let i = 0; i < this._settingsControllers.length; i++) {
+                if(i!=this.currentMonitorIndex){
+                if(this._settingsControllers[i]._menuButton.leftClickMenu.isOpen)
+                    this._settingsControllers[i]._menuButton.toggleMenu();
+                if(this._settingsControllers[i]._menuButton.rightClickMenu.isOpen)
+                    this._settingsControllers[i]._menuButton.toggleRightClickMenu();
+                }
+            }  
+            //toggle menu on current monitor
+            for (let i = 0; i < this._settingsControllers.length; i++) {
+                if(i==this.currentMonitorIndex)
+                    this._settingsControllers[i]._menuButton.toggleMenu();
+            }   
+        }
+        else {
+            //global.log("no dash to panel")
+            this._menuButton.toggleMenu();
+        }
     }
     _reloadExtension(){
-    	//ExtensionSystem.reloadExtension(Me);
-    	/*let styleContext = new Gtk.StyleContext();
-    	let cssProvider = new Gtk.CssProvider();
-    	cssProvider.load_from_file(Gio.File.new_for_path(Me.path+"/stylesheet.css"));
-    	styleContext.add_provider_for_screen(Gdk.Screen.get_default(),cssProvider,800);*/
+        if(this._settings.get_boolean('reload-theme') == true){
+            Main.loadTheme();
+            this._settings.set_boolean('reload-theme',false);
+        }
     }
     _enableCustomArcMenu() {
         this._menuButton.updateStyle();
@@ -122,8 +150,16 @@ var MenuSettingsController = class {
     _updateMenuHeight(){
         this._menuButton.updateHeight();
     }
-    _redisplayMenu(){
-        this._menuButton.reloadFlag =true;
+    _updateFavorites(){
+        this._menuButton._loadFavorites();
+        if(this._menuButton.currentMenu == Constants.CURRENT_MENU.FAVORITES)
+           this._menuButton._displayFavorites();
+    }
+    _updateMenuDefaultView(){
+        if(this._settings.get_boolean('enable-pinned-apps'))
+            this._menuButton._displayFavorites();
+        else
+            this._menuButton._displayCategories();
     }
     _redisplayRightSide(){
         this._menuButton._redisplayRightSide();
@@ -137,24 +173,22 @@ var MenuSettingsController = class {
     }
 
     _updateHotKeyBinder() {
-        let hotKeyPos = this._settings.get_enum('menu-hotkey');
-        if (hotKeyPos !== Constants.HOT_KEY.Undefined) {
-            let hotKey = Constants.HOT_KEY[hotKeyPos];
-            this._menuHotKeybinder.enableHotKey(hotKey);
-        } else {
-            this._menuHotKeybinder.disableHotKey();
-        }
-    }
-
-    _setMenuKeybinding() {
-        if (this._settings.get_boolean('enable-menu-keybinding')) {
-            this._keybindingManager.bind('menu-keybinding-text', 'menu-keybinding',
-                () => {
-                    this._menuButton.toggleMenu();
-                });
-        } else {
+        if(this.isMainPanel){
             this._keybindingManager.unbind('menu-keybinding-text');
-        }
+            this._menuHotKeybinder.disableHotKey();
+            let hotKeyPos = this._settings.get_enum('menu-hotkey');
+
+            if (hotKeyPos==3) {
+                this._keybindingManager.bind('menu-keybinding-text', 'menu-keybinding',
+                    () => {
+                        this.toggleMenus();    
+                    });
+            }
+            else if (hotKeyPos !== Constants.HOT_KEY.Undefined ) {
+                let hotKey = Constants.HOT_KEY[hotKeyPos];
+                this._menuHotKeybinder.enableHotKey(hotKey);
+            }        
+        } 
     }
 
     // Place the menu button to main panel as specified in the settings
@@ -247,7 +281,10 @@ var MenuSettingsController = class {
 
     // Update the icon of the menu button as specified in the settings
     _setButtonIconSize() {
-        let scaleFactor = St.ThemeContext.get_for_stage(global.stage).scale_factor;
+        let display = Gdk.Display.get_default();
+        let primaryMonitor =display.get_monitor(0);
+        let scaleFactor = primaryMonitor.get_scale_factor();
+        //let scaleFactor = St.ThemeContext.get_for_stage(global.stage).scale_factor;
         let menuButtonWidget = this._menuButton.getWidget();
         let stIcon = menuButtonWidget.getPanelIcon();
         let iconSize = this._settings.get_double('custom-menu-button-icon-size');
@@ -273,36 +310,36 @@ var MenuSettingsController = class {
         // Thanks to lestcape @github.com for the refinement of this method.
         return (this._activitiesButton &&
             this._activitiesButton.container &&
-            Main.panel._leftBox.contains(this._activitiesButton.container));
+            this.panel._leftBox.contains(this._activitiesButton.container));
     }
 
     // Remove the activities button from the main panel
     _removeActivitiesButtonFromMainPanel() {
         if (this._isActivitiesButtonPresent()) {
-            Main.panel._leftBox.remove_child(this._activitiesButton.container);
+            this.panel._leftBox.remove_child(this._activitiesButton.container);
         }
     }
 
     // Add or restore the activities button on the main panel
     _addActivitiesButtonToMainPanel() {
-        if (!this._isActivitiesButtonPresent()) {
+        if (this.panel == Main.panel && !this._isActivitiesButtonPresent()) {
             // Retsore the activities button at the default position
-            Main.panel._leftBox.add_child(this._activitiesButton.container);
-            Main.panel._leftBox.set_child_at_index(this._activitiesButton.container, 0);
+            this.panel._leftBox.add_child(this._activitiesButton.container);
+            this.panel._leftBox.set_child_at_index(this._activitiesButton.container, 0);
         }
     }
 
     // Add the menu button to the main panel
     _addMenuButtonToMainPanel() {
         let [menuPosition, order] = this._getMenuPositionTuple();
-        Main.panel.addToStatusArea('arc-menu', this._menuButton, order, menuPosition);
+        this.panel.addToStatusArea('arc-menu', this._menuButton, order, menuPosition);
     }
 
     // Remove the menu button from the main panel
     _removeMenuButtonFromMainPanel() {
-        Main.panel.menuManager.removeMenu(this._menuButton.leftClickMenu);
-        Main.panel.menuManager.removeMenu(this._menuButton.rightClickMenu);
-        Main.panel.statusArea['arc-menu'] = null;
+        this.panel.menuManager.removeMenu(this._menuButton.leftClickMenu);
+        this.panel.menuManager.removeMenu(this._menuButton.rightClickMenu);
+        this.panel.statusArea['arc-menu'] = null;
     }
 
     // Enable the menu button
@@ -312,25 +349,29 @@ var MenuSettingsController = class {
     }
 
     // Disable the menu button
-    disableButton() {
+    _disableButton() {
         this._removeMenuButtonFromMainPanel();
         this._addActivitiesButtonToMainPanel(); // restore the activities button
+        this._menuButton._onDestroy();
     }
 
     _isButtonEnabled() {
-        return Main.panel.statusArea['arc-menu'] !== null;
+        return this.panel.statusArea['arc-menu'] !== null;
     }
 
     // Destroy this object
     destroy() {
+        this.settingsChangeIds.forEach(id => this._settings.disconnect(id));
+        
         // Clean up and restore the default behaviour
         if (this._isButtonEnabled()) {
             this._disableButton();
         }
         this._hotCornerManager.destroy();
-        this._menuHotKeybinder.destroy();
-        this._keybindingManager.destroy();
-
+        if(this.isMainPanel){
+            this._menuHotKeybinder.destroy();
+            this._keybindingManager.destroy();
+        }
         this._settings = null;
         this._activitiesButton = null;
         this._menuButton = null;
