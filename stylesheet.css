@@ -66,7 +66,7 @@ color:rgba(255,255,255,1);
 }
 #tooltip-menu-item{
  padding: 2px 5px;
-max-width:325px;
+max-width:550px;
 }.search-box-padding { 
 padding-top: 0.75em;
 padding-bottom: 0.25em;
@@ -123,8 +123,8 @@ border-bottom-style: solid;
  background-size: contain; 
  border: none;
  border-radius: 999px;
- }#rightClickMenu{max-width:275px;}.arc-right-click{
-max-width:275px;
+ }#rightClickMenu{max-width:350px;}.arc-right-click{
+max-width:350px;
 min-width: 15em;
 color: #D3DAE3;
 border-image: none;
