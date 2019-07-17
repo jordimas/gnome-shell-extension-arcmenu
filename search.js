@@ -35,6 +35,8 @@ const ExtensionUtils = imports.misc.extensionUtils;
 const Me = ExtensionUtils.getCurrentExtension();
 const MW = Me.imports.menuWidgets;
 const appSys = Shell.AppSystem.get_default();
+const Gettext = imports.gettext.domain(Me.metadata['gettext-domain']);
+const _ = Gettext.gettext;
 
 var MAX_LIST_SEARCH_RESULTS_ROWS = 30;
 var MAX_APPS_SEARCH_RESULTS_ROWS = 10;
@@ -46,7 +48,6 @@ class ArcSearchMaxWidthBin extends St.Bin {
         let maxWidth = themeNode.get_max_width();
         let availWidth = box.x2 - box.x1;
         let adjustedBox = box;
-
         if (availWidth > maxWidth) {
             let excessWidth = availWidth - maxWidth;
             adjustedBox.x1 += Math.floor(excessWidth / 2);
@@ -62,7 +63,6 @@ var SearchResult = class {
         this._button= resultsView._button;
         this.metaInfo = metaInfo;
         this._resultsView = resultsView;
-
         let app = appSys.lookup_app(this.metaInfo['id']);
         if(app){
             this.menuItem = new MW.SearchResultItem(this._button,app); 
