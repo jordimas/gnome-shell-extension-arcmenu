@@ -200,7 +200,7 @@ var PinnedAppsPage = GObject.registerClass(
                 });
 
 
-                frameLabel.label = frameRow._name;
+                frameLabel.label = _(frameRow._name);
                 frameRow.add(frameLabel);
                 let buttonBox = new Gtk.Grid({
                     margin_top:0,
@@ -2058,8 +2058,8 @@ function saveCSS(settings){
     let tooltipBackgroundColor= customArcMenu ? "\n background-color:"+lighten_rgb( menuColor,0.05)+";\n" : "";
     let tooltipStyle = customArcMenu ?   
         ("#tooltip-menu-item{border-color:"+  lighten_rgb(separatorColor,0.05)+ ";\n border: 1px;\nfont-size:"+fontSize+"pt;\n padding: 2px 5px;"
-        + tooltipForegroundColor + tooltipBackgroundColor+"\nmax-width:325px;\n}") 
-        : ("#tooltip-menu-item{\n padding: 2px 5px;\nmax-width:325px;\n}")
+        + tooltipForegroundColor + tooltipBackgroundColor+"\nmax-width:550px;\n}") 
+        : ("#tooltip-menu-item{\n padding: 2px 5px;\nmax-width:550px;\n}")
 
     let file = Gio.File.new_for_path(Me.path+"/stylesheet.css");
     let css ="#arc-search{width: "+  menuWidth+"px;} \n.arc-menu-status-text{\ncolor:"+  menuForegroundColor+";\nfont-size:" + fontSize+"pt;\n}\n "+                                                      
@@ -2098,8 +2098,8 @@ function saveCSS(settings){
         +"\nborder-color:"+  separatorColor+";\n border-bottom-width: 1px;\nborder-bottom-style: solid;\n }"
 
         +".menu-user-avatar {\n background-size: contain; \n border: none;\n border-radius: "+avatarRadius+"px;\n }"
-        + "#rightClickMenu{max-width:275px;}"
-        +".arc-right-click{\nmax-width:275px;\nmin-width: 15em;\ncolor: #D3DAE3;\nborder-image: none;\nfont-size:" + fontSize+"pt;\nmargin:2px;\npadding:2px;"
+        + "#rightClickMenu{max-width:350px;}"
+        +".arc-right-click{\nmax-width:350px;\nmin-width: 15em;\ncolor: #D3DAE3;\nborder-image: none;\nfont-size:" + fontSize+"pt;\nmargin:2px;\npadding:2px;"
         +"\nspacing:2px;\nbox-shadow: 1px 1px 4px rgb(53, 52, 52);\n}\n"
         +".arc-right-click .popup-sub-menu {\npadding-bottom: 1px;\nbackground-color: #3a393b;\nbox-shadow: inset 0 -1px 0px #323233;\n }\n"
         +".arc-right-click .popup-menu-content {padding: 2px;}\n .arc-right-click .popup-menu-item {\nspacing: 12px; \nborder: 0;\ncolor:"+  menuForegroundColor+";\n }\n" 

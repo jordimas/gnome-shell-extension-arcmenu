@@ -623,7 +623,7 @@ var SearchResults = class {
 
         if (!haveResults) {
             if (this.searchInProgress) {
-                this._statusText.set_text("Searching...");
+                this._statusText.set_text(_("Searching..."));
             } else {
                 this._statusText.set_text(_("No results."));
             }
