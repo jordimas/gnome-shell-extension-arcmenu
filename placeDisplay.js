@@ -27,11 +27,11 @@ const Clutter = imports.gi.Clutter;
 const Main = imports.ui.main;
 const ShellMountOperation = imports.ui.shellMountOperation;
 const PopupMenu = imports.ui.popupMenu;
-const Gettext = imports.gettext.domain('gnome-shell-extensions');
+const ExtensionUtils = imports.misc.extensionUtils;
+const Me = ExtensionUtils.getCurrentExtension();
+const Gettext = imports.gettext.domain(Me.metadata['gettext-domain']);
 const _ = Gettext.gettext;
-const N_ = x => x;
 const BACKGROUND_SCHEMA = 'org.gnome.desktop.background';
-
 const Hostname1Iface = '<node> \
 <interface name="org.freedesktop.hostname1"> \
 <property name="PrettyHostname" type="s" access="read" /> \
