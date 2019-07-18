@@ -1528,7 +1528,7 @@ var OverrideArcMenuThemeWindow = GObject.registerClass(
                 
                 this.menuColor = "rgba(28, 28, 28, 0.98)";
                 this.menuForegroundColor = "rgba(211, 218, 227, 1)";
-                this.borderColor = "rgba(28, 28, 28, 0.98)";
+                this.borderColor = "rgb(63,62,64)";
                 this.highlightColor = "rgba(238, 238, 236, 0.1)";
                 this.fontSize = 9;
                 this.borderSize = 0;
@@ -1589,7 +1589,7 @@ var OverrideArcMenuThemeWindow = GObject.registerClass(
         checkIfResetButtonSensitive(){
             return (this.menuColor != "rgba(28, 28, 28, 0.98)"||
             this.menuForegroundColor != "rgba(211, 218, 227, 1)"||
-            this.borderColor != "rgba(28, 28, 28, 0.98)"||
+            this.borderColor != "rgb(63,62,64)"||
             this.highlightColor != "rgba(238, 238, 236, 0.1)"||
             this.fontSize != 9||
             this.borderSize != 0||
@@ -2110,7 +2110,7 @@ function saveCSS(settings){
         +".arc-right-click .popup-menu-item:insensitive {color:" +  lighten_rgb( menuForegroundColor,-0.30) + "; }\n"
         +".arc-right-click-boxpointer{ \n-arrow-border-radius:"+  cornerRadius+"px;\n"
         +"-arrow-background-color:" +  lighten_rgb( menuColor,0.05) + ";\n"
-        +"-arrow-border-color:"+  lighten_rgb(separatorColor,0.05)+ ";\n"
+        +"-arrow-border-color:"+  borderColor+ ";\n"
         +"-arrow-border-width:"+  "1px;\n"
         +"-arrow-base:"+  menuMargin+"px;\n"
         +"-arrow-rise:"+  menuArrowSize+"px;\n"
