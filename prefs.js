@@ -725,7 +725,7 @@ var GeneralSettingsPage = GObject.registerClass(
                             dialog.destroy();
                         }
                         else{
-                            global.log('close');
+                            //global.log('close');
                             this.settings.set_enum('menu-hotkey', 3);
                             if(this.menuKeybindingFrame.count==3)
                                 this.menuKeybindingFrame.remove(this.menuKeybindingRow);
