@@ -3,11 +3,12 @@
 # This file is distributed under the same license as the Arc Menu package.
 # Piotr Komur <pkomur@gmail.com>, 2017.
 # Igor Serwin <serwinigor@gmail.com>, 2017.
+# Alex <rylatgl@gmail.com>, 2019.
 msgid ""
 msgstr ""
 "Project-Id-Version: Arc Menu\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-07-17 18:50-0400\n"
+"POT-Creation-Date: 2019-03-19 15:14+0100\n"
 "PO-Revision-Date: 2019-07-18 07:53+0200\n"
 "Last-Translator: Alex <rylatgl@gmail.com>\n"
 "Language-Team: \n"
