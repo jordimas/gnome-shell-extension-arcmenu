@@ -30,6 +30,8 @@ const Util = imports.misc.util;
 const ExtensionUtils = imports.misc.extensionUtils;
 const Me = ExtensionUtils.getCurrentExtension();
 const ExtensionSystem = imports.ui.extensionSystem;
+const Gettext = imports.gettext.domain(Me.metadata['gettext-domain']);
+const _ = Gettext.gettext;
 
 // Aplication menu class
 const ApplicationsMenu = class extends PopupMenu.PopupMenu {
@@ -39,7 +41,6 @@ const ApplicationsMenu = class extends PopupMenu.PopupMenu {
         this._settings = settings;
         this._button = button;  
     }
-
     // Return that the menu is not empty (used by parent class)
     isEmpty() {
         return false;
@@ -58,7 +59,6 @@ const ApplicationsMenu = class extends PopupMenu.PopupMenu {
         super.close(animate);
     }
 };
-
 var TwoMenuButton = GObject.registerClass( class TwoMenuButton extends PanelMenu.Button {
     _init(settings) {
         super._init(1.0, null, false);

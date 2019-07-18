@@ -75,7 +75,7 @@ var AppRightClickMenu = class extends PopupMenu.PopupMenu {
         this.isPinnedApp = isPinnedApp;
         //this.actor.style_class = 'app-right-click-boxpointer';
         //this.actor.add_style_class_name('app-right-click');
-        this.actor.width=250;
+        //this.actor.width=250;
         this.redisplay();
         this.discreteGpuAvailable = false;
         Gio.DBus.system.watch_name(SWITCHEROO_BUS_NAME,
@@ -110,8 +110,8 @@ var AppRightClickMenu = class extends PopupMenu.PopupMenu {
             //this.actor.style_class = 'app-right-click-boxpointer';
             //this.actor.add_style_class_name('app-right-click');
             this.actor.style_class = 'arc-right-click-boxpointer';
-           this.actor.add_style_class_name('arc-right-click');
-           
+            this.actor.add_style_class_name('arc-right-click');
+            this.actor.set_name('rightClickMenu');
         }
         else{
             this.actor.style_class = 'popup-menu-boxpointer';
@@ -772,7 +772,8 @@ var FavoritesMenuItem = class extends BaseMenuItem {
         this._button = button;
         this._command = command;
         this._iconPath = icon;
-        this._name = name;
+        this._name = name == "Arc Menu Settings" ? _("Arc Menu Settings") : name;
+        this._name = name == "Terminal" ? _("Terminal") : name;
         this._icon = new St.Icon({
             gicon: Gio.icon_new_for_string(icon),
             style_class: 'popup-menu-icon',
@@ -781,7 +782,7 @@ var FavoritesMenuItem = class extends BaseMenuItem {
         this.actor.add_child(this._icon);
  
         let label = new St.Label({
-            text: name, y_expand: true, x_expand: true,
+            text: _(this._name), y_expand: true, x_expand: true,
             y_align: Clutter.ActorAlign.CENTER
         });
         this.actor.add_child(label);

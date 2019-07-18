@@ -66,7 +66,7 @@ color:rgba(255,255,255,1);
 }
 #tooltip-menu-item{
  padding: 2px 5px;
-max-width:325px;
+max-width:550px;
 }.search-box-padding { 
 padding-top: 0.75em;
 padding-bottom: 0.25em;
@@ -106,7 +106,7 @@ color: rgba(255,255,255,1);
 .arc-menu-boxpointer{ 
 -arrow-border-radius:0px;
 -arrow-background-color:rgba(28, 28, 28, 0.98);
--arrow-border-color:rgba(28, 28, 28, 0.98);
+-arrow-border-color:rgb(63,62,64);
 -arrow-border-width:0px;
 -arrow-base:0px;
 -arrow-rise:0px;
@@ -123,7 +123,8 @@ border-bottom-style: solid;
  background-size: contain; 
  border: none;
  border-radius: 999px;
- }.arc-right-click{
+ }#rightClickMenu{max-width:350px;}.arc-right-click{
+max-width:350px;
 min-width: 15em;
 color: #D3DAE3;
 border-image: none;
@@ -160,7 +161,7 @@ color: rgba(255,255,255,1);
 .arc-right-click-boxpointer{ 
 -arrow-border-radius:0px;
 -arrow-background-color:rgba(41,41,41,0.98);
--arrow-border-color:rgba(76,75,77,1);
+-arrow-border-color:rgb(63,62,64);
 -arrow-border-width:1px;
 -arrow-base:0px;
 -arrow-rise:0px;
