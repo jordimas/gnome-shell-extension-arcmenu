@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Arc Menu\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-07-17 10:42-0400\n"
-"PO-Revision-Date: 2019-07-18 07:49+0200\n"
+"POT-Creation-Date: 2019-07-17 18:50-0400\n"
+"PO-Revision-Date: 2019-07-18 07:53+0200\n"
 "Last-Translator: Alex <rylatgl@gmail.com>\n"
 "Language-Team: \n"
 "Language: pl\n"
@@ -16,9 +16,10 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Poedit 2.2.1\n"
-"Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<12 || n%100>14) ? 1 : 2);\n"
+"Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<12 "
+"|| n%100>14) ? 1 : 2);\n"
 
-#: controller.js:253 menuWidgets.js:1431
+#: controller.js:253 menuWidgets.js:1432
 msgid "Applications"
 msgstr "Programy"
 
@@ -62,7 +63,7 @@ msgstr "Ustawienia"
 msgid "Tweaks"
 msgstr "Dostrajanie"
 
-#: menu.js:596 prefs.js:1718
+#: menu.js:596 menuWidgets.js:776 prefs.js:1718
 msgid "Terminal"
 msgstr "Terminal"
 
@@ -126,11 +127,15 @@ msgstr "Wstecz"
 msgid "All Programs"
 msgstr "Wszystkie programy"
 
-#: menuWidgets.js:1118
+#: menuWidgets.js:775 twoMenuButton.js:77
+msgid "Arc Menu Settings"
+msgstr "Ustawienia Arc Menu"
+
+#: menuWidgets.js:1119
 msgid "Frequent Apps"
 msgstr "Często używane"
 
-#: menuWidgets.js:1268
+#: menuWidgets.js:1269
 msgid "Type to search…"
 msgstr "Szukaj…"
 
@@ -451,6 +456,10 @@ msgstr "wersja: "
 msgid "GitLab Page"
 msgstr "Strona na GitLabie"
 
+#: search.js:626
+msgid "Searching..."
+msgstr "Szukanie..."
+
 #: search.js:628
 msgid "No results."
 msgstr "Brak wyników."
@@ -462,10 +471,6 @@ msgid_plural "%d more"
 msgstr[0] "jeszcze jeden"
 msgstr[1] "jeszcze %d"
 msgstr[2] "jeszcze %d"
-
-#: twoMenuButton.js:77
-msgid "Arc Menu Settings"
-msgstr "Ustawienia Arc Menu"
 
 #: twoMenuButton.js:86
 msgid "Arc Menu on GitLab"
