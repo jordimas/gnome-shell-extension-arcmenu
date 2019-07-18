@@ -115,6 +115,10 @@ var ARC_MENU_LOGO = {
     Path: '/media/logo.png',
     Size: [175, 175] // width, height
 };
+var KEYBOARD_LOGO = {
+    Path: '/media/keyboard.svg',
+    Size: [256, 72] // width, height
+};
 var CREDITS = '\n<b>Credits:</b>'+
 		'\n\nCurrent Developers'+
 		'\n <a href="https://gitlab.com/LinxGem33">@LinxGem33</a>  (Founder/Maintainer)'+

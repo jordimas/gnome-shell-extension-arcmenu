@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-07-17 18:50-0400\n"
+"POT-Creation-Date: 2019-07-18 18:17-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -22,47 +22,47 @@ msgstr ""
 msgid "Applications"
 msgstr ""
 
-#: menu.js:334 placeDisplay.js:447 prefs.js:1622
+#: menu.js:334 placeDisplay.js:447 prefs.js:1795
 msgid "Home"
 msgstr ""
 
-#: menu.js:341 prefs.js:1622
+#: menu.js:341 prefs.js:1795
 msgid "Documents"
 msgstr ""
 
-#: menu.js:341 prefs.js:1622
+#: menu.js:341 prefs.js:1795
 msgid "Downloads"
 msgstr ""
 
-#: menu.js:341 prefs.js:1622
+#: menu.js:341 prefs.js:1795
 msgid "Music"
 msgstr ""
 
-#: menu.js:341 prefs.js:1622
+#: menu.js:341 prefs.js:1795
 msgid "Pictures"
 msgstr ""
 
-#: menu.js:341 prefs.js:1622
+#: menu.js:341 prefs.js:1795
 msgid "Videos"
 msgstr ""
 
-#: menu.js:541 prefs.js:1623
+#: menu.js:541 prefs.js:1796
 msgid "Network"
 msgstr ""
 
-#: menu.js:596 prefs.js:1718
+#: menu.js:596 prefs.js:1891
 msgid "Software"
 msgstr ""
 
-#: menu.js:596 prefs.js:1718
+#: menu.js:596 prefs.js:1891
 msgid "Settings"
 msgstr ""
 
-#: menu.js:596 prefs.js:1718
+#: menu.js:596 prefs.js:1891
 msgid "Tweaks"
 msgstr ""
 
-#: menu.js:596 menuWidgets.js:776 prefs.js:1718
+#: menu.js:596 menuWidgets.js:776 prefs.js:1891
 msgid "Terminal"
 msgstr ""
 
@@ -98,7 +98,7 @@ msgstr ""
 msgid "Show Details"
 msgstr ""
 
-#: menuWidgets.js:403 prefs.js:1718
+#: menuWidgets.js:403 prefs.js:1891
 msgid "Activities Overview"
 msgstr ""
 
@@ -106,15 +106,15 @@ msgstr ""
 msgid "Power Off"
 msgstr ""
 
-#: menuWidgets.js:542 prefs.js:1792
+#: menuWidgets.js:542 prefs.js:1965
 msgid "Log Out"
 msgstr ""
 
-#: menuWidgets.js:555 prefs.js:1756
+#: menuWidgets.js:555 prefs.js:1929
 msgid "Suspend"
 msgstr ""
 
-#: menuWidgets.js:573 prefs.js:1774
+#: menuWidgets.js:573 prefs.js:1947
 msgid "Lock"
 msgstr ""
 
@@ -148,7 +148,7 @@ msgstr ""
 msgid "Failed to mount volume for “%s”"
 msgstr ""
 
-#: placeDisplay.js:237 placeDisplay.js:260 prefs.js:1622
+#: placeDisplay.js:237 placeDisplay.js:260 prefs.js:1795
 msgid "Computer"
 msgstr ""
 
@@ -261,195 +261,223 @@ msgstr ""
 msgid "None"
 msgstr ""
 
-#: prefs.js:709
-msgid "Custom Hotkey"
+#: prefs.js:756
+msgid "Current Hotkey"
 msgstr ""
 
-#: prefs.js:715 prefs.js:1266 prefs.js:1571
+#: prefs.js:782
+msgid "Set Custom Shortcut"
+msgstr ""
+
+#: prefs.js:791
+msgid "Press a key"
+msgstr ""
+
+#: prefs.js:816
+msgid "Modifiers"
+msgstr ""
+
+#: prefs.js:821
+msgid "Ctrl"
+msgstr ""
+
+#: prefs.js:826
+msgid "Super"
+msgstr ""
+
+#: prefs.js:830
+msgid "Shift"
+msgstr ""
+
+#: prefs.js:834
+msgid "Alt"
+msgstr ""
+
+#: prefs.js:898 prefs.js:1439 prefs.js:1744
 msgid "Apply"
 msgstr ""
 
-#: prefs.js:760
+#: prefs.js:933
 msgid "Button appearance"
 msgstr ""
 
-#: prefs.js:772
+#: prefs.js:945
 msgid "Text for the menu button"
 msgstr ""
 
-#: prefs.js:778
+#: prefs.js:951
 msgid "System text"
 msgstr ""
 
-#: prefs.js:781
+#: prefs.js:954
 msgid "Custom text"
 msgstr ""
 
-#: prefs.js:805
+#: prefs.js:978
 msgid "Set custom text for the menu button"
 msgstr ""
 
-#: prefs.js:825
+#: prefs.js:998
 msgid "Enable the arrow icon beside the button text"
 msgstr ""
 
-#: prefs.js:847
+#: prefs.js:1020
 msgid "Select icon for the menu button"
 msgstr ""
 
-#: prefs.js:857
+#: prefs.js:1030
 msgid "Please select an image icon"
 msgstr ""
 
-#: prefs.js:862
+#: prefs.js:1035
 msgid "Arc Menu Icon"
 msgstr ""
 
-#: prefs.js:863
+#: prefs.js:1036
 msgid "System Icon"
 msgstr ""
 
-#: prefs.js:864
+#: prefs.js:1037
 msgid "Custom Icon"
 msgstr ""
 
-#: prefs.js:890
+#: prefs.js:1063
 msgid "Icon size"
 msgstr ""
 
-#: prefs.js:890
+#: prefs.js:1063
 msgid "default is"
 msgstr ""
 
-#: prefs.js:930
+#: prefs.js:1103
 msgid "Appearance"
 msgstr ""
 
-#: prefs.js:939
+#: prefs.js:1112
 msgid "Customize Menu Button Appearance"
 msgstr ""
 
-#: prefs.js:949
+#: prefs.js:1122
 msgid "Icon"
 msgstr ""
 
-#: prefs.js:950
+#: prefs.js:1123
 msgid "Text"
 msgstr ""
 
-#: prefs.js:951
+#: prefs.js:1124
 msgid "Icon and Text"
 msgstr ""
 
-#: prefs.js:952
+#: prefs.js:1125
 msgid "Text and Icon"
 msgstr ""
 
-#: prefs.js:975 prefs.js:1122
+#: prefs.js:1148 prefs.js:1295
 msgid "Customize Arc Menu Appearance"
 msgstr ""
 
-#: prefs.js:1023 prefs.js:1315
+#: prefs.js:1196 prefs.js:1488
 msgid "Override Arc Menu Theme"
 msgstr ""
 
-#: prefs.js:1081
+#: prefs.js:1254
 msgid "Choose Avatar Icon Shape"
 msgstr ""
 
-#: prefs.js:1086
+#: prefs.js:1259
 msgid "Circular"
 msgstr ""
 
-#: prefs.js:1087
+#: prefs.js:1260
 msgid "Square"
 msgstr ""
 
-#: prefs.js:1140
+#: prefs.js:1313
 msgid "Menu Height"
 msgstr ""
 
-#: prefs.js:1172
+#: prefs.js:1345
 msgid "Left-Panel Width"
 msgstr ""
 
-#: prefs.js:1195
+#: prefs.js:1368
 msgid "Enable Vertical Separator"
 msgstr ""
 
-#: prefs.js:1214
+#: prefs.js:1387
 msgid "Separator Color"
 msgstr ""
 
-#: prefs.js:1236 prefs.js:1523
+#: prefs.js:1409 prefs.js:1696
 msgid "Reset"
 msgstr ""
 
-#: prefs.js:1327
+#: prefs.js:1500
 msgid "Menu Background Color"
 msgstr ""
 
-#: prefs.js:1346
+#: prefs.js:1519
 msgid "Menu Foreground Color"
 msgstr ""
 
-#: prefs.js:1364
+#: prefs.js:1537
 msgid "Font Size"
 msgstr ""
 
-#: prefs.js:1388
+#: prefs.js:1561
 msgid "Border Color"
 msgstr ""
 
-#: prefs.js:1407
+#: prefs.js:1580
 msgid "Border Size"
 msgstr ""
 
-#: prefs.js:1431
+#: prefs.js:1604
 msgid "Highlighted Item Color"
 msgstr ""
 
-#: prefs.js:1450
+#: prefs.js:1623
 msgid "Corner Radius"
 msgstr ""
 
-#: prefs.js:1474
+#: prefs.js:1647
 msgid "Menu Arrow Size"
 msgstr ""
 
-#: prefs.js:1498
+#: prefs.js:1671
 msgid "Menu Displacement"
 msgstr ""
 
-#: prefs.js:1605
+#: prefs.js:1778
 msgid "Configure"
 msgstr ""
 
-#: prefs.js:1612
+#: prefs.js:1785
 msgid "Enable/Disable shortcuts"
 msgstr ""
 
-#: prefs.js:1667
+#: prefs.js:1840
 msgid "External Devices"
 msgstr ""
 
-#: prefs.js:1690
+#: prefs.js:1863
 msgid "Bookmarks"
 msgstr ""
 
-#: prefs.js:1857
+#: prefs.js:1997
 msgid "About"
 msgstr ""
 
-#: prefs.js:1886
+#: prefs.js:2026
 msgid "Arc-Menu"
 msgstr ""
 
-#: prefs.js:1891
+#: prefs.js:2031
 msgid "version: "
 msgstr ""
 
-#: prefs.js:1899
+#: prefs.js:2039
 msgid "GitLab Page"
 msgstr ""
 

@@ -688,16 +688,47 @@ var GeneralSettingsPage = GObject.registerClass(
                     break;
             }
             this.undefinedButton.connect('clicked', ()=>{
-                this.settings.set_enum('menu-hotkey', 0);
+                if(this.undefinedButton.get_active()){
+                    this.settings.set_enum('menu-hotkey', 0);
+                    if(this.menuKeybindingFrame.count==3)
+                        this.menuKeybindingFrame.remove(this.menuKeybindingRow);
+                }
             });
             leftButton.connect('clicked', ()=>{
-                this.settings.set_enum('menu-hotkey', 1);
+                if(leftButton.get_active()){
+                    this.settings.set_enum('menu-hotkey', 1);
+                    if(this.menuKeybindingFrame.count==3)
+                        this.menuKeybindingFrame.remove(this.menuKeybindingRow);
+                }
             });
             rightButton.connect('clicked', ()=>{
-                this.settings.set_enum('menu-hotkey', 2);
+                if(rightButton.get_active()){
+                    this.settings.set_enum('menu-hotkey', 2);
+                    if(this.menuKeybindingFrame.count==3)
+                        this.menuKeybindingFrame.remove(this.menuKeybindingRow);
+                }
             });
             customButton.connect('clicked', ()=>{
-                this.settings.set_enum('menu-hotkey', 3);
+                if(customButton.get_active()){
+                    let dialog = new CustomShortcutDialogWindow(this.settings, this);
+                    dialog.show_all();
+                    dialog.connect('response', ()=>
+                    {   
+                        if(dialog.addResponse)
+                        {
+                            this.settings.set_string('menu-keybinding-text', dialog.resultsText);
+                            this.settings.set_enum('menu-hotkey', 3);
+                            if(this.menuKeybindingFrame.count==3)
+                                this.menuKeybindingFrame.remove(this.menuKeybindingRow);
+                            this.createHotKeyRow();
+                            this.menuKeybindingFrame.show();
+                            dialog.destroy();
+                        }
+                        else
+                            dialog.destroy();
+                    
+                    }); 
+                }
             });
 
             menuHotkeyButtonRow.add(this.undefinedButton);
@@ -705,40 +736,10 @@ var GeneralSettingsPage = GObject.registerClass(
             menuHotkeyButtonRow.add(rightButton);
             menuHotkeyButtonRow.add(customButton);
 
-            let fillerLabel = new Gtk.Label({
-                label: _("Custom Hotkey"),
-                use_markup: true,
-                xalign: 0,
-                hexpand: true
-            });
-            let applyButton = new Gtk.Button({
-                label: _("Apply")
-            });   
-            applyButton.set_sensitive(false);
-            applyButton.connect('clicked', ()=>{
-                let _menuKeybinding =  this.customKeyBind;
-                this.settings.set_string('menu-keybinding-text', _menuKeybinding);
-                this.settings.set_enum('menu-hotkey', 3);
-                applyButton.set_sensitive(false);
-            });
-         
-            this.menuKeybindingRow = new PW.FrameBoxRow();      
-
-            let menuKeybindingEntry = new Gtk.Entry({ halign: .5 });
-            menuKeybindingEntry.set_width_chars(30);
-            menuKeybindingEntry.set_text(this.settings.get_string('menu-keybinding-text'));
-            menuKeybindingEntry.connect('changed', function (entry) {
-                this.customKeyBind = entry.get_text();
-                applyButton.set_sensitive(true);
-            }.bind(this));
-            
-            this.menuKeybindingRow.add(fillerLabel);
-         
-            this.menuKeybindingRow.add(menuKeybindingEntry);
-            this.menuKeybindingRow.add(applyButton);
             this.menuKeybindingFrame.add(menuHotkeyLabelRow);
             this.menuKeybindingFrame.add(menuHotkeyButtonRow);
-            this.menuKeybindingFrame.add(this.menuKeybindingRow);
+            if(this.settings.get_enum('menu-hotkey')==3)
+                this.createHotKeyRow();
             
             // add the frames
             this.add(defaultLeftBoxFrame);
@@ -749,8 +750,180 @@ var GeneralSettingsPage = GObject.registerClass(
             this.add(this.menuKeybindingFrame);
             //-----------------------------------------------------------------
         }
+        createHotKeyRow(){
+            this.menuKeybindingRow = new PW.FrameBoxRow();    
+            let fillerLabel = new Gtk.Label({
+                label: _("Current Hotkey"),
+                use_markup: true,
+                xalign: 0,
+                hexpand: true
+            });
+
+            let shortcutCell = new Gtk.ShortcutsShortcut();
+            shortcutCell.accelerator = this.settings.get_string('menu-keybinding-text');
+
+            shortcutCell.set_halign(Gtk.Align.END);
+         
+             
+
+            this.menuKeybindingRow.add(fillerLabel);
+            this.menuKeybindingRow.add(shortcutCell);
+            this.menuKeybindingFrame.add(this.menuKeybindingRow);
+            
+        }
 });
-    
+//DialogWindow for Custom Shortcut
+var CustomShortcutDialogWindow = GObject.registerClass(
+    class CustomShortcutDialogWindow extends PW.DialogWindow {
+
+        _init(settings, parent) {
+            this._settings = settings;
+            this.addResponse = false;
+            super._init(_('Set Custom Shortcut'), parent);
+        }
+
+        _createLayout(vbox) {
+            let frame = new PW.FrameBox();
+
+            //Label 
+            let labelRow = new PW.FrameBoxRow();  
+            let label = new Gtk.Label({
+            label: _("Press a key"),
+            use_markup: true,
+            xalign: .5,
+            hexpand: true
+            });
+            labelRow.add(label);
+
+            //Hotkey
+            let hotkeyKey='';
+
+            //Keyboard Image
+            let keyboardPath = Me.path + Constants.KEYBOARD_LOGO.Path;
+            let [imageWidth, imageHeight] = Constants.KEYBOARD_LOGO.Size;
+            let pixbuf = GdkPixbuf.Pixbuf.new_from_file_at_size(keyboardPath, imageWidth, imageHeight);
+            let keyboardImage = new Gtk.Image({ pixbuf: pixbuf });
+            let keyboardImageBox = new Gtk.VBox({
+                margin_top: 5,
+                margin_bottom: 5,
+                expand: false
+            });
+            keyboardImageBox.add(keyboardImage);
+
+           //Modifiers
+            let modRow= new PW.FrameBoxRow(); 
+            let modLabel = new Gtk.Label({
+                label: _("Modifiers"),
+                xalign: 0,
+                hexpand: true
+            });
+            let ctrlButton = new Gtk.CheckButton({
+                label: _("Ctrl"),
+                xalign:.5,
+                draw_indicator: false
+            });   
+            let superButton = new Gtk.CheckButton({
+                label: _("Super"),
+                draw_indicator: false
+            });   
+            let shiftButton = new Gtk.CheckButton({
+                label: _("Shift"),
+                draw_indicator: false
+            });   
+            let altButton = new Gtk.CheckButton({
+                label: _("Alt"),
+                draw_indicator: false
+            });  
+            ctrlButton.connect('clicked', ()=>{
+                this.resultsText=""; 
+                if(ctrlButton.get_active()) this.resultsText += "<Ctrl>";     
+                if(superButton.get_active()) this.resultsText += "<Super>";   
+                if(shiftButton.get_active()) this.resultsText += "<Shift>";   
+                if(altButton.get_active()) this.resultsText += "<Alt>";  
+                this.resultsText += hotkeyKey;   
+                resultsLabel.accelerator =  this.resultsText; 
+                applyButton.set_sensitive(true);      
+            });
+            superButton.connect('clicked', ()=>{
+                this.resultsText=""; 
+                if(ctrlButton.get_active()) this.resultsText += "<Ctrl>";     
+                if(superButton.get_active()) this.resultsText += "<Super>";   
+                if(shiftButton.get_active()) this.resultsText += "<Shift>";   
+                if(altButton.get_active()) this.resultsText += "<Alt>";  
+                this.resultsText += hotkeyKey;   
+                resultsLabel.accelerator =  this.resultsText;   
+                applyButton.set_sensitive(true);    
+            });
+            shiftButton.connect('clicked', ()=>{
+                this.resultsText=""; 
+                if(ctrlButton.get_active()) this.resultsText += "<Ctrl>";     
+                if(superButton.get_active()) this.resultsText += "<Super>";   
+                if(shiftButton.get_active()) this.resultsText += "<Shift>";   
+                if(altButton.get_active()) this.resultsText += "<Alt>";  
+                this.resultsText += hotkeyKey;   
+                resultsLabel.accelerator =  this.resultsText; 
+                applyButton.set_sensitive(true);      
+            });
+            altButton.connect('clicked', ()=>{
+                this.resultsText=""; 
+                if(ctrlButton.get_active()) this.resultsText += "<Ctrl>";     
+                if(superButton.get_active()) this.resultsText += "<Super>";   
+                if(shiftButton.get_active()) this.resultsText += "<Shift>";   
+                if(altButton.get_active()) this.resultsText += "<Alt>";  
+                this.resultsText += hotkeyKey;   
+                resultsLabel.accelerator =  this.resultsText;  
+                applyButton.set_sensitive(true);     
+            });
+            modRow.add(modLabel);
+            modRow.add(ctrlButton);
+            modRow.add(superButton);
+            modRow.add(shiftButton);
+            modRow.add(altButton);
+
+            //Hotkey Results
+            let resultsRow= new PW.FrameBoxRow(); 
+            let resultsLabel = new Gtk.ShortcutsShortcut({
+                hexpand: true});
+            resultsLabel.set_halign(Gtk.Align.CENTER);
+            resultsRow.add(resultsLabel);
+           
+            //Add to frame
+            frame.add(modRow);
+            frame.add(labelRow);
+            frame.add(keyboardImageBox);
+            frame.add(resultsRow);
+
+            //ApplyB utton
+            let applyButton = new Gtk.Button({
+                label: _("Apply"),
+                xalign:1
+            });
+            applyButton.connect('clicked', ()=> {
+                this.addResponse = true;
+                this.response(-10);
+            });
+            applyButton.set_halign(Gtk.Align.END);
+            applyButton.set_sensitive(false);
+
+            //connect to key presses
+            this.connect('key-release-event', function(widget,event)  {
+                this.resultsText="";
+                let key = event.get_keyval()[1];
+                hotkeyKey = Gtk.accelerator_name(key,0);    
+                if(ctrlButton.get_active()) this.resultsText += "<Ctrl>";     
+                if(superButton.get_active()) this.resultsText += "<Super>";   
+                if(shiftButton.get_active()) this.resultsText += "<Shift>";   
+                if(altButton.get_active()) this.resultsText += "<Alt>";  
+                this.resultsText += Gtk.accelerator_name(key,0);   
+                resultsLabel.accelerator =  this.resultsText;   
+                applyButton.set_sensitive(true);  
+            }.bind(this));
+
+            //add to vbox
+            vbox.add(frame);
+            vbox.add(applyButton);    
+        }
+});
 //DialogWindow for Menu Button Customization
 var MenuButtonCustomizationWindow = GObject.registerClass(
     class MenuButtonCustomizationWindow extends PW.DialogWindow {
@@ -1814,39 +1987,6 @@ var ConfigureSettingsPage = GObject.registerClass(
         
     }
 });
-/*
- * Fine Tune Settings Page
- *
-var  FineTuneSettingsPage = GObject.registerClass(
-    class FineTuneSettingsPage extends PW.NotebookPage {
-    _init(settings) {
-        super._init(_('Fine Tune'));
-        this.settings = settings;
-
-        /*
-         * Tooltips Box
-         *
-        let toolTipsFrame = new PW.FrameBox();
-        let toolTipsRow = new PW.FrameBoxRow();
-        let toolTipsLabel = new Gtk.Label({
-            label: _("Enable tooltips"),
-            use_markup: true,
-            xalign: 0,
-            hexpand: true
-        });
-        let toolTipsSwitch = new Gtk.Switch({ halign: Gtk.Align.END });
-        toolTipsSwitch.set_active(this.settings.get_boolean('enable-tooltips'));
-        toolTipsSwitch.connect('notify::active', function(check) => {
-            this.settings.set_boolean('enable-tooltips', check.get_active());
-        });
-        toolTipsRow.add(toolTipsLabel);
-        toolTipsRow.add(toolTipsSwitch);
-        toolTipsFrame.add(toolTipsRow);
-
-        // add the frames
-        this.add(toolTipsFrame)
-    }
-});
 
 /*
  * About Page
@@ -1956,22 +2096,19 @@ class ArcMenuPreferencesWidget extends Gtk.Box{
         this.settings = Convenience.getSettings(Me.metadata['settings-schema']);
 
         let notebook = new PW.Notebook();
-        // Spoiler alert: There will be a general settings page in vXX ;-)
-
 
         let generalSettingsPage = new GeneralSettingsPage(this.settings);
         notebook.append_page(generalSettingsPage);
 
         let appearancePage = new AppearanceSettingsPage(this.settings);
         notebook.append_page(appearancePage);
+
         let configurePage = new ConfigureSettingsPage(this.settings);
         notebook.append_page(configurePage);
+        
         let pinnedAppsPage = new PinnedAppsPage(this.settings);
         notebook.append_page(pinnedAppsPage);
-        
-        // let fineTunePage = new FineTuneSettingsPage(this.settings);
-        // notebook.append_page(fineTunePage);
-
+   
         let aboutPage = new AboutPage(this.settings);
         notebook.append_page(aboutPage);
 
