@@ -191,10 +191,11 @@ var ApplicationsButton =
                 this.leftClickMenu.destroy();
                 this.leftClickMenu = null;
             }
-               if (this.rightClickMenu) {
+            if(this.rightClickMenu){
                 this.rightClickMenu.destroy();
                 this.rightClickMenu = null;
             }
+
             if (this._showingId > 0) {
                 Main.overview.disconnect(this._showingId);
                 this._showingId = 0;
@@ -211,7 +212,7 @@ var ApplicationsButton =
                 appSys.disconnect(this._installedChangedId);
                 this._installedChangedId  = 0;
             }
-            super._onDestroy();
+            super.destroy();
         }
 
         // Handle captured event

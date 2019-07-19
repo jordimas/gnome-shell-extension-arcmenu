@@ -62,7 +62,6 @@ const ApplicationsMenu = class extends PopupMenu.PopupMenu {
     }
 };
 
-
 var TwoMenuButton =  new Lang.Class({
     Name: 'TwoMenuButton',
     Extends: PanelMenu.Button,
@@ -189,10 +188,5 @@ var TwoMenuButton =  new Lang.Class({
             this.actor.add_style_pseudo_class('active');
         else
             this.actor.remove_style_pseudo_class('active');
-    },
-
-    _onDestroy: function() {
-        this.parent();
-    },
+    }
 });
-Signals.addSignalMethods(TwoMenuButton.prototype);
