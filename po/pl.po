@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: Arc Menu\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-03-19 15:14+0100\n"
-"PO-Revision-Date: 2019-07-18 07:53+0200\n"
+"PO-Revision-Date: 2019-07-20 16:46+0200\n"
 "Last-Translator: Alex <rylatgl@gmail.com>\n"
 "Language-Team: \n"
 "Language: pl\n"
@@ -24,47 +24,47 @@ msgstr ""
 msgid "Applications"
 msgstr "Programy"
 
-#: menu.js:334 placeDisplay.js:447 prefs.js:1622
+#: menu.js:334 placeDisplay.js:447 prefs.js:1803
 msgid "Home"
 msgstr "Katalog domowy"
 
-#: menu.js:341 prefs.js:1622
+#: menu.js:341 prefs.js:1803
 msgid "Documents"
 msgstr "Dokumenty"
 
-#: menu.js:341 prefs.js:1622
+#: menu.js:341 prefs.js:1803
 msgid "Downloads"
 msgstr "Pobrane"
 
-#: menu.js:341 prefs.js:1622
+#: menu.js:341 prefs.js:1803
 msgid "Music"
 msgstr "Muzyka"
 
-#: menu.js:341 prefs.js:1622
+#: menu.js:341 prefs.js:1803
 msgid "Pictures"
 msgstr "Obrazy"
 
-#: menu.js:341 prefs.js:1622
+#: menu.js:341 prefs.js:1803
 msgid "Videos"
 msgstr "Wideo"
 
-#: menu.js:541 prefs.js:1623
+#: menu.js:541 prefs.js:1804
 msgid "Network"
 msgstr "Sieć"
 
-#: menu.js:596 prefs.js:1718
+#: menu.js:596 prefs.js:1899
 msgid "Software"
 msgstr "Oprogramowanie"
 
-#: menu.js:596 prefs.js:1718
+#: menu.js:596 prefs.js:1899
 msgid "Settings"
 msgstr "Ustawienia"
 
-#: menu.js:596 prefs.js:1718
+#: menu.js:596 prefs.js:1899
 msgid "Tweaks"
 msgstr "Dostrajanie"
 
-#: menu.js:596 menuWidgets.js:776 prefs.js:1718
+#: menu.js:596 menuWidgets.js:776 prefs.js:1899
 msgid "Terminal"
 msgstr "Terminal"
 
@@ -100,7 +100,7 @@ msgstr "Przypnij do Arc Menu"
 msgid "Show Details"
 msgstr "Pokaż szczegóły"
 
-#: menuWidgets.js:403 prefs.js:1718
+#: menuWidgets.js:403 prefs.js:1899
 msgid "Activities Overview"
 msgstr "Ekran podglądu"
 
@@ -108,15 +108,15 @@ msgstr "Ekran podglądu"
 msgid "Power Off"
 msgstr "Wyłącz komputer"
 
-#: menuWidgets.js:542 prefs.js:1792
+#: menuWidgets.js:542 prefs.js:1973
 msgid "Log Out"
 msgstr "Wyloguj się"
 
-#: menuWidgets.js:555 prefs.js:1756
+#: menuWidgets.js:555 prefs.js:1937
 msgid "Suspend"
 msgstr "Wstrzymaj komputer"
 
-#: menuWidgets.js:573 prefs.js:1774
+#: menuWidgets.js:573 prefs.js:1955
 msgid "Lock"
 msgstr "Zablokuj ekran"
 
@@ -150,7 +150,7 @@ msgstr "Uruchamianie \"%s\" się nie powiodło"
 msgid "Failed to mount volume for “%s”"
 msgstr "Zamontowanie partycji \"%s\" się nie powiodło"
 
-#: placeDisplay.js:237 placeDisplay.js:260 prefs.js:1622
+#: placeDisplay.js:237 placeDisplay.js:260 prefs.js:1803
 msgid "Computer"
 msgstr "Komputer"
 
@@ -265,195 +265,223 @@ msgstr "Własne"
 msgid "None"
 msgstr "Żadne"
 
-#: prefs.js:709
-msgid "Custom Hotkey"
-msgstr "Własny klawisz aktywacji"
+#: prefs.js:764
+msgid "Current Hotkey"
+msgstr "Obecny klawisz aktywacji"
 
-#: prefs.js:715 prefs.js:1266 prefs.js:1571
+#: prefs.js:790
+msgid "Set Custom Shortcut"
+msgstr "Ustaw własny skrót"
+
+#: prefs.js:799
+msgid "Press a key"
+msgstr "Wciśnij dowolny klawisz"
+
+#: prefs.js:824
+msgid "Modifiers"
+msgstr "Modyfikatory"
+
+#: prefs.js:829
+msgid "Ctrl"
+msgstr "Ctrl"
+
+#: prefs.js:834
+msgid "Super"
+msgstr "Super"
+
+#: prefs.js:838
+msgid "Shift"
+msgstr "Shift"
+
+#: prefs.js:842
+msgid "Alt"
+msgstr "Alt"
+
+#: prefs.js:906 prefs.js:1447 prefs.js:1752
 msgid "Apply"
 msgstr "Zastosuj"
 
-#: prefs.js:760
+#: prefs.js:941
 msgid "Button appearance"
 msgstr "Wygląd przycisku"
 
-#: prefs.js:772
+#: prefs.js:953
 msgid "Text for the menu button"
 msgstr "Tekst dla przycisku menu"
 
-#: prefs.js:778
+#: prefs.js:959
 msgid "System text"
 msgstr "Domyślny tekst"
 
-#: prefs.js:781
+#: prefs.js:962
 msgid "Custom text"
 msgstr "Własny tekst"
 
-#: prefs.js:805
+#: prefs.js:986
 msgid "Set custom text for the menu button"
 msgstr "Ustaw własny tekst dla przycisku menu"
 
-#: prefs.js:825
+#: prefs.js:1006
 msgid "Enable the arrow icon beside the button text"
 msgstr "Włącz ikonę strzałki obok tekstu przycisku"
 
-#: prefs.js:847
+#: prefs.js:1028
 msgid "Select icon for the menu button"
 msgstr "Wybierz ikone dla przycisku menu"
 
-#: prefs.js:857
+#: prefs.js:1038
 msgid "Please select an image icon"
 msgstr "Wybierz obraz ikony"
 
-#: prefs.js:862
+#: prefs.js:1043
 msgid "Arc Menu Icon"
 msgstr "Ikona Arc Menu"
 
-#: prefs.js:863
+#: prefs.js:1044
 msgid "System Icon"
 msgstr "Ikona Systemowa"
 
-#: prefs.js:864
+#: prefs.js:1045
 msgid "Custom Icon"
 msgstr "Własna Ikona"
 
-#: prefs.js:890
+#: prefs.js:1071
 msgid "Icon size"
 msgstr "Rozmiar ikony"
 
-#: prefs.js:890
+#: prefs.js:1071
 msgid "default is"
 msgstr "domyślny wynosi"
 
-#: prefs.js:930
+#: prefs.js:1111
 msgid "Appearance"
 msgstr "Wygląd"
 
-#: prefs.js:939
+#: prefs.js:1120
 msgid "Customize Menu Button Appearance"
 msgstr "Spersonalizuj wygląd przycisku menu"
 
-#: prefs.js:949
+#: prefs.js:1130
 msgid "Icon"
 msgstr "Ikona"
 
-#: prefs.js:950
+#: prefs.js:1131
 msgid "Text"
 msgstr "Tekst"
 
-#: prefs.js:951
+#: prefs.js:1132
 msgid "Icon and Text"
 msgstr "Ikona i tekst"
 
-#: prefs.js:952
+#: prefs.js:1133
 msgid "Text and Icon"
 msgstr "Tekst i ikona"
 
-#: prefs.js:975 prefs.js:1122
+#: prefs.js:1156 prefs.js:1303
 msgid "Customize Arc Menu Appearance"
 msgstr "Spersonalizuj motyw Arc Menu"
 
-#: prefs.js:1023 prefs.js:1315
+#: prefs.js:1204 prefs.js:1496
 msgid "Override Arc Menu Theme"
 msgstr "Nadpisz motyw Arc Menu"
 
-#: prefs.js:1081
+#: prefs.js:1262
 msgid "Choose Avatar Icon Shape"
 msgstr "Wybierz kształt ikony użytkownika"
 
-#: prefs.js:1086
+#: prefs.js:1267
 msgid "Circular"
 msgstr "Okrągły"
 
-#: prefs.js:1087
+#: prefs.js:1268
 msgid "Square"
 msgstr "Kwadratowy"
 
-#: prefs.js:1140
+#: prefs.js:1321
 msgid "Menu Height"
 msgstr "Wysokość menu"
 
-#: prefs.js:1172
+#: prefs.js:1353
 msgid "Left-Panel Width"
 msgstr "Szerokość panelu po lewej"
 
-#: prefs.js:1195
+#: prefs.js:1376
 msgid "Enable Vertical Separator"
 msgstr "Włącz pionowy separator"
 
-#: prefs.js:1214
+#: prefs.js:1395
 msgid "Separator Color"
 msgstr "Kolor separatora"
 
-#: prefs.js:1236 prefs.js:1523
+#: prefs.js:1417 prefs.js:1704
 msgid "Reset"
 msgstr "Reset"
 
-#: prefs.js:1327
+#: prefs.js:1508
 msgid "Menu Background Color"
 msgstr "Kolor tła menu"
 
-#: prefs.js:1346
+#: prefs.js:1527
 msgid "Menu Foreground Color"
 msgstr "Kolor czcionki menu"
 
-#: prefs.js:1364
+#: prefs.js:1545
 msgid "Font Size"
 msgstr "Wielkość czcionki"
 
-#: prefs.js:1388
+#: prefs.js:1569
 msgid "Border Color"
 msgstr "Kolor ramki"
 
-#: prefs.js:1407
+#: prefs.js:1588
 msgid "Border Size"
 msgstr "Rozmiar ramki"
 
-#: prefs.js:1431
+#: prefs.js:1612
 msgid "Highlighted Item Color"
 msgstr "Kolor podświetlonych przedmiotów"
 
-#: prefs.js:1450
+#: prefs.js:1631
 msgid "Corner Radius"
 msgstr "Zaokrąglenie rogów"
 
-#: prefs.js:1474
+#: prefs.js:1655
 msgid "Menu Arrow Size"
 msgstr "Rozmiar strzałki menu"
 
-#: prefs.js:1498
+#: prefs.js:1679
 msgid "Menu Displacement"
 msgstr "Wysunięcie menu"
 
-#: prefs.js:1605
+#: prefs.js:1786
 msgid "Configure"
 msgstr "Konfiguruj"
 
-#: prefs.js:1612
+#: prefs.js:1793
 msgid "Enable/Disable shortcuts"
 msgstr "Włącz/Wyłącz skróty"
 
-#: prefs.js:1667
+#: prefs.js:1848
 msgid "External Devices"
 msgstr "Zewnętrzne urządzenia"
 
-#: prefs.js:1690
+#: prefs.js:1871
 msgid "Bookmarks"
 msgstr "Ulubione"
 
-#: prefs.js:1857
+#: prefs.js:2005
 msgid "About"
 msgstr "Informacje"
 
-#: prefs.js:1886
+#: prefs.js:2034
 msgid "Arc-Menu"
 msgstr "Arc-Menu"
 
-#: prefs.js:1891
+#: prefs.js:2039
 msgid "version: "
 msgstr "wersja: "
 
-#: prefs.js:1899
+#: prefs.js:2047
 msgid "GitLab Page"
 msgstr "Strona na GitLabie"
 
