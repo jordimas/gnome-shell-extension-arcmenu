@@ -292,7 +292,7 @@
       <description>Size of the icon in percentage.</description>
     </key>
     <key name="pinned-app-list" type="as">
-      <default>["Firefox","firefox", "firefox.desktop","Terminal", "gnome-terminal", "org.gnome.Terminal.desktop","Arc Menu Settings", "emblem-system-symbolic", "gnome-shell-extension-prefs arc-menu@linxgem33.com"]</default>
+      <default>["Firefox","firefox", "firefox.desktop","Terminal", "utilities-terminal", "org.gnome.Terminal.desktop","Arc Menu Settings", "emblem-system-symbolic", "gnome-shell-extension-prefs arc-menu@linxgem33.com"]</default>
       <summary>List of Apps Pinned to Menu</summary>
       <description>
         List of Apps Pinned to Menu
