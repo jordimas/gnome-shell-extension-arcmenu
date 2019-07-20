@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: Arc Menu\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-03-19 15:14+0100\n"
-"PO-Revision-Date: 2019-07-20 16:45+0200\n"
+"PO-Revision-Date: 2019-07-20 16:46+0200\n"
 "Last-Translator: Alex <rylatgl@gmail.com>\n"
 "Language-Team: \n"
 "Language: pl\n"
@@ -266,16 +266,12 @@ msgid "None"
 msgstr "Żadne"
 
 #: prefs.js:764
-#, fuzzy
-#| msgid "Custom Hotkey"
 msgid "Current Hotkey"
-msgstr "Własny klawisz aktywacji"
+msgstr "Obecny klawisz aktywacji"
 
 #: prefs.js:790
-#, fuzzy
-#| msgid "Add Custom Shortcut"
 msgid "Set Custom Shortcut"
-msgstr "Dodaj własny skrót"
+msgstr "Ustaw własny skrót"
 
 #: prefs.js:799
 msgid "Press a key"
