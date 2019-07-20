@@ -320,7 +320,7 @@ var ApplicationsButton =   Utils.defineClass({
                 appSys.disconnect(this._installedChangedId);
                 this._installedChangedId  = 0;
             }
-            super.destroy();
+            this.callParent('destroy');
         },
 
         // Handle captured event
