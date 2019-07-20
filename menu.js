@@ -31,6 +31,7 @@
  */
 
 // Import Libraries
+const Lang = imports.lang;
 const Atk = imports.gi.Atk;
 const GMenu = imports.gi.GMenu;
 const Shell = imports.gi.Shell;
@@ -58,7 +59,7 @@ const appSys = Shell.AppSystem.get_default();
 
 
 // Application Menu Button class (most of the menu logic is here)
-var ApplicationsButton = GObject.registerClass(
+var ApplicationsButton = 
     class ApplicationsButton extends TwoMenuButton.TwoMenuButton {
         // Initialize the menu
         _init(settings, panel) {
@@ -190,10 +191,11 @@ var ApplicationsButton = GObject.registerClass(
                 this.leftClickMenu.destroy();
                 this.leftClickMenu = null;
             }
-               if (this.rightClickMenu) {
+            if(this.rightClickMenu){
                 this.rightClickMenu.destroy();
                 this.rightClickMenu = null;
             }
+
             if (this._showingId > 0) {
                 Main.overview.disconnect(this._showingId);
                 this._showingId = 0;
@@ -210,7 +212,7 @@ var ApplicationsButton = GObject.registerClass(
                 appSys.disconnect(this._installedChangedId);
                 this._installedChangedId  = 0;
             }
-            super._onDestroy();
+            super.destroy();
         }
 
         // Handle captured event
@@ -289,7 +291,7 @@ var ApplicationsButton = GObject.registerClass(
             this.applicationsByCategory["Frequent Apps"] = [];
        
             this._usage = Shell.AppUsage.get_default();
-            let mostUsed = this._usage.get_most_used();
+            let mostUsed = this._usage.get_most_used("");
             for (let i = 0; i < mostUsed.length; i++) {
                 if (mostUsed[i] && mostUsed[i].get_app_info().should_show())
                     this.applicationsByCategory["Frequent Apps"].push(mostUsed[i]);
@@ -986,4 +988,5 @@ var ApplicationsButton = GObject.registerClass(
              vertSep.queue_repaint();
              return vertSep;
          }
-    });
+    };
+  
