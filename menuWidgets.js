@@ -43,10 +43,14 @@ const LoginManager = imports.misc.loginManager;
 const Gdk = imports.gi.Gdk;
 const Gtk = imports.gi.Gtk;
 const AppFavorites = imports.ui.appFavorites;
-const { loadInterfaceXML } = imports.misc.fileUtils;
+
 const SWITCHEROO_BUS_NAME = 'net.hadess.SwitcherooControl';
 const SWITCHEROO_OBJECT_PATH = '/net/hadess/SwitcherooControl';
-const SwitcherooProxyInterface = loadInterfaceXML('net.hadess.SwitcherooControl');
+const SwitcherooProxyInterface = '<node> \
+<interface name="net.hadess.SwitcherooControl"> \
+  <property name="HasDualGpu" type="b" access="read"/> \
+</interface> \
+</node>';
 const SwitcherooProxy = Gio.DBusProxy.makeProxyWrapper(SwitcherooProxyInterface);
 // Menu Size variables
 const LARGE_ICON_SIZE = 34;
@@ -341,7 +345,7 @@ var AppRightClickMenu = class extends PopupMenu.PopupMenu {
             return Clutter.EVENT_STOP;
         } else if (symbol == navKey) {
             if (this.isOpen){
-                this.actor.navigate_focus(null, St.DirectionType.TAB_FORWARD, false);
+                this.actor.navigate_focus(null, Gtk.DirectionType.TAB_FORWARD, false);
                 return Clutter.EVENT_STOP;
             }
             else 
@@ -794,7 +798,14 @@ var FavoritesMenuItem = class extends BaseMenuItem {
         
         let sys = Shell.AppSystem.get_default();
         this.app = sys.lookup_app(this._command);
-
+        if(this._command == "firefox.desktop" && !this.app){
+            //check if Firefox ESR
+            if(sys.lookup_app("firefox-esr.desktop")){
+                this._command ="firefox-esr.desktop";
+                this.app = sys.lookup_app(this._command);
+                this._icon.gicon = Gio.icon_new_for_string("firefox-esr");
+            }
+        }
         this.rightClickMenu = new AppRightClickMenu(this.actor,this.app ? this.app : this._command ,this._button,true);
 
         

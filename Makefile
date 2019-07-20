@@ -4,7 +4,7 @@ UUID=arc-menu@linxgem33.com
 POT_FILEPATH=./po/arc-menu.pot
 MO_FILE=arc-menu.mo
 GSCHEMA_FILE=org.gnome.shell.extensions.arc-menu.gschema.xml
-TO_LOCALIZE=prefs.js menu.js menuWidgets.js search.js twoMenuButton.js placeDisplay.js controller.js
+TO_LOCALIZE=prefs.js menu.js menuWidgets.js search.js placeDisplay.js controller.js
 
 GIT_HEAD=$(shell git rev-parse HEAD)
 LAST_RELEASE=$(shell git describe --abbrev=0 --tags --match v[0-9]*)
