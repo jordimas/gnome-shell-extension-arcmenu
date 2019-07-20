@@ -6,13 +6,14 @@
   "name": "Arc Menu", 
   "settings-schema": "org.gnome.shell.extensions.arc-menu", 
   "shell-version": [
-    "3.18", 
-    "3.20", 
-    "3.22", 
-    "3.24", 
-    "3.26", 
-    "3.28", 
-    "3.30"
+      "3.18", 
+      "3.20", 
+      "3.22", 
+      "3.24", 
+      "3.26", 
+      "3.28", 
+      "3.30",    
+      "3.32"
   ], 
   "url": "https://gitlab.com/LinxGem33/Arc-Menu", 
   "uuid": "arc-menu@linxgem33.com", 

@@ -31,7 +31,7 @@
  */
 
 // Import Libraries
-const Lang = imports.lang;
+const Signals = imports.signals;
 const Atk = imports.gi.Atk;
 const GMenu = imports.gi.GMenu;
 const Shell = imports.gi.Shell;
@@ -52,19 +52,62 @@ const PlaceDisplay = Me.imports.placeDisplay;
 const MW = Me.imports.menuWidgets;
 const ArcSearch = Me.imports.search;
 const Constants = Me.imports.constants;
-const TwoMenuButton = Me.imports.twoMenuButton;
+
 const Gettext = imports.gettext.domain(Me.metadata['gettext-domain']);
 const _ = Gettext.gettext;
+const Utils =  Me.imports.utils;
 const appSys = Shell.AppSystem.get_default();
-
+const PanelMenu = imports.ui.panelMenu;
+let modernGnome = imports.misc.config.PACKAGE_VERSION >= '3.31.9';
 
 // Application Menu Button class (most of the menu logic is here)
-var ApplicationsButton = 
-    class ApplicationsButton extends TwoMenuButton.TwoMenuButton {
-        // Initialize the menu
+var ApplicationsButton =   Utils.defineClass({
+    Name: 'ApplicationsButton',
+    Extends: PanelMenu.Button,
+    // Initialize the menu
         _init(settings, panel) {
-    	    super._init(settings);
+            this.callParent('_init');
             this._settings = settings;
+            this.DTPSettings=false;
+            this.menuManager = new PopupMenu.PopupMenuManager(this);
+            this.menuManager._changeMenu = (menu) => {};
+            let sourceActor =  modernGnome ?  this : this.actor;
+            this.rightClickMenu = new PopupMenu.PopupMenu(sourceActor,1.0,St.Side.TOP);	
+            this.rightClickMenu.actor.add_style_class_name('panel-menu');
+            this.rightClickMenu.connect('open-state-changed', this._onOpenStateChanged.bind(this));
+            this.rightClickMenu.actor.connect('key-press-event', this._onMenuKeyPress.bind(this));
+            Main.uiGroup.add_actor(this.rightClickMenu.actor);
+            this.rightClickMenu.actor.hide();
+            let item = new PopupMenu.PopupMenuItem(_("Arc Menu Settings"));
+            item.connect('activate', ()=>{
+                Util.spawnCommandLine('gnome-shell-extension-prefs arc-menu@linxgem33.com');
+            });
+            this.rightClickMenu.addMenuItem(item);        
+            item = new PopupMenu.PopupSeparatorMenuItem();     
+            item._separator.style_class='arc-menu-sep';     
+            this.rightClickMenu.addMenuItem(item);      
+            
+            item = new PopupMenu.PopupMenuItem(_("Arc Menu on GitLab"));        
+            item.connect('activate', ()=>{
+                Util.spawnCommandLine('xdg-open https://gitlab.com/LinxGem33/Arc-Menu');
+            });     
+            this.rightClickMenu.addMenuItem(item);  
+            item = new PopupMenu.PopupMenuItem(_("About Arc Menu"));          
+            item.connect('activate', ()=>{
+                Util.spawnCommandLine('xdg-open https://gitlab.com/LinxGem33/Arc-Menu/wikis/Introduction');
+            });      
+            this.rightClickMenu.addMenuItem(item);
+            
+            this.leftClickMenu = new ApplicationsMenu(sourceActor, 1.0, St.Side.TOP, this, this._settings);
+            this.leftClickMenu.actor.add_style_class_name('panel-menu');
+            this.leftClickMenu.connect('open-state-changed', this._onOpenStateChanged.bind(this));
+            this.leftClickMenu.actor.connect('key-press-event', this._onMenuKeyPress.bind(this));
+            Main.uiGroup.add_actor(this.leftClickMenu.actor);
+            this.leftClickMenu.actor.hide();
+            this.menuManager.addMenu(this.rightClickMenu); 	
+            this.menuManager.addMenu(this.leftClickMenu); 
+
+
             this._session = new GnomeSession.SessionManager();
             this._panel = panel;
             this.appMenuManager = new PopupMenu.PopupMenuManager(this);
@@ -79,13 +122,79 @@ var ApplicationsButton =
             if(global.dashToPanel)
                 this.addDTPSettings();
             this._loadCategories();
-          
+            
             this.createMenu();   
             if (this.sourceActor)
-            	this._keyReleaseId = this.sourceActor.connect('key-release-event',
+                this._keyReleaseId = this.sourceActor.connect('key-release-event',
             this._onKeyRelease.bind(this));  
            
-        }
+        },
+        addDTPSettings(){
+            if(this.DTPSettings==false){
+                let item = new PopupMenu.PopupMenuItem(_("Dash to Panel Settings"));
+                item.connect('activate', ()=>{
+                    Util.spawnCommandLine('gnome-shell-extension-prefs dash-to-panel@jderose9.github.com');
+                });
+                this.rightClickMenu.addMenuItem(item,1);   
+                this.DTPSettings=true;
+            }
+        },
+        removeDTPSettings(){
+            let children = this.rightClickMenu._getMenuItems();
+            if(children[1] instanceof PopupMenu.PopupMenuItem)
+                children[1].destroy();
+            this.DTPSettings=false;
+        },
+        _onMenuKeyPress(actor, event) {
+            if (global.focus_manager.navigate_from_event(event))
+                return Clutter.EVENT_STOP;
+            
+            let symbol = event.get_key_symbol();
+            if (symbol == Clutter.KEY_Left || symbol == Clutter.KEY_Right) {
+    
+                let group = global.focus_manager.get_group(this);
+                if (group) {
+                    let direction = (symbol == Clutter.KEY_Left) ? Gtk.DirectionType.LEFT : Gtk.DirectionType.RIGHT;
+                    group.navigate_focus(this, direction, false);
+                    return Clutter.EVENT_STOP;
+                }
+            }
+            return Clutter.EVENT_PROPAGATE;
+        },
+        setSensitive(sensitive) {
+            this.reactive = sensitive;
+            this.can_focus = sensitive;
+            this.track_hover = sensitive;
+        },
+        _onVisibilityChanged() {
+            if (!this.rightClickMenu || !this.leftClickMenu)
+                return;
+    
+            if (!this.visible){
+                this.rightClickMenu.close();
+                this.leftClickMenu.close();
+            }     
+        },
+        _onEvent(actor, event) {
+    
+            if (event.type() == Clutter.EventType.BUTTON_PRESS){   
+                if(event.get_button()==1){                   
+                    this.leftClickMenu.toggle();	
+                    if(this.leftClickMenu.isOpen)
+                        this.mainBox.grab_key_focus();	
+                }     
+                else if(event.get_button()==3){                      
+                    this.rightClickMenu.toggle();	                	
+                }    
+            }
+            else if(event.type() == Clutter.EventType.TOUCH_BEGIN){         
+                this.leftClickMenu.toggle();
+                if(this.leftClickMenu.isOpen)
+                    this.mainBox.grab_key_focus();
+            }
+                    
+            return Clutter.EVENT_PROPAGATE;
+        },
         createMenu(){
             
             this.vertSep=null;
@@ -117,27 +226,27 @@ var ApplicationsButton =
                 //this._redisplay();
             });
             this.updateStyle();
-        }
+        },
         toggleMenu() {
             if(this.appMenuManager.activeMenu)
                 this.appMenuManager.activeMenu.toggle();	  
      	    this.leftClickMenu.toggle();
             if(this.leftClickMenu.isOpen)
                 this.mainBox.grab_key_focus();
-        }
+        },
         toggleRightClickMenu(){
             if(this.rightClickMenu.isOpen)
                 this.rightClickMenu.toggle();   
-        }
+        },
         getWidget() {
             return this._menuButtonWidget;
-        }
+        },
         updateHeight(){
             //set menu height
             this.mainBox.set_height(this._settings.get_int('menu-height'));
             this._redisplay();
             this._redisplayRightSide();
-        }
+        },
         updateStyle(){
             let addStyle=this._settings.get_boolean('enable-custom-arc-menu');
   
@@ -169,7 +278,7 @@ var ApplicationsButton =
                     }
                 }.bind(this));
             }
-        }
+        },
         // Destroy the menu button
         _onDestroy() {
             ExtensionSystem.disconnect(this.extensionChangedId);
@@ -191,11 +300,10 @@ var ApplicationsButton =
                 this.leftClickMenu.destroy();
                 this.leftClickMenu = null;
             }
-            if(this.rightClickMenu){
+            if (this.rightClickMenu) {
                 this.rightClickMenu.destroy();
                 this.rightClickMenu = null;
             }
-
             if (this._showingId > 0) {
                 Main.overview.disconnect(this._showingId);
                 this._showingId = 0;
@@ -213,7 +321,7 @@ var ApplicationsButton =
                 this._installedChangedId  = 0;
             }
             super.destroy();
-        }
+        },
 
         // Handle captured event
         _onCapturedEvent(actor, event) {
@@ -222,7 +330,7 @@ var ApplicationsButton =
                     return true;
             }
             return false;
-        }
+        },
         // Handle changes in menu open state
         _onOpenStateChanged(menu, open) {
             if (open) {
@@ -233,19 +341,22 @@ var ApplicationsButton =
                 this.setDefaultMenuView();
                 this.mainBox.show();  
             }
-            super._onOpenStateChanged(menu, open);
-        }
+            if (open)
+                modernGnome ?  this.add_style_pseudo_class('active') : this.actor.add_style_pseudo_class('active');
+            else
+                modernGnome ? this.remove_style_pseudo_class('active'): this.actor.remove_style_pseudo_class('active');
+        },
         _redisplayRightSide(){
             this.rightBox.destroy_all_children();
             this._createRightBox();
             this.updateStyle();
-        }
+        },
         // Redisplay the menu
         _redisplay() {
             if (this.applicationsBox)
                 this._clearApplicationsBox();
             this._display();
-        }
+        },
         // Display the menu
         _display() {
             this.mainBox.hide();
@@ -258,7 +369,7 @@ var ApplicationsButton =
             if(this.vertSep!=null)
                 this.vertSep.queue_repaint(); 
             
-        }
+        },
         // Load menu category data for a single category
         _loadCategory(categoryId, dir) {
             let iter = dir.iter();
@@ -281,7 +392,7 @@ var ApplicationsButton =
                         this._loadCategory(categoryId, subdir);
                 }
             }
-        }
+        },
 
         // Load data for all menu categories
         _loadCategories() {
@@ -291,7 +402,7 @@ var ApplicationsButton =
             this.applicationsByCategory["Frequent Apps"] = [];
        
             this._usage = Shell.AppUsage.get_default();
-            let mostUsed = this._usage.get_most_used("");
+            let mostUsed =  modernGnome ?  this._usage.get_most_used() : this._usage.get_most_used("");
             for (let i = 0; i < mostUsed.length; i++) {
                 if (mostUsed[i] && mostUsed[i].get_app_info().should_show())
                     this.applicationsByCategory["Frequent Apps"].push(mostUsed[i]);
@@ -312,7 +423,7 @@ var ApplicationsButton =
                     }
                 }
             }
-        }
+        },
         _displayCategories(){
             
          	this._clearApplicationsBox();
@@ -328,7 +439,7 @@ var ApplicationsButton =
 			    this.applicationsBox.add_actor(categoryMenuItem.actor);	
             }
             this.updateStyle();
-        }
+        },
 
         // Load menu place shortcuts
         _displayPlaces() {
@@ -352,7 +463,7 @@ var ApplicationsButton =
                     this.shorcutsBox.add_actor(placeMenuItem.actor);
                 }
             }
-        }
+        },
         _loadFavorites() {
             let pinnedApps = this._settings.get_strv('pinned-app-list');
             this.favoritesArray=[];
@@ -372,7 +483,7 @@ var ApplicationsButton =
                 this.favoritesArray.push(favoritesMenuItem);
             }
          
-        }
+        },
         _displayFavorites() {
             //global.log('display favs');
             this._clearApplicationsBox();
@@ -383,7 +494,7 @@ var ApplicationsButton =
                 this.applicationsBox.add_actor(this.favoritesArray[i].actor);		   
             }
             this.updateStyle();  
-        }
+        },
         // Create the menu layout
         _createLayout() {
             // Create main menu sections and scroll views
@@ -485,7 +596,7 @@ var ApplicationsButton =
             });
             this._createRightBox();
             this.mainBox.add(this.rightBox);   
-        }
+        },
         
         _createRightBox(){
             this.placesShortcuts=false
@@ -674,7 +785,7 @@ var ApplicationsButton =
                 y_fill: false,
                 y_align: St.Align.END
             });
-        }
+        },
         placesAddSeparator(id){
             this._sections[id].box.add(this._createHorizontalSeparator(true), {
                 x_expand: true,
@@ -683,7 +794,7 @@ var ApplicationsButton =
                 y_fill: false,
                 y_align: St.Align.END
             });  
-        }
+        },
         _redisplayPlaces(id) {
             if(this._sections[id].length>0){
                 this.bookmarksShorctus = false;
@@ -693,7 +804,7 @@ var ApplicationsButton =
                 this._sections[id].box.destroy_all_children();
             }
             this._createPlaces(id);
-        }
+        },
     	_createPlaces(id) {
             let places = this.placesManager.get(id);
             if(this.placesManager.get('network').length>0)
@@ -734,7 +845,7 @@ var ApplicationsButton =
                             this.placesAddSeparator(id);                        
                 }
             }
-    	}
+    	},
 
         //used to check if a shortcut should be displayed
         getShouldShowShortcut(shortcutName){
@@ -748,7 +859,7 @@ var ApplicationsButton =
               
             }
       	    return addToMenu;
-        }
+        },
         // Scroll to a specific button (menu item) in the applications scroll view
         scrollToButton(button) {
             let appsScrollBoxAdj = this.applicationsScrollBox.get_vscroll_bar().get_adjustment();
@@ -763,7 +874,7 @@ var ApplicationsButton =
                 newScrollValue = buttonAlloc.y2 - boxHeight + 10;
             if (newScrollValue != currentScrollValue)
                 appsScrollBoxAdj.set_value(newScrollValue);
-        }
+        },
         
         // Handle key press events on the mainBox to support the "type-away-feature"
         _onMainBoxKeyPress(mainBox, event) {
@@ -805,7 +916,7 @@ var ApplicationsButton =
                     }
             }
             return Clutter.EVENT_PROPAGATE;
-        }
+        },
         setDefaultMenuView()
         {
             this._clearApplicationsBox();
@@ -819,7 +930,7 @@ var ApplicationsButton =
             }
             this.backButton.actor.hide();
             this.viewProgramsButton.actor.show();
-        }
+        },
         _onSearchBoxKeyPress(searchBox, event) {
             let symbol = event.get_key_symbol();
             if (!searchBox.isEmpty() && searchBox.hasKeyFocus()) {
@@ -828,11 +939,11 @@ var ApplicationsButton =
             	}
     	    }
             return Clutter.EVENT_PROPAGATE;
-        }
+        },
 
         resetSearch(){ //used by back button to clear results
             this.searchBox.clear();
-        }
+        },
         _onSearchBoxChanged(searchBox, searchString) {        
             if(this.currentMenu != Constants.CURRENT_MENU.SEARCH_RESULTS){              
             	this.currentMenu = Constants.CURRENT_MENU.SEARCH_RESULTS;        
@@ -849,7 +960,7 @@ var ApplicationsButton =
                 this.backButton.actor.show();
 	            this.viewProgramsButton.actor.hide();             	    
             }            	
-        }
+        },
         // Clear the applications menu box
         _clearApplicationsBox() {
             let actors = this.applicationsBox.get_children();
@@ -857,7 +968,7 @@ var ApplicationsButton =
                 let actor = actors[i];
                 this.applicationsBox.remove_actor(actor);
             }
-        }
+        },
 
         // Select a category or show category overview if no category specified
         selectCategory(dir) {
@@ -879,7 +990,7 @@ var ApplicationsButton =
                 this.viewProgramsButton.actor.show();
             }
             this.updateStyle();
-        }
+        },
 
         // Display application menu items
         _displayButtons(apps) {
@@ -896,7 +1007,7 @@ var ApplicationsButton =
                     }
                 }
             }
-        }
+        },
         _displayAllApps(){
             let appList=[];
             for(let directory in this.applicationsByCategory){
@@ -910,7 +1021,7 @@ var ApplicationsButton =
             this.updateStyle();   
             this.backButton.actor.show();
             this.viewProgramsButton.actor.hide();
-        }
+        },
         // Get a list of applications for the specified category or search query
         _listApplications(category_menu_id) {
             let applist;
@@ -930,7 +1041,7 @@ var ApplicationsButton =
             }
             
             return applist;
-        }
+        },
         //Create a horizontal separator
         _createHorizontalSeparator(rightSide){
             let hSep = new St.DrawingArea({
@@ -962,7 +1073,7 @@ var ApplicationsButton =
              });
              hSep.queue_repaint();
              return hSep;
-         }
+         },
          // Create a vertical separator
          _createVertSeparator(){      
              let vertSep = new St.DrawingArea({
@@ -988,5 +1099,30 @@ var ApplicationsButton =
              vertSep.queue_repaint();
              return vertSep;
          }
-    };
-  
+    });
+// Aplication menu class
+const ApplicationsMenu = class extends PopupMenu.PopupMenu {
+    // Initialize the menu
+    constructor(sourceActor, arrowAlignment, arrowSide, button, settings) {
+        super(sourceActor, arrowAlignment, arrowSide);
+        this._settings = settings;
+        this._button = button;  
+    }
+    // Return that the menu is not empty (used by parent class)
+    isEmpty() {
+        return false;
+    }
+    // Handle opening the menu
+    open(animate) {
+        super.open(animate);
+    }
+    // Handle closing the menu
+    close(animate) {
+        if (this._button.applicationsBox) {
+            let searchBox = this._button.searchBox;
+            if(!searchBox.isEmpty())
+                searchBox.clear();
+        }
+        super.close(animate);
+    }
+};

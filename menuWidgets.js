@@ -43,7 +43,6 @@ const LoginManager = imports.misc.loginManager;
 const Gdk = imports.gi.Gdk;
 const Gtk = imports.gi.Gtk;
 const AppFavorites = imports.ui.appFavorites;
-
 const SWITCHEROO_BUS_NAME = 'net.hadess.SwitcherooControl';
 const SWITCHEROO_OBJECT_PATH = '/net/hadess/SwitcherooControl';
 const SwitcherooProxyInterface = '<node> \
@@ -51,6 +50,7 @@ const SwitcherooProxyInterface = '<node> \
   <property name="HasDualGpu" type="b" access="read"/> \
 </interface> \
 </node>';
+
 const SwitcherooProxy = Gio.DBusProxy.makeProxyWrapper(SwitcherooProxyInterface);
 // Menu Size variables
 const LARGE_ICON_SIZE = 34;
