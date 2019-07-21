@@ -80,7 +80,7 @@ var AppRightClickMenu = class extends PopupMenu.PopupMenu {
         //this.actor.style_class = 'app-right-click-boxpointer';
         //this.actor.add_style_class_name('app-right-click');
         //this.actor.width=250;
-        this.redisplay();
+        
         this.discreteGpuAvailable = false;
         Gio.DBus.system.watch_name(SWITCHEROO_BUS_NAME,
             Gio.BusNameWatcherFlags.NONE,
@@ -89,6 +89,7 @@ var AppRightClickMenu = class extends PopupMenu.PopupMenu {
                 this._switcherooProxy = null;
                 this._updateDiscreteGpuAvailable();
             });
+        this.redisplay();
     }
     _updateDiscreteGpuAvailable() {
         if (!this._switcherooProxy)
@@ -148,28 +149,20 @@ var AppRightClickMenu = class extends PopupMenu.PopupMenu {
 
             if (!this._app.is_window_backed()) {
                 this._appendSeparator();
-
                 if (this._app.can_open_new_window() &&
                     !actions.includes('new-window')) {
                     this._newWindowMenuItem = this._appendMenuItem(_("New Window"));
                     this._newWindowMenuItem.connect('activate', () => {
-                        
-                        
                         this._app.open_new_window(-1);
                         this.emit('activate-window', null);
-
-                        this._button.leftClickMenu.toggle();
-                        
-                    });
-                   
+                        this._button.leftClickMenu.toggle(); 
+                    });  
                 }
                 if (this.discreteGpuAvailable &&
                     this._app.state == Shell.AppState.STOPPED &&
                     !actions.includes('activate-discrete-gpu')) {
                     this._onDiscreteGpuMenuItem = this._appendMenuItem(_("Launch using Dedicated Graphics Card"));
                     this._onDiscreteGpuMenuItem.connect('activate', () => {
-                        
-    
                         this._app.launch(0, -1, true);
                         this.emit('activate-window', null);
                         this._button.leftClickMenu.toggle();
@@ -180,21 +173,16 @@ var AppRightClickMenu = class extends PopupMenu.PopupMenu {
                     let action = actions[i];
                     let item = this._appendMenuItem(this.appInfo.get_action_name(action));
                     item.connect('activate', (emitter, event) => {
-
                         this._app.launch_action(action, event.get_time(), -1);
                         this.emit('activate-window', null);
-        
                         this._button.leftClickMenu.toggle();
                     });
                 }
 
                 let canFavorite = global.settings.is_writable('favorite-apps');
-
                 if (canFavorite) {
                     this._appendSeparator();
-
                     let isFavorite = AppFavorites.getAppFavorites().isFavorite(this._app.get_id());
-
                     if (isFavorite) {
                         let item = this._appendMenuItem(_("Remove from Favorites"));
                         item.connect('activate', () => {
@@ -209,34 +197,31 @@ var AppRightClickMenu = class extends PopupMenu.PopupMenu {
                         });
                     }
                 }
-                if(this.isPinnedApp){
+                let pinnedApps = this._settings.get_strv('pinned-app-list');
+                let pinnedAppID=[];
+                for(let i=2;i<pinnedApps.length;i+=3){
+                    pinnedAppID.push(pinnedApps[i]);  
+                }
+                let match = pinnedAppID.find( (element)=>{
+                    return element == this._app.get_id();
+                });
+                if(this.isPinnedApp || match){ //if app is pinned add Unpin
                     let item = new PopupMenu.PopupMenuItem(_("Unpin from Arc Menu"));  
                     item.connect('activate', ()=>{
-                        let pinnedApps = this._settings.get_strv('pinned-app-list');
-                        for(let i = 0;i<pinnedApps.length;i+=3)
-                        {
-                            if(pinnedApps[i+2]==this._app.get_id())
-                            {
-                                //global.log(this._app.get_id());
+                        for(let i = 0;i<pinnedApps.length;i+=3){
+                            if(pinnedApps[i+2]==this._app.get_id()){
                                 pinnedApps.splice(i,3);
-                                //global.log( i / 3 );
                                 this._button.applicationsBox.remove_actor(this._button.favoritesArray[ i / 3 ].actor)
-                                //this._button.favoritesArray.splice(i / 3, 1);
                                 this._settings.set_strv('pinned-app-list',pinnedApps);
-                                //this._button.applicationsBox.show();
                                 break;
                             }
                         }
                     });      
                     this.addMenuItem(item);
                 }
-                else{
+                else{ //if app is not pinned add pin
                     let item = new PopupMenu.PopupMenuItem(_("Pin to Arc Menu"));   
                     item.connect('activate', ()=>{
-                        let pinnedApps = this._settings.get_strv('pinned-app-list');
-                        //global.log(this.appInfo.get_display_name());
-                        //global.log(this.appInfo.get_icon().to_string());
-                        //global.log(this._app.get_id());
                         pinnedApps.push(this.appInfo.get_display_name());
                         pinnedApps.push(this.appInfo.get_icon().to_string());
                         pinnedApps.push(this._app.get_id());
@@ -264,19 +249,15 @@ var AppRightClickMenu = class extends PopupMenu.PopupMenu {
                 }
             }
         }  
-        else{  
+        else{  //if pinned custom shortcut add unpin option to menu
             if(this.isPinnedApp){
                 this._appendSeparator()  ;
                 let item = new PopupMenu.PopupMenuItem(_("Unpin from Arc Menu"));   
                 item.connect('activate', ()=>{
                     let pinnedApps = this._settings.get_strv('pinned-app-list');
-                        for(let i = 0;i<pinnedApps.length;i+=3)
-                        {
-                            if(pinnedApps[i+2]==this._app)
-                            {
-                               //global.log(this._app);
+                        for(let i = 0;i<pinnedApps.length;i+=3){
+                            if(pinnedApps[i+2]==this._app){
                                 pinnedApps.splice(i,3);
-                                //global.log( i / 3 );
                                 this._button.applicationsBox.remove_actor(this._button.favoritesArray[ i / 3 ].actor)
                                 this._button.favoritesArray.splice(i / 3, 1);
                                 this._settings.set_strv('pinned-app-list',pinnedApps);
@@ -286,13 +267,11 @@ var AppRightClickMenu = class extends PopupMenu.PopupMenu {
                 });      
                 this.addMenuItem(item);
             }
-        }
-        
+        }   
     }
 
     _appendSeparator() {
         let separator = new PopupMenu.PopupSeparatorMenuItem();
-        //separator.actor.set_height(1);
         separator.actor.style_class='app-right-click-sep';
         separator._separator.style_class='';
         this.addMenuItem(separator);
@@ -300,7 +279,6 @@ var AppRightClickMenu = class extends PopupMenu.PopupMenu {
 
     _appendMenuItem(labelText) {
         let item = new PopupMenu.PopupMenuItem(labelText);
-        //item.actor.style_class = 'app-menu-item';  
         this.addMenuItem(item);
         return item;
     }
