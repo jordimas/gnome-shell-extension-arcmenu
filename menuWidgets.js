@@ -781,11 +781,9 @@ var FavoritesMenuItem = class extends BaseMenuItem {
         this.app = sys.lookup_app(this._command);
         if(this._command == "firefox.desktop" && !this.app){
             //check if Firefox ESR
-            if(sys.lookup_app("firefox-esr.desktop")){
-                this._command ="firefox-esr.desktop";
-                this.app = sys.lookup_app(this._command);
+            this.app = sys.lookup_app("firefox-esr.desktop");
+            if(this.app)
                 this._icon.gicon = Gio.icon_new_for_string("firefox-esr");
-            }
         }
         this.rightClickMenu = new AppRightClickMenu(this.actor,this.app ? this.app : this._command ,this._button,true);
 
