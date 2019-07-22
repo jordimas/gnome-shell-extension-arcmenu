@@ -203,8 +203,11 @@ var AppRightClickMenu = class extends PopupMenu.PopupMenu {
                     pinnedAppID.push(pinnedApps[i]);  
                 }
                 let match = pinnedAppID.find( (element)=>{
+                   // global.log(this._app.get_id());
+                    //global.log(element);
                     return element == this._app.get_id();
                 });
+                //global.log(this._app.get_id());
                 if(this.isPinnedApp || match){ //if app is pinned add Unpin
                     let item = new PopupMenu.PopupMenuItem(_("Unpin from Arc Menu"));  
                     item.connect('activate', ()=>{
@@ -864,10 +867,10 @@ var FavoritesMenuItem = class extends BaseMenuItem {
             let temp = this._button.favoritesArray[this.startIndex];
             this._button.favoritesArray.splice(this.startIndex,1);
             this._button.favoritesArray.splice(index,0,temp);
-            this.emit('saveSettings');	
         }
         Main.overview.endItemDrag(this);
-        DND.removeDragMonitor(this._dragMonitor);     
+        DND.removeDragMonitor(this._dragMonitor);   
+        this.emit('saveSettings');	  
     }
     
     getDragActor() {
