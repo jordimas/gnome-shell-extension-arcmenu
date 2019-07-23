@@ -203,8 +203,11 @@ var AppRightClickMenu = class extends PopupMenu.PopupMenu {
                     pinnedAppID.push(pinnedApps[i]);  
                 }
                 let match = pinnedAppID.find( (element)=>{
+                   // global.log(this._app.get_id());
+                    //global.log(element);
                     return element == this._app.get_id();
                 });
+                //global.log(this._app.get_id());
                 if(this.isPinnedApp || match){ //if app is pinned add Unpin
                     let item = new PopupMenu.PopupMenuItem(_("Unpin from Arc Menu"));  
                     item.connect('activate', ()=>{
@@ -778,9 +781,10 @@ var FavoritesMenuItem = class extends BaseMenuItem {
         this.app = sys.lookup_app(this._command);
         if(this._command == "firefox.desktop" && !this.app){
             //check if Firefox ESR
-            if(sys.lookup_app("firefox-esr.desktop")){
-                this._command ="firefox-esr.desktop";
-                this.app = sys.lookup_app(this._command);
+            this.app = sys.lookup_app("firefox-esr.desktop");
+            if(this.app){
+                this._iconPath = "firefox-esr";
+                this._command = "firefox-esr.desktop";
                 this._icon.gicon = Gio.icon_new_for_string("firefox-esr");
             }
         }
@@ -818,39 +822,31 @@ var FavoritesMenuItem = class extends BaseMenuItem {
         this.dragStartY = (this._draggable._dragStartY); 
         this._emptyDropTarget = new Dash.EmptyDropTargetItem();
         this._emptyDropTarget.setChild(new St.Bin({ style_class: 'arc-empty-dash-drop-target' }));  
-	    this._button.applicationsBox.insert_child_at_index(this._emptyDropTarget, 0);
- 	    this._emptyDropTarget.show(false);
+
         let p = this._button.applicationsBox.get_transformed_position();
         this.posY= p[1];        
-        this.rowHeight = this._button.applicationsBox.get_child_at_index(1).height;
-        //global.log("Box Start Y: "+ p[1]);            
-        //global.log("Row Height: "+ this.rowHeight);    
-        //global.log("Drag Start Y: "+this.dragStartY); 
+        this.rowHeight = this._button.applicationsBox.get_child_at_index(0).height;
 
-         this.startIndex=0;
-         for(let i = 0; i< this._button.applicationsBox.get_children().length;i++)
-         {
-         	if(this.actor == this._button.applicationsBox.get_child_at_index(i))
-         	  this.startIndex=i;
-         }
-         //global.log(this.startIndex);
-         //global.log(this._draggable._dragStartY);
+        this.startIndex=0;
+        for(let i = 0; i< this._button.applicationsBox.get_children().length;i++){
+        if(this.actor == this._button.applicationsBox.get_child_at_index(i))
+            this.startIndex=i;
+        }
+        this._button.applicationsBox.insert_child_at_index(this._emptyDropTarget, this.startIndex);
             
         Main.overview.beginItemDrag(this);  
         this._emptyDropTarget.show(true); 
 
     }
     _onDragMotion(dragEvent) {
-    	let newIndex = Math.floor((this._draggable._dragY - this.posY) / (this.rowHeight));
-    	if(newIndex > this._button.applicationsBox.get_children().length -1)
-        	newIndex = this._button.applicationsBox.get_children().length -1;
-        if(newIndex < 0)
-        	newIndex = 0;	
-    	if(this._button.applicationsBox.get_child_at_index(newIndex) != this._emptyDropTarget)
-    	{
-    		//global.log("not equal");
-		this._button.applicationsBox.set_child_at_index(this._emptyDropTarget, newIndex);
-	}
+    	this.newIndex = Math.floor((this._draggable._dragY - this.posY) / (this.rowHeight));
+    	if(this.newIndex > this._button.applicationsBox.get_children().length -1)
+            this.newIndex = this._button.applicationsBox.get_children().length -1;
+        if(this.newIndex < 0)
+            this.newIndex = 0;	
+    	if(this._button.applicationsBox.get_child_at_index(this.newIndex) != this._emptyDropTarget){
+            this._button.applicationsBox.set_child_at_index(this._emptyDropTarget, this.newIndex);
+	    }
 
 	return DND.DragMotionResult.CONTINUE;
     }
@@ -859,22 +855,23 @@ var FavoritesMenuItem = class extends BaseMenuItem {
     }
 
     _onDragEnd() {    
- 	this._button.applicationsBox.remove_child(this._emptyDropTarget); 
-        let index = Math.floor((this._draggable._dragY - this.posY) / this.rowHeight);
-        //global.log("NEW INDEX: "+index);
-        if(index>=this.startIndex)
+ 	    this._button.applicationsBox.remove_child(this._emptyDropTarget); 
+        let index = this.newIndex;
+        if(index > this.startIndex)
         	index--;
-        if(index> this._button.applicationsBox.get_children().length -1)
-        	index= this._button.applicationsBox.get_children().length -1;
+        if(index > this._button.applicationsBox.get_children().length -1)
+        	index = this._button.applicationsBox.get_children().length -1;
          if(index < 0)
-        	index = 0;		
-    	this._button.applicationsBox.set_child_at_index(this.actor,index);    	
-    	let temp = this._button.favoritesArray[this.startIndex-1];
-    	this._button.favoritesArray.splice(this.startIndex-1,1);
-    	this._button.favoritesArray.splice(index,0,temp);
+            index = 0;	
+        if(index != this.startIndex){	
+            this._button.applicationsBox.set_child_at_index(this.actor,index);    	
+            let temp = this._button.favoritesArray[this.startIndex];
+            this._button.favoritesArray.splice(this.startIndex,1);
+            this._button.favoritesArray.splice(index,0,temp);
+        }
         Main.overview.endItemDrag(this);
-        DND.removeDragMonitor(this._dragMonitor);
-        this.emit('saveSettings');	
+        DND.removeDragMonitor(this._dragMonitor);   
+        this.emit('saveSettings');	  
     }
     
     getDragActor() {

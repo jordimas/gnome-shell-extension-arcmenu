@@ -25,12 +25,12 @@
 var SHORTCUTS = [
     {
         label: ("Software"),
-        symbolic: "gnome-software-symbolic",
+        symbolic: "org.gnome.Software-symbolic",
         command: "gnome-software"
     },
     {
         label: ("Software"),
-        symbolic: "gnome-software-symbolic",
+        symbolic: "org.gnome.Software-symbolic",
         command: "pamac-manager"
     },
     {
