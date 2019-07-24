@@ -296,6 +296,8 @@ var ApplicationsButton =   Utils.defineClass({
                     this.placesManager.destroy();
                 this.searchBox.disconnect(this._searchBoxChangedId);
                 this.searchBox.disconnect(this._searchBoxKeyPressId);
+                this.searchBox.disconnect(this._searchBoxActivateId);
+                this.searchBox.disconnect(this._searchBoxKeyFocusInId);
                 this.mainBox.disconnect(this._mainBoxKeyPressId);
                 this.leftClickMenu.destroy();
                 this.leftClickMenu = null;
@@ -569,6 +571,8 @@ var ApplicationsButton =   Utils.defineClass({
             this._tabbedOnce = false;
             this._searchBoxChangedId = this.searchBox.connect('changed', this._onSearchBoxChanged.bind(this));
             this._searchBoxKeyPressId = this.searchBox.connect('key-press-event', this._onSearchBoxKeyPress.bind(this));
+            this._searchBoxActivateId = this.searchBox.connect('activate', this._onSearchBoxActive.bind(this));
+            this._searchBoxKeyFocusInId = this.searchBox.connect('key-focus-in', this._onSearchBoxKeyFocusIn.bind(this));
             //Add search box to menu
             this.leftBox.add(this.searchBox.actor, {
                 expand: false,
@@ -934,13 +938,27 @@ var ApplicationsButton =   Utils.defineClass({
         _onSearchBoxKeyPress(searchBox, event) {
             let symbol = event.get_key_symbol();
             if (!searchBox.isEmpty() && searchBox.hasKeyFocus()) {
-               if (symbol == Clutter.Up) {
+                if (symbol == Clutter.Up) {
+                    this.newSearch.getTopResult().actor.grab_key_focus();
+                }
+                else if (symbol == Clutter.Down) {
                     this.newSearch.getTopResult().actor.grab_key_focus();
             	}
     	    }
             return Clutter.EVENT_PROPAGATE;
         },
-
+        _onSearchBoxKeyFocusIn(searchBox) {
+            if (!searchBox.isEmpty()) {
+                this.newSearch.highlightDefault(true);
+           }
+        },
+   
+        _onSearchBoxActive() {
+            if (this.newSearch.getTopResult()) {
+                this.newSearch.getTopResult().activate();
+            }
+        },
+    
         resetSearch(){ //used by back button to clear results
             this.searchBox.clear();
         },
@@ -953,8 +971,9 @@ var ApplicationsButton =   Utils.defineClass({
             	this.newSearch.actor.hide();
             }            
             else{        
-            	this._clearApplicationsBox(); 
-             	this.applicationsBox.add(this.newSearch.actor);      
+                this._clearApplicationsBox(); 
+                this.applicationsBox.add(this.newSearch.actor);    
+                this.newSearch.highlightDefault(true);
  		        this.newSearch.actor.show();         
     	    	this.newSearch.setTerms([searchString]);   
                 this.backButton.actor.show();
