@@ -38,8 +38,8 @@ const appSys = Shell.AppSystem.get_default();
 const Gettext = imports.gettext.domain(Me.metadata['gettext-domain']);
 const _ = Gettext.gettext;
 
-var MAX_LIST_SEARCH_RESULTS_ROWS = 30;
-var MAX_APPS_SEARCH_RESULTS_ROWS = 10;
+var MAX_LIST_SEARCH_RESULTS_ROWS = 6;
+var MAX_APPS_SEARCH_RESULTS_ROWS = 6;
 
 var ArcSearchMaxWidthBin = GObject.registerClass(
 class ArcSearchMaxWidthBin extends St.Bin {
@@ -554,7 +554,7 @@ var SearchResults = class {
 
         let escapedTerms = this._terms.map(term => Shell.util_regex_escape(term));
         this._highlightRegex = new RegExp(`(${escapedTerms.join('|')})`, 'gi');
-
+     
         this.emit('terms-changed');
     }
 
@@ -654,9 +654,9 @@ var SearchResults = class {
         if (!result)
             return;
         if (selected) {
-            result.actor.add_style_pseudo_class('active');
+            result.actor.add_style_class_name('selected');
         } else {
-            result.actor.remove_style_pseudo_class('active');
+            result.actor.remove_style_class_name('selected');
         }
     }
 
