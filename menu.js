@@ -297,6 +297,7 @@ var ApplicationsButton =   Utils.defineClass({
                 this.searchBox.disconnect(this._searchBoxChangedId);
                 this.searchBox.disconnect(this._searchBoxKeyPressId);
                 this.searchBox.disconnect(this._searchBoxActivateId);
+                this.searchBox.disconnect(this._searchBoxKeyFocusInId);
                 this.mainBox.disconnect(this._mainBoxKeyPressId);
                 this.leftClickMenu.destroy();
                 this.leftClickMenu = null;
@@ -571,6 +572,7 @@ var ApplicationsButton =   Utils.defineClass({
             this._searchBoxChangedId = this.searchBox.connect('changed', this._onSearchBoxChanged.bind(this));
             this._searchBoxKeyPressId = this.searchBox.connect('key-press-event', this._onSearchBoxKeyPress.bind(this));
             this._searchBoxActivateId = this.searchBox.connect('activate', this._onSearchBoxActive.bind(this));
+            this._searchBoxKeyFocusInId = this.searchBox.connect('key-focus-in', this._onSearchBoxKeyFocusIn.bind(this));
             //Add search box to menu
             this.leftBox.add(this.searchBox.actor, {
                 expand: false,
@@ -939,12 +941,18 @@ var ApplicationsButton =   Utils.defineClass({
                 if (symbol == Clutter.Up) {
                     this.newSearch.getTopResult().actor.grab_key_focus();
                 }
-                if (symbol == Clutter.Down) {
+                else if (symbol == Clutter.Down) {
                     this.newSearch.getTopResult().actor.grab_key_focus();
             	}
     	    }
             return Clutter.EVENT_PROPAGATE;
         },
+        _onSearchBoxKeyFocusIn(searchBox) {
+            if (!searchBox.isEmpty()) {
+                this.newSearch.highlightDefault(true);
+           }
+        },
+   
         _onSearchBoxActive() {
             if (this.newSearch.getTopResult()) {
                 this.newSearch.getTopResult().activate();
