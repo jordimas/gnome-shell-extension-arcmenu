@@ -1,0 +1,509 @@
+# Norwegian (bokmål) translation file for Arc Menu.
+# Copyright (C) 2019
+# This file is distributed under the same license as the Arc Menu package.
+# Sigbjørn Kjensmo <kjesig@gmail.com>, 2019.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2019-07-18 18:37-0400\n"
+"PO-Revision-Date: 2019-07-25 09:36+0200\n"
+"Language-Team: Norwegian <>\n"
+"Language: nb_NO\n"
+"Last-Translator: Sigbjørn Kjensmo <kjesig@gmail.com>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Poedit 2.2.3\n"
+
+#: controller.js:253 menuWidgets.js:1432
+msgid "Applications"
+msgstr "Applikasjoner"
+
+#: menu.js:334 placeDisplay.js:447 prefs.js:1803
+msgid "Home"
+msgstr "Hjem"
+
+#: menu.js:341 prefs.js:1803
+msgid "Documents"
+msgstr "Dokumenter"
+
+#: menu.js:341 prefs.js:1803
+msgid "Downloads"
+msgstr "Nedlastinger"
+
+#: menu.js:341 prefs.js:1803
+msgid "Music"
+msgstr "Musikk"
+
+#: menu.js:341 prefs.js:1803
+msgid "Pictures"
+msgstr "Bilder"
+
+#: menu.js:341 prefs.js:1803
+msgid "Videos"
+msgstr "Videoer"
+
+#: menu.js:541 prefs.js:1804
+msgid "Network"
+msgstr "Nettverk"
+
+#: menu.js:596 prefs.js:1899
+msgid "Software"
+msgstr "Programvare"
+
+#: menu.js:596 prefs.js:1899
+msgid "Settings"
+msgstr "Instillinger"
+
+#: menu.js:596 prefs.js:1899
+msgid "Tweaks"
+msgstr "Konfigurasjonsendringer"
+
+#: menu.js:596 menuWidgets.js:776 prefs.js:1899
+msgid "Terminal"
+msgstr "Terminal"
+
+#: menuWidgets.js:129
+msgid "Current Windows:"
+msgstr "Nåværende vinduer:"
+
+#: menuWidgets.js:150
+msgid "New Window"
+msgstr "Nytt vindu"
+
+#: menuWidgets.js:165
+msgid "Launch using Dedicated Graphics Card"
+msgstr "Start med dedikert grafikkort"
+
+#: menuWidgets.js:195
+msgid "Remove from Favorites"
+msgstr "Fjern fra Favoritter"
+
+#: menuWidgets.js:201
+msgid "Add to Favorites"
+msgstr "Legg til Favoritter"
+
+#: menuWidgets.js:209 menuWidgets.js:266
+msgid "Unpin from Arc Menu"
+msgstr "Løsne fra Arc Menu"
+
+#: menuWidgets.js:230
+msgid "Pin to Arc Menu"
+msgstr "Fest til Arc Menu"
+
+#: menuWidgets.js:245
+msgid "Show Details"
+msgstr "Vis Detaljer"
+
+#: menuWidgets.js:403 prefs.js:1899
+msgid "Activities Overview"
+msgstr "Aktivitets Oversikt"
+
+#: menuWidgets.js:529
+msgid "Power Off"
+msgstr "Slå av"
+
+#: menuWidgets.js:542 prefs.js:1973
+msgid "Log Out"
+msgstr "Logg ut"
+
+#: menuWidgets.js:555 prefs.js:1937
+msgid "Suspend"
+msgstr "Dvale"
+
+#: menuWidgets.js:573 prefs.js:1955
+msgid "Lock"
+msgstr "Lås"
+
+#: menuWidgets.js:595
+msgid "Back"
+msgstr "Tilbake"
+
+#: menuWidgets.js:651
+msgid "All Programs"
+msgstr "Alle programmer"
+
+#: menuWidgets.js:775 twoMenuButton.js:77
+msgid "Arc Menu Settings"
+msgstr "Arc Menu instillinger"
+
+#: menuWidgets.js:1119
+msgid "Frequent Apps"
+msgstr "Hyppige apper"
+
+#: menuWidgets.js:1269
+msgid "Type to search…"
+msgstr "Skriv for å søke..."
+
+#: placeDisplay.js:138
+#, javascript-format
+msgid "Failed to launch “%s”"
+msgstr "Kunne ikke starte “%s”"
+
+#: placeDisplay.js:153
+#, javascript-format
+msgid "Failed to mount volume for “%s”"
+msgstr "Kunne ikke montere volumet for “%s”"
+
+#: placeDisplay.js:237 placeDisplay.js:260 prefs.js:1803
+msgid "Computer"
+msgstr "Datamaskin"
+
+#: placeDisplay.js:321
+#, javascript-format
+msgid "Ejecting drive “%s” failed:"
+msgstr "Fjerning av stasjon “%s” mislyktes:"
+
+#: prefs.js:46 prefs.js:620
+msgid "Pinned Apps"
+msgstr "Festede Apper"
+
+#: prefs.js:51
+msgid "Your Pinned Apps:"
+msgstr "Dine Festede Apper:"
+
+#: prefs.js:75
+msgid "Add More Apps"
+msgstr "Legg til flere Apper"
+
+#: prefs.js:119
+msgid "Add Custom Shortcut"
+msgstr "Legg til egendefinert snarvei"
+
+#: prefs.js:153
+msgid "Save"
+msgstr "Lagre"
+
+#: prefs.js:278
+msgid "Select Apps to add to Pinned Apps List"
+msgstr "Velg applikasjoner å legge til Festede Apper-listen"
+
+#: prefs.js:298 prefs.js:457
+msgid "Add"
+msgstr "Legg til"
+
+#: prefs.js:406
+msgid "Add a Custom Shortcut"
+msgstr "Legg til egendefinert snarvei"
+
+#: prefs.js:416
+msgid "Shortcut Name:"
+msgstr "Snarveinavn:"
+
+#: prefs.js:430
+msgid "Icon Path/Icon Symbolic:"
+msgstr "Ikonsti/Ikon symbolsk:"
+
+#: prefs.js:444
+msgid "Terminal Command:"
+msgstr "Terminalkommando:"
+
+#: prefs.js:491
+msgid "General"
+msgstr "Generelt"
+
+#: prefs.js:500
+msgid "Menu Button Position in Panel"
+msgstr "Menyknappens posisjon i panelet"
+
+#: prefs.js:507
+msgid "Left"
+msgstr "Venstre"
+
+#: prefs.js:510
+msgid "Center"
+msgstr "Midten"
+
+#: prefs.js:514
+msgid "Right"
+msgstr "Høyre"
+
+#: prefs.js:552
+msgid "Display on all monitors when using Dash to Panel"
+msgstr "Vis på alle skjermer ved bruk av Dash to Panel"
+
+#: prefs.js:573
+msgid "Disable Tooltips"
+msgstr "Deaktiver verktøytips"
+
+#: prefs.js:595
+msgid "Disable activities hot corner"
+msgstr "Deaktiver activities hurtighjørne"
+
+#: prefs.js:614
+msgid "Choose Arc Menus Default View"
+msgstr "Velg Arc Menus standardvisning"
+
+#: prefs.js:621
+msgid "Categories List"
+msgstr "Kategoriliste"
+
+#: prefs.js:646
+msgid "Set Menu Hotkey"
+msgstr "Angi meny hurtigtast"
+
+#: prefs.js:656
+msgid "Left Super Key"
+msgstr "Venstre Supertast"
+
+#: prefs.js:662
+msgid "Right Super Key"
+msgstr "Høyre Supertast"
+
+#: prefs.js:667
+msgid "Custom"
+msgstr "Egendefinert"
+
+#: prefs.js:672
+msgid "None"
+msgstr "Ingen"
+
+#: prefs.js:764
+msgid "Current Hotkey"
+msgstr "Nåverende hurtigtast"
+
+#: prefs.js:790
+msgid "Set Custom Shortcut"
+msgstr "Angi egendefinert snarvei"
+
+#: prefs.js:799
+msgid "Press a key"
+msgstr "Tykk på en tast"
+
+#: prefs.js:824
+msgid "Modifiers"
+msgstr "Modifikatorer"
+
+#: prefs.js:829
+msgid "Ctrl"
+msgstr "Ctrl"
+
+#: prefs.js:834
+msgid "Super"
+msgstr "Super"
+
+#: prefs.js:838
+msgid "Shift"
+msgstr "Shift"
+
+#: prefs.js:842
+msgid "Alt"
+msgstr "Alt"
+
+#: prefs.js:906 prefs.js:1447 prefs.js:1752
+msgid "Apply"
+msgstr "Bruk"
+
+#: prefs.js:941
+msgid "Button appearance"
+msgstr "Knappens utseende"
+
+#: prefs.js:953
+msgid "Text for the menu button"
+msgstr "Tekst for menyknappen"
+
+#: prefs.js:959
+msgid "System text"
+msgstr "System tekst"
+
+#: prefs.js:962
+msgid "Custom text"
+msgstr "Egendefinert tekst"
+
+#: prefs.js:986
+msgid "Set custom text for the menu button"
+msgstr "Angi egendefinert tekst for menyknappen"
+
+#: prefs.js:1006
+msgid "Enable the arrow icon beside the button text"
+msgstr "Aktiver pilikonet ved siden av knappeteksten"
+
+#: prefs.js:1028
+msgid "Select icon for the menu button"
+msgstr "Velgt ikon for menyknappen"
+
+#: prefs.js:1038
+msgid "Please select an image icon"
+msgstr "Vennligst velg et bildeikon"
+
+#: prefs.js:1043
+msgid "Arc Menu Icon"
+msgstr "Arc Menu-ikonet"
+
+#: prefs.js:1044
+msgid "System Icon"
+msgstr "System ikon"
+
+#: prefs.js:1045
+msgid "Custom Icon"
+msgstr "Egendefinert ikon"
+
+#: prefs.js:1071
+msgid "Icon size"
+msgstr "Ikonstørrelse"
+
+#: prefs.js:1071
+msgid "default is"
+msgstr "standard er"
+
+#: prefs.js:1111
+msgid "Appearance"
+msgstr "Utseende"
+
+#: prefs.js:1120
+msgid "Customize Menu Button Appearance"
+msgstr "Tilpass menyknapputseende"
+
+#: prefs.js:1130
+msgid "Icon"
+msgstr "Ikon"
+
+#: prefs.js:1131
+msgid "Text"
+msgstr "Tekst"
+
+#: prefs.js:1132
+msgid "Icon and Text"
+msgstr "Ikon og Tekst"
+
+#: prefs.js:1133
+msgid "Text and Icon"
+msgstr "Tekst og Ikon"
+
+#: prefs.js:1156 prefs.js:1303
+msgid "Customize Arc Menu Appearance"
+msgstr "Tilpass Arc Menu utseende"
+
+#: prefs.js:1204 prefs.js:1496
+msgid "Override Arc Menu Theme"
+msgstr "Overstyr Arc Menu tema"
+
+#: prefs.js:1262
+msgid "Choose Avatar Icon Shape"
+msgstr "Velg avatar ikonform"
+
+#: prefs.js:1267
+msgid "Circular"
+msgstr "Sirkel"
+
+#: prefs.js:1268
+msgid "Square"
+msgstr "Kvadrat"
+
+#: prefs.js:1321
+msgid "Menu Height"
+msgstr "Menyhøyde"
+
+#: prefs.js:1353
+msgid "Left-Panel Width"
+msgstr "Venstre-panelstørrelse"
+
+#: prefs.js:1376
+msgid "Enable Vertical Separator"
+msgstr "Aktiver vertikalskille"
+
+#: prefs.js:1395
+msgid "Separator Color"
+msgstr "Skillefarge"
+
+#: prefs.js:1417 prefs.js:1704
+msgid "Reset"
+msgstr "Tilbakestill"
+
+#: prefs.js:1508
+msgid "Menu Background Color"
+msgstr "Meny bakgrunnsfarge"
+
+#: prefs.js:1527
+msgid "Menu Foreground Color"
+msgstr "Meny forgrunnsfarge"
+
+#: prefs.js:1545
+msgid "Font Size"
+msgstr "Skriftstørrelse"
+
+#: prefs.js:1569
+msgid "Border Color"
+msgstr "Kantfarge"
+
+#: prefs.js:1588
+msgid "Border Size"
+msgstr "Kantstørrelse"
+
+#: prefs.js:1612
+msgid "Highlighted Item Color"
+msgstr "Markert elementfarge"
+
+#: prefs.js:1631
+msgid "Corner Radius"
+msgstr "Hjørneradius"
+
+#: prefs.js:1655
+msgid "Menu Arrow Size"
+msgstr "Menypilstørrelse"
+
+#: prefs.js:1679
+msgid "Menu Displacement"
+msgstr "Menyforskyvning"
+
+#: prefs.js:1786
+msgid "Configure"
+msgstr "Konfigurer"
+
+#: prefs.js:1793
+msgid "Enable/Disable shortcuts"
+msgstr "Aktiver/Deaktiver snarveier"
+
+#: prefs.js:1848
+msgid "External Devices"
+msgstr "Eksterne enheter"
+
+#: prefs.js:1871
+msgid "Bookmarks"
+msgstr "Bokmerker"
+
+#: prefs.js:2005
+msgid "About"
+msgstr "Om"
+
+#: prefs.js:2034
+msgid "Arc-Menu"
+msgstr "Arc-Menu"
+
+#: prefs.js:2039
+msgid "version: "
+msgstr "versjon: "
+
+#: prefs.js:2047
+msgid "GitLab Page"
+msgstr "GitLab side"
+
+#: search.js:626
+msgid "Searching..."
+msgstr "Søker..."
+
+#: search.js:628
+msgid "No results."
+msgstr "Ingen resultater."
+
+#: search.js:706
+#, javascript-format
+msgid "%d more"
+msgid_plural "%d more"
+msgstr[0] "%d mer"
+msgstr[1] "%d flere"
+
+#: twoMenuButton.js:86
+msgid "Arc Menu on GitLab"
+msgstr "Arc Menu på GitLab"
+
+#: twoMenuButton.js:91
+msgid "About Arc Menu"
+msgstr "Om Arc Menu"
+
+#: twoMenuButton.js:112
+msgid "Dash to Panel Settings"
+msgstr "Dash to Panel Instillinger"
