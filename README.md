@@ -132,7 +132,7 @@ Arc-Menu is Free Software: You can use, study share and improve it at your will.
 ### Credits
 
 
-Additional credits: This extension also leverages the work from [Giovanni Campagna ](https://git.gnome.org//browse/gnome-shell-extensions) gnome Application Menu used in [Gnome 3](https://www.gnome.org/) to allow the menu to be embedded in the Gnome main panel This extension also leverages some of the work from [Zorin OS menu](https://zorinos.com/)..
+Additional credits: This extension also leverages the work from [Giovanni Campagna ](https://git.gnome.org//browse/gnome-shell-extensions) gnome Application Menu used in [Gnome 3](https://www.gnome.org/) to allow the menu to be embedded in the Gnome main panel This extension also leverages some of the work from [Zorin OS menu](https://zorinos.com/).
 
 -----
 
@@ -171,36 +171,24 @@ Additional credits: This extension also leverages the work from [Giovanni Campag
 
 #### Thanks to the following people for contributing via pull requests:
 
-- @[fishears](https://github.com/fishears/Arc-Menu) (1) compiling the schema's (2) Added suspend button and re-order buttons
-- @[JasonLG1979](https://github.com/JasonLG1979)  (1) menu style fix, (2) Asynchronously set an icon and handle errors
-- @[itmitica](https://github.com/itmitica) (1) icon symbolic
+- **@[fishears](https://github.com/fishears/Arc-Menu)** 
+- **@[JasonLG1979](https://github.com/JasonLG1979)** 
+- **@[itmitica](https://github.com/itmitica)**
 
 #### Bug Fixes:
 
-- @[JasonLG1979](https://github.com/JasonLG1979) (1) menu style fix
-- @[lexruee](https://github.com/lexruee/Arc-Menu) (1) correctly restore the Activities button
-- @[charlesg99](https://github.com/charlesg99) (1) Disconnect height notification signal ,(2) Prevent duplicate destruction of the menu sections
+- **@[JasonLG1979](https://github.com/JasonLG1979)** 
+- **@[lexruee](https://github.com/lexruee/Arc-Menu)** 
+- **@[charlesg99](https://github.com/charlesg99)**
 
 -----
 
 #### Please refer to the Wiki section for a [Translation Guide](https://gitlab.com/LinxGem33/Arc-Menu/wikis/Translation-Guide)
 
-|Contributor|Language|Translated|Contributor|Language|Translated|
-|:-----|:-----|:-----:|:-----|:-----|:-----:|
-|@[h3r0n](https://github.com/h3r0n)|Italian|![](https://gitlab.com/LinxGem33/Neon/raw/master/artwork/done.svg.png)|@[megasyl](https://github.com/megasyl) > updated by @[16NoCo](https://github.com/16NoCo)|French|![](https://gitlab.com/LinxGem33/Neon/raw/master/artwork/done.svg.png)
-|@[pkomur](https://github.com/pkomur) > updated by @[Ixoos](https://github.com/Ixoos)|Polish|![](https://gitlab.com/LinxGem33/Neon/raw/master/artwork/done.svg.png)|@[madaramost](https://github.com/madaramost)|Arabic|![](https://gitlab.com/LinxGem33/Neon/raw/master/artwork/done.svg.png)
-|@[danielstuart14](https://github.com/danielstuart14)|Brazilian portuguese|![](https://gitlab.com/LinxGem33/Neon/raw/master/artwork/done.svg.png)||Chinese|
-|@[zakkak](https://github.com/zakkak)|Greek|![](https://gitlab.com/LinxGem33/Neon/raw/master/artwork/done.svg.png)|@[mjtullio](https://github.com/mjtullio)|Spanish|![](https://gitlab.com/LinxGem33/Neon/raw/master/artwork/done.svg.png)
-|@[mrprobot](https://github.com/mrprobot) > updated by @[Etamuk](https://gitlab.com/Etamuk)|German|![](https://gitlab.com/LinxGem33/Neon/raw/master/artwork/done.svg.png)|@[saisasidhar](https://github.com/saisasidhar)|Hindi|![](https://gitlab.com/LinxGem33/Neon/raw/master/artwork/done.svg.png)
-||Portuguese|||Bengali||
-|@[elsieholmes](https://github.com/elsieholmes)|Russian|![](https://gitlab.com/LinxGem33/Neon/raw/master/artwork/done.svg.png)||Japanese||
-|@[MorganAntonsson](https://github.com/MorganAntonsson)|Swedish|![](https://gitlab.com/LinxGem33/Neon/raw/master/artwork/done.svg.png)||Dutch||
-|@[neynefes](https://github.com/neynefes)|Turkish|![](https://gitlab.com/LinxGem33/Neon/raw/master/artwork/done.svg.png)||Javanese||
-|@[elsieholmes](https://github.com/elsieholmes)|Ukrainian|![](https://gitlab.com/LinxGem33/Neon/raw/master/artwork/done.svg.png)|@[PSSGCSim](https://github.com/PSSGCSim)|Czech|![](https://gitlab.com/LinxGem33/Neon/raw/master/artwork/done.svg.png)
-|@[ipanamski](https://github.com/ipanamski)|Bulgarian|![](https://gitlab.com/LinxGem33/Neon/raw/master/artwork/done.svg.png)|@[muhfajar](https://github.com/muhfajar) > updated by @[emhaye](https://github.com/emhaye)|Indonesian|![](https://gitlab.com/LinxGem33/Neon/raw/master/artwork/done.svg.png)
-|@[artnay](https://github.com/artnay)|Finnish|![](https://gitlab.com/LinxGem33/Neon/raw/master/artwork/done.svg.png)|@[Lrss](https://github.com/Lrss)|Danish|![](https://gitlab.com/LinxGem33/Neon/raw/master/artwork/done.svg.png)|
-|@[Faenriis](https://github.com/Faenriis)|Serbian|![](https://gitlab.com/LinxGem33/Neon/raw/master/artwork/done.svg.png)||||
+- **Current translated languages and translators..**
 
 -----
 
- ![](https://img.shields.io/badge/Language-JavaScript-yellow.svg) ![](https://img.shields.io/badge/Licence-GPL--2.0-blue.svg)
+**- @[Nilvus](https://gitlab.com/Nilvus) - French** | **- @[Etamuk](https://gitlab.com/Etamuk) - German** | **- @[alex4401](https://gitlab.com/alex4401) - Polish** | **- @[vmalta10](https://gitlab.com/vmalta10) - Brazilian Portuguese** | **- @[sigbjokj](https://gitlab.com/sigbjokj) - Norwegian** |
+
+-----
