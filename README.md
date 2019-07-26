@@ -67,22 +67,7 @@ on the Arc-Menu Wiki.
 ### Dependencies
 
 __Please note:__ For Arc-Menu to work properly, your GNOME Desktop must have the
-following dependencies installed.
-
-|On Ubuntu/Debian based systems||On Arch based systems||
-|-----|:-----:|-----|:-----:|
-|gnome-shell-extensions|![](https://gitlab.com/LinxGem33/Neon/raw/master/artwork/done.svg.png)|gnome-shell-extensions|![](https://gitlab.com/LinxGem33/Neon/raw/master/artwork/done.svg.png)
-|gnome-tweak-tool|![](https://gitlab.com/LinxGem33/Neon/raw/master/artwork/done.svg.png)|gnome-tweak-tool|![](https://gitlab.com/LinxGem33/Neon/raw/master/artwork/done.svg.png)
-|gnome-menus|![](https://gitlab.com/LinxGem33/Neon/raw/master/artwork/done.svg.png)|gnome-menus|![](https://gitlab.com/LinxGem33/Neon/raw/master/artwork/done.svg.png)
-|gnome-session|![](https://gitlab.com/LinxGem33/Neon/raw/master/artwork/done.svg.png)
-
-#### Please Read: 
-
-Legacy versions of Arc Menu can be obtained from the sources below;
-
-[legacy-version-3.30](https://gitlab.com/LinxGem33/Arc-Menu/tree/legacy-version-3.30) repository branch alternatively download the source code via the [v22 tag](https://gitlab.com/LinxGem33/Arc-Menu/tags/v22).
-
-- **Please Note:** the legacy version branch will not include the new features and updates found in the gnome-shell 3.32 and above builds.
+following [dependencies installed](https://gitlab.com/LinxGem33/Arc-Menu/wikis/Arc-Menu-Dependencies).
 
 -----
 
