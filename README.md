@@ -2,7 +2,7 @@
 
 -----
 
-![](https://gitlab.com/LinxGem33/Neon/raw/master/artwork/browserAM.png)
+![](https://gitlab.com/LinxGem33/Neon/raw/master/dptscreen.png)
 
 -----
 ### Introduction
@@ -31,7 +31,7 @@ This extension could be even better with your help! Any items in the issue track
 
 -----
 
-![](https://gitlab.com/LinxGem33/Neon/raw/master/artwork/amu3.png)
+![](https://gitlab.com/LinxGem33/Neon/raw/master/dptscreen.png)
 
 -----
 
@@ -39,7 +39,7 @@ This extension could be even better with your help! Any items in the issue track
 
 -----
 
-![](https://gitlab.com/LinxGem33/Neon/raw/master/artwork/amu33.png)
+![](https://gitlab.com/LinxGem33/Neon/raw/master/dtdscreen.png)
 
 -----
 
