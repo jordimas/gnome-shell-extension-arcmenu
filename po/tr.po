@@ -3,223 +3,507 @@
 # This file is distributed under the same license as the Arc Menu package.
 # Hüseyin Karacabey <neynefes@ubuntu-tr.net>, 2017.
 #
-#, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: Arc Menu\n"
+"Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-03-19 15:14+0100\n"
-"PO-Revision-Date: 2017-07-13 01:36+0300\n"
-"Last-Translator: Hüseyin Karacabey <neynefes@ubuntu-tr.net>\n"
-"Language: Turkish\n"
+"POT-Creation-Date: 2019-07-18 18:37-0400\n"
+"PO-Revision-Date: 2019-08-24 19:46+0300\n"
+"Language-Team: TR\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Poedit 2.2.1\n"
+"Last-Translator: Mustafa Yaman <m.yaman9898@gmail.com>, 2019\n"
+"Language: tr_TR\n"
 
-#: prefs.js:42
-msgid "General"
-msgstr ""
-
-#: prefs.js:54
-msgid "Behaviour"
-msgstr "Davranış"
-
-#: prefs.js:63
-msgid "Disable activities hot corner"
-msgstr "Etkin köşeleri devre dışı bırak"
-
-#: prefs.js:85
-msgid "Set menu hotkey"
-msgstr "Menü kısayolu ayarla"
-
-#: prefs.js:91
-msgid "Undefined"
-msgstr "Tanımlanmamış"
-
-#: prefs.js:92
-msgid "Left Super Key"
-msgstr "Sol Super Tuşu"
-
-#: prefs.js:93
-msgid "Right Super Key"
-msgstr "Sağ Super Tuşu"
-
-#: prefs.js:105
-msgid "Enable custom menu keybinding"
-msgstr "Özel kısayol belirle"
-
-#: prefs.js:112
-msgid "Syntax: <Shift>, <Ctrl>, <Alt>, <Super>"
-msgstr ""
-
-#: prefs.js:153
-msgid "Button appearance"
-msgstr "Buton görünümü"
-
-#: prefs.js:165
-msgid "Text for the menu button"
-msgstr "Menü butonu için metin"
-
-#: prefs.js:171
-msgid "System text"
-msgstr "Sistem metni"
-
-#: prefs.js:174
-msgid "Custom text"
-msgstr "Özel metin"
-
-#: prefs.js:198
-msgid "Set custom text for the menu button"
-msgstr "Menü butonu için özel metin ayarla"
-
-#: prefs.js:218
-msgid "Enable the arrow icon beside the button text"
-msgstr "Buton metninin yanında ok simgesini etkinleştir"
-
-#: prefs.js:240
-msgid "Select icon for the menu button"
-msgstr "Menü butonu için simge seç"
-
-#: prefs.js:250
-msgid "Please select an image icon"
-msgstr "Lütfen bir resim simgesi seçin"
-
-#: prefs.js:255
-msgid "Arc Menu Icon"
-msgstr "Arc Menü Simgesi"
-
-#: prefs.js:256
-msgid "System Icon"
-msgstr "Sistem Simgesi"
-
-#: prefs.js:257
-msgid "Custom Icon"
-msgstr "Özel Simge"
-
-#: prefs.js:283
-msgid "Icon size"
-msgstr "Simge boyutu"
-
-#: prefs.js:283
-msgid "default is"
-msgstr "varsayılan"
-
-#: prefs.js:323
-msgid "Appearance"
-msgstr "Görünüm"
-
-#: prefs.js:332
-msgid "Customize menu button appearance"
-msgstr "Menü buton görünümünü özelliştir"
-
-#: prefs.js:342
-msgid "Icon"
-msgstr "Simge"
-
-#: prefs.js:343
-msgid "Text"
-msgstr "Yazı"
-
-#: prefs.js:344
-msgid "Icon and Text"
-msgstr "Simge ve Metin"
-
-#: prefs.js:345
-msgid "Text and Icon"
-msgstr "Metin ve Simge"
-
-#: prefs.js:370
-msgid "Menu position in panel"
-msgstr "Menünün paneldeki konumu"
-
-#: prefs.js:377
-msgid "Left"
-msgstr "Sol"
-
-#: prefs.js:380
-msgid "Center"
-msgstr "Orta"
-
-#: prefs.js:384
-msgid "Right"
-msgstr "Sağ"
-
-#: prefs.js:461
-msgid "About"
-msgstr "Hakkında"
-
-#: prefs.js:490
-msgid "Arc-Menu"
-msgstr "Arc-Menu"
-
-#: prefs.js:495
-msgid "version: "
-msgstr "sürüm: "
-
-#: prefs.js:503
-msgid "GitLab Page"
-msgstr ""
-
-#: menu.js:272
-msgid "Home"
-msgstr "Ev"
-
-#: menu.js:456 menu.js:461
-msgid "Software"
-msgstr "Yazılımlar"
-
-#: menu.js:466
-msgid "Settings"
-msgstr "Ayarlar"
-
-#: menu.js:471
-msgid "Tweak Tool"
-msgstr "İnce Ayar Aracı"
-
-#: menu.js:476
-#, fuzzy
-msgid "Tweaks"
-msgstr "İnce Ayar Aracı"
-
-#: menu.js:481
-msgid "Terminal"
-msgstr ""
-
-#: menuWidgets.js:86
-msgid "Activities Overview"
-msgstr "Pencerelere Genel Bakış"
-
-#: menuWidgets.js:199
-msgid "Power Off"
-msgstr "Kapat"
-
-#: menuWidgets.js:212
-msgid "Log Out"
-msgstr "Oturumu Kapat"
-
-#: menuWidgets.js:225
-msgid "Suspend"
-msgstr "Askıya Al"
-
-#: menuWidgets.js:243
-msgid "Lock"
-msgstr "Kilitle"
-
-#: menuWidgets.js:265
-msgid "Back"
-msgstr "Geri"
-
-#: menuWidgets.js:483
-msgid "Favorites"
-msgstr "Favoriler"
-
-#: menuWidgets.js:616
-msgid "Type to search…"
-msgstr "Aramak için yazın..."
-
-#: menuWidgets.js:781
+#: controller.js:253 menuWidgets.js:1432
 msgid "Applications"
 msgstr "Uygulamalar"
 
-#~ msgid "Webpage"
-#~ msgstr "Web Sayfası"
+#: menu.js:334 placeDisplay.js:447 prefs.js:1803
+msgid "Home"
+msgstr "Ev"
+
+#: menu.js:341 prefs.js:1803
+msgid "Documents"
+msgstr "Belgeler"
+
+#: menu.js:341 prefs.js:1803
+msgid "Downloads"
+msgstr "İndirilenler"
+
+#: menu.js:341 prefs.js:1803
+msgid "Music"
+msgstr "Müzik"
+
+#: menu.js:341 prefs.js:1803
+msgid "Pictures"
+msgstr "Resimler"
+
+#: menu.js:341 prefs.js:1803
+msgid "Videos"
+msgstr "Videolar"
+
+#: menu.js:541 prefs.js:1804
+msgid "Network"
+msgstr "Ağ"
+
+#: menu.js:596 prefs.js:1899
+msgid "Software"
+msgstr "Yazılım"
+
+#: menu.js:596 prefs.js:1899
+msgid "Settings"
+msgstr "Ayarlar"
+
+#: menu.js:596 prefs.js:1899
+msgid "Tweaks"
+msgstr "İnce Ayarlar"
+
+#: menu.js:596 menuWidgets.js:776 prefs.js:1899
+msgid "Terminal"
+msgstr "Uç Birim"
+
+#: menuWidgets.js:129
+msgid "Current Windows:"
+msgstr "Şuanki Pencereler:"
+
+#: menuWidgets.js:150
+msgid "New Window"
+msgstr "Yeni Pencere"
+
+#: menuWidgets.js:165
+msgid "Launch using Dedicated Graphics Card"
+msgstr "Adanmış Grafik Kartı ile başlat"
+
+#: menuWidgets.js:195
+msgid "Remove from Favorites"
+msgstr "Favorilerden Kaldır"
+
+#: menuWidgets.js:201
+msgid "Add to Favorites"
+msgstr "Favorilere Ekle"
+
+#: menuWidgets.js:209 menuWidgets.js:266
+msgid "Unpin from Arc Menu"
+msgstr "Arc Menu den kaldır"
+
+#: menuWidgets.js:230
+msgid "Pin to Arc Menu"
+msgstr "Arc Menuye Sabitle"
+
+#: menuWidgets.js:245
+msgid "Show Details"
+msgstr "Detayları Göster"
+
+#: menuWidgets.js:403 prefs.js:1899
+msgid "Activities Overview"
+msgstr "Aktivitelere Genel Bakış"
+
+#: menuWidgets.js:529
+msgid "Power Off"
+msgstr "Sistemi Kapat"
+
+#: menuWidgets.js:542 prefs.js:1973
+msgid "Log Out"
+msgstr "Oturumu Kapat"
+
+#: menuWidgets.js:555 prefs.js:1937
+msgid "Suspend"
+msgstr "Beklemeye Al"
+
+#: menuWidgets.js:573 prefs.js:1955
+msgid "Lock"
+msgstr "Kilitle"
+
+#: menuWidgets.js:595
+msgid "Back"
+msgstr "Geri"
+
+#: menuWidgets.js:651
+msgid "All Programs"
+msgstr "Tüm Uygulamalar"
+
+#: menuWidgets.js:775 twoMenuButton.js:77
+msgid "Arc Menu Settings"
+msgstr "Arc Menu Ayarları"
+
+#: menuWidgets.js:1119
+msgid "Frequent Apps"
+msgstr "Sık Kullanılan Uygulamalar"
+
+#: menuWidgets.js:1269
+msgid "Type to search…"
+msgstr "Aramak İçin Yazınız..."
+
+#: placeDisplay.js:138
+#, javascript-format
+msgid "Failed to launch “%s”"
+msgstr "Başlatma Başarısız “%s”"
+
+#: placeDisplay.js:153
+#, javascript-format
+msgid "Failed to mount volume for “%s”"
+msgstr "Disk bağlama başarısız “%s”"
+
+#: placeDisplay.js:237 placeDisplay.js:260 prefs.js:1803
+msgid "Computer"
+msgstr "Bilgisayar"
+
+#: placeDisplay.js:321
+#, javascript-format
+msgid "Ejecting drive “%s” failed:"
+msgstr "“%s” adlı sürücü çıkartılamadı:"
+
+#: prefs.js:46 prefs.js:620
+msgid "Pinned Apps"
+msgstr "Sabitlenmiş Uygulamalar"
+
+#: prefs.js:51
+msgid "Your Pinned Apps:"
+msgstr "Sabitlenmiş Uygulamaların:"
+
+#: prefs.js:75
+msgid "Add More Apps"
+msgstr "Daha Fazla Uygulama Ekle"
+
+#: prefs.js:119
+msgid "Add Custom Shortcut"
+msgstr "Kişisel Kısayol Ekle"
+
+#: prefs.js:153
+msgid "Save"
+msgstr "Kaydet"
+
+#: prefs.js:278
+msgid "Select Apps to add to Pinned Apps List"
+msgstr "Sabitlenmiş Uygulamalar Listesinden Uygulama Seç"
+
+#: prefs.js:298 prefs.js:457
+msgid "Add"
+msgstr "Ekle"
+
+#: prefs.js:406
+msgid "Add a Custom Shortcut"
+msgstr "Kişisel Kısayol Ekle"
+
+#: prefs.js:416
+msgid "Shortcut Name:"
+msgstr "Kısayol Adı:"
+
+#: prefs.js:430
+msgid "Icon Path/Icon Symbolic:"
+msgstr "İkon Yolu/Sembolik İkon:"
+
+#: prefs.js:444
+msgid "Terminal Command:"
+msgstr "Uç Birim Komutu:"
+
+#: prefs.js:491
+msgid "General"
+msgstr "Genel"
+
+#: prefs.js:500
+msgid "Menu Button Position in Panel"
+msgstr "Menü Tuşu Pozisyonu"
+
+#: prefs.js:507
+msgid "Left"
+msgstr "Sol"
+
+#: prefs.js:510
+msgid "Center"
+msgstr "Merkez"
+
+#: prefs.js:514
+msgid "Right"
+msgstr "Sağ"
+
+#: prefs.js:552
+msgid "Display on all monitors when using Dash to Panel"
+msgstr "Dash To Panel kullanırken Tüm Ekranlarda Göster"
+
+#: prefs.js:573
+msgid "Disable Tooltips"
+msgstr "Araç İpuçlarını Devre Dışı Bırak"
+
+#: prefs.js:595
+msgid "Disable activities hot corner"
+msgstr "Aktivite Etkin Köşesini Devre Dışı Bırak"
+
+#: prefs.js:614
+msgid "Choose Arc Menus Default View"
+msgstr "Arc Menu'nün Varsayılan Görüntüsünü Seç"
+
+#: prefs.js:621
+msgid "Categories List"
+msgstr "Katagori Listesi"
+
+#: prefs.js:646
+msgid "Set Menu Hotkey"
+msgstr "Menu Kısayol Tuşu Ayarla"
+
+#: prefs.js:656
+msgid "Left Super Key"
+msgstr "Sol Super Tuşu"
+
+#: prefs.js:662
+msgid "Right Super Key"
+msgstr "Sağ Super tuşu"
+
+#: prefs.js:667
+msgid "Custom"
+msgstr "Kişisel"
+
+#: prefs.js:672
+msgid "None"
+msgstr "Yok"
+
+#: prefs.js:764
+msgid "Current Hotkey"
+msgstr "Şuanki Kısayol"
+
+#: prefs.js:790
+msgid "Set Custom Shortcut"
+msgstr "Kısayol Oluştur"
+
+#: prefs.js:799
+msgid "Press a key"
+msgstr "Bir Tuşa Basınız"
+
+#: prefs.js:824
+msgid "Modifiers"
+msgstr "Düzenleyiciler"
+
+#: prefs.js:829
+msgid "Ctrl"
+msgstr "Ctrl"
+
+#: prefs.js:834
+msgid "Super"
+msgstr "Super"
+
+#: prefs.js:838
+msgid "Shift"
+msgstr "Shift"
+
+#: prefs.js:842
+msgid "Alt"
+msgstr "Alt"
+
+#: prefs.js:906 prefs.js:1447 prefs.js:1752
+msgid "Apply"
+msgstr "Onayla"
+
+#: prefs.js:941
+msgid "Button appearance"
+msgstr "Buton görüntüsü"
+
+#: prefs.js:953
+msgid "Text for the menu button"
+msgstr "Menü için yazı"
+
+#: prefs.js:959
+msgid "System text"
+msgstr "Sistem Yazısı"
+
+#: prefs.js:962
+msgid "Custom text"
+msgstr "Kişisel Yazı"
+
+#: prefs.js:986
+msgid "Set custom text for the menu button"
+msgstr "Menü için kişisel yazı belirle"
+
+#: prefs.js:1006
+msgid "Enable the arrow icon beside the button text"
+msgstr "Buton yazıları için ok işaretini aktif et"
+
+#: prefs.js:1028
+msgid "Select icon for the menu button"
+msgstr "Menü için icon seç"
+
+#: prefs.js:1038
+msgid "Please select an image icon"
+msgstr "Lütfen icon seçiniz"
+
+#: prefs.js:1043
+msgid "Arc Menu Icon"
+msgstr "Arc Menu ikonu"
+
+#: prefs.js:1044
+msgid "System Icon"
+msgstr "Sistem İkonu"
+
+#: prefs.js:1045
+msgid "Custom Icon"
+msgstr "Kişisel İkon"
+
+#: prefs.js:1071
+msgid "Icon size"
+msgstr "İkon Boyutu"
+
+#: prefs.js:1071
+msgid "default is"
+msgstr "varsayılan"
+
+#: prefs.js:1111
+msgid "Appearance"
+msgstr "Görüntü"
+
+#: prefs.js:1120
+msgid "Customize Menu Button Appearance"
+msgstr "Menü Tuşu Götüntüsünü Kişiselleştir"
+
+#: prefs.js:1130
+msgid "Icon"
+msgstr "İkon"
+
+#: prefs.js:1131
+msgid "Text"
+msgstr "Yazı"
+
+#: prefs.js:1132
+msgid "Icon and Text"
+msgstr "İkon ve Yazı"
+
+#: prefs.js:1133
+msgid "Text and Icon"
+msgstr "Yazı ve İkon"
+
+#: prefs.js:1156 prefs.js:1303
+msgid "Customize Arc Menu Appearance"
+msgstr "Arc Menu görüntüsünü kişiselleştir"
+
+#: prefs.js:1204 prefs.js:1496
+msgid "Override Arc Menu Theme"
+msgstr "Arc Menu temasını değiştir"
+
+#: prefs.js:1262
+msgid "Choose Avatar Icon Shape"
+msgstr "Avatar İkonu Seç"
+
+#: prefs.js:1267
+msgid "Circular"
+msgstr "Yuvarlar"
+
+#: prefs.js:1268
+msgid "Square"
+msgstr "Kare"
+
+#: prefs.js:1321
+msgid "Menu Height"
+msgstr "Menu Boyu"
+
+#: prefs.js:1353
+msgid "Left-Panel Width"
+msgstr "Sol Panel Genişliği"
+
+#: prefs.js:1376
+msgid "Enable Vertical Separator"
+msgstr "Dikey Ayırıcıyı Etkinleştir"
+
+#: prefs.js:1395
+msgid "Separator Color"
+msgstr "Ayırıcı Rengi"
+
+#: prefs.js:1417 prefs.js:1704
+msgid "Reset"
+msgstr "Sıfırla"
+
+#: prefs.js:1508
+msgid "Menu Background Color"
+msgstr "Menu Arkaplan Rengi"
+
+#: prefs.js:1527
+msgid "Menu Foreground Color"
+msgstr "Menu Önplan Rengi"
+
+#: prefs.js:1545
+msgid "Font Size"
+msgstr "Yazı Boyutu"
+
+#: prefs.js:1569
+msgid "Border Color"
+msgstr "Çerçeve Rengi"
+
+#: prefs.js:1588
+msgid "Border Size"
+msgstr "Çerçeve Boyutu"
+
+#: prefs.js:1612
+msgid "Highlighted Item Color"
+msgstr "Vurgulanmış Seçenek Rengi"
+
+#: prefs.js:1631
+msgid "Corner Radius"
+msgstr "Köşe Çapı"
+
+#: prefs.js:1655
+msgid "Menu Arrow Size"
+msgstr "Menü Ok Boyutu"
+
+#: prefs.js:1679
+msgid "Menu Displacement"
+msgstr "Menü Kaydırımı"
+
+#: prefs.js:1786
+msgid "Configure"
+msgstr "Düzenle"
+
+#: prefs.js:1793
+msgid "Enable/Disable shortcuts"
+msgstr "Kısayolları Aktif/Deaktif et"
+
+#: prefs.js:1848
+msgid "External Devices"
+msgstr "Harici Aygıtlar"
+
+#: prefs.js:1871
+msgid "Bookmarks"
+msgstr "Yer İmleri"
+
+#: prefs.js:2005
+msgid "About"
+msgstr "Hakkında"
+
+#: prefs.js:2034
+msgid "Arc-Menu"
+msgstr "Arc-Menu"
+
+#: prefs.js:2039
+msgid "version: "
+msgstr "versiyon: "
+
+#: prefs.js:2047
+msgid "GitLab Page"
+msgstr "GitLab Sayfası"
+
+#: search.js:626
+msgid "Searching..."
+msgstr "Aranıyor..."
+
+#: search.js:628
+msgid "No results."
+msgstr "Sonuç Bulunamadı."
+
+#: search.js:706
+#, javascript-format
+msgid "%d more"
+msgid_plural "%d more"
+msgstr[0] "%d daha"
+msgstr[1] "%d daha"
+
+#: twoMenuButton.js:86
+msgid "Arc Menu on GitLab"
+msgstr "GitLab da Arc Menu"
+
+#: twoMenuButton.js:91
+msgid "About Arc Menu"
+msgstr "Arc Menu Hakkında"
+
+#: twoMenuButton.js:112
+msgid "Dash to Panel Settings"
+msgstr "Dash to Panel Ayarları"
