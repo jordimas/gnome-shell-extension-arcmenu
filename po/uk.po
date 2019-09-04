@@ -1,228 +1,495 @@
-# SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# Ukrainian translation for Arc Menu.
+# Copyright (C) 2019 The Arc Menu Authors.
 # This file is distributed under the same license as the Arc Menu package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# vikaig <vikaig99@gmail.com>, 2019.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: Arc Menu\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-03-19 15:14+0100\n"
-"PO-Revision-Date: 2017-12-04 20:03+0200\n"
-"Last-Translator: Alice Charlotte Liddell <e-liss@tuta.io>\n"
+"POT-Creation-Date: 2019-09-04 11:45+0300\n"
+"PO-Revision-Date: 2019-09-04 11:50+0300\n"
+"Last-Translator: vikaig <vikaig99@gmail.com>\n"
 "Language-Team: \n"
 "Language: uk\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 2.0.4\n"
+"X-Generator: Gtranslator 3.32.1\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
 "%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 
-#: prefs.js:42
-msgid "General"
-msgstr ""
+#: prefs.js:46 prefs.js:620
+msgid "Pinned Apps"
+msgstr "Закріплені програми"
 
-#: prefs.js:54
-msgid "Behaviour"
-msgstr "Поведінка"
+#: prefs.js:51
+msgid "Your Pinned Apps:"
+msgstr "Ваші закріплені програми:"
 
-#: prefs.js:63
-msgid "Disable activities hot corner"
-msgstr "Вимкнути гарячий кут Діяльність"
+#: prefs.js:75
+msgid "Add More Apps"
+msgstr "Додати програми"
 
-#: prefs.js:85
-msgid "Set menu hotkey"
-msgstr "Гаряча клавіша меню"
-
-#: prefs.js:91
-msgid "Undefined"
-msgstr "Невизначено"
-
-#: prefs.js:92
-msgid "Left Super Key"
-msgstr "Ліва Super"
-
-#: prefs.js:93
-msgid "Right Super Key"
-msgstr "Права Super"
-
-#: prefs.js:105
-msgid "Enable custom menu keybinding"
-msgstr "Увімкнути власну комбінацію клавіш"
-
-#: prefs.js:112
-msgid "Syntax: <Shift>, <Ctrl>, <Alt>, <Super>"
-msgstr "Синтаксис: <Shift>, <Ctrl>, <Alt>, <Super>"
+#: prefs.js:119
+msgid "Add Custom Shortcut"
+msgstr "Додати власний ярлик"
 
 #: prefs.js:153
-msgid "Button appearance"
-msgstr "Вигляд кнопки"
+msgid "Save"
+msgstr "Зберегти"
 
-#: prefs.js:165
-msgid "Text for the menu button"
-msgstr "Текст кнопки меню"
+#: prefs.js:278
+msgid "Select Apps to add to Pinned Apps List"
+msgstr "Виберіть програми, які потрібно додати до списку закріплених"
 
-#: prefs.js:171
-msgid "System text"
-msgstr "Системний текст"
+#: prefs.js:298 prefs.js:457
+msgid "Add"
+msgstr "Додати"
 
-#: prefs.js:174
-msgid "Custom text"
-msgstr "Власний текст"
+#: prefs.js:406
+msgid "Add a Custom Shortcut"
+msgstr "Додавання власного ярлика"
 
-#: prefs.js:198
-msgid "Set custom text for the menu button"
-msgstr "Встановити власний текст кнопки меню"
+#: prefs.js:416
+msgid "Shortcut Name:"
+msgstr "Назва ярлика:"
 
-#: prefs.js:218
-msgid "Enable the arrow icon beside the button text"
-msgstr "Увімкнути стрілочку поруч з текстом кнопки"
+#: prefs.js:430
+msgid "Icon Path/Icon Symbolic:"
+msgstr "Шлях до значка/Символічний значок:"
 
-#: prefs.js:240
-msgid "Select icon for the menu button"
-msgstr "Оберіть значок кнопки меню"
+#: prefs.js:444
+msgid "Terminal Command:"
+msgstr "Команда терміналу:"
 
-#: prefs.js:250
-msgid "Please select an image icon"
-msgstr "Будь ласка, оберіть файл значка"
+#: prefs.js:491
+msgid "General"
+msgstr "Загальне"
 
-#: prefs.js:255
-msgid "Arc Menu Icon"
-msgstr "Значок Arc Menu"
+#: prefs.js:500
+msgid "Menu Button Position in Panel"
+msgstr "Положення кнопки меню на панелі"
 
-#: prefs.js:256
-msgid "System Icon"
-msgstr "Системний значок"
-
-#: prefs.js:257
-msgid "Custom Icon"
-msgstr "Власний значок"
-
-#: prefs.js:283
-msgid "Icon size"
-msgstr "Розмір значка"
-
-#: prefs.js:283
-msgid "default is"
-msgstr "за замовчуванням"
-
-#: prefs.js:323
-msgid "Appearance"
-msgstr "Вигляд"
-
-#: prefs.js:332
-msgid "Customize menu button appearance"
-msgstr "Змінити вигляд кнопки меню"
-
-#: prefs.js:342
-msgid "Icon"
-msgstr "Значок"
-
-#: prefs.js:343
-msgid "Text"
-msgstr "Текст"
-
-#: prefs.js:344
-msgid "Icon and Text"
-msgstr "Значок та Текст"
-
-#: prefs.js:345
-msgid "Text and Icon"
-msgstr "Текст та Значок"
-
-#: prefs.js:370
-msgid "Menu position in panel"
-msgstr "Розташування меню на панелі"
-
-#: prefs.js:377
+#: prefs.js:507
 msgid "Left"
 msgstr "Ліворуч"
 
-#: prefs.js:380
+#: prefs.js:510
 msgid "Center"
-msgstr "По центру"
+msgstr "Центр"
 
-#: prefs.js:384
+#: prefs.js:514
 msgid "Right"
 msgstr "Праворуч"
 
-#: prefs.js:461
-msgid "About"
-msgstr "Деталі"
+#: prefs.js:552
+msgid "Display on all monitors when using Dash to Panel"
+msgstr "Відображати на всіх моніторах під час використання Dash to Panel"
 
-#: prefs.js:490
-msgid "Arc-Menu"
-msgstr "Arc-Menu"
+#: prefs.js:573
+msgid "Disable Tooltips"
+msgstr "Вимкнути підказки"
 
-#: prefs.js:495
-msgid "version: "
-msgstr "версія: "
+#: prefs.js:595
+msgid "Disable activities hot corner"
+msgstr "Вимкнути гарячий кут діяльностей"
 
-#: prefs.js:503
-msgid "GitLab Page"
-msgstr ""
+#: prefs.js:614
+msgid "Choose Arc Menus Default View"
+msgstr "Виберіть стандартний вигляд Arc Menu"
 
-#: menu.js:272
-msgid "Home"
-msgstr "Домашня тека"
+#: prefs.js:621
+msgid "Categories List"
+msgstr "Список категорій"
 
-#: menu.js:456 menu.js:461
-msgid "Software"
-msgstr "Програмне Забезпечення"
+#: prefs.js:646
+msgid "Set Menu Hotkey"
+msgstr "Гаряча клавіша меню"
 
-#: menu.js:466
-msgid "Settings"
+#: prefs.js:656
+msgid "Left Super Key"
+msgstr "Ліва Super"
+
+#: prefs.js:662
+msgid "Right Super Key"
+msgstr "Права Super"
+
+#: prefs.js:667
+msgid "Custom"
+msgstr "Власна"
+
+#: prefs.js:672
+msgid "None"
+msgstr "Немає"
+
+#: prefs.js:764
+msgid "Current Hotkey"
+msgstr "Поточна клавіша"
+
+#: prefs.js:790
+msgid "Set Custom Shortcut"
+msgstr "Встановити своє скорочення"
+
+#: prefs.js:799
+msgid "Press a key"
+msgstr "Натисніть клавішу"
+
+#: prefs.js:824
+msgid "Modifiers"
+msgstr "Модифікатори"
+
+#: prefs.js:829
+msgid "Ctrl"
+msgstr "Ctrl"
+
+#: prefs.js:834
+msgid "Super"
+msgstr "Super"
+
+#: prefs.js:838
+msgid "Shift"
+msgstr "Shift"
+
+#: prefs.js:842
+msgid "Alt"
+msgstr "Alt"
+
+#: prefs.js:906 prefs.js:1447 prefs.js:1752
+msgid "Apply"
+msgstr "Застосувати"
+
+#: prefs.js:941
+msgid "Button appearance"
+msgstr "Вигляд кнопки"
+
+#: prefs.js:953
+msgid "Text for the menu button"
+msgstr "Текст кнопки меню"
+
+#: prefs.js:959
+msgid "System text"
+msgstr "Системний текст"
+
+#: prefs.js:962
+msgid "Custom text"
+msgstr "Власний текст"
+
+#: prefs.js:986
+msgid "Set custom text for the menu button"
+msgstr "Встановити власний текст кнопки меню"
+
+#: prefs.js:1006
+msgid "Enable the arrow icon beside the button text"
+msgstr "Увімкнути значок стрілки біля тексту кнопки"
+
+#: prefs.js:1028
+msgid "Select icon for the menu button"
+msgstr "Виберіть значок кнопки меню"
+
+#: prefs.js:1038
+msgid "Please select an image icon"
+msgstr "Будь ласка, виберіть файл значка"
+
+#: prefs.js:1043
+msgid "Arc Menu Icon"
+msgstr "Значок Arc Menu"
+
+#: prefs.js:1044
+msgid "System Icon"
+msgstr "Системний значок"
+
+#: prefs.js:1045
+msgid "Custom Icon"
+msgstr "Власний значок"
+
+#: prefs.js:1071
+msgid "Icon size"
+msgstr "Розмір значка"
+
+#: prefs.js:1071
+msgid "default is"
+msgstr "за замовчуванням"
+
+#: prefs.js:1111
+msgid "Appearance"
+msgstr "Вигляд"
+
+#: prefs.js:1120
+msgid "Customize Menu Button Appearance"
+msgstr "Змінити вигляд кнопки меню"
+
+#: prefs.js:1130
+msgid "Icon"
+msgstr "Значок"
+
+#: prefs.js:1131
+msgid "Text"
+msgstr "Текст"
+
+#: prefs.js:1132
+msgid "Icon and Text"
+msgstr "Значок та текст"
+
+#: prefs.js:1133
+msgid "Text and Icon"
+msgstr "Текст та значок"
+
+#: prefs.js:1156 prefs.js:1303
+msgid "Customize Arc Menu Appearance"
+msgstr "Змінити вигляд Arc Menu"
+
+#: prefs.js:1204 prefs.js:1496
+msgid "Override Arc Menu Theme"
+msgstr "Перевизначити тему Arc Menu"
+
+#: prefs.js:1262
+msgid "Choose Avatar Icon Shape"
+msgstr "Виберіть форму значка користувача"
+
+#: prefs.js:1267
+msgid "Circular"
+msgstr "Круглий"
+
+#: prefs.js:1268
+msgid "Square"
+msgstr "Квадратний"
+
+#: prefs.js:1321
+msgid "Menu Height"
+msgstr "Висота меню"
+
+#: prefs.js:1353
+msgid "Left-Panel Width"
+msgstr "Ширина лівої панелі"
+
+#: prefs.js:1376
+msgid "Enable Vertical Separator"
+msgstr "Увімкнути вертикальний роздільник"
+
+#: prefs.js:1395
+msgid "Separator Color"
+msgstr "Колір роздільника"
+
+#: prefs.js:1417 prefs.js:1704
+msgid "Reset"
+msgstr "Скидання"
+
+#: prefs.js:1508
+msgid "Menu Background Color"
+msgstr "Колір фону меню"
+
+#: prefs.js:1527
+msgid "Menu Foreground Color"
+msgstr "Колір переднього плану меню"
+
+#: prefs.js:1545
+msgid "Font Size"
+msgstr "Розмір шрифту"
+
+#: prefs.js:1569
+msgid "Border Color"
+msgstr "Колір рамки"
+
+#: prefs.js:1588
+msgid "Border Size"
+msgstr "Розмір рамки"
+
+#: prefs.js:1612
+msgid "Highlighted Item Color"
+msgstr "Колір виділеного елемента"
+
+#: prefs.js:1631
+msgid "Corner Radius"
+msgstr "Кутовий радіус"
+
+#: prefs.js:1655
+msgid "Menu Arrow Size"
+msgstr "Розмір стрілки меню"
+
+#: prefs.js:1679
+msgid "Menu Displacement"
+msgstr "Зміщення меню"
+
+#: prefs.js:1786
+msgid "Configure"
 msgstr "Налаштування"
 
-#: menu.js:471
-msgid "Tweak Tool"
-msgstr "Tweak Tool"
+#: prefs.js:1793
+msgid "Enable/Disable shortcuts"
+msgstr "Включити/Виключити ярлики"
 
-#: menu.js:476
-#, fuzzy
+#: prefs.js:1803 menu.js:449 placeDisplay.js:447
+msgid "Home"
+msgstr "Домівка"
+
+#: prefs.js:1803 menu.js:456
+msgid "Documents"
+msgstr "Документи"
+
+#: prefs.js:1803 menu.js:456
+msgid "Downloads"
+msgstr "Завантажене"
+
+#: prefs.js:1803 menu.js:456
+msgid "Music"
+msgstr "Музика"
+
+#: prefs.js:1803 menu.js:456
+msgid "Pictures"
+msgstr "Картинки"
+
+#: prefs.js:1803 menu.js:456
+msgid "Videos"
+msgstr "Відео"
+
+#: prefs.js:1803 placeDisplay.js:237 placeDisplay.js:260
+msgid "Computer"
+msgstr "Комп'ютер"
+
+#: prefs.js:1804 menu.js:658
+msgid "Network"
+msgstr "Мережа"
+
+#: prefs.js:1848
+msgid "External Devices"
+msgstr "Зовнішні пристрої"
+
+#: prefs.js:1871
+msgid "Bookmarks"
+msgstr "Закладки"
+
+#: prefs.js:1899
+msgid "Software"
+msgstr "Програмне забезпечення"
+
+#: prefs.js:1899
+msgid "Settings"
+msgstr "Параметри"
+
+#: prefs.js:1899
 msgid "Tweaks"
-msgstr "Tweak Tool"
+msgstr "Коригування"
 
-#: menu.js:481
+#: prefs.js:1899 menuWidgets.js:761
 msgid "Terminal"
-msgstr ""
+msgstr "Термінал"
 
-#: menuWidgets.js:86
+#: prefs.js:1899 menuWidgets.js:388
 msgid "Activities Overview"
-msgstr "Огляд Діяльності"
+msgstr "Огляд діяльності"
 
-#: menuWidgets.js:199
-msgid "Power Off"
-msgstr "Вимкнути"
-
-#: menuWidgets.js:212
-msgid "Log Out"
-msgstr "Вийти"
-
-#: menuWidgets.js:225
+#: prefs.js:1937 menuWidgets.js:540
 msgid "Suspend"
 msgstr "Призупинити"
 
-#: menuWidgets.js:243
+#: prefs.js:1955 menuWidgets.js:558
 msgid "Lock"
-msgstr "Заблокувати екран"
+msgstr "Заблокувати"
 
-#: menuWidgets.js:265
+#: prefs.js:1973 menuWidgets.js:527
+msgid "Log Out"
+msgstr "Вийти"
+
+#: prefs.js:2005
+msgid "About"
+msgstr "Деталі"
+
+#: prefs.js:2034
+msgid "Arc-Menu"
+msgstr "Arc-Menu"
+
+#: prefs.js:2039
+msgid "version: "
+msgstr "версія: "
+
+#: prefs.js:2047
+msgid "GitLab Page"
+msgstr "Сторінка GitLab"
+
+#: menu.js:81 menuWidgets.js:760
+msgid "Arc Menu Settings"
+msgstr "Налаштування Arc Menu"
+
+#: menu.js:90
+msgid "Arc Menu on GitLab"
+msgstr "Arc Menu на GitLab"
+
+#: menu.js:95
+msgid "About Arc Menu"
+msgstr "Про Arc Menu"
+
+#: menu.js:134
+msgid "Dash to Panel Settings"
+msgstr "Налаштування Dash to Panel"
+
+#: menuWidgets.js:134
+msgid "Current Windows:"
+msgstr "Поточні вікна:"
+
+#: menuWidgets.js:154
+msgid "New Window"
+msgstr "Нове вікно"
+
+#: menuWidgets.js:164
+msgid "Launch using Dedicated Graphics Card"
+msgstr "Запуск за допомогою спеціалізованої відеокарти"
+
+#: menuWidgets.js:187
+msgid "Remove from Favorites"
+msgstr "Видалити з улюбленого"
+
+#: menuWidgets.js:193
+msgid "Add to Favorites"
+msgstr "Додати до улюблених"
+
+#: menuWidgets.js:212 menuWidgets.js:258
+msgid "Unpin from Arc Menu"
+msgstr "Відкріпити від Arc Menu"
+
+#: menuWidgets.js:226
+msgid "Pin to Arc Menu"
+msgstr "Прикріпити до Arc Menu"
+
+#: menuWidgets.js:237
+msgid "Show Details"
+msgstr "Показати деталі"
+
+#: menuWidgets.js:514
+msgid "Power Off"
+msgstr "Вимкнути"
+
+#: menuWidgets.js:580
 msgid "Back"
 msgstr "Назад"
 
-#: menuWidgets.js:483
-msgid "Favorites"
-msgstr "Улюблені"
+#: menuWidgets.js:636
+msgid "All Programs"
+msgstr "Усі програми"
 
-#: menuWidgets.js:616
+#: menuWidgets.js:1105
+msgid "Frequent Apps"
+msgstr "Найуживаніші програми"
+
+#: menuWidgets.js:1255
 msgid "Type to search…"
-msgstr "Пошук…"
+msgstr "Друкуйте для пошуку…"
 
-#: menuWidgets.js:781
+#: menuWidgets.js:1418 controller.js:253
 msgid "Applications"
-msgstr "Застосунки"
+msgstr "Програми"
 
-#~ msgid "Webpage"
-#~ msgstr "Веб-сторінка"
+#: placeDisplay.js:138
+#, javascript-format
+msgid "Failed to launch “%s”"
+msgstr "Не вдалося запустити \"% s\""
+
+#: placeDisplay.js:153
+#, javascript-format
+msgid "Failed to mount volume for “%s”"
+msgstr "Не вдалося встановити гучність для \"% s\""
+
+#: placeDisplay.js:321
+#, javascript-format
+msgid "Ejecting drive “%s” failed:"
+msgstr "Не вдалося вийняти диск \"% s\":"
