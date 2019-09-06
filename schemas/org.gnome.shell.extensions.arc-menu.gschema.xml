@@ -204,7 +204,7 @@
     <key type="b" name="show-power-button">
      <default>true</default>
       <summary>Show power button</summary>
-      <description>Show Show power button.</description>
+      <description>Show power button.</description>
     </key>
     <key type="b" name="show-logout-button">
      <default>true</default>
