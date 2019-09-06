@@ -203,8 +203,8 @@
     </key>
     <key type="b" name="show-power-button">
      <default>true</default>
-      <summary>Show power button</summary>
-      <description>Show power button.</description>
+      <summary>Show power off button</summary>
+      <description>Show power off button.</description>
     </key>
     <key type="b" name="show-logout-button">
      <default>true</default>
