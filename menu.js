@@ -776,12 +776,14 @@ var ApplicationsButton =   Utils.defineClass({
                 });
             }
             //Power Button
-            let power = new MW.PowerButton(this);
-            this.actionsBox.actor.add(power.actor, {
-                expand: true,
-                x_fill: false,
-                y_align: St.Align.START
-            });   
+            if(this._settings.get_boolean('show-power-button')){
+                let power = new MW.PowerButton(this);
+                this.actionsBox.actor.add(power.actor, {
+                    expand: true,
+                    x_fill: false,
+                    y_align: St.Align.START
+                });
+            }
             //add actionsbox to rightbox             
             this.rightBox.add(this.actionsBox.actor, {
                 expand: true,

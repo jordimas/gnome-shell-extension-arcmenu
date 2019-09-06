@@ -1930,8 +1930,27 @@ var ConfigureSettingsPage = GObject.registerClass(
           //-----------------------------------------------------------------------------------------
           
           //Session Buttons Enable/Disable----------------------------------------------------          
-          //SUSPEND BUTTON
           let sessionButtonsFrame = new PW.FrameBox();
+
+          //POWER BUTTON
+          let powerRow = new PW.FrameBoxRow();
+          let powerLabel = new Gtk.Label({
+              label: _("Power Off"),
+              use_markup: true,
+              xalign: 0,
+              hexpand: true
+          });
+          let powerButton = new Gtk.Switch({margin_right: 20});
+          if(this.settings.get_boolean('show-power-button'))
+              powerButton.set_active(true);
+          powerButton.connect('notify::active', function (check)
+          {
+              this.settings.set_boolean('show-power-button', check.get_active());
+          }.bind(this));
+          powerRow.add(powerLabel);
+          powerRow.add(powerButton);
+
+          //SUSPEND BUTTON
           let suspendRow = new PW.FrameBoxRow();
           let suspendLabel = new Gtk.Label({
               label: _("Suspend"),
@@ -1985,6 +2004,7 @@ var ConfigureSettingsPage = GObject.registerClass(
           logOffRow.add(logOffLabel);
           logOffRow.add(logOffButton);
           //ADD TO FRAME
+          sessionButtonsFrame.add(powerRow);
           sessionButtonsFrame.add(suspendRow);
           sessionButtonsFrame.add(logOffRow);
           sessionButtonsFrame.add(lockRow);
