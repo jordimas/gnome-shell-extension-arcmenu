@@ -1,0 +1,511 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2019-07-18 18:37-0400\n"
+"PO-Revision-Date: 2019-09-07 10:43+0200\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 2.0.6\n"
+"Last-Translator: Grzegorz Kulik\n"
+"Language: szl\n"
+"Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+
+#: controller.js:253 menuWidgets.js:1432
+msgid "Applications"
+msgstr "Programy"
+
+#: menu.js:334 placeDisplay.js:447 prefs.js:1803
+msgid "Home"
+msgstr "Katalog dōmowy"
+
+#: menu.js:341 prefs.js:1803
+msgid "Documents"
+msgstr "Dokumynta"
+
+#: menu.js:341 prefs.js:1803
+msgid "Downloads"
+msgstr "Pobrane"
+
+#: menu.js:341 prefs.js:1803
+msgid "Music"
+msgstr "Muzyka"
+
+#: menu.js:341 prefs.js:1803
+msgid "Pictures"
+msgstr "Ôbrazy"
+
+#: menu.js:341 prefs.js:1803
+msgid "Videos"
+msgstr "Wideo"
+
+#: menu.js:541 prefs.js:1804
+msgid "Network"
+msgstr "Nec"
+
+#: menu.js:596 prefs.js:1899
+msgid "Software"
+msgstr "Ôprogramowanie"
+
+#: menu.js:596 prefs.js:1899
+msgid "Settings"
+msgstr "Sztelōnki"
+
+#: menu.js:596 prefs.js:1899
+msgid "Tweaks"
+msgstr "Ulepszynia"
+
+#: menu.js:596 menuWidgets.js:776 prefs.js:1899
+msgid "Terminal"
+msgstr "Terminal"
+
+#: menuWidgets.js:129
+msgid "Current Windows:"
+msgstr "Teroźne ôkna:"
+
+#: menuWidgets.js:150
+msgid "New Window"
+msgstr "Nowe ôkno"
+
+#: menuWidgets.js:165
+msgid "Launch using Dedicated Graphics Card"
+msgstr "Sztartnij ze pōmocōm dedykowanyj karty graficznyj"
+
+#: menuWidgets.js:195
+msgid "Remove from Favorites"
+msgstr "Skasuj z ôblubiōnych"
+
+#: menuWidgets.js:201
+msgid "Add to Favorites"
+msgstr "Przidej do ôblubiōnych"
+
+#: menuWidgets.js:209 menuWidgets.js:266
+msgid "Unpin from Arc Menu"
+msgstr "Ôdepnij ôd Arc Menu"
+
+#: menuWidgets.js:230
+msgid "Pin to Arc Menu"
+msgstr "Przipnij do Arc Menu"
+
+#: menuWidgets.js:245
+msgid "Show Details"
+msgstr "Pokoż informacyje"
+
+#: menuWidgets.js:403 prefs.js:1899
+msgid "Activities Overview"
+msgstr "Przeglōnd roboty"
+
+#: menuWidgets.js:529
+msgid "Power Off"
+msgstr "Zawrzij"
+
+#: menuWidgets.js:542 prefs.js:1973
+msgid "Log Out"
+msgstr "Ôdloguj sie"
+
+#: menuWidgets.js:555 prefs.js:1937
+msgid "Suspend"
+msgstr "Strzim"
+
+#: menuWidgets.js:573 prefs.js:1955
+msgid "Lock"
+msgstr "Zablokuj"
+
+#: menuWidgets.js:595
+msgid "Back"
+msgstr "Nazod"
+
+#: menuWidgets.js:651
+msgid "All Programs"
+msgstr "Wszyjske programy"
+
+#: menuWidgets.js:775 twoMenuButton.js:77
+msgid "Arc Menu Settings"
+msgstr "Sztelōnki Arc Menu"
+
+#: menuWidgets.js:1119
+msgid "Frequent Apps"
+msgstr "Czynste aplikacyje"
+
+#: menuWidgets.js:1269
+msgid "Type to search…"
+msgstr "Szukej…"
+
+#: placeDisplay.js:138
+#, javascript-format
+msgid "Failed to launch “%s”"
+msgstr "Ôtwarcie „%s” sie niy podarziło"
+
+#: placeDisplay.js:153
+#, javascript-format
+msgid "Failed to mount volume for “%s”"
+msgstr "Niy idzie zamōntować woluminu „%s”"
+
+#: placeDisplay.js:237 placeDisplay.js:260 prefs.js:1803
+msgid "Computer"
+msgstr "Kōmputer"
+
+#: placeDisplay.js:321
+#, javascript-format
+msgid "Ejecting drive “%s” failed:"
+msgstr "Niy szło wysunōńć woluminu „%s”:"
+
+#: prefs.js:46 prefs.js:620
+msgid "Pinned Apps"
+msgstr "Przipiynte aplikacyje"
+
+#: prefs.js:51
+msgid "Your Pinned Apps:"
+msgstr "Twoje przipiynte aplikacyje:"
+
+#: prefs.js:75
+msgid "Add More Apps"
+msgstr "Przidej wiyncyj aplikacyji"
+
+#: prefs.js:119
+msgid "Add Custom Shortcut"
+msgstr "Przidanie niysztandardowego skrōtu"
+
+#: prefs.js:153
+msgid "Save"
+msgstr "Spamiyntej"
+
+#: prefs.js:278
+msgid "Select Apps to add to Pinned Apps List"
+msgstr "Ôbier aplikacyje do przidanio do listy przipiyntych aplikacyji"
+
+#: prefs.js:298 prefs.js:457
+msgid "Add"
+msgstr "Przidej"
+
+#: prefs.js:406
+msgid "Add a Custom Shortcut"
+msgstr "Przidej niysztandardowy skrōt"
+
+#: prefs.js:416
+msgid "Shortcut Name:"
+msgstr "Miano skrōtu:"
+
+#: prefs.js:430
+msgid "Icon Path/Icon Symbolic:"
+msgstr "Drōga ikōny/Skrōt do ikōny:"
+
+#: prefs.js:444
+msgid "Terminal Command:"
+msgstr "Kōmynda Terminala:"
+
+#: prefs.js:491
+msgid "General"
+msgstr "Ôgōlne"
+
+#: prefs.js:500
+msgid "Menu Button Position in Panel"
+msgstr "Pozycyjo knefla myni na panelu"
+
+#: prefs.js:507
+msgid "Left"
+msgstr "Lewo"
+
+#: prefs.js:510
+msgid "Center"
+msgstr "Na postrzodku"
+
+#: prefs.js:514
+msgid "Right"
+msgstr "Prawo"
+
+#: prefs.js:552
+msgid "Display on all monitors when using Dash to Panel"
+msgstr "Pokoż na wszyjskich mōnitorach przi używaniu Dash to Panel"
+
+#: prefs.js:573
+msgid "Disable Tooltips"
+msgstr "Pokoż podpowiedzi"
+
+#: prefs.js:595
+msgid "Disable activities hot corner"
+msgstr "Zastow aktywny narożnik"
+
+#: prefs.js:614
+msgid "Choose Arc Menus Default View"
+msgstr "Ôbier wychodny widok Myni Arc"
+
+#: prefs.js:621
+msgid "Categories List"
+msgstr "Lista kategoryji"
+
+#: prefs.js:646
+msgid "Set Menu Hotkey"
+msgstr "Nasztaluj knefel aktywowanio myni"
+
+#: prefs.js:656
+msgid "Left Super Key"
+msgstr "Lewy Super"
+
+#: prefs.js:662
+msgid "Right Super Key"
+msgstr "Prawy Super"
+
+#: prefs.js:667
+msgid "Custom"
+msgstr "Włosne"
+
+#: prefs.js:672
+msgid "None"
+msgstr "Brak"
+
+#: prefs.js:764
+msgid "Current Hotkey"
+msgstr "Terŏźny knefel aktywowano"
+
+#: prefs.js:790
+msgid "Set Custom Shortcut"
+msgstr "Nasztalowanie niysztandardowego skrōtu"
+
+#: prefs.js:799
+msgid "Press a key"
+msgstr "Wciś knefel"
+
+#: prefs.js:824
+msgid "Modifiers"
+msgstr "Modyfikatory"
+
+#: prefs.js:829
+msgid "Ctrl"
+msgstr "Ctrl"
+
+#: prefs.js:834
+msgid "Super"
+msgstr "Super"
+
+#: prefs.js:838
+msgid "Shift"
+msgstr "Shift"
+
+#: prefs.js:842
+msgid "Alt"
+msgstr "Alt"
+
+#: prefs.js:906 prefs.js:1447 prefs.js:1752
+msgid "Apply"
+msgstr "Zastosuj"
+
+#: prefs.js:941
+msgid "Button appearance"
+msgstr "Wyglōnd knefla"
+
+#: prefs.js:953
+msgid "Text for the menu button"
+msgstr "Tekst ôd knefla myni"
+
+#: prefs.js:959
+msgid "System text"
+msgstr "Systymowy tekst"
+
+#: prefs.js:962
+msgid "Custom text"
+msgstr "Włosny tekst"
+
+#: prefs.js:986
+msgid "Set custom text for the menu button"
+msgstr "Nasztaluj włosny tekst ôd knefla myni"
+
+#: prefs.js:1006
+msgid "Enable the arrow icon beside the button text"
+msgstr "Włōncz ikōna strzałki kole tekstu knefla"
+
+#: prefs.js:1028
+msgid "Select icon for the menu button"
+msgstr "Ôbier ikona do knefla myni"
+
+#: prefs.js:1038
+msgid "Please select an image icon"
+msgstr "Ôbier ôbroz ikōny"
+
+#: prefs.js:1043
+msgid "Arc Menu Icon"
+msgstr "Ikōna Arc Menu"
+
+#: prefs.js:1044
+msgid "System Icon"
+msgstr "Ikōna systymowo"
+
+#: prefs.js:1045
+msgid "Custom Icon"
+msgstr "Włosno Ikōna"
+
+#: prefs.js:1071
+msgid "Icon size"
+msgstr "Miara ikōny"
+
+#: prefs.js:1071
+msgid "default is"
+msgstr "wychodno je"
+
+#: prefs.js:1111
+msgid "Appearance"
+msgstr "Wyglōnd"
+
+#: prefs.js:1120
+msgid "Customize Menu Button Appearance"
+msgstr "Spersōnalizuj wyglōnd knefla myni"
+
+#: prefs.js:1130
+msgid "Icon"
+msgstr "Ikōna"
+
+#: prefs.js:1131
+msgid "Text"
+msgstr "Tekst"
+
+#: prefs.js:1132
+msgid "Icon and Text"
+msgstr "Ikōna i tekst"
+
+#: prefs.js:1133
+msgid "Text and Icon"
+msgstr "Tekst i ikōna"
+
+#: prefs.js:1156 prefs.js:1303
+msgid "Customize Arc Menu Appearance"
+msgstr "Spersōnalizuj wyglōnd myni"
+
+#: prefs.js:1204 prefs.js:1496
+msgid "Override Arc Menu Theme"
+msgstr "Nadpisz tymat Arc Menu"
+
+#: prefs.js:1262
+msgid "Choose Avatar Icon Shape"
+msgstr "Ôbier kształt ikōny awatara"
+
+#: prefs.js:1267
+msgid "Circular"
+msgstr "W kształcie koła"
+
+#: prefs.js:1268
+msgid "Square"
+msgstr "Kwadratowe"
+
+#: prefs.js:1321
+msgid "Menu Height"
+msgstr "Wysokośc myni"
+
+#: prefs.js:1353
+msgid "Left-Panel Width"
+msgstr "Szyrokość lewego panelu"
+
+#: prefs.js:1376
+msgid "Enable Vertical Separator"
+msgstr "Włōncz piōnowy separatōr"
+
+#: prefs.js:1395
+msgid "Separator Color"
+msgstr "Farba separatora"
+
+#: prefs.js:1417 prefs.js:1704
+msgid "Reset"
+msgstr "Prziwrōć"
+
+#: prefs.js:1508
+msgid "Menu Background Color"
+msgstr "Farba zadku myni"
+
+#: prefs.js:1527
+msgid "Menu Foreground Color"
+msgstr "Farba przodku myni"
+
+#: prefs.js:1545
+msgid "Font Size"
+msgstr "Srogość fōntu"
+
+#: prefs.js:1569
+msgid "Border Color"
+msgstr "Farba rantu"
+
+#: prefs.js:1588
+msgid "Border Size"
+msgstr "Srogość rantu"
+
+#: prefs.js:1612
+msgid "Highlighted Item Color"
+msgstr "Farba podświetlōnego elymyntu"
+
+#: prefs.js:1631
+msgid "Corner Radius"
+msgstr "Prōmiyń krziwizny narożnika"
+
+#: prefs.js:1655
+msgid "Menu Arrow Size"
+msgstr "Srogość strzałki myni"
+
+#: prefs.js:1679
+msgid "Menu Displacement"
+msgstr "Pōnkniyńcie myni"
+
+#: prefs.js:1786
+msgid "Configure"
+msgstr "Kōnfiguracyjo"
+
+#: prefs.js:1793
+msgid "Enable/Disable shortcuts"
+msgstr "Włōncz/zastow skrōty"
+
+#: prefs.js:1848
+msgid "External Devices"
+msgstr "Zewnyntrzne masziny"
+
+#: prefs.js:1871
+msgid "Bookmarks"
+msgstr "Zokłodki"
+
+#: prefs.js:2005
+msgid "About"
+msgstr "Informacyje"
+
+#: prefs.js:2034
+msgid "Arc-Menu"
+msgstr "Arc-Menu"
+
+#: prefs.js:2039
+msgid "version: "
+msgstr "wersyjo: "
+
+#: prefs.js:2047
+msgid "GitLab Page"
+msgstr "GitLab Page"
+
+#: search.js:626
+msgid "Searching..."
+msgstr "Wyszukowanie..."
+
+#: search.js:628
+msgid "No results."
+msgstr "Brak wynikōw."
+
+#: search.js:706
+#, javascript-format
+msgid "%d more"
+msgid_plural "%d more"
+msgstr[0] "%d wiyncyj"
+msgstr[1] "%d wiyncyj"
+msgstr[2] "%d wiyncyj"
+
+#: twoMenuButton.js:86
+msgid "Arc Menu on GitLab"
+msgstr "Arc Menu na GitLab"
+
+#: twoMenuButton.js:91
+msgid "About Arc Menu"
+msgstr "Ô Arc Menu"
+
+#: twoMenuButton.js:112
+msgid "Dash to Panel Settings"
+msgstr "Sztelōnki Dash to Panel"
+
