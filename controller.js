@@ -97,6 +97,7 @@ var MenuSettingsController = class {
             this._settings.connect('changed::show-terminal-shortcut', this._redisplayRightSide.bind(this)),
             this._settings.connect('changed::show-settings-shortcut', this._redisplayRightSide.bind(this)),
             this._settings.connect('changed::show-activities-overview-shortcut', this._redisplayRightSide.bind(this)),
+            this._settings.connect('changed::show-power-button', this._redisplayRightSide.bind(this)),
             this._settings.connect('changed::show-logout-button', this._redisplayRightSide.bind(this)),
             this._settings.connect('changed::show-lock-button', this._redisplayRightSide.bind(this)),
             this._settings.connect('changed::show-external-devices', this._redisplayRightSide.bind(this)),
