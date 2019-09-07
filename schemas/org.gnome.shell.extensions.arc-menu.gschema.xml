@@ -201,25 +201,25 @@
       <summary>Show Bookmarks</summary>
       <description>Show Bookmarks.</description>
     </key>
-    <key type="b" name="show-power-button">
-     <default>true</default>
-      <summary>Show power off button</summary>
-      <description>Show power off button.</description>
-    </key>
     <key type="b" name="show-logout-button">
      <default>true</default>
       <summary>Show logout button</summary>
-      <description>Show Show logout button.</description>
+      <description>Show logout button.</description>
     </key>
     <key type="b" name="show-lock-button">
      <default>true</default>
       <summary>Show lock button</summary>
-      <description>Show Show lock button.</description>
+      <description>Show lock button.</description>
     </key>
     <key type="b" name="show-suspend-button">
      <default>false</default>
       <summary>Show suspend button</summary>
-      <description>Show Show suspend button.</description>
+      <description>Show suspend button.</description>
+    </key>
+    <key type="b" name="show-power-button">
+     <default>true</default>
+      <summary>Show power button</summary>
+      <description>Show power button.</description>
     </key>
     <key type="b" name="multi-monitor">
       <default>false</default>

@@ -36,7 +36,8 @@ const Constants = Me.imports.constants;
 const PW = Me.imports.prefsWidgets;
 const Gettext = imports.gettext.domain(Me.metadata['gettext-domain']);
 const _ = Gettext.gettext;
-
+const SCHEMA_PATH = '/org/gnome/shell/extensions/arc-menu/';
+const GSET = 'gnome-shell-extension-tool';
 /*
  * Pinned Apps Page
  */
@@ -212,6 +213,10 @@ var PinnedAppsPage = GObject.registerClass(
                 });
                 //create the three buttons to handle the ordering of pinned apps
                 //and delete pinned apps
+                let editButton = new PW.IconButton({
+                    circular: false,
+                    icon_name: 'emblem-system-symbolic'
+                });
                 let upButton = new PW.IconButton({
                   circular: false,
                   icon_name: 'go-up-symbolic'
@@ -224,7 +229,30 @@ var PinnedAppsPage = GObject.registerClass(
                   circular: false,
                   icon_name: 'edit-delete-symbolic'
                 });
-
+                editButton.connect('clicked', ()=>
+                {
+                    let appArray = [frameRow._name,frameRow._icon,frameRow._cmd];
+                    let dialog = new AddCustomLinkDialogWindow(this.settings, this, true, appArray);
+                    dialog.show_all();
+                    dialog.connect('response', ()=>
+                    { 
+                        if(dialog.get_response())
+                        {
+                            let newPinnedApps = dialog.get_newPinnedAppsArray();
+                            frameRow._name = newPinnedApps[0];
+                            frameRow._icon = newPinnedApps[1];
+                            frameRow._cmd = newPinnedApps[2];
+                            frameLabel.label = _(frameRow._name);
+                            arcMenuImage.gicon = Gio.icon_new_for_string(frameRow._icon);
+                            dialog.destroy();
+                            this.frame.show();
+                            this.savePinnedAppsButton.set_sensitive(true);
+                        }
+                        else
+                            dialog.destroy();
+                    }); 
+                    
+                });
                 upButton.connect('clicked', ()=>
                 {
                     //find index of frameRow in frame
@@ -261,6 +289,7 @@ var PinnedAppsPage = GObject.registerClass(
                     this.savePinnedAppsButton.set_sensitive(true);
                 });
                 //add everything to frame
+                buttonBox.add(editButton);
                 buttonBox.add(upButton);
                 buttonBox.add(downButton);
                 buttonBox.add(deleteButton);
@@ -401,11 +430,15 @@ var AddAppsToPinnedListWindow = GObject.registerClass(
 var AddCustomLinkDialogWindow = GObject.registerClass(
     class AddCustomLinkDialogWindow extends PW.DialogWindow {
 
-        _init(settings, parent) {
+        _init(settings, parent, isAppEdit=false, appArray=null) {
             this._settings = settings;
-            super._init(_('Add a Custom Shortcut'), parent);
             this.newPinnedAppsArray=[];
             this.addResponse = false;
+            this.isAppEdit = isAppEdit;
+            this.appArray = appArray;
+            super._init(isAppEdit?_('Edit Pinned App'):_('Add a Custom Shortcut'), parent);
+        
+          
         }
 
         _createLayout(vbox) {
@@ -420,6 +453,7 @@ var AddCustomLinkDialogWindow = GObject.registerClass(
                 selectable: false
             });
             let nameEntry = new Gtk.Entry();
+            nameEntry.set_width_chars(35);
             nameFrameRow.add(nameFrameLabel);
             nameFrameRow.add(nameEntry);
             nameEntry.grab_focus();
@@ -434,6 +468,7 @@ var AddCustomLinkDialogWindow = GObject.registerClass(
                 selectable: false
             });
             let iconEntry = new Gtk.Entry();
+            iconEntry.set_width_chars(35);
             iconFrameRow.add(iconFrameLabel);
             iconFrameRow.add(iconEntry);
             mainFrame.add(iconFrameRow);
@@ -448,15 +483,22 @@ var AddCustomLinkDialogWindow = GObject.registerClass(
                 selectable: false
             });
             let cmdEntry = new Gtk.Entry();
+            cmdEntry.set_width_chars(35);
             cmdFrameRow.add(cmdFrameLabel);
             cmdFrameRow.add(cmdEntry);
             mainFrame.add(cmdFrameRow);
             //last row - Label and button to add custom link to list
 
             let addButton = new Gtk.Button({
-                label: _("Add")
+                label: this.isAppEdit ?_("Save") :_("Add")
             });
 
+            if(this.appArray!=null)
+            {
+                nameEntry.text=this.appArray[0];
+                iconEntry.text=this.appArray[1];
+                cmdEntry.text=this.appArray[2];
+            }
             addButton.connect('clicked', ()=>
             {
                this.newPinnedAppsArray.push(nameEntry.get_text());
@@ -749,6 +791,80 @@ var GeneralSettingsPage = GObject.registerClass(
             if(this.settings.get_enum('menu-hotkey')==3)
                 this.createHotKeyRow();
             
+            let importFrame = new PW.FrameBox();
+            let importRow = new PW.FrameBoxRow();
+            let importLabel = new Gtk.Label({
+                label: _("Export and Import Arc Menu Settings"),
+                use_markup: true,
+                xalign: 0,
+                hexpand: true
+            });
+
+            let importButtonsRow = new PW.FrameBoxRow();
+            let importButton = new Gtk.Button({
+                label: _("Import from File"),
+                xalign:1
+            });
+            importButton.connect('clicked', ()=> {
+                this._showFileChooser(
+                    _('Import settings'),
+                    { action: Gtk.FileChooserAction.OPEN },
+                    Gtk.STOCK_OPEN,
+                    filename => {
+                        let settingsFile = Gio.File.new_for_path(filename);
+                        let [ , pid, stdin, stdout, stderr] = 
+                            GLib.spawn_async_with_pipes(
+                                null,
+                                ['dconf', 'load', SCHEMA_PATH],
+                                null,
+                                GLib.SpawnFlags.SEARCH_PATH | GLib.SpawnFlags.DO_NOT_REAP_CHILD,
+                                null
+                            );
+            
+                        stdin = new Gio.UnixOutputStream({ fd: stdin, close_fd: true });
+                        GLib.close(stdout);
+                        GLib.close(stderr);
+                                            
+                        let [ , , , retCode] = GLib.spawn_command_line_sync(GSET + ' -d ' + Me.uuid);
+                                            
+                        if (retCode == 0) {
+                            GLib.child_watch_add(GLib.PRIORITY_DEFAULT, pid, () => GLib.spawn_command_line_sync(GSET + ' -e ' + Me.uuid));
+                        }
+    
+                        stdin.splice(settingsFile.read(null), Gio.OutputStreamSpliceFlags.CLOSE_SOURCE | Gio.OutputStreamSpliceFlags.CLOSE_TARGET, null);
+                    }
+                );
+            });
+            let exportButton = new Gtk.Button({
+                label: _("Export to File"),
+                xalign:1
+            });
+            exportButton.connect('clicked', ()=> {
+                
+                this._showFileChooser(
+                    _('Export settings'),
+                    { action: Gtk.FileChooserAction.SAVE,
+                      do_overwrite_confirmation: true },
+                    Gtk.STOCK_SAVE,
+                    filename => {
+                        let file = Gio.file_new_for_path(filename);
+                        let raw = file.replace(null, false, Gio.FileCreateFlags.NONE, null);
+                        let out = Gio.BufferedOutputStream.new_sized(raw, 4096);
+    
+                        out.write_all(GLib.spawn_command_line_sync('dconf dump ' + SCHEMA_PATH)[1], null);
+                        out.close(null);
+                    }
+                );
+
+            
+            });
+       
+    
+            importRow.add(importLabel);
+            importButtonsRow.add(exportButton);
+            importButtonsRow.add(importButton);
+            importFrame.add(importRow);     
+            importFrame.add(importButtonsRow);
             // add the frames
             this.add(defaultLeftBoxFrame);
             this.add(menuPositionFrame);
@@ -756,7 +872,24 @@ var GeneralSettingsPage = GObject.registerClass(
             this.add(tooltipFrame);
             this.add(disableHotCornerFrame);
             this.add(this.menuKeybindingFrame);
+            this.add(importFrame);
             //-----------------------------------------------------------------
+        }
+        _showFileChooser(title, params, acceptBtn, acceptHandler) {
+            let dialog = new Gtk.FileChooserDialog(mergeObjects({ title: title, transient_for: this.get_toplevel() }, params));
+    
+            dialog.add_button(Gtk.STOCK_CANCEL, Gtk.ResponseType.CANCEL);
+            dialog.add_button(acceptBtn, Gtk.ResponseType.ACCEPT);
+    
+            if (dialog.run() == Gtk.ResponseType.ACCEPT) {
+                try {
+                    acceptHandler(dialog.get_filename());
+                } catch(e) {
+                    log('error from dash-to-panel filechooser: ' + e);
+                }
+            }
+    
+            dialog.destroy();
         }
         createHotKeyRow(){
             this.menuKeybindingRow = new PW.FrameBoxRow();    
@@ -780,6 +913,15 @@ var GeneralSettingsPage = GObject.registerClass(
             
         }
 });
+function mergeObjects(main, bck) {
+    for (var prop in bck) {
+        if (!main.hasOwnProperty(prop) && bck.hasOwnProperty(prop)) {
+            main[prop] = bck[prop];
+        }
+    }
+
+    return main;
+};
 //DialogWindow for Custom Shortcut
 var CustomShortcutDialogWindow = GObject.registerClass(
     class CustomShortcutDialogWindow extends PW.DialogWindow {
@@ -1528,7 +1670,7 @@ var OverrideArcMenuThemeWindow = GObject.registerClass(
                 xalign:0,
                 hexpand: true,
              });   
-            let menuForegroundColorChooser = new Gtk.ColorButton({use_alpha:false});     
+            let menuForegroundColorChooser = new Gtk.ColorButton({use_alpha:true});     
             color.parse(this.menuForegroundColor);
             menuForegroundColorChooser.set_rgba(color);            
             menuForegroundColorChooser.connect('color-set', ()=>{
@@ -1548,7 +1690,7 @@ var OverrideArcMenuThemeWindow = GObject.registerClass(
              });   
             let fontScale = new Gtk.HScale({
                 adjustment: new Gtk.Adjustment({
-                    lower: 8,upper: 12, step_increment: 1, page_increment: 1, page_size: 0
+                    lower: 8,upper: 14, step_increment: 1, page_increment: 1, page_size: 0
                 }),
                 digits: 0,round_digits: 0,hexpand: true,
                 value_pos: Gtk.PositionType.RIGHT
@@ -1797,8 +1939,8 @@ var ConfigureSettingsPage = GObject.registerClass(
           });
           let shortcutsScrollWindow = new Gtk.ScrolledWindow();
           shortcutsScrollWindow.set_policy(Gtk.PolicyType.AUTOMATIC, Gtk.PolicyType.AUTOMATIC);
-          shortcutsScrollWindow.set_max_content_height(150);
-          shortcutsScrollWindow.set_min_content_height(150);
+          shortcutsScrollWindow.set_max_content_height(115);
+          shortcutsScrollWindow.set_min_content_height(115);
           shortcutsScrollWindow.add(shortcutsFrame);
           var SHORTCUT_TRANSLATIONS = [_("Home"), _("Documents"),_("Downloads"), _("Music"),_("Pictures"),_("Videos"),_("Computer"), 
           _("Network")];
@@ -1930,27 +2072,14 @@ var ConfigureSettingsPage = GObject.registerClass(
           //-----------------------------------------------------------------------------------------
           
           //Session Buttons Enable/Disable----------------------------------------------------          
-          let sessionButtonsFrame = new PW.FrameBox();
-
-          //POWER BUTTON
-          let powerRow = new PW.FrameBoxRow();
-          let powerLabel = new Gtk.Label({
-              label: _("Power Off"),
-              use_markup: true,
-              xalign: 0,
-              hexpand: true
-          });
-          let powerButton = new Gtk.Switch({margin_right: 20});
-          if(this.settings.get_boolean('show-power-button'))
-              powerButton.set_active(true);
-          powerButton.connect('notify::active', function (check)
-          {
-              this.settings.set_boolean('show-power-button', check.get_active());
-          }.bind(this));
-          powerRow.add(powerLabel);
-          powerRow.add(powerButton);
-
           //SUSPEND BUTTON
+
+          let sessionButtonsFrame = new PW.FrameBox();
+          let sessionButtonsScrollWindow = new Gtk.ScrolledWindow();
+          sessionButtonsScrollWindow.set_policy(Gtk.PolicyType.AUTOMATIC, Gtk.PolicyType.AUTOMATIC);
+          sessionButtonsScrollWindow.set_max_content_height(115);
+          sessionButtonsScrollWindow.set_min_content_height(115);
+          sessionButtonsScrollWindow.add(sessionButtonsFrame);
           let suspendRow = new PW.FrameBoxRow();
           let suspendLabel = new Gtk.Label({
               label: _("Suspend"),
@@ -2003,12 +2132,31 @@ var ConfigureSettingsPage = GObject.registerClass(
           }.bind(this));   
           logOffRow.add(logOffLabel);
           logOffRow.add(logOffButton);
+
+          //POWER BUTTON
+          let powerRow = new PW.FrameBoxRow();
+          let powerLabel = new Gtk.Label({
+              label: _("Power Off"),
+              use_markup: true,
+              xalign: 0,
+              hexpand: true
+          });
+          let powerButton = new Gtk.Switch({margin_right: 20});
+          if(this.settings.get_boolean('show-power-button'))
+            powerButton.set_active(true);
+          powerButton.connect('notify::active', function (check)
+          {
+              this.settings.set_boolean('show-power-button', check.get_active());
+          }.bind(this));   
+          powerRow.add(powerLabel);
+          powerRow.add(powerButton);
+
           //ADD TO FRAME
-          sessionButtonsFrame.add(powerRow);
           sessionButtonsFrame.add(suspendRow);
           sessionButtonsFrame.add(logOffRow);
           sessionButtonsFrame.add(lockRow);
-          this.add(sessionButtonsFrame);
+          sessionButtonsFrame.add(powerRow);
+          this.add(sessionButtonsScrollWindow);
 	  //------------------------------------------------------------------------------------------
           
 
