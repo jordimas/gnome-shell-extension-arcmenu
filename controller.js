@@ -107,7 +107,11 @@ var MenuSettingsController = class {
             this._settings.connect('changed::reload-theme',this._reloadExtension.bind(this)),
             this._settings.connect('changed::pinned-app-list',this._updateFavorites.bind(this)),
             this._settings.connect('changed::enable-pinned-apps',this._updateMenuDefaultView.bind(this)),
+            this._settings.connect('changed::menu-layout', this._updateMenuLayout.bind(this)),
         ];
+    }
+    _updateMenuLayout(){
+        this._menuButton._updateMenuLayout();
     }
     toggleMenus(){
         if(this._settings.get_boolean('multi-monitor')){

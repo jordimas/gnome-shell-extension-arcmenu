@@ -6,6 +6,8 @@
  * Copyright (C) 2017-2019 LinxGem33 
  *
  * Copyright (C) 2019 Andrew Zaech
+ * 
+ * Import/Export settings utility leveraged from Dash to Panel -- https://github.com/home-sweet-gnome/dash-to-panel
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -675,7 +677,32 @@ var GeneralSettingsPage = GObject.registerClass(
             defaultLeftBoxRow.add(defaultLeftBoxLabel);
             defaultLeftBoxRow.add(defaultLeftBoxCombo);
             defaultLeftBoxFrame.add(defaultLeftBoxRow);
+            /*
+             * Menu Layout
+             */
+            let layoutFrame = new PW.FrameBox();
+            let layoutRow = new PW.FrameBoxRow();
+            let layoutLabel = new Gtk.Label({
+                label: _("Arc Menus Layout"),
+                use_markup: true,
+                xalign: 0,
+                hexpand: true
+            });
+            let layoutCombo = new Gtk.ComboBoxText({ halign: Gtk.Align.END });
+            layoutCombo.append_text(_("Default"));
+            layoutCombo.append_text(_("Brisk"));
 
+            layoutCombo.set_active(this.settings.get_enum('menu-layout'));
+
+            layoutCombo.connect('changed', function (widget) {
+                this.settings.set_enum('menu-layout', widget.get_active());
+                saveCSS(this.settings);
+                this.settings.set_boolean('reload-theme',true);
+            }.bind(this));
+           
+            layoutRow.add(layoutLabel);
+            layoutRow.add( layoutCombo);
+            layoutFrame.add( layoutRow);
             /*
              * Menu Hotkey and Keybinding Frame Box
              */
@@ -859,13 +886,14 @@ var GeneralSettingsPage = GObject.registerClass(
             
             });
        
-    
+            
             importRow.add(importLabel);
             importButtonsRow.add(exportButton);
             importButtonsRow.add(importButton);
             importFrame.add(importRow);     
             importFrame.add(importButtonsRow);
             // add the frames
+            this.add(layoutFrame);
             this.add(defaultLeftBoxFrame);
             this.add(menuPositionFrame);
             this.add(multiMonitorFrame);
@@ -2366,6 +2394,16 @@ function saveCSS(settings){
     let menuWidth = this._settings.get_int('menu-width');
     let avatarStyle =  this._settings.get_enum('avatar-style');
     let avatarRadius = avatarStyle == 0 ? 999 : 0;
+    
+    let menuLayout =  this._settings.get_enum('menu-layout');
+    let searchBoxPadding;
+    if(menuLayout == 0) 
+        searchBoxPadding = ".search-box-padding { \npadding-top: 0.75em;\n"+"padding-bottom: 0.25em;\npadding-left: 1em;\n padding-right: 0.25em;\n margin-right: .5em;\n}\n";
+    else 
+        searchBoxPadding = ".search-box-padding { \npadding-top: 0.0em;\n"+"padding-bottom: 0.5em;\npadding-left: 0.4em;\n padding-right: 0.4em;\n margin-right: 0em;\n}\n";
+
+
+   
 
     let tooltipForegroundColor= customArcMenu ? "\n color:"+  menuForegroundColor+";\n" : "";
     let tooltipBackgroundColor= customArcMenu ? "\n background-color:"+lighten_rgb( menuColor,0.05)+";\n" : "";
@@ -2390,7 +2428,7 @@ function saveCSS(settings){
 
         +tooltipStyle
 
-        +".search-box-padding { \npadding-top: 0.75em;\n"+"padding-bottom: 0.25em;\npadding-left: 1em;\n padding-right: 0.25em;\n margin-right: .5em;\n}\n"
+        +searchBoxPadding
         
         +".arc-menu{\nmin-width: 15em;\ncolor: #D3DAE3;\nborder-image: none;\nbox-shadow: none;\nfont-size:" + fontSize+"pt;\n}\n"
         +".arc-menu .popup-sub-menu {\npadding-bottom: 1px;\nbackground-color: #3a393b;\n }\n"

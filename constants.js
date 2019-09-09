@@ -91,6 +91,11 @@ var MENU_POSITION = { // See: org.gnome.shell.extensions.arc-menu.menu-position
     Center: 1,
     Right: 2
 };
+var MENU_LAYOUT = { // See: org.gnome.shell.extensions.arc-menu.menu-position
+    Default: 0,
+    Brisk: 1,
+    Other: 2
+};
 var MENU_APPEARANCE = { // See: org.gnome.shell.extensions.arc-menu.menu-button-icon
     Icon: 0,
     Text: 1,
