@@ -677,32 +677,7 @@ var GeneralSettingsPage = GObject.registerClass(
             defaultLeftBoxRow.add(defaultLeftBoxLabel);
             defaultLeftBoxRow.add(defaultLeftBoxCombo);
             defaultLeftBoxFrame.add(defaultLeftBoxRow);
-            /*
-             * Menu Layout
-             */
-            let layoutFrame = new PW.FrameBox();
-            let layoutRow = new PW.FrameBoxRow();
-            let layoutLabel = new Gtk.Label({
-                label: _("Arc Menus Layout"),
-                use_markup: true,
-                xalign: 0,
-                hexpand: true
-            });
-            let layoutCombo = new Gtk.ComboBoxText({ halign: Gtk.Align.END });
-            layoutCombo.append_text(_("Default"));
-            layoutCombo.append_text(_("Brisk"));
-
-            layoutCombo.set_active(this.settings.get_enum('menu-layout'));
-
-            layoutCombo.connect('changed', function (widget) {
-                this.settings.set_enum('menu-layout', widget.get_active());
-                saveCSS(this.settings);
-                this.settings.set_boolean('reload-theme',true);
-            }.bind(this));
            
-            layoutRow.add(layoutLabel);
-            layoutRow.add( layoutCombo);
-            layoutFrame.add( layoutRow);
             /*
              * Menu Hotkey and Keybinding Frame Box
              */
@@ -893,7 +868,6 @@ var GeneralSettingsPage = GObject.registerClass(
             importFrame.add(importRow);     
             importFrame.add(importButtonsRow);
             // add the frames
-            this.add(layoutFrame);
             this.add(defaultLeftBoxFrame);
             this.add(menuPositionFrame);
             this.add(multiMonitorFrame);
@@ -1446,8 +1420,147 @@ var  AppearanceSettingsPage = GObject.registerClass(
           avatarStyleRow.add(avatarStyleCombo);
           avatarStyleFrame.add(avatarStyleRow);
           this.add(avatarStyleFrame);
+
+           /*
+             * Menu Layout
+             */
+            let layoutFrame = new PW.FrameBox();
+            let layoutRow = new PW.FrameBoxRow();
+            let layoutLabel = new Gtk.Label({
+                label: _("Arc Menu Layout"),
+                use_markup: true,
+                xalign: 0,
+                hexpand: true
+            });
+            let layoutButton = new PW.IconButton({
+                circular: true,
+                icon_name: 'emblem-system-symbolic'
+            });
+            layoutButton.connect('clicked', ()=>{
+                let dialog = new ArcMenuLayoutWindow(this.settings, this);
+                dialog.show_all();
+                dialog.connect('response', function(response)
+                { 
+                    if(dialog.get_response())
+                    {
+                        this.settings.set_enum('menu-layout', dialog.index);
+                        saveCSS(this.settings);
+                        this.settings.set_boolean('reload-theme',true);
+                        dialog.destroy();
+                    }
+                    else
+                        dialog.destroy();
+                }.bind(this)); 
+            });
+                       
+            layoutRow.add(layoutLabel);
+            layoutRow.add(layoutButton);
+            layoutFrame.add(layoutRow);
+            this.add(layoutFrame);
     }
 });
+
+//Dialog Window for Arc Menu Customization    
+var ArcMenuLayoutWindow = GObject.registerClass(
+    class ArcMenuLayoutWindow extends PW.DialogWindow {
+
+        _init(settings, parent) {
+            this._settings = settings;
+            this.addResponse = false;
+            this.index = this._settings.get_enum('menu-layout');
+            
+            this._params = {
+                title: _("Menu style chooser"),
+                height: Constants.MENU_STYLE_CHOOSER.WindowHeight,
+                width: Constants.MENU_STYLE_CHOOSER.WindowWidth,
+                maxColumns: Constants.MENU_STYLE_CHOOSER.MaxColumns,
+                thumbnailHeight: Constants.MENU_STYLE_CHOOSER.ThumbnailHeight,
+                thumbnailWidth: Constants.MENU_STYLE_CHOOSER.ThumbnailWidth,
+                styles: Constants.MENU_STYLE_CHOOSER.Styles
+            };
+            this._tileGrid = new PW.TileGrid(this._params.maxColumns);
+            super._init(_('Arc Menu Layout'), parent);
+            this.resize(660,480);
+          
+
+
+        }
+
+        _createLayout(vbox) {         
+            this._scrolled = new Gtk.ScrolledWindow();
+            this._scrolled.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC);
+
+            this._params.styles.forEach(function(style){
+                this._addTile(style.name, Me.path + style.thumbnail);
+            }.bind(this));
+    
+            this._scrolled.add(this._tileGrid);
+
+            vbox.add(this._scrolled);
+            // Button Row -------------------------------------------------------
+           let buttonRow = new PW.FrameBoxRow();
+
+
+           this._tileGrid.connect('selected-children-changed', ()=>{
+                applyButton.set_sensitive(true);
+            });
+           let fillerLabel = new Gtk.Label({
+               label: '',
+               xalign:0,
+               hexpand: true,
+           });   
+           buttonRow.add(fillerLabel);
+
+           let applyButton = new Gtk.Button({
+               label: _("Apply"),
+               xalign:1
+           });
+           applyButton.connect('clicked', ()=> {
+                let temp = this._tileGrid.get_selected_children();
+                let array= this._tileGrid.get_children();
+                for(let i = 0; i < array.length; i++){
+                   if(array[i]==temp[0]){
+                       //TODO ONCE ALL IMPLEMENTED CHANGED THIS TO JUST this.index=i;
+                       if(i>=2)
+                            this.index=0;
+                        else
+                            this.index=i;
+                   }
+                        
+                }
+                this.addResponse = true;
+                this.response(-10);
+           });
+           applyButton.set_halign(Gtk.Align.END);
+         
+           buttonRow.add(applyButton);
+
+           vbox.add(buttonRow);
+           this._tileGrid.set_selection_mode(Gtk.SelectionMode.SINGLE);
+           this.show();
+           let temp = this._tileGrid.get_child_at_index(this.index);
+           this._tileGrid.select_child(temp);
+           applyButton.set_sensitive(false);
+            
+        }
+        _addTile(name, thumbnail) {
+            let tile = new PW.Tile(name, thumbnail, this._params.thumbnailWidth, this._params.thumbnailHeight);
+            this._tileGrid.add(tile);
+            tile.connect('button-press-event', ()=> {
+                //TODO
+            });
+        }
+   
+
+    
+        get_response(){
+            return this.addResponse;
+        }
+
+  
+});
+
+
 //Dialog Window for Arc Menu Customization    
 var ArcMenuCustomizationWindow = GObject.registerClass(
     class ArcMenuCustomizationWindow extends PW.DialogWindow {

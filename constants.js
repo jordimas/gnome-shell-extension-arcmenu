@@ -146,3 +146,38 @@ var GNU_SOFTWARE = '<span size="small">' +
 	'GNU General Public License, version 2 or later</a> for details.' +
 	'</span>';
 
+var MENU_STYLE_CHOOSER = {
+    ThumbnailHeight: 200,
+    ThumbnailWidth: 200,
+    MaxColumns: 6,
+    Styles: [
+        {   thumbnail: '/media/layouts/arc-menu.svg',
+            name: 'Arc Menu'
+        },
+        {   thumbnail: '/media/layouts/brisk-menu.svg',
+            name: 'Brisk Menu Style'
+        },
+        {   thumbnail: '/media/layouts/whisker-menu.svg',
+            name: 'Whisker Menu Style'
+        },
+        {   thumbnail: '/media/layouts/gnome-menu.svg',
+            name: 'GNOME Menu Style'
+        },
+        {   thumbnail: '/media/layouts/mint-menu.svg',
+            name: 'Mint Menu Style'
+        },
+        {   thumbnail: '/media/layouts/elementary-menu.svg',
+            name: 'Elementary Menu Style'
+        },
+        {   thumbnail: '/media/layouts/gnome-dash-menu.svg',
+            name: 'GNOME Dash Style'
+        },
+        {   thumbnail: '/media/layouts/simple-menu.svg',
+            name: 'Simple Menu Style'
+        },
+        {   thumbnail: '/media/layouts/redmond-style-menu.svg',
+            name: 'Redmond Menu Style'
+        }
+    ]
+};
+    
