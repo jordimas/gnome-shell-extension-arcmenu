@@ -250,7 +250,7 @@ var ApplicationsButton =   Utils.defineClass({
             if(layout == Constants.MENU_LAYOUT.Default)
                 this._createLayout();
             else if(layout == Constants.MENU_LAYOUT.Brisk)
-                new MenuLayouts.brisk.createBriskMenu(this); 
+               this.BriskMenu =  new MenuLayouts.brisk.createBriskMenu(this); 
             this._loadFavorites();
             this._display();
             this.updateStyle();
