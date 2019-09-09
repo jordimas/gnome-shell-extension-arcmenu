@@ -226,10 +226,19 @@ var ApplicationsButton =   Utils.defineClass({
             if(layout == Constants.MENU_LAYOUT.Default)
                 this._createLayout();
             else if(layout == Constants.MENU_LAYOUT.Brisk){
-                this.BriskMenu = new MenuLayouts.brisk.createBriskMenu(this); 
+                this.BriskMenu = new MenuLayouts.brisk.createMenu(this); 
                 this._displayAllApps();
             }
-                
+            else if(layout == Constants.MENU_LAYOUT.Whisker){
+                this.BriskMenu = new MenuLayouts.whisker.createMenu(this); 
+                this._displayAllApps();
+            }
+            else if(layout == Constants.MENU_LAYOUT.GnomeMenu){
+                this.BriskMenu = new MenuLayouts.gnomemenu.createMenu(this); 
+                this._displayAllApps();
+            }
+            else
+                this._createLayout();
 
             this._loadFavorites();
             this._display();
@@ -250,7 +259,14 @@ var ApplicationsButton =   Utils.defineClass({
             if(layout == Constants.MENU_LAYOUT.Default)
                 this._createLayout();
             else if(layout == Constants.MENU_LAYOUT.Brisk)
-               this.BriskMenu =  new MenuLayouts.brisk.createBriskMenu(this); 
+               this.BriskMenu =  new MenuLayouts.brisk.createMenu(this); 
+            else if(layout == Constants.MENU_LAYOUT.Whisker){
+                this.BriskMenu = new MenuLayouts.whisker.createMenu(this); 
+            }
+            else if (layout == Constants.MENU_LAYOUT.GnomeMenu){
+                this.BriskMenu = new MenuLayouts.gnomemenu.createMenu(this); 
+            }
+
             this._loadFavorites();
             this._display();
             this.updateStyle();
@@ -377,13 +393,23 @@ var ApplicationsButton =   Utils.defineClass({
                 modernGnome ? this.remove_style_pseudo_class('active'): this.actor.remove_style_pseudo_class('active');
         },
         _redisplayRightSide(){
-            
-            if(this._settings.get_enum('menu-layout')==Constants.MENU_LAYOUT.Default){
+            let layout = this._settings.get_enum('menu-layout');
+            if(layout==Constants.MENU_LAYOUT.Default){
                 this.rightBox.destroy_all_children();
                 this._createRightBox();
             }
-            else{
+            else if (layout==Constants.MENU_LAYOUT.Brisk){
                 this.BriskMenu._redisplayLeftSide();
+            }
+            else if (layout==Constants.MENU_LAYOUT.GnomeMenu){
+                this.BriskMenu._redisplayLeftSide();
+            }
+            else if (layout==Constants.MENU_LAYOUT.Whisker){
+                this.leftClickMenu.removeAll();
+                this.BriskMenu = new MenuLayouts.whisker.createMenu(this); 
+                
+                this._display();
+                this._displayAllApps();
             }
             this.updateStyle();
         },
@@ -469,10 +495,10 @@ var ApplicationsButton =   Utils.defineClass({
             }
         },
         _displayCategories(){
-            
+            let menuLayout = this._settings.get_enum('menu-layout');
          	this._clearApplicationsBox();
             
-            if(this._settings.get_enum('menu-layout')==Constants.MENU_LAYOUT.Default){
+            if(menuLayout==Constants.MENU_LAYOUT.Default){
                 this.viewProgramsButton.actor.hide();
                 if(this._settings.get_boolean('enable-pinned-apps'))
                     this.backButton.actor.show();
@@ -482,7 +508,7 @@ var ApplicationsButton =   Utils.defineClass({
                 }
             }
             this.categoryMenuItemArray=[];
-            if(this._settings.get_enum('menu-layout')==Constants.MENU_LAYOUT.Brisk)
+            if(menuLayout==Constants.MENU_LAYOUT.Brisk ||  menuLayout==Constants.MENU_LAYOUT.Whisker || menuLayout ==Constants.MENU_LAYOUT.GnomeMenu)
             {
                 let categoryMenuItem = new MW.CategoryMenuItem(this, "","All Programs");
                 this.categoryMenuItemArray.push(categoryMenuItem);
@@ -494,7 +520,8 @@ var ApplicationsButton =   Utils.defineClass({
 
             }
     		for(var categoryDir of this.categoryDirectories){
-                if(!categoryDir && this._settings.get_enum('menu-layout')==Constants.MENU_LAYOUT.Brisk){
+                if((!categoryDir && menuLayout==Constants.MENU_LAYOUT.Brisk) ||  (!categoryDir && menuLayout==Constants.MENU_LAYOUT.Whisker)
+                ||  (!categoryDir && menuLayout==Constants.MENU_LAYOUT.GnomeMenu)){
                     
                 }
                 else{
@@ -1153,7 +1180,7 @@ var ApplicationsButton =   Utils.defineClass({
                     if (!item.actor.get_parent()) {
                         if(layout == Constants.MENU_LAYOUT.Default)
                             this.applicationsBox.add_actor(item.actor);
-                        else if(layout == Constants.MENU_LAYOUT.Brisk)
+                        else if(layout == Constants.MENU_LAYOUT.Brisk ||  layout==Constants.MENU_LAYOUT.Whisker || layout==Constants.MENU_LAYOUT.GnomeMenu)
                             this.shorcutsBox.add_actor(item.actor);	
                     }
                     if(i==0){

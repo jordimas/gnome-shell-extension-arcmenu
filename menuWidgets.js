@@ -1154,7 +1154,7 @@ var CategoryMenuItem = class extends BaseMenuItem {
             this._button.selectCategory("Frequent Apps");
         let layout = this._button._settings.get_enum('menu-layout');
         
-        if(layout == Constants.MENU_LAYOUT.Brisk){
+        if(layout == Constants.MENU_LAYOUT.Brisk ||  layout==Constants.MENU_LAYOUT.Whisker || layout == Constants.MENU_LAYOUT.GnomeMenu){
             this._button._setActiveCategory();
             this.setFakeActive(true);
         }

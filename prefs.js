@@ -1520,11 +1520,7 @@ var ArcMenuLayoutWindow = GObject.registerClass(
                 let array= this._tileGrid.get_children();
                 for(let i = 0; i < array.length; i++){
                    if(array[i]==temp[0]){
-                       //TODO ONCE ALL IMPLEMENTED CHANGED THIS TO JUST this.index=i;
-                       if(i>=2)
-                            this.index=0;
-                        else
-                            this.index=i;
+                        this.index=i;
                    }
                         
                 }

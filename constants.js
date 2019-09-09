@@ -94,7 +94,13 @@ var MENU_POSITION = { // See: org.gnome.shell.extensions.arc-menu.menu-position
 var MENU_LAYOUT = { // See: org.gnome.shell.extensions.arc-menu.menu-position
     Default: 0,
     Brisk: 1,
-    Other: 2
+    Whisker: 2,
+    GnomeMenu: 3,
+    Mint: 4,
+    Elementary: 5,
+    GnomeDash: 6,
+    Simple: 7,
+    Redmond: 8
 };
 var MENU_APPEARANCE = { // See: org.gnome.shell.extensions.arc-menu.menu-button-icon
     Icon: 0,
