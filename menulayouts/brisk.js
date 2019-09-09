@@ -47,7 +47,7 @@ const appSys = Shell.AppSystem.get_default();
 const PanelMenu = imports.ui.panelMenu;
 let modernGnome = imports.misc.config.PACKAGE_VERSION >= '3.31.9';
 
-class createBriskMenu {
+class createMenu {
     constructor(mainButton) {
          this.mainButton = mainButton;
         // Create main menu sections and scroll views
