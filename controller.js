@@ -156,9 +156,12 @@ var MenuSettingsController = class {
         this._menuButton.updateHeight();
     }
     _updateFavorites(){
-        this._menuButton._loadFavorites();
-        if(this._menuButton.currentMenu == Constants.CURRENT_MENU.FAVORITES)
-           this._menuButton._displayFavorites();
+        if(this._settings.get_enum('menu-layout') == Constants.MENU_LAYOUT.Default){
+            this._menuButton._loadFavorites();
+            if(this._menuButton.getCurrentMenu() == Constants.CURRENT_MENU.FAVORITES)
+               this._menuButton._displayFavorites();
+        }
+
     }
     _updateMenuDefaultView(){
         if(this._settings.get_boolean('enable-pinned-apps'))

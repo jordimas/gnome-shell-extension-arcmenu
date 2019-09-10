@@ -506,7 +506,30 @@ var SessionButton = class {
         }
     }
 };
+// Settings Button
+var SettingsButton = class extends SessionButton {
+    // Initialize the button
+    constructor(button) {
+        super(button, _("Settings"), 'emblem-system-symbolic');
+    }
 
+    // Activate the button (Shutdown)
+    activate() {
+        Util.spawnCommandLine('gnome-control-center');
+    }
+};
+// User Button
+var UserButton = class extends SessionButton {
+    // Initialize the button
+    constructor(button) {
+        super(button, _("Users"), 'system-users-symbolic');
+    }
+
+    // Activate the button (Shutdown)
+    activate() {
+        Util.spawnCommandLine("gnome-control-center user-accounts");
+    }
+};
 // Power Button
 var PowerButton = class extends SessionButton {
     // Initialize the button
