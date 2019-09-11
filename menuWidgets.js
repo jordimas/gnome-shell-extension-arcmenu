@@ -536,7 +536,7 @@ var FirefoxButton = class extends SessionButton {
 var FilesButton = class extends SessionButton {
     // Initialize the button
     constructor(button) {
-        super(button, _("Files"), 'nautilus');
+        super(button, _("Files"), 'system-file-manager');
     }
 
     // Activate the button (Shutdown)
