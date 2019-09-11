@@ -164,6 +164,8 @@ var ApplicationsButton =   Utils.defineClass({
                 this.MenuLayout = new MenuLayouts.whisker.createMenu(this); 
             else if (layout == Constants.MENU_LAYOUT.GnomeMenu)
                 this.MenuLayout = new MenuLayouts.gnomemenu.createMenu(this); 
+            else if (layout == Constants.MENU_LAYOUT.Mint)
+                this.MenuLayout = new MenuLayouts.mint.createMenu(this); 
             this.updateStyle();
         },
         getMenu(){
@@ -341,6 +343,8 @@ var ApplicationsButton =   Utils.defineClass({
                 this.MenuLayout = new MenuLayouts.whisker.createMenu(this); 
             else if (layout == Constants.MENU_LAYOUT.GnomeMenu)
                 this.MenuLayout = new MenuLayouts.gnomemenu.createMenu(this); 
+            else if (layout == Constants.MENU_LAYOUT.Mint)
+                this.MenuLayout = new MenuLayouts.mint.createMenu(this); 
         },
         _clearApplicationsBox() {
             this.MenuLayout._clearApplicationsBox();
@@ -475,8 +479,7 @@ const ApplicationsMenu = class extends PopupMenu.PopupMenu {
     }
     // Handle closing the menu
     close(animate) {
-        if(this._button.MenuLayout.newSearch)
-            this._button.MenuLayout.resetSearch();
+        this._button.MenuLayout.resetSearch();
         super.close(animate);
     }
 };

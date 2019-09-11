@@ -123,7 +123,7 @@ var MENU_ICON_PATH = {
 var ICON_SIZES = [ 16, 24, 32, 40, 48 ];
 var DEFAULT_ICON_SIZE = 22;
 var ARC_MENU_LOGO = {
-    Path: '/media/logo.png',
+    Path: '/media/ArcMenu-logo.svg',
     Size: [175, 175] // width, height
 };
 var KEYBOARD_LOGO = {

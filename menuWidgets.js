@@ -208,30 +208,34 @@ var AppRightClickMenu = class extends PopupMenu.PopupMenu {
                     return element == this._app.get_id();
                 });
                 //global.log(this._app.get_id());
-                if(this.isPinnedApp || match){ //if app is pinned add Unpin
-                    let item = new PopupMenu.PopupMenuItem(_("Unpin from Arc Menu"));  
-                    item.connect('activate', ()=>{
-                        for(let i = 0;i<pinnedApps.length;i+=3){
-                            if(pinnedApps[i+2]==this._app.get_id()){
-                                pinnedApps.splice(i,3);
-                                this._button.applicationsBox.remove_actor(this._button.favoritesArray[ i / 3 ].actor)
-                                this._settings.set_strv('pinned-app-list',pinnedApps);
-                                break;
+                let layout = this._button._settings.get_enum('menu-layout');
+                if(layout == Constants.MENU_LAYOUT.Default){
+                    if(this.isPinnedApp || match){ //if app is pinned add Unpin
+                        let item = new PopupMenu.PopupMenuItem(_("Unpin from Arc Menu"));  
+                        item.connect('activate', ()=>{
+                            for(let i = 0;i<pinnedApps.length;i+=3){
+                                if(pinnedApps[i+2]==this._app.get_id()){
+                                    pinnedApps.splice(i,3);
+                                    this._button.applicationsBox.remove_actor(this._button.favoritesArray[ i / 3 ].actor)
+                                    this._settings.set_strv('pinned-app-list',pinnedApps);
+                                    break;
+                                }
                             }
-                        }
-                    });      
-                    this.addMenuItem(item);
+                        });      
+                        this.addMenuItem(item);
+                    }
+                    else{ //if app is not pinned add pin
+                        let item = new PopupMenu.PopupMenuItem(_("Pin to Arc Menu"));   
+                        item.connect('activate', ()=>{
+                            pinnedApps.push(this.appInfo.get_display_name());
+                            pinnedApps.push(this.appInfo.get_icon().to_string());
+                            pinnedApps.push(this._app.get_id());
+                            this._settings.set_strv('pinned-app-list',pinnedApps);
+                        });      
+                        this.addMenuItem(item);
+                    }
                 }
-                else{ //if app is not pinned add pin
-                    let item = new PopupMenu.PopupMenuItem(_("Pin to Arc Menu"));   
-                    item.connect('activate', ()=>{
-                        pinnedApps.push(this.appInfo.get_display_name());
-                        pinnedApps.push(this.appInfo.get_icon().to_string());
-                        pinnedApps.push(this._app.get_id());
-                        this._settings.set_strv('pinned-app-list',pinnedApps);
-                    });      
-                    this.addMenuItem(item);
-                }
+                
                 if (Shell.AppSystem.get_default().lookup_app('org.gnome.Software.desktop')) {
                     this._appendSeparator();
                     let item = this._appendMenuItem(_("Show Details"));
@@ -253,22 +257,25 @@ var AppRightClickMenu = class extends PopupMenu.PopupMenu {
             }
         }  
         else{  //if pinned custom shortcut add unpin option to menu
-            if(this.isPinnedApp){
-                this._appendSeparator()  ;
-                let item = new PopupMenu.PopupMenuItem(_("Unpin from Arc Menu"));   
-                item.connect('activate', ()=>{
-                    let pinnedApps = this._settings.get_strv('pinned-app-list');
-                        for(let i = 0;i<pinnedApps.length;i+=3){
-                            if(pinnedApps[i+2]==this._app){
-                                pinnedApps.splice(i,3);
-                                this._button.applicationsBox.remove_actor(this._button.favoritesArray[ i / 3 ].actor)
-                                this._button.favoritesArray.splice(i / 3, 1);
-                                this._settings.set_strv('pinned-app-list',pinnedApps);
-                                break;
+            let layout = this._button._settings.get_enum('menu-layout');
+            if(layout == Constants.MENU_LAYOUT.Default){
+                if(this.isPinnedApp){
+                    this._appendSeparator()  ;
+                    let item = new PopupMenu.PopupMenuItem(_("Unpin from Arc Menu"));   
+                    item.connect('activate', ()=>{
+                        let pinnedApps = this._settings.get_strv('pinned-app-list');
+                            for(let i = 0;i<pinnedApps.length;i+=3){
+                                if(pinnedApps[i+2]==this._app){
+                                    pinnedApps.splice(i,3);
+                                    this._button.applicationsBox.remove_actor(this._button.favoritesArray[ i / 3 ].actor)
+                                    this._button.favoritesArray.splice(i / 3, 1);
+                                    this._settings.set_strv('pinned-app-list',pinnedApps);
+                                    break;
+                                }
                             }
-                        }
-                });      
-                this.addMenuItem(item);
+                    });      
+                    this.addMenuItem(item);
+                }
             }
         }   
     }
@@ -480,10 +487,17 @@ var SessionButton = class {
 
         this.tooltip = new Tooltip(this.actor, accessible_name, false, this._button._settings);
         this.tooltip.hide();
-        this.actor.child = new St.Icon({ 
+        let layout = this._button._settings.get_enum('menu-layout');
+        let iconSize;
+        if(layout == Constants.MENU_LAYOUT.Mint)
+            iconSize = 21;
+        else
+            iconSize = SMALL_ICON_SIZE;
+        this._icon = new St.Icon({ 
             icon_name: icon_name,
-            icon_size: SMALL_ICON_SIZE 
+            icon_size: iconSize  
         });
+        this.actor.child = this._icon;
         this.actor.connect('clicked', this._onClick.bind(this));
         this.actor.connect('notify::hover', this._onHover.bind(this));
     }
@@ -506,6 +520,55 @@ var SessionButton = class {
         }
     }
 };
+// Firefox Button
+var FirefoxButton = class extends SessionButton {
+    // Initialize the button
+    constructor(button) {
+        super(button, _("Firefox"), 'firefox');
+    }
+
+    // Activate the button (Shutdown)
+    activate() {
+        Util.spawnCommandLine('firefox');
+    }
+};
+// Files Button
+var FilesButton = class extends SessionButton {
+    // Initialize the button
+    constructor(button) {
+        super(button, _("Files"), 'nautilus');
+    }
+
+    // Activate the button (Shutdown)
+    activate() {
+        Util.spawnCommandLine('nautilus');
+    }
+};
+// Software Button
+var SoftwareButton = class extends SessionButton {
+    // Initialize the button
+    constructor(button) {
+        super(button, _("Software"), 'org.gnome.Software-symbolic');
+    }
+
+    // Activate the button (Shutdown)
+    activate() {
+        Util.spawnCommandLine('gnome-software');
+    }
+};
+// Terminal Button
+var TerminalButton = class extends SessionButton {
+    // Initialize the button
+    constructor(button) {
+        super(button, _("Terminal"), 'gnome-terminal');
+    }
+
+    // Activate the button (Shutdown)
+    activate() {
+        Util.spawnCommandLine('gnome-terminal');
+    }
+};
+
 // Settings Button
 var SettingsButton = class extends SessionButton {
     // Initialize the button
@@ -1177,7 +1240,8 @@ var CategoryMenuItem = class extends BaseMenuItem {
             this._button.selectCategory("Frequent Apps");
         let layout = this._button._settings.get_enum('menu-layout');
         
-        if(layout == Constants.MENU_LAYOUT.Brisk ||  layout==Constants.MENU_LAYOUT.Whisker || layout == Constants.MENU_LAYOUT.GnomeMenu){
+        if(layout == Constants.MENU_LAYOUT.Brisk ||  layout==Constants.MENU_LAYOUT.Whisker || layout == Constants.MENU_LAYOUT.GnomeMenu
+            || layout == Constants.MENU_LAYOUT.Mint){
             this._button._setActiveCategory();
             this.setFakeActive(true);
         }
