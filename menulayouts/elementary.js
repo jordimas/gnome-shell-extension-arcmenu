@@ -458,26 +458,16 @@ class createMenu {
                 }
               
                 this.appsBox= new St.BoxLayout({
-                    vertical: false
+                    vertical: true
                 });
                 for (let i = 0; i < this._applications.length; i++){
-                    if(i%15==0){
-                        this.pageBox= new St.BoxLayout({
-                            vertical: true
-                        });
-                        this.appsBox.add(this.pageBox, {
-                            expand: false,
-                            x_fill: false,
-                            y_fill: false,
-                            x_align: St.Align.MIDDLE,
-                            y_align: St.Align.MIDDLE
-                        });
-                    }
+                   
                     if(i%5==0){ //create a new row every 5 app icons
                         this.rowBox= new St.BoxLayout({
                             vertical: false
                         });
-                        this.pageBox.add(this.rowBox, {
+                        this.rowBox.style ='spacing: 10px; margin: 5px 0px;'
+                        this.appsBox.add(this.rowBox, {
                             expand: false,
                             x_fill: false,
                             y_fill: false,

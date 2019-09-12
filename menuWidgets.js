@@ -1008,27 +1008,31 @@ var ApplicationMenuIcon = class extends PopupMenu.PopupBaseMenuItem {
     // Initialize menu item
     constructor(button, app) {
         super();
-        this.actor.style ='padding: 10px 25px;'
-                                     + 'spacing: 0px;';
+        this._button = button;
+        let layout = this._button._settings.get_enum('menu-layout');
+        if(layout == Constants.MENU_LAYOUT.Elementary)
+            this.actor.style ='padding: 0; spacing: 0px; width:85px';
+        else
+            this.actor.style ='padding: 0; spacing: 0px; width:80px';
+        
         this._app = app;
         this.app = app;
        
-        this._button = button;
        
-        let layout = this._button._settings.get_enum('menu-layout');
-            
+       
+     
         this.actor.vertical = true;
             
       
         this._iconBin = new St.Bin({
             y_align: St.Align.END,
-            x_align: St.Align.END
+            x_align: St.Align.MIDDLE
         });
         this.actor.add_child(this._iconBin);
  
         let appLabel = new St.Label({
             text: app.get_name(),
-            y_expand: true,
+            y_expand: false,
             y_align: St.Align.END,
             x_align: St.Align.END
         });
@@ -1155,7 +1159,7 @@ var ApplicationMenuIcon = class extends PopupMenu.PopupBaseMenuItem {
         if(layout == Constants.MENU_LAYOUT.Elementary)
             this._iconBin.set_child(this._app.create_icon_texture(52));
         else
-            this._iconBin.set_child(this._app.create_icon_texture(48));    
+            this._iconBin.set_child(this._app.create_icon_texture(44));    
     }
     _onDestroy(){
         if(this._button.appMenuManager.activeMenu)
