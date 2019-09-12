@@ -71,7 +71,7 @@ function setIconAsync(icon, gioFile, fallback_icon_name) {
     });
 }
 var AppRightClickMenu = class extends PopupMenu.PopupMenu {
-    constructor(actor,app,button, isPinnedApp){
+    constructor(actor,app,button, isPinnedApp,path){
         super(actor,.45,St.Side.TOP);
         this._button = button;
         this._settings = this._button._settings;
@@ -80,7 +80,8 @@ var AppRightClickMenu = class extends PopupMenu.PopupMenu {
         //this.actor.style_class = 'app-right-click-boxpointer';
         //this.actor.add_style_class_name('app-right-click');
         //this.actor.width=250;
-        
+        this._path = path;
+       
         this.discreteGpuAvailable = false;
         Gio.DBus.system.watch_name(SWITCHEROO_BUS_NAME,
             Gio.BusNameWatcherFlags.NONE,
@@ -91,6 +92,7 @@ var AppRightClickMenu = class extends PopupMenu.PopupMenu {
             });
         this.redisplay();
     }
+
     _updateDiscreteGpuAvailable() {
         if (!this._switcherooProxy)
             this.discreteGpuAvailable = false;
@@ -123,137 +125,146 @@ var AppRightClickMenu = class extends PopupMenu.PopupMenu {
             this.actor.add_style_class_name('popup-menu');   
         }
         if(this._app instanceof Shell.App){
-            this.appInfo = this._app.get_app_info();
-            let actions = this.appInfo.list_actions();
-            
-            let windows = this._app.get_windows().filter(
-                w => !w.skip_taskbar
-            );
-
-            if (windows.length > 0){    
-                let item = new PopupMenu.PopupMenuItem(_("Current Windows:"),{reactive:false,can_focus:false});
-                item.actor.add_style_class_name('inactive');  
-                this.addMenuItem(item);
+            if(this._path != undefined){
+                this._newWindowMenuItem = this._appendMenuItem(_("Open Folder Location"));
+                this._newWindowMenuItem.connect('activate', () => {
+                    Util.spawnCommandLine('nautilus '+ this._path);
+                    this.emit('activate-window', null);
+                    this._button.leftClickMenu.toggle(); 
+                });  
             }
-
-            windows.forEach(window => {
-                let title = window.title ? window.title
-                                        : this._app.get_name();
-                let item = this._appendMenuItem(title);
-                item.connect('activate', () => {
-                    this.emit('activate-window', window);
-                    Main.activateWindow(window);
-                    this._button.leftClickMenu.toggle();
-                });
-            });
-
-            if (!this._app.is_window_backed()) {
-                this._appendSeparator();
-                if (this._app.can_open_new_window() &&
-                    !actions.includes('new-window')) {
-                    this._newWindowMenuItem = this._appendMenuItem(_("New Window"));
-                    this._newWindowMenuItem.connect('activate', () => {
-                        this._app.open_new_window(-1);
-                        this.emit('activate-window', null);
-                        this._button.leftClickMenu.toggle(); 
-                    });  
-                }
-                if (this.discreteGpuAvailable &&
-                    this._app.state == Shell.AppState.STOPPED &&
-                    !actions.includes('activate-discrete-gpu')) {
-                    this._onDiscreteGpuMenuItem = this._appendMenuItem(_("Launch using Dedicated Graphics Card"));
-                    this._onDiscreteGpuMenuItem.connect('activate', () => {
-                        this._app.launch(0, -1, true);
-                        this.emit('activate-window', null);
-                        this._button.leftClickMenu.toggle();
-                    });
+            else{
+                this.appInfo = this._app.get_app_info();
+                let actions = this.appInfo.list_actions();
+                
+                let windows = this._app.get_windows().filter(
+                    w => !w.skip_taskbar
+                );
+    
+                if (windows.length > 0){    
+                    let item = new PopupMenu.PopupMenuItem(_("Current Windows:"),{reactive:false,can_focus:false});
+                    item.actor.add_style_class_name('inactive');  
+                    this.addMenuItem(item);
                 }
     
-                for (let i = 0; i < actions.length; i++) {
-                    let action = actions[i];
-                    let item = this._appendMenuItem(this.appInfo.get_action_name(action));
-                    item.connect('activate', (emitter, event) => {
-                        this._app.launch_action(action, event.get_time(), -1);
-                        this.emit('activate-window', null);
+                windows.forEach(window => {
+                    let title = window.title ? window.title
+                                            : this._app.get_name();
+                    let item = this._appendMenuItem(title);
+                    item.connect('activate', () => {
+                        this.emit('activate-window', window);
+                        Main.activateWindow(window);
                         this._button.leftClickMenu.toggle();
                     });
-                }
-
-                let canFavorite = global.settings.is_writable('favorite-apps');
-                if (canFavorite) {
-                    this._appendSeparator();
-                    let isFavorite = AppFavorites.getAppFavorites().isFavorite(this._app.get_id());
-                    if (isFavorite) {
-                        let item = this._appendMenuItem(_("Remove from Favorites"));
-                        item.connect('activate', () => {
-                            let favs = AppFavorites.getAppFavorites();
-                            favs.removeFavorite(this._app.get_id());
-                        });
-                    } else {
-                        let item = this._appendMenuItem(_("Add to Favorites"));
-                        item.connect('activate', () => {
-                            let favs = AppFavorites.getAppFavorites();
-                            favs.addFavorite(this._app.get_id());
-                        });
-                    }
-                }
-                let pinnedApps = this._settings.get_strv('pinned-app-list');
-                let pinnedAppID=[];
-                for(let i=2;i<pinnedApps.length;i+=3){
-                    pinnedAppID.push(pinnedApps[i]);  
-                }
-                let match = pinnedAppID.find( (element)=>{
-                   // global.log(this._app.get_id());
-                    //global.log(element);
-                    return element == this._app.get_id();
                 });
-                //global.log(this._app.get_id());
-                let layout = this._button._settings.get_enum('menu-layout');
-                if(layout == Constants.MENU_LAYOUT.Default){
-                    if(this.isPinnedApp || match){ //if app is pinned add Unpin
-                        let item = new PopupMenu.PopupMenuItem(_("Unpin from Arc Menu"));  
-                        item.connect('activate', ()=>{
-                            for(let i = 0;i<pinnedApps.length;i+=3){
-                                if(pinnedApps[i+2]==this._app.get_id()){
-                                    pinnedApps.splice(i,3);
-                                    this._button.applicationsBox.remove_actor(this._button.favoritesArray[ i / 3 ].actor)
-                                    this._settings.set_strv('pinned-app-list',pinnedApps);
-                                    break;
-                                }
-                            }
-                        });      
-                        this.addMenuItem(item);
-                    }
-                    else{ //if app is not pinned add pin
-                        let item = new PopupMenu.PopupMenuItem(_("Pin to Arc Menu"));   
-                        item.connect('activate', ()=>{
-                            pinnedApps.push(this.appInfo.get_display_name());
-                            pinnedApps.push(this.appInfo.get_icon().to_string());
-                            pinnedApps.push(this._app.get_id());
-                            this._settings.set_strv('pinned-app-list',pinnedApps);
-                        });      
-                        this.addMenuItem(item);
-                    }
-                }
-                
-                if (Shell.AppSystem.get_default().lookup_app('org.gnome.Software.desktop')) {
+                if (!this._app.is_window_backed()) {
                     this._appendSeparator();
-                    let item = this._appendMenuItem(_("Show Details"));
-                    item.connect('activate', () => {
-                        let id = this._app.get_id();
-                        let args = GLib.Variant.new('(ss)', [id, '']);
-                        Gio.DBus.get(Gio.BusType.SESSION, null, (o, res) => {
-                            let bus = Gio.DBus.get_finish(res);
-                            bus.call('org.gnome.Software',
-                                    '/org/gnome/Software',
-                                    'org.gtk.Actions', 'Activate',
-                                    GLib.Variant.new('(sava{sv})',
-                                                    ['details', [args], null]),
-                                    null, 0, -1, null, null);
+                    if (this._app.can_open_new_window() && !actions.includes('new-window')) {
+                        this._newWindowMenuItem = this._appendMenuItem(_("New Window"));
+                        this._newWindowMenuItem.connect('activate', () => {
+                            this._app.open_new_window(-1);
+                            this.emit('activate-window', null);
+                            this._button.leftClickMenu.toggle(); 
+                        });  
+                    }
+                    if (this.discreteGpuAvailable &&
+                        this._app.state == Shell.AppState.STOPPED &&
+                        !actions.includes('activate-discrete-gpu')) {
+                        this._onDiscreteGpuMenuItem = this._appendMenuItem(_("Launch using Dedicated Graphics Card"));
+                        this._onDiscreteGpuMenuItem.connect('activate', () => {
+                            this._app.launch(0, -1, true);
+                            this.emit('activate-window', null);
                             this._button.leftClickMenu.toggle();
                         });
+                    }
+        
+                    for (let i = 0; i < actions.length; i++) {
+                        let action = actions[i];
+                        let item = this._appendMenuItem(this.appInfo.get_action_name(action));
+                        item.connect('activate', (emitter, event) => {
+                            this._app.launch_action(action, event.get_time(), -1);
+                            this.emit('activate-window', null);
+                            this._button.leftClickMenu.toggle();
+                        });
+                    }
+    
+                    let canFavorite = global.settings.is_writable('favorite-apps');
+                    if (canFavorite) {
+                        this._appendSeparator();
+                        let isFavorite = AppFavorites.getAppFavorites().isFavorite(this._app.get_id());
+                        if (isFavorite) {
+                            let item = this._appendMenuItem(_("Remove from Favorites"));
+                            item.connect('activate', () => {
+                                let favs = AppFavorites.getAppFavorites();
+                                favs.removeFavorite(this._app.get_id());
+                            });
+                        } else {
+                            let item = this._appendMenuItem(_("Add to Favorites"));
+                            item.connect('activate', () => {
+                                let favs = AppFavorites.getAppFavorites();
+                                favs.addFavorite(this._app.get_id());
+                            });
+                        }
+                    }
+                    let pinnedApps = this._settings.get_strv('pinned-app-list');
+                    let pinnedAppID=[];
+                    for(let i=2;i<pinnedApps.length;i+=3){
+                        pinnedAppID.push(pinnedApps[i]);  
+                    }
+                    let match = pinnedAppID.find( (element)=>{
+                       // global.log(this._app.get_id());
+                        //global.log(element);
+                        return element == this._app.get_id();
                     });
-                }
+                    //global.log(this._app.get_id());
+                    let layout = this._button._settings.get_enum('menu-layout');
+                    if(layout == Constants.MENU_LAYOUT.Default){
+                        if(this.isPinnedApp || match){ //if app is pinned add Unpin
+                            let item = new PopupMenu.PopupMenuItem(_("Unpin from Arc Menu"));  
+                            item.connect('activate', ()=>{
+                                for(let i = 0;i<pinnedApps.length;i+=3){
+                                    if(pinnedApps[i+2]==this._app.get_id()){
+                                        pinnedApps.splice(i,3);
+                                        this._button.applicationsBox.remove_actor(this._button.favoritesArray[ i / 3 ].actor)
+                                        this._settings.set_strv('pinned-app-list',pinnedApps);
+                                        break;
+                                    }
+                                }
+                            });      
+                            this.addMenuItem(item);
+                        }
+                        else{ //if app is not pinned add pin
+                            let item = new PopupMenu.PopupMenuItem(_("Pin to Arc Menu"));   
+                            item.connect('activate', ()=>{
+                                pinnedApps.push(this.appInfo.get_display_name());
+                                pinnedApps.push(this.appInfo.get_icon().to_string());
+                                pinnedApps.push(this._app.get_id());
+                                this._settings.set_strv('pinned-app-list',pinnedApps);
+                            });      
+                            this.addMenuItem(item);
+                        }
+                    }
+                    
+                    if (Shell.AppSystem.get_default().lookup_app('org.gnome.Software.desktop')) {
+                        this._appendSeparator();
+                        let item = this._appendMenuItem(_("Show Details"));
+                        item.connect('activate', () => {
+                            let id = this._app.get_id();
+                            let args = GLib.Variant.new('(ss)', [id, '']);
+                            Gio.DBus.get(Gio.BusType.SESSION, null, (o, res) => {
+                                let bus = Gio.DBus.get_finish(res);
+                                bus.call('org.gnome.Software',
+                                        '/org/gnome/Software',
+                                        'org.gtk.Actions', 'Activate',
+                                        GLib.Variant.new('(sava{sv})',
+                                                        ['details', [args], null]),
+                                        null, 0, -1, null, null);
+                                this._button.leftClickMenu.toggle();
+                            });
+                        });
+                    }
+                }   
+            
             }
         }  
         else{  //if pinned custom shortcut add unpin option to menu
@@ -993,6 +1004,164 @@ var FavoritesMenuItem = class extends BaseMenuItem {
     }
 };
 // Menu application item class
+var ApplicationMenuIcon = class extends PopupMenu.PopupBaseMenuItem {
+    // Initialize menu item
+    constructor(button, app) {
+        super();
+        this.actor.style ='padding: 10px 25px;'
+                                     + 'spacing: 0px;';
+        this._app = app;
+        this.app = app;
+       
+        this._button = button;
+       
+        let layout = this._button._settings.get_enum('menu-layout');
+            
+        this.actor.vertical = true;
+            
+      
+        this._iconBin = new St.Bin({
+            y_align: St.Align.END,
+            x_align: St.Align.END
+        });
+        this.actor.add_child(this._iconBin);
+ 
+        let appLabel = new St.Label({
+            text: app.get_name(),
+            y_expand: true,
+            y_align: St.Align.END,
+            x_align: St.Align.END
+        });
+        this.actor.add(appLabel);
+        this.actor.label_actor = appLabel;
+
+        let textureCache = St.TextureCache.get_default();
+        let iconThemeChangedId = textureCache.connect('icon-theme-changed',
+            this._updateIcon.bind(this));
+        this.actor.connect('destroy', () => {
+            textureCache.disconnect(iconThemeChangedId);
+        });
+        this._updateIcon();
+
+        let isMenuItem=true;
+        if( app.get_description()){
+            this.tooltip = new Tooltip(this.actor, app.get_description(),isMenuItem,this._button._settings);
+            this.tooltip.hide();
+            this.actor.connect('notify::hover', this._onHover.bind(this));
+        }
+        this._draggable = DND.makeDraggable(this.actor);
+        this.isDraggableApp = true;
+        this._draggable.connect('drag-begin', this._onDragBegin.bind(this));
+        this._draggable.connect('drag-cancelled', this._onDragCancelled.bind(this));
+        this._draggable.connect('drag-end', this._onDragEnd.bind(this));
+
+        this.rightClickMenu = new AppRightClickMenu(this.actor,this.app,this._button);
+
+        this.rightClickMenu.actor.hide();
+        Main.uiGroup.add_actor(this.rightClickMenu.actor);
+    }
+
+    _onButtonReleaseEvent(actor, event) {
+        if(event.get_button()==1){
+            this.activate(event);
+        }
+        if(event.get_button()==3){
+            this._button.appMenuManager.addMenu(this.rightClickMenu);
+            if(!this.rightClickMenu.isOpen)
+                this.rightClickMenu.redisplay();
+            this.rightClickMenu.toggle();
+	    }   
+        return Clutter.EVENT_STOP;
+    }
+    _onHover() {
+
+        if ( this.actor.hover) { // mouse pointer hovers over the button
+            this.tooltip.show();
+        } else { // mouse pointer leaves the button area
+            this.tooltip.hide();
+        }
+    }
+    _onDragBegin() {
+        Main.overview.beginItemDrag(this);
+    }
+
+    _onDragCancelled() {
+        Main.overview.cancelledItemDrag(this);
+    }
+
+    _onDragEnd() {
+        Main.overview.endItemDrag(this);
+    }
+
+    _onKeyPressEvent(actor, event) {
+        let symbol = event.get_key_symbol();
+        if (symbol == Clutter.KEY_Return ||
+            symbol == Clutter.KEY_KP_Enter) {
+            this.activate(event);
+            return Clutter.EVENT_STOP;
+        }
+        return Clutter.EVENT_PROPAGATE;
+    }
+
+    get_app_id() {
+        return this._app.get_id();
+    }
+
+    getDragActor() {
+        return this._app.create_icon_texture(MEDIUM_ICON_SIZE);
+    }
+
+    // Returns the original actor that should align with the actor
+    // we show as the item is being dragged.
+    getDragActorSource() {
+        return this.actor;
+    }
+
+    // Activate menu item (Launch application)
+    activate(event) {
+        if(this._button.appMenuManager.activeMenu)
+            this._button.appMenuManager.activeMenu.toggle();
+        this._app.open_new_window(-1);
+        this._button.leftClickMenu.toggle();
+        super.activate(event);
+    }
+
+   // Set button as active, scroll to the button
+    setActive(active, params) {
+        if (active && !this.actor.hover)
+            this._button.scrollToButton(this);
+
+        super.setActive(active, params);
+    }
+
+    setFakeActive(active) {
+        if (active) {
+            this._button.scrollToButton(this);
+            this.actor.add_style_class_name('selected');
+        } else {
+            this.actor.remove_style_class_name('selected');
+        }
+    }
+
+    // Grab the key focus
+    grabKeyFocus() {
+        this.actor.grab_key_focus();
+    }
+
+    // Update the app icon in the menu
+    _updateIcon() {
+        let layout = this._button._settings.get_enum('menu-layout');
+        
+        if(layout == Constants.MENU_LAYOUT.Elementary)
+            this._iconBin.set_child(this._app.create_icon_texture(52));
+        else
+            this._iconBin.set_child(this._app.create_icon_texture(48));    
+    }
+    _onDestroy(){
+        if(this._button.appMenuManager.activeMenu)
+            this._button.appMenuManager.activeMenu.toggle();
+    }
+};
 var ApplicationMenuItem = class extends PopupMenu.PopupBaseMenuItem {
     // Initialize menu item
     constructor(button, app) {
@@ -1136,16 +1305,16 @@ var ApplicationMenuItem = class extends PopupMenu.PopupBaseMenuItem {
 };
 var SearchResultItem = class extends PopupMenu.PopupBaseMenuItem {
     // Initialize menu item
-    constructor(button, app) {
+    constructor(button, app,path) {
         super();
         this._button = button;
         this.app =app;
-        this.rightClickMenu = new AppRightClickMenu(this.actor,this.app,this._button);
+        this._path=path;
+        this.rightClickMenu = new AppRightClickMenu(this.actor,this.app,this._button,false, this._path ? this._path: null);
         this.rightClickMenu.actor.hide();
         Main.uiGroup.add_actor(this.rightClickMenu.actor);
   
     }
-  
     _onButtonReleaseEvent(actor, event) {
         if(event.get_button()==1){
             this.activate(event);
@@ -1168,10 +1337,6 @@ var SearchResultItem = class extends PopupMenu.PopupBaseMenuItem {
         }
         return Clutter.EVENT_PROPAGATE;
     }
-
-
- 
-
     _onDestroy(){
         if(this._button.appMenuManager.activeMenu)
             this._button.appMenuManager.activeMenu.toggle();

@@ -67,7 +67,10 @@ var SearchResult = class {
         if(app){
             this.menuItem = new MW.SearchResultItem(this._button,app); 
         }
-        else {
+        else if(this.provider.id =='org.gnome.Nautilus.desktop'){
+            this.menuItem = new MW.SearchResultItem(this._button,appSys.lookup_app(this.provider.id),this.metaInfo['description']);
+        }
+        else{
             this.menuItem = new MW.BaseMenuItem(this._button);
         }
        	this.menuItem._delegate = this;
@@ -76,9 +79,9 @@ var SearchResult = class {
         let isMenuItem=true;
         if(this.metaInfo['description'] || ((app!=undefined) ? app.get_description() : false))
         {
-          this.tooltip = new MW.Tooltip(this.menuItem.actor, this.metaInfo['description'] ? this.metaInfo['description']:  app.get_description(),isMenuItem,this._button._settings);
-          this.tooltip.hide();
-          this.menuItem.actor.connect('notify::hover', this._onHover.bind(this));
+            this.tooltip = new MW.Tooltip(this.menuItem.actor, this.metaInfo['description'] ? this.metaInfo['description']:  app.get_description(),isMenuItem,this._button._settings);
+            this.tooltip.hide();
+            this.menuItem.actor.connect('notify::hover', this._onHover.bind(this));
         }
 
     }
@@ -286,6 +289,7 @@ var SearchResultsBase = class {
                 results.forEach(resultId => {
                     this._addItem(this._resultDisplays[resultId]);
                 });
+               
                 this._setMoreCount(this.provider.canLaunchSearch ? moreCount : 0);
                 this.actor.show();
                 callback();

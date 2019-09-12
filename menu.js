@@ -166,6 +166,12 @@ var ApplicationsButton =   Utils.defineClass({
                 this.MenuLayout = new MenuLayouts.gnomemenu.createMenu(this); 
             else if (layout == Constants.MENU_LAYOUT.Mint)
                 this.MenuLayout = new MenuLayouts.mint.createMenu(this); 
+            else if (layout == Constants.MENU_LAYOUT.GnomeDash)
+                this.MenuLayout = new MenuLayouts.gnomedash.createMenu(this); 
+            else if (layout == Constants.MENU_LAYOUT.Elementary)
+                this.MenuLayout = new MenuLayouts.elementary.createMenu(this); 
+            else if (layout == Constants.MENU_LAYOUT.Redmond)
+                this.MenuLayout = new MenuLayouts.redmond.createMenu(this); 
             this.updateStyle();
         },
         getMenu(){
@@ -238,29 +244,45 @@ var ApplicationsButton =   Utils.defineClass({
         _onEvent(actor, event) {
     
             if (event.type() == Clutter.EventType.BUTTON_PRESS){   
-                if(event.get_button()==1){                   
-                    this.leftClickMenu.toggle();	
-                    if(this.leftClickMenu.isOpen)
-                        this.mainBox.grab_key_focus();	
-                }     
+                if(event.get_button()==1){    
+                    let layout = this._settings.get_enum('menu-layout');
+                    if(layout == Constants.MENU_LAYOUT.GnomeDash)
+                        Main.overview.toggle();
+                    else{
+                        this.leftClickMenu.toggle();	
+                        if(this.leftClickMenu.isOpen)
+                            this.mainBox.grab_key_focus();	
+                    }                
+                }    
                 else if(event.get_button()==3){                      
                     this.rightClickMenu.toggle();	                	
                 }    
             }
             else if(event.type() == Clutter.EventType.TOUCH_BEGIN){         
-                this.leftClickMenu.toggle();
-                if(this.leftClickMenu.isOpen)
-                    this.mainBox.grab_key_focus();
+                let layout = this._settings.get_enum('menu-layout');
+                    if(layout == Constants.MENU_LAYOUT.GnomeDash)
+                        Main.overview.toggle();
+                    else{
+                        this.leftClickMenu.toggle();	
+                        if(this.leftClickMenu.isOpen)
+                            this.mainBox.grab_key_focus();	
+                    }         
             }
                     
             return Clutter.EVENT_PROPAGATE;
         },
         toggleMenu() {
             if(this.appMenuManager.activeMenu)
-                this.appMenuManager.activeMenu.toggle();	  
-     	    this.leftClickMenu.toggle();
-            if(this.leftClickMenu.isOpen)
-                this.mainBox.grab_key_focus();
+                this.appMenuManager.activeMenu.toggle();
+            let layout = this._settings.get_enum('menu-layout');
+            if(layout == Constants.MENU_LAYOUT.GnomeDash)
+                Main.overview.toggle();
+            else{
+                this.leftClickMenu.toggle();
+                if(this.leftClickMenu.isOpen)
+                    this.mainBox.grab_key_focus();
+            }	  
+
         },
         toggleRightClickMenu(){
             if(this.rightClickMenu.isOpen)
@@ -345,6 +367,12 @@ var ApplicationsButton =   Utils.defineClass({
                 this.MenuLayout = new MenuLayouts.gnomemenu.createMenu(this); 
             else if (layout == Constants.MENU_LAYOUT.Mint)
                 this.MenuLayout = new MenuLayouts.mint.createMenu(this); 
+            else if (layout == Constants.MENU_LAYOUT.GnomeDash)
+                this.MenuLayout = new MenuLayouts.gnomedash.createMenu(this); 
+            else if (layout == Constants.MENU_LAYOUT.Elementary)
+                this.MenuLayout = new MenuLayouts.elementary.createMenu(this);
+            else if (layout == Constants.MENU_LAYOUT.Redmond)
+                this.MenuLayout = new MenuLayouts.redmond.createMenu(this);  
         },
         _clearApplicationsBox() {
             this.MenuLayout._clearApplicationsBox();
@@ -480,6 +508,6 @@ const ApplicationsMenu = class extends PopupMenu.PopupMenu {
     // Handle closing the menu
     close(animate) {
         this._button.MenuLayout.resetSearch();
-        super.close(animate);
+        super.close(animate);     
     }
 };
