@@ -52,7 +52,7 @@ const Me = ExtensionUtils.getCurrentExtension();
 const PlaceDisplay = Me.imports.placeDisplay;
 const MW = Me.imports.menuWidgets;
 const IconGrid = imports.ui.iconGrid;
-const PageIndicators= imports.ui.pageIndicators;
+
 const MenuLayouts = Me.imports.menulayouts;
 
 const ArcSearch = Me.imports.search;
