@@ -449,7 +449,7 @@ var Tooltip = class {
             let [width, height] = this.sourceActor.get_transformed_size();
             let y = this.isMenuItem ? stageY + height: stageY -Math.round(height / 1.24);
             
-            let x = this.isMenuItem ? stageX + Math.round(width / 2)  : stageX - Math.round((this.actor.get_width() - width) / 2);
+            let x = this.isMenuItem ? stageX   : stageX - Math.round((this.actor.get_width() - width) / 2);
 
             this.actor.show();
             this.actor.set_position(x, y);
@@ -1402,7 +1402,7 @@ var CategoryMenuItem = class extends BaseMenuItem {
         if (this._category)
             this._button.selectCategory(this._category);
         else if(this.title =="All Programs")
-            this._button._displayAllApps();
+            this._button._displayAllApps(this.actor);
         else if(this.title == "Favorites")
             this._button._displayGnomeFavorites();
         else
@@ -1455,6 +1455,89 @@ var CategoryMenuItem = class extends BaseMenuItem {
     }
 };
 
+// SubMenu Category item class
+var CategorySubMenuItem = class extends PopupMenu.PopupSubMenuMenuItem {
+    // Initialize menu item
+    constructor(button, category, title=null) {
+        super('',true);
+        
+        this._category = category;
+        this._button = button;
+        this.name;
+        this.title = title;
+        this._active = false;
+
+        if (this._category) {
+            this.name = this._category.get_name();
+        } 
+        else if(title!=null){
+            this.name = title == "All Programs" ? _("All Programs") : _("Favorites")
+        }   
+        else {
+            this.name = _("Frequent Apps");
+        }
+        this.label.text = this.name;
+
+        this.icon.gicon = this._category ? this._category.get_icon() : null;
+        this.icon.style_class= 'popup-menu-icon';
+        this.icon.icon_size=MEDIUM_ICON_SIZE;
+
+        if(title!=null){
+            this.icon.icon_name = title == "All Programs" ?'emblem-system-symbolic': 'emblem-favorite-symbolic';
+        }
+        else if(!this._category){
+            this.icon.icon_name= 'emblem-favorite-symbolic';
+        }
+        this.actor.add_child(this.icon);
+
+       
+       
+        this.actor.connect('notify::hover', this._onHover.bind(this));
+
+    }
+
+    // Activate menu item (Display applications in category)
+    activate(event) {
+        this.submenu.toggle();
+        super.activate(event);
+    }
+    _onHover() {
+        if (this.actor.hover) { // mouse pointer hovers over the button
+            this.actor.add_style_class_name('selected');
+        } else if(!this.actor.hover && !this._active) { // mouse pointer leaves the button area
+            this.actor.remove_style_class_name('selected');
+        }
+    }
+    // Set button as active, scroll to the button
+    setFakeActive(active, params) {
+        this._active = active;
+        if (active && !this.actor.hover) {
+            this.actor.add_style_class_name('selected');
+        }
+        else if (!active && !this.actor.hover){
+            this.actor.remove_style_class_name('selected');
+        }
+    }
+    // Set button as active, scroll to the button
+    setActive(active, params) {
+        //this._active = active;
+        if (active && !this.actor.hover) {
+            this._button.scrollToButton(this);
+            this.actor.add_style_class_name('selected');
+        }
+        //TODO add if statement
+        let activeChanged = active != !this._active;
+        if (activeChanged) {
+
+            if (active) {
+               
+            } else {
+                this.actor.remove_style_class_name('selected');
+            }
+        }
+        //super.setActive(active, params);
+    }
+};
 
 
 

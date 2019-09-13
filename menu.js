@@ -172,6 +172,8 @@ var ApplicationsButton =   Utils.defineClass({
                 this.MenuLayout = new MenuLayouts.elementary.createMenu(this); 
             else if (layout == Constants.MENU_LAYOUT.Redmond)
                 this.MenuLayout = new MenuLayouts.redmond.createMenu(this); 
+            else if (layout == Constants.MENU_LAYOUT.Simple)
+                this.MenuLayout = new MenuLayouts.simple.createMenu(this);  
             this.updateStyle();
         },
         getMenu(){
@@ -355,6 +357,12 @@ var ApplicationsButton =   Utils.defineClass({
             return false;
         },
         _updateMenuLayout(){
+            let actors = this.section.actor.get_children();
+            for (let i = 0; i < actors.length; i++) {
+                let actor = actors[i];
+                this.section.actor.remove_actor(actor);
+            }
+            this.section.actor.add_actor(this.mainBox);    
             this.mainBox.remove_all_children();
             let layout = this._settings.get_enum('menu-layout');
             if(layout == Constants.MENU_LAYOUT.Default)
@@ -373,6 +381,8 @@ var ApplicationsButton =   Utils.defineClass({
                 this.MenuLayout = new MenuLayouts.elementary.createMenu(this);
             else if (layout == Constants.MENU_LAYOUT.Redmond)
                 this.MenuLayout = new MenuLayouts.redmond.createMenu(this);  
+            else if (layout == Constants.MENU_LAYOUT.Simple)
+                this.MenuLayout = new MenuLayouts.simple.createMenu(this);  
         },
         _clearApplicationsBox() {
             this.MenuLayout._clearApplicationsBox();
