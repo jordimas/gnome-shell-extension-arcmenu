@@ -41,7 +41,7 @@ var defineClass = function (classDef) {
     let parentProto = classDef.Extends ? classDef.Extends.prototype : null;
     
     if (imports.misc.config.PACKAGE_VERSION < '3.31.9') {
-        if (parentProto && (classDef.Extends.name || classDef.Extends.toString()).indexOf('DashToPanel.') < 0) {
+        if (parentProto && (classDef.Extends.name || classDef.Extends.toString()).indexOf('ArcMenu.') < 0) {
             classDef.callParent = function() {
                 let args = Array.prototype.slice.call(arguments);
                 let func = args.shift();
