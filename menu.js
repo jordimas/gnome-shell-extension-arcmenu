@@ -110,7 +110,9 @@ var ApplicationsButton =   Utils.defineClass({
             this.leftClickMenu.actor.hide();
             this.menuManager.addMenu(this.rightClickMenu); 	
             this.menuManager.addMenu(this.leftClickMenu); 
-
+            this.subMenuManager = new PopupMenu.PopupMenuManager(this);
+            this.subMenuManager._changeMenu = (menu) => {
+            };
 
             this._session = new GnomeSession.SessionManager();
             this._panel = panel;
@@ -149,7 +151,7 @@ var ApplicationsButton =   Utils.defineClass({
             this.leftClickMenu.addMenuItem(this.section);            
             this.mainBox = new St.BoxLayout({
                 vertical: false
-            });      ;
+            });      
             //this.newSearch = new ArcSearch.SearchResults(this);      
             this.mainBox.set_height(this._settings.get_int('menu-height'));               
             this.section.actor.add_actor(this.mainBox);               
@@ -174,6 +176,10 @@ var ApplicationsButton =   Utils.defineClass({
                 this.MenuLayout = new MenuLayouts.redmond.createMenu(this); 
             else if (layout == Constants.MENU_LAYOUT.Simple)
                 this.MenuLayout = new MenuLayouts.simple.createMenu(this);  
+            else if (layout == Constants.MENU_LAYOUT.Simple2)
+                this.MenuLayout = new MenuLayouts.simple2.createMenu(this);  
+            else if (layout == Constants.MENU_LAYOUT.UbuntuDash)
+                this.MenuLayout = new MenuLayouts.ubuntudash.createMenu(this);  
             this.updateStyle();
         },
         getMenu(){
@@ -276,6 +282,12 @@ var ApplicationsButton =   Utils.defineClass({
         toggleMenu() {
             if(this.appMenuManager.activeMenu)
                 this.appMenuManager.activeMenu.toggle();
+
+            
+             if(this.subMenuManager.activeMenu)
+                this.subMenuManager.activeMenu.toggle();
+            
+
             let layout = this._settings.get_enum('menu-layout');
             if(layout == Constants.MENU_LAYOUT.GnomeDash)
                 Main.overview.toggle();
@@ -300,34 +312,12 @@ var ApplicationsButton =   Utils.defineClass({
             this._redisplayRightSide();
         },
         // Destroy the menu button
-        _onDestroy() {
+        destroy() {
             this.MenuLayout.destroy();
-            ExtensionSystem.disconnect(this.extensionChangedId);
-            this.extensionChangedId = 0;
-            if (this.leftClickMenu) {
-                if(this.network!=null){
-                    this.network.destroy();
-                    this.networkMenuItem.destroy();
-                }
-                if(this.computer!=null){
-                    this.computer.destroy();
-                    this.computerMenuItem.destroy();
-                }
-                if(this.placesManager!=null)
-                    this.placesManager.destroy();
-                if(this.searchBox!=null){
-                    this.searchBox.disconnect(this._searchBoxChangedId);
-                    this.searchBox.disconnect(this._searchBoxKeyPressId);
-                    this.searchBox.disconnect(this._searchBoxActivateId);
-                    this.searchBox.disconnect(this._searchBoxKeyFocusInId);
-                    this.mainBox.disconnect(this._mainBoxKeyPressId);
-                }
-                this.leftClickMenu.destroy();
-                this.leftClickMenu = null;
-            }
-            if (this.rightClickMenu) {
-                this.rightClickMenu.destroy();
-                this.rightClickMenu = null;
+
+            if ( this.extensionChangedId > 0) {
+                ExtensionSystem.disconnect(this.extensionChangedId);
+                this.extensionChangedId = 0;
             }
             if (this._showingId > 0) {
                 Main.overview.disconnect(this._showingId);
@@ -337,15 +327,17 @@ var ApplicationsButton =   Utils.defineClass({
                 Main.overview.disconnect(this._hidingId);
                 this._hidingId = 0;
             }
-            if (this._notifyHeightId > 0) {
-                this._panel.actor.disconnect(this._notifyHeightId);
-                this._notifyHeightId = 0;
-            }
             if (this._installedChangedId > 0) {
                 appSys.disconnect(this._installedChangedId);
                 this._installedChangedId  = 0;
             }
-            this.callParent('destroy');
+            if (this.leftClickMenu) {
+                this.leftClickMenu.destroy();
+            }
+            if (this.rightClickMenu) {
+                this.rightClickMenu.destroy();
+            }
+            modernGnome ? this.callParent('_onDestroy') : this.emit('destroy');
         },
 
         // Handle captured event
@@ -378,11 +370,15 @@ var ApplicationsButton =   Utils.defineClass({
             else if (layout == Constants.MENU_LAYOUT.GnomeDash)
                 this.MenuLayout = new MenuLayouts.gnomedash.createMenu(this); 
             else if (layout == Constants.MENU_LAYOUT.Elementary)
-                this.MenuLayout = new MenuLayouts.elementary.createMenu(this);
+                this.MenuLayout = new MenuLayouts.elementary.createMenu(this); 
             else if (layout == Constants.MENU_LAYOUT.Redmond)
-                this.MenuLayout = new MenuLayouts.redmond.createMenu(this);  
+                this.MenuLayout = new MenuLayouts.redmond.createMenu(this); 
             else if (layout == Constants.MENU_LAYOUT.Simple)
                 this.MenuLayout = new MenuLayouts.simple.createMenu(this);  
+            else if (layout == Constants.MENU_LAYOUT.Simple2)
+                this.MenuLayout = new MenuLayouts.simple2.createMenu(this);  
+            else if (layout == Constants.MENU_LAYOUT.UbuntuDash)
+                this.MenuLayout = new MenuLayouts.ubuntudash.createMenu(this);  
         },
         _clearApplicationsBox() {
             this.MenuLayout._clearApplicationsBox();
@@ -518,6 +514,12 @@ const ApplicationsMenu = class extends PopupMenu.PopupMenu {
     // Handle closing the menu
     close(animate) {
         this._button.MenuLayout.resetSearch();
+        //close any active menus
+        if(this._button.appMenuManager.activeMenu)
+            this._button.appMenuManager.activeMenu.toggle();
+        if(this._button.subMenuManager.activeMenu)
+            this._button.subMenuManager.activeMenu.toggle();
+    
         super.close(animate);     
     }
 };

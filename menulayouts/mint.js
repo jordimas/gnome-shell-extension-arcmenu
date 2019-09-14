@@ -65,7 +65,7 @@ const PanelMenu = imports.ui.panelMenu;
 let modernGnome = imports.misc.config.PACKAGE_VERSION >= '3.31.9';
 
 // Application Menu Button class (most of the menu logic is here)
-class createMenu {
+var createMenu =class{
     constructor(mainButton) {
         this.button = mainButton;
         this._settings = mainButton._settings;
@@ -778,11 +778,26 @@ class createMenu {
             if(this.placesManager!=null)
                 this.placesManager.destroy();
             if(this.searchBox!=null){
-                this.searchBox.disconnect(this._searchBoxChangedId);
-                this.searchBox.disconnect(this._searchBoxKeyPressId);
-                this.searchBox.disconnect(this._searchBoxActivateId);
-                this.searchBox.disconnect(this._searchBoxKeyFocusInId);
-                this.mainBox.disconnect(this._mainBoxKeyPressId);
+                if (this._searchBoxChangedId > 0) {
+                    this.searchBox.disconnect(this._searchBoxChangedId);
+                    this._searchBoxChangedId = 0;
+                }
+                if (this._searchBoxKeyPressId > 0) {
+                    this.searchBox.disconnect(this._searchBoxKeyPressId);
+                    this._searchBoxKeyPressId = 0;
+                }
+                if (this._searchBoxActivateId > 0) {
+                    this.searchBox.disconnect(this._searchBoxActivateId);
+                    this._searchBoxActivateId = 0;
+                }
+                if (this._searchBoxKeyFocusInId > 0) {
+                    this.searchBox.disconnect(this._searchBoxKeyFocusInId);
+                    this._searchBoxKeyFocusInId = 0;
+                }
+                if (this._mainBoxKeyPressId > 0) {
+                    this.mainBox.disconnect(this._mainBoxKeyPressId);
+                    this._mainBoxKeyPressId = 0;
+                }
             }
         }
         //Create a horizontal separator

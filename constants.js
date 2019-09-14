@@ -100,7 +100,9 @@ var MENU_LAYOUT = { // See: org.gnome.shell.extensions.arc-menu.menu-position
     Elementary: 5,
     GnomeDash: 6,
     Simple: 7,
-    Redmond: 8
+    Simple2: 8,
+    Redmond: 9,
+    UbuntuDash: 10
 };
 var MENU_APPEARANCE = { // See: org.gnome.shell.extensions.arc-menu.menu-button-icon
     Icon: 0,
@@ -181,9 +183,15 @@ var MENU_STYLE_CHOOSER = {
         {   thumbnail: '/media/layouts/simple-menu.svg',
             name: 'Simple Menu Style'
         },
+        {   thumbnail: '/media/layouts/simple-menu-2.svg',
+            name: 'Simple Menu Style 2'
+        },
         {   thumbnail: '/media/layouts/redmond-style-menu.svg',
             name: 'Redmond Menu Style'
-        }
+        },
+        {   thumbnail: '/media/layouts/ubuntu-dash-menu.svg',
+            name: 'Ubuntu Dash Style'
+        }   
     ]
 };
     

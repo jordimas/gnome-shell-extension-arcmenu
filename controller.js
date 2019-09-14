@@ -360,7 +360,7 @@ var MenuSettingsController = class {
     _disableButton() {
         this._removeMenuButtonFromMainPanel();
         this._addActivitiesButtonToMainPanel(); // restore the activities button
-        this._menuButton._onDestroy();
+        this._menuButton.destroy();
     }
 
     _isButtonEnabled() {

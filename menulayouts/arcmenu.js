@@ -62,117 +62,117 @@ const _ = Gettext.gettext;
 const Utils =  Me.imports.utils;
 const appSys = Shell.AppSystem.get_default();
 const PanelMenu = imports.ui.panelMenu;
-let modernGnome = imports.misc.config.PACKAGE_VERSION >= '3.31.9';
+var modernGnome = imports.misc.config.PACKAGE_VERSION >= '3.31.9';
 
 // Application Menu Button class (most of the menu logic is here)
-class createMenu {
+var createMenu = class {
     constructor(mainButton) {
-            this.button = mainButton;
-            this._settings = mainButton._settings;
-            this.mainBox = mainButton.mainBox; 
-            this.appMenuManager = mainButton.appMenuManager;
-            this.leftClickMenu  = mainButton.leftClickMenu;
-            this.currentMenu = Constants.CURRENT_MENU.FAVORITES; 
-            this._applicationsButtons = mainButton._applicationsButtons;
-            this._session = new GnomeSession.SessionManager();
-           this.newSearch = new ArcSearch.SearchResults(this);      
-           this.mainBox._delegate = this.mainBox;
-           this._mainBoxKeyPressId = this.mainBox.connect('key-press-event', this._onMainBoxKeyPress.bind(this));
+        this.button = mainButton;
+        this._settings = mainButton._settings;
+        this.mainBox = mainButton.mainBox; 
+        this.appMenuManager = mainButton.appMenuManager;
+        this.leftClickMenu  = mainButton.leftClickMenu;
+        this.currentMenu = Constants.CURRENT_MENU.FAVORITES; 
+        this._applicationsButtons = mainButton._applicationsButtons;
+        this._session = new GnomeSession.SessionManager();
+        this.newSearch = new ArcSearch.SearchResults(this);      
+        this.mainBox._delegate = this.mainBox;
+        this._mainBoxKeyPressId = this.mainBox.connect('key-press-event', this._onMainBoxKeyPress.bind(this));
 
-           this.mainBox.vertical = false;
-           // Left Box
-           //Menus Left Box container
-           this.leftBox = new St.BoxLayout({
-               vertical: true,
-               style_class: 'left-box'
-           });
-           //Applications Box - Contains Favorites, Categories or programs
-           this.applicationsScrollBox = new St.ScrollView({
-               x_fill: true,
-               y_fill: false,
-               y_align: St.Align.START,
-               style_class: 'apps-menu vfade left-scroll-area',
-               overlay_scrollbars: true
-           });                
-           this.applicationsScrollBox.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC);
-           let vscroll = this.applicationsScrollBox.get_vscroll_bar();
-           vscroll.connect('scroll-start', () => {
-               this.leftClickMenu.passEvents = true;
-           });
-           vscroll.connect('scroll-stop', () => {
-               this.leftClickMenu.passEvents = false;
-           });
-           this.leftBox.add(this.applicationsScrollBox, {
-               expand: true,
-               x_fill: true, y_fill: true,
-               y_align: St.Align.START
-           });
-           this.applicationsBox = new St.BoxLayout({ vertical: true });
-           this.applicationsScrollBox.add_actor(this.applicationsBox);
-           //Add Horizontal Separator
-           this.leftBox.add(this._createHorizontalSeparator(false), {
-               x_expand: true,
-               x_fill: true,
-               y_fill: false,
-               y_align: St.Align.END
-           });
-           //Add back button to menu
-           this.backButton = new MW.BackMenuItem(this);
-           this.leftBox.add(this.backButton.actor, {
-               expand: false,
-               x_fill: true,
-               y_fill: false,
-               y_align: St.Align.End
-           });
-           //Add view all programs button to menu
-           this.viewProgramsButton = new MW.ViewAllPrograms(this);
-           this.leftBox.add(this.viewProgramsButton.actor, {
-               expand: false,
-               x_fill: true,
-               y_fill: false,
-               y_align: St.Align.START,
-               margin_top:1,
-           });
-           // Create search box
-           this.searchBox = new MW.SearchBox();
-           this._firstAppItem = null;
-           this._firstApp = null;
-           this._tabbedOnce = false;
-           this._searchBoxChangedId = this.searchBox.connect('changed', this._onSearchBoxChanged.bind(this));
-           this._searchBoxKeyPressId = this.searchBox.connect('key-press-event', this._onSearchBoxKeyPress.bind(this));
-           this._searchBoxActivateId = this.searchBox.connect('activate', this._onSearchBoxActive.bind(this));
-           this._searchBoxKeyFocusInId = this.searchBox.connect('key-focus-in', this._onSearchBoxKeyFocusIn.bind(this));
-           //Add search box to menu
-           this.leftBox.add(this.searchBox.actor, {
-               expand: false,
-               x_fill: true,
-               y_fill: false,
-               y_align: St.Align.START
-           });
-           //Add LeftBox to MainBox
-           this.mainBox.add(this.leftBox, {
-               expand: true,
-               x_fill: true,
-               y_fill: true
-           });
-           //Add Vert Separator to Main Box
-           this.mainBox.add(this._createVertSeparator(), {
-               expand: true,
-               x_fill: true,
-               y_fill: true
-           });
+        this.mainBox.vertical = false;
+        // Left Box
+        //Menus Left Box container
+        this.leftBox = new St.BoxLayout({
+            vertical: true,
+            style_class: 'left-box'
+        });
+        //Applications Box - Contains Favorites, Categories or programs
+        this.applicationsScrollBox = new St.ScrollView({
+            x_fill: true,
+            y_fill: false,
+            y_align: St.Align.START,
+            style_class: 'apps-menu vfade left-scroll-area',
+            overlay_scrollbars: true
+        });                
+        this.applicationsScrollBox.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC);
+        let vscroll = this.applicationsScrollBox.get_vscroll_bar();
+        vscroll.connect('scroll-start', () => {
+            this.leftClickMenu.passEvents = true;
+        });
+        vscroll.connect('scroll-stop', () => {
+            this.leftClickMenu.passEvents = false;
+        });
+        this.leftBox.add(this.applicationsScrollBox, {
+            expand: true,
+            x_fill: true, y_fill: true,
+            y_align: St.Align.START
+        });
+        this.applicationsBox = new St.BoxLayout({ vertical: true });
+        this.applicationsScrollBox.add_actor(this.applicationsBox);
+        //Add Horizontal Separator
+        this.leftBox.add(this._createHorizontalSeparator(false), {
+            x_expand: true,
+            x_fill: true,
+            y_fill: false,
+            y_align: St.Align.END
+        });
+        //Add back button to menu
+        this.backButton = new MW.BackMenuItem(this);
+        this.leftBox.add(this.backButton.actor, {
+            expand: false,
+            x_fill: true,
+            y_fill: false,
+            y_align: St.Align.End
+        });
+        //Add view all programs button to menu
+        this.viewProgramsButton = new MW.ViewAllPrograms(this);
+        this.leftBox.add(this.viewProgramsButton.actor, {
+            expand: false,
+            x_fill: true,
+            y_fill: false,
+            y_align: St.Align.START,
+            margin_top:1,
+        });
+        // Create search box
+        this.searchBox = new MW.SearchBox();
+        this._firstAppItem = null;
+        this._firstApp = null;
+        this._tabbedOnce = false;
+        this._searchBoxChangedId = this.searchBox.connect('changed', this._onSearchBoxChanged.bind(this));
+        this._searchBoxKeyPressId = this.searchBox.connect('key-press-event', this._onSearchBoxKeyPress.bind(this));
+        this._searchBoxActivateId = this.searchBox.connect('activate', this._onSearchBoxActive.bind(this));
+        this._searchBoxKeyFocusInId = this.searchBox.connect('key-focus-in', this._onSearchBoxKeyFocusIn.bind(this));
+        //Add search box to menu
+        this.leftBox.add(this.searchBox.actor, {
+            expand: false,
+            x_fill: true,
+            y_fill: false,
+            y_align: St.Align.START
+        });
+        //Add LeftBox to MainBox
+        this.mainBox.add(this.leftBox, {
+            expand: true,
+            x_fill: true,
+            y_fill: true
+        });
+        //Add Vert Separator to Main Box
+        this.mainBox.add(this._createVertSeparator(), {
+            expand: true,
+            x_fill: true,
+            y_fill: true
+        });
 
-           //Right Box
-           this.rightBox = new St.BoxLayout({
-               vertical: true,
-               style_class: 'right-box'
-           });
-           this._loadCategories();
-           this._createRightBox();
-           this.mainBox.add(this.rightBox);  
-           this._loadFavorites();
-            this._display(); 
-        }
+        //Right Box
+        this.rightBox = new St.BoxLayout({
+            vertical: true,
+            style_class: 'right-box'
+        });
+        this._loadCategories();
+        this._createRightBox();
+        this.mainBox.add(this.rightBox);  
+        this._loadFavorites();
+        this._display(); 
+    }
         _onMainBoxKeyPress(mainBox, event) {
             if (!this.searchBox) {
                 return Clutter.EVENT_PROPAGATE;
@@ -866,6 +866,7 @@ class createMenu {
             return applist;
         }
         destroy(){
+           
             if(this.network!=null){
                 this.network.destroy();
                 this.networkMenuItem.destroy();
@@ -877,11 +878,26 @@ class createMenu {
             if(this.placesManager!=null)
                 this.placesManager.destroy();
             if(this.searchBox!=null){
-                this.searchBox.disconnect(this._searchBoxChangedId);
-                this.searchBox.disconnect(this._searchBoxKeyPressId);
-                this.searchBox.disconnect(this._searchBoxActivateId);
-                this.searchBox.disconnect(this._searchBoxKeyFocusInId);
-                this.mainBox.disconnect(this._mainBoxKeyPressId);
+                if (this._searchBoxChangedId > 0) {
+                    this.searchBox.disconnect(this._searchBoxChangedId);
+                    this._searchBoxChangedId = 0;
+                }
+                if (this._searchBoxKeyPressId > 0) {
+                    this.searchBox.disconnect(this._searchBoxKeyPressId);
+                    this._searchBoxKeyPressId = 0;
+                }
+                if (this._searchBoxActivateId > 0) {
+                    this.searchBox.disconnect(this._searchBoxActivateId);
+                    this._searchBoxActivateId = 0;
+                }
+                if (this._searchBoxKeyFocusInId > 0) {
+                    this.searchBox.disconnect(this._searchBoxKeyFocusInId);
+                    this._searchBoxKeyFocusInId = 0;
+                }
+                if (this._mainBoxKeyPressId > 0) {
+                    this.mainBox.disconnect(this._mainBoxKeyPressId);
+                    this._mainBoxKeyPressId = 0;
+                }
             }
         }
         //Create a horizontal separator

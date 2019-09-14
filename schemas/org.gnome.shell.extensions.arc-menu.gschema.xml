@@ -14,7 +14,9 @@
     <value value='5' nick='Elementary'/>
     <value value='6' nick='GnomeDash'/>
     <value value='7' nick='Simple'/>
-    <value value='8' nick='Redmond'/>
+    <value value='8' nick='Simple2'/>
+    <value value='9' nick='Redmond'/>
+    <value value='10' nick='UbuntuDash'/>
   </enum>
   <enum id='org.gnome.shell.extensions.arc-menu.menu-hotkey'>
     <value value='0' nick='Undefined'/>

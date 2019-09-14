@@ -65,7 +65,7 @@ const PanelMenu = imports.ui.panelMenu;
 let modernGnome = imports.misc.config.PACKAGE_VERSION >= '3.31.9';
 
 // Application Menu Button class (most of the menu logic is here)
-class createMenu {
+var createMenu = class{
     constructor(mainButton) {
         this.button = mainButton;
         this._settings = mainButton._settings;
@@ -575,16 +575,7 @@ class createMenu {
             return applist;
         }
         destroy(){
-            if(this.network!=null){
-                this.network.destroy();
-                this.networkMenuItem.destroy();
-            }
-            if(this.computer!=null){
-                this.computer.destroy();
-                this.computerMenuItem.destroy();
-            }
-            if(this.placesManager!=null)
-                this.placesManager.destroy();
+            
         }
         //Create a horizontal separator
         _createHorizontalSeparator(rightSide){

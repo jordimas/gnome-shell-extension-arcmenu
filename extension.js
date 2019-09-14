@@ -80,8 +80,11 @@ function enable() {
 
 // Disable the extension
 function disable() {
-    ExtensionSystem.disconnect(extensionChangedId);
-    extensionChangedId = 0;
+    if ( extensionChangedId > 0){
+        ExtensionSystem.disconnect(extensionChangedId);
+        extensionChangedId = 0;
+    }
+
 
     _disconnectDtpSignals();
     

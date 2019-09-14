@@ -81,7 +81,7 @@ var AppRightClickMenu = class extends PopupMenu.PopupMenu {
         //this.actor.add_style_class_name('app-right-click');
         //this.actor.width=250;
         this._path = path;
-       
+        this.layout =  this._settings.get_enum('menu-layout');
         this.discreteGpuAvailable = false;
         Gio.DBus.system.watch_name(SWITCHEROO_BUS_NAME,
             Gio.BusNameWatcherFlags.NONE,
@@ -110,6 +110,13 @@ var AppRightClickMenu = class extends PopupMenu.PopupMenu {
                 this._updateDiscreteGpuAvailable();
             });
     }
+    closeMenus(){
+        if(this.layout == Constants.MENU_LAYOUT.Simple){
+            if(this._button.subMenuManager.activeMenu)
+            this._button.subMenuManager.activeMenu.toggle();
+        }
+        this._button.leftClickMenu.toggle(); 
+    }
     redisplay(){
         this.removeAll();
         let addStyle = this._settings.get_boolean('enable-custom-arc-menu');
@@ -130,7 +137,7 @@ var AppRightClickMenu = class extends PopupMenu.PopupMenu {
                 this._newWindowMenuItem.connect('activate', () => {
                     Util.spawnCommandLine('nautilus '+ this._path);
                     this.emit('activate-window', null);
-                    this._button.leftClickMenu.toggle(); 
+                    this.closeMenus();
                 });  
             }
             else{
@@ -154,7 +161,8 @@ var AppRightClickMenu = class extends PopupMenu.PopupMenu {
                     item.connect('activate', () => {
                         this.emit('activate-window', window);
                         Main.activateWindow(window);
-                        this._button.leftClickMenu.toggle();
+                        this.closeMenus();
+                        
                     });
                 });
                 if (!this._app.is_window_backed()) {
@@ -164,7 +172,7 @@ var AppRightClickMenu = class extends PopupMenu.PopupMenu {
                         this._newWindowMenuItem.connect('activate', () => {
                             this._app.open_new_window(-1);
                             this.emit('activate-window', null);
-                            this._button.leftClickMenu.toggle(); 
+                            this.closeMenus();
                         });  
                     }
                     if (this.discreteGpuAvailable &&
@@ -174,7 +182,7 @@ var AppRightClickMenu = class extends PopupMenu.PopupMenu {
                         this._onDiscreteGpuMenuItem.connect('activate', () => {
                             this._app.launch(0, -1, true);
                             this.emit('activate-window', null);
-                            this._button.leftClickMenu.toggle();
+                            this.closeMenus();
                         });
                     }
         
@@ -184,7 +192,7 @@ var AppRightClickMenu = class extends PopupMenu.PopupMenu {
                         item.connect('activate', (emitter, event) => {
                             this._app.launch_action(action, event.get_time(), -1);
                             this.emit('activate-window', null);
-                            this._button.leftClickMenu.toggle();
+                            this.closeMenus();
                         });
                     }
     
@@ -259,7 +267,7 @@ var AppRightClickMenu = class extends PopupMenu.PopupMenu {
                                         GLib.Variant.new('(sava{sv})',
                                                         ['details', [args], null]),
                                         null, 0, -1, null, null);
-                                this._button.leftClickMenu.toggle();
+                                this.closeMenus();
                             });
                         });
                     }
@@ -887,7 +895,7 @@ var FavoritesMenuItem = class extends BaseMenuItem {
         }
         this.rightClickMenu = new AppRightClickMenu(this.actor,this.app ? this.app : this._command ,this._button,true);
 
-        
+        this._button.appMenuManager.addMenu(this.rightClickMenu);
         this.rightClickMenu.actor.hide();
         Main.uiGroup.add_actor(this.rightClickMenu.actor);
         //this.actor.connect('enter-event', this.enterEvent.bind(this));
@@ -903,7 +911,7 @@ var FavoritesMenuItem = class extends BaseMenuItem {
                 this.activate(event); 
         }
   	    if(event.get_button()==3){
-            this._button.appMenuManager.addMenu(this.rightClickMenu);
+            
             if(!this.rightClickMenu.isOpen)
                 this.rightClickMenu.redisplay();
             this.rightClickMenu.toggle();
@@ -1060,7 +1068,7 @@ var ApplicationMenuIcon = class extends PopupMenu.PopupBaseMenuItem {
         this._draggable.connect('drag-end', this._onDragEnd.bind(this));
 
         this.rightClickMenu = new AppRightClickMenu(this.actor,this.app,this._button);
-
+        this._button.appMenuManager.addMenu(this.rightClickMenu);
         this.rightClickMenu.actor.hide();
         Main.uiGroup.add_actor(this.rightClickMenu.actor);
     }
@@ -1070,7 +1078,7 @@ var ApplicationMenuIcon = class extends PopupMenu.PopupBaseMenuItem {
             this.activate(event);
         }
         if(event.get_button()==3){
-            this._button.appMenuManager.addMenu(this.rightClickMenu);
+            
             if(!this.rightClickMenu.isOpen)
                 this.rightClickMenu.redisplay();
             this.rightClickMenu.toggle();
@@ -1123,6 +1131,8 @@ var ApplicationMenuIcon = class extends PopupMenu.PopupBaseMenuItem {
 
     // Activate menu item (Launch application)
     activate(event) {
+        if(this._button.subMenuManager.activeMenu)
+            this._button.subMenuManager.activeMenu.toggle();
         if(this._button.appMenuManager.activeMenu)
             this._button.appMenuManager.activeMenu.toggle();
         this._app.open_new_window(-1);
@@ -1162,6 +1172,8 @@ var ApplicationMenuIcon = class extends PopupMenu.PopupBaseMenuItem {
             this._iconBin.set_child(this._app.create_icon_texture(44));    
     }
     _onDestroy(){
+        if(this._button.subMenuManager.activeMenu)
+            this._button.subMenuManager.activeMenu.toggle();
         if(this._button.appMenuManager.activeMenu)
             this._button.appMenuManager.activeMenu.toggle();
     }
@@ -1206,7 +1218,7 @@ var ApplicationMenuItem = class extends PopupMenu.PopupBaseMenuItem {
         this._draggable.connect('drag-end', this._onDragEnd.bind(this));
 
         this.rightClickMenu = new AppRightClickMenu(this.actor,this.app,this._button);
-
+        this._button.appMenuManager.addMenu(this.rightClickMenu);
         this.rightClickMenu.actor.hide();
         Main.uiGroup.add_actor(this.rightClickMenu.actor);
     }
@@ -1216,7 +1228,7 @@ var ApplicationMenuItem = class extends PopupMenu.PopupBaseMenuItem {
             this.activate(event);
         }
         if(event.get_button()==3){
-            this._button.appMenuManager.addMenu(this.rightClickMenu);
+           
             if(!this.rightClickMenu.isOpen)
                 this.rightClickMenu.redisplay();
             this.rightClickMenu.toggle();
@@ -1269,6 +1281,8 @@ var ApplicationMenuItem = class extends PopupMenu.PopupBaseMenuItem {
 
     // Activate menu item (Launch application)
     activate(event) {
+        if(this._button.subMenuManager.activeMenu)
+            this._button.subMenuManager.activeMenu.toggle();
         if(this._button.appMenuManager.activeMenu)
             this._button.appMenuManager.activeMenu.toggle();
         this._app.open_new_window(-1);
@@ -1303,6 +1317,8 @@ var ApplicationMenuItem = class extends PopupMenu.PopupBaseMenuItem {
         this._iconBin.set_child(this._app.create_icon_texture(SMALL_ICON_SIZE));
     }
     _onDestroy(){
+        if(this._button.subMenuManager.activeMenu)
+            this._button.subMenuManager.activeMenu.toggle();
         if(this._button.appMenuManager.activeMenu)
             this._button.appMenuManager.activeMenu.toggle();
     }
@@ -1315,6 +1331,7 @@ var SearchResultItem = class extends PopupMenu.PopupBaseMenuItem {
         this.app =app;
         this._path=path;
         this.rightClickMenu = new AppRightClickMenu(this.actor,this.app,this._button,false, this._path ? this._path: null);
+        this._button.appMenuManager.addMenu(this.rightClickMenu);
         this.rightClickMenu.actor.hide();
         Main.uiGroup.add_actor(this.rightClickMenu.actor);
   
@@ -1324,7 +1341,7 @@ var SearchResultItem = class extends PopupMenu.PopupBaseMenuItem {
             this.activate(event);
         }
         if(event.get_button()==3){
-            this._button.appMenuManager.addMenu(this.rightClickMenu);
+            
             if(!this.rightClickMenu.isOpen)
                 this.rightClickMenu.redisplay();
             this.rightClickMenu.toggle();
@@ -1454,7 +1471,149 @@ var CategoryMenuItem = class extends BaseMenuItem {
         //super.setActive(active, params);
     }
 };
+// Simple Menu item class
+var SimpleMenuItem = class extends BaseMenuItem {
+    // Initialize menu item
+    constructor(button, category, title=null) {
+        super(button);
+        this._category = category;
+        this._button = button;
+        this.name;
+        this.title = title;
+        this._active = false;
+        if (this._category) {
+            this.name = this._category.get_name();
+        } 
+        else if(title!=null){
+            this.name = title == "All Programs" ? _("All Programs") : _("Favorites")
+        }   
+        else {
+            this.name = _("Frequent Apps");
+        }
 
+        this._icon = new St.Icon({
+            gicon: this._category ? this._category.get_icon() : null,
+            style_class: 'popup-menu-icon',
+            icon_size: MEDIUM_ICON_SIZE
+        });
+        if(title!=null){
+            this._icon.icon_name = title == "All Programs" ?'emblem-system-symbolic': 'emblem-favorite-symbolic';
+        }
+        else if(!this._category){
+            this._icon.icon_name= 'emblem-favorite-symbolic';
+        }
+        this.actor.add_child(this._icon);
+        let categoryLabel = new St.Label({
+            text: this.name,
+            y_expand: true,
+            x_expand:true,
+            y_align: Clutter.ActorAlign.CENTER
+        });
+        this.actor.add_child(categoryLabel);
+        this._arrowIcon = new St.Icon({
+            icon_name: 'go-next-symbolic',
+            style_class: 'popup-menu-icon',
+            x_align: St.Align.END,
+            icon_size: 12,
+        });
+        this.actor.add_child(this._arrowIcon);
+        this.actor.label_actor = categoryLabel;
+        this.actor.connect('notify::hover', this._onHover.bind(this));
+        
+        let modernGnome = imports.misc.config.PACKAGE_VERSION >= '3.31.9';
+        let sourceActor =  modernGnome ?  this : this.actor;
+        
+        
+
+        this.subMenu = new PopupMenu.PopupMenu(this.actor,.5,St.Side.RIGHT);
+        Main.uiGroup.add_actor(this.subMenu.actor);  
+        this.section = new PopupMenu.PopupMenuSection();
+        this.subMenu.addMenuItem(this.section);  
+        this.updateStyle();
+        this.mainBox = new St.BoxLayout({
+            vertical: false
+        });    
+        this.mainBox.style = 'max-height: 25em;';
+        this.section.actor.add_actor(this.mainBox);   
+        this.applicationsScrollBox = new St.ScrollView({
+            x_fill: true,
+            y_fill: false,
+            y_align: St.Align.START,
+            style_class: 'apps-menu vfade left-scroll-area',
+            overlay_scrollbars: true
+        });                
+        this.applicationsScrollBox.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC);
+        this._button.subMenuManager.addMenu(this.subMenu);
+        this.applicationsBox = new St.BoxLayout({ vertical: true });
+        this.applicationsScrollBox.add_actor(this.applicationsBox);
+        this.mainBox.add(this.applicationsScrollBox, {
+            expand: true,
+            x_fill: true, y_fill: true,
+            y_align: St.Align.START
+        });
+        
+        //if(!this.subMenu.isOpen)
+           // this.subMenu.redisplay();
+        //this.subMenu.toggle();
+    }
+    updateStyle(){
+        let addStyle=this._button._settings.get_boolean('enable-custom-arc-menu');
+       
+        this.subMenu.actor.hide();
+            if(addStyle){
+                this.subMenu.actor.style_class = 'arc-menu-boxpointer';
+                this.subMenu.actor.add_style_class_name('arc-menu');
+            }
+            else
+            {       
+                this.subMenu.actor.style_class = 'popup-menu-boxpointer';
+                this.subMenu.actor.add_style_class_name('popup-menu');
+            }
+    }
+    // Activate menu item (Display applications in category)
+    activate(event) {
+        /*if (this._category)
+            this._button.selectCategory(this._category);
+        else if(this.title =="All Programs")
+            this._button._displayAllApps(this.actor);
+        else if(this.title == "Favorites")
+            this._button._displayGnomeFavorites();
+        else
+            this._button.selectCategory("Frequent Apps");
+        let layout = this._button._settings.get_enum('menu-layout');
+        
+        if(layout == Constants.MENU_LAYOUT.Brisk ||  layout==Constants.MENU_LAYOUT.Whisker || layout == Constants.MENU_LAYOUT.GnomeMenu
+            || layout == Constants.MENU_LAYOUT.Mint){
+            this._button._setActiveCategory();
+            this.setFakeActive(true);
+        }*/
+     
+        //if(!this.subMenu.isOpen)
+            //this.subMenu.redisplay();
+        this.subMenu.toggle();
+            
+        //super.activate(event);
+    }
+    _onHover() {
+        if (this.actor.hover) { // mouse pointer hovers over the button
+            this.actor.add_style_class_name('selected');
+        } else if(!this.actor.hover && !this._active) { // mouse pointer leaves the button area
+            this.actor.remove_style_class_name('selected');
+        }
+    }
+    // Set button as active, scroll to the button
+    setFakeActive(active, params) {
+
+    }
+    // Set button as active, scroll to the button
+    setActive(active, params) {
+
+    }
+    _onDestroy(){
+        if(this._button.subMenuManager.activeMenu)
+        this._button.subMenuManager.activeMenu.toggle();
+    }
+};
 // SubMenu Category item class
 var CategorySubMenuItem = class extends PopupMenu.PopupSubMenuMenuItem {
     // Initialize menu item
