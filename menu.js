@@ -133,7 +133,7 @@ var ApplicationsButton =   Utils.defineClass({
             this.actor.add_actor(this._menuButtonWidget.actor);
             this.actor.name = 'panelApplications';
             this.actor.connect('captured-event', this._onCapturedEvent.bind(this));
-            this.actor.connect('destroy', this._onDestroy.bind(this));
+            this.actor.connect('destroy', this.destroy.bind(this));
             this._showingId = Main.overview.connect('showing', () => {
                 this.actor.add_accessible_state(Atk.StateType.CHECKED);
             });
