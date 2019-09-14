@@ -111,10 +111,6 @@ var AppRightClickMenu = class extends PopupMenu.PopupMenu {
             });
     }
     closeMenus(){
-        if(this.layout == Constants.MENU_LAYOUT.Simple){
-            if(this._button.subMenuManager.activeMenu)
-            this._button.subMenuManager.activeMenu.toggle();
-        }
         this._button.leftClickMenu.toggle(); 
     }
     redisplay(){
@@ -898,14 +894,8 @@ var FavoritesMenuItem = class extends BaseMenuItem {
         this._button.appMenuManager.addMenu(this.rightClickMenu);
         this.rightClickMenu.actor.hide();
         Main.uiGroup.add_actor(this.rightClickMenu.actor);
-        //this.actor.connect('enter-event', this.enterEvent.bind(this));
     }
-    enterEvent(){
-        if(this._button.appMenuManager.activeMenu!=this.rightClickMenu)
-            this._button.appMenuManager.activeMenu.toggle();
-      
-    }
-    
+
     _onButtonReleaseEvent(actor, event) {
         if(event.get_button()==1){
                 this.activate(event); 
@@ -1001,14 +991,12 @@ var FavoritesMenuItem = class extends BaseMenuItem {
             
         else
             Util.spawnCommandLine(this._command);
-        if(this._button.appMenuManager.activeMenu)
-            this._button.appMenuManager.activeMenu.toggle();
+
         this._button.leftClickMenu.toggle();
         super.activate(event);
     }
     _onDestroy(){
-        if(this._button.appMenuManager.activeMenu)
-            this._button.appMenuManager.activeMenu.toggle();    
+  
     }
 };
 // Menu application item class
@@ -1131,10 +1119,6 @@ var ApplicationMenuIcon = class extends PopupMenu.PopupBaseMenuItem {
 
     // Activate menu item (Launch application)
     activate(event) {
-        if(this._button.subMenuManager.activeMenu)
-            this._button.subMenuManager.activeMenu.toggle();
-        if(this._button.appMenuManager.activeMenu)
-            this._button.appMenuManager.activeMenu.toggle();
         this._app.open_new_window(-1);
         this._button.leftClickMenu.toggle();
         super.activate(event);
@@ -1172,10 +1156,7 @@ var ApplicationMenuIcon = class extends PopupMenu.PopupBaseMenuItem {
             this._iconBin.set_child(this._app.create_icon_texture(44));    
     }
     _onDestroy(){
-        if(this._button.subMenuManager.activeMenu)
-            this._button.subMenuManager.activeMenu.toggle();
-        if(this._button.appMenuManager.activeMenu)
-            this._button.appMenuManager.activeMenu.toggle();
+
     }
 };
 var ApplicationMenuItem = class extends PopupMenu.PopupBaseMenuItem {
@@ -1281,10 +1262,6 @@ var ApplicationMenuItem = class extends PopupMenu.PopupBaseMenuItem {
 
     // Activate menu item (Launch application)
     activate(event) {
-        if(this._button.subMenuManager.activeMenu)
-            this._button.subMenuManager.activeMenu.toggle();
-        if(this._button.appMenuManager.activeMenu)
-            this._button.appMenuManager.activeMenu.toggle();
         this._app.open_new_window(-1);
         this._button.leftClickMenu.toggle();
         super.activate(event);
@@ -1317,10 +1294,6 @@ var ApplicationMenuItem = class extends PopupMenu.PopupBaseMenuItem {
         this._iconBin.set_child(this._app.create_icon_texture(SMALL_ICON_SIZE));
     }
     _onDestroy(){
-        if(this._button.subMenuManager.activeMenu)
-            this._button.subMenuManager.activeMenu.toggle();
-        if(this._button.appMenuManager.activeMenu)
-            this._button.appMenuManager.activeMenu.toggle();
     }
 };
 var SearchResultItem = class extends PopupMenu.PopupBaseMenuItem {
@@ -1359,8 +1332,6 @@ var SearchResultItem = class extends PopupMenu.PopupBaseMenuItem {
         return Clutter.EVENT_PROPAGATE;
     }
     _onDestroy(){
-        if(this._button.appMenuManager.activeMenu)
-            this._button.appMenuManager.activeMenu.toggle();
     }
 };
 // Menu Category item class
@@ -1610,8 +1581,7 @@ var SimpleMenuItem = class extends BaseMenuItem {
 
     }
     _onDestroy(){
-        if(this._button.subMenuManager.activeMenu)
-        this._button.subMenuManager.activeMenu.toggle();
+
     }
 };
 // SubMenu Category item class
