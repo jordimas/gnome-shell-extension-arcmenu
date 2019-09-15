@@ -226,6 +226,7 @@ var createMenu = class {
         } 
         resetSearch(){ //used by back button to clear results
             this.searchBox.clear();
+            this.setDefaultMenuView();  
         }
         _redisplayRightSide(){
 

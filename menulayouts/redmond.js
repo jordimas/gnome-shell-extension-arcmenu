@@ -217,8 +217,8 @@ var createMenu = class {
         this.setDefaultMenuView();  
     }
     _redisplayRightSide(){
-        this.leftBox.destroy_all_children();
-        this._createLeftBox();
+        this.rightBox.destroy_all_children();
+        this._createRightBox();
    
         this.updateStyle();
     }

@@ -163,34 +163,34 @@ var MENU_STYLE_CHOOSER = {
             name: 'Arc Menu'
         },
         {   thumbnail: '/media/layouts/brisk-menu.svg',
-            name: 'Brisk Menu Style'
+            name: 'Brisk Menu'
         },
         {   thumbnail: '/media/layouts/whisker-menu.svg',
-            name: 'Whisker Menu Style'
+            name: 'Whisker Menu'
         },
         {   thumbnail: '/media/layouts/gnome-menu.svg',
-            name: 'GNOME Menu Style'
+            name: 'GNOME Menu'
         },
         {   thumbnail: '/media/layouts/mint-menu.svg',
-            name: 'Mint Menu Style'
+            name: 'Mint Menu'
         },
         {   thumbnail: '/media/layouts/elementary-menu.svg',
-            name: 'Elementary Menu Style'
+            name: 'Elementary Menu'
         },
         {   thumbnail: '/media/layouts/gnome-dash-menu.svg',
-            name: 'GNOME Dash Style'
+            name: 'GNOME Dash'
         },
         {   thumbnail: '/media/layouts/simple-menu.svg',
-            name: 'Simple Menu Style'
+            name: 'Simple Menu'
         },
         {   thumbnail: '/media/layouts/simple-menu-2.svg',
-            name: 'Simple Menu Style 2'
+            name: 'Simple Menu 2'
         },
         {   thumbnail: '/media/layouts/redmond-style-menu.svg',
-            name: 'Redmond Menu Style'
+            name: 'Redmond Menu'
         },
         {   thumbnail: '/media/layouts/ubuntu-dash-menu.svg',
-            name: 'Ubuntu Dash Style'
+            name: 'Ubuntu Dash'
         }   
     ]
 };

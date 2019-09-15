@@ -1427,7 +1427,7 @@ var  AppearanceSettingsPage = GObject.registerClass(
             let layoutFrame = new PW.FrameBox();
             let layoutRow = new PW.FrameBoxRow();
             let layoutLabel = new Gtk.Label({
-                label: _("Arc Menu Layout"),
+                label: _("Choose Menu Layout"),
                 use_markup: true,
                 xalign: 0,
                 hexpand: true
@@ -1444,6 +1444,7 @@ var  AppearanceSettingsPage = GObject.registerClass(
                     if(dialog.get_response())
                     {
                         this.settings.set_enum('menu-layout', dialog.index);
+                        currentStyleLabel.label = Constants.MENU_STYLE_CHOOSER.Styles[dialog.index].name;
                         saveCSS(this.settings);
                         this.settings.set_boolean('reload-theme',true);
                         dialog.destroy();
@@ -1452,11 +1453,32 @@ var  AppearanceSettingsPage = GObject.registerClass(
                         dialog.destroy();
                 }.bind(this)); 
             });
-                       
             layoutRow.add(layoutLabel);
             layoutRow.add(layoutButton);
             layoutFrame.add(layoutRow);
+    
+            let currentLayoutRow = new PW.FrameBoxRow();
+            let currentLayoutLabel = new Gtk.Label({
+                label: _("Current Layout"),
+                use_markup: true,
+                xalign: 0,
+                hexpand: true
+            }); 
+            let currentStyleLabel = new Gtk.Label({
+                label: "",
+                use_markup: true,
+                xalign: 0,
+                hexpand: false
+            }); 
+            let index = this.settings.get_enum('menu-layout');
+            currentStyleLabel.label = Constants.MENU_STYLE_CHOOSER.Styles[index].name;
+            currentLayoutRow.add(currentLayoutLabel);
+            currentLayoutRow.add(currentStyleLabel);
+            layoutFrame.add(currentLayoutRow);
             this.add(layoutFrame);
+        
+
+
     }
 });
 
