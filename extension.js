@@ -134,7 +134,7 @@ function _onMultiMonitorChange() {
 
 function _enableButtons() {
     (settings.get_boolean('multi-monitor') && global.dashToPanel ? 
-     global.dashToPanel.panels.map(pw => pw.panel) : 
+     global.dashToPanel.panels.map(pw => pw.panel || pw) : 
      [Main.panel]).forEach(panel => {
         if (settingsControllers.filter(sc => sc.panel == panel).length)
             return;
