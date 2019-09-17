@@ -191,7 +191,9 @@ var MenuSettingsController = class {
     }
 
     _onHotkey() {
-        let focusTarget = this._menuButton.leftClickMenu.isOpen ? this._menuButton : this.panel;
+        let focusTarget = this._menuButton.leftClickMenu.isOpen ? 
+                          (this._menuButton.actor || this._menuButton) : 
+                          (this.panel.actor || this.panel);
         
         this.disconnectKeyRelease();
 
