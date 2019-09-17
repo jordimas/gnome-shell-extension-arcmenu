@@ -141,7 +141,7 @@ function _enableButtons() {
 
         // Create a Menu Controller that is responsible for controlling
         // and managing the menu as well as the menu button.
-        let isMainPanel = panel == Main.panel;
+        let isMainPanel = ('isSecondary' in panel && !panel.isSecondary) || panel == Main.panel;
         let settingsController = new Controller.MenuSettingsController(settings, settingsControllers, panel, isMainPanel);
         
         if (!isMainPanel) {
