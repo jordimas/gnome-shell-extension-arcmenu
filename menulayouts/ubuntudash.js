@@ -88,6 +88,7 @@ var createMenu = class{
         //Top Search Bar
         // Create search box
         this.searchBox = new MW.SearchBox();
+        this.searchBox.actor.style ="margin: 0px 10px 10px 10px;";
         this._firstAppItem = null;
         this._firstApp = null;
         this._tabbedOnce = false;
@@ -150,6 +151,7 @@ var createMenu = class{
         this.placesBox = new St.BoxLayout({
             vertical: false
         });
+        this.placesBox.style = "margin: 15px 5px 0px 5px; spacing: 10px;";
         this.subMainBox.add( this.placesBox, {
             expand: true,
             x_fill: false,
