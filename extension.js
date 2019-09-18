@@ -137,14 +137,14 @@ function _onMultiMonitorChange() {
 
 function _enableButtons() {
     (settings.get_boolean('multi-monitor') && global.dashToPanel ? 
-     global.dashToPanel.panels.map(pw => pw.panel) : 
+     global.dashToPanel.panels.map(pw => pw.panel || pw) : 
      [Main.panel]).forEach(panel => {
         if (settingsControllers.filter(sc => sc.panel == panel).length)
             return;
 
         // Create a Menu Controller that is responsible for controlling
         // and managing the menu as well as the menu button.
-        let isMainPanel = panel == Main.panel;
+        let isMainPanel = ('isSecondary' in panel && !panel.isSecondary) || panel == Main.panel;
         let settingsController = new Controller.MenuSettingsController(settings, settingsControllers, panel, isMainPanel);
         
         if (!isMainPanel) {

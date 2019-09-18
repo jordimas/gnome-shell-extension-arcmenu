@@ -105,7 +105,7 @@ var createMenu = class{
 
         //Sub Main Box -- stores left and right box
         this.subMainBox= new St.BoxLayout({
-            vertical: false
+            vertical: true
         });
         this.mainBox.add(this.subMainBox, {
             expand: true,
@@ -147,6 +147,42 @@ var createMenu = class{
 
         this._loadCategories();
         this._displayAllApps();
+        this.placesBox = new St.BoxLayout({
+            vertical: false
+        });
+        this.subMainBox.add( this.placesBox, {
+            expand: true,
+            x_fill: false,
+            y_fill: false,
+            x_align: St.Align.MIDDLE,
+            y_align: St.Align.END
+        });
+        let homePath = GLib.get_home_dir();
+        let placeInfo = new MW.PlaceInfo(Gio.File.new_for_path(homePath), _("Home"));
+        let addToMenu = this._settings.get_boolean('show-home-shortcut');
+        if(addToMenu){
+            let placeMenuItem = new MW.PlaceButtonItem(this, placeInfo);
+            this.placesBox.add_actor(placeMenuItem.actor);
+        }    
+        let dirs = Constants.DEFAULT_DIRECTORIES.slice();
+        var SHORTCUT_TRANSLATIONS = [_("Documents"),_("Downloads"), _("Music"),_("Pictures"),_("Videos")];
+        for (let i = 0; i < dirs.length; i++) {
+            let path = GLib.get_user_special_dir(dirs[i]);
+            if (path == null || path == homePath)
+                continue;
+            let placeInfo = new MW.PlaceInfo(Gio.File.new_for_path(path), _(SHORTCUT_TRANSLATIONS[i]));
+        
+                let placeMenuItem = new MW.PlaceButtonItem(this, placeInfo);
+                this.placesBox.add_actor(placeMenuItem.actor);
+            
+        }
+        let settingsButton= new MW.SettingsButton( this);
+        this.placesBox.add(settingsButton.actor, {
+            expand: false,
+            x_fill: true,
+            x_align: St.Align.END,
+            margin:5,
+        });
 
         this._display();
        
@@ -209,7 +245,7 @@ var createMenu = class{
         this.setDefaultMenuView();  
     }
     _redisplayRightSide(){
-        this.leftBox.destroy_all_children();
+       
         this._createLeftBox();
    
         this.updateStyle();
@@ -227,8 +263,8 @@ var createMenu = class{
                     this.newSearch.setStyle('arc-menu-status-text');
                     this.searchBox._stEntry.set_name('arc-search-entry');
                 }
-                if(this.actionsBox){
-                    this.actionsBox.actor.get_children().forEach(function (actor) {
+                if(this.placesBox){
+                    this.placesBox.get_children().forEach(function (actor) {
                         if(actor instanceof St.Button){
                             actor.add_style_class_name('arc-menu-action');
                         }
@@ -241,8 +277,8 @@ var createMenu = class{
                     this.newSearch.setStyle('search-statustext');            
                     this.searchBox._stEntry.set_name('search-entry');
                 }
-                if(this.actionsBox){
-                    this.actionsBox.actor.get_children().forEach(function (actor) {
+                if(this.placesBox){
+                    this.placesBox.get_children().forEach(function (actor) {
                         if(actor instanceof St.Button){
                             actor.remove_style_class_name('arc-menu-action');
                         }

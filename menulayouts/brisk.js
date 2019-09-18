@@ -86,6 +86,7 @@ var createMenu = class{
         //Top Search Bar
         // Create search box
         this.searchBox = new MW.SearchBox();
+        this.searchBox.actor.style ="margin: 0px 10px 5px 10px;";
         this._firstAppItem = null;
         this._firstApp = null;
         this._tabbedOnce = false;
@@ -126,7 +127,7 @@ var createMenu = class{
             y_align: St.Align.START,
             overlay_scrollbars: true
         });   
-        this.shortcutsScrollBox.set_width(250);  
+        this.shortcutsScrollBox.set_width(275);  
         this.shortcutsScrollBox.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC);
         let vscroll2 =  this.shortcutsScrollBox.get_vscroll_bar();
         vscroll2.connect('scroll-start', () => {
@@ -140,8 +141,7 @@ var createMenu = class{
         // Left Box
         //Menus Left Box container
         this.leftBox = new St.BoxLayout({
-            vertical: true,
-            style_class: 'left-box'
+            vertical: true
         });
         this.subMainBox.add( this.leftBox, {
             expand: true,
@@ -407,9 +407,10 @@ var createMenu = class{
                 x_fill: true,
                 y_fill: true,
                 y_align: St.Align.START,
-                style_class: 'apps-menu vfade left-scroll-area',
                 overlay_scrollbars: true
             });
+           
+            this.applicationsScrollBox.set_width(225);  
             this.applicationsScrollBox.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC);
             let vscroll =  this.applicationsScrollBox.get_vscroll_bar();
             vscroll.connect('scroll-start', () => {
@@ -425,8 +426,39 @@ var createMenu = class{
             });
             this.applicationsBox = new St.BoxLayout({ vertical: true });
             this.applicationsScrollBox.add_actor( this.applicationsBox);
+            
+            this.shortcutsBox = new St.BoxLayout({ vertical: true });
             //Add Horizontal Separator
-            this.leftBox.add( this._createHorizontalSeparator(false), {
+            this.leftBox.add(this.shortcutsBox, {
+                expand: true,
+                x_fill: true, y_fill: true,
+                y_align: St.Align.START
+            });
+            this.shortcutsBox.add( this._createHorizontalSeparator(false), {
+                x_expand: true,
+                x_fill: true,
+                y_fill: true,
+                y_align: St.Align.END
+            });
+            this.shortcutsBox.style = "padding: 5px 0px 0px 0px;"
+
+            var SHORTCUT_TRANSLATIONS = [_("Software"),_("Software"), _("Settings")];
+            for(let i = 0; i < 3; i++) {
+                if (GLib.find_program_in_path(Constants.SHORTCUTS[i].command)) {
+                    let shortcutMenuItem = new MW.ShortcutMenuItem(this, SHORTCUT_TRANSLATIONS[i], Constants.SHORTCUTS[i].symbolic, Constants.SHORTCUTS[i].command);
+                    shortcutMenuItem.setIconSizeLarge();
+                    this.shortcutsBox.add(shortcutMenuItem.actor, {
+                        expand: false,
+                        x_fill: true,
+                        y_fill: false,
+                        y_align: St.Align.START,
+                    });
+                }
+            };
+
+
+            //Add Horizontal Separator
+            this.shortcutsBox.add( this._createHorizontalSeparator(false), {
                 x_expand: true,
                 x_fill: true,
                 y_fill: true,

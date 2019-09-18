@@ -489,7 +489,7 @@ var Tooltip = class {
  * A base class for custom session buttons.
  */
 var SessionButton = class {
-    constructor(button, accessible_name, icon_name) {
+    constructor(button, accessible_name, icon_name, gicon) {
         this._button = button;
 
         this.actor = new St.Button({
@@ -512,6 +512,10 @@ var SessionButton = class {
             icon_name: icon_name,
             icon_size: iconSize  
         });
+        if(gicon)
+            this._icon.gicon = gicon;
+        else
+            this._icon.icon_name = icon_name;
         this.actor.child = this._icon;
         this.actor.connect('clicked', this._onClick.bind(this));
         this.actor.connect('notify::hover', this._onHover.bind(this));
@@ -534,6 +538,20 @@ var SessionButton = class {
             this.tooltip.hide();
         }
     }
+};
+// Menu Place Button Shortcut item class
+var PlaceButtonItem = class extends SessionButton {
+    // Initialize menu item
+    constructor(button, info) {
+        super(button, _(info.name), null, info.icon);
+        this._button = button;
+        this._info = info;
+    }
+    // Activate (launch) the shortcut
+    activate() {
+        this._info.launch();
+    }
+
 };
 // Firefox Button
 var FirefoxButton = class extends SessionButton {
@@ -782,6 +800,9 @@ var ShortcutMenuItem = class extends BaseMenuItem {
         this._button.leftClickMenu.toggle();
         super.activate(event);
     }
+    setIconSizeLarge(){
+        this._icon.icon_size = MEDIUM_ICON_SIZE;
+    }
 };
 
 // Menu item which displays the current user
@@ -1005,11 +1026,17 @@ var ApplicationMenuIcon = class extends PopupMenu.PopupBaseMenuItem {
     constructor(button, app) {
         super();
         this._button = button;
+        this.layoutWidth = 0;
         let layout = this._button._settings.get_enum('menu-layout');
-        if(layout == Constants.MENU_LAYOUT.Elementary)
-            this.actor.style ='padding: 0; spacing: 0px; width:85px';
-        else
-            this.actor.style ='padding: 0; spacing: 0px; width:80px';
+        if(layout == Constants.MENU_LAYOUT.Elementary){
+            this.actor.style ='padding: 5px; spacing: 0px; width:95px; height:95px;';
+            this.layoutWidth = 85;
+        }
+        else{
+            this.actor.style ='padding: 5px; spacing: 0px; width:80px;height:80px;';
+            this.layoutWidth = 85;
+        }
+            
         
         this._app = app;
         this.app = app;
@@ -1025,15 +1052,73 @@ var ApplicationMenuIcon = class extends PopupMenu.PopupBaseMenuItem {
             x_align: St.Align.MIDDLE
         });
         this.actor.add_child(this._iconBin);
+
+
+        let wordCount = app.get_name().split(" ");
+       
+
+        this.labelArray=[];
+        if(wordCount.length > 1){
+            let firstLineCount = wordCount[0].length + wordCount[1].length; 
+            if(firstLineCount<14){
+                
+                let label = new St.Label({
+                    text: wordCount[0]+ " " + wordCount[1],
+                    y_expand: false,
+                    y_align: St.Align.END,
+                    x_align: St.Align.END
+                });
+                this.actor.add_child(label);
+                if(wordCount.length > 2){
+                    for(let i = 2; i < wordCount.length; i++){
+                        label = new St.Label({
+                            text: wordCount[i],
+                            y_expand: false,
+                            y_align: St.Align.END,
+                            x_align: St.Align.END
+                        });
+                        this.actor.add_child(label);
+                    }
+                }
+            }
+            else{
+                let label = new St.Label({
+                    text: wordCount[0],
+                    y_expand: false,
+                    y_align: St.Align.END,
+                    x_align: St.Align.END
+                });
+                this.actor.add_child(label);
+                label = new St.Label({
+                    text: wordCount[1],
+                    y_expand: false,
+                    y_align: St.Align.END,
+                    x_align: St.Align.END
+                });
+                this.actor.add_child(label);
+                for(let i = 2; i < wordCount.length; i++){
+                    label.text+= " " + wordCount[i];
+                }
+                
+            }
+        }
+        
+        else {
+            for(let i = 0; i < wordCount.length; i++){
+                this.labelArray.push(new St.Label({
+                    text: wordCount[i],
+                    y_expand: false,
+                    y_align: St.Align.END,
+                    x_align: St.Align.END
+                }));
+                this.actor.add(this.labelArray[i]);
+            }
+        }
+            
+        
  
-        let appLabel = new St.Label({
-            text: app.get_name(),
-            y_expand: false,
-            y_align: St.Align.END,
-            x_align: St.Align.END
-        });
-        this.actor.add(appLabel);
-        this.actor.label_actor = appLabel;
+         
+      
 
         let textureCache = St.TextureCache.get_default();
         let iconThemeChangedId = textureCache.connect('icon-theme-changed',
@@ -1060,7 +1145,80 @@ var ApplicationMenuIcon = class extends PopupMenu.PopupBaseMenuItem {
         this.rightClickMenu.actor.hide();
         Main.uiGroup.add_actor(this.rightClickMenu.actor);
     }
+    createLabel(){
+        let totalWidth = 0;
+        let newName = "";
+        let oldName = "";
+        for(let i = 0; i<this.labelArray.length;i++){
+            totalWidth+= this.labelArray[i].width;
+            this.actor.remove_child(this.labelArray[i]);
+            if (newName == "") 
+                newName += this.labelArray[i].text;
+            else
+                newName += " " + this.labelArray[i].text;
+            if(totalWidth > this.layoutWidth && i!=0){
+                let newLabel = new St.Label({
+                    text: oldName,
+                    y_expand: false,
+                    y_align: St.Align.END,
+                    x_align: St.Align.END
+                });
+               
+                this.actor.add_child(newLabel);
+                
+                break;
+            }
+            if(i == this.labelArray.length - 1){
+                let newLabel = new St.Label({
+                    text: newName,
+                    y_expand: false,
+                    y_align: St.Align.END,
+                    x_align: St.Align.END
+                });
+                this.actor.add_child(newLabel);
+            }
+            oldName= newName;
+           
+        }
+        
+    }
+    createLabelsss(){
+        
+        if(this.appLabel.get_preferred_width(this.appLabel)[1] > this.layoutWidth){
+            let array = this.appLabel.text.split(" ");
+            this.actor.remove_child(this.appLabel);
+            this.createLabels(array);
+        }
+        
+    }
+    createLabels(nameArray){
+        let newName = "";
+        let oldName = "";
 
+        for(let i = 0; i<nameArray.length;i++){
+            if (newName == "") 
+                newName += nameArray[i];
+            else
+                newName += " " + nameArray[i];
+            let appLabel = new St.Label({
+                text: newName,
+                y_expand: false,
+                y_align: St.Align.END,
+                x_align: St.Align.END
+            });
+            if(appLabel.get_preferred_width(appLabel)[1] > this.layoutWidth && nameArray.length!=1){
+                appLabel.text=oldName;
+                this.actor.add_child(appLabel);
+                let newNameArray = nameArray.slice(i);
+                this.createLabels(newNameArray);
+                break;
+            }
+            if(i == nameArray.length - 1){
+                this.actor.add_child(appLabel);
+            }
+            oldName=newName;
+        }
+    }
     _onButtonReleaseEvent(actor, event) {
         if(event.get_button()==1){
             this.activate(event);
@@ -1153,7 +1311,7 @@ var ApplicationMenuIcon = class extends PopupMenu.PopupBaseMenuItem {
         if(layout == Constants.MENU_LAYOUT.Elementary)
             this._iconBin.set_child(this._app.create_icon_texture(52));
         else
-            this._iconBin.set_child(this._app.create_icon_texture(44));    
+            this._iconBin.set_child(this._app.create_icon_texture(36));    
     }
     _onDestroy(){
 
@@ -1449,7 +1607,7 @@ var SimpleMenuItem = class extends BaseMenuItem {
         super(button);
         this._category = category;
         this._button = button;
-        this.name;
+        this.name = "";
         this.title = title;
         this._active = false;
         if (this._category) {
@@ -1561,13 +1719,14 @@ var SimpleMenuItem = class extends BaseMenuItem {
      
         //if(!this.subMenu.isOpen)
             //this.subMenu.redisplay();
-        this.subMenu.toggle();
+       // this.subMenu.toggle();
             
         //super.activate(event);
     }
     _onHover() {
         if (this.actor.hover) { // mouse pointer hovers over the button
             this.actor.add_style_class_name('selected');
+            this.subMenu.toggle();
         } else if(!this.actor.hover && !this._active) { // mouse pointer leaves the button area
             this.actor.remove_style_class_name('selected');
         }

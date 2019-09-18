@@ -86,6 +86,7 @@ var createMenu = class {
         this.topBox= new St.BoxLayout({
             vertical: false
         });
+        this.topBox.style ="margin: 0px 10px;spacing: 5px;";
         this.mainBox.add(this.topBox, {
             expand: true,
             x_fill: true,
@@ -103,6 +104,7 @@ var createMenu = class {
         this.actionsBox = new St.BoxLayout({
             vertical: false
         });
+        this.actionsBox.style ="spacing: 5px;";
         //check if custom arc menu is enabled
         if( this._settings.get_boolean('enable-custom-arc-menu'))
             this.actionsBox.add_style_class_name('arc-menu');
@@ -163,6 +165,7 @@ var createMenu = class {
         //Top Search Bar
         // Create search box
         this.searchBox = new MW.SearchBox();
+        this.searchBox.actor.style ="margin: 10px;";
         this._firstAppItem = null;
         this._firstApp = null;
         this._tabbedOnce = false;

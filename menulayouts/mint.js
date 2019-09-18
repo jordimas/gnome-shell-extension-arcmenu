@@ -87,8 +87,9 @@ var createMenu =class{
         //create new section for Power, Lock, Logout, Suspend Buttons
         this.actionsBox = new St.BoxLayout({ 
             vertical: true,
-            width: 100
+            width: 60
         });
+        this.actionsBox.style = "border-color:rgb(63,62,64); border-width: 2px;margin: 0px 20px; width: 30px; spacing: 5px; padding: 5px 0px;";
         //check if custom arc menu is enabled
         if( this._settings.get_boolean('enable-custom-arc-menu'))
             this.actionsBox.add_style_class_name('arc-menu');
@@ -180,6 +181,7 @@ var createMenu =class{
         //Top Search Bar
         // Create search box
         this.searchBox = new MW.SearchBox();
+        this.searchBox.actor.style ="margin: 0px 10px 10px 10px;";
         this._firstAppItem = null;
         this._firstApp = null;
         this._tabbedOnce = false;
@@ -820,8 +822,8 @@ var createMenu =class{
                      cr.lineTo(3 * width / 4, height-7.5);
                  }   
                  else{   
-                     cr.moveTo(25, height-4.5);
-                     cr.lineTo(width-25, height-4.5);
+                     cr.moveTo(10, height-4.5);
+                     cr.lineTo(width-10, height-4.5);
                  }
                  //adjust endpoints by 0.5 
                  //see https://www.cairographics.org/FAQ/#sharp_lines

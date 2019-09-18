@@ -88,6 +88,7 @@ var createMenu = class {
         //Top Search Bar
         // Create search box
         this.searchBox = new MW.SearchBox();
+        this.searchBox.actor.style ="margin: 0px 10px 10px 10px;";
         this._firstAppItem = null;
         this._firstApp = null;
         this._tabbedOnce = false;
@@ -731,7 +732,7 @@ var createMenu = class {
                 this.appsBox= new St.BoxLayout({
                     vertical: true
                 });
-                
+                this.appsBox.style ='spacing: 5px; margin: 5px 0px;'
                 for (let i = 0; i < this._applications.length; i++){
                     if(i%4==0){ //create a new row every 5 app icons
                         this.rowBox= new St.BoxLayout({
@@ -749,6 +750,7 @@ var createMenu = class {
   
                     let app = this._applications[i];
                     let item = new MW.ApplicationMenuIcon(this, app);
+                    
 
                     this.rowBox.add(item.actor, {
                         expand: false,

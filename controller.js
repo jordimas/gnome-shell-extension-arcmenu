@@ -43,7 +43,7 @@ var MenuSettingsController = class {
     constructor(settings, settingsControllers, panel, isMainPanel) {
         this._settings = settings;
         this.panel = panel;
-        this.currentMonitorIndex;
+        this.currentMonitorIndex = 0;
         this.isMainPanel = isMainPanel;
         this._activitiesButton = this.panel.statusArea.activities;
         this._settingsControllers = settingsControllers
@@ -52,7 +52,7 @@ var MenuSettingsController = class {
         this._hotCornerManager = new Helper.HotCornerManager(this._settings);
         if(this.isMainPanel){
             this._menuHotKeybinder = new Helper.MenuHotKeybinder(() => {
-                this.toggleMenus();   
+                this._onHotkey(); 
             });
             this._keybindingManager = new Helper.KeybindingManager(this._settings); 
         }
@@ -188,15 +188,37 @@ var MenuSettingsController = class {
 
             if (hotKeyPos==3) {
                 this._keybindingManager.bind('menu-keybinding-text', 'menu-keybinding',
-                    () => {
-                        this.toggleMenus();    
-                    });
+                    () => this._onHotkey());
             }
             else if (hotKeyPos !== Constants.HOT_KEY.Undefined ) {
                 let hotKey = Constants.HOT_KEY[hotKeyPos];
                 this._menuHotKeybinder.enableHotKey(hotKey);
             }        
         } 
+    }
+    _onHotkey() {
+        let focusTarget = this._menuButton.leftClickMenu.isOpen ? 
+                          (this._menuButton.actor || this._menuButton) : 
+                          (this.panel.actor || this.panel);
+        
+        this.disconnectKeyRelease();
+
+        this.keyReleaseInfo = {
+            id: focusTarget.connect('key-release-event', (actor, event) => {
+                this.disconnectKeyRelease();
+                this.toggleMenus()
+            }),
+            target: focusTarget
+        };
+
+        focusTarget.grab_key_focus();
+    }
+
+    disconnectKeyRelease() {
+        if (this.keyReleaseInfo) {
+            this.keyReleaseInfo.target.disconnect(this.keyReleaseInfo.id);
+            this.keyReleaseInfo = 0;
+        }
     }
 
     // Place the menu button to main panel as specified in the settings
@@ -371,6 +393,8 @@ var MenuSettingsController = class {
     destroy() {
         this.settingsChangeIds.forEach(id => this._settings.disconnect(id));
         
+        this.disconnectKeyRelease();
+
         // Clean up and restore the default behaviour
         if (this._isButtonEnabled()) {
             this._disableButton();

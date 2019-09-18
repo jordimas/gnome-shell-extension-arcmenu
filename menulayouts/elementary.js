@@ -88,6 +88,7 @@ var createMenu = class{
         //Top Search Bar
         // Create search box
         this.searchBox = new MW.SearchBox();
+        this.searchBox.actor.style ="margin: 10px;";
         this._firstAppItem = null;
         this._firstApp = null;
         this._tabbedOnce = false;
@@ -125,7 +126,7 @@ var createMenu = class{
             y_align: St.Align.START,
             overlay_scrollbars: true
         });   
-        this.shortcutsScrollBox.set_width(550);  
+        this.shortcutsScrollBox.set_width(750);  
         this.shortcutsScrollBox.set_policy(Gtk.PolicyType.AUTOMATIC, Gtk.PolicyType.AUTOMATIC);
         let vscroll2 =  this.shortcutsScrollBox.get_vscroll_bar();
         vscroll2.connect('scroll-start', () => {
@@ -460,13 +461,14 @@ var createMenu = class{
                 this.appsBox= new St.BoxLayout({
                     vertical: true
                 });
+                this.appsBox.style ='spacing: 15px; margin: 5px 0px;'
                 for (let i = 0; i < this._applications.length; i++){
                    
                     if(i%5==0){ //create a new row every 5 app icons
                         this.rowBox= new St.BoxLayout({
                             vertical: false
                         });
-                        this.rowBox.style ='spacing: 10px; margin: 5px 0px;'
+                        this.rowBox.style ='spacing: 30px; margin: 5px 0px;'
                         this.appsBox.add(this.rowBox, {
                             expand: false,
                             x_fill: false,
