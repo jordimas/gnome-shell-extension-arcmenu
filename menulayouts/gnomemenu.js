@@ -275,18 +275,15 @@ var createMenu = class{
          	this._clearApplicationsBox();
             this.categoryMenuItemArray=[];
             
-                let categoryMenuItem = new MW.CategoryMenuItem(this, "","All Programs");
-                this.categoryMenuItemArray.push(categoryMenuItem);
-                this.applicationsBox.add_actor(categoryMenuItem.actor);	
-                categoryMenuItem.setFakeActive(true);
-                categoryMenuItem = new MW.CategoryMenuItem(this, "","Favorites");
-                this.categoryMenuItemArray.push(categoryMenuItem);
-                this.applicationsBox.add_actor(categoryMenuItem.actor);	
+            let categoryMenuItem = new MW.CategoryMenuItem(this, "","All Programs");
+            this.categoryMenuItemArray.push(categoryMenuItem);
+            this.applicationsBox.add_actor(categoryMenuItem.actor);	
+            categoryMenuItem.setFakeActive(true);
+            categoryMenuItem = new MW.CategoryMenuItem(this, "","Favorites");
+            this.categoryMenuItemArray.push(categoryMenuItem);
+            this.applicationsBox.add_actor(categoryMenuItem.actor);	
     		for(var categoryDir of this.categoryDirectories){
-                if(!categoryDir){
-                    
-                }
-                else{
+                if(categoryDir){
                     let categoryMenuItem = new MW.CategoryMenuItem(this, categoryDir);
                     this.categoryMenuItemArray.push(categoryMenuItem);
                     this.applicationsBox.add_actor(categoryMenuItem.actor);	

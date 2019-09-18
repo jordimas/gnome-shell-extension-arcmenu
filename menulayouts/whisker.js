@@ -104,7 +104,8 @@ var createMenu = class {
         this.actionsBox = new St.BoxLayout({
             vertical: false
         });
-        this.actionsBox.style ="spacing: 5px; margin-right:40px;";
+        
+        this.actionsBox.style ="spacing: 10px; margin-right:10px;";
         //check if custom arc menu is enabled
         if( this._settings.get_boolean('enable-custom-arc-menu'))
             this.actionsBox.add_style_class_name('arc-menu');

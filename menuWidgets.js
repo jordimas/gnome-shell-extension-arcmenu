@@ -1497,9 +1497,10 @@ var CategoryMenuItem = class extends BaseMenuItem {
     // Initialize menu item
     constructor(button, category, title=null) {
         super(button);
+        this.layout = this._button._settings.get_enum('menu-layout');
         this._category = category;
         this._button = button;
-        this.name;
+        this.name = "";
         this.title = title;
         this._active = false;
         if (this._category) {
@@ -1511,19 +1512,24 @@ var CategoryMenuItem = class extends BaseMenuItem {
         else {
             this.name = _("Frequent Apps");
         }
-
-        this._icon = new St.Icon({
-            gicon: this._category ? this._category.get_icon() : null,
-            style_class: 'popup-menu-icon',
-            icon_size: MEDIUM_ICON_SIZE
-        });
-        if(title!=null){
-            this._icon.icon_name = title == "All Programs" ?'emblem-system-symbolic': 'emblem-favorite-symbolic';
+        if(this.layout != Constants.MENU_LAYOUT.GnomeMenu){
+            this._icon = new St.Icon({
+                gicon: this._category ? this._category.get_icon() : null,
+                style_class: 'popup-menu-icon',
+                icon_size: MEDIUM_ICON_SIZE
+            });
+            if(title!=null){
+                this._icon.icon_name = title == "All Programs" ?'emblem-system-symbolic': 'emblem-favorite-symbolic';
+            }
+            else if(!this._category){
+                this._icon.icon_name= 'emblem-favorite-symbolic';
+            }
+            this.actor.add_child(this._icon);
+            
         }
-        else if(!this._category){
-            this._icon.icon_name= 'emblem-favorite-symbolic';
+        else{
+            this.actor.style = "padding: 10px;"
         }
-        this.actor.add_child(this._icon);
         let categoryLabel = new St.Label({
             text: this.name,
             y_expand: true,
@@ -1540,6 +1546,7 @@ var CategoryMenuItem = class extends BaseMenuItem {
         this.actor.add_child(this._arrowIcon);
         this.actor.label_actor = categoryLabel;
         this.actor.connect('notify::hover', this._onHover.bind(this));
+  
 
     }
 
@@ -1553,19 +1560,36 @@ var CategoryMenuItem = class extends BaseMenuItem {
             this._button._displayGnomeFavorites();
         else
             this._button.selectCategory("Frequent Apps");
-        let layout = this._button._settings.get_enum('menu-layout');
         
-        if(layout == Constants.MENU_LAYOUT.Brisk ||  layout==Constants.MENU_LAYOUT.Whisker || layout == Constants.MENU_LAYOUT.GnomeMenu
-            || layout == Constants.MENU_LAYOUT.Mint){
+        if(this.layout == Constants.MENU_LAYOUT.Brisk ||  this.layout==Constants.MENU_LAYOUT.Whisker || this.layout == Constants.MENU_LAYOUT.GnomeMenu
+            || this.layout == Constants.MENU_LAYOUT.Mint){
             this._button._setActiveCategory();
             this.setFakeActive(true);
         }
             
         super.activate(event);
     }
+
     _onHover() {
         if (this.actor.hover) { // mouse pointer hovers over the button
             this.actor.add_style_class_name('selected');
+            if(this.layout == Constants.MENU_LAYOUT.GnomeMenu){
+            if (this._category)
+                this._button.selectCategory(this._category);
+            else if(this.title =="All Programs")
+                this._button._displayAllApps(this.actor);
+            else if(this.title == "Favorites")
+                this._button._displayGnomeFavorites();
+            else
+                this._button.selectCategory("Frequent Apps");
+            
+            
+                this._button._setActiveCategory();
+                this.setFakeActive(true);
+            
+                
+           
+         }
         } else if(!this.actor.hover && !this._active) { // mouse pointer leaves the button area
             this.actor.remove_style_class_name('selected');
         }
@@ -1751,7 +1775,7 @@ var CategorySubMenuItem = class extends PopupMenu.PopupSubMenuMenuItem {
         
         this._category = category;
         this._button = button;
-        this.name;
+        this.name = "";
         this.title = title;
         this._active = false;
 
