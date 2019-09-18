@@ -126,7 +126,7 @@ var createMenu = class{
             y_align: St.Align.START,
             overlay_scrollbars: true
         });   
-        this.shortcutsScrollBox.set_width(550);  
+        this.shortcutsScrollBox.set_width(750);  
         this.shortcutsScrollBox.set_policy(Gtk.PolicyType.AUTOMATIC, Gtk.PolicyType.AUTOMATIC);
         let vscroll2 =  this.shortcutsScrollBox.get_vscroll_bar();
         vscroll2.connect('scroll-start', () => {
@@ -498,6 +498,7 @@ var createMenu = class{
                 this.appsBox= new St.BoxLayout({
                     vertical: true
                 });
+                this.appsBox.style ='spacing: 15px; margin: 5px 0px;'
                 for (let i = 0; i < this._applications.length; i++){
                    
                     if(i%5==0){ //create a new row every 5 app icons

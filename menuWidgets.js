@@ -1028,7 +1028,7 @@ var ApplicationMenuIcon = class extends PopupMenu.PopupBaseMenuItem {
         this._button = button;
         this.layoutWidth = 0;
         let layout = this._button._settings.get_enum('menu-layout');
-        if(layout == Constants.MENU_LAYOUT.Elementary){
+        if(layout == Constants.MENU_LAYOUT.Elementary || layout == Constants.MENU_LAYOUT.UbuntuDash){
             this.actor.style ='padding: 5px; spacing: 0px; width:95px; height:95px;';
             this.layoutWidth = 85;
         }
@@ -1308,7 +1308,7 @@ var ApplicationMenuIcon = class extends PopupMenu.PopupBaseMenuItem {
     _updateIcon() {
         let layout = this._button._settings.get_enum('menu-layout');
         
-        if(layout == Constants.MENU_LAYOUT.Elementary)
+        if(layout == Constants.MENU_LAYOUT.Elementary || layout == Constants.MENU_LAYOUT.UbuntuDash)
             this._iconBin.set_child(this._app.create_icon_texture(52));
         else
             this._iconBin.set_child(this._app.create_icon_texture(36));    

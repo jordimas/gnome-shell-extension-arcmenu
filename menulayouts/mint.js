@@ -89,7 +89,7 @@ var createMenu =class{
             vertical: true,
             width: 60
         });
-        this.actionsBox.style = "border-color:rgb(63,62,64); border-width: 2px;margin: 0px 20px; width: 30px; spacing: 5px; padding: 5px 0px;";
+        this.actionsBox.style = "background-color:rgba(186, 196,201, 0.1) ;border-color:rgba(186, 196,201, 0.2) ; border-width: 1px; border-radius: 5px;margin: 0px 20px; width: 30px; spacing: 5px; padding: 5px 0px;";
         //check if custom arc menu is enabled
         if( this._settings.get_boolean('enable-custom-arc-menu'))
             this.actionsBox.add_style_class_name('arc-menu');
@@ -816,7 +816,7 @@ var createMenu =class{
                  let cr = hSep.get_context();
                  let [width, height] = hSep.get_surface_size();                 
                  let b, stippleColor;                                                            
-                 [b,stippleColor] = Clutter.Color.from_string(this._settings.get_string('separator-color'));           
+                 [b,stippleColor] = Clutter.Color.from_string("rgba(186, 196,201, 0.2)");           
                  if(rightSide){   
                      cr.moveTo(width / 4, height-7.5);
                      cr.lineTo(3 * width / 4, height-7.5);
