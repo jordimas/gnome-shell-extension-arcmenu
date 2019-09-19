@@ -793,80 +793,7 @@ var GeneralSettingsPage = GObject.registerClass(
             if(this.settings.get_enum('menu-hotkey')==3)
                 this.createHotKeyRow();
             
-            let importFrame = new PW.FrameBox();
-            let importRow = new PW.FrameBoxRow();
-            let importLabel = new Gtk.Label({
-                label: _("Export and Import Arc Menu Settings"),
-                use_markup: true,
-                xalign: 0,
-                hexpand: true
-            });
-
-            let importButtonsRow = new PW.FrameBoxRow();
-            let importButton = new Gtk.Button({
-                label: _("Import from File"),
-                xalign:1
-            });
-            importButton.connect('clicked', ()=> {
-                this._showFileChooser(
-                    _('Import settings'),
-                    { action: Gtk.FileChooserAction.OPEN },
-                    Gtk.STOCK_OPEN,
-                    filename => {
-                        let settingsFile = Gio.File.new_for_path(filename);
-                        let [ , pid, stdin, stdout, stderr] = 
-                            GLib.spawn_async_with_pipes(
-                                null,
-                                ['dconf', 'load', SCHEMA_PATH],
-                                null,
-                                GLib.SpawnFlags.SEARCH_PATH | GLib.SpawnFlags.DO_NOT_REAP_CHILD,
-                                null
-                            );
             
-                        stdin = new Gio.UnixOutputStream({ fd: stdin, close_fd: true });
-                        GLib.close(stdout);
-                        GLib.close(stderr);
-                                            
-                        let [ , , , retCode] = GLib.spawn_command_line_sync(GSET + ' -d ' + Me.uuid);
-                                            
-                        if (retCode == 0) {
-                            GLib.child_watch_add(GLib.PRIORITY_DEFAULT, pid, () => GLib.spawn_command_line_sync(GSET + ' -e ' + Me.uuid));
-                        }
-    
-                        stdin.splice(settingsFile.read(null), Gio.OutputStreamSpliceFlags.CLOSE_SOURCE | Gio.OutputStreamSpliceFlags.CLOSE_TARGET, null);
-                    }
-                );
-            });
-            let exportButton = new Gtk.Button({
-                label: _("Export to File"),
-                xalign:1
-            });
-            exportButton.connect('clicked', ()=> {
-                
-                this._showFileChooser(
-                    _('Export settings'),
-                    { action: Gtk.FileChooserAction.SAVE,
-                      do_overwrite_confirmation: true },
-                    Gtk.STOCK_SAVE,
-                    filename => {
-                        let file = Gio.file_new_for_path(filename);
-                        let raw = file.replace(null, false, Gio.FileCreateFlags.NONE, null);
-                        let out = Gio.BufferedOutputStream.new_sized(raw, 4096);
-    
-                        out.write_all(GLib.spawn_command_line_sync('dconf dump ' + SCHEMA_PATH)[1], null);
-                        out.close(null);
-                    }
-                );
-
-            
-            });
-       
-            
-            importRow.add(importLabel);
-            importButtonsRow.add(exportButton);
-            importButtonsRow.add(importButton);
-            importFrame.add(importRow);     
-            importFrame.add(importButtonsRow);
             // add the frames
             this.add(defaultLeftBoxFrame);
             this.add(menuPositionFrame);
@@ -874,25 +801,9 @@ var GeneralSettingsPage = GObject.registerClass(
             this.add(tooltipFrame);
             this.add(disableHotCornerFrame);
             this.add(this.menuKeybindingFrame);
-            this.add(importFrame);
             //-----------------------------------------------------------------
         }
-        _showFileChooser(title, params, acceptBtn, acceptHandler) {
-            let dialog = new Gtk.FileChooserDialog(mergeObjects({ title: title, transient_for: this.get_toplevel() }, params));
-    
-            dialog.add_button(Gtk.STOCK_CANCEL, Gtk.ResponseType.CANCEL);
-            dialog.add_button(acceptBtn, Gtk.ResponseType.ACCEPT);
-    
-            if (dialog.run() == Gtk.ResponseType.ACCEPT) {
-                try {
-                    acceptHandler(dialog.get_filename());
-                } catch(e) {
-                    log('error from dash-to-panel filechooser: ' + e);
-                }
-            }
-    
-            dialog.destroy();
-        }
+        
         createHotKeyRow(){
             this.menuKeybindingRow = new PW.FrameBoxRow();    
             let fillerLabel = new Gtk.Label({
@@ -915,15 +826,7 @@ var GeneralSettingsPage = GObject.registerClass(
             
         }
 });
-function mergeObjects(main, bck) {
-    for (var prop in bck) {
-        if (!main.hasOwnProperty(prop) && bck.hasOwnProperty(prop)) {
-            main[prop] = bck[prop];
-        }
-    }
 
-    return main;
-};
 //DialogWindow for Custom Shortcut
 var CustomShortcutDialogWindow = GObject.registerClass(
     class CustomShortcutDialogWindow extends PW.DialogWindow {
@@ -1475,7 +1378,20 @@ var  AppearanceSettingsPage = GObject.registerClass(
             currentLayoutRow.add(currentLayoutLabel);
             currentLayoutRow.add(currentStyleLabel);
             layoutFrame.add(currentLayoutRow);
+
+            let messageRow = new PW.FrameBoxRow();
+            let messageLabel = new Gtk.Label({
+                label: _("Each layout is different in behaviour and style.\n"
+                    +"All layouts can be modified by our cusomization settings.\n"
+                    +"However, some settings are specifc to Arc Menu layout."),
+                use_markup: true,
+                xalign: 0,
+                hexpand: true
+            }); 
+            messageRow.add(messageLabel);
+            layoutFrame.add(messageRow);
             this.add(layoutFrame);
+            
         
 
 
@@ -2322,7 +2238,119 @@ var ConfigureSettingsPage = GObject.registerClass(
         
     }
 });
+/*
+ * Misc Page
+ */
+var MiscPage = GObject.registerClass(
+    class MiscPage extends PW.NotebookPage {
+        _init(settings) {
+            super._init(_('Misc'));
+            this.settings = settings;
 
+            let importFrame = new PW.FrameBox();
+            let importRow = new PW.FrameBoxRow();
+            let importLabel = new Gtk.Label({
+                label: _("Export and Import Arc Menu Settings"),
+                use_markup: true,
+                xalign: 0,
+                hexpand: true
+            });
+
+            let importButtonsRow = new PW.FrameBoxRow();
+            let importButton = new Gtk.Button({
+                label: _("Import from File"),
+                xalign:1
+            });
+            importButton.connect('clicked', ()=> {
+                this._showFileChooser(
+                    _('Import settings'),
+                    { action: Gtk.FileChooserAction.OPEN },
+                    Gtk.STOCK_OPEN,
+                    filename => {
+                        let settingsFile = Gio.File.new_for_path(filename);
+                        let [ , pid, stdin, stdout, stderr] = 
+                            GLib.spawn_async_with_pipes(
+                                null,
+                                ['dconf', 'load', SCHEMA_PATH],
+                                null,
+                                GLib.SpawnFlags.SEARCH_PATH | GLib.SpawnFlags.DO_NOT_REAP_CHILD,
+                                null
+                            );
+            
+                        stdin = new Gio.UnixOutputStream({ fd: stdin, close_fd: true });
+                        GLib.close(stdout);
+                        GLib.close(stderr);
+                                            
+                        let [ , , , retCode] = GLib.spawn_command_line_sync(GSET + ' -d ' + Me.uuid);
+                                            
+                        if (retCode == 0) {
+                            GLib.child_watch_add(GLib.PRIORITY_DEFAULT, pid, () => GLib.spawn_command_line_sync(GSET + ' -e ' + Me.uuid));
+                        }
+    
+                        stdin.splice(settingsFile.read(null), Gio.OutputStreamSpliceFlags.CLOSE_SOURCE | Gio.OutputStreamSpliceFlags.CLOSE_TARGET, null);
+                    }
+                );
+            });
+            let exportButton = new Gtk.Button({
+                label: _("Export to File"),
+                xalign:1
+            });
+            exportButton.connect('clicked', ()=> {
+                
+                this._showFileChooser(
+                    _('Export settings'),
+                    { action: Gtk.FileChooserAction.SAVE,
+                      do_overwrite_confirmation: true },
+                    Gtk.STOCK_SAVE,
+                    filename => {
+                        let file = Gio.file_new_for_path(filename);
+                        let raw = file.replace(null, false, Gio.FileCreateFlags.NONE, null);
+                        let out = Gio.BufferedOutputStream.new_sized(raw, 4096);
+    
+                        out.write_all(GLib.spawn_command_line_sync('dconf dump ' + SCHEMA_PATH)[1], null);
+                        out.close(null);
+                    }
+                );
+
+            
+            });
+       
+            
+            importRow.add(importLabel);
+            importButtonsRow.add(exportButton);
+            importButtonsRow.add(importButton);
+            importFrame.add(importRow);     
+            importFrame.add(importButtonsRow);
+
+            this.add(importFrame);
+        
+        }
+        _showFileChooser(title, params, acceptBtn, acceptHandler) {
+            let dialog = new Gtk.FileChooserDialog(mergeObjects({ title: title, transient_for: this.get_toplevel() }, params));
+    
+            dialog.add_button(Gtk.STOCK_CANCEL, Gtk.ResponseType.CANCEL);
+            dialog.add_button(acceptBtn, Gtk.ResponseType.ACCEPT);
+    
+            if (dialog.run() == Gtk.ResponseType.ACCEPT) {
+                try {
+                    acceptHandler(dialog.get_filename());
+                } catch(e) {
+                    log('error from dash-to-panel filechooser: ' + e);
+                }
+            }
+    
+            dialog.destroy();
+        }
+    });
+    function mergeObjects(main, bck) {
+        for (var prop in bck) {
+            if (!main.hasOwnProperty(prop) && bck.hasOwnProperty(prop)) {
+                main[prop] = bck[prop];
+            }
+        }
+    
+        return main;
+    };
 /*
  * About Page
  */
@@ -2444,6 +2472,9 @@ class ArcMenuPreferencesWidget extends Gtk.Box{
         let pinnedAppsPage = new PinnedAppsPage(this.settings);
         notebook.append_page(pinnedAppsPage);
    
+        let miscPage = new MiscPage(this.settings);
+        notebook.append_page(miscPage);
+
         let aboutPage = new AboutPage(this.settings);
         notebook.append_page(aboutPage);
 
@@ -2562,10 +2593,10 @@ function saveCSS(settings){
         +searchBoxPadding
         
         +".arc-menu{\nmin-width: 15em;\ncolor: #D3DAE3;\nborder-image: none;\nbox-shadow: none;\nfont-size:" + fontSize+"pt;\n}\n"
-        +".arc-menu .popup-sub-menu {\npadding-bottom: 1px;\nbackground-color: #3a393b;\n }\n"
+        +".arc-menu .popup-sub-menu {\npadding-bottom: 1px;\nbackground-color: "+lighten_rgb( menuColor,0.05)+";\nborder-color: "+lighten_rgb( menuColor,0.10)+";\n border-width:1px;\n}\n"
         +".arc-menu .popup-menu-content {padding: 1em 0em;}\n .arc-menu .popup-menu-item {\nspacing: 12px; \nborder: 0;\ncolor:"+  menuForegroundColor+";\n }\n" 
         +".arc-menu .popup-menu-item:ltr {padding: .4em 1.75em .4em 0em; }\n.arc-menu .popup-menu-item:rtl {padding: .4em 0em .4em 1.75em;}\n"
-        +".arc-menu .popup-menu-item:checked {\nbackground-color: #3a393b;\n box-shadow: inset 0 1px 0px #323233;\nfont-weight: bold;\n }\n"
+        +".arc-menu .popup-menu-item:checked {\nbackground-color:"+menuColor+";\n box-shadow: 0;\nfont-weight: bold;\n }\n"
         +".arc-menu .popup-menu-item.selected, .arc-menu .popup-menu-item:active{\nbackground-color:"+  highlightColor+"; \ncolor: "+ lighten_rgb( menuForegroundColor,0.15)+";\n }\n" 
         +".arc-menu .popup-menu-item:disabled {color: rgba(238, 238, 236, 0.5); }\n"
         +".arc-menu-boxpointer{ \n-arrow-border-radius:"+  cornerRadius+"px;\n"

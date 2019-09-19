@@ -186,7 +186,7 @@ var createMenu = class {
     _displayCategories(){
         this._clearApplicationsBox();
         for(let i = 0; i < this.categoryMenuItemArray.length; i++){
-        this.section.addMenuItem(this.categoryMenuItemArray[i]);
+            this.section.addMenuItem(this.categoryMenuItemArray[i]);
         }
     }
     _displayGnomeFavorites(categoryMenuItem){
