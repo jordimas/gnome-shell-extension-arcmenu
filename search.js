@@ -34,6 +34,7 @@ const SEARCH_PROVIDERS_SCHEMA = 'org.gnome.desktop.search-providers';
 const ExtensionUtils = imports.misc.extensionUtils;
 const Me = ExtensionUtils.getCurrentExtension();
 const MW = Me.imports.menuWidgets;
+const Constants = Me.imports.constants;
 const appSys = Shell.AppSystem.get_default();
 const Gettext = imports.gettext.domain(Me.metadata['gettext-domain']);
 const _ = Gettext.gettext;
@@ -107,12 +108,30 @@ var ListSearchResult = class extends SearchResult {
         let button = resultsView._button;
 
         this._termsChangedId = 0;
+        
+        this.layout = button._settings.get_enum('menu-layout');
+        let ICON_SIZE = 16;
 
+        if(this.layout == Constants.MENU_LAYOUT.Elementary || this.layout == Constants.MENU_LAYOUT.UbuntuDash){
+            ICON_SIZE = 52;
+        }
+        else if(this.layout == Constants.MENU_LAYOUT.Redmond){
+            ICON_SIZE = 36;
+        }
+        
         // An icon for, or thumbnail of, content
-        let icon = this.metaInfo['createIcon'](this.ICON_SIZE);
+        let icon = this.metaInfo['createIcon'](ICON_SIZE);
         if (icon) {
              this.menuItem.actor.add_child(icon);
         }
+        else{
+            if(this.layout == Constants.MENU_LAYOUT.Elementary || this.layout == Constants.MENU_LAYOUT.UbuntuDash){
+                this.menuItem.actor.style = "padding: 25px 0px;";
+            }
+            else if(this.layout == Constants.MENU_LAYOUT.Redmond){
+                this.menuItem.actor.style = "padding: 20px 0px;";
+            }
+        }    
 
         let title = new St.Label({ text: this.metaInfo['name'],x_expand: true,y_align: Clutter.ActorAlign.CENTER });
         this.menuItem.actor.add_child(title);
@@ -123,10 +142,6 @@ var ListSearchResult = class extends SearchResult {
         this.menuItem.connect('destroy', this._onDestroy.bind(this));
     }
   
-    get ICON_SIZE() {
-        return 16;
-    }
-
     _highlightTerms() {
         let markup = this._resultsView.highlightTerms(this.metaInfo['description'].split('\n')[0]);
         this._descriptionLabel.clutter_text.set_markup(markup);
@@ -143,11 +158,28 @@ var AppSearchResult = class extends SearchResult {
     constructor(provider, metaInfo, resultsView) {
         super(provider, metaInfo, resultsView);
         this._button = resultsView._button;
-         
-        this.icon = this.metaInfo['createIcon'](16);
+        this.layout = this._button._settings.get_enum('menu-layout');
+        let ICON_SIZE = 16;
+
+        if(this.layout == Constants.MENU_LAYOUT.Elementary || this.layout == Constants.MENU_LAYOUT.UbuntuDash){
+            ICON_SIZE = 52;
+        }
+        else if(this.layout == Constants.MENU_LAYOUT.Redmond){
+            ICON_SIZE = 36;
+        } 
+
+        this.icon = this.metaInfo['createIcon'](ICON_SIZE);
         if (this.icon) {
               this.menuItem.actor.add_child(this.icon);
-        }             
+        } 
+        else{
+            if(this.layout == Constants.MENU_LAYOUT.Elementary || this.layout == Constants.MENU_LAYOUT.UbuntuDash){
+                this.menuItem.actor.style = "padding: 25px 0px;";
+            }
+            else if(this.layout == Constants.MENU_LAYOUT.Redmond){
+                this.menuItem.actor.style = "padding: 20px 0px;";
+            }
+        }            
         let label = new St.Label({
             text: this.metaInfo['name'],
             y_expand: true,
@@ -682,7 +714,15 @@ class ArcSearchProviderInfo extends MW.BaseMenuItem {
             super(button);
         this.provider = provider;
         this._button = button;
+        this.layout = button._settings.get_enum('menu-layout');
+     
 
+        if(this.layout == Constants.MENU_LAYOUT.Elementary || this.layout == Constants.MENU_LAYOUT.UbuntuDash){
+            this.actor.style = "padding: 25px 0px;";
+        }
+        else if(this.layout == Constants.MENU_LAYOUT.Redmond){
+            this.actor.style = "padding: 20px 0px;";
+        }
         this.nameLabel = new St.Label({ text: provider.appInfo.get_name() + ":",
                                        x_align: Clutter.ActorAlign.START,x_expand: true});
         this._moreText="";
