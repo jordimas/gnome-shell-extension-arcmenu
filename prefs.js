@@ -1382,7 +1382,7 @@ var  AppearanceSettingsPage = GObject.registerClass(
             let messageRow = new PW.FrameBoxRow();
             let messageLabel = new Gtk.Label({
                 label: _("Each layout is different in behaviour and style.\n"
-                    +"All layouts can be modified by our cusomization settings.\n"
+                    +"All layouts can be modified by customization settings.\n"
                     +"However, some settings are specifc to Arc Menu layout."),
                 use_markup: true,
                 xalign: 0,
