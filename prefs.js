@@ -1388,6 +1388,7 @@ var  AppearanceSettingsPage = GObject.registerClass(
                 xalign: 0,
                 hexpand: true
             }); 
+            messageLabel.set_sensitive(false);
             messageRow.add(messageLabel);
             layoutFrame.add(messageRow);
             this.add(layoutFrame);
@@ -2259,7 +2260,8 @@ var MiscPage = GObject.registerClass(
             let importButtonsRow = new PW.FrameBoxRow();
             let importButton = new Gtk.Button({
                 label: _("Import from File"),
-                xalign:1
+                xalign:.5,
+                expand:true
             });
             importButton.connect('clicked', ()=> {
                 this._showFileChooser(
@@ -2293,7 +2295,8 @@ var MiscPage = GObject.registerClass(
             });
             let exportButton = new Gtk.Button({
                 label: _("Export to File"),
-                xalign:1
+                xalign:.5,
+                expand:true
             });
             exportButton.connect('clicked', ()=> {
                 

@@ -690,9 +690,9 @@ var SearchResults = class {
         if (!result)
             return;
         if (selected) {
-            result.actor.add_style_class_name('selected');
+            //result.actor.add_style_class_name('selected');
         } else {
-            result.actor.remove_style_class_name('selected');
+           // result.actor.remove_style_class_name('selected');
         }
     }
 
@@ -708,10 +708,10 @@ var SearchResults = class {
 };
 Signals.addSignalMethods(SearchResults.prototype);
 
-var ArcSearchProviderInfo = 
+var ArcSearchProviderInfo = GObject.registerClass(
 class ArcSearchProviderInfo extends MW.BaseMenuItem {
-    constructor(provider,button) {
-            super(button);
+    _init(provider,button) {
+        super._init(button);
         this.provider = provider;
         this._button = button;
         this.layout = button._settings.get_enum('menu-layout');
@@ -736,7 +736,7 @@ class ArcSearchProviderInfo extends MW.BaseMenuItem {
         }
     }
     _onHover() {
-        if ( this.actor.hover) { // mouse pointer hovers over the button
+        if ( this.hover) { // mouse pointer hovers over the button
             this.tooltip.show();
         } else { // mouse pointer leaves the button area
             this.tooltip.hide();
@@ -751,5 +751,5 @@ class ArcSearchProviderInfo extends MW.BaseMenuItem {
         if(count>0)
             this.nameLabel.text = this.provider.appInfo.get_name() + "  ("+ this._moreText+")";
     }
-};
+});
 

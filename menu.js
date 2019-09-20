@@ -119,7 +119,7 @@ var ApplicationsButton =   Utils.defineClass({
             this.appMenuManager = new PopupMenu.PopupMenuManager(this);
             this.appMenuManager._changeMenu = (menu) => {
             };
-            this.extensionChangedId = ExtensionSystem.connect('extension-state-changed', (data, extension) => {
+            this.extensionChangedId = (Main.extensionManager || ExtensionSystem).connect('extension-state-changed', (data, extension) => {
                 if (extension.uuid === 'dash-to-panel@jderose9.github.com' && extension.state === 1) 
                     this.addDTPSettings();
                 if (extension.uuid === 'dash-to-panel@jderose9.github.com' && extension.state === 2) 
@@ -316,7 +316,7 @@ var ApplicationsButton =   Utils.defineClass({
             this.MenuLayout.destroy();
 
             if ( this.extensionChangedId > 0) {
-                ExtensionSystem.disconnect(this.extensionChangedId);
+                (Main.extensionManager || ExtensionSystem).disconnect(this.extensionChangedId);
                 this.extensionChangedId = 0;
             }
             if (this._showingId > 0) {
@@ -337,7 +337,7 @@ var ApplicationsButton =   Utils.defineClass({
             if (this.rightClickMenu) {
                 this.rightClickMenu.destroy();
             }
-            modernGnome ? this.callParent('_onDestroy') : this.emit('destroy');
+            modernGnome ? this.callParent('destroy') : this.emit('destroy');
         },
 
         // Handle captured event

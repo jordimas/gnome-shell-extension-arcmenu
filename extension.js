@@ -67,7 +67,7 @@ function enable() {
     _enableButtons();
     
     // dash to panel might get enabled after Arc-Menu
-    extensionChangedId = ExtensionSystem.connect('extension-state-changed', (data, extension) => {
+    extensionChangedId = (Main.extensionManager || ExtensionSystem).connect('extension-state-changed', (data, extension) => {
         if (extension.uuid === 'dash-to-panel@jderose9.github.com' && extension.state === 1) {
             _connectDtpSignals();
             _enableButtons();
@@ -81,7 +81,7 @@ function enable() {
 // Disable the extension
 function disable() {
     if ( extensionChangedId > 0){
-        ExtensionSystem.disconnect(extensionChangedId);
+        (Main.extensionManager || ExtensionSystem).disconnect(extensionChangedId);
         extensionChangedId = 0;
     }
 

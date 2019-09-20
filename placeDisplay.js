@@ -27,6 +27,7 @@ const Clutter = imports.gi.Clutter;
 const Main = imports.ui.main;
 const ShellMountOperation = imports.ui.shellMountOperation;
 const PopupMenu = imports.ui.popupMenu;
+const GObject = imports.gi.GObject;
 const ExtensionUtils = imports.misc.extensionUtils;
 const Me = ExtensionUtils.getCurrentExtension();
 const Gettext = imports.gettext.domain(Me.metadata['gettext-domain']);
@@ -39,9 +40,9 @@ const Hostname1Iface = '<node> \
 </node>';
 const Hostname1 = Gio.DBusProxy.makeProxyWrapper(Hostname1Iface);
 
-var PlaceMenuItem = class PlaceMenuItem extends PopupMenu.PopupBaseMenuItem {
-    constructor(info,button) {
-        super();
+var PlaceMenuItem = GObject.registerClass(class PlaceMenuItem2 extends PopupMenu.PopupBaseMenuItem {
+    _init(info,button) {
+        super._init();
         this._info = info;
         this._button = button;
         this._icon = new St.Icon({
@@ -109,7 +110,7 @@ var PlaceMenuItem = class PlaceMenuItem extends PopupMenu.PopupBaseMenuItem {
         this._icon.gicon = info.icon;
         this._label.text = info.name;
     }
-}
+});
 
 var PlaceInfo = class PlaceInfo {
     constructor() {
@@ -269,7 +270,7 @@ var RootInfo = class RootInfo extends PlaceInfo {
         }
         super.destroy();
     }
-}
+};
 
 
 var PlaceDeviceInfo = class PlaceDeviceInfo extends PlaceInfo {
@@ -321,7 +322,7 @@ var PlaceDeviceInfo = class PlaceDeviceInfo extends PlaceInfo {
         let msg = _('Ejecting drive “%s” failed:').format(this._mount.get_name());
         Main.notifyError(msg, exception.message);
     }
-}
+};
 
 var PlaceVolumeInfo = class PlaceVolumeInfo extends PlaceInfo {
     _init(kind, volume) {
@@ -347,7 +348,7 @@ var PlaceVolumeInfo = class PlaceVolumeInfo extends PlaceInfo {
     getIcon() {
         return this._volume.get_symbolic_icon();
     }
-}
+};
 
 const DEFAULT_DIRECTORIES = [
     GLib.UserDirectory.DIRECTORY_DOCUMENTS,

@@ -70,7 +70,7 @@ function setIconAsync(icon, gioFile, fallback_icon_name) {
         }
     });
 }
-var AppRightClickMenu = class extends PopupMenu.PopupMenu {
+var AppRightClickMenu = class AppRightClickMenu extends PopupMenu.PopupMenu {
     constructor(actor,app,button, isPinnedApp,path){
         super(actor,.45,St.Side.TOP);
         this._button = button;
@@ -363,9 +363,9 @@ var AppRightClickMenu = class extends PopupMenu.PopupMenu {
 
 // Removing the default behaviour which selects a hovered item if the space key is pressed.
 // This avoids issues when searching for an app with a space character in its name.
-var BaseMenuItem = class extends PopupMenu.PopupBaseMenuItem {
-    constructor(button){
-        super();
+var BaseMenuItem = GObject.registerClass(class BaseMenuItem extends PopupMenu.PopupBaseMenuItem {
+    _init(button){
+        super._init();
         this._button = button;
         
     }    
@@ -392,26 +392,26 @@ var BaseMenuItem = class extends PopupMenu.PopupBaseMenuItem {
         return Clutter.EVENT_STOP;
     }    
 
-};
+});
 
 // Menu item to launch GNOME activities overview
-var ActivitiesMenuItem = class extends BaseMenuItem {
+var ActivitiesMenuItem = GObject.registerClass(class ActivitiesMenuItem extends BaseMenuItem {
     // Initialize the menu item
-    constructor(button) {
-        super(button);
+    _init(button) {
+        super._init(button);
         this._button = button;
         this._icon = new St.Icon({
             icon_name: 'view-fullscreen-symbolic',
             style_class: 'popup-menu-icon',
             icon_size: SMALL_ICON_SIZE
         });
-        this.actor.add_child(this._icon);
+        this.add_child(this._icon);
         let label = new St.Label({
             text: _("Activities Overview"),
             y_expand: true,
             y_align: Clutter.ActorAlign.CENTER
         });
-        this.actor.add_child(label);
+        this.add_child(label);
     }
 
     // Activate the menu item (Open activities overview)
@@ -420,7 +420,7 @@ var ActivitiesMenuItem = class extends BaseMenuItem {
         Main.overview.toggle();
         super.activate(event);
     }
-};
+});
 
 /**
  * A class representing a Tooltip.
@@ -432,8 +432,9 @@ var Tooltip = class {
         this._settings = settings;
         this.actor = new St.Label({
             style_class: 'dash-label',
-            text: text,
-            opacity: 0
+            text: text ? text : "",
+            opacity: 0,
+            y_align: .5
         });
         this.actor.set_name('tooltip-menu-item');
         global.stage.add_actor(this.actor);
@@ -496,7 +497,7 @@ var SessionButton = class {
             reactive: true,
             can_focus: true,
             track_hover: true,
-            accessible_name: accessible_name,
+            accessible_name: accessible_name ? accessible_name : "",
             style_class: 'system-menu-action'
         });
 
@@ -509,13 +510,13 @@ var SessionButton = class {
         else
             iconSize = SMALL_ICON_SIZE;
         this._icon = new St.Icon({ 
-            icon_name: icon_name,
+            icon_name: icon_name ? icon_name : "",
             icon_size: iconSize  
         });
         if(gicon)
             this._icon.gicon = gicon;
         else
-            this._icon.icon_name = icon_name;
+            this._icon.icon_name = icon_name ? icon_name : "";
         this.actor.child = this._icon;
         this.actor.connect('clicked', this._onClick.bind(this));
         this.actor.connect('notify::hover', this._onHover.bind(this));
@@ -684,10 +685,10 @@ var LockButton = class extends SessionButton {
 };
 
 // Menu item to go back to category view
-var BackMenuItem = class extends BaseMenuItem {
+var BackMenuItem = GObject.registerClass(class BackMenuItem extends BaseMenuItem {
     // Initialize the button
-    constructor(button) {
-        super(button);
+    _init(button) {
+        super._init(button);
         this._button = button;
         this._icon = new St.Icon({
             icon_name: 'go-previous-symbolic',
@@ -736,13 +737,13 @@ var BackMenuItem = class extends BaseMenuItem {
         }
         super.activate(event);
     }
-};
+});
 
 // Menu item to view all apps
-var ViewAllPrograms = class extends BaseMenuItem {
+var ViewAllPrograms = GObject.registerClass(class ViewAllPrograms extends BaseMenuItem {
     // Initialize the button
-    constructor(button) {
-        super(button);
+    _init(button) {
+        super._init(button);
         this._button = button;
         this._icon = new St.Icon({
             icon_name: 'go-next-symbolic',
@@ -772,13 +773,13 @@ var ViewAllPrograms = class extends BaseMenuItem {
       }
       super.activate(event);
     }
-};
+});
 
 // Menu shortcut item class
-var ShortcutMenuItem = class extends BaseMenuItem {
+var ShortcutMenuItem = GObject.registerClass( class ShortcutMenuItem extends BaseMenuItem {
     // Initialize the menu item
-    constructor(button, name, icon, command) {
-        super(button);
+    _init(button, name, icon, command) {
+        super._init(button);
         this._button = button;
         this._command = command;
         this._icon = new St.Icon({
@@ -803,13 +804,13 @@ var ShortcutMenuItem = class extends BaseMenuItem {
     setIconSizeLarge(){
         this._icon.icon_size = MEDIUM_ICON_SIZE;
     }
-};
+});
 
 // Menu item which displays the current user
-var UserMenuItem = class extends BaseMenuItem {
+var UserMenuItem = GObject.registerClass(class UserMenuItem extends BaseMenuItem {
     // Initialize the menu item
-    constructor(button) {
-        super(button);
+    _init(button) {
+        super._init(button);
         this._button = button;
         let username = GLib.get_user_name();
         this._user = AccountsService.UserManager.get_default().get_user(username);
@@ -870,12 +871,12 @@ var UserMenuItem = class extends BaseMenuItem {
             this._userChangedId = 0;
         }
     }
-};
+});
 // Menu pinned apps/favorites item class
-var FavoritesMenuItem = class extends BaseMenuItem {
+var FavoritesMenuItem = GObject.registerClass(class FavoritesMenuItem extends BaseMenuItem {
     // Initialize the menu item
-    constructor(button, name, icon, command) {
-        super(button);
+    _init(button, name, icon, command) {
+        super._init(button);
         this._button = button;
         this._command = command;
         this._iconPath = icon;
@@ -1019,12 +1020,12 @@ var FavoritesMenuItem = class extends BaseMenuItem {
     _onDestroy(){
   
     }
-};
+});
 // Menu application item class
-var ApplicationMenuIcon = class extends PopupMenu.PopupBaseMenuItem {
+var ApplicationMenuIcon = GObject.registerClass(class ApplicationMenuIcon extends PopupMenu.PopupBaseMenuItem {
     // Initialize menu item
-    constructor(button, app) {
-        super();
+    _init(button, app) {
+        super._init();
         this._button = button;
         this.layoutWidth = 0;
         let layout = this._button._settings.get_enum('menu-layout');
@@ -1316,11 +1317,11 @@ var ApplicationMenuIcon = class extends PopupMenu.PopupBaseMenuItem {
     _onDestroy(){
 
     }
-};
-var ApplicationMenuItem = class extends PopupMenu.PopupBaseMenuItem {
+});
+var ApplicationMenuItem =GObject.registerClass(class ApplicationMenuItem extends PopupMenu.PopupBaseMenuItem {
     // Initialize menu item
-    constructor(button, app) {
-        super();
+    _init(button, app) {
+        super._init();
         this._app = app;
         this.app = app;
         //global.log(app);
@@ -1453,11 +1454,11 @@ var ApplicationMenuItem = class extends PopupMenu.PopupBaseMenuItem {
     }
     _onDestroy(){
     }
-};
-var SearchResultItem = class extends PopupMenu.PopupBaseMenuItem {
+});
+var SearchResultItem = GObject.registerClass(class SearchResultItem extends PopupMenu.PopupBaseMenuItem {
     // Initialize menu item
-    constructor(button, app,path) {
-        super();
+    _init(button, app,path) {
+        super._init();
         this._button = button;
         this.app =app;
         this._path=path;
@@ -1491,12 +1492,12 @@ var SearchResultItem = class extends PopupMenu.PopupBaseMenuItem {
     }
     _onDestroy(){
     }
-};
+});
 // Menu Category item class
-var CategoryMenuItem = class extends BaseMenuItem {
+var CategoryMenuItem = GObject.registerClass(class CategoryMenuItem extends BaseMenuItem {
     // Initialize menu item
-    constructor(button, category, title=null) {
-        super(button);
+    _init(button, category, title=null) {
+        super._init(button);
         this.layout = this._button._settings.get_enum('menu-layout');
         this._category = category;
         this._button = button;
@@ -1623,12 +1624,12 @@ var CategoryMenuItem = class extends BaseMenuItem {
         }
         //super.setActive(active, params);
     }
-};
+});
 // Simple Menu item class
-var SimpleMenuItem = class extends BaseMenuItem {
+var SimpleMenuItem = GObject.registerClass(class SimpleMenuItem extends BaseMenuItem {
     // Initialize menu item
-    constructor(button, category, title=null) {
-        super(button);
+    _init(button, category, title=null) {
+        super._init(button);
         this._category = category;
         this._button = button;
         this.name = "";
@@ -1766,12 +1767,12 @@ var SimpleMenuItem = class extends BaseMenuItem {
     _onDestroy(){
 
     }
-};
+});
 // SubMenu Category item class
-var CategorySubMenuItem = class extends PopupMenu.PopupSubMenuMenuItem {
+var CategorySubMenuItem = GObject.registerClass( class CategorySubMenuItem extends PopupMenu.PopupSubMenuMenuItem {
     // Initialize menu item
-    constructor(button, category, title=null) {
-        super('',true);
+    _init(button, category, title=null) {
+        super._init('',true);
         
         this._category = category;
         this._button = button;
@@ -1849,7 +1850,7 @@ var CategorySubMenuItem = class extends PopupMenu.PopupSubMenuMenuItem {
         }
         //super.setActive(active, params);
     }
-};
+});
 
 
 
@@ -1900,10 +1901,10 @@ var PlaceInfo = class {
 Signals.addSignalMethods(PlaceInfo.prototype);
 
 // Menu Place Shortcut item class
-var PlaceMenuItem = class extends BaseMenuItem {
+var PlaceMenuItem = GObject.registerClass( class PlaceMenuItem extends BaseMenuItem {
     // Initialize menu item
-    constructor(button, info) {
-        super(button);
+    _init(button, info) {
+        super._init(button);
         this._button = button;
         this._info = info;
         this._icon = new St.Icon({
@@ -1942,7 +1943,7 @@ var PlaceMenuItem = class extends BaseMenuItem {
         this._icon.gicon = info.icon;
         this._label.text = info.name;
     }
-};
+});
 
 /**
  * This class represents a SearchBox.
