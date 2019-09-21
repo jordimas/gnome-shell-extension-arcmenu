@@ -27,6 +27,7 @@ const Clutter = imports.gi.Clutter;
 const Main = imports.ui.main;
 const ShellMountOperation = imports.ui.shellMountOperation;
 const PopupMenu = imports.ui.popupMenu;
+const GObject = imports.gi.GObject;
 const ExtensionUtils = imports.misc.extensionUtils;
 const Me = ExtensionUtils.getCurrentExtension();
 const Gettext = imports.gettext.domain(Me.metadata['gettext-domain']);
@@ -38,10 +39,13 @@ const Hostname1Iface = '<node> \
 </interface> \
 </node>';
 const Hostname1 = Gio.DBusProxy.makeProxyWrapper(Hostname1Iface);
+const Utils =  Me.imports.utils;
 
-var PlaceMenuItem = class PlaceMenuItem extends PopupMenu.PopupBaseMenuItem {
-    constructor(info,button) {
-        super();
+var PlaceMenuItem = Utils.createClass({
+    Name: 'PlaceMenuItem2',
+    Extends: PopupMenu.PopupBaseMenuItem,
+    _init(info,button) {
+        this.callParent('_init');
         this._info = info;
         this._button = button;
         this._icon = new St.Icon({
@@ -66,16 +70,16 @@ var PlaceMenuItem = class PlaceMenuItem extends PopupMenu.PopupBaseMenuItem {
 
         this._changedId = info.connect('changed',
                                        this._propertiesChanged.bind(this));
-    }
+    },
 
     destroy() {
         if (this._changedId) {
             this._info.disconnect(this._changedId);
             this._changedId = 0;
         }
-
-        super.destroy();
-    }
+        this.callParent('destroy');
+ 
+    },
     _onKeyPressEvent(actor, event) {
         let symbol = event.get_key_symbol();
         if (symbol == Clutter.KEY_Return ||
@@ -84,11 +88,11 @@ var PlaceMenuItem = class PlaceMenuItem extends PopupMenu.PopupBaseMenuItem {
             return Clutter.EVENT_STOP;
         }
         return Clutter.EVENT_PROPAGATE;
-    }
+    },
     _onButtonPressEvent(actor, event) {
 		
         return Clutter.EVENT_PROPAGATE;
-    }
+    },
 
     _onButtonReleaseEvent(actor, event) {
         if(event.get_button()==1){
@@ -97,19 +101,19 @@ var PlaceMenuItem = class PlaceMenuItem extends PopupMenu.PopupBaseMenuItem {
   	    if(event.get_button()==3){
 	    }   
         return Clutter.EVENT_STOP;
-    }
+    },
 
     activate(event) {
         this._info.launch(event.get_time());
         this._button.leftClickMenu.toggle();
-        super.activate(event);
-    }
+        this.callParent('activate',event);
+    },
 
     _propertiesChanged(info) {
         this._icon.gicon = info.icon;
         this._label.text = info.name;
     }
-}
+});
 
 var PlaceInfo = class PlaceInfo {
     constructor() {
@@ -269,7 +273,7 @@ var RootInfo = class RootInfo extends PlaceInfo {
         }
         super.destroy();
     }
-}
+};
 
 
 var PlaceDeviceInfo = class PlaceDeviceInfo extends PlaceInfo {
@@ -321,7 +325,7 @@ var PlaceDeviceInfo = class PlaceDeviceInfo extends PlaceInfo {
         let msg = _('Ejecting drive “%s” failed:').format(this._mount.get_name());
         Main.notifyError(msg, exception.message);
     }
-}
+};
 
 var PlaceVolumeInfo = class PlaceVolumeInfo extends PlaceInfo {
     _init(kind, volume) {
@@ -347,7 +351,7 @@ var PlaceVolumeInfo = class PlaceVolumeInfo extends PlaceInfo {
     getIcon() {
         return this._volume.get_symbolic_icon();
     }
-}
+};
 
 const DEFAULT_DIRECTORIES = [
     GLib.UserDirectory.DIRECTORY_DOCUMENTS,

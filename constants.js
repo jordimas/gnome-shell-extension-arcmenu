@@ -91,6 +91,19 @@ var MENU_POSITION = { // See: org.gnome.shell.extensions.arc-menu.menu-position
     Center: 1,
     Right: 2
 };
+var MENU_LAYOUT = { // See: org.gnome.shell.extensions.arc-menu.menu-position
+    Default: 0,
+    Brisk: 1,
+    Whisker: 2,
+    GnomeMenu: 3,
+    Mint: 4,
+    Elementary: 5,
+    GnomeDash: 6,
+    Simple: 7,
+    Simple2: 8,
+    Redmond: 9,
+    UbuntuDash: 10
+};
 var MENU_APPEARANCE = { // See: org.gnome.shell.extensions.arc-menu.menu-button-icon
     Icon: 0,
     Text: 1,
@@ -112,7 +125,7 @@ var MENU_ICON_PATH = {
 var ICON_SIZES = [ 16, 24, 32, 40, 48 ];
 var DEFAULT_ICON_SIZE = 22;
 var ARC_MENU_LOGO = {
-    Path: '/media/logo.png',
+    Path: '/media/ArcMenu-logo.svg',
     Size: [175, 175] // width, height
 };
 var KEYBOARD_LOGO = {
@@ -141,3 +154,44 @@ var GNU_SOFTWARE = '<span size="small">' +
 	'GNU General Public License, version 2 or later</a> for details.' +
 	'</span>';
 
+var MENU_STYLE_CHOOSER = {
+    ThumbnailHeight: 200,
+    ThumbnailWidth: 200,
+    MaxColumns: 6,
+    Styles: [
+        {   thumbnail: '/media/layouts/arc-menu.svg',
+            name: 'Arc Menu'
+        },
+        {   thumbnail: '/media/layouts/brisk-menu.svg',
+            name: 'Brisk Menu Style'
+        },
+        {   thumbnail: '/media/layouts/whisker-menu.svg',
+            name: 'Whisker Menu Style'
+        },
+        {   thumbnail: '/media/layouts/gnome-menu.svg',
+            name: 'GNOME Menu Style'
+        },
+        {   thumbnail: '/media/layouts/mint-menu.svg',
+            name: 'Mint Menu Style'
+        },
+        {   thumbnail: '/media/layouts/elementary-menu.svg',
+            name: 'Elementary Menu Style'
+        },
+        {   thumbnail: '/media/layouts/gnome-dash-menu.svg',
+            name: 'GNOME Dash Style'
+        },
+        {   thumbnail: '/media/layouts/simple-menu.svg',
+            name: 'Simple Menu Style'
+        },
+        {   thumbnail: '/media/layouts/simple-menu-2.svg',
+            name: 'Simple Menu 2 Style'
+        },
+        {   thumbnail: '/media/layouts/redmond-style-menu.svg',
+            name: 'Redmond Menu Style'
+        },
+        {   thumbnail: '/media/layouts/ubuntu-dash-menu.svg',
+            name: 'Ubuntu Dash Style'
+        }   
+    ]
+};
+    

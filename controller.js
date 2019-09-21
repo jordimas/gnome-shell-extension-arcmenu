@@ -107,7 +107,11 @@ var MenuSettingsController = class {
             this._settings.connect('changed::reload-theme',this._reloadExtension.bind(this)),
             this._settings.connect('changed::pinned-app-list',this._updateFavorites.bind(this)),
             this._settings.connect('changed::enable-pinned-apps',this._updateMenuDefaultView.bind(this)),
+            this._settings.connect('changed::menu-layout', this._updateMenuLayout.bind(this)),
         ];
+    }
+    _updateMenuLayout(){
+        this._menuButton._updateMenuLayout();
     }
     toggleMenus(){
         if(this._settings.get_boolean('multi-monitor')){
@@ -152,9 +156,12 @@ var MenuSettingsController = class {
         this._menuButton.updateHeight();
     }
     _updateFavorites(){
-        this._menuButton._loadFavorites();
-        if(this._menuButton.currentMenu == Constants.CURRENT_MENU.FAVORITES)
-           this._menuButton._displayFavorites();
+        if(this._settings.get_enum('menu-layout') == Constants.MENU_LAYOUT.Default){
+            this._menuButton._loadFavorites();
+            if(this._menuButton.getCurrentMenu() == Constants.CURRENT_MENU.FAVORITES)
+               this._menuButton._displayFavorites();
+        }
+
     }
     _updateMenuDefaultView(){
         if(this._settings.get_boolean('enable-pinned-apps'))
@@ -188,6 +195,30 @@ var MenuSettingsController = class {
                 this._menuHotKeybinder.enableHotKey(hotKey);
             }        
         } 
+    }
+    _onHotkey() {
+        let focusTarget = this._menuButton.leftClickMenu.isOpen ? 
+                          (this._menuButton.actor || this._menuButton) : 
+                          (this.panel.actor || this.panel);
+        
+        this.disconnectKeyRelease();
+
+        this.keyReleaseInfo = {
+            id: focusTarget.connect('key-release-event', (actor, event) => {
+                this.disconnectKeyRelease();
+                this.toggleMenus()
+            }),
+            target: focusTarget
+        };
+
+        focusTarget.grab_key_focus();
+    }
+
+    disconnectKeyRelease() {
+        if (this.keyReleaseInfo) {
+            this.keyReleaseInfo.target.disconnect(this.keyReleaseInfo.id);
+            this.keyReleaseInfo = 0;
+        }
     }
 
     _onHotkey() {
@@ -376,7 +407,7 @@ var MenuSettingsController = class {
     _disableButton() {
         this._removeMenuButtonFromMainPanel();
         this._addActivitiesButtonToMainPanel(); // restore the activities button
-        this._menuButton._onDestroy();
+        this._menuButton.destroy();
     }
 
     _isButtonEnabled() {

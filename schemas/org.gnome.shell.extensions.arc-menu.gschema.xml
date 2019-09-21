@@ -5,6 +5,19 @@
     <value value='1' nick='APPS_ONLY'/>
     <value value='2' nick='SYSTEM_ONLY'/>
   </enum>
+    <enum id='org.gnome.shell.extensions.arc-menu.menulayout'>
+    <value value='0' nick='Default'/>
+    <value value='1' nick='Brisk'/>
+    <value value='2' nick='Whisker'/>
+    <value value='3' nick='GnomeMenu'/>
+    <value value='4' nick='Mint'/>
+    <value value='5' nick='Elementary'/>
+    <value value='6' nick='GnomeDash'/>
+    <value value='7' nick='Simple'/>
+    <value value='8' nick='Simple2'/>
+    <value value='9' nick='Redmond'/>
+    <value value='10' nick='UbuntuDash'/>
+  </enum>
   <enum id='org.gnome.shell.extensions.arc-menu.menu-hotkey'>
     <value value='0' nick='Undefined'/>
     <value value='1' nick='Super_L'/>
@@ -40,6 +53,11 @@
       <default>'ALL'</default>
       <summary>Visible menus</summary>
       <description>Which menus are visible within the Arc Menu popup.</description>
+    </key>
+    <key name="menu-layout" enum="org.gnome.shell.extensions.arc-menu.menulayout">
+      <default>'Default'</default>
+      <summary>menu layout</summary>
+      <description>Menu Layout</description>
     </key>
     <key type="b" name="disable-tooltips">
      <default>false</default>
