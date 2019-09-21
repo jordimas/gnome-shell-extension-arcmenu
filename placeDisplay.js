@@ -39,10 +39,12 @@ const Hostname1Iface = '<node> \
 </interface> \
 </node>';
 const Hostname1 = Gio.DBusProxy.makeProxyWrapper(Hostname1Iface);
-
-var PlaceMenuItem = GObject.registerClass(class PlaceMenuItem2 extends PopupMenu.PopupBaseMenuItem {
+const Utils =  Me.imports.utils;
+var PlaceMenuItem = Utils.defineClass({
+    Name: 'PlaceMenuItem2',
+    Extends: PopupMenu.PopupBaseMenuItem,
     _init(info,button) {
-        super._init();
+        this.callParent("_init");
         this._info = info;
         this._button = button;
         this._icon = new St.Icon({
@@ -67,7 +69,7 @@ var PlaceMenuItem = GObject.registerClass(class PlaceMenuItem2 extends PopupMenu
 
         this._changedId = info.connect('changed',
                                        this._propertiesChanged.bind(this));
-    }
+    },
 
     destroy() {
         if (this._changedId) {
@@ -76,7 +78,7 @@ var PlaceMenuItem = GObject.registerClass(class PlaceMenuItem2 extends PopupMenu
         }
 
         super.destroy();
-    }
+    },
     _onKeyPressEvent(actor, event) {
         let symbol = event.get_key_symbol();
         if (symbol == Clutter.KEY_Return ||
@@ -85,11 +87,11 @@ var PlaceMenuItem = GObject.registerClass(class PlaceMenuItem2 extends PopupMenu
             return Clutter.EVENT_STOP;
         }
         return Clutter.EVENT_PROPAGATE;
-    }
+    },
     _onButtonPressEvent(actor, event) {
 		
         return Clutter.EVENT_PROPAGATE;
-    }
+    },
 
     _onButtonReleaseEvent(actor, event) {
         if(event.get_button()==1){
@@ -98,13 +100,13 @@ var PlaceMenuItem = GObject.registerClass(class PlaceMenuItem2 extends PopupMenu
   	    if(event.get_button()==3){
 	    }   
         return Clutter.EVENT_STOP;
-    }
+    },
 
     activate(event) {
         this._info.launch(event.get_time());
         this._button.leftClickMenu.toggle();
         super.activate(event);
-    }
+    },
 
     _propertiesChanged(info) {
         this._icon.gicon = info.icon;

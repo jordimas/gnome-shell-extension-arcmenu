@@ -708,7 +708,7 @@ var SearchResults = class {
 };
 Signals.addSignalMethods(SearchResults.prototype);
 
-var ArcSearchProviderInfo = GObject.registerClass(
+var ArcSearchProviderInfo = 
 class ArcSearchProviderInfo extends MW.BaseMenuItem {
     _init(provider,button) {
         super._init(button);
@@ -751,5 +751,5 @@ class ArcSearchProviderInfo extends MW.BaseMenuItem {
         if(count>0)
             this.nameLabel.text = this.provider.appInfo.get_name() + "  ("+ this._moreText+")";
     }
-});
+};
 

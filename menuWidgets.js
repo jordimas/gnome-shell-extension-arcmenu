@@ -43,7 +43,7 @@ const LoginManager = imports.misc.loginManager;
 const Gdk = imports.gi.Gdk;
 const Gtk = imports.gi.Gtk;
 const AppFavorites = imports.ui.appFavorites;
-
+const Utils =  Me.imports.utils;
 const SWITCHEROO_BUS_NAME = 'net.hadess.SwitcherooControl';
 const SWITCHEROO_OBJECT_PATH = '/net/hadess/SwitcherooControl';
 const SwitcherooProxyInterface = '<node> \
@@ -363,12 +363,14 @@ var AppRightClickMenu = class AppRightClickMenu extends PopupMenu.PopupMenu {
 
 // Removing the default behaviour which selects a hovered item if the space key is pressed.
 // This avoids issues when searching for an app with a space character in its name.
-var BaseMenuItem = GObject.registerClass(class BaseMenuItem extends PopupMenu.PopupBaseMenuItem {
+var BaseMenuItem = Utils.defineClass({
+    Name: 'BaseMenuItem',
+    Extends: PopupMenu.PopupBaseMenuItem,
     _init(button){
-        super._init();
+        this.callParent("_init");
         this._button = button;
         
-    }    
+    },    
     _onKeyPressEvent(actor, event) {
         let symbol = event.get_key_symbol();
         if (symbol == Clutter.KEY_Return ||
@@ -377,11 +379,11 @@ var BaseMenuItem = GObject.registerClass(class BaseMenuItem extends PopupMenu.Po
             return Clutter.EVENT_STOP;
         }
         return Clutter.EVENT_PROPAGATE;
-    }
+    },
     _onButtonPressEvent(actor, event) {
 		
         return Clutter.EVENT_PROPAGATE;
-    }
+    },
 
     _onButtonReleaseEvent(actor, event) {
         if(event.get_button()==1){
@@ -395,7 +397,7 @@ var BaseMenuItem = GObject.registerClass(class BaseMenuItem extends PopupMenu.Po
 });
 
 // Menu item to launch GNOME activities overview
-var ActivitiesMenuItem = GObject.registerClass(class ActivitiesMenuItem extends BaseMenuItem {
+var ActivitiesMenuItem = class ActivitiesMenuItem extends BaseMenuItem {
     // Initialize the menu item
     _init(button) {
         super._init(button);
@@ -405,13 +407,13 @@ var ActivitiesMenuItem = GObject.registerClass(class ActivitiesMenuItem extends 
             style_class: 'popup-menu-icon',
             icon_size: SMALL_ICON_SIZE
         });
-        this.add_child(this._icon);
+        this.actor.add_child(this._icon);
         let label = new St.Label({
             text: _("Activities Overview"),
             y_expand: true,
             y_align: Clutter.ActorAlign.CENTER
         });
-        this.add_child(label);
+        this.actor.add_child(label);
     }
 
     // Activate the menu item (Open activities overview)
@@ -420,7 +422,7 @@ var ActivitiesMenuItem = GObject.registerClass(class ActivitiesMenuItem extends 
         Main.overview.toggle();
         super.activate(event);
     }
-});
+};
 
 /**
  * A class representing a Tooltip.
@@ -685,7 +687,7 @@ var LockButton = class extends SessionButton {
 };
 
 // Menu item to go back to category view
-var BackMenuItem = GObject.registerClass(class BackMenuItem extends BaseMenuItem {
+var BackMenuItem = class BackMenuItem extends BaseMenuItem {
     // Initialize the button
     _init(button) {
         super._init(button);
@@ -737,10 +739,10 @@ var BackMenuItem = GObject.registerClass(class BackMenuItem extends BaseMenuItem
         }
         super.activate(event);
     }
-});
+};
 
 // Menu item to view all apps
-var ViewAllPrograms = GObject.registerClass(class ViewAllPrograms extends BaseMenuItem {
+var ViewAllPrograms = class ViewAllPrograms extends BaseMenuItem {
     // Initialize the button
     _init(button) {
         super._init(button);
@@ -773,10 +775,10 @@ var ViewAllPrograms = GObject.registerClass(class ViewAllPrograms extends BaseMe
       }
       super.activate(event);
     }
-});
+};
 
 // Menu shortcut item class
-var ShortcutMenuItem = GObject.registerClass( class ShortcutMenuItem extends BaseMenuItem {
+var ShortcutMenuItem =  class ShortcutMenuItem extends BaseMenuItem {
     // Initialize the menu item
     _init(button, name, icon, command) {
         super._init(button);
@@ -804,10 +806,10 @@ var ShortcutMenuItem = GObject.registerClass( class ShortcutMenuItem extends Bas
     setIconSizeLarge(){
         this._icon.icon_size = MEDIUM_ICON_SIZE;
     }
-});
+};
 
 // Menu item which displays the current user
-var UserMenuItem = GObject.registerClass(class UserMenuItem extends BaseMenuItem {
+var UserMenuItem = class UserMenuItem extends BaseMenuItem {
     // Initialize the menu item
     _init(button) {
         super._init(button);
@@ -871,9 +873,9 @@ var UserMenuItem = GObject.registerClass(class UserMenuItem extends BaseMenuItem
             this._userChangedId = 0;
         }
     }
-});
+};
 // Menu pinned apps/favorites item class
-var FavoritesMenuItem = GObject.registerClass(class FavoritesMenuItem extends BaseMenuItem {
+var FavoritesMenuItem = class FavoritesMenuItem extends BaseMenuItem {
     // Initialize the menu item
     _init(button, name, icon, command) {
         super._init(button);
@@ -1020,12 +1022,14 @@ var FavoritesMenuItem = GObject.registerClass(class FavoritesMenuItem extends Ba
     _onDestroy(){
   
     }
-});
+};
 // Menu application item class
-var ApplicationMenuIcon = GObject.registerClass(class ApplicationMenuIcon extends PopupMenu.PopupBaseMenuItem {
+var ApplicationMenuIcon = Utils.defineClass({
+    Name: 'ApplicationMenuIcon',
+    Extends: PopupMenu.PopupBaseMenuItem,
     // Initialize menu item
     _init(button, app) {
-        super._init();
+        this.callParent("_init");
         this._button = button;
         this.layoutWidth = 0;
         let layout = this._button._settings.get_enum('menu-layout');
@@ -1145,81 +1149,8 @@ var ApplicationMenuIcon = GObject.registerClass(class ApplicationMenuIcon extend
         this._button.appMenuManager.addMenu(this.rightClickMenu);
         this.rightClickMenu.actor.hide();
         Main.uiGroup.add_actor(this.rightClickMenu.actor);
-    }
-    createLabel(){
-        let totalWidth = 0;
-        let newName = "";
-        let oldName = "";
-        for(let i = 0; i<this.labelArray.length;i++){
-            totalWidth+= this.labelArray[i].width;
-            this.actor.remove_child(this.labelArray[i]);
-            if (newName == "") 
-                newName += this.labelArray[i].text;
-            else
-                newName += " " + this.labelArray[i].text;
-            if(totalWidth > this.layoutWidth && i!=0){
-                let newLabel = new St.Label({
-                    text: oldName,
-                    y_expand: false,
-                    y_align: St.Align.END,
-                    x_align: St.Align.END
-                });
-               
-                this.actor.add_child(newLabel);
-                
-                break;
-            }
-            if(i == this.labelArray.length - 1){
-                let newLabel = new St.Label({
-                    text: newName,
-                    y_expand: false,
-                    y_align: St.Align.END,
-                    x_align: St.Align.END
-                });
-                this.actor.add_child(newLabel);
-            }
-            oldName= newName;
-           
-        }
-        
-    }
-    createLabelsss(){
-        
-        if(this.appLabel.get_preferred_width(this.appLabel)[1] > this.layoutWidth){
-            let array = this.appLabel.text.split(" ");
-            this.actor.remove_child(this.appLabel);
-            this.createLabels(array);
-        }
-        
-    }
-    createLabels(nameArray){
-        let newName = "";
-        let oldName = "";
-
-        for(let i = 0; i<nameArray.length;i++){
-            if (newName == "") 
-                newName += nameArray[i];
-            else
-                newName += " " + nameArray[i];
-            let appLabel = new St.Label({
-                text: newName,
-                y_expand: false,
-                y_align: St.Align.END,
-                x_align: St.Align.END
-            });
-            if(appLabel.get_preferred_width(appLabel)[1] > this.layoutWidth && nameArray.length!=1){
-                appLabel.text=oldName;
-                this.actor.add_child(appLabel);
-                let newNameArray = nameArray.slice(i);
-                this.createLabels(newNameArray);
-                break;
-            }
-            if(i == nameArray.length - 1){
-                this.actor.add_child(appLabel);
-            }
-            oldName=newName;
-        }
-    }
+    },
+   
     _onButtonReleaseEvent(actor, event) {
         if(event.get_button()==1){
             this.activate(event);
@@ -1231,7 +1162,7 @@ var ApplicationMenuIcon = GObject.registerClass(class ApplicationMenuIcon extend
             this.rightClickMenu.toggle();
 	    }   
         return Clutter.EVENT_STOP;
-    }
+    },
     _onHover() {
 
         if ( this.actor.hover) { // mouse pointer hovers over the button
@@ -1239,18 +1170,18 @@ var ApplicationMenuIcon = GObject.registerClass(class ApplicationMenuIcon extend
         } else { // mouse pointer leaves the button area
             this.tooltip.hide();
         }
-    }
+    },
     _onDragBegin() {
         Main.overview.beginItemDrag(this);
-    }
+    },
 
     _onDragCancelled() {
         Main.overview.cancelledItemDrag(this);
-    }
+    },
 
     _onDragEnd() {
         Main.overview.endItemDrag(this);
-    }
+    },
 
     _onKeyPressEvent(actor, event) {
         let symbol = event.get_key_symbol();
@@ -1260,28 +1191,28 @@ var ApplicationMenuIcon = GObject.registerClass(class ApplicationMenuIcon extend
             return Clutter.EVENT_STOP;
         }
         return Clutter.EVENT_PROPAGATE;
-    }
+    },
 
     get_app_id() {
         return this._app.get_id();
-    }
+    },
 
     getDragActor() {
         return this._app.create_icon_texture(MEDIUM_ICON_SIZE);
-    }
+    },
 
     // Returns the original actor that should align with the actor
     // we show as the item is being dragged.
     getDragActorSource() {
         return this.actor;
-    }
+    },
 
     // Activate menu item (Launch application)
     activate(event) {
         this._app.open_new_window(-1);
         this._button.leftClickMenu.toggle();
         super.activate(event);
-    }
+    },
 
    // Set button as active, scroll to the button
     setActive(active, params) {
@@ -1289,7 +1220,7 @@ var ApplicationMenuIcon = GObject.registerClass(class ApplicationMenuIcon extend
             this._button.scrollToButton(this);
 
         super.setActive(active, params);
-    }
+    },
 
     setFakeActive(active) {
         if (active) {
@@ -1298,12 +1229,12 @@ var ApplicationMenuIcon = GObject.registerClass(class ApplicationMenuIcon extend
         } else {
             this.actor.remove_style_class_name('selected');
         }
-    }
+    },
 
     // Grab the key focus
     grabKeyFocus() {
         this.actor.grab_key_focus();
-    }
+    },
 
     // Update the app icon in the menu
     _updateIcon() {
@@ -1313,15 +1244,17 @@ var ApplicationMenuIcon = GObject.registerClass(class ApplicationMenuIcon extend
             this._iconBin.set_child(this._app.create_icon_texture(52));
         else
             this._iconBin.set_child(this._app.create_icon_texture(36));    
-    }
+    },
     _onDestroy(){
 
     }
 });
-var ApplicationMenuItem =GObject.registerClass(class ApplicationMenuItem extends PopupMenu.PopupBaseMenuItem {
+var ApplicationMenuItem =Utils.defineClass({
+    Name: 'ApplicationMenuItem',
+    Extends: PopupMenu.PopupBaseMenuItem,
     // Initialize menu item
     _init(button, app) {
-        super._init();
+        this.callParent("_init");
         this._app = app;
         this.app = app;
         //global.log(app);
@@ -1361,7 +1294,7 @@ var ApplicationMenuItem =GObject.registerClass(class ApplicationMenuItem extends
         this._button.appMenuManager.addMenu(this.rightClickMenu);
         this.rightClickMenu.actor.hide();
         Main.uiGroup.add_actor(this.rightClickMenu.actor);
-    }
+    },
 
     _onButtonReleaseEvent(actor, event) {
         if(event.get_button()==1){
@@ -1374,7 +1307,7 @@ var ApplicationMenuItem =GObject.registerClass(class ApplicationMenuItem extends
             this.rightClickMenu.toggle();
 	    }   
         return Clutter.EVENT_STOP;
-    }
+    },
     _onHover() {
 
         if ( this.actor.hover) { // mouse pointer hovers over the button
@@ -1382,18 +1315,18 @@ var ApplicationMenuItem =GObject.registerClass(class ApplicationMenuItem extends
         } else { // mouse pointer leaves the button area
             this.tooltip.hide();
         }
-    }
+    },
     _onDragBegin() {
         Main.overview.beginItemDrag(this);
-    }
+    },
 
     _onDragCancelled() {
         Main.overview.cancelledItemDrag(this);
-    }
+    },
 
     _onDragEnd() {
         Main.overview.endItemDrag(this);
-    }
+    },
 
     _onKeyPressEvent(actor, event) {
         let symbol = event.get_key_symbol();
@@ -1403,28 +1336,28 @@ var ApplicationMenuItem =GObject.registerClass(class ApplicationMenuItem extends
             return Clutter.EVENT_STOP;
         }
         return Clutter.EVENT_PROPAGATE;
-    }
+    },
 
     get_app_id() {
         return this._app.get_id();
-    }
+    },
 
     getDragActor() {
         return this._app.create_icon_texture(MEDIUM_ICON_SIZE);
-    }
+    },
 
     // Returns the original actor that should align with the actor
     // we show as the item is being dragged.
     getDragActorSource() {
         return this.actor;
-    }
+    },
 
     // Activate menu item (Launch application)
     activate(event) {
         this._app.open_new_window(-1);
         this._button.leftClickMenu.toggle();
         super.activate(event);
-    }
+    },
 
    // Set button as active, scroll to the button
     setActive(active, params) {
@@ -1432,7 +1365,7 @@ var ApplicationMenuItem =GObject.registerClass(class ApplicationMenuItem extends
             this._button.scrollToButton(this);
 
         super.setActive(active, params);
-    }
+    },
 
     setFakeActive(active) {
         if (active) {
@@ -1441,24 +1374,26 @@ var ApplicationMenuItem =GObject.registerClass(class ApplicationMenuItem extends
         } else {
             this.actor.remove_style_class_name('selected');
         }
-    }
+    },
 
     // Grab the key focus
     grabKeyFocus() {
         this.actor.grab_key_focus();
-    }
+    },
 
     // Update the app icon in the menu
     _updateIcon() {
         this._iconBin.set_child(this._app.create_icon_texture(SMALL_ICON_SIZE));
-    }
+    },
     _onDestroy(){
     }
 });
-var SearchResultItem = GObject.registerClass(class SearchResultItem extends PopupMenu.PopupBaseMenuItem {
+var SearchResultItem = Utils.defineClass({
+    Name: 'SearchResultItem',
+    Extends: PopupMenu.PopupBaseMenuItem,
     // Initialize menu item
     _init(button, app,path) {
-        super._init();
+        this.callParent("_init");
         this._button = button;
         this.app =app;
         this._path=path;
@@ -1467,7 +1402,7 @@ var SearchResultItem = GObject.registerClass(class SearchResultItem extends Popu
         this.rightClickMenu.actor.hide();
         Main.uiGroup.add_actor(this.rightClickMenu.actor);
   
-    }
+    },
     _onButtonReleaseEvent(actor, event) {
         if(event.get_button()==1){
             this.activate(event);
@@ -1479,7 +1414,7 @@ var SearchResultItem = GObject.registerClass(class SearchResultItem extends Popu
             this.rightClickMenu.toggle();
 	    }   
         return Clutter.EVENT_STOP;
-    }
+    },
 
     _onKeyPressEvent(actor, event) {
         let symbol = event.get_key_symbol();
@@ -1489,12 +1424,12 @@ var SearchResultItem = GObject.registerClass(class SearchResultItem extends Popu
             return Clutter.EVENT_STOP;
         }
         return Clutter.EVENT_PROPAGATE;
-    }
+    },
     _onDestroy(){
     }
 });
 // Menu Category item class
-var CategoryMenuItem = GObject.registerClass(class CategoryMenuItem extends BaseMenuItem {
+var CategoryMenuItem = class CategoryMenuItem extends BaseMenuItem {
     // Initialize menu item
     _init(button, category, title=null) {
         super._init(button);
@@ -1624,9 +1559,9 @@ var CategoryMenuItem = GObject.registerClass(class CategoryMenuItem extends Base
         }
         //super.setActive(active, params);
     }
-});
+};
 // Simple Menu item class
-var SimpleMenuItem = GObject.registerClass(class SimpleMenuItem extends BaseMenuItem {
+var SimpleMenuItem = class SimpleMenuItem extends BaseMenuItem {
     // Initialize menu item
     _init(button, category, title=null) {
         super._init(button);
@@ -1767,9 +1702,9 @@ var SimpleMenuItem = GObject.registerClass(class SimpleMenuItem extends BaseMenu
     _onDestroy(){
 
     }
-});
+};
 // SubMenu Category item class
-var CategorySubMenuItem = GObject.registerClass( class CategorySubMenuItem extends PopupMenu.PopupSubMenuMenuItem {
+var CategorySubMenuItem = class CategorySubMenuItem extends PopupMenu.PopupSubMenuMenuItem {
     // Initialize menu item
     _init(button, category, title=null) {
         super._init('',true);
@@ -1850,7 +1785,7 @@ var CategorySubMenuItem = GObject.registerClass( class CategorySubMenuItem exten
         }
         //super.setActive(active, params);
     }
-});
+};
 
 
 
@@ -1901,7 +1836,7 @@ var PlaceInfo = class {
 Signals.addSignalMethods(PlaceInfo.prototype);
 
 // Menu Place Shortcut item class
-var PlaceMenuItem = GObject.registerClass( class PlaceMenuItem extends BaseMenuItem {
+var PlaceMenuItem =  class PlaceMenuItem extends BaseMenuItem {
     // Initialize menu item
     _init(button, info) {
         super._init(button);
@@ -1943,7 +1878,7 @@ var PlaceMenuItem = GObject.registerClass( class PlaceMenuItem extends BaseMenuI
         this._icon.gicon = info.icon;
         this._label.text = info.name;
     }
-});
+};
 
 /**
  * This class represents a SearchBox.
