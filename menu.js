@@ -127,13 +127,24 @@ var ApplicationsButton =   Utils.defineClass({
             });
             if(global.dashToPanel)
                 this.addDTPSettings();
-
-            this.actor.accessible_role = Atk.Role.LABEL;            
-            this._menuButtonWidget = new MW.MenuButtonWidget();
-            this.actor.add_actor(this._menuButtonWidget.actor);
-            this.actor.name = 'panelApplications';
-            this.actor.connect('captured-event', this._onCapturedEvent.bind(this));
-            this.actor.connect('destroy', this.destroy.bind(this));
+          
+            if(imports.misc.config.PACKAGE_VERSION >= '3.33'){
+                this.accessible_role = Atk.Role.LABEL;            
+                this._menuButtonWidget = new MW.MenuButtonWidget();
+                this.add_actor(this._menuButtonWidget.actor);
+                this.name = 'panelApplications';
+                this.connect('captured-event', this._onCapturedEvent.bind(this));
+                this.connect('destroy', this.destroy.bind(this));
+            }
+            else{
+                this.actor.accessible_role = Atk.Role.LABEL;            
+                this._menuButtonWidget = new MW.MenuButtonWidget();
+                this.actor.add_actor(this._menuButtonWidget.actor);
+                this.actor.name = 'panelApplications';
+                this.actor.connect('captured-event', this._onCapturedEvent.bind(this));
+                this.actor.connect('destroy', this.destroy.bind(this));
+            }
+            
             this._showingId = Main.overview.connect('showing', () => {
                 this.actor.add_accessible_state(Atk.StateType.CHECKED);
             });
