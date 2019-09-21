@@ -377,13 +377,13 @@ var ActivitiesMenuItem =  Utils.createClass({
             style_class: 'popup-menu-icon',
             icon_size: SMALL_ICON_SIZE
         });
-        this.add_child(this._icon);
+        this.actor.add_child(this._icon);
         let label = new St.Label({
             text: _("Activities Overview"),
             y_expand: true,
             y_align: Clutter.ActorAlign.CENTER
         });
-        this.add_child(label);
+        this.actor.add_child(label);
     },
 
     // Activate the menu item (Open activities overview)
@@ -1413,9 +1413,10 @@ var CategoryMenuItem =  Utils.createClass({
     // Initialize menu item
     _init(button, category, title=null) {
         this.callParent('_init');
+        this._button = button;
         this.layout = this._button._settings.get_enum('menu-layout');
         this._category = category;
-        this._button = button;
+        
         this.name = "";
         this.title = title;
         this._active = false;

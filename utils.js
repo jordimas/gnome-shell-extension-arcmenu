@@ -104,10 +104,21 @@ var defineClass = function (classDef) {
 
 var createClass = function (classDef) {
     let parentProto = classDef.Extends ? classDef.Extends.prototype : null;
-    
-    if (imports.misc.config.PACKAGE_VERSION < '3.33') {
+    if (imports.misc.config.PACKAGE_VERSION < '3.31.9') {
+        if (parentProto && (classDef.Extends.name || classDef.Extends.toString()).indexOf('ArcMenu.') < 0) {
+            classDef.callParent = function() {
+                let args = Array.prototype.slice.call(arguments);
+                let func = args.shift();
+
+                classDef.Extends.prototype[func].apply(this, args);
+            };
+        }
+
+        return new imports.lang.Class(classDef);
+    }
+    else if (imports.misc.config.PACKAGE_VERSION < '3.33') {
         let isGObject = parentProto instanceof GObject.Object;
-        let needsSuper = parentProto && !isGObject;
+        let needsSuper = true;
         let getParentArgs = function(args) {
             let parentArgs = [];
 
@@ -125,10 +136,9 @@ var createClass = function (classDef) {
         };
         
         let C = eval(
-            '(class C ' + (needsSuper ? 'extends Object' : '') + ' { ' +
+            '(class C ' + 'extends Object' + ' { ' +
             '     constructor(...args) { ' +
-                    (needsSuper ? 'super(...getParentArgs(args));' : '') +
-                    (needsSuper || !parentProto ? 'this._init(...args);' : '') +
+                    'super(...getParentArgs(args));' +
             '     }' +
             '     callParent(...args) { ' +
             '         let func = args.shift(); ' +
@@ -148,7 +158,8 @@ var createClass = function (classDef) {
             .filter(k => classDef.hasOwnProperty(k) && classDef[k] instanceof Function)
             .forEach(k => C.prototype[k] = classDef[k]);
 
-        
+            global.log(C);
+          
         return C;
     }
     else if (imports.misc.config.PACKAGE_VERSION >= '3.33') {
