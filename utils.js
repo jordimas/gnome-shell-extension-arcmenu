@@ -136,9 +136,10 @@ var createClass = function (classDef) {
         };
         
         let C = eval(
-            '(class C ' + 'extends Object' + ' { ' +
+            '(class C ' + (needsSuper ? 'extends Object' : '') + ' { ' +
             '     constructor(...args) { ' +
-                    'super(...getParentArgs(args));' +
+                    (needsSuper ? 'super(...getParentArgs(args));' : '') +
+                    (needsSuper || !parentProto ? 'this._init(...args);' : '') +
             '     }' +
             '     callParent(...args) { ' +
             '         let func = args.shift(); ' +
@@ -147,6 +148,7 @@ var createClass = function (classDef) {
             '     }' +    
             '})'
         );
+
 
         if (parentProto) {
             Object.setPrototypeOf(C.prototype, parentProto);
@@ -158,7 +160,9 @@ var createClass = function (classDef) {
             .filter(k => classDef.hasOwnProperty(k) && classDef[k] instanceof Function)
             .forEach(k => C.prototype[k] = classDef[k]);
 
-            global.log(C);
+        C = ({ Signals: classDef.Signals || {} }, C);
+
+            
           
         return C;
     }
