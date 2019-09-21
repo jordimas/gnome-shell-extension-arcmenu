@@ -134,7 +134,7 @@ var ListSearchResult = class extends SearchResult {
         }    
 
         let title = new St.Label({ text: this.metaInfo['name'],x_expand: true,y_align: Clutter.ActorAlign.CENTER });
-        this.menuItem.actor.add_child(title,{x_fill:true,x_expand:true});
+        this.menuItem.actor.add_child(title);
         this.menuItem.actor.style = "width:275px;";
 
         if (this.metaInfo['description']&&  this.provider.appInfo.get_name() == "Calculator") {

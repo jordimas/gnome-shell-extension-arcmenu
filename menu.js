@@ -360,13 +360,15 @@ var ApplicationsButton =   Utils.defineClass({
             return false;
         },
         _updateMenuLayout(){
-            let actors = this.section.actor.get_children();
-            for (let i = 0; i < actors.length; i++) {
-                let actor = actors[i];
-                this.section.actor.remove_actor(actor);
-            }
-            this.section.actor.add_actor(this.mainBox);    
-            this.mainBox.remove_all_children();
+            this.section.actor.destroy_all_children();
+            this.mainBox = new St.BoxLayout({
+                vertical: false
+            });      
+            
+            this.mainBox.set_height(this._settings.get_int('menu-height'));               
+            this.section.actor.add_actor(this.mainBox);       
+             
+            this.MenuLayout = null;
             let layout = this._settings.get_enum('menu-layout');
             if(layout == Constants.MENU_LAYOUT.Default)
                 this.MenuLayout =  new MenuLayouts.arcmenu.createMenu(this);
