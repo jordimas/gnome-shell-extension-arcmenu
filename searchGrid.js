@@ -360,7 +360,7 @@ var ListSearchResults = class extends SearchResultsBase {
                                            vertical: true });
         this._container.add(this._content, { expand: true,x_fill:true});
         this._container.style = "padding: 10px;"
-        this._resultDisplayBin.set_child(this._container, { expand: true,x_fill:true});
+        this._resultDisplayBin.set_child(this._container);
     }
 
     _setMoreCount(count) {
@@ -400,13 +400,7 @@ var AppSearchResults = class extends SearchResultsBase {
         this._parentContainer = resultsView.actor;
         this._grid = new St.BoxLayout({vertical: false });
         this._grid.style = "padding: 10px;"
-        this._resultDisplayBin.set_child(this._grid, {
-            x_expand: true,
-            y_expand:false,
-            x_fill: true,
-            y_fill: false,
-            x_align: St.Align.START
-        });  
+        this._resultDisplayBin.set_child(this._grid);  
     }
 
     _getMaxDisplayedResults() {
@@ -705,9 +699,9 @@ var SearchResults = class {
         if (!result)
             return;
         if (selected) {
-            //result.actor.add_style_class_name('selected');
+            result.actor.add_style_class_name('selected');
         } else {
-           // result.actor.remove_style_class_name('selected');
+            result.actor.remove_style_class_name('selected');
         }
     }
 
