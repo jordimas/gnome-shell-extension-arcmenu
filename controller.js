@@ -52,7 +52,7 @@ var MenuSettingsController = class {
         this._hotCornerManager = new Helper.HotCornerManager(this._settings);
         if(this.isMainPanel){
             this._menuHotKeybinder = new Helper.MenuHotKeybinder(() => {
-                this._onHotkey(); 
+                this._onHotkey();
             });
             this._keybindingManager = new Helper.KeybindingManager(this._settings); 
         }
@@ -196,6 +196,31 @@ var MenuSettingsController = class {
             }        
         } 
     }
+    _onHotkey() {
+        let focusTarget = this._menuButton.leftClickMenu.isOpen ? 
+                          (this._menuButton.actor || this._menuButton) : 
+                          (this.panel.actor || this.panel);
+        
+        this.disconnectKeyRelease();
+
+        this.keyReleaseInfo = {
+            id: focusTarget.connect('key-release-event', (actor, event) => {
+                this.disconnectKeyRelease();
+                this.toggleMenus()
+            }),
+            target: focusTarget
+        };
+
+        focusTarget.grab_key_focus();
+    }
+
+    disconnectKeyRelease() {
+        if (this.keyReleaseInfo) {
+            this.keyReleaseInfo.target.disconnect(this.keyReleaseInfo.id);
+            this.keyReleaseInfo = 0;
+        }
+    }
+
     _onHotkey() {
         let focusTarget = this._menuButton.leftClickMenu.isOpen ? 
                           (this._menuButton.actor || this._menuButton) : 
