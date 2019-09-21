@@ -55,7 +55,7 @@ const IconGrid = imports.ui.iconGrid;
 
 const MenuLayouts = Me.imports.menulayouts;
 
-const ArcSearch = Me.imports.search;
+const ArcSearch = Me.imports.searchGrid;
 const Constants = Me.imports.constants;
 
 const Gettext = imports.gettext.domain(Me.metadata['gettext-domain']);

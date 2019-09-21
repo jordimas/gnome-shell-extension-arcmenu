@@ -55,7 +55,7 @@ const IconGrid = imports.ui.iconGrid;
 
 const MenuLayouts = Me.imports.menulayouts;
 
-const ArcSearch = Me.imports.search;
+const ArcSearch = Me.imports.searchGrid;
 const Constants = Me.imports.constants;
 
 const Gettext = imports.gettext.domain(Me.metadata['gettext-domain']);
@@ -109,10 +109,11 @@ var createMenu = class{
             vertical: false
         });
         this.mainBox.add(this.subMainBox, {
-            expand: true,
+            expand: false,
             x_fill: true,
             y_fill: true,
-            y_align: St.Align.START
+            y_align: St.Align.START,
+            x_align: St.Align.START
         });
 
         //Right Box
@@ -120,10 +121,12 @@ var createMenu = class{
         this.shorcutsBox = new St.BoxLayout({
             vertical: true
         });
+        this.shorcutsBox.set_width(750);  
         this.shortcutsScrollBox = new St.ScrollView({
-            x_fill:false,
+            x_fill:true,
             y_fill: false,
             y_align: St.Align.START,
+            x_align: St.Align.START,
             overlay_scrollbars: true
         });   
         this.shortcutsScrollBox.set_width(750);  
@@ -135,13 +138,18 @@ var createMenu = class{
         vscroll2.connect('scroll-stop', () => {
             this.leftClickMenu.passEvents = false;
         }); 
-        this.shortcutsScrollBox.add_actor( this.shorcutsBox);
+        this.shortcutsScrollBox.add_actor( this.shorcutsBox, {
+            expand: false,
+            x_fill: true,
+            y_fill: true,
+            x_align: St.Align.START
+        });
         
       
         //this.shorcutsBox.add(this.iconGrid.actor);
         this.subMainBox.add( this.shortcutsScrollBox, {
-            expand: false,
-            x_fill: false,
+            expand: true,
+            x_fill: true,
             y_fill: true,
             y_align: St.Align.START
         });
@@ -417,7 +425,13 @@ var createMenu = class{
                             let actor = actors[i];
                             this.shorcutsBox.remove_actor(actor);
                     }
-                    this.shorcutsBox.add(this.newSearch.actor); 
+                    this.shorcutsBox.add(this.newSearch.actor, {
+                        x_expand: true,
+                        y_expand:false,
+                        x_fill: false,
+                        y_fill: false,
+                        x_align: St.Align.START
+                    });   
                  
                 this.newSearch.highlightDefault(true);
  		        this.newSearch.actor.show();         
