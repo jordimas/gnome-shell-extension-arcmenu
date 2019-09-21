@@ -38,7 +38,7 @@ const Constants = Me.imports.constants;
 const appSys = Shell.AppSystem.get_default();
 const Gettext = imports.gettext.domain(Me.metadata['gettext-domain']);
 const _ = Gettext.gettext;
-
+const Utils =  Me.imports.utils;
 var MAX_LIST_SEARCH_RESULTS_ROWS = 6;
 var MAX_APPS_SEARCH_RESULTS_ROWS = 6;
 
@@ -72,7 +72,7 @@ var SearchResult = class {
             this.menuItem = new MW.SearchResultItem(this._button,appSys.lookup_app(this.provider.id),this.metaInfo['description']);
         }
         else{
-            this.menuItem = new MW.BaseMenuItem(this._button);
+            this.menuItem = new PopupMenu.PopupBaseMenuItem();
         }
        	this.menuItem._delegate = this;
         this.menuItem.connect('activate', this.activate.bind(this));
@@ -708,10 +708,11 @@ var SearchResults = class {
 };
 Signals.addSignalMethods(SearchResults.prototype);
 
-var ArcSearchProviderInfo = 
-class ArcSearchProviderInfo extends MW.BaseMenuItem {
+var ArcSearchProviderInfo =Utils.createClass({
+    Name: 'ArcSearchProviderInfo',
+    Extends: PopupMenu.PopupBaseMenuItem, 
     _init(provider,button) {
-        super._init(button);
+        this.callParent('_init');
         this.provider = provider;
         this._button = button;
         this.layout = button._settings.get_enum('menu-layout');
@@ -734,22 +735,22 @@ class ArcSearchProviderInfo extends MW.BaseMenuItem {
             this.tooltip.hide();
             this.actor.connect('notify::hover', this._onHover.bind(this));
         }
-    }
+    },
     _onHover() {
         if ( this.hover) { // mouse pointer hovers over the button
             this.tooltip.show();
         } else { // mouse pointer leaves the button area
             this.tooltip.hide();
         }
-    }
+    },
     animateLaunch() {
         let app = appSys.lookup_app(this.provider.appInfo.get_id());
-    }
+    },
 
     setMoreCount(count) {
         this._moreText= ngettext("%d more", "%d more", count).format(count);
         if(count>0)
             this.nameLabel.text = this.provider.appInfo.get_name() + "  ("+ this._moreText+")";
     }
-};
+});
 

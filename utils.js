@@ -101,3 +101,103 @@ var defineClass = function (classDef) {
     
     return C;
 };
+
+var createClass = function (classDef) {
+    let parentProto = classDef.Extends ? classDef.Extends.prototype : null;
+    
+    if (imports.misc.config.PACKAGE_VERSION < '3.33') {
+        let isGObject = parentProto instanceof GObject.Object;
+        let needsSuper = parentProto && !isGObject;
+        let getParentArgs = function(args) {
+            let parentArgs = [];
+
+            (classDef.ParentConstrParams || parentArgs).forEach(p => {
+                if (p.constructor === Array) {
+                    let param = args[p[0]];
+                    
+                    parentArgs.push(p[1] ? param[p[1]] : param);
+                } else {
+                    parentArgs.push(p);
+                }
+            });
+
+            return parentArgs;
+        };
+        
+        let C = eval(
+            '(class C ' + (needsSuper ? 'extends Object' : '') + ' { ' +
+            '     constructor(...args) { ' +
+                    (needsSuper ? 'super(...getParentArgs(args));' : '') +
+                    (needsSuper || !parentProto ? 'this._init(...args);' : '') +
+            '     }' +
+            '     callParent(...args) { ' +
+            '         let func = args.shift(); ' +
+            '         if (!(func === \'_init\' && needsSuper))' +
+            '             super[func](...args); ' +
+            '     }' +    
+            '})'
+        );
+
+        if (parentProto) {
+            Object.setPrototypeOf(C.prototype, parentProto);
+            Object.setPrototypeOf(C, classDef.Extends);
+        } 
+        
+        Object.defineProperty(C, 'name', { value: classDef.Name });
+        Object.keys(classDef)
+            .filter(k => classDef.hasOwnProperty(k) && classDef[k] instanceof Function)
+            .forEach(k => C.prototype[k] = classDef[k]);
+
+        
+        return C;
+    }
+    else if (imports.misc.config.PACKAGE_VERSION >= '3.33') {
+        let isGObject = parentProto instanceof GObject.Object;
+        let needsSuper = parentProto && !isGObject;
+        let getParentArgs = function(args) {
+            let parentArgs = [];
+
+            (classDef.ParentConstrParams || parentArgs).forEach(p => {
+                if (p.constructor === Array) {
+                    let param = args[p[0]];
+                    
+                    parentArgs.push(p[1] ? param[p[1]] : param);
+                } else {
+                    parentArgs.push(p);
+                }
+            });
+
+            return parentArgs;
+        };
+        
+        let C = eval(
+            '(class C ' + (needsSuper ? 'extends Object' : '') + ' { ' +
+            '     _init(...args) { ' +
+                    (needsSuper ? 'super._init(...getParentArgs(args));' : '') +
+                    (needsSuper || !parentProto ? 'this._init(...args);' : '') +
+            '     }' +
+            '     callParent(...args) { ' +
+            '         let func = args.shift(); ' +
+            '         if (!(func === \'_init\' && needsSuper))' +
+            '             super[func](...args); ' +
+            '     }' +    
+            '})'
+        );
+
+
+        if (parentProto) {
+            Object.setPrototypeOf(C.prototype, parentProto);
+            Object.setPrototypeOf(C, classDef.Extends);
+        } 
+        
+        Object.defineProperty(C, 'name', { value: classDef.Name });
+        Object.keys(classDef)
+            .filter(k => classDef.hasOwnProperty(k) && classDef[k] instanceof Function)
+            .forEach(k => C.prototype[k] = classDef[k]);
+
+        C = GObject.registerClass({ Signals: classDef.Signals || {} }, C);
+  
+        return C;
+
+    }
+};

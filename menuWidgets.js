@@ -363,66 +363,36 @@ var AppRightClickMenu = class AppRightClickMenu extends PopupMenu.PopupMenu {
 
 // Removing the default behaviour which selects a hovered item if the space key is pressed.
 // This avoids issues when searching for an app with a space character in its name.
-var BaseMenuItem = Utils.defineClass({
-    Name: 'BaseMenuItem',
-    Extends: PopupMenu.PopupBaseMenuItem,
-    _init(button){
-        this.callParent("_init");
-        this._button = button;
-        
-    },    
-    _onKeyPressEvent(actor, event) {
-        let symbol = event.get_key_symbol();
-        if (symbol == Clutter.KEY_Return ||
-            symbol == Clutter.KEY_KP_Enter) {
-            this.activate(event);
-            return Clutter.EVENT_STOP;
-        }
-        return Clutter.EVENT_PROPAGATE;
-    },
-    _onButtonPressEvent(actor, event) {
-		
-        return Clutter.EVENT_PROPAGATE;
-    },
-
-    _onButtonReleaseEvent(actor, event) {
-        if(event.get_button()==1){
-            this.activate(event);
-        }
-  	    if(event.get_button()==3){
-	    }   
-        return Clutter.EVENT_STOP;
-    }    
-
-});
 
 // Menu item to launch GNOME activities overview
-var ActivitiesMenuItem = class ActivitiesMenuItem extends BaseMenuItem {
+var ActivitiesMenuItem =  Utils.createClass({
+    Name: 'ActivitiesMenuItem',
+    Extends: PopupMenu.PopupBaseMenuItem, 
     // Initialize the menu item
     _init(button) {
-        super._init(button);
+        this.callParent('_init');
         this._button = button;
         this._icon = new St.Icon({
             icon_name: 'view-fullscreen-symbolic',
             style_class: 'popup-menu-icon',
             icon_size: SMALL_ICON_SIZE
         });
-        this.actor.add_child(this._icon);
+        this.add_child(this._icon);
         let label = new St.Label({
             text: _("Activities Overview"),
             y_expand: true,
             y_align: Clutter.ActorAlign.CENTER
         });
-        this.actor.add_child(label);
-    }
+        this.add_child(label);
+    },
 
     // Activate the menu item (Open activities overview)
     activate(event) {
         this._button.leftClickMenu.toggle();
         Main.overview.toggle();
-        super.activate(event);
+        this.callParent('activate',event);
     }
-};
+});
 
 /**
  * A class representing a Tooltip.
@@ -687,10 +657,12 @@ var LockButton = class extends SessionButton {
 };
 
 // Menu item to go back to category view
-var BackMenuItem = class BackMenuItem extends BaseMenuItem {
+var BackMenuItem = Utils.createClass({
+    Name: 'BackMenuItem',
+    Extends: PopupMenu.PopupBaseMenuItem,
     // Initialize the button
     _init(button) {
-        super._init(button);
+        this.callParent('_init');
         this._button = button;
         this._icon = new St.Icon({
             icon_name: 'go-previous-symbolic',
@@ -704,7 +676,7 @@ var BackMenuItem = class BackMenuItem extends BaseMenuItem {
             y_align: Clutter.ActorAlign.CENTER
         });
         this.actor.add_child(backLabel);
-    }
+    },
 
     // Activate the button (go back to category view)
     activate(event) {
@@ -737,15 +709,17 @@ var BackMenuItem = class BackMenuItem extends BaseMenuItem {
             this._button.currentMenu = Constants.CURRENT_MENU.CATEGORIES;
             this._button._displayCategories();
         }
-        super.activate(event);
+        this.callParent('activate',event);
     }
-};
+});
 
 // Menu item to view all apps
-var ViewAllPrograms = class ViewAllPrograms extends BaseMenuItem {
+var ViewAllPrograms =Utils.createClass({
+    Name: 'ViewAllPrograms',
+    Extends: PopupMenu.PopupBaseMenuItem, 
     // Initialize the button
     _init(button) {
-        super._init(button);
+        this.callParent('_init');
         this._button = button;
         this._icon = new St.Icon({
             icon_name: 'go-next-symbolic',
@@ -760,7 +734,7 @@ var ViewAllPrograms = class ViewAllPrograms extends BaseMenuItem {
             y_align: Clutter.ActorAlign.CENTER
         });
         this.actor.add_child(backLabel);
-    }
+    },
 
     // Activate the button (go back to category view)
     activate(event) {
@@ -773,15 +747,17 @@ var ViewAllPrograms = class ViewAllPrograms extends BaseMenuItem {
        	  this._button._displayAllApps();
           this._button.currentMenu = Constants.CURRENT_MENU.SEARCH_RESULTS;
       }
-      super.activate(event);
+      this.callParent('activate',event);
     }
-};
+});
 
 // Menu shortcut item class
-var ShortcutMenuItem =  class ShortcutMenuItem extends BaseMenuItem {
+var ShortcutMenuItem = Utils.createClass({
+    Name: 'ShortcutMenuItem',
+    Extends: PopupMenu.PopupBaseMenuItem,
     // Initialize the menu item
     _init(button, name, icon, command) {
-        super._init(button);
+        this.callParent('_init');
         this._button = button;
         this._command = command;
         this._icon = new St.Icon({
@@ -795,24 +771,26 @@ var ShortcutMenuItem =  class ShortcutMenuItem extends BaseMenuItem {
             y_align: Clutter.ActorAlign.CENTER
         });
         this.actor.add_child(label);
-    }
+    },
 
     // Activate the menu item (Launch the shortcut)
     activate(event) {
         Util.spawnCommandLine(this._command);
         this._button.leftClickMenu.toggle();
-        super.activate(event);
-    }
+        this.callParent('activate',event);
+    },
     setIconSizeLarge(){
         this._icon.icon_size = MEDIUM_ICON_SIZE;
     }
-};
+});
 
 // Menu item which displays the current user
-var UserMenuItem = class UserMenuItem extends BaseMenuItem {
+var UserMenuItem =Utils.createClass({
+    Name: 'UserMenuItem',
+    Extends: PopupMenu.PopupBaseMenuItem, 
     // Initialize the menu item
     _init(button) {
-        super._init(button);
+        this.callParent('_init');
         this._button = button;
         let username = GLib.get_user_name();
         this._user = AccountsService.UserManager.get_default().get_user(username);
@@ -830,14 +808,14 @@ var UserMenuItem = class UserMenuItem extends BaseMenuItem {
         this._userChangedId = this._user.connect('changed', this._onUserChanged.bind(this));
         this.actor.connect('destroy', this._onDestroy.bind(this));
         this._onUserChanged();
-    }
+    },
 
     // Activate the menu item (Open user account settings)
     activate(event) {
         Util.spawnCommandLine("gnome-control-center user-accounts");
         this._button.leftClickMenu.toggle();
-        super.activate(event);
-    }
+        this.callParent('activate',event);
+    },
 
     // Handle changes to user information (redisplay new info)
     _onUserChanged() {
@@ -860,7 +838,7 @@ var UserMenuItem = class UserMenuItem extends BaseMenuItem {
                 //setIconAsync(this._userIcon, iconFile, 'avatar-default-symbolic');
         }
         
-    }
+    },
 
     // Destroy the menu item
     _onDestroy() {
@@ -873,12 +851,14 @@ var UserMenuItem = class UserMenuItem extends BaseMenuItem {
             this._userChangedId = 0;
         }
     }
-};
+});
 // Menu pinned apps/favorites item class
-var FavoritesMenuItem = class FavoritesMenuItem extends BaseMenuItem {
+var FavoritesMenuItem = Utils.createClass({
+    Name: 'FavoritesMenuItem',
+    Extends: PopupMenu.PopupBaseMenuItem, 
     // Initialize the menu item
     _init(button, name, icon, command) {
-        super._init(button);
+        this.callParent('_init');
         this._button = button;
         this._command = command;
         this._iconPath = icon;
@@ -918,7 +898,7 @@ var FavoritesMenuItem = class FavoritesMenuItem extends BaseMenuItem {
         this._button.appMenuManager.addMenu(this.rightClickMenu);
         this.rightClickMenu.actor.hide();
         Main.uiGroup.add_actor(this.rightClickMenu.actor);
-    }
+    },
 
     _onButtonReleaseEvent(actor, event) {
         if(event.get_button()==1){
@@ -931,7 +911,7 @@ var FavoritesMenuItem = class FavoritesMenuItem extends BaseMenuItem {
             this.rightClickMenu.toggle();
 	    }   
         return Clutter.EVENT_STOP;
-    }
+    },
    _onDragBegin() {   
         this._dragMonitor = {
             dragMotion: (this, this._onDragMotion.bind(this))
@@ -956,7 +936,7 @@ var FavoritesMenuItem = class FavoritesMenuItem extends BaseMenuItem {
         Main.overview.beginItemDrag(this);  
         this._emptyDropTarget.show(true); 
 
-    }
+    },
     _onDragMotion(dragEvent) {
     	this.newIndex = Math.floor((this._draggable._dragY - this.posY) / (this.rowHeight));
     	if(this.newIndex > this._button.applicationsBox.get_children().length -1)
@@ -967,11 +947,11 @@ var FavoritesMenuItem = class FavoritesMenuItem extends BaseMenuItem {
             this._button.applicationsBox.set_child_at_index(this._emptyDropTarget, this.newIndex);
 	    }
 
-	return DND.DragMotionResult.CONTINUE;
-    }
+	    return DND.DragMotionResult.CONTINUE;
+    },
     _onDragCancelled() {
-       Main.overview.cancelledItemDrag(this);
-    }
+        Main.overview.cancelledItemDrag(this);
+    },
 
     _onDragEnd() {    
  	    this._button.applicationsBox.remove_child(this._emptyDropTarget); 
@@ -991,7 +971,7 @@ var FavoritesMenuItem = class FavoritesMenuItem extends BaseMenuItem {
         Main.overview.endItemDrag(this);
         DND.removeDragMonitor(this._dragMonitor);   
         this.emit('saveSettings');	  
-    }
+    },
     
     getDragActor() {
         return new St.Icon({
@@ -999,13 +979,13 @@ var FavoritesMenuItem = class FavoritesMenuItem extends BaseMenuItem {
             style_class: 'popup-menu-icon',
             icon_size: 40
         });
-    }
+    },
 
     // Returns the original actor that should align with the actor
     // we show as the item is being dragged.
     getDragActorSource() {
         return this.actor;
-    }
+    },
 
     // Activate the menu item (Launch the shortcut)
     activate(event) {
@@ -1017,19 +997,19 @@ var FavoritesMenuItem = class FavoritesMenuItem extends BaseMenuItem {
             Util.spawnCommandLine(this._command);
 
         this._button.leftClickMenu.toggle();
-        super.activate(event);
-    }
+        this.callParent('activate',event);
+    },
     _onDestroy(){
   
     }
-};
+});
 // Menu application item class
-var ApplicationMenuIcon = Utils.defineClass({
+var ApplicationMenuIcon = Utils.createClass({
     Name: 'ApplicationMenuIcon',
     Extends: PopupMenu.PopupBaseMenuItem,
     // Initialize menu item
     _init(button, app) {
-        this.callParent("_init");
+        this.callParent('_init');
         this._button = button;
         this.layoutWidth = 0;
         let layout = this._button._settings.get_enum('menu-layout');
@@ -1211,15 +1191,14 @@ var ApplicationMenuIcon = Utils.defineClass({
     activate(event) {
         this._app.open_new_window(-1);
         this._button.leftClickMenu.toggle();
-        super.activate(event);
+        this.callParent('activate',event);
     },
 
    // Set button as active, scroll to the button
     setActive(active, params) {
         if (active && !this.actor.hover)
             this._button.scrollToButton(this);
-
-        super.setActive(active, params);
+        this.callParent('setActive',active, params);
     },
 
     setFakeActive(active) {
@@ -1249,12 +1228,12 @@ var ApplicationMenuIcon = Utils.defineClass({
 
     }
 });
-var ApplicationMenuItem =Utils.defineClass({
+var ApplicationMenuItem =Utils.createClass({
     Name: 'ApplicationMenuItem',
     Extends: PopupMenu.PopupBaseMenuItem,
     // Initialize menu item
     _init(button, app) {
-        this.callParent("_init");
+        this.callParent('_init');
         this._app = app;
         this.app = app;
         //global.log(app);
@@ -1356,15 +1335,14 @@ var ApplicationMenuItem =Utils.defineClass({
     activate(event) {
         this._app.open_new_window(-1);
         this._button.leftClickMenu.toggle();
-        super.activate(event);
+        this.callParent('activate',event);
     },
 
    // Set button as active, scroll to the button
     setActive(active, params) {
         if (active && !this.actor.hover)
             this._button.scrollToButton(this);
-
-        super.setActive(active, params);
+        this.callParent('setActive',active, params);
     },
 
     setFakeActive(active) {
@@ -1388,12 +1366,12 @@ var ApplicationMenuItem =Utils.defineClass({
     _onDestroy(){
     }
 });
-var SearchResultItem = Utils.defineClass({
+var SearchResultItem = Utils.createClass({
     Name: 'SearchResultItem',
     Extends: PopupMenu.PopupBaseMenuItem,
     // Initialize menu item
     _init(button, app,path) {
-        this.callParent("_init");
+        this.callParent('_init');
         this._button = button;
         this.app =app;
         this._path=path;
@@ -1429,10 +1407,12 @@ var SearchResultItem = Utils.defineClass({
     }
 });
 // Menu Category item class
-var CategoryMenuItem = class CategoryMenuItem extends BaseMenuItem {
+var CategoryMenuItem =  Utils.createClass({
+    Name: 'CategoryMenuItem',
+    Extends: PopupMenu.PopupBaseMenuItem,
     // Initialize menu item
     _init(button, category, title=null) {
-        super._init(button);
+        this.callParent('_init');
         this.layout = this._button._settings.get_enum('menu-layout');
         this._category = category;
         this._button = button;
@@ -1484,7 +1464,7 @@ var CategoryMenuItem = class CategoryMenuItem extends BaseMenuItem {
         this.actor.connect('notify::hover', this._onHover.bind(this));
   
 
-    }
+    },
 
     // Activate menu item (Display applications in category)
     activate(event) {
@@ -1503,8 +1483,8 @@ var CategoryMenuItem = class CategoryMenuItem extends BaseMenuItem {
             this.setFakeActive(true);
         }
             
-        super.activate(event);
-    }
+        this.callParent('activate',event);
+    },
 
     _onHover() {
         if (this.actor.hover) { // mouse pointer hovers over the button
@@ -1529,7 +1509,7 @@ var CategoryMenuItem = class CategoryMenuItem extends BaseMenuItem {
         } else if(!this.actor.hover && !this._active) { // mouse pointer leaves the button area
             this.actor.remove_style_class_name('selected');
         }
-    }
+    },
     // Set button as active, scroll to the button
     setFakeActive(active, params) {
         this._active = active;
@@ -1539,7 +1519,7 @@ var CategoryMenuItem = class CategoryMenuItem extends BaseMenuItem {
         else if (!active && !this.actor.hover){
             this.actor.remove_style_class_name('selected');
         }
-    }
+    },
     // Set button as active, scroll to the button
     setActive(active, params) {
         //this._active = active;
@@ -1559,12 +1539,14 @@ var CategoryMenuItem = class CategoryMenuItem extends BaseMenuItem {
         }
         //super.setActive(active, params);
     }
-};
+});
 // Simple Menu item class
-var SimpleMenuItem = class SimpleMenuItem extends BaseMenuItem {
+var SimpleMenuItem = Utils.createClass({
+    Name: 'SimpleMenuItem',
+    Extends: PopupMenu.PopupBaseMenuItem,
     // Initialize menu item
     _init(button, category, title=null) {
-        super._init(button);
+        this.callParent('_init');
         this._category = category;
         this._button = button;
         this.name = "";
@@ -1644,7 +1626,7 @@ var SimpleMenuItem = class SimpleMenuItem extends BaseMenuItem {
         //if(!this.subMenu.isOpen)
            // this.subMenu.redisplay();
         //this.subMenu.toggle();
-    }
+    },
     updateStyle(){
         let addStyle=this._button._settings.get_boolean('enable-custom-arc-menu');
        
@@ -1658,7 +1640,7 @@ var SimpleMenuItem = class SimpleMenuItem extends BaseMenuItem {
                 this.subMenu.actor.style_class = 'popup-menu-boxpointer';
                 this.subMenu.actor.add_style_class_name('popup-menu');
             }
-    }
+    },
     // Activate menu item (Display applications in category)
     activate(event) {
         /*if (this._category)
@@ -1682,7 +1664,7 @@ var SimpleMenuItem = class SimpleMenuItem extends BaseMenuItem {
        // this.subMenu.toggle();
             
         //super.activate(event);
-    }
+    },
     _onHover() {
         if (this.actor.hover) { // mouse pointer hovers over the button
             this.actor.add_style_class_name('selected');
@@ -1690,25 +1672,26 @@ var SimpleMenuItem = class SimpleMenuItem extends BaseMenuItem {
         } else if(!this.actor.hover && !this._active) { // mouse pointer leaves the button area
             this.actor.remove_style_class_name('selected');
         }
-    }
+    },
     // Set button as active, scroll to the button
     setFakeActive(active, params) {
 
-    }
+    },
     // Set button as active, scroll to the button
     setActive(active, params) {
 
-    }
+    },
     _onDestroy(){
 
     }
-};
+});
 // SubMenu Category item class
-var CategorySubMenuItem = class CategorySubMenuItem extends PopupMenu.PopupSubMenuMenuItem {
+var CategorySubMenuItem = Utils.createClass({
+    Name: 'CategorySubMenuItem',
+    Extends: PopupMenu.PopupSubMenuMenuItem, 
     // Initialize menu item
     _init(button, category, title=null) {
-        super._init('',true);
-        
+        this.callParent('_init','',true);
         this._category = category;
         this._button = button;
         this.name = "";
@@ -1742,20 +1725,20 @@ var CategorySubMenuItem = class CategorySubMenuItem extends PopupMenu.PopupSubMe
        
         this.actor.connect('notify::hover', this._onHover.bind(this));
 
-    }
+    },
 
     // Activate menu item (Display applications in category)
     activate(event) {
         this.submenu.toggle();
-        super.activate(event);
-    }
+        this.callParent('activate',event);
+    },
     _onHover() {
         if (this.actor.hover) { // mouse pointer hovers over the button
             this.actor.add_style_class_name('selected');
         } else if(!this.actor.hover && !this._active) { // mouse pointer leaves the button area
             this.actor.remove_style_class_name('selected');
         }
-    }
+    },
     // Set button as active, scroll to the button
     setFakeActive(active, params) {
         this._active = active;
@@ -1765,7 +1748,7 @@ var CategorySubMenuItem = class CategorySubMenuItem extends PopupMenu.PopupSubMe
         else if (!active && !this.actor.hover){
             this.actor.remove_style_class_name('selected');
         }
-    }
+    },
     // Set button as active, scroll to the button
     setActive(active, params) {
         //this._active = active;
@@ -1785,7 +1768,7 @@ var CategorySubMenuItem = class CategorySubMenuItem extends PopupMenu.PopupSubMe
         }
         //super.setActive(active, params);
     }
-};
+});
 
 
 
@@ -1836,10 +1819,12 @@ var PlaceInfo = class {
 Signals.addSignalMethods(PlaceInfo.prototype);
 
 // Menu Place Shortcut item class
-var PlaceMenuItem =  class PlaceMenuItem extends BaseMenuItem {
+var PlaceMenuItem = Utils.createClass({
+    Name: 'PlaceMenuItem',
+    Extends: PopupMenu.PopupBaseMenuItem,
     // Initialize menu item
     _init(button, info) {
-        super._init(button);
+        this.callParent('_init');
         this._button = button;
         this._info = info;
         this._icon = new St.Icon({
@@ -1855,7 +1840,7 @@ var PlaceMenuItem =  class PlaceMenuItem extends BaseMenuItem {
         this.actor.add_child(this._label);
         this._changedId = this._info.connect('changed',
             this._propertiesChanged.bind(this));
-    }
+    },
 
     // Destroy menu item
     destroy() {
@@ -1863,22 +1848,22 @@ var PlaceMenuItem =  class PlaceMenuItem extends BaseMenuItem {
             this._info.disconnect(this._changedId);
             this._changedId = 0;
         }
-        super.destroy();
-    }
+        this.callParent('destroy');
+    },
 
     // Activate (launch) the shortcut
     activate(event) {
         this._info.launch(event.get_time());
         this._button.leftClickMenu.toggle();
-        super.activate(event);
-    }
+        this.callParent('activate',event);
+    },
 
     // Handle changes in place info (redisplay new info)
     _propertiesChanged(info) {
         this._icon.gicon = info.icon;
         this._label.text = info.name;
     }
-};
+});
 
 /**
  * This class represents a SearchBox.

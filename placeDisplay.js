@@ -40,11 +40,12 @@ const Hostname1Iface = '<node> \
 </node>';
 const Hostname1 = Gio.DBusProxy.makeProxyWrapper(Hostname1Iface);
 const Utils =  Me.imports.utils;
-var PlaceMenuItem = Utils.defineClass({
+
+var PlaceMenuItem = Utils.createClass({
     Name: 'PlaceMenuItem2',
     Extends: PopupMenu.PopupBaseMenuItem,
     _init(info,button) {
-        this.callParent("_init");
+        this.callParent('_init');
         this._info = info;
         this._button = button;
         this._icon = new St.Icon({
@@ -76,8 +77,8 @@ var PlaceMenuItem = Utils.defineClass({
             this._info.disconnect(this._changedId);
             this._changedId = 0;
         }
-
-        super.destroy();
+        this.callParent('destroy');
+ 
     },
     _onKeyPressEvent(actor, event) {
         let symbol = event.get_key_symbol();
@@ -105,7 +106,7 @@ var PlaceMenuItem = Utils.defineClass({
     activate(event) {
         this._info.launch(event.get_time());
         this._button.leftClickMenu.toggle();
-        super.activate(event);
+        this.callParent('activate',event);
     },
 
     _propertiesChanged(info) {
