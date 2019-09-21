@@ -690,9 +690,11 @@ var SearchResults = class {
         if (!result)
             return;
         if (selected) {
-            result.actor.add_style_class_name('selected');
+            result.actor ? 
+            result.actor.add_style_class_name('selected') : '';
         } else {
-           result.actor.remove_style_class_name('selected');
+            result.actor ? 
+            result.actor.remove_style_class_name('selected') : '';
         }
     }
 
