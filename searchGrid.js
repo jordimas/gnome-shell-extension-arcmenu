@@ -155,14 +155,69 @@ var AppSearchResult = class extends SearchResult {
         this._button = resultsView._button;
         this.layout = this._button._settings.get_enum('menu-layout');
         let app = appSys.lookup_app(this.metaInfo['id']);
-        
+        if(app){
             this.menuItem = new MW.ApplicationMenuIcon(this._button, app);
-            this.menuItem.connect('activate', this.activate.bind(this))
         }
-        activate() {
-            //global.log('activate');
-            this.emit('activate', this.metaInfo.id);
+        else{
+            let ICON_SIZE = 16;
+            this.menuItem = new PopupMenu.PopupBaseMenuItem();
+            this.menuItem.actor.vertical = true;
+            this.menuItem.actor.style ='padding: 5px; spacing: 0px; width:80px;height:80px;';
+            if(this.layout == Constants.MENU_LAYOUT.Elementary || this.layout == Constants.MENU_LAYOUT.UbuntuDash){
+                ICON_SIZE = 52;
+            }
+            else if(this.layout == Constants.MENU_LAYOUT.Redmond){
+                ICON_SIZE = 36;
+            } 
+            this._iconBin = new St.Bin({
+                y_align: St.Align.END,
+                x_align: St.Align.MIDDLE
+            });
+            this.icon=this.metaInfo['createIcon'](ICON_SIZE)
+            this._iconBin.set_child(this.icon);    
+           
+            if (this.icon) {
+                this.menuItem.actor.add_child(this._iconBin);
+            } 
+            else{
+                if(this.layout == Constants.MENU_LAYOUT.Elementary || this.layout == Constants.MENU_LAYOUT.UbuntuDash){
+                    this.menuItem.actor.style = "padding: 25px 0px;";
+                }
+                else if(this.layout == Constants.MENU_LAYOUT.Redmond){
+                    this.menuItem.actor.style = "padding: 20px 0px;";
+                }
+            }            
+         
+            let label = new St.Label({
+                text: this.metaInfo['name'],
+                y_expand: false,
+                y_align: St.Align.END,
+                x_align: St.Align.END
+            });
+            this.menuItem.actor.add_child(label);
+            let isMenuItem=true;
+            if(this.metaInfo['description'] || ((app!=undefined) ? app.get_description() : false))
+            {
+                this.tooltip = new MW.Tooltip(this.menuItem.actor, this.metaInfo['description'] ? this.metaInfo['description']:  app.get_description(),isMenuItem,this._button._settings);
+                this.tooltip.hide();
+                this.menuItem.actor.connect('notify::hover', this._onHover.bind(this));
+            }
+    
         }
+        this.menuItem.connect('activate', this.activate.bind(this))
+    }
+    activate() {
+        //global.log('activate');
+        this.emit('activate', this.metaInfo.id);
+    }
+    _onHover() {
+
+        if (this.menuItem.actor.hover) { // mouse pointer hovers over the button
+            this.tooltip.show();
+        } else { // mouse pointer leaves the button area
+            this.tooltip.hide();
+        }
+    }
 };
 var SearchResultsBase = class {
     constructor(provider, resultsView) {
