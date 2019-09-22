@@ -162,11 +162,12 @@ var AppSearchResult = class extends SearchResult {
             let ICON_SIZE = 16;
             this.menuItem = new PopupMenu.PopupBaseMenuItem();
             this.menuItem.actor.vertical = true;
-            this.menuItem.actor.style ='padding: 5px; spacing: 0px; width:80px;height:80px;';
             if(this.layout == Constants.MENU_LAYOUT.Elementary || this.layout == Constants.MENU_LAYOUT.UbuntuDash){
+                this.menuItem.actor.style ='padding: 5px; spacing: 0px; width:95px; height:95px;';
                 ICON_SIZE = 52;
             }
             else if(this.layout == Constants.MENU_LAYOUT.Redmond){
+                this.menuItem.actor.style ='padding: 5px; spacing: 0px; width:80px;height:80px;';
                 ICON_SIZE = 36;
             } 
             this._iconBin = new St.Bin({
