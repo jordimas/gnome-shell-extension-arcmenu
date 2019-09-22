@@ -203,9 +203,9 @@ var AppSearchResult = class extends SearchResult {
                 this.tooltip.hide();
                 this.menuItem.actor.connect('notify::hover', this._onHover.bind(this));
             }
-    
+            this.menuItem.connect('activate', this.activate.bind(this))
         }
-        this.menuItem.connect('activate', this.activate.bind(this))
+       
     }
     activate() {
         //global.log('activate');
