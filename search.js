@@ -64,17 +64,37 @@ var SearchResult = class {
         this._button= resultsView._button;
         this.metaInfo = metaInfo;
         this._resultsView = resultsView;
-        let app = appSys.lookup_app(this.metaInfo['id']);
-        if(app){
-            this.menuItem = new MW.SearchResultItem(this._button,app); 
-        }
-        else if(this.provider.id =='org.gnome.Nautilus.desktop'){
+    }
+
+};
+Signals.addSignalMethods(SearchResult.prototype);
+
+var ListSearchResult = class extends SearchResult {
+    constructor(provider, metaInfo, resultsView) {
+        super(provider, metaInfo, resultsView);
+        let button = resultsView._button;
+        if(this.provider.id =='org.gnome.Nautilus.desktop'){
             this.menuItem = new MW.SearchResultItem(this._button,appSys.lookup_app(this.provider.id),this.metaInfo['description']);
         }
         else{
             this.menuItem = new PopupMenu.PopupBaseMenuItem();
         }
-       	this.menuItem._delegate = this;
+        this._termsChangedId = 0;
+        
+        // An icon for, or thumbnail of, content
+        let icon = this.metaInfo['createIcon'](16);
+        if (icon) {
+             this.menuItem.actor.add_child(icon);
+        }
+
+        let title = new St.Label({ text: this.metaInfo['name'],x_expand: true,y_align: Clutter.ActorAlign.CENTER });
+        this.menuItem.actor.add_child(title);
+
+        if (this.metaInfo['description']&&  this.provider.appInfo.get_name() == "Calculator") {
+            title.text = this.metaInfo['name'] + "   " + this.metaInfo['description'];
+        }
+        this.menuItem.connect('destroy', this._onDestroy.bind(this));
+        
         this.menuItem.connect('activate', this.activate.bind(this));
 
         let isMenuItem=true;
@@ -86,7 +106,10 @@ var SearchResult = class {
         }
 
     }
-
+    activate() {
+        //global.log('activate');
+        this.emit('activate', this.metaInfo.id);
+    }
     _onHover() {
 
         if (this.menuItem.actor.hover) { // mouse pointer hovers over the button
@@ -94,52 +117,6 @@ var SearchResult = class {
         } else { // mouse pointer leaves the button area
             this.tooltip.hide();
         }
-    }
-    activate() {
-        //global.log('activate');
-        this.emit('activate', this.metaInfo.id);
-    }
-};
-Signals.addSignalMethods(SearchResult.prototype);
-
-var ListSearchResult = class extends SearchResult {
-    constructor(provider, metaInfo, resultsView) {
-        super(provider, metaInfo, resultsView);
-        let button = resultsView._button;
-
-        this._termsChangedId = 0;
-        
-        this.layout = button._settings.get_enum('menu-layout');
-        let ICON_SIZE = 16;
-
-        if(this.layout == Constants.MENU_LAYOUT.Elementary || this.layout == Constants.MENU_LAYOUT.UbuntuDash){
-            ICON_SIZE = 52;
-        }
-        else if(this.layout == Constants.MENU_LAYOUT.Redmond){
-            ICON_SIZE = 36;
-        }
-        
-        // An icon for, or thumbnail of, content
-        let icon = this.metaInfo['createIcon'](ICON_SIZE);
-        if (icon) {
-             this.menuItem.actor.add_child(icon);
-        }
-        else{
-            if(this.layout == Constants.MENU_LAYOUT.Elementary || this.layout == Constants.MENU_LAYOUT.UbuntuDash){
-                this.menuItem.actor.style = "padding: 25px 0px;";
-            }
-            else if(this.layout == Constants.MENU_LAYOUT.Redmond){
-                this.menuItem.actor.style = "padding: 20px 0px;";
-            }
-        }    
-
-        let title = new St.Label({ text: this.metaInfo['name'],x_expand: true,y_align: Clutter.ActorAlign.CENTER });
-        this.menuItem.actor.add_child(title);
-
-        if (this.metaInfo['description']&&  this.provider.appInfo.get_name() == "Calculator") {
-            title.text = this.metaInfo['name'] + "   " + this.metaInfo['description'];
-        }
-        this.menuItem.connect('destroy', this._onDestroy.bind(this));
     }
   
     _highlightTerms() {
@@ -159,35 +136,58 @@ var AppSearchResult = class extends SearchResult {
         super(provider, metaInfo, resultsView);
         this._button = resultsView._button;
         this.layout = this._button._settings.get_enum('menu-layout');
-        let ICON_SIZE = 16;
-
-        if(this.layout == Constants.MENU_LAYOUT.Elementary || this.layout == Constants.MENU_LAYOUT.UbuntuDash){
-            ICON_SIZE = 52;
+        let app = appSys.lookup_app(this.metaInfo['id']);
+        if(app){
+            this.menuItem = new MW.ApplicationMenuItem(this._button, app);
         }
-        else if(this.layout == Constants.MENU_LAYOUT.Redmond){
-            ICON_SIZE = 36;
-        } 
-
-        this.icon = this.metaInfo['createIcon'](ICON_SIZE);
-        if (this.icon) {
-              this.menuItem.actor.add_child(this.icon);
-        } 
         else{
-            if(this.layout == Constants.MENU_LAYOUT.Elementary || this.layout == Constants.MENU_LAYOUT.UbuntuDash){
-                this.menuItem.actor.style = "padding: 25px 0px;";
+            this.menuItem = new PopupMenu.PopupBaseMenuItem();
+            this.icon = this.metaInfo['createIcon'](16);
+            if (this.icon) {
+                  this.menuItem.actor.add_child(this.icon);
+            } 
+            else{
+                if(this.layout == Constants.MENU_LAYOUT.Elementary || this.layout == Constants.MENU_LAYOUT.UbuntuDash){
+                    this.menuItem.actor.style = "padding: 25px 0px;";
+                }
+                else if(this.layout == Constants.MENU_LAYOUT.Redmond){
+                    this.menuItem.actor.style = "padding: 20px 0px;";
+                }
+            }            
+            let label = new St.Label({
+                text: this.metaInfo['name'],
+                y_expand: true,
+                x_expand: true,
+                y_align: Clutter.ActorAlign.CENTER
+            });
+            this.menuItem.actor.add_child(label);
+            let isMenuItem=true;
+            if(this.metaInfo['description'] || ((app!=undefined) ? app.get_description() : false))
+            {
+                this.tooltip = new MW.Tooltip(this.menuItem.actor, this.metaInfo['description'] ? this.metaInfo['description']:  app.get_description(),isMenuItem,this._button._settings);
+                this.tooltip.hide();
+                this.menuItem.actor.connect('notify::hover', this._onHover.bind(this));
             }
-            else if(this.layout == Constants.MENU_LAYOUT.Redmond){
-                this.menuItem.actor.style = "padding: 20px 0px;";
-            }
-        }            
-        let label = new St.Label({
-            text: this.metaInfo['name'],
-            y_expand: true,
-            x_expand: true,
-            y_align: Clutter.ActorAlign.CENTER
-        });
-        this.menuItem.actor.add_child(label);
+    
+        }
+        
+       
+        this.menuItem.connect('activate', this.activate.bind(this))
     }
+
+    _onHover() {
+
+        if (this.menuItem.actor.hover) { // mouse pointer hovers over the button
+            this.tooltip.show();
+        } else { // mouse pointer leaves the button area
+            this.tooltip.hide();
+        }
+    }
+    activate() {
+        //global.log('activate');
+        this.emit('activate', this.metaInfo.id);
+    }
+
 };
 var SearchResultsBase = class {
     constructor(provider, resultsView) {
@@ -690,9 +690,9 @@ var SearchResults = class {
         if (!result)
             return;
         if (selected) {
-            //result.actor.add_style_class_name('selected');
+            result.actor.add_style_class_name('selected');
         } else {
-           // result.actor.remove_style_class_name('selected');
+            result.actor.remove_style_class_name('selected');
         }
     }
 

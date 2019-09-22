@@ -131,7 +131,7 @@ var AppRightClickMenu = class AppRightClickMenu extends PopupMenu.PopupMenu {
             if(this._path != undefined){
                 this._newWindowMenuItem = this._appendMenuItem(_("Open Folder Location"));
                 this._newWindowMenuItem.connect('activate', () => {
-                    Util.spawnCommandLine('nautilus '+ this._path);
+                    Util.spawnCommandLine('nautilus "' +this._path +'"');
                     this.emit('activate-window', null);
                     this.closeMenus();
                 });  

@@ -64,17 +64,23 @@ var SearchResult = class {
         this._button= resultsView._button;
         this.metaInfo = metaInfo;
         this._resultsView = resultsView;
-        let app = appSys.lookup_app(this.metaInfo['id']);
-        if(app){
-            this.menuItem = new MW.SearchResultItem(this._button,app); 
-        }
-        else if(this.provider.id =='org.gnome.Nautilus.desktop'){
+ 
+    }
+
+};
+Signals.addSignalMethods(SearchResult.prototype);
+
+var ListSearchResult = class extends SearchResult {
+    constructor(provider, metaInfo, resultsView) {
+        super(provider, metaInfo, resultsView);
+        let button = resultsView._button;
+        if(this.provider.id =='org.gnome.Nautilus.desktop'){
             this.menuItem = new MW.SearchResultItem(this._button,appSys.lookup_app(this.provider.id),this.metaInfo['description']);
         }
         else{
             this.menuItem = new PopupMenu.PopupBaseMenuItem();
         }
-       	this.menuItem._delegate = this;
+       
         this.menuItem.connect('activate', this.activate.bind(this));
 
         let isMenuItem=true;
@@ -84,29 +90,6 @@ var SearchResult = class {
             this.tooltip.hide();
             this.menuItem.actor.connect('notify::hover', this._onHover.bind(this));
         }
-
-    }
-
-    _onHover() {
-
-        if (this.menuItem.actor.hover) { // mouse pointer hovers over the button
-            this.tooltip.show();
-        } else { // mouse pointer leaves the button area
-            this.tooltip.hide();
-        }
-    }
-    activate() {
-        //global.log('activate');
-        this.emit('activate', this.metaInfo.id);
-    }
-};
-Signals.addSignalMethods(SearchResult.prototype);
-
-var ListSearchResult = class extends SearchResult {
-    constructor(provider, metaInfo, resultsView) {
-        super(provider, metaInfo, resultsView);
-        let button = resultsView._button;
-
         this._termsChangedId = 0;
         
         this.layout = button._settings.get_enum('menu-layout');
@@ -134,7 +117,7 @@ var ListSearchResult = class extends SearchResult {
         }    
 
         let title = new St.Label({ text: this.metaInfo['name'],x_expand: true,y_align: Clutter.ActorAlign.CENTER });
-        this.menuItem.actor.add_child(title,{x_fill:true,x_expand:true});
+        this.menuItem.actor.add_child(title);
         this.menuItem.actor.style = "width:275px;";
 
         if (this.metaInfo['description']&&  this.provider.appInfo.get_name() == "Calculator") {
@@ -142,7 +125,18 @@ var ListSearchResult = class extends SearchResult {
         }
         this.menuItem.connect('destroy', this._onDestroy.bind(this));
     }
-  
+    _onHover() {
+
+        if (this.menuItem.actor.hover) { // mouse pointer hovers over the button
+            this.tooltip.show();
+        } else { // mouse pointer leaves the button area
+            this.tooltip.hide();
+        }
+    }
+    activate() {
+        //global.log('activate');
+        this.emit('activate', this.metaInfo.id);
+    }
     _highlightTerms() {
         let markup = this._resultsView.highlightTerms(this.metaInfo['description'].split('\n')[0]);
         this._descriptionLabel.clutter_text.set_markup(markup);
@@ -166,17 +160,25 @@ var AppSearchResult = class extends SearchResult {
         }
         else{
             let ICON_SIZE = 16;
-
+            this.menuItem = new PopupMenu.PopupBaseMenuItem();
+            this.menuItem.actor.vertical = true;
             if(this.layout == Constants.MENU_LAYOUT.Elementary || this.layout == Constants.MENU_LAYOUT.UbuntuDash){
+                this.menuItem.actor.style ='padding: 5px; spacing: 0px; width:95px; height:95px;';
                 ICON_SIZE = 52;
             }
             else if(this.layout == Constants.MENU_LAYOUT.Redmond){
+                this.menuItem.actor.style ='padding: 5px; spacing: 0px; width:80px;height:80px;';
                 ICON_SIZE = 36;
             } 
-    
-            this.icon = this.metaInfo['createIcon'](ICON_SIZE);
+            this._iconBin = new St.Bin({
+                y_align: St.Align.END,
+                x_align: St.Align.MIDDLE
+            });
+            this.icon=this.metaInfo['createIcon'](ICON_SIZE)
+            this._iconBin.set_child(this.icon);    
+           
             if (this.icon) {
-                  this.menuItem.actor.add_child(this.icon);
+                this.menuItem.actor.add_child(this._iconBin);
             } 
             else{
                 if(this.layout == Constants.MENU_LAYOUT.Elementary || this.layout == Constants.MENU_LAYOUT.UbuntuDash){
@@ -186,15 +188,36 @@ var AppSearchResult = class extends SearchResult {
                     this.menuItem.actor.style = "padding: 20px 0px;";
                 }
             }            
+         
             let label = new St.Label({
                 text: this.metaInfo['name'],
-                y_expand: true,
-                x_expand: true,
-                y_align: Clutter.ActorAlign.CENTER
+                y_expand: false,
+                y_align: St.Align.END,
+                x_align: St.Align.END
             });
             this.menuItem.actor.add_child(label);
+            let isMenuItem=true;
+            if(this.metaInfo['description'] || ((app!=undefined) ? app.get_description() : false))
+            {
+                this.tooltip = new MW.Tooltip(this.menuItem.actor, this.metaInfo['description'] ? this.metaInfo['description']:  app.get_description(),isMenuItem,this._button._settings);
+                this.tooltip.hide();
+                this.menuItem.actor.connect('notify::hover', this._onHover.bind(this));
+            }
+    
         }
-      
+        this.menuItem.connect('activate', this.activate.bind(this))
+    }
+    activate() {
+        //global.log('activate');
+        this.emit('activate', this.metaInfo.id);
+    }
+    _onHover() {
+
+        if (this.menuItem.actor.hover) { // mouse pointer hovers over the button
+            this.tooltip.show();
+        } else { // mouse pointer leaves the button area
+            this.tooltip.hide();
+        }
     }
 };
 var SearchResultsBase = class {
@@ -360,7 +383,7 @@ var ListSearchResults = class extends SearchResultsBase {
                                            vertical: true });
         this._container.add(this._content, { expand: true,x_fill:true});
         this._container.style = "padding: 10px;"
-        this._resultDisplayBin.set_child(this._container, { expand: true,x_fill:true});
+        this._resultDisplayBin.set_child(this._container);
     }
 
     _setMoreCount(count) {
@@ -400,13 +423,7 @@ var AppSearchResults = class extends SearchResultsBase {
         this._parentContainer = resultsView.actor;
         this._grid = new St.BoxLayout({vertical: false });
         this._grid.style = "padding: 10px;"
-        this._resultDisplayBin.set_child(this._grid, {
-            x_expand: true,
-            y_expand:false,
-            x_fill: true,
-            y_fill: false,
-            x_align: St.Align.START
-        });  
+        this._resultDisplayBin.set_child(this._grid);  
     }
 
     _getMaxDisplayedResults() {
@@ -705,9 +722,9 @@ var SearchResults = class {
         if (!result)
             return;
         if (selected) {
-            //result.actor.add_style_class_name('selected');
+            result.actor.add_style_class_name('selected');
         } else {
-           // result.actor.remove_style_class_name('selected');
+            result.actor.remove_style_class_name('selected');
         }
     }
 

@@ -454,7 +454,13 @@ var createMenu = class{
                             let actor = actors[i];
                             this.shorcutsBox.remove_actor(actor);
                     }
-                    this.shorcutsBox.add(this.newSearch.actor); 
+                    this.shorcutsBox.add(this.newSearch.actor, {
+                        x_expand: true,
+                        y_expand:false,
+                        x_fill: false,
+                        y_fill: false,
+                        x_align: St.Align.START
+                    });   
                  
                 this.newSearch.highlightDefault(true);
  		        this.newSearch.actor.show();         
