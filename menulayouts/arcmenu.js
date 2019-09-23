@@ -102,7 +102,7 @@ var createMenu = class {
         this.applicationsBox = new St.BoxLayout({ vertical: true });
         this.applicationsScrollBox.add_actor(this.applicationsBox);
         //Add Horizontal Separator
-        this.leftBox.add(this._createHorizontalSeparator(false), {
+        this.leftBox.add(this._createHorizontalSeparator(Constants.SEPARATOR_STYLE.LONG), {
             x_expand: true,
             x_fill: true,
             y_fill: false,
@@ -183,7 +183,7 @@ var createMenu = class {
         });
     
         //draw top right horizontal separator under User Name
-        this.rightBox.add(this._createHorizontalSeparator(true), {
+        this.rightBox.add(this._createHorizontalSeparator(Constants.SEPARATOR_STYLE.SHORT), {
             x_expand: true,
             x_fill: true,
             y_fill: false,
@@ -242,7 +242,7 @@ var createMenu = class {
         if(this.placesShortcuts && (this._settings.get_boolean('show-external-devices') || this.softwareShortcuts || this._settings.get_boolean('show-bookmarks'))  )
             shouldDraw=true;  
         if(shouldDraw){
-            this.shorcutsBox.add(this._createHorizontalSeparator(true), {
+            this.shorcutsBox.add(this._createHorizontalSeparator(Constants.SEPARATOR_STYLE.SHORT), {
             x_expand: true,
             y_expand:false,
             x_fill: true,
@@ -557,7 +557,7 @@ var createMenu = class {
         this.updateStyle();  
     }
     placesAddSeparator(id){
-        this._sections[id].box.add(this._createHorizontalSeparator(true), {
+        this._sections[id].box.add(this._createHorizontalSeparator(Constants.SEPARATOR_STYLE.SHORT), {
             x_expand: true,
             y_expand:false,
             x_fill: true,
@@ -870,60 +870,26 @@ var createMenu = class {
         }
     }
     //Create a horizontal separator
-    _createHorizontalSeparator(rightSide){
-        let hSep = new St.DrawingArea({
-                x_expand:true,
-                y_expand:false
-            });
-            if(rightSide)
-                hSep.set_height(15); //increase height if on right side
-            else 
-                hSep.set_height(10);
-            hSep.connect('repaint', ()=> {
-                let cr = hSep.get_context();
-                let [width, height] = hSep.get_surface_size();                 
-                let b, stippleColor;                                                            
-                [b,stippleColor] = Clutter.Color.from_string(this._settings.get_string('separator-color'));           
-                if(rightSide){   
-                    cr.moveTo(width / 4, height-7.5);
-                    cr.lineTo(3 * width / 4, height-7.5);
-                }   
-                else{   
-                    cr.moveTo(25, height-4.5);
-                    cr.lineTo(width-25, height-4.5);
-                }
-                //adjust endpoints by 0.5 
-                //see https://www.cairographics.org/FAQ/#sharp_lines
-                Clutter.cairo_set_source_color(cr, stippleColor);
-                cr.setLineWidth(1);
-                cr.stroke();
-            });
-            hSep.queue_repaint();
-            return hSep;
+    _createHorizontalSeparator(style){
+        let alignment = Constants.SEPARATOR_ALIGNMENT.HORIZONTAL;
+        let hSep = new MW.SeparatorDrawingArea(this._settings,alignment,style,{
+            x_expand:true,
+            y_expand:false
+        });
+        hSep.queue_repaint();
+        return hSep;
         }
-        // Create a vertical separator
-        _createVertSeparator(){      
-            let vertSep = new St.DrawingArea({
-                x_expand:true,
-                y_expand:true,
-                style_class: 'vert-sep'
-            });
-            vertSep.connect('repaint', ()=> {
-                if(this._settings.get_boolean('vert-separator'))  {
-                    let cr = vertSep.get_context();
-                    let [width, height] = vertSep.get_surface_size();
-                    let b, stippleColor;   
-                    [b,stippleColor] = Clutter.Color.from_string(this._settings.get_string('separator-color'));   
-                    let stippleWidth = 1;
-                    let x = Math.floor(width / 2) + 0.5;
-                    cr.moveTo(x,  0.5);
-                    cr.lineTo(x, height - 0.5);
-                    Clutter.cairo_set_source_color(cr, stippleColor);
-                    cr.setLineWidth(stippleWidth);
-                    cr.stroke();
-                }
-            }); 
-            vertSep.queue_repaint();
-            return vertSep;
-        }
+    // Create a vertical separator
+    _createVertSeparator(){    
+        let alignment = Constants.SEPARATOR_ALIGNMENT.VERTICAL;
+        let style = Constants.SEPARATOR_STYLE.NORMAL;
+        this.vertSep = new MW.SeparatorDrawingArea(this._settings,alignment,style,{
+            x_expand:true,
+            y_expand:true,
+            style_class: 'vert-sep'
+        });
+        this.vertSep.queue_repaint();
+        return  this.vertSep;
+    }
 };
+

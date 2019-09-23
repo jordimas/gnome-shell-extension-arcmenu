@@ -130,8 +130,7 @@ var ApplicationsButton =   Utils.defineClass({
             
             this.reloadFlag = false;
             if (this.sourceActor)
-                this._keyReleaseId = this.sourceActor.connect('key-release-event',
-            this._onKeyRelease.bind(this));  
+                this._keyReleaseId = this.sourceActor.connect('key-release-event', this._onKeyRelease.bind(this));  
 
             //Create Basic Layout ------------------------------------------------
             this.section = new PopupMenu.PopupMenuSection();
@@ -390,64 +389,7 @@ var ApplicationsButton =   Utils.defineClass({
                 modernGnome ?  this.add_style_pseudo_class('active') : this.actor.add_style_pseudo_class('active');
             else
                 modernGnome ? this.remove_style_pseudo_class('active'): this.actor.remove_style_pseudo_class('active');
-        },
-        //Create a horizontal separator
-        _createHorizontalSeparator(rightSide){
-            let hSep = new St.DrawingArea({
-                 x_expand:true,
-                 y_expand:false
-             });
-             if(rightSide)
-                 hSep.set_height(15); //increase height if on right side
-             else 
-                 hSep.set_height(10);
-             hSep.connect('repaint', ()=> {
-                 let cr = hSep.get_context();
-                 let [width, height] = hSep.get_surface_size();                 
-                 let b, stippleColor;                                                            
-                 [b,stippleColor] = Clutter.Color.from_string(this._settings.get_string('separator-color'));           
-                 if(rightSide){   
-                     cr.moveTo(width / 4, height-7.5);
-                     cr.lineTo(3 * width / 4, height-7.5);
-                 }   
-                 else{   
-                     cr.moveTo(25, height-4.5);
-                     cr.lineTo(width-25, height-4.5);
-                 }
-                 //adjust endpoints by 0.5 
-                 //see https://www.cairographics.org/FAQ/#sharp_lines
-                 Clutter.cairo_set_source_color(cr, stippleColor);
-                 cr.setLineWidth(1);
-                 cr.stroke();
-             });
-             hSep.queue_repaint();
-             return hSep;
-         },
-         // Create a vertical separator
-         _createVertSeparator(){      
-             let vertSep = new St.DrawingArea({
-                 x_expand:true,
-                 y_expand:true,
-                 style_class: 'vert-sep'
-             });
-             vertSep.connect('repaint', ()=> {
-                 if(this._settings.get_boolean('vert-separator'))  {
-                     let cr = vertSep.get_context();
-                     let [width, height] = vertSep.get_surface_size();
-                     let b, stippleColor;   
-                     [b,stippleColor] = Clutter.Color.from_string(this._settings.get_string('separator-color'));   
-                     let stippleWidth = 1;
-                     let x = Math.floor(width / 2) + 0.5;
-                     cr.moveTo(x,  0.5);
-                     cr.lineTo(x, height - 0.5);
-                     Clutter.cairo_set_source_color(cr, stippleColor);
-                     cr.setLineWidth(stippleWidth);
-                     cr.stroke();
-                 }
-             }); 
-             vertSep.queue_repaint();
-             return vertSep;
-         }
+        }
     });
 // Aplication menu class
 const ApplicationsMenu = class extends PopupMenu.PopupMenu {

@@ -21,7 +21,7 @@
 
 // Import Libraries
 const Me = imports.misc.extensionUtils.getCurrentExtension();
-const {Atk, Clutter, Gio, GLib, GMenu, Gtk, Shell, St} = imports.gi;
+const {Atk, Clutter, Gio, GLib, GMenu, GObject, Gtk, Shell, St} = imports.gi;
 const AccountsService = imports.gi.AccountsService;
 const AppFavorites = imports.ui.appFavorites;
 const Constants = Me.imports.constants;
@@ -355,8 +355,52 @@ var AppRightClickMenu = class AppRightClickMenu extends PopupMenu.PopupMenu {
 
 };
 
-// Removing the default behaviour which selects a hovered item if the space key is pressed.
-// This avoids issues when searching for an app with a space character in its name.
+var SeparatorDrawingArea =  GObject.registerClass(class extends St.DrawingArea {
+    _init(settings,alignment,style) {
+        super._init();
+        this._settings = settings;
+        this._alignment = alignment;
+        this._style = style;
+
+        if(this._style == Constants.SEPARATOR_STYLE.SHORT)
+            this.set_height(15); //increase height if on right side
+        else if(this._style == Constants.SEPARATOR_STYLE.LONG)
+            this.set_height(10);
+    }
+    vfunc_repaint(){
+       
+        let shouldDraw = this._settings.get_boolean('vert-separator');
+        if((this._alignment == Constants.SEPARATOR_ALIGNMENT.VERTICAL && shouldDraw) || 
+            this._alignment == Constants.SEPARATOR_ALIGNMENT.HORIZONTAL){
+            let cr = this.get_context();
+            let [width, height] = this.get_surface_size();
+            let color = this._settings.get_string('separator-color')
+            let b, stippleColor;   
+            [b,stippleColor] = Clutter.Color.from_string(color);   
+            let stippleWidth = 1;
+            if(this._alignment == Constants.SEPARATOR_ALIGNMENT.VERTICAL){
+                let x = Math.floor(width / 2) + 0.5;
+                cr.moveTo(x,  0.5);
+                cr.lineTo(x, height - 0.5);
+            }
+            else if (this._alignment == Constants.SEPARATOR_ALIGNMENT.HORIZONTAL){
+                if(this._style == Constants.SEPARATOR_STYLE.SHORT){
+                    cr.moveTo(width / 4, height-7.5);
+                    cr.lineTo(3 * width / 4, height-7.5);
+                }
+                else if(this._style == Constants.SEPARATOR_STYLE.LONG){
+                    cr.moveTo(25, height-4.5);
+                    cr.lineTo(width-25, height-4.5);
+                }
+            }
+            Clutter.cairo_set_source_color(cr, stippleColor);
+            cr.setLineWidth(stippleWidth);
+            cr.stroke();
+            cr.$dispose();
+        }
+        return false;
+    }
+});
 
 // Menu item to launch GNOME activities overview
 var ActivitiesMenuItem =  Utils.createClass({

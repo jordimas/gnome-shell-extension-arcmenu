@@ -35,6 +35,16 @@ var CURRENT_MENU = {
     SEARCH_RESULTS: 3
 };
 
+var SEPARATOR_ALIGNMENT = {
+    VERTICAL: 0,
+    HORIZONTAL: 1
+};
+var SEPARATOR_STYLE = {
+    NORMAL: 0,
+    LONG: 1,
+    SHORT: 2
+};
+
 var DEFAULT_DIRECTORIES = [
     imports.gi.GLib.UserDirectory.DIRECTORY_DOCUMENTS,
     imports.gi.GLib.UserDirectory.DIRECTORY_DOWNLOAD,
