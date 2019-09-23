@@ -1684,7 +1684,8 @@ var SimpleMenuItem = Utils.createClass({
 // SubMenu Category item class
 var CategorySubMenuItem = Utils.createClass({
     Name: 'CategorySubMenuItem',
-    Extends: PopupMenu.PopupSubMenuMenuItem, 
+    Extends: PopupMenu.PopupSubMenuMenuItem,
+    ParentConstrParams: {text: '', wantIcon: true},
     // Initialize menu item
     _init(button, category, title=null) {
         this.callParent('_init','',true);
