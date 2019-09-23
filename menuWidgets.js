@@ -850,6 +850,7 @@ var UserMenuItem =Utils.createClass({
 var FavoritesMenuItem = Utils.createClass({
     Name: 'FavoritesMenuItem',
     Extends: PopupMenu.PopupBaseMenuItem, 
+    Signals: {'saveSettings': {}},
     // Initialize the menu item
     _init(button, name, icon, command) {
         this.callParent('_init');

@@ -529,7 +529,7 @@ var createMenu = class {
         for(let i = 0;i<pinnedApps.length;i+=3)
         {
             let favoritesMenuItem = new MW.FavoritesMenuItem(this, pinnedApps[i], pinnedApps[i+1], pinnedApps[i+2]);
-            favoritesMenuItem.connect('notify::saveSettings', ()=>{
+            favoritesMenuItem.connect('saveSettings', ()=>{
                 let array = [];
                 for(let i = 0;i < this.favoritesArray.length; i++)
                 {
