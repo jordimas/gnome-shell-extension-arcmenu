@@ -20,30 +20,23 @@
  */
 
 // Import Libraries
-const Shell = imports.gi.Shell;
-const St = imports.gi.St;
-const Clutter = imports.gi.Clutter;
-const Main = imports.ui.main;
-const Tweener = imports.ui.tweener;
-const PopupMenu = imports.ui.popupMenu;
-const GLib = imports.gi.GLib;
-const Signals = imports.signals;
+const Me = imports.misc.extensionUtils.getCurrentExtension();
+const {Atk, Clutter, Gio, GLib, GMenu, Gtk, Shell, St} = imports.gi;
 const AccountsService = imports.gi.AccountsService;
-const Gio = imports.gi.Gio;
-const GObject = imports.gi.GObject;
-const Util = imports.misc.util;
-const ExtensionUtils = imports.misc.extensionUtils;
-const Me = ExtensionUtils.getCurrentExtension();
-const Constants = Me.imports.constants;
-const Gettext = imports.gettext.domain(Me.metadata['gettext-domain']);
-const _ = Gettext.gettext;
-const DND = imports.ui.dnd;
-const Dash = imports.ui.dash;
-const LoginManager = imports.misc.loginManager;
-const Gdk = imports.gi.Gdk;
-const Gtk = imports.gi.Gtk;
 const AppFavorites = imports.ui.appFavorites;
+const Constants = Me.imports.constants;
+const Dash = imports.ui.dash;
+const DND = imports.ui.dnd;
+const Gettext = imports.gettext.domain(Me.metadata['gettext-domain']);
+const LoginManager = imports.misc.loginManager;
+const Main = imports.ui.main;
+const PopupMenu = imports.ui.popupMenu;
+const Signals = imports.signals;
+const Tweener = imports.ui.tweener;
+const Util = imports.misc.util;
 const Utils =  Me.imports.utils;
+const _ = Gettext.gettext;
+
 const SWITCHEROO_BUS_NAME = 'net.hadess.SwitcherooControl';
 const SWITCHEROO_OBJECT_PATH = '/net/hadess/SwitcherooControl';
 const SwitcherooProxyInterface = '<node> \
@@ -52,6 +45,7 @@ const SwitcherooProxyInterface = '<node> \
 </interface> \
 </node>';
 const SwitcherooProxy = Gio.DBusProxy.makeProxyWrapper(SwitcherooProxyInterface);
+
 // Menu Size variables
 const LARGE_ICON_SIZE = 34;
 const MEDIUM_ICON_SIZE = 25;

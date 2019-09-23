@@ -31,38 +31,24 @@
  */
 
 // Import Libraries
-const Signals = imports.signals;
-const Atk = imports.gi.Atk;
-const GMenu = imports.gi.GMenu;
-const Shell = imports.gi.Shell;
-const St = imports.gi.St;
-const Clutter = imports.gi.Clutter;
-const Main = imports.ui.main;
-const PopupMenu = imports.ui.popupMenu;
-const Gtk = imports.gi.Gtk;
-const GLib = imports.gi.GLib;
-const Gio = imports.gi.Gio;
-const GObject = imports.gi.GObject;
+const Me = imports.misc.extensionUtils.getCurrentExtension();
+
+const {Clutter, GLib, Gio, GMenu, Gtk, Shell, St} = imports.gi;
 const AppFavorites = imports.ui.appFavorites;
-const Util = imports.misc.util;
-const GnomeSession = imports.misc.gnomeSession;
-const ExtensionUtils = imports.misc.extensionUtils;
-const ExtensionSystem = imports.ui.extensionSystem;
-const Me = ExtensionUtils.getCurrentExtension();
-const PlaceDisplay = Me.imports.placeDisplay;
-const MW = Me.imports.menuWidgets;
-
-const MenuLayouts = Me.imports.menulayouts;
-
+const appSys = Shell.AppSystem.get_default();
 const ArcSearch = Me.imports.search;
 const Constants = Me.imports.constants;
-
+const GnomeSession = imports.misc.gnomeSession;
 const Gettext = imports.gettext.domain(Me.metadata['gettext-domain']);
-const _ = Gettext.gettext;
+const Main = imports.ui.main;
+const MenuLayouts = Me.imports.menulayouts;
+const MW = Me.imports.menuWidgets;
+const PlaceDisplay = Me.imports.placeDisplay;
+const PopupMenu = imports.ui.popupMenu;
 const Utils =  Me.imports.utils;
-const appSys = Shell.AppSystem.get_default();
-const PanelMenu = imports.ui.panelMenu;
-let modernGnome = imports.misc.config.PACKAGE_VERSION >= '3.31.9';
+const _ = Gettext.gettext;
+
+var modernGnome = imports.misc.config.PACKAGE_VERSION >= '3.31.9';
 
 // Application Menu Button class (most of the menu logic is here)
 var createMenu = class{
@@ -73,7 +59,7 @@ var createMenu = class{
         this.appMenuManager = mainButton.appMenuManager;
         this.leftClickMenu  = mainButton.leftClickMenu;
         this.currentMenu = Constants.CURRENT_MENU.FAVORITES; 
-        this._applicationsButtons = mainButton._applicationsButtons;
+        this._applicationsButtons = new Map();
         this._session = new GnomeSession.SessionManager();
      
         this.mainBox._delegate = this.mainBox;

@@ -19,15 +19,11 @@
  */
 
 // Import Libraries
-const Main = imports.ui.main;
-const Meta = imports.gi.Meta;
-const Gio = imports.gi.Gio;
-const Gtk = imports.gi.Gtk;
-const Shell = imports.gi.Shell;
-
-const ExtensionUtils = imports.misc.extensionUtils;
-const Me = ExtensionUtils.getCurrentExtension();
+const Me = imports.misc.extensionUtils.getCurrentExtension();
+const {Gio, Gtk, Meta, Shell} = imports.gi;
 const Constants = Me.imports.constants;
+const Main = imports.ui.main;
+
 
 // Local constants
 const MUTTER_SCHEMA = 'org.gnome.mutter';

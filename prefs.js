@@ -24,20 +24,14 @@
  */
 
 // Import Libraries
-const GLib = imports.gi.GLib;
-const GObject = imports.gi.GObject;
-const Gio = imports.gi.Gio;
-const Gtk = imports.gi.Gtk;
-const Gdk = imports.gi.Gdk;
-const GdkPixbuf = imports.gi.GdkPixbuf;
-
-const ExtensionUtils = imports.misc.extensionUtils;
-const Me = ExtensionUtils.getCurrentExtension();
-const Convenience = Me.imports.convenience;
+const Me = imports.misc.extensionUtils.getCurrentExtension();
+const {Gdk, GdkPixbuf, Gio, GLib, GObject, Gtk} = imports.gi;
 const Constants = Me.imports.constants;
-const PW = Me.imports.prefsWidgets;
+const Convenience = Me.imports.convenience;
 const Gettext = imports.gettext.domain(Me.metadata['gettext-domain']);
+const PW = Me.imports.prefsWidgets;
 const _ = Gettext.gettext;
+
 const SCHEMA_PATH = '/org/gnome/shell/extensions/arc-menu/';
 const GSET = 'gnome-shell-extension-tool';
 /*

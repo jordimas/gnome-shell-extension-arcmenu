@@ -21,24 +21,21 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-const {Atk, Clutter, Gio, GLib, GObject, Shell, St } = imports.gi;
-const Signals = imports.signals;
+const Me = imports.misc.extensionUtils.getCurrentExtension();
+const {Clutter, Gio, GLib, GObject, Shell, St } = imports.gi;
 const AppDisplay = imports.ui.appDisplay;
-const IconGrid = imports.ui.iconGrid;
-const Main = imports.ui.main;
-const RemoteSearch = imports.ui.remoteSearch;
-const Util = imports.misc.util;
-const Params = imports.misc.params;
-const PopupMenu = imports.ui.popupMenu;
-const SEARCH_PROVIDERS_SCHEMA = 'org.gnome.desktop.search-providers';
-const ExtensionUtils = imports.misc.extensionUtils;
-const Me = ExtensionUtils.getCurrentExtension();
-const MW = Me.imports.menuWidgets;
-const Constants = Me.imports.constants;
 const appSys = Shell.AppSystem.get_default();
+const Constants = Me.imports.constants;
 const Gettext = imports.gettext.domain(Me.metadata['gettext-domain']);
-const _ = Gettext.gettext;
+const MW = Me.imports.menuWidgets;
+const PopupMenu = imports.ui.popupMenu;
+const RemoteSearch = imports.ui.remoteSearch;
+const Signals = imports.signals;
 const Utils =  Me.imports.utils;
+const _ = Gettext.gettext;
+
+const SEARCH_PROVIDERS_SCHEMA = 'org.gnome.desktop.search-providers';
+
 var MAX_LIST_SEARCH_RESULTS_ROWS = 6;
 var MAX_APPS_SEARCH_RESULTS_ROWS = 6;
 
