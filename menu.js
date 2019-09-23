@@ -166,7 +166,7 @@ var ApplicationsButton =   Utils.defineClass({
             else if (layout == Constants.MENU_LAYOUT.Simple)
                 this.MenuLayout = new MenuLayouts.simple.createMenu(this);  
             else if (layout == Constants.MENU_LAYOUT.Simple2)
-                this.MenuLayout = new MenuLayouts.simple.createMenu(this);  
+                this.MenuLayout = new MenuLayouts.simple2.createMenu(this);  
             else if (layout == Constants.MENU_LAYOUT.UbuntuDash)
                 this.MenuLayout = new MenuLayouts.ubuntudash.createMenu(this);  
             ///--------------------------------------------------------------------
