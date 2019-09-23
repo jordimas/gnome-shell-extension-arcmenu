@@ -56,6 +56,7 @@ var createMenu = class {
         this._settings = mainButton._settings;
         this.mainBox = mainButton.mainBox; 
         this.appMenuManager = mainButton.appMenuManager;
+        this._session = new GnomeSession.SessionManager();
         this.leftClickMenu  = mainButton.leftClickMenu;
         this.currentMenu = Constants.CURRENT_MENU.FAVORITES; 
         this._applicationsButtons = new Map();

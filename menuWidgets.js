@@ -385,6 +385,16 @@ var ActivitiesMenuItem =  Utils.createClass({
         this._button.leftClickMenu.toggle();
         Main.overview.toggle();
         this.callParent('activate',event);
+    },
+    _onButtonPressEvent(actor, event) {
+		
+        return Clutter.EVENT_PROPAGATE;
+    },
+    _onButtonReleaseEvent(actor, event) {
+        if(event.get_button()==1){
+            this.activate(event);
+        }
+        return Clutter.EVENT_STOP;
     }
 });
 
@@ -704,6 +714,16 @@ var BackMenuItem = Utils.createClass({
             this._button._displayCategories();
         }
         this.callParent('activate',event);
+    },
+    _onButtonPressEvent(actor, event) {
+		
+        return Clutter.EVENT_PROPAGATE;
+    },
+    _onButtonReleaseEvent(actor, event) {
+        if(event.get_button()==1){
+            this.activate(event);
+        }
+        return Clutter.EVENT_STOP;
     }
 });
 
@@ -742,6 +762,16 @@ var ViewAllPrograms =Utils.createClass({
           this._button.currentMenu = Constants.CURRENT_MENU.SEARCH_RESULTS;
       }
       this.callParent('activate',event);
+    },
+    _onButtonPressEvent(actor, event) {
+		
+        return Clutter.EVENT_PROPAGATE;
+    },
+    _onButtonReleaseEvent(actor, event) {
+        if(event.get_button()==1){
+            this.activate(event);
+        }
+        return Clutter.EVENT_STOP;
     }
 });
 
@@ -775,6 +805,16 @@ var ShortcutMenuItem = Utils.createClass({
     },
     setIconSizeLarge(){
         this._icon.icon_size = MEDIUM_ICON_SIZE;
+    },
+    _onButtonPressEvent(actor, event) {
+		
+        return Clutter.EVENT_PROPAGATE;
+    },
+    _onButtonReleaseEvent(actor, event) {
+        if(event.get_button()==1){
+            this.activate(event);
+        }
+        return Clutter.EVENT_STOP;
     }
 });
 
@@ -844,6 +884,16 @@ var UserMenuItem =Utils.createClass({
             this._user.disconnect(this._userChangedId);
             this._userChangedId = 0;
         }
+    },
+    _onButtonPressEvent(actor, event) {
+		
+        return Clutter.EVENT_PROPAGATE;
+    },
+    _onButtonReleaseEvent(actor, event) {
+        if(event.get_button()==1){
+            this.activate(event);
+        }
+        return Clutter.EVENT_STOP;
     }
 });
 // Menu pinned apps/favorites item class
@@ -894,7 +944,10 @@ var FavoritesMenuItem = Utils.createClass({
         this.rightClickMenu.actor.hide();
         Main.uiGroup.add_actor(this.rightClickMenu.actor);
     },
-
+    _onButtonPressEvent(actor, event) {
+		
+        return Clutter.EVENT_PROPAGATE;
+    },
     _onButtonReleaseEvent(actor, event) {
         if(event.get_button()==1){
                 this.activate(event); 
@@ -1125,7 +1178,10 @@ var ApplicationMenuIcon = Utils.createClass({
         this.rightClickMenu.actor.hide();
         Main.uiGroup.add_actor(this.rightClickMenu.actor);
     },
-   
+    _onButtonPressEvent(actor, event) {
+		
+        return Clutter.EVENT_PROPAGATE;
+    },
     _onButtonReleaseEvent(actor, event) {
         if(event.get_button()==1){
             this.activate(event);
@@ -1269,6 +1325,10 @@ var ApplicationMenuItem =Utils.createClass({
         this.rightClickMenu.actor.hide();
         Main.uiGroup.add_actor(this.rightClickMenu.actor);
     },
+    _onButtonPressEvent(actor, event) {
+		
+        return Clutter.EVENT_PROPAGATE;
+    },
 
     _onButtonReleaseEvent(actor, event) {
         if(event.get_button()==1){
@@ -1376,6 +1436,11 @@ var SearchResultItem = Utils.createClass({
         Main.uiGroup.add_actor(this.rightClickMenu.actor);
   
     },
+    _onButtonPressEvent(actor, event) {
+		
+        return Clutter.EVENT_PROPAGATE;
+    },
+
     _onButtonReleaseEvent(actor, event) {
         if(event.get_button()==1){
             this.activate(event);
@@ -1461,7 +1526,16 @@ var CategoryMenuItem =  Utils.createClass({
   
 
     },
-
+    _onButtonPressEvent(actor, event) {
+		
+        return Clutter.EVENT_PROPAGATE;
+    },
+    _onButtonReleaseEvent(actor, event) {
+        if(event.get_button()==1){
+            this.activate(event);
+        }
+        return Clutter.EVENT_STOP;
+    },
     // Activate menu item (Display applications in category)
     activate(event) {
         if (this._category)
@@ -1859,6 +1933,16 @@ var PlaceMenuItem = Utils.createClass({
     _propertiesChanged(info) {
         this._icon.gicon = info.icon;
         this._label.text = info.name;
+    },
+    _onButtonPressEvent(actor, event) {
+		
+        return Clutter.EVENT_PROPAGATE;
+    },
+    _onButtonReleaseEvent(actor, event) {
+        if(event.get_button()==1){
+            this.activate(event);
+        }
+        return Clutter.EVENT_STOP;
     }
 });
 
