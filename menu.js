@@ -67,11 +67,9 @@ var ApplicationsButton =   Utils.defineClass({
 
             this.rightClickMenu = new RightClickMenu(sourceActor,1.0,St.Side.TOP);	
             this.rightClickMenu.connect('open-state-changed', this._onOpenStateChanged.bind(this));
-            this.rightClickMenu.actor.connect('key-press-event', this._onMenuKeyPress.bind(this));
            
             this.leftClickMenu = new ApplicationsMenu(sourceActor, 1.0, St.Side.TOP, this, this._settings);
             this.leftClickMenu.connect('open-state-changed', this._onOpenStateChanged.bind(this));
-            this.leftClickMenu.actor.connect('key-press-event', this._onMenuKeyPress.bind(this));
             //------------------------------------------------------------------------------------------------
 
             //Main Menu Manager--------------------------------------------------------
@@ -184,22 +182,6 @@ var ApplicationsButton =   Utils.defineClass({
 
             this.rightClickMenu.actor.style_class = addStyle ? 'arc-menu-boxpointer': 'popup-menu-boxpointer';
             this.rightClickMenu.actor.add_style_class_name(addStyle ? 'arc-menu' : 'popup-menu');
-        },
-        _onMenuKeyPress(actor, event) {
-            if (global.focus_manager.navigate_from_event(event))
-                return Clutter.EVENT_STOP;
-            
-            let symbol = event.get_key_symbol();
-            if (symbol == Clutter.KEY_Left || symbol == Clutter.KEY_Right) {
-    
-                let group = global.focus_manager.get_group(this);
-                if (group) {
-                    let direction = (symbol == Clutter.KEY_Left) ? Gtk.DirectionType.LEFT : Gtk.DirectionType.RIGHT;
-                    group.navigate_focus(this, direction, false);
-                    return Clutter.EVENT_STOP;
-                }
-            }
-            return Clutter.EVENT_PROPAGATE;
         },
         setSensitive(sensitive) {
             this.reactive = sensitive;
