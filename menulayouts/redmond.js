@@ -35,7 +35,7 @@ const Me = imports.misc.extensionUtils.getCurrentExtension();
 
 const {Clutter, GLib, Gio, GMenu, Gtk, Shell, St} = imports.gi;
 const appSys = Shell.AppSystem.get_default();
-const ArcSearch = Me.imports.search;
+const ArcSearch = Me.imports.searchGrid;
 const Constants = Me.imports.constants;
 const GnomeSession = imports.misc.gnomeSession;
 const Gettext = imports.gettext.domain(Me.metadata['gettext-domain']);

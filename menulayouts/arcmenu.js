@@ -391,6 +391,7 @@ var createMenu = class {
         this.applicationsBox.destroy_all_children();
         this._applicationsButtons.clear();
         this._loadCategories();
+        this._loadFavorites();
         this._loadAllMenuItems();
         this._display();
     }
