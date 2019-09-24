@@ -1474,10 +1474,13 @@ var SearchResultItem = Utils.createClass({
         this._button = button;
         this.app =app;
         this._path=path;
-        this.rightClickMenu = new AppRightClickMenu(this.actor,this.app,this._button,false, this._path ? this._path: null);
-        this._button.appMenuManager.addMenu(this.rightClickMenu);
-        this.rightClickMenu.actor.hide();
-        Main.uiGroup.add_actor(this.rightClickMenu.actor);
+        if(app){
+            this.rightClickMenu = new AppRightClickMenu(this.actor,this.app,this._button,false, this._path ? this._path: null);
+            this._button.appMenuManager.addMenu(this.rightClickMenu);
+            this.rightClickMenu.actor.hide();
+            Main.uiGroup.add_actor(this.rightClickMenu.actor);
+        }
+     
   
     },
     _onButtonPressEvent(actor, event) {
@@ -1489,7 +1492,7 @@ var SearchResultItem = Utils.createClass({
         if(event.get_button()==1){
             this.activate(event);
         }
-        if(event.get_button()==3){
+        if(event.get_button()==3 && this.rightClickMenu!=undefined){
             
             if(!this.rightClickMenu.isOpen)
                 this.rightClickMenu.redisplay();

@@ -70,11 +70,15 @@ var ListSearchResult = class extends SearchResult {
     constructor(provider, metaInfo, resultsView) {
         super(provider, metaInfo, resultsView);
         let button = resultsView._button;
+        let app = appSys.lookup_app(this.metaInfo['id']);
         if(this.provider.id =='org.gnome.Nautilus.desktop'){
             this.menuItem = new MW.SearchResultItem(this._button,appSys.lookup_app(this.provider.id),this.metaInfo['description']);
         }
+        else if(app){
+            this.menuItem = new MW.SearchResultItem(this._button,app); 
+        }
         else{
-            this.menuItem = new PopupMenu.PopupBaseMenuItem();
+            this.menuItem = new MW.SearchResultItem(this._button);
         }
         this._termsChangedId = 0;
         
@@ -135,38 +139,31 @@ var AppSearchResult = class extends SearchResult {
         this.layout = this._button._settings.get_enum('menu-layout');
         let app = appSys.lookup_app(this.metaInfo['id']);
         if(app){
-            this.menuItem = new MW.ApplicationMenuItem(this._button, app);
+            this.menuItem = new MW.SearchResultItem(this._button, app);
         }
         else{
-            this.menuItem = new PopupMenu.PopupBaseMenuItem();
-            this.icon = this.metaInfo['createIcon'](16);
-            if (this.icon) {
-                  this.menuItem.actor.add_child(this.icon);
-            } 
-            else{
-                if(this.layout == Constants.MENU_LAYOUT.Elementary || this.layout == Constants.MENU_LAYOUT.UbuntuDash){
-                    this.menuItem.actor.style = "padding: 25px 0px;";
-                }
-                else if(this.layout == Constants.MENU_LAYOUT.Redmond){
-                    this.menuItem.actor.style = "padding: 20px 0px;";
-                }
-            }            
-            let label = new St.Label({
-                text: this.metaInfo['name'],
-                y_expand: true,
-                x_expand: true,
-                y_align: Clutter.ActorAlign.CENTER
-            });
-            this.menuItem.actor.add_child(label);
-            let isMenuItem=true;
-            if(this.metaInfo['description'] || ((app!=undefined) ? app.get_description() : false))
-            {
-                this.tooltip = new MW.Tooltip(this.menuItem.actor, this.metaInfo['description'] ? this.metaInfo['description']:  app.get_description(),isMenuItem,this._button._settings);
-                this.tooltip.hide();
-                this.menuItem.actor.connect('notify::hover', this._onHover.bind(this));
-            }
-            this.menuItem.connect('activate', this.activate.bind(this))
+            this.menuItem = new MW.SearchResultItem(this._button);
         }
+        this.icon = this.metaInfo['createIcon'](16);
+        if (this.icon) {
+                this.menuItem.actor.add_child(this.icon);
+        }         
+        let label = new St.Label({
+            text: this.metaInfo['name'],
+            y_expand: true,
+            x_expand: true,
+            y_align: Clutter.ActorAlign.CENTER
+        });
+        this.menuItem.actor.add_child(label);
+        let isMenuItem=true;
+        if(this.metaInfo['description'] || ((app!=undefined) ? app.get_description() : false))
+        {
+            this.tooltip = new MW.Tooltip(this.menuItem.actor, this.metaInfo['description'] ? this.metaInfo['description']:  app.get_description(),isMenuItem,this._button._settings);
+            this.tooltip.hide();
+            this.menuItem.actor.connect('notify::hover', this._onHover.bind(this));
+        }
+        this.menuItem.connect('activate', this.activate.bind(this));
+        
         
        
        
@@ -712,15 +709,7 @@ var ArcSearchProviderInfo =Utils.createClass({
         this.callParent('_init');
         this.provider = provider;
         this._button = button;
-        this.layout = button._settings.get_enum('menu-layout');
      
-
-        if(this.layout == Constants.MENU_LAYOUT.Elementary || this.layout == Constants.MENU_LAYOUT.UbuntuDash){
-            this.actor.style = "padding: 25px 0px;";
-        }
-        else if(this.layout == Constants.MENU_LAYOUT.Redmond){
-            this.actor.style = "padding: 20px 0px;";
-        }
         this.nameLabel = new St.Label({ text: provider.appInfo.get_name() + ":",
                                        x_align: Clutter.ActorAlign.START,x_expand: true});
         this._moreText="";
@@ -748,6 +737,15 @@ var ArcSearchProviderInfo =Utils.createClass({
         this._moreText= ngettext("%d more", "%d more", count).format(count);
         if(count>0)
             this.nameLabel.text = this.provider.appInfo.get_name() + "  ("+ this._moreText+")";
+    },
+    _onButtonPressEvent(actor, event) {
+        return Clutter.EVENT_PROPAGATE;
+    },
+    _onButtonReleaseEvent(actor, event) {
+        if(event.get_button()==1){
+            this.activate(event);
+        }
+        return Clutter.EVENT_STOP;
     }
 });
 

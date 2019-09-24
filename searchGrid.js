@@ -71,11 +71,15 @@ var ListSearchResult = class extends SearchResult {
     constructor(provider, metaInfo, resultsView) {
         super(provider, metaInfo, resultsView);
         let button = resultsView._button;
+        let app = appSys.lookup_app(this.metaInfo['id']);
         if(this.provider.id =='org.gnome.Nautilus.desktop'){
             this.menuItem = new MW.SearchResultItem(this._button,appSys.lookup_app(this.provider.id),this.metaInfo['description']);
         }
+        else if(app){
+            this.menuItem = new MW.SearchResultItem(this._button,app); 
+        }
         else{
-            this.menuItem = new PopupMenu.PopupBaseMenuItem();
+            this.menuItem =  new MW.SearchResultItem(this._button); 
         }
        
         this.menuItem.connect('activate', this.activate.bind(this));
@@ -90,28 +94,15 @@ var ListSearchResult = class extends SearchResult {
         this._termsChangedId = 0;
         
         this.layout = button._settings.get_enum('menu-layout');
-        let ICON_SIZE = 16;
+        let ICON_SIZE = 32;
 
-        if(this.layout == Constants.MENU_LAYOUT.Elementary || this.layout == Constants.MENU_LAYOUT.UbuntuDash){
-            ICON_SIZE = 32;
-        }
-        else if(this.layout == Constants.MENU_LAYOUT.Redmond){
-            ICON_SIZE = 32;
-        }
         
         // An icon for, or thumbnail of, content
         let icon = this.metaInfo['createIcon'](ICON_SIZE);
-        if (icon) {
+        if (icon) 
              this.menuItem.actor.add_child(icon);
-        }
-        else{
-            if(this.layout == Constants.MENU_LAYOUT.Elementary || this.layout == Constants.MENU_LAYOUT.UbuntuDash){
-                this.menuItem.actor.style = "padding: 12px 0px;";
-            }
-            else if(this.layout == Constants.MENU_LAYOUT.Redmond){
-                this.menuItem.actor.style = "padding: 12px 0px;";
-            }
-        }    
+        else
+            this.menuItem.actor.style = "padding: 12px 0px;";
 
         let title = new St.Label({ text: this.metaInfo['name'],x_expand: true,y_align: Clutter.ActorAlign.CENTER });
         this.menuItem.actor.add_child(title);
@@ -157,7 +148,7 @@ var AppSearchResult = class extends SearchResult {
         }
         else{
             let ICON_SIZE = 16;
-            this.menuItem = new PopupMenu.PopupBaseMenuItem();
+            this.menuItem = new MW.SearchResultItem(this._button); 
             this.menuItem.actor.vertical = true;
             if(this.layout == Constants.MENU_LAYOUT.Elementary || this.layout == Constants.MENU_LAYOUT.UbuntuDash){
                 this.menuItem.actor.style ='padding: 5px; spacing: 0px; width:95px; height:95px;';
@@ -780,6 +771,15 @@ var ArcSearchProviderInfo =Utils.createClass({
         this._moreText= ngettext("%d more", "%d more", count).format(count);
         if(count>0)
             this.nameLabel.text = this.provider.appInfo.get_name() + "\n("+ this._moreText+")";
-    }
+    },
+    _onButtonPressEvent(actor, event) {
+        return Clutter.EVENT_PROPAGATE;
+    },
+    _onButtonReleaseEvent(actor, event) {
+        if(event.get_button()==1){
+            this.activate(event);
+        }
+        return Clutter.EVENT_STOP;
+    },
 });
 
