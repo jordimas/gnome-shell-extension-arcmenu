@@ -50,7 +50,6 @@ const _ = Gettext.gettext;
 
 var modernGnome = imports.misc.config.PACKAGE_VERSION >= '3.31.9';
 
-// Application Menu Button class (most of the menu logic is here)
 var createMenu = class{
     constructor(mainButton) {
         this._button = mainButton;
@@ -140,12 +139,12 @@ var createMenu = class{
             y_fill: true,
             y_align: St.Align.START
         });
-                //Add Vert Separator to Main Box
-                this.subMainBox.add( this._createVertSeparator(), {
-                    expand: true,
-                    x_fill: true,
-                    y_fill: true
-                });
+        //Add Vert Separator to Main Box
+        this.subMainBox.add( this._createVertSeparator(), {
+            expand: true,
+            x_fill: true,
+            y_fill: true
+        });
         this._createLeftBox();
         this.subMainBox.add( this.rightBox, {
             expand: true,
@@ -226,35 +225,25 @@ var createMenu = class{
         this._loadAllMenuItems();
         this._display();
     }
+    _reload() {
+        this.applicationsBox.destroy_all_children();
+        this._applicationsButtons.clear();
+        this._loadCategories();
+        this._loadAllMenuItems();
+        this._display();
+    }
     updateStyle(){
         let addStyle=this._settings.get_boolean('enable-custom-arc-menu');
-
-        if(addStyle){
-            if(this.newSearch){
-                this.newSearch.setStyle('arc-menu-status-text');
-                this.searchBox._stEntry.set_name('arc-search-entry');
-            }
-            if(this.actionsBox){
-                this.actionsBox.actor.get_children().forEach(function (actor) {
-                    if(actor instanceof St.Button){
-                        actor.add_style_class_name('arc-menu-action');
-                    }
-                }.bind(this));
-            }
+        if(this.newSearch){
+            addStyle ? this.newSearch.setStyle('arc-menu-status-text') :  this.newSearch.setStyle('search-statustext'); 
+            addStyle ? this.searchBox._stEntry.set_name('arc-search-entry') : this.searchBox._stEntry.set_name('search-entry');
         }
-        else
-        {       
-            if(this.newSearch){ 
-                this.newSearch.setStyle('search-statustext');            
-                this.searchBox._stEntry.set_name('search-entry');
-            }
-            if(this.actionsBox){
-                this.actionsBox.actor.get_children().forEach(function (actor) {
-                    if(actor instanceof St.Button){
-                        actor.remove_style_class_name('arc-menu-action');
-                    }
-                }.bind(this));
-            }
+        if(this.actionsBox){
+            this.actionsBox.actor.get_children().forEach(function (actor) {
+                if(actor instanceof St.Button){
+                    addStyle ? actor.add_style_class_name('arc-menu-action') : actor.remove_style_class_name('arc-menu-action');
+                }
+            }.bind(this));
         }
     }
     // Display the menu
@@ -329,13 +318,13 @@ var createMenu = class{
         this._clearApplicationsBox();
         this.categoryMenuItemArray=[];
         
-            let categoryMenuItem = new MW.CategoryMenuItem(this, "","All Programs");
-            this.categoryMenuItemArray.push(categoryMenuItem);
-            this.applicationsBox.add_actor(categoryMenuItem.actor);	
-            categoryMenuItem.setFakeActive(true);
-            categoryMenuItem = new MW.CategoryMenuItem(this, "","Favorites");
-            this.categoryMenuItemArray.push(categoryMenuItem);
-            this.applicationsBox.add_actor(categoryMenuItem.actor);	
+        let categoryMenuItem = new MW.CategoryMenuItem(this, "","All Programs");
+        this.categoryMenuItemArray.push(categoryMenuItem);
+        this.applicationsBox.add_actor(categoryMenuItem.actor);	
+        categoryMenuItem.setFakeActive(true);
+        categoryMenuItem = new MW.CategoryMenuItem(this, "","Favorites");
+        this.categoryMenuItemArray.push(categoryMenuItem);
+        this.applicationsBox.add_actor(categoryMenuItem.actor);	
         for(var categoryDir of this.categoryDirectories){
             if(!categoryDir){
                 
@@ -705,7 +694,7 @@ var createMenu = class{
         });
         hSep.queue_repaint();
         return hSep;
-        }
+    }
     // Create a vertical separator
     _createVertSeparator(){    
         let alignment = Constants.SEPARATOR_ALIGNMENT.VERTICAL;

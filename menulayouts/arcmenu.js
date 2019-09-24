@@ -49,7 +49,6 @@ const _ = Gettext.gettext;
 
 var modernGnome = imports.misc.config.PACKAGE_VERSION >= '3.31.9';
 
-// Application Menu Button class (most of the menu logic is here)
 var createMenu = class {
     constructor(mainButton) {
         this._button = mainButton;
@@ -879,7 +878,7 @@ var createMenu = class {
         });
         hSep.queue_repaint();
         return hSep;
-        }
+    }
     // Create a vertical separator
     _createVertSeparator(){    
         let alignment = Constants.SEPARATOR_ALIGNMENT.VERTICAL;

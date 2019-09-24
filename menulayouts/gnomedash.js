@@ -49,7 +49,6 @@ const _ = Gettext.gettext;
 
 var modernGnome = imports.misc.config.PACKAGE_VERSION >= '3.31.9';
 
-// Application Menu Button class (most of the menu logic is here)
 var createMenu = class {
     constructor(mainButton) {
         this.button = mainButton;
@@ -59,113 +58,68 @@ var createMenu = class {
         this.leftClickMenu  = mainButton.leftClickMenu;
         this.currentMenu = Constants.CURRENT_MENU.FAVORITES; 
         this._applicationsButtons = new Map();
-       
-     
         this.mainBox._delegate = this.mainBox;
         this._mainBoxKeyPressId = this.mainBox.connect('key-press-event', this._onMainBoxKeyPress.bind(this));
-
-        
- 
-
     }
     _onMainBoxKeyPress(mainBox, event) {
-
         return Clutter.EVENT_PROPAGATE;
     }
     setCurrentMenu(menu){
     }
     getCurrentMenu(){
     } 
-    resetSearch(){ //used by back button to clear results
+    resetSearch(){
     }
     _redisplayRightSide(){
     }
-        // Redisplay the menu
-        _redisplay() {
-
-        }
-        updateStyle(){
-
-        }
-        // Display the menu
-        _display() {
-
-            
-        }
-        // Load menu category data for a single category
-        _loadCategory(categoryId, dir) {
-        }
-
-        // Load data for all menu categories
-        _loadCategories() {
-
-        }
-        _displayCategories(){
-        }
-        _displayGnomeFavorites(){
-
-        }
-        // Load menu place shortcuts
-        _displayPlaces() {
-
-        }
-        _loadFavorites() {
-         
-        }
-        _displayFavorites() {
-            
-        }
-        // Create the menu layout
-
-        _createLeftBox(){
-            
-            
-        }
-        placesAddSeparator(id){
-          
-        }
-        _redisplayPlaces(id) {
-
-        }
-    	_createPlaces(id) {
-           
-    	}
-
-        //used to check if a shortcut should be displayed
-        getShouldShowShortcut(shortcutName){
-            
-        }
-        // Scroll to a specific button (menu item) in the applications scroll view
-        scrollToButton(button) {
-
-        }
-        
-        setDefaultMenuView()
-        {
-
-        }
-        _setActiveCategory(){
-        }
-        
-        // Clear the applications menu box
-        _clearApplicationsBox() {
-        }
-
-        // Select a category or show category overview if no category specified
-        selectCategory(dir) {
-        }
-
-        // Display application menu items
-        _displayButtons(apps) {
-
-        }
-        _displayAllApps(){
-
-        }
-        // Get a list of applications for the specified category or search query
-        _listApplications(category_menu_id) {
-
-        }
-        destroy(){
-        }
-    };
+    _redisplay() {
+    }
+    _reload() {
+    }
+    updateStyle(){
+    }
+    _display() {
+    }
+    _loadCategory(categoryId, dir) {
+    }
+    _loadCategories() {
+    }
+    _displayCategories(){
+    }
+    _displayGnomeFavorites(){
+    }
+    _displayPlaces() {
+    }
+    _loadFavorites() {  
+    }
+    _displayFavorites() {     
+    }
+    _createLeftBox(){    
+    }
+    placesAddSeparator(id){   
+    }
+    _redisplayPlaces(id) {
+    }
+    _createPlaces(id) {       
+    }
+    getShouldShowShortcut(shortcutName){   
+    }
+    scrollToButton(button) {
+    }
+    setDefaultMenuView(){
+    }
+    _setActiveCategory(){
+    }   
+    _clearApplicationsBox() {
+    }
+    selectCategory(dir) {
+    }
+    _displayButtons(apps) {
+    }
+    _displayAllApps(){
+    }
+    _listApplications(category_menu_id) {
+    }
+    destroy(){
+    }
+};
