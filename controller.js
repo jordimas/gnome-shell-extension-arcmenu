@@ -109,7 +109,6 @@ var MenuSettingsController = class {
         this._menuButton._updateMenuLayout();
     }
     toggleMenus(){
-        global.log("keyrelease EVENT");
         if(this._settings.get_boolean('multi-monitor')){
             let screen = Gdk.Screen.get_default();
             //global.log( global.get_pointer());
