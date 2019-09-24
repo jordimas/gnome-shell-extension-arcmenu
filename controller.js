@@ -109,6 +109,7 @@ var MenuSettingsController = class {
         this._menuButton._updateMenuLayout();
     }
     toggleMenus(){
+        global.log("keyrelease EVENT");
         if(this._settings.get_boolean('multi-monitor')){
             let screen = Gdk.Screen.get_default();
             //global.log( global.get_pointer());
@@ -191,9 +192,11 @@ var MenuSettingsController = class {
             }        
         } 
     }
+
     _onHotkey() {
-        let focusTarget = this._menuButton.leftClickMenu.isOpen ? 
-                          (this._menuButton.actor || this._menuButton) : 
+        let activeMenu = this._menuButton.getActiveMenu();
+        let focusTarget = activeMenu ? 
+                          (activeMenu.actor || activeMenu) : 
                           (this.panel.actor || this.panel);
         
         this.disconnectKeyRelease();
@@ -201,32 +204,7 @@ var MenuSettingsController = class {
         this.keyReleaseInfo = {
             id: focusTarget.connect('key-release-event', (actor, event) => {
                 this.disconnectKeyRelease();
-                this.toggleMenus()
-            }),
-            target: focusTarget
-        };
-
-        focusTarget.grab_key_focus();
-    }
-
-    disconnectKeyRelease() {
-        if (this.keyReleaseInfo) {
-            this.keyReleaseInfo.target.disconnect(this.keyReleaseInfo.id);
-            this.keyReleaseInfo = 0;
-        }
-    }
-
-    _onHotkey() {
-        let focusTarget = this._menuButton.leftClickMenu.isOpen ? 
-                          (this._menuButton.actor || this._menuButton) : 
-                          (this.panel.actor || this.panel);
-        
-        this.disconnectKeyRelease();
-
-        this.keyReleaseInfo = {
-            id: focusTarget.connect('key-release-event', (actor, event) => {
-                this.disconnectKeyRelease();
-                this.toggleMenus()
+                this.toggleMenus();
             }),
             target: focusTarget
         };

@@ -244,6 +244,18 @@ var ApplicationsButton =   Utils.defineClass({
             }	  
 
         },
+        getActiveMenu(){
+            if(this.appMenuManager.activeMenu)
+                return this.appMenuManager.activeMenu;
+            else if(this.subMenuManager.activeMenu)
+                return this.appMenuManager.activeMenu;
+            else if(this.leftClickMenu.isOpen)
+                return this.leftClickMenu;
+            else if(this.rightClickMenu.isOpen)
+                return this.rightClickMenu;
+            else
+                return null;
+        },
         toggleRightClickMenu(){
             if(this.rightClickMenu.isOpen)
                 this.rightClickMenu.toggle();   
