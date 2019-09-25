@@ -208,8 +208,9 @@ var createMenu = class{
     getCurrentMenu(){
         return this.currentMenu;
     } 
-    resetSearch(){ //used by back button to clear results -- gets called on menu close
+    resetSearch(){ //used by back button to clear results
         this.searchBox.clear();
+        this.setDefaultMenuView();  
     }
     _redisplayRightSide(){
         this.leftBox.destroy_all_children();
