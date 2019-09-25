@@ -1734,7 +1734,8 @@ var OverrideArcMenuThemeWindow = GObject.registerClass(
             this.menuArrowSize = this._settings.get_int('menu-arrow-size');
             this.menuWidth = this._settings.get_int('menu-width');
             super._init(_('Override Arc Menu Theme'), parent);
-		    this.resize(450,250);
+            this.resize(450,250);
+            this.shouldDeselect = true; 
         }
 
         _createLayout(vbox) {         
@@ -1742,6 +1743,72 @@ var OverrideArcMenuThemeWindow = GObject.registerClass(
             //OVERRIDE OPTIONS--------------------------------
             let customArcMenuOptionsFrame = new PW.FrameBox();
  
+            let colorPresetFrame = new PW.FrameBox();
+            let colorPresetRow = new PW.FrameBoxRow();
+            let colorPresetLabel = new Gtk.Label({
+                label: _('Color Theme Presets'),
+                xalign:0,
+                hexpand: true,
+             });   
+             let colorPresetCombo = new Gtk.ComboBoxText({ halign: Gtk.Align.END });
+             this.color_themes = this._settings.get_value('color-themes').deep_unpack();
+             for(let i= 0; i<this.color_themes.length; i++){
+                colorPresetCombo.append_text(_(this.color_themes[i][0]));
+             }
+
+             //colorPresetCombo.set_active(this._settings.get_int('color-theme-index'));
+             colorPresetCombo.connect('changed', function (widget) {
+                    let index = widget.get_active();
+                    //this._settings.set_int('color-theme-index',index);
+                    /*let defaultArray = ["Theme Name","Background Color", "Foreground Color","Border Color", "Highlight Color", "Separator Color"
+                                            , "Font Size", "Border Size", "Corner Radius", "Arrow Size", "Menu Displacement", "Vertical Separator"];*/
+
+                    if(index>=0){
+                        this.menuColor = this.color_themes[index][1];
+                        this.menuForegroundColor = this.color_themes[index][2];
+                        this.borderColor = this.color_themes[index][3];
+                        this.highlightColor = this.color_themes[index][4];
+                        this.separatorColor = this.color_themes[index][5];
+                        this.fontSize = parseInt(this.color_themes[index][6]);
+                        this.borderSize = parseInt(this.color_themes[index][7]);
+                        this.cornerRadius = parseInt(this.color_themes[index][8]);
+                        this.menuArrowSize = parseInt(this.color_themes[index][9]);
+                        this.menuMargin = parseInt(this.color_themes[index][10]);
+                        this.verticalSeparator = (this.color_themes[index][11] === 'true');
+                        this.shouldDeselect = false;
+                        color.parse(this.menuColor);
+                        menuBackgroudColorChooser.set_rgba(color);
+        
+                        color.parse(this.menuForegroundColor);
+                        menuForegroundColorChooser.set_rgba(color); 
+        
+                        fontScale.set_value(this.fontSize); 
+        
+                        color.parse(this.borderColor);
+                        borderColorChooser.set_rgba(color); 
+        
+                        borderScale.set_value(this.borderSize);
+        
+                        color.parse(this.highlightColor);
+                        itemColorChooser.set_rgba(color);
+        
+                        cornerScale.set_value(this.cornerRadius);
+                        marginScale.set_value(this.menuMargin);
+                        arrowScale.set_value(this.menuArrowSize);
+                        resetButton.set_sensitive(false);
+                        applyButton.set_sensitive(true);  
+                        this.shouldDeselect = true;           
+                    }         
+                    
+                
+                 //saveCSS(this.settings);
+                 //this.settings.set_boolean('reload-theme',true);
+             }.bind(this));
+             colorPresetRow.add(colorPresetLabel);
+             colorPresetRow.add(colorPresetCombo);
+             colorPresetFrame.add(colorPresetRow);
+            vbox.add(colorPresetFrame);
+
             //ROW 1 - MENU BACKGROUND COLOR--------------------------------------   
             let menuBackgroudColorRow = new PW.FrameBoxRow();
             let menuBackgroudColorLabel = new Gtk.Label({
@@ -1755,7 +1822,10 @@ var OverrideArcMenuThemeWindow = GObject.registerClass(
             menuBackgroudColorChooser.set_rgba(color);            
             menuBackgroudColorChooser.connect('color-set', ()=>{
                 this.menuColor = menuBackgroudColorChooser.get_rgba().to_string();
+                if(this.shouldDeselect)
+                    colorPresetCombo.set_active(-1);
                 applyButton.set_sensitive(true);
+                
                 resetButton.set_sensitive(true);
             });
             menuBackgroudColorRow.add(menuBackgroudColorLabel);
@@ -1774,6 +1844,8 @@ var OverrideArcMenuThemeWindow = GObject.registerClass(
             menuForegroundColorChooser.connect('color-set', ()=>{
                 this.menuForegroundColor = menuForegroundColorChooser.get_rgba().to_string();
                 applyButton.set_sensitive(true);
+                if(this.shouldDeselect)
+                    colorPresetCombo.set_active(-1);
                 resetButton.set_sensitive(true);
             });
             menuForegroundColorRow.add(menuForegroundColorLabel);
@@ -1798,6 +1870,8 @@ var OverrideArcMenuThemeWindow = GObject.registerClass(
             fontScale.connect('value-changed', () => {
                 this.fontSize = fontScale.get_value();
                 applyButton.set_sensitive(true);
+                if(this.shouldDeselect)
+                    colorPresetCombo.set_active(-1);
                 resetButton.set_sensitive(true);
             });
             fontSizeRow.add(fontSizeLabel);
@@ -1817,6 +1891,8 @@ var OverrideArcMenuThemeWindow = GObject.registerClass(
             borderColorChooser.connect('color-set', ()=>{
                 this.borderColor = borderColorChooser.get_rgba().to_string();
                 applyButton.set_sensitive(true);
+                if(this.shouldDeselect)
+                    colorPresetCombo.set_active(-1);
                 resetButton.set_sensitive(true);
             });
             borderColorRow.add(borderColorLabel);
@@ -1841,6 +1917,8 @@ var OverrideArcMenuThemeWindow = GObject.registerClass(
             borderScale.connect('value-changed', () => {
                 this.borderSize = borderScale.get_value();
                 applyButton.set_sensitive(true);
+                if(this.shouldDeselect)
+                    colorPresetCombo.set_active(-1);
                 resetButton.set_sensitive(true);
             }); 
             borderSizeRow.add(borderSizeLabel);
@@ -1860,6 +1938,8 @@ var OverrideArcMenuThemeWindow = GObject.registerClass(
             itemColorChooser.connect('color-set', ()=>{
                 this.highlightColor = itemColorChooser.get_rgba().to_string();
                 applyButton.set_sensitive(true);
+                if(this.shouldDeselect)
+                    colorPresetCombo.set_active(-1);
                 resetButton.set_sensitive(true);
             });
             itemColorRow.add(itemColorLabel);
@@ -1884,6 +1964,8 @@ var OverrideArcMenuThemeWindow = GObject.registerClass(
             cornerScale.connect('value-changed', () => {
                 this.cornerRadius = cornerScale.get_value();
                 applyButton.set_sensitive(true);
+                if(this.shouldDeselect)
+                    colorPresetCombo.set_active(-1);
                 resetButton.set_sensitive(true);
             });   
             cornerRadiusRow.add(cornerRadiusLabel);
@@ -1908,6 +1990,8 @@ var OverrideArcMenuThemeWindow = GObject.registerClass(
             marginScale.connect('value-changed', () => {
                 this.menuMargin = marginScale.get_value();
                 applyButton.set_sensitive(true);
+                if(this.shouldDeselect)
+                    colorPresetCombo.set_active(-1);
                 resetButton.set_sensitive(true);
             });   
             menuMarginRow.add(menuMarginLabel);
@@ -1932,6 +2016,8 @@ var OverrideArcMenuThemeWindow = GObject.registerClass(
             arrowScale.connect('value-changed', () => {
                 this.menuArrowSize = arrowScale.get_value();
                 applyButton.set_sensitive(true);
+                if(this.shouldDeselect)
+                    colorPresetCombo.set_active(-1);
                 resetButton.set_sensitive(true);
             });   
             menuArrowRow.add(menuArrowLabel);

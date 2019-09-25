@@ -326,5 +326,17 @@
         List of Apps Pinned to Menu
       </description>
     </key>
+     <key name="color-themes" type="aas">
+      <default>[['Arc Menu Theme', 'rgba(28, 28, 28, 0.98)', 'rgba(211, 218, 227, 1)', 'rgb(63,62,64)', 'rgba(238, 238, 236, 0.1)', 'rgb(63,62,64)', '9', '0', '0', '0', '0', 'false'], ['Dark Blue Theme', 'rgb(25,31,34)', 'rgb(189,230,251)', 'rgb(41,50,55)', 'rgb(41,50,55)', 'rgb(41,50,55)', '9', '1', '5', '15', '20', 'true']]</default>
+      <summary>List of color-themes</summary>
+      <description> List of color themes.
+      </description>
+    </key>
+    <key name="color-theme-index" type="i">
+      <default>0</default>
+      <summary>Color theme selected</summary>
+      <description> Color theme selected,used for color-themes.
+      </description>
+    </key>
   </schema>
 </schemalist>
