@@ -47,7 +47,11 @@ var MenuSettingsController = class {
         this._hotCornerManager = new Helper.HotCornerManager(this._settings);
         if(this.isMainPanel){
             this._menuHotKeybinder = new Helper.MenuHotKeybinder(() => {
-                this._onHotkey();
+                if(this._settings.get_boolean('disable-hotkey-onkeyrelease')){
+                    this.toggleMenus();
+                }
+                else
+                    this._onHotkey();
             });
             this._keybindingManager = new Helper.KeybindingManager(this._settings); 
         }
@@ -183,7 +187,13 @@ var MenuSettingsController = class {
 
             if (hotKeyPos==3) {
                 this._keybindingManager.bind('menu-keybinding-text', 'menu-keybinding',
-                    () => this._onHotkey());
+                    () =>{
+                        if(this._settings.get_boolean('disable-hotkey-onkeyrelease')){
+                            this.toggleMenus();
+                        }
+                        else
+                            this._onHotkey();
+                    });
             }
             else if (hotKeyPos !== Constants.HOT_KEY.Undefined ) {
                 let hotKey = Constants.HOT_KEY[hotKeyPos];

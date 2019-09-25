@@ -671,7 +671,34 @@ var GeneralSettingsPage = GObject.registerClass(
             defaultLeftBoxRow.add(defaultLeftBoxLabel);
             defaultLeftBoxRow.add(defaultLeftBoxCombo);
             defaultLeftBoxFrame.add(defaultLeftBoxRow);
-           
+            /*
+           * Hotkey On Key Release
+           */
+          let keyReleaseFrame = new PW.FrameBox();
+          let keyReleaseRow = new PW.FrameBoxRow();
+          let keyReleaseLabel = new Gtk.Label({
+              label: _("Hotkey activation"),
+              use_markup: true,
+              xalign: 0,
+              hexpand: true
+          });
+          let keyReleaseCombo = new Gtk.ComboBoxText({ halign: Gtk.Align.END });
+          keyReleaseCombo.append_text(_("Key Release"));
+          keyReleaseCombo.append_text(_("Key Press"));
+          if(this.settings.get_boolean('disable-hotkey-onkeyrelease'))
+            keyReleaseCombo.set_active(1);
+          else 
+            keyReleaseCombo.set_active(0);
+          keyReleaseCombo.connect('changed', function (widget) {
+                if(widget.get_active()==0)
+                    this.settings.set_boolean('disable-hotkey-onkeyrelease',false);
+                if(widget.get_active()==1)
+                    this.settings.set_boolean('disable-hotkey-onkeyrelease',true);
+          }.bind(this));
+   
+          keyReleaseRow.add(keyReleaseLabel);
+          keyReleaseRow.add(keyReleaseCombo);
+          keyReleaseFrame.add(keyReleaseRow);
             /*
              * Menu Hotkey and Keybinding Frame Box
              */
@@ -794,6 +821,7 @@ var GeneralSettingsPage = GObject.registerClass(
             this.add(multiMonitorFrame);
             this.add(tooltipFrame);
             this.add(disableHotCornerFrame);
+            this.add(keyReleaseFrame);
             this.add(this.menuKeybindingFrame);
             //-----------------------------------------------------------------
         }

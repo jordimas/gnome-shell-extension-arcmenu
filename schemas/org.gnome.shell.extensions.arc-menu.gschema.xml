@@ -59,6 +59,11 @@
       <summary>menu layout</summary>
       <description>Menu Layout</description>
     </key>
+    <key type="b" name="disable-hotkey-onkeyrelease">
+     <default>false</default>
+      <summary>disable hotkey on key release</summary>
+      <description>disable hotkey on key release.</description>
+    </key>
     <key type="b" name="disable-tooltips">
      <default>false</default>
       <summary>disable tooltips</summary>
