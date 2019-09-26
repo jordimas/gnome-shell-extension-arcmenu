@@ -1252,6 +1252,7 @@ var  AppearanceSettingsPage = GObject.registerClass(
                       this.settings.set_int('menu-margin',dialog.menuMargin);
                       this.settings.set_int('menu-arrow-size',dialog.menuArrowSize);
                       this.settings.set_int('menu-width', dialog.menuWidth);
+                      this.settings.set_int('menu-rightpanel-width',dialog.menuRightWidth);
                       this.settings.set_boolean('enable-large-icons',dialog.largeIcons);
                       saveCSS(this.settings);
                       this.settings.set_boolean('reload-theme',true);
@@ -1302,6 +1303,7 @@ var  AppearanceSettingsPage = GObject.registerClass(
                       this.settings.set_int('menu-margin',dialog.menuMargin);
                       this.settings.set_int('menu-arrow-size',dialog.menuArrowSize);
                       this.settings.set_int('menu-width', dialog.menuWidth);
+                      this.settings.set_int('menu-rightpanel-width',dialog.menuRightWidth);
                       saveCSS(this.settings);
                       this.settings.set_boolean('reload-theme',true);
                       dialog.destroy();
@@ -1528,6 +1530,7 @@ var ArcMenuCustomizationWindow = GObject.registerClass(
             this.addResponse = false;
             this.heightValue = this._settings.get_int('menu-height');
             this.menuWidth = this._settings.get_int('menu-width');
+            this.menuRightWidth = this._settings.get_int('menu-rightpanel-width');
             this.separatorColor = this._settings.get_string('separator-color');
             this.verticalSeparator = this._settings.get_boolean('vert-separator');
             this.customArcMenu = this._settings.get_boolean('enable-custom-arc-menu');
@@ -1612,6 +1615,30 @@ var ArcMenuCustomizationWindow = GObject.registerClass(
             menuWidthRow.add(menuWidthLabel);
             menuWidthRow.add(menuWidthScale);
             mainFrame.add(menuWidthRow);
+            //ROW 3 - MENU Right WIDTH--------------------------------------------------   
+            let menuRightWidthRow = new PW.FrameBoxRow();
+            let menuRightWidthLabel = new Gtk.Label({
+                label: _('Right-Panel Width'),
+                xalign:0,
+                hexpand: false,
+             });   
+            let menuRightWidthScale = new Gtk.HScale({
+                adjustment: new Gtk.Adjustment({
+                    lower: 200,upper: 500, step_increment: 1, page_increment: 1, page_size: 0
+                }),
+                digits: 0,round_digits: 0,hexpand: true,
+                value_pos: Gtk.PositionType.RIGHT
+            });
+            menuRightWidthScale.connect('format-value', function (scale, value) { return value.toString() + 'px'; });
+            menuRightWidthScale.set_value(this.menuRightWidth);
+            menuRightWidthScale.connect('value-changed', () => {
+                this.menuRightWidth = menuRightWidthScale.get_value();
+                applyButton.set_sensitive(true);
+                resetButton.set_sensitive(true);
+            });
+            menuRightWidthRow.add(menuRightWidthLabel);
+            menuRightWidthRow.add(menuRightWidthScale);
+            mainFrame.add(menuRightWidthRow);
 
             let largeIconsRow = new PW.FrameBoxRow();
             let largeIconsLabel = new Gtk.Label({
@@ -1683,11 +1710,13 @@ var ArcMenuCustomizationWindow = GObject.registerClass(
                
                 this.heightValue = 550;
                 this.menuWidth = 290;
+                this.menuRightWidth = 200;
                 this.separatorColor = "rgb(63,62,64)";
                 this.verticalSeparator = false;
                 this.largeIcons = false;
                 hscale.set_value(this.heightValue);
                 menuWidthScale.set_value(this.menuWidth);
+                menuRightWidthScale.set_value(this.menuRightWidth);
                 vertSeparatorSwitch.set_active(this.verticalSeparator);
                 largeIconsSwitch.set_active(this.largeIcons);
                 color.parse(this.separatorColor);
@@ -1727,8 +1756,10 @@ var ArcMenuCustomizationWindow = GObject.registerClass(
         checkIfResetButtonSensitive(){
             return (this.heightValue != 550 ||
                 this.menuWidth != 290 ||
+                this.menuRightWidth != 200 ||
                 this.separatorColor != "rgb(63,62,64)"||
-                this.verticalSeparator != false) ? true : false
+                this.verticalSeparator != false||
+                this.largeIcons != false) ? true : false
             
         }
    
@@ -1756,6 +1787,7 @@ var OverrideArcMenuThemeWindow = GObject.registerClass(
             this.menuMargin = this._settings.get_int('menu-margin');
             this.menuArrowSize = this._settings.get_int('menu-arrow-size');
             this.menuWidth = this._settings.get_int('menu-width');
+            this.menuRightWidth = this._settings.get_int('menu-rightpanel-width');
             super._init(_('Override Arc Menu Theme'), parent);
             this.resize(450,250);
             this.shouldDeselect = true; 
@@ -2688,6 +2720,7 @@ function saveCSS(settings){
     let menuMargin = this._settings.get_int('menu-margin');
     let menuArrowSize = this._settings.get_int('menu-arrow-size');
     let menuWidth = this._settings.get_int('menu-width');
+    let menuRightWidth = this._settings.get_int('menu-rightpanel-width');
     let avatarStyle =  this._settings.get_enum('avatar-style');
     let avatarRadius = avatarStyle == 0 ? 999 : 0;
     
@@ -2704,7 +2737,7 @@ function saveCSS(settings){
     let tooltipForegroundColor= customArcMenu ? "\n color:"+  menuForegroundColor+";\n" : "";
     let tooltipBackgroundColor= customArcMenu ? "\n background-color:"+lighten_rgb( menuColor,0.05)+";\n" : "";
     let tooltipStyle = customArcMenu ?   
-        ("#tooltip-menu-item{border-color:"+  lighten_rgb(separatorColor,0.05)+ ";\n border: 1px;\nfont-size:"+fontSize+"pt;\n padding: 2px 5px;"
+        ("#tooltip-menu-item{border-color:"+  borderColor+ ";\n border: 1px;\nfont-size:"+fontSize+"pt;\n padding: 2px 5px;"
         + tooltipForegroundColor + tooltipBackgroundColor+"\nmax-width:550px;\n}") 
         : ("#tooltip-menu-item{\n padding: 2px 5px;\nmax-width:550px;\n}")
 
@@ -2714,6 +2747,7 @@ function saveCSS(settings){
     	".left-scroll-area{ \nwidth:"+  menuWidth+"px;\n}\n"   
     	+".arc-empty-dash-drop-target{\nwidth: "+  menuWidth+"px; \nheight: 2px; \nbackground-color:"+  separatorColor+"; \npadding: 0 0; \nmargin:0;\n}\n"     
         +".left-box{\nwidth:"+  menuWidth+"px;\n}" + "\n.vert-sep{\nwidth:11px;\n}\n"
+        +".right-box{\nwidth:"+  menuRightWidth+"px;\n}"
         +"#search-entry{\nmax-width: 17.667em;\n}\n#search-entry:focus { \nborder-color:"+  separatorColor+";\n}\n"
         +"#arc-search-entry{\nmax-width: 17.667em;\nfont-size:" + fontSize+"pt;\n border-color:"+  separatorColor+";\n"
         +" color:"+  menuForegroundColor+";\n background-color:" +  menuColor + ";\n}\n"
