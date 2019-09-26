@@ -1680,7 +1680,7 @@ var ArcMenuCustomizationWindow = GObject.registerClass(
             largeIconsRow.add(largeIconsSwitch);             
             mainFrame.add(largeIconsRow);
 
-            let vertSeparatorRow = new PW.FrameBoxRow();
+            /*let vertSeparatorRow = new PW.FrameBoxRow();
             let vertSeparatorLabel = new Gtk.Label({
                 label: _('Enable Vertical Separator'),
                 use_markup: true,
@@ -1718,7 +1718,7 @@ var ArcMenuCustomizationWindow = GObject.registerClass(
             });
             separatorColorRow.add(separatorColorLabel);            
             separatorColorRow.add(colorChooser);             
-            mainFrame.add(separatorColorRow);
+            mainFrame.add(separatorColorRow);*/
             
            // Button Row -------------------------------------------------------
            let buttonRow = new PW.FrameBoxRow();
@@ -1785,7 +1785,73 @@ var ArcMenuCustomizationWindow = GObject.registerClass(
         }
    
 });
+//Dialog Window for Arc Menu Customization    
+var ColorThemeDialogWindow = GObject.registerClass(
+    class ColorThemeDialogWindow extends PW.DialogWindow {
 
+        _init(settings, parent, isSave, themeName="") {
+            this._settings = settings;
+            this.addResponse = false;
+            this.isSave = isSave;
+            this.themeName = themeName;
+            super._init( isSave? _('Color Theme Name') : _('Delete Theme "') + themeName +'?' , parent);
+            //this.resize(450,250);
+        }
+
+        _createLayout(vbox) {        
+            let nameFrameRow = new PW.FrameBoxRow();
+            let nameFrameLabel = new Gtk.Label({
+                label: _('Name:'),
+                use_markup: true,
+                xalign: 0,
+                hexpand: true,
+                selectable: false
+            });
+            nameFrameRow.add(nameFrameLabel);
+            if(this.isSave){
+                this.nameEntry = new Gtk.Entry();
+                this.nameEntry.set_width_chars(35);
+                
+                nameFrameRow.add(this.nameEntry);
+                this.nameEntry.grab_focus();
+                
+                this.nameEntry.connect('changed',()=>{
+                    if(this.nameEntry.get_text().length > 0)
+                        saveButton.set_sensitive(true);
+                    else
+                        saveButton.set_sensitive(false);
+                });
+            }
+            else{
+                nameFrameLabel.label = _('Are you sure you want to delete theme ')+ '"' + this.themeName +'"?';
+            }
+            
+            vbox.add(nameFrameRow);
+            let buttonRow = new PW.FrameBoxRow();
+            let saveButton = new Gtk.Button({
+                label: this.isSave ? _("Save Theme") : _("Delete Theme"),
+                xalign:0
+            });   
+            saveButton.set_sensitive(this.isSave ? false : true);
+            saveButton.connect('clicked', ()=> {
+                if(this.isSave)
+                    this.themeName = this.nameEntry.get_text();
+                this.addResponse=true;
+                this.response(-10);
+            });
+            let fillerLabel = new Gtk.Label({
+                label: '',
+                xalign:0,
+                hexpand: true,
+            });   
+            buttonRow.add(fillerLabel);
+            buttonRow.add(saveButton);
+            vbox.add(buttonRow);
+        }
+        get_response(){
+            return this.addResponse;
+        }
+});
 //Dialog Window for Arc Menu Customization    
 var OverrideArcMenuThemeWindow = GObject.registerClass(
     class OverrideArcMenuThemeWindow extends PW.DialogWindow {
@@ -1838,7 +1904,7 @@ var OverrideArcMenuThemeWindow = GObject.registerClass(
                     //this._settings.set_int('color-theme-index',index);
                     /*let defaultArray = ["Theme Name","Background Color", "Foreground Color","Border Color", "Highlight Color", "Separator Color"
                                             , "Font Size", "Border Size", "Corner Radius", "Arrow Size", "Menu Displacement", "Vertical Separator"];*/
-
+                    
                     if(index>=0){
                         this.menuColor = this.color_themes[index][1];
                         this.menuForegroundColor = this.color_themes[index][2];
@@ -1851,7 +1917,9 @@ var OverrideArcMenuThemeWindow = GObject.registerClass(
                         this.menuArrowSize = parseInt(this.color_themes[index][9]);
                         this.menuMargin = parseInt(this.color_themes[index][10]);
                         this.verticalSeparator = (this.color_themes[index][11] === 'true');
+                        
                         this.shouldDeselect = false;
+
                         color.parse(this.menuColor);
                         menuBackgroudColorChooser.set_rgba(color);
         
@@ -1871,14 +1939,15 @@ var OverrideArcMenuThemeWindow = GObject.registerClass(
                         cornerScale.set_value(this.cornerRadius);
                         marginScale.set_value(this.menuMargin);
                         arrowScale.set_value(this.menuArrowSize);
-                        resetButton.set_sensitive(false);
+
+                        vertSeparatorSwitch.set_active(this.verticalSeparator);
+                        color.parse(this.separatorColor);
+                        colorChooser.set_rgba(color);  
+                        deleteButton.set_sensitive(true);
+                        saveButton.set_sensitive(false);
                         applyButton.set_sensitive(true);  
                         this.shouldDeselect = true;           
                     }         
-                    
-                
-                 //saveCSS(this.settings);
-                 //this.settings.set_boolean('reload-theme',true);
              }.bind(this));
              colorPresetRow.add(colorPresetLabel);
              colorPresetRow.add(colorPresetCombo);
@@ -1898,11 +1967,13 @@ var OverrideArcMenuThemeWindow = GObject.registerClass(
             menuBackgroudColorChooser.set_rgba(color);            
             menuBackgroudColorChooser.connect('color-set', ()=>{
                 this.menuColor = menuBackgroudColorChooser.get_rgba().to_string();
-                if(this.shouldDeselect)
+                if(this.shouldDeselect){
+                    deleteButton.set_sensitive(false);
                     colorPresetCombo.set_active(-1);
+                }
                 applyButton.set_sensitive(true);
                 
-                resetButton.set_sensitive(true);
+                saveButton.set_sensitive(true);
             });
             menuBackgroudColorRow.add(menuBackgroudColorLabel);
             menuBackgroudColorRow.add(menuBackgroudColorChooser);
@@ -1920,9 +1991,11 @@ var OverrideArcMenuThemeWindow = GObject.registerClass(
             menuForegroundColorChooser.connect('color-set', ()=>{
                 this.menuForegroundColor = menuForegroundColorChooser.get_rgba().to_string();
                 applyButton.set_sensitive(true);
-                if(this.shouldDeselect)
+                if(this.shouldDeselect){
+                    deleteButton.set_sensitive(false);
                     colorPresetCombo.set_active(-1);
-                resetButton.set_sensitive(true);
+                }
+                saveButton.set_sensitive(true);
             });
             menuForegroundColorRow.add(menuForegroundColorLabel);
             menuForegroundColorRow.add(menuForegroundColorChooser);
@@ -1946,9 +2019,11 @@ var OverrideArcMenuThemeWindow = GObject.registerClass(
             fontScale.connect('value-changed', () => {
                 this.fontSize = fontScale.get_value();
                 applyButton.set_sensitive(true);
-                if(this.shouldDeselect)
+                if(this.shouldDeselect){
+                    deleteButton.set_sensitive(false);
                     colorPresetCombo.set_active(-1);
-                resetButton.set_sensitive(true);
+                }
+                saveButton.set_sensitive(true);
             });
             fontSizeRow.add(fontSizeLabel);
             fontSizeRow.add(fontScale);
@@ -1967,9 +2042,11 @@ var OverrideArcMenuThemeWindow = GObject.registerClass(
             borderColorChooser.connect('color-set', ()=>{
                 this.borderColor = borderColorChooser.get_rgba().to_string();
                 applyButton.set_sensitive(true);
-                if(this.shouldDeselect)
+                if(this.shouldDeselect){
+                    deleteButton.set_sensitive(false);
                     colorPresetCombo.set_active(-1);
-                resetButton.set_sensitive(true);
+                }
+                saveButton.set_sensitive(true);
             });
             borderColorRow.add(borderColorLabel);
             borderColorRow.add(borderColorChooser);
@@ -1993,9 +2070,11 @@ var OverrideArcMenuThemeWindow = GObject.registerClass(
             borderScale.connect('value-changed', () => {
                 this.borderSize = borderScale.get_value();
                 applyButton.set_sensitive(true);
-                if(this.shouldDeselect)
+                if(this.shouldDeselect){
+                    deleteButton.set_sensitive(false);
                     colorPresetCombo.set_active(-1);
-                resetButton.set_sensitive(true);
+                }
+                saveButton.set_sensitive(true);
             }); 
             borderSizeRow.add(borderSizeLabel);
             borderSizeRow.add(borderScale);
@@ -2014,9 +2093,11 @@ var OverrideArcMenuThemeWindow = GObject.registerClass(
             itemColorChooser.connect('color-set', ()=>{
                 this.highlightColor = itemColorChooser.get_rgba().to_string();
                 applyButton.set_sensitive(true);
-                if(this.shouldDeselect)
+                if(this.shouldDeselect){
+                    deleteButton.set_sensitive(false);
                     colorPresetCombo.set_active(-1);
-                resetButton.set_sensitive(true);
+                }
+                saveButton.set_sensitive(true);
             });
             itemColorRow.add(itemColorLabel);
             itemColorRow.add(itemColorChooser);
@@ -2040,9 +2121,11 @@ var OverrideArcMenuThemeWindow = GObject.registerClass(
             cornerScale.connect('value-changed', () => {
                 this.cornerRadius = cornerScale.get_value();
                 applyButton.set_sensitive(true);
-                if(this.shouldDeselect)
+                if(this.shouldDeselect){
+                    deleteButton.set_sensitive(false);
                     colorPresetCombo.set_active(-1);
-                resetButton.set_sensitive(true);
+                }
+                saveButton.set_sensitive(true);
             });   
             cornerRadiusRow.add(cornerRadiusLabel);
             cornerRadiusRow.add(cornerScale);
@@ -2066,9 +2149,11 @@ var OverrideArcMenuThemeWindow = GObject.registerClass(
             marginScale.connect('value-changed', () => {
                 this.menuMargin = marginScale.get_value();
                 applyButton.set_sensitive(true);
-                if(this.shouldDeselect)
+                if(this.shouldDeselect){
+                    deleteButton.set_sensitive(false);
                     colorPresetCombo.set_active(-1);
-                resetButton.set_sensitive(true);
+                }
+                saveButton.set_sensitive(true);
             });   
             menuMarginRow.add(menuMarginLabel);
             menuMarginRow.add(marginScale);
@@ -2092,57 +2177,108 @@ var OverrideArcMenuThemeWindow = GObject.registerClass(
             arrowScale.connect('value-changed', () => {
                 this.menuArrowSize = arrowScale.get_value();
                 applyButton.set_sensitive(true);
-                if(this.shouldDeselect)
+                if(this.shouldDeselect){
+                    deleteButton.set_sensitive(false);
                     colorPresetCombo.set_active(-1);
-                resetButton.set_sensitive(true);
+                }
+                saveButton.set_sensitive(true);
             });   
             menuArrowRow.add(menuArrowLabel);
             menuArrowRow.add(arrowScale);
             customArcMenuOptionsFrame.add(menuArrowRow);
-
+            let vertSeparatorRow = new PW.FrameBoxRow();
+            let vertSeparatorLabel = new Gtk.Label({
+                label: _('Enable Vertical Separator'),
+                use_markup: true,
+                xalign: 0,
+                hexpand: true,
+                selectable: false
+             });   
+            let vertSeparatorSwitch = new Gtk.Switch({ halign: Gtk.Align.END});
+            vertSeparatorSwitch.set_active(this.verticalSeparator);
+            vertSeparatorSwitch.connect('notify::active', function (check) {
+                 this.verticalSeparator = check.get_active();
+                 applyButton.set_sensitive(true);
+                 saveButton.set_sensitive(true);
+            }.bind(this));
+            vertSeparatorRow.add(vertSeparatorLabel);            
+            vertSeparatorRow.add(vertSeparatorSwitch);             
+            customArcMenuOptionsFrame.add(vertSeparatorRow);
+            
+            let separatorColorRow = new PW.FrameBoxRow();
+            let separatorColorLabel = new Gtk.Label({
+                label: _('Separator Color'),
+                use_markup: true,
+                xalign: 0,
+                hexpand: true,
+                selectable: false
+            });
+            let colorChooser = new Gtk.ColorButton({use_alpha:true});     
+            color = new Gdk.RGBA();
+            color.parse(this.separatorColor);
+            colorChooser.set_rgba(color);    
+            colorChooser.connect('color-set', ()=>{
+                this.separatorColor = colorChooser.get_rgba().to_string();
+                applyButton.set_sensitive(true);
+                saveButton.set_sensitive(true);
+            });
+            separatorColorRow.add(separatorColorLabel);            
+            separatorColorRow.add(colorChooser);             
+            customArcMenuOptionsFrame.add(separatorColorRow);
             // Button Row -------------------------------------------------------
             let buttonRow = new PW.FrameBoxRow();
-            let resetButton = new Gtk.Button({
-                label: _("Reset"),
+            let saveButton = new Gtk.Button({
+                label: _("Save as Preset"),
                 xalign:0
             });   
-            resetButton.set_sensitive( this.checkIfResetButtonSensitive());
-            resetButton.connect('clicked', ()=> {
-                
-                this.menuColor = "rgba(28, 28, 28, 0.98)";
-                this.menuForegroundColor = "rgba(211, 218, 227, 1)";
-                this.borderColor = "rgb(63,62,64)";
-                this.highlightColor = "rgba(238, 238, 236, 0.1)";
-                this.fontSize = 9;
-                this.borderSize = 0;
-                this.cornerRadius = 0;
-                this.menuMargin = 0;
-                this.menuArrowSize = 0;
-                color.parse(this.menuColor);
-                menuBackgroudColorChooser.set_rgba(color);
-
-                color.parse(this.menuForegroundColor);
-                menuForegroundColorChooser.set_rgba(color); 
-
-                fontScale.set_value(this.fontSize); 
-
-                color.parse(this.borderColor);
-                borderColorChooser.set_rgba(color); 
-
-                borderScale.set_value(this.borderSize);
-
-                color.parse("rgba(238, 238, 236, 0.1)");
-                itemColorChooser.set_rgba(color);
-
-                cornerScale.set_value(this.cornerRadius);
-                marginScale.set_value(this.menuMargin);
-                arrowScale.set_value(this.menuArrowSize);
-                resetButton.set_sensitive(false);
-                applyButton.set_sensitive(true);               
+            saveButton.set_sensitive(false);
+            saveButton.connect('clicked', ()=> {
+                /*let defaultArray = ["Theme Name","Background Color", "Foreground Color","Border Color", "Highlight Color", "Separator Color"
+                                , "Font Size", "Border Size", "Corner Radius", "Arrow Size", "Menu Displacement", "Vertical Separator"];*/
+             
+                let dialog = new ColorThemeDialogWindow(this._settings, this, true);
+                dialog.show_all();
+                dialog.connect('response', function(response){ 
+                    if(dialog.get_response()){
+                        let array = [dialog.themeName, this.menuColor, this.menuForegroundColor, this.borderColor, this.highlightColor, this.separatorColor, 
+                                        this.fontSize.toString(), this.borderSize.toString(), this.cornerRadius.toString(), this.menuArrowSize.toString(), 
+                                        this.menuMargin.toString(), this.verticalSeparator.toString()];
+                        this.color_themes.push(array);
+                        this._settings.set_value('color-themes',new GLib.Variant('aas',this.color_themes));
+                        colorPresetCombo.append_text(_(array[0]));
+                        dialog.destroy();
+                    }
+                    else
+                        dialog.destroy();
+                }.bind(this)); 
             });
 
-            buttonRow.add(resetButton);
-           
+            buttonRow.add(saveButton);
+            let deleteButton = new Gtk.Button({
+                label: _("Delete Preset"),
+                xalign:0
+            });   
+            deleteButton.set_sensitive(false);
+            deleteButton.connect('clicked', ()=> {
+                /*let defaultArray = ["Theme Name","Background Color", "Foreground Color","Border Color", "Highlight Color", "Separator Color"
+                                , "Font Size", "Border Size", "Corner Radius", "Arrow Size", "Menu Displacement", "Vertical Separator"];*/
+             
+                let dialog = new ColorThemeDialogWindow(this._settings, this, false, colorPresetCombo.get_active_text());
+                dialog.show_all();
+                dialog.connect('response', function(response){ 
+                    if(dialog.get_response()){
+                        this.color_themes.splice(colorPresetCombo.get_active(),1);
+                        this._settings.set_value('color-themes',new GLib.Variant('aas',this.color_themes));
+                        colorPresetCombo.remove(colorPresetCombo.get_active());
+                        colorPresetCombo.set_active(-1);
+                        deleteButton.set_sensitive(false);
+                        dialog.destroy();
+                    }
+                    else
+                        dialog.destroy();
+                }.bind(this)); 
+            });
+            buttonRow.add(deleteButton);
             let fillerLabel = new Gtk.Label({
                 label: '',
                 xalign:0,
