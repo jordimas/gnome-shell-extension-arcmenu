@@ -457,7 +457,7 @@ var AddCustomLinkDialogWindow = GObject.registerClass(
             //second row  - Icon of Custom link
             let iconFrameRow = new PW.FrameBoxRow();
             let iconFrameLabel = new Gtk.Label({
-                label: _("Icon Path/Icon Symbolic:"),
+                label: _("Icon:"),
                 use_markup: true,
                 xalign: 0,
                 hexpand: true,
@@ -465,7 +465,24 @@ var AddCustomLinkDialogWindow = GObject.registerClass(
             });
             let iconEntry = new Gtk.Entry();
             iconEntry.set_width_chars(35);
+            // create file filter and file chooser button
+            let fileFilter = new Gtk.FileFilter();
+            fileFilter.add_pixbuf_formats();
+            let fileChooserButton = new Gtk.FileChooserButton({
+                action: Gtk.FileChooserAction.OPEN,
+                title: _('Please select an image icon'),
+                filter: fileFilter,
+                width_chars: 10
+            });
+            fileChooserButton.connect('file-set', function (fileChooserButton) {
+                let iconFilepath = fileChooserButton.get_filename();
+                iconEntry.set_text(iconFilepath);
+            }.bind(this));
+            fileChooserButton.set_current_folder(GLib.get_user_special_dir(GLib.UserDirectory.DIRECTORY_PICTURES));
+
+
             iconFrameRow.add(iconFrameLabel);
+            iconFrameRow.add(fileChooserButton);
             iconFrameRow.add(iconEntry);
             mainFrame.add(iconFrameRow);
 
@@ -494,6 +511,10 @@ var AddCustomLinkDialogWindow = GObject.registerClass(
                 nameEntry.text=this.appArray[0];
                 iconEntry.text=this.appArray[1];
                 cmdEntry.text=this.appArray[2];
+                let iconFilepath = iconEntry.get_text();
+                if (iconFilepath) {
+                    fileChooserButton.set_filename(iconFilepath);
+                }
             }
             addButton.connect('clicked', ()=>
             {
