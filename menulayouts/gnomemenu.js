@@ -276,7 +276,8 @@ var createMenu = class{
 
 
     }
-    // Load menu place shortcuts
+    updateIcons(){       
+    }
     _displayPlaces() {
     }
     _loadFavorites() {  

@@ -39,6 +39,9 @@ const SEARCH_PROVIDERS_SCHEMA = 'org.gnome.desktop.search-providers';
 var MAX_LIST_SEARCH_RESULTS_ROWS = 6;
 var MAX_APPS_SEARCH_RESULTS_ROWS = 6;
 
+var MEDIUM_ICON_SIZE = 25;
+var SMALL_ICON_SIZE = 16;
+
 var ArcSearchMaxWidthBin = GObject.registerClass(
 class ArcSearchMaxWidthBin extends St.Bin {
     vfunc_allocate(box, flags) {
@@ -70,6 +73,7 @@ var ListSearchResult = class extends SearchResult {
     constructor(provider, metaInfo, resultsView) {
         super(provider, metaInfo, resultsView);
         let button = resultsView._button;
+        this._settings = button._settings;
         let app = appSys.lookup_app(this.metaInfo['id']);
         if(this.provider.id =='org.gnome.Nautilus.desktop'){
             this.menuItem = new MW.SearchResultItem(this._button,appSys.lookup_app(this.provider.id),this.metaInfo['description']);
@@ -81,9 +85,9 @@ var ListSearchResult = class extends SearchResult {
             this.menuItem = new MW.SearchResultItem(this._button);
         }
         this._termsChangedId = 0;
-        
-        // An icon for, or thumbnail of, content
-        let icon = this.metaInfo['createIcon'](16);
+
+        let largeIcons = this._settings.get_boolean('enable-large-icons');
+        let icon = this.metaInfo['createIcon'](largeIcons ? MEDIUM_ICON_SIZE : SMALL_ICON_SIZE);
         if (icon) {
              this.menuItem.actor.add_child(icon);
         }
@@ -136,7 +140,8 @@ var AppSearchResult = class extends SearchResult {
     constructor(provider, metaInfo, resultsView) {
         super(provider, metaInfo, resultsView);
         this._button = resultsView._button;
-        this.layout = this._button._settings.get_enum('menu-layout');
+        this._settings = this._button._settings;
+        this.layout =this._settings.get_enum('menu-layout');
         let app = appSys.lookup_app(this.metaInfo['id']);
         if(app){
             this.menuItem = new MW.SearchResultItem(this._button, app);
@@ -144,7 +149,8 @@ var AppSearchResult = class extends SearchResult {
         else{
             this.menuItem = new MW.SearchResultItem(this._button);
         }
-        this.icon = this.metaInfo['createIcon'](16);
+        let largeIcons = this._settings.get_boolean('enable-large-icons');
+        this.icon = this.metaInfo['createIcon'](largeIcons ? MEDIUM_ICON_SIZE : SMALL_ICON_SIZE);
         if (this.icon) {
                 this.menuItem.actor.add_child(this.icon);
         }         

@@ -350,6 +350,9 @@ var createMenu = class{
         _createRightBox(){
             
         }
+        updateIcons(){
+           
+        }
         placesAddSeparator(id){
             this._sections[id].box.add(this._createHorizontalSeparator(true), {
                 x_expand: true,

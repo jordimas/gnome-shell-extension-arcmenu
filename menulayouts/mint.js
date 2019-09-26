@@ -319,6 +319,13 @@ var createMenu =class{
             this._clearApplicationsBox();
         this._display();
     }
+    updateIcons(){
+        this._applicationsButtons.forEach((value,key,map)=>{
+            map.get(key)._updateIcon();
+        });
+        this.newSearch._reset();
+        
+    }
     _reload() {
         this.applicationsBox.destroy_all_children();
         this._applicationsButtons.clear();

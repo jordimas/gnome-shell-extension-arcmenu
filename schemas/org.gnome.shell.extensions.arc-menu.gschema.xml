@@ -299,6 +299,11 @@
       <summary>Enables the default menu button arrow.</summary>
       <description>Enables the default menu button arrow.</description>
     </key>
+    <key type="b" name="enable-large-icons">
+      <default>false</default>
+      <summary>Enables large icons for applications.</summary>
+      <description>Enables large icons for applications and search results.</description>
+    </key>
     <key type="s" name="custom-menu-button-text">
       <default>'Applications'</default>
       <summary>Text of the menu button.</summary>

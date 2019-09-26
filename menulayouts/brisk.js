@@ -208,6 +208,13 @@ var createMenu = class{
     getCurrentMenu(){
         return this.currentMenu;
     } 
+    updateIcons(){
+        this._applicationsButtons.forEach((value,key,map)=>{
+            map.get(key)._updateIcon();
+        });
+        this.newSearch._reset();
+        
+    }
     resetSearch(){ //used by back button to clear results
         this.searchBox.clear();
         this.setDefaultMenuView();  

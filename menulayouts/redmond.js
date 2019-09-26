@@ -197,6 +197,8 @@ var createMenu = class {
     getCurrentMenu(){
         return this.currentMenu;
     } 
+    updateIcons(){
+    }
     resetSearch(){ //used by back button to clear results -- gets called on menu close
         this.searchBox.clear();
         this.setDefaultMenuView();  

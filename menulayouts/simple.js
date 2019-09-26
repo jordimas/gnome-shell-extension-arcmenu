@@ -207,6 +207,8 @@ var createMenu = class {
     _displayFavorites() {
         
     }
+    updateIcons(){
+    }
     // Create the menu layout
 
     _createLeftBox(){

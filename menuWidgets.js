@@ -1333,6 +1333,7 @@ var ApplicationMenuItem =Utils.createClass({
         this.app = app;
         //global.log(app);
         this._button = button;
+        this._settings = this._button._settings;
         this._iconBin = new St.Bin();
         this.actor.add_child(this._iconBin);
 
@@ -1460,7 +1461,8 @@ var ApplicationMenuItem =Utils.createClass({
 
     // Update the app icon in the menu
     _updateIcon() {
-        this._iconBin.set_child(this._app.create_icon_texture(SMALL_ICON_SIZE));
+        let largeIcons = this._settings.get_boolean('enable-large-icons');
+        this._iconBin.set_child(this._app.create_icon_texture(largeIcons ? MEDIUM_ICON_SIZE : SMALL_ICON_SIZE));
     },
     _onDestroy(){
     }

@@ -211,7 +211,9 @@ var createMenu = class {
     _createPlaces(id) {
         
     }
-
+    updateIcons(){
+      
+    }
     //used to check if a shortcut should be displayed
     getShouldShowShortcut(shortcutName){
         

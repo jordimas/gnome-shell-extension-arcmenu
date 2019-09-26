@@ -1252,6 +1252,7 @@ var  AppearanceSettingsPage = GObject.registerClass(
                       this.settings.set_int('menu-margin',dialog.menuMargin);
                       this.settings.set_int('menu-arrow-size',dialog.menuArrowSize);
                       this.settings.set_int('menu-width', dialog.menuWidth);
+                      this.settings.set_boolean('enable-large-icons',dialog.largeIcons);
                       saveCSS(this.settings);
                       this.settings.set_boolean('reload-theme',true);
                       dialog.destroy();
@@ -1539,7 +1540,7 @@ var ArcMenuCustomizationWindow = GObject.registerClass(
             this.cornerRadius = this._settings.get_int('menu-corner-radius');
             this.menuMargin = this._settings.get_int('menu-margin');
             this.menuArrowSize = this._settings.get_int('menu-arrow-size');
-
+            this.largeIcons = this._settings.get_boolean('enable-large-icons');
             super._init(_('Customize Arc Menu Appearance'), parent);
 	        this.resize(450,250);
         }
@@ -1611,6 +1612,26 @@ var ArcMenuCustomizationWindow = GObject.registerClass(
             menuWidthRow.add(menuWidthLabel);
             menuWidthRow.add(menuWidthScale);
             mainFrame.add(menuWidthRow);
+
+            let largeIconsRow = new PW.FrameBoxRow();
+            let largeIconsLabel = new Gtk.Label({
+                label: _('Large Application Icons'),
+                use_markup: true,
+                xalign: 0,
+                hexpand: true,
+                selectable: false
+             });   
+            let largeIconsSwitch = new Gtk.Switch({ halign: Gtk.Align.END});
+            largeIconsSwitch.set_active( this.largeIcons);
+            largeIconsSwitch.connect('notify::active', function (check) {
+                 this.largeIcons = check.get_active();
+                 applyButton.set_sensitive(true);
+                 resetButton.set_sensitive(true);
+            }.bind(this));
+            largeIconsRow.add(largeIconsLabel);            
+            largeIconsRow.add(largeIconsSwitch);             
+            mainFrame.add(largeIconsRow);
+
             let vertSeparatorRow = new PW.FrameBoxRow();
             let vertSeparatorLabel = new Gtk.Label({
                 label: _('Enable Vertical Separator'),
@@ -1664,9 +1685,11 @@ var ArcMenuCustomizationWindow = GObject.registerClass(
                 this.menuWidth = 290;
                 this.separatorColor = "rgb(63,62,64)";
                 this.verticalSeparator = false;
+                this.largeIcons = false;
                 hscale.set_value(this.heightValue);
                 menuWidthScale.set_value(this.menuWidth);
                 vertSeparatorSwitch.set_active(this.verticalSeparator);
+                largeIconsSwitch.set_active(this.largeIcons);
                 color.parse(this.separatorColor);
                 colorChooser.set_rgba(color);    
 

@@ -289,6 +289,13 @@ var createMenu = class {
         this.searchBox.clear();
         this.setDefaultMenuView();  
     }
+    updateIcons(){
+        this._applicationsButtons.forEach((value,key,map)=>{
+            map.get(key)._updateIcon();
+        });
+        this.newSearch._reset();
+        
+    }
     _redisplayRightSide(){
         this.leftBox.destroy_all_children();
         this._createLeftBox();

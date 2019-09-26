@@ -64,6 +64,8 @@ var createMenu = class {
     _onMainBoxKeyPress(mainBox, event) {
         return Clutter.EVENT_PROPAGATE;
     }
+    updateIcons(){       
+    }
     setCurrentMenu(menu){
     }
     getCurrentMenu(){

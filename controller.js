@@ -107,7 +107,11 @@ var MenuSettingsController = class {
             this._settings.connect('changed::pinned-app-list',this._updateFavorites.bind(this)),
             this._settings.connect('changed::enable-pinned-apps',this._updateMenuDefaultView.bind(this)),
             this._settings.connect('changed::menu-layout', this._updateMenuLayout.bind(this)),
+            this._settings.connect('changed::enable-large-icons', this.updateIcons.bind(this)),
         ];
+    }
+    updateIcons(){
+        this._menuButton.updateIcons();
     }
     _updateMenuLayout(){
         this._menuButton._updateMenuLayout();

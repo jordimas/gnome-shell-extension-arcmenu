@@ -340,7 +340,10 @@ var ApplicationsButton =   Utils.defineClass({
             else if (layout == Constants.MENU_LAYOUT.UbuntuDash)
                 this.MenuLayout = new MenuLayouts.ubuntudash.createMenu(this);  
         },
-        __loadCategories(){
+        updateIcons(){
+            this.MenuLayout.updateIcons();
+        },
+        _loadCategories(){
             this.MenuLayout._loadCategories();
         },
         _clearApplicationsBox() {

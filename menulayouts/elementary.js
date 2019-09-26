@@ -215,6 +215,8 @@ var createMenu = class{
     _redisplay() {
         this._display();
     }
+    updateIcons(){       
+    }
     _reload() {
         this.appsBox.destroy_all_children();
         this._applications = [];
