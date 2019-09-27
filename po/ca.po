@@ -1,0 +1,508 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# Jordi Mas <jmas@softcatala.org>, 2019
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2019-09-27 18:03+0200\n"
+"PO-Revision-Date: 2019-09-27 17:59+0200\n"
+"Last-Translator: Jordi Mas <jmas@softcatala.org>\n"
+"Language-Team: \n"
+"Language: ca\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Poedit 2.2.1\n"
+
+#: prefs.js:46 prefs.js:620
+msgid "Pinned Apps"
+msgstr "Aplicacions ancorades"
+
+#: prefs.js:51
+msgid "Your Pinned Apps:"
+msgstr "Aplicacions ancorades:"
+
+#: prefs.js:75
+msgid "Add More Apps"
+msgstr "Afegeix més aplicacions"
+
+#: prefs.js:119
+msgid "Add Custom Shortcut"
+msgstr "Afegeix drecera personalitzada"
+
+#: prefs.js:153
+msgid "Save"
+msgstr "Desa"
+
+#: prefs.js:278
+msgid "Select Apps to add to Pinned Apps List"
+msgstr ""
+"Seleccioneu aplicacions per a afegir a la llista d'Aplicacions ancorades"
+
+#: prefs.js:298 prefs.js:457
+msgid "Add"
+msgstr "Afegeix"
+
+#: prefs.js:406
+msgid "Add a Custom Shortcut"
+msgstr "Afegeix una drecera personalitzada"
+
+#: prefs.js:416
+msgid "Shortcut Name:"
+msgstr "Nom de la drecera"
+
+#: prefs.js:430
+msgid "Icon Path/Icon Symbolic:"
+msgstr "Camí de  la icona/Icona simbòlica:"
+
+#: prefs.js:444
+msgid "Terminal Command:"
+msgstr "Ordre del terminal:"
+
+#: prefs.js:491
+msgid "General"
+msgstr "General"
+
+#: prefs.js:500
+msgid "Menu Button Position in Panel"
+msgstr "Posició del botó del menú al quadre"
+
+#: prefs.js:507
+msgid "Left"
+msgstr "Esquerra"
+
+#: prefs.js:510
+msgid "Center"
+msgstr "Central"
+
+#: prefs.js:514
+msgid "Right"
+msgstr "Dreta"
+
+#: prefs.js:552
+msgid "Display on all monitors when using Dash to Panel"
+msgstr "Mostra a tots els monitors usant taulell al quadre"
+
+#: prefs.js:573
+msgid "Disable Tooltips"
+msgstr "Inhabilita els indicadors de funció"
+
+#: prefs.js:595
+msgid "Disable activities hot corner"
+msgstr "Inhabiliteu la cantonada sensible d'activitats"
+
+#: prefs.js:614
+msgid "Choose Arc Menus Default View"
+msgstr "Trieu la vista per defecte de l'Arc Menu"
+
+#: prefs.js:621
+msgid "Categories List"
+msgstr "Llista de categories"
+
+#: prefs.js:646
+msgid "Set Menu Hotkey"
+msgstr "Estableix tecla de drecera"
+
+#: prefs.js:656
+msgid "Left Super Key"
+msgstr "Tecla Súper esquerra"
+
+#: prefs.js:662
+msgid "Right Super Key"
+msgstr "Tecla Súper dreta"
+
+#: prefs.js:667
+msgid "Custom"
+msgstr "Personalitzada"
+
+#: prefs.js:672
+msgid "None"
+msgstr "No disponible"
+
+#: prefs.js:764
+msgid "Current Hotkey"
+msgstr "Tecla de drecera actual"
+
+#: prefs.js:790
+msgid "Set Custom Shortcut"
+msgstr "Estableix la drecera personalitzada"
+
+#: prefs.js:799
+msgid "Press a key"
+msgstr "Premeu una tecla"
+
+#: prefs.js:824
+msgid "Modifiers"
+msgstr "Modificadors"
+
+#: prefs.js:829
+msgid "Ctrl"
+msgstr "Control"
+
+#: prefs.js:834
+msgid "Super"
+msgstr "Súper"
+
+#: prefs.js:838
+msgid "Shift"
+msgstr "Maj"
+
+#: prefs.js:842
+msgid "Alt"
+msgstr "Alt"
+
+#: prefs.js:906 prefs.js:1447 prefs.js:1752
+msgid "Apply"
+msgstr "Aplica"
+
+#: prefs.js:941
+msgid "Button appearance"
+msgstr "Aparença del botó"
+
+#: prefs.js:953
+msgid "Text for the menu button"
+msgstr "Text pel botó del menú"
+
+#: prefs.js:959
+msgid "System text"
+msgstr "Text del sistema"
+
+#: prefs.js:962
+msgid "Custom text"
+msgstr "Text personalitzat"
+
+#: prefs.js:986
+msgid "Set custom text for the menu button"
+msgstr "Establiu el text pel botó del menú"
+
+#: prefs.js:1006
+msgid "Enable the arrow icon beside the button text"
+msgstr "Habilita la icona de la fletxa al costat del text del botó"
+
+#: prefs.js:1028
+msgid "Select icon for the menu button"
+msgstr "Seleccioneu una icona pel botó del menú"
+
+#: prefs.js:1038
+msgid "Please select an image icon"
+msgstr "Seleccioneu una imatge com a icona"
+
+#: prefs.js:1043
+msgid "Arc Menu Icon"
+msgstr "Icona de l'Arc Menu"
+
+#: prefs.js:1044
+msgid "System Icon"
+msgstr "Icona del sistema"
+
+#: prefs.js:1045
+msgid "Custom Icon"
+msgstr "Icona personalitzada"
+
+#: prefs.js:1071
+msgid "Icon size"
+msgstr "Mida d'icona"
+
+#: prefs.js:1071
+msgid "default is"
+msgstr "per defecte és"
+
+#: prefs.js:1111
+msgid "Appearance"
+msgstr "Aparença"
+
+#: prefs.js:1120
+msgid "Customize Menu Button Appearance"
+msgstr "Personalitza l'aparença del botó del menú"
+
+#: prefs.js:1130
+msgid "Icon"
+msgstr "Icona"
+
+#: prefs.js:1131
+msgid "Text"
+msgstr "Text"
+
+#: prefs.js:1132
+msgid "Icon and Text"
+msgstr "Icona i text"
+
+#: prefs.js:1133
+msgid "Text and Icon"
+msgstr "Text i icones"
+
+#: prefs.js:1156 prefs.js:1303
+msgid "Customize Arc Menu Appearance"
+msgstr "Personalitza l'aparença del menú de l'Arc"
+
+#: prefs.js:1204 prefs.js:1496
+msgid "Override Arc Menu Theme"
+msgstr "Sobreescriu el tema del menú de l'Arc"
+
+#: prefs.js:1262
+msgid "Choose Avatar Icon Shape"
+msgstr "Seleccioneu la forma de la icona de l'avatar"
+
+#: prefs.js:1267
+msgid "Circular"
+msgstr "Circular"
+
+#: prefs.js:1268
+msgid "Square"
+msgstr "Quadrat"
+
+#: prefs.js:1321
+msgid "Menu Height"
+msgstr "Alçada del menú"
+
+#: prefs.js:1353
+msgid "Left-Panel Width"
+msgstr "Amplada del quadre esquerre"
+
+#: prefs.js:1376
+msgid "Enable Vertical Separator"
+msgstr "Habilita el separador vertical"
+
+#: prefs.js:1395
+msgid "Separator Color"
+msgstr "Color del separador"
+
+#: prefs.js:1417 prefs.js:1704
+msgid "Reset"
+msgstr "Reinicia"
+
+#: prefs.js:1508
+msgid "Menu Background Color"
+msgstr "Color de fons del menú"
+
+#: prefs.js:1527
+msgid "Menu Foreground Color"
+msgstr "Color de primer pla del menú"
+
+#: prefs.js:1545
+msgid "Font Size"
+msgstr "Mida de la lletra"
+
+#: prefs.js:1569
+msgid "Border Color"
+msgstr "Color del contorn"
+
+#: prefs.js:1588
+msgid "Border Size"
+msgstr "Mida de la vora"
+
+#: prefs.js:1612
+msgid "Highlighted Item Color"
+msgstr "Color de l'ítem ressaltat"
+
+#: prefs.js:1631
+msgid "Corner Radius"
+msgstr "Radi de la cantonada"
+
+#: prefs.js:1655
+msgid "Menu Arrow Size"
+msgstr "Mida de la fletxa del menú"
+
+#: prefs.js:1679
+msgid "Menu Displacement"
+msgstr "Desplaçament del menú"
+
+#: prefs.js:1786
+msgid "Configure"
+msgstr "Configuració"
+
+#: prefs.js:1793
+msgid "Enable/Disable shortcuts"
+msgstr "Habilita o inhabilita dreceres"
+
+#: prefs.js:1803 menu.js:449 placeDisplay.js:447
+msgid "Home"
+msgstr "Carpeta de l’usuari"
+
+#: prefs.js:1803 menu.js:456
+msgid "Documents"
+msgstr "Documents"
+
+#: prefs.js:1803 menu.js:456
+msgid "Downloads"
+msgstr "Baixades"
+
+#: prefs.js:1803 menu.js:456
+msgid "Music"
+msgstr "Música"
+
+#: prefs.js:1803 menu.js:456
+msgid "Pictures"
+msgstr "Imatges"
+
+#: prefs.js:1803 menu.js:456
+msgid "Videos"
+msgstr "Vídeos"
+
+#: prefs.js:1803 placeDisplay.js:237 placeDisplay.js:260
+msgid "Computer"
+msgstr "Ordinador"
+
+#: prefs.js:1804 menu.js:658
+msgid "Network"
+msgstr "Xarxa"
+
+#: prefs.js:1848
+msgid "External Devices"
+msgstr "Dispositius externs"
+
+#: prefs.js:1871
+msgid "Bookmarks"
+msgstr "Marcadors"
+
+#: prefs.js:1899 menu.js:713
+msgid "Software"
+msgstr "Programari"
+
+#: prefs.js:1899 menu.js:713
+msgid "Settings"
+msgstr "Paràmetres"
+
+#: prefs.js:1899 menu.js:713
+msgid "Tweaks"
+msgstr "Ajustaments"
+
+#: prefs.js:1899 menu.js:713 menuWidgets.js:761
+msgid "Terminal"
+msgstr "Terminal"
+
+#: prefs.js:1899 menuWidgets.js:388
+msgid "Activities Overview"
+msgstr "Vista general d'activitats"
+
+#: prefs.js:1937 menuWidgets.js:540
+msgid "Suspend"
+msgstr "Atura temporalment"
+
+#: prefs.js:1955 menuWidgets.js:558
+msgid "Lock"
+msgstr "Bloca"
+
+#: prefs.js:1973 menuWidgets.js:527
+msgid "Log Out"
+msgstr "Tanca sessió"
+
+#: prefs.js:2005
+msgid "About"
+msgstr "Quant a"
+
+#: prefs.js:2034
+msgid "Arc-Menu"
+msgstr "Arc-Menu"
+
+#: prefs.js:2039
+msgid "version: "
+msgstr "versió: "
+
+#: prefs.js:2047
+msgid "GitLab Page"
+msgstr "Pàgina del GitLab"
+
+#: menu.js:81 menuWidgets.js:760
+msgid "Arc Menu Settings"
+msgstr "Paràmetres de l'Arc Menu"
+
+#: menu.js:90
+msgid "Arc Menu on GitLab"
+msgstr "Menú de l'Arc a Gitlab"
+
+#: menu.js:95
+msgid "About Arc Menu"
+msgstr "Quant al menú Arc"
+
+#: menu.js:134
+msgid "Dash to Panel Settings"
+msgstr "Taulell al quadre de paràmetres"
+
+#: menuWidgets.js:134
+msgid "Current Windows:"
+msgstr "Finestres actuals:"
+
+#: menuWidgets.js:154
+msgid "New Window"
+msgstr "Finestra nova"
+
+#: menuWidgets.js:164
+msgid "Launch using Dedicated Graphics Card"
+msgstr "Inicia usant una targeta gràfica dedicada"
+
+#: menuWidgets.js:187
+msgid "Remove from Favorites"
+msgstr "Suprimeix dels favorits"
+
+#: menuWidgets.js:193
+msgid "Add to Favorites"
+msgstr "Afegeix als favorits"
+
+#: menuWidgets.js:212 menuWidgets.js:258
+msgid "Unpin from Arc Menu"
+msgstr "Ancora a l'Arc Menu"
+
+#: menuWidgets.js:226
+msgid "Pin to Arc Menu"
+msgstr "Desancora a l'Arc Menu"
+
+#: menuWidgets.js:237
+msgid "Show Details"
+msgstr "Mostra les dades"
+
+#: menuWidgets.js:514
+msgid "Power Off"
+msgstr "Apagada"
+
+#: menuWidgets.js:580
+msgid "Back"
+msgstr "Part de darrere"
+
+#: menuWidgets.js:636
+msgid "All Programs"
+msgstr "Tots els programes"
+
+#: menuWidgets.js:1105
+msgid "Frequent Apps"
+msgstr "Aplicacions freqüents"
+
+#: menuWidgets.js:1255
+msgid "Type to search…"
+msgstr "Teclegeu per cercar…"
+
+#: menuWidgets.js:1418 controller.js:253
+msgid "Applications"
+msgstr "Aplicacions"
+
+#: search.js:626
+msgid "Searching..."
+msgstr "S'està cercant..."
+
+#: search.js:628
+msgid "No results."
+msgstr "Cap resultat."
+
+#: placeDisplay.js:138
+#, javascript-format
+msgid "Failed to launch “%s”"
+msgstr "No s'ha pogut iniciar «%s»"
+
+#: placeDisplay.js:153
+#, javascript-format
+msgid "Failed to mount volume for “%s”"
+msgstr "No s'ha pogut muntar el volum «%s»"
+
+#: placeDisplay.js:321
+#, javascript-format
+msgid "Ejecting drive “%s” failed:"
+msgstr "Ha fallat l'expulsió de la unitat «%s»:"
+
+#~ msgid "%d more"
+#~ msgid_plural "%d more"
+#~ msgstr[0] "%d més"
+#~ msgstr[1] "%d més"
