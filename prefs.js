@@ -1814,7 +1814,9 @@ var ColorThemeDialogWindow = GObject.registerClass(
                 
                 nameFrameRow.add(this.nameEntry);
                 this.nameEntry.grab_focus();
-                
+                if(this.themeName!=""){
+                    this.nameEntry.set_text(this.themeName);
+                }
                 this.nameEntry.connect('changed',()=>{
                     if(this.nameEntry.get_text().length > 0)
                         saveButton.set_sensitive(true);
@@ -1857,11 +1859,12 @@ var ColorThemeDialogWindow = GObject.registerClass(
 var ExportColorThemeDialogWindow = GObject.registerClass(
     class ExportColorThemeDialogWindow extends PW.DialogWindow {
 
-        _init(settings, parent) {
+        _init(settings, parent, themes=null) {
             this._settings = settings;
+            this._themes = themes;
             this.addResponse = false;
             this.selectedThemes = [];
-            super._init( _('Select Themes to Export'), parent);
+            super._init(this._themes ? _('Select Themes to Import'): _('Select Themes to Export'), parent);
             //this.resize(450,250);
         }
 
@@ -1880,7 +1883,7 @@ var ExportColorThemeDialogWindow = GObject.registerClass(
 
             //last row - Label and button to add apps to list
             let themesListButton = new Gtk.Button({
-                label: _("Export"),
+                label: this._themes ?_("Import"): _("Export"),
                 xalign:1
             });
 
@@ -1897,7 +1900,7 @@ var ExportColorThemeDialogWindow = GObject.registerClass(
             vbox.add(themesListScrollWindow);
             vbox.add(themesListButton);
 
-            this.color_themes = this._settings.get_value('color-themes').deep_unpack();
+            this.color_themes = this._themes ? this._themes : this._settings.get_value('color-themes').deep_unpack();
             for(let i = 0; i< this.color_themes.length; i++){
                 let theme = this.color_themes[i];
                 let frameRow = new PW.FrameBoxRow();
@@ -1927,6 +1930,164 @@ var ExportColorThemeDialogWindow = GObject.registerClass(
                     }
                 });
                 frameRow.add(checkButton);
+                this.mainFrame.add(frameRow);
+                checkButton.set_active(true);
+            }    
+          
+        }
+        get_response(){
+            return this.addResponse;
+        }
+});
+//Dialog Window for Arc Menu Customization    
+var ManageColorThemeDialogWindow = GObject.registerClass(
+    class ManageColorThemeDialogWindow extends PW.DialogWindow {
+
+        _init(settings, parent) {
+            this._settings = settings;
+            this.addResponse = false;
+            this.selectedThemes = [];
+            super._init( _('Manage Themes'), parent);
+            //this.resize(450,250);
+        }
+
+        _createLayout(vbox) {    
+            //create a scrolledwindow for list of all apps
+            let themesListScrollWindow = new Gtk.ScrolledWindow();
+            themesListScrollWindow.set_policy(Gtk.PolicyType.AUTOMATIC, Gtk.PolicyType.AUTOMATIC);
+            themesListScrollWindow.set_max_content_height(300);
+            themesListScrollWindow.set_min_content_height(300);
+            themesListScrollWindow.set_min_content_width(500);
+            themesListScrollWindow.set_min_content_width(500);
+            this.mainFrame = new PW.FrameBox();
+
+            //first row
+
+
+            //last row - Label and button to add apps to list
+            let applyButton = new Gtk.Button({
+                label: _("Apply"),
+                xalign:1
+            });
+            applyButton.set_sensitive(false);
+            applyButton.connect('clicked', ()=>
+            {
+                this.addResponse = true;
+                this.response(-10);
+            });
+	        applyButton.set_halign(Gtk.Align.END);
+
+            // add the frames to the vbox
+           
+            themesListScrollWindow.add_with_viewport(this.mainFrame);
+            vbox.add(themesListScrollWindow);
+            vbox.add(applyButton);
+
+            this.color_themes = this._settings.get_value('color-themes').deep_unpack();
+            for(let i = 0; i< this.color_themes.length; i++){
+                let theme = this.color_themes[i];
+                let frameRow = new PW.FrameBoxRow();
+                let frameLabel = new Gtk.Label(
+                {
+                    use_markup: false,
+                    xalign: 0,
+                    hexpand: true
+                });
+    
+                frameLabel.label = theme[0];
+    
+                frameRow.add(frameLabel);
+    
+                let buttonBox = new Gtk.Grid({
+                    margin_top:0,
+                    margin_bottom: 0,
+                    vexpand: false,
+                    hexpand: false,
+                    margin_right: 15,
+                    column_spacing: 2
+                });
+                //create the three buttons to handle the ordering of pinned apps
+                //and delete pinned apps
+                let editButton = new PW.IconButton({
+                    circular: false,
+                    icon_name: 'emblem-system-symbolic'
+                });
+                let upButton = new PW.IconButton({
+                  circular: false,
+                  icon_name: 'go-up-symbolic'
+                });
+                let downButton = new PW.IconButton({
+                  circular: false,
+                  icon_name: 'go-down-symbolic'
+                });
+                let deleteButton = new PW.IconButton({
+                  circular: false,
+                  icon_name: 'edit-delete-symbolic'
+                });
+                editButton.connect('clicked', ()=>
+                {
+                    let dialog = new ColorThemeDialogWindow(this._settings, this, true,theme[0]);
+                    dialog.show_all();
+                    dialog.connect('response', function(response){ 
+                        if(dialog.get_response()){
+                            let array = [dialog.themeName, theme[1], theme[2], theme[3], theme[4], theme[5], 
+                            theme[6], theme[7], theme[8], theme[9], theme[10], theme[11]];
+                            this.color_themes.splice(i,1,array);
+                            //this._settings.set_value('color-themes',new GLib.Variant('aas',this.color_themes));
+                            frameLabel.label = dialog.themeName;
+                            dialog.destroy();
+                        }
+                        else
+                            dialog.destroy();
+                    }.bind(this)); 
+                    applyButton.set_sensitive(true);
+                });
+                upButton.connect('clicked', ()=>
+                {
+                    //find index of frameRow in frame
+                    //remove and reinsert at new position
+                    let index = frameRow.get_index();
+                    if(index!=0)
+                    {
+                      this.mainFrame.remove(frameRow);
+                      this.mainFrame.insert(frameRow,index-1);
+                      this.color_themes.splice(i,1);
+                      this.color_themes.splice(i-1,0,theme);
+                    }
+                    this.mainFrame.show();
+                    applyButton.set_sensitive(true);
+                });
+
+                downButton.connect('clicked', ()=>
+                {
+                    //find index of frameRow in frame
+                    //remove and reinsert at new position
+                    let index = frameRow.get_index();
+                    if(index+1<this.mainFrame.count)
+                    {
+                      this.mainFrame.remove(frameRow);
+                      this.mainFrame.insert(frameRow,index+1);
+                      this.color_themes.splice(i,1);
+                      this.color_themes.splice(i+1,0,theme);
+                    }
+                    this.mainFrame.show();
+                    applyButton.set_sensitive(true);
+                });
+
+                deleteButton.connect('clicked', ()=>
+                {
+                    //remove frameRow
+                    this.mainFrame.remove(frameRow);
+                    this.color_themes.splice(i,1);
+                    this.mainFrame.show();
+                    applyButton.set_sensitive(true);
+                });
+                //add everything to frame
+                buttonBox.add(editButton);
+                buttonBox.add(upButton);
+                buttonBox.add(downButton);
+                buttonBox.add(deleteButton);
+                frameRow.add(buttonBox);
                 this.mainFrame.add(frameRow);
               
             }    
@@ -2036,6 +2197,93 @@ var OverrideArcMenuThemeWindow = GObject.registerClass(
              colorPresetRow.add(colorPresetLabel);
              colorPresetRow.add(colorPresetCombo);
              colorPresetFrame.add(colorPresetRow);
+
+             let presetsButtonRow = new PW.FrameBoxRow();
+             let saveButton = new Gtk.Button({
+                 label: _("Save as Preset"),
+                 xalign:0
+             });   
+             saveButton.set_sensitive(false);
+             saveButton.connect('clicked', ()=> {
+                 /*let defaultArray = ["Theme Name","Background Color", "Foreground Color","Border Color", "Highlight Color", "Separator Color"
+                                 , "Font Size", "Border Size", "Corner Radius", "Arrow Size", "Menu Displacement", "Vertical Separator"];*/
+              
+                 let dialog = new ColorThemeDialogWindow(this._settings, this, true);
+                 dialog.show_all();
+                 dialog.connect('response', function(response){ 
+                     if(dialog.get_response()){
+                         let array = [dialog.themeName, this.menuColor, this.menuForegroundColor, this.borderColor, this.highlightColor, this.separatorColor, 
+                                         this.fontSize.toString(), this.borderSize.toString(), this.cornerRadius.toString(), this.menuArrowSize.toString(), 
+                                         this.menuMargin.toString(), this.verticalSeparator.toString()];
+                         this.color_themes.push(array);
+                         this._settings.set_value('color-themes',new GLib.Variant('aas',this.color_themes));
+                         colorPresetCombo.append_text(_(array[0]));
+                         dialog.destroy();
+                     }
+                     else
+                         dialog.destroy();
+                 }.bind(this)); 
+             });
+ 
+             
+             let fillerLabel = new Gtk.Label({
+                label: '',
+                xalign:0,
+                hexpand: true,
+            });   
+         
+             let deleteButton = new Gtk.Button({
+                 label: _("Manage Presets"),
+                 xalign:0
+             });   
+             deleteButton.set_sensitive(false);
+             deleteButton.connect('clicked', ()=> {
+                 /*let defaultArray = ["Theme Name","Background Color", "Foreground Color","Border Color", "Highlight Color", "Separator Color"
+                                 , "Font Size", "Border Size", "Corner Radius", "Arrow Size", "Menu Displacement", "Vertical Separator"];*/
+              
+                 let dialog = new ColorThemeDialogWindow(this._settings, this, false, colorPresetCombo.get_active_text());
+                 dialog.show_all();
+                 dialog.connect('response', function(response){ 
+                     if(dialog.get_response()){
+                         this.color_themes.splice(colorPresetCombo.get_active(),1);
+                         this._settings.set_value('color-themes',new GLib.Variant('aas',this.color_themes));
+                         colorPresetCombo.remove(colorPresetCombo.get_active());
+                         colorPresetCombo.set_active(-1);
+                         deleteButton.set_sensitive(false);
+                         dialog.destroy();
+                     }
+                     else
+                         dialog.destroy();
+                 }.bind(this)); 
+             });
+             let manageButton = new Gtk.Button({
+                label: _("Manage Presets"),
+                xalign:0
+            });   
+            manageButton.connect('clicked', ()=> {            
+                let dialog = new ManageColorThemeDialogWindow(this._settings, this);
+                dialog.show_all();
+                dialog.connect('response', function(response){ 
+                    if(dialog.get_response()){
+                        this.color_themes = dialog.color_themes;
+                        this._settings.set_value('color-themes',new GLib.Variant('aas',dialog.color_themes));
+                        colorPresetCombo.remove_all();
+                        
+                        for(let i= 0; i<this.color_themes.length; i++){
+                            colorPresetCombo.append_text(_(this.color_themes[i][0]));
+                         }
+                         colorPresetCombo.set_active(-1);
+                        dialog.destroy();
+                    }
+                    else
+                        dialog.destroy();
+                }.bind(this)); 
+            });
+            //presetsButtonRow.add(deleteButton);
+            presetsButtonRow.add(manageButton);
+            presetsButtonRow.add(fillerLabel);
+            presetsButtonRow.add(saveButton);
+            colorPresetFrame.add(presetsButtonRow);
             vbox.add(colorPresetFrame);
 
             //ROW 1 - MENU BACKGROUND COLOR--------------------------------------   
@@ -2058,6 +2306,7 @@ var OverrideArcMenuThemeWindow = GObject.registerClass(
                 applyButton.set_sensitive(true);
                 
                 saveButton.set_sensitive(true);
+                resetButton.set_sensitive(true);
             });
             menuBackgroudColorRow.add(menuBackgroudColorLabel);
             menuBackgroudColorRow.add(menuBackgroudColorChooser);
@@ -2080,6 +2329,7 @@ var OverrideArcMenuThemeWindow = GObject.registerClass(
                     colorPresetCombo.set_active(-1);
                 }
                 saveButton.set_sensitive(true);
+                resetButton.set_sensitive(true);
             });
             menuForegroundColorRow.add(menuForegroundColorLabel);
             menuForegroundColorRow.add(menuForegroundColorChooser);
@@ -2108,6 +2358,7 @@ var OverrideArcMenuThemeWindow = GObject.registerClass(
                     colorPresetCombo.set_active(-1);
                 }
                 saveButton.set_sensitive(true);
+                resetButton.set_sensitive(true);
             });
             fontSizeRow.add(fontSizeLabel);
             fontSizeRow.add(fontScale);
@@ -2131,6 +2382,7 @@ var OverrideArcMenuThemeWindow = GObject.registerClass(
                     colorPresetCombo.set_active(-1);
                 }
                 saveButton.set_sensitive(true);
+                resetButton.set_sensitive(true);
             });
             borderColorRow.add(borderColorLabel);
             borderColorRow.add(borderColorChooser);
@@ -2159,6 +2411,7 @@ var OverrideArcMenuThemeWindow = GObject.registerClass(
                     colorPresetCombo.set_active(-1);
                 }
                 saveButton.set_sensitive(true);
+                resetButton.set_sensitive(true);
             }); 
             borderSizeRow.add(borderSizeLabel);
             borderSizeRow.add(borderScale);
@@ -2182,6 +2435,7 @@ var OverrideArcMenuThemeWindow = GObject.registerClass(
                     colorPresetCombo.set_active(-1);
                 }
                 saveButton.set_sensitive(true);
+                resetButton.set_sensitive(true);
             });
             itemColorRow.add(itemColorLabel);
             itemColorRow.add(itemColorChooser);
@@ -2210,6 +2464,7 @@ var OverrideArcMenuThemeWindow = GObject.registerClass(
                     colorPresetCombo.set_active(-1);
                 }
                 saveButton.set_sensitive(true);
+                resetButton.set_sensitive(true);
             });   
             cornerRadiusRow.add(cornerRadiusLabel);
             cornerRadiusRow.add(cornerScale);
@@ -2238,6 +2493,7 @@ var OverrideArcMenuThemeWindow = GObject.registerClass(
                     colorPresetCombo.set_active(-1);
                 }
                 saveButton.set_sensitive(true);
+                resetButton.set_sensitive(true);
             });   
             menuMarginRow.add(menuMarginLabel);
             menuMarginRow.add(marginScale);
@@ -2266,6 +2522,7 @@ var OverrideArcMenuThemeWindow = GObject.registerClass(
                     colorPresetCombo.set_active(-1);
                 }
                 saveButton.set_sensitive(true);
+                resetButton.set_sensitive(true);
             });   
             menuArrowRow.add(menuArrowLabel);
             menuArrowRow.add(arrowScale);
@@ -2282,8 +2539,13 @@ var OverrideArcMenuThemeWindow = GObject.registerClass(
             vertSeparatorSwitch.set_active(this.verticalSeparator);
             vertSeparatorSwitch.connect('notify::active', function (check) {
                  this.verticalSeparator = check.get_active();
+                 if(this.shouldDeselect){
+                    deleteButton.set_sensitive(false);
+                    colorPresetCombo.set_active(-1);
+                }
                  applyButton.set_sensitive(true);
                  saveButton.set_sensitive(true);
+                 resetButton.set_sensitive(true);
             }.bind(this));
             vertSeparatorRow.add(vertSeparatorLabel);            
             vertSeparatorRow.add(vertSeparatorSwitch);             
@@ -2304,66 +2566,66 @@ var OverrideArcMenuThemeWindow = GObject.registerClass(
             colorChooser.connect('color-set', ()=>{
                 this.separatorColor = colorChooser.get_rgba().to_string();
                 applyButton.set_sensitive(true);
+                if(this.shouldDeselect){
+                    deleteButton.set_sensitive(false);
+                    colorPresetCombo.set_active(-1);
+                }
                 saveButton.set_sensitive(true);
+                resetButton.set_sensitive(true);
             });
             separatorColorRow.add(separatorColorLabel);            
             separatorColorRow.add(colorChooser);             
             customArcMenuOptionsFrame.add(separatorColorRow);
             // Button Row -------------------------------------------------------
             let buttonRow = new PW.FrameBoxRow();
-            let saveButton = new Gtk.Button({
-                label: _("Save as Preset"),
+            let resetButton = new Gtk.Button({
+                label: _("Reset"),
                 xalign:0
             });   
-            saveButton.set_sensitive(false);
-            saveButton.connect('clicked', ()=> {
-                /*let defaultArray = ["Theme Name","Background Color", "Foreground Color","Border Color", "Highlight Color", "Separator Color"
-                                , "Font Size", "Border Size", "Corner Radius", "Arrow Size", "Menu Displacement", "Vertical Separator"];*/
-             
-                let dialog = new ColorThemeDialogWindow(this._settings, this, true);
-                dialog.show_all();
-                dialog.connect('response', function(response){ 
-                    if(dialog.get_response()){
-                        let array = [dialog.themeName, this.menuColor, this.menuForegroundColor, this.borderColor, this.highlightColor, this.separatorColor, 
-                                        this.fontSize.toString(), this.borderSize.toString(), this.cornerRadius.toString(), this.menuArrowSize.toString(), 
-                                        this.menuMargin.toString(), this.verticalSeparator.toString()];
-                        this.color_themes.push(array);
-                        this._settings.set_value('color-themes',new GLib.Variant('aas',this.color_themes));
-                        colorPresetCombo.append_text(_(array[0]));
-                        dialog.destroy();
-                    }
-                    else
-                        dialog.destroy();
-                }.bind(this)); 
-            });
+            resetButton.set_sensitive( this.checkIfResetButtonSensitive());
+            resetButton.connect('clicked', ()=> {
+                 this.separatorColor = "rgb(63,62,64)";
+                 this.verticalSeparator = false;
+                 this.menuColor = "rgba(28, 28, 28, 0.98)";
+                 this.menuForegroundColor = "rgba(211, 218, 227, 1)";
+                 this.borderColor = "rgb(63,62,64)";
+                 this.highlightColor = "rgba(238, 238, 236, 0.1)";
+                 this.fontSize = 9;
+                 this.borderSize = 0;
+                 this.cornerRadius = 0;
+                 this.menuMargin = 0;
+                 this.menuArrowSize = 0;
+                 color.parse(this.menuColor);
+                 menuBackgroudColorChooser.set_rgba(color);
+ 
+                 color.parse(this.menuForegroundColor);
+                 menuForegroundColorChooser.set_rgba(color); 
+ 
+                 fontScale.set_value(this.fontSize); 
+ 
+                 color.parse(this.borderColor);
+                 borderColorChooser.set_rgba(color); 
+ 
+                 borderScale.set_value(this.borderSize);
+ 
+                 color.parse("rgba(238, 238, 236, 0.1)");
+                 itemColorChooser.set_rgba(color);
+ 
+                 cornerScale.set_value(this.cornerRadius);
+                 marginScale.set_value(this.menuMargin);
+                 arrowScale.set_value(this.menuArrowSize);
 
-            buttonRow.add(saveButton);
-            let deleteButton = new Gtk.Button({
-                label: _("Delete Preset"),
-                xalign:0
-            });   
-            deleteButton.set_sensitive(false);
-            deleteButton.connect('clicked', ()=> {
-                /*let defaultArray = ["Theme Name","Background Color", "Foreground Color","Border Color", "Highlight Color", "Separator Color"
-                                , "Font Size", "Border Size", "Corner Radius", "Arrow Size", "Menu Displacement", "Vertical Separator"];*/
-             
-                let dialog = new ColorThemeDialogWindow(this._settings, this, false, colorPresetCombo.get_active_text());
-                dialog.show_all();
-                dialog.connect('response', function(response){ 
-                    if(dialog.get_response()){
-                        this.color_themes.splice(colorPresetCombo.get_active(),1);
-                        this._settings.set_value('color-themes',new GLib.Variant('aas',this.color_themes));
-                        colorPresetCombo.remove(colorPresetCombo.get_active());
-                        colorPresetCombo.set_active(-1);
-                        deleteButton.set_sensitive(false);
-                        dialog.destroy();
-                    }
-                    else
-                        dialog.destroy();
-                }.bind(this)); 
+                 vertSeparatorSwitch.set_active(this.verticalSeparator);
+                 color.parse(this.separatorColor);
+                 colorChooser.set_rgba(color);    
+ 
+                 resetButton.set_sensitive(false);
+                 applyButton.set_sensitive(true);               
             });
-            buttonRow.add(deleteButton);
-            let fillerLabel = new Gtk.Label({
+ 
+            buttonRow.add(resetButton);
+ 
+            fillerLabel = new Gtk.Label({
                 label: '',
                 xalign:0,
                 hexpand: true,
@@ -2398,7 +2660,10 @@ var OverrideArcMenuThemeWindow = GObject.registerClass(
             this.borderSize != 0||
             this.cornerRadius != 0||
             this.menuMargin != 0||
-            this.menuArrowSize != 0) ? true : false
+            this.menuArrowSize != 0 ||
+            this.verticalSeparator != false ||
+            this.separatorColor != "rgb(63,62,64)"
+            ) ? true : false
         }
 });
 
@@ -2780,15 +3045,30 @@ var MiscPage = GObject.registerClass(
                         let string = content.toString();
                         let themes = string.split("\n")
                         //global.log(string[0]);
-                        
-                        this.color_themes = this._settings.get_value('color-themes').deep_unpack();
-                        for(let i = 0; i < themes.length-1; i++){
+                        themes.pop(); //remove last blank array 
+                        this.color_themes = [];
+                        for(let i = 0; i < themes.length; i++){
                             let array = themes[i].split('//')
                             this.color_themes.push(array);
-                            
                         }
+                        let dialog = new ExportColorThemeDialogWindow(this._settings, this, this.color_themes);
+                        dialog.show_all();
+                        dialog.connect('response', function(response){ 
+                            if(dialog.get_response()){
+                                let selectedThemes = dialog.selectedThemes;
+                                this.color_themes = this._settings.get_value('color-themes').deep_unpack();
+                                for(let i = 0; i < selectedThemes.length; i++){
+                                    this.color_themes.push(selectedThemes[i]);
+                                }
+                                
+                                this._settings.set_value('color-themes',new GLib.Variant('aas',this.color_themes));
                         
-                        this._settings.set_value('color-themes',new GLib.Variant('aas',this.color_themes));
+                                dialog.destroy();
+                            }
+                            else
+                                dialog.destroy();
+                        }.bind(this)); 
+                        
                     }
                 );
             });
@@ -2798,9 +3078,7 @@ var MiscPage = GObject.registerClass(
                 expand:true
             });
             exportColorPresetButton.connect('clicked', ()=> {
-                global.log("clicked");
                 let dialog = new ExportColorThemeDialogWindow(this._settings, this);
-                global.log("clicked");
                 dialog.show_all();
                 dialog.connect('response', function(response){ 
                     if(dialog.get_response()){
