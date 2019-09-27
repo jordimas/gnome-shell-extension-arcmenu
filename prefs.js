@@ -2051,8 +2051,8 @@ var ManageColorThemeDialogWindow = GObject.registerClass(
                     {
                       this.mainFrame.remove(frameRow);
                       this.mainFrame.insert(frameRow,index-1);
-                      this.color_themes.splice(i,1);
-                      this.color_themes.splice(i-1,0,theme);
+                      this.color_themes.splice(index,1);
+                      this.color_themes.splice(index-1,0,theme);
                     }
                     this.mainFrame.show();
                     applyButton.set_sensitive(true);
@@ -2067,8 +2067,8 @@ var ManageColorThemeDialogWindow = GObject.registerClass(
                     {
                       this.mainFrame.remove(frameRow);
                       this.mainFrame.insert(frameRow,index+1);
-                      this.color_themes.splice(i,1);
-                      this.color_themes.splice(i+1,0,theme);
+                      this.color_themes.splice(index,1);
+                      this.color_themes.splice(index+1,0,theme);
                     }
                     this.mainFrame.show();
                     applyButton.set_sensitive(true);
@@ -2077,8 +2077,9 @@ var ManageColorThemeDialogWindow = GObject.registerClass(
                 deleteButton.connect('clicked', ()=>
                 {
                     //remove frameRow
+                    let index = frameRow.get_index();
                     this.mainFrame.remove(frameRow);
-                    this.color_themes.splice(i,1);
+                    this.color_themes.splice(index,1);
                     this.mainFrame.show();
                     applyButton.set_sensitive(true);
                 });
