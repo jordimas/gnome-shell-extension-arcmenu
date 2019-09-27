@@ -2030,9 +2030,10 @@ var ManageColorThemeDialogWindow = GObject.registerClass(
                     dialog.show_all();
                     dialog.connect('response', function(response){ 
                         if(dialog.get_response()){
+                            let index = frameRow.get_index();
                             let array = [dialog.themeName, theme[1], theme[2], theme[3], theme[4], theme[5], 
                             theme[6], theme[7], theme[8], theme[9], theme[10], theme[11]];
-                            this.color_themes.splice(i,1,array);
+                            this.color_themes.splice(index,1,array);
                             //this._settings.set_value('color-themes',new GLib.Variant('aas',this.color_themes));
                             frameLabel.label = dialog.themeName;
                             dialog.destroy();
