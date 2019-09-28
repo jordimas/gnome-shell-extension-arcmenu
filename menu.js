@@ -339,6 +339,7 @@ var ApplicationsButton =   Utils.defineClass({
                 this.MenuLayout = new MenuLayouts.simple2.createMenu(this);  
             else if (layout == Constants.MENU_LAYOUT.UbuntuDash)
                 this.MenuLayout = new MenuLayouts.ubuntudash.createMenu(this);  
+            this.updateStyle();
         },
         updateIcons(){
             this.MenuLayout.updateIcons();

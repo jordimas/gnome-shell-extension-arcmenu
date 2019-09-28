@@ -173,8 +173,8 @@ var createMenu = class{
             x_align: St.Align.END,
             margin:5,
         });
+        
         this._display();
-       
     }
 
 
@@ -233,10 +233,7 @@ var createMenu = class{
         this.searchBox.clear();
         this.setDefaultMenuView();  
     }
-    _redisplayRightSide(){
-        this.leftBox.destroy_all_children();
-        this._createLeftBox();
-   
+    _redisplayRightSide(){ 
         this.updateStyle();
     }
     // Redisplay the menu
@@ -271,7 +268,7 @@ var createMenu = class{
         //this.mainBox.hide();
         //this._applications = [];
         this._displayAppIcons();
-        
+
         if(this.vertSep!=null)
             this.vertSep.queue_repaint(); 
         

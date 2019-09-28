@@ -146,7 +146,6 @@ var createMenu = class{
         this._displayAllApps();
 
         this._display();
-       
     }
 
 
@@ -206,8 +205,6 @@ var createMenu = class{
         this.setDefaultMenuView();  
     }
     _redisplayRightSide(){
-        this.leftBox.destroy_all_children();
-        this._createLeftBox();
    
         this.updateStyle();
     }
