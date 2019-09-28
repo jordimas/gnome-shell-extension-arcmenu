@@ -41,9 +41,7 @@ width:290px;
 .vert-sep{
 width:11px;
 }
-.right-box{
-width:210px;
-}#search-entry{
+#search-entry{
 max-width: 17.667em;
 }
 #search-entry:focus { 
