@@ -1427,9 +1427,9 @@ var  AppearanceSettingsPage = GObject.registerClass(
 
             let messageRow = new PW.FrameBoxRow();
             let messageLabel = new Gtk.Label({
-                label: _("Each layout is different in behaviour and style.\n"
-                    +"All layouts can be modified by customization settings.\n"
-                    +"However, some settings are specifc to Arc Menu layout."),
+                label: _("Each layout is different in behaviour and style.")+"\n"
+                    +_("All layouts can be modified by customization settings.")+"\n"
+                    +_("However, some settings are specifc to Arc Menu layout."),
                 use_markup: true,
                 xalign: 0,
                 hexpand: true
@@ -2906,8 +2906,8 @@ var MiscPage = GObject.registerClass(
             });
             let importTextRow = new PW.FrameBoxRow();
             let importTextLabel = new Gtk.Label({
-                label: _("All current Arc Menu settings will be changed when importing from file.\n"
-                    +"This includes all saved pinned apps."),
+                label: _("All current Arc Menu settings will be changed when importing from file.") +"\n"
+                    + _("This includes all saved pinned apps."),
                 use_markup: true,
                 xalign: 0,
                 hexpand: true
@@ -2989,7 +2989,7 @@ var MiscPage = GObject.registerClass(
             let importColorPresetFrame = new PW.FrameBox();
             let importColorPresetRow = new PW.FrameBoxRow();
             let importColorPresetLabel = new Gtk.Label({
-                label: _("Export and Import Color Theme Presets"),
+                label: _("Color Theme Presets - Export/Import"),
                 use_markup: true,
                 xalign: 0,
                 hexpand: true
@@ -3008,8 +3008,8 @@ var MiscPage = GObject.registerClass(
 
             let importColorPresetTextRow = new PW.FrameBoxRow();
             let importColorPresetTextLabel = new Gtk.Label({
-                label: _("Only color theme settings will be changed\n"
-                    +"when importing custom color theme presets."),
+                label: _("Imported theme presets are located on the Appearance Tab")+
+                 "\n"+ _("in Override Arc Menu Theme"),
                 use_markup: true,
                 xalign: 0,
                 hexpand: true
