@@ -27,6 +27,10 @@ var ARC_MENU_LOGO = {
     Path: '/media/ArcMenu-logo.svg',
     Size: [175, 175] // width, height
 };
+var COLOR_PRESET = {
+    Path: '/media/color-preset.svg',
+    Size: [200, 35] // width, height
+};
 
 var CURRENT_MENU = {
     FAVORITES: 0,

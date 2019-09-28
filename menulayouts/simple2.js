@@ -224,8 +224,7 @@ var createMenu = class {
     }
     
     setDefaultMenuView(){
-        this._clearApplicationsBox();
-        this._displayCategories();
+    
     }
     _setActiveCategory(){
 

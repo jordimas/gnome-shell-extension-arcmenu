@@ -2994,6 +2994,18 @@ var MiscPage = GObject.registerClass(
                 xalign: 0,
                 hexpand: true
             });
+            let imgPath = Me.path + Constants.COLOR_PRESET.Path;
+            let [imageWidth, imageHeight] = Constants.COLOR_PRESET.Size;
+            let pixbuf = GdkPixbuf.Pixbuf.new_from_file_at_size(imgPath, imageWidth, imageHeight);
+            let colorPresetImage = new Gtk.Image({ pixbuf: pixbuf });
+            let colorPresetBox = new Gtk.VBox({
+                margin_top: 5,
+                margin_bottom: 0,
+                expand: false
+            });
+            colorPresetBox.add(colorPresetImage);
+            
+
             let importColorPresetTextRow = new PW.FrameBoxRow();
             let importColorPresetTextLabel = new Gtk.Label({
                 label: _("Only color theme settings will be changed\n"
@@ -3004,6 +3016,7 @@ var MiscPage = GObject.registerClass(
             }); 
             importColorPresetTextLabel.set_sensitive(false);
             importColorPresetTextRow.add(importColorPresetTextLabel);
+           
 
             let importColorPresetButtonsRow = new PW.FrameBoxRow();
             let importColorPresetButton = new Gtk.Button({
@@ -3093,7 +3106,7 @@ var MiscPage = GObject.registerClass(
        
             
             importColorPresetRow.add(importColorPresetLabel);
-
+            importColorPresetRow.add(colorPresetBox);
             importColorPresetButtonsRow.add(exportColorPresetButton);
             importColorPresetButtonsRow.add(importColorPresetButton);
             importColorPresetFrame.add(importColorPresetRow);   

@@ -593,10 +593,7 @@ var createMenu = class {
         
         setDefaultMenuView()
         {
-            this._clearApplicationsBox();
-       
-                this.currentMenu = Constants.CURRENT_MENU.CATEGORIES;
-                this._displayCategories();
+            this.searchBox.clear();
                 this._displayAllApps();
 
 

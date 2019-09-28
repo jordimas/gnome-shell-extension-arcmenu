@@ -520,8 +520,6 @@ var createMenu = class{
     setDefaultMenuView()
     {
         this.searchBox.clear();
-        this._clearApplicationsBox();
-        this._displayCategories();
         this._displayAllApps();
     }
     _setActiveCategory(){
