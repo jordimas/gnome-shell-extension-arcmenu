@@ -1636,30 +1636,7 @@ var ArcMenuCustomizationWindow = GObject.registerClass(
             menuWidthRow.add(menuWidthLabel);
             menuWidthRow.add(menuWidthScale);
             mainFrame.add(menuWidthRow);
-            //ROW 3 - MENU Right WIDTH--------------------------------------------------   
-            let menuRightWidthRow = new PW.FrameBoxRow();
-            let menuRightWidthLabel = new Gtk.Label({
-                label: _('Right-Panel Width'),
-                xalign:0,
-                hexpand: false,
-             });   
-            let menuRightWidthScale = new Gtk.HScale({
-                adjustment: new Gtk.Adjustment({
-                    lower: 210,upper: 500, step_increment: 1, page_increment: 1, page_size: 0
-                }),
-                digits: 0,round_digits: 0,hexpand: true,
-                value_pos: Gtk.PositionType.RIGHT
-            });
-            menuRightWidthScale.connect('format-value', function (scale, value) { return value.toString() + 'px'; });
-            menuRightWidthScale.set_value(this.menuRightWidth);
-            menuRightWidthScale.connect('value-changed', () => {
-                this.menuRightWidth = menuRightWidthScale.get_value();
-                applyButton.set_sensitive(true);
-                resetButton.set_sensitive(true);
-            });
-            menuRightWidthRow.add(menuRightWidthLabel);
-            menuRightWidthRow.add(menuRightWidthScale);
-            mainFrame.add(menuRightWidthRow);
+            
 
             let largeIconsRow = new PW.FrameBoxRow();
             let largeIconsLabel = new Gtk.Label({
@@ -1680,7 +1657,7 @@ var ArcMenuCustomizationWindow = GObject.registerClass(
             largeIconsRow.add(largeIconsSwitch);             
             mainFrame.add(largeIconsRow);
 
-            /*let vertSeparatorRow = new PW.FrameBoxRow();
+            let vertSeparatorRow = new PW.FrameBoxRow();
             let vertSeparatorLabel = new Gtk.Label({
                 label: _('Enable Vertical Separator'),
                 use_markup: true,
@@ -1718,7 +1695,7 @@ var ArcMenuCustomizationWindow = GObject.registerClass(
             });
             separatorColorRow.add(separatorColorLabel);            
             separatorColorRow.add(colorChooser);             
-            mainFrame.add(separatorColorRow);*/
+            mainFrame.add(separatorColorRow);
             
            // Button Row -------------------------------------------------------
            let buttonRow = new PW.FrameBoxRow();
@@ -3387,7 +3364,6 @@ function saveCSS(settings){
     	".left-scroll-area{ \nwidth:"+  menuWidth+"px;\n}\n"   
     	+".arc-empty-dash-drop-target{\nwidth: "+  menuWidth+"px; \nheight: 2px; \nbackground-color:"+  separatorColor+"; \npadding: 0 0; \nmargin:0;\n}\n"     
         +".left-box{\nwidth:"+  menuWidth+"px;\n}" + "\n.vert-sep{\nwidth:11px;\n}\n"
-        +".right-box{\nwidth:"+  menuRightWidth+"px;\n}"
         +"#search-entry{\nmax-width: 17.667em;\n}\n#search-entry:focus { \nborder-color:"+  separatorColor+";\n}\n"
         +"#arc-search-entry{\nmax-width: 17.667em;\nfont-size:" + fontSize+"pt;\n border-color:"+  separatorColor+";\n"
         +" color:"+  menuForegroundColor+";\n background-color:" +  menuColor + ";\n}\n"

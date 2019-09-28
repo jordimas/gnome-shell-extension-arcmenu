@@ -22,6 +22,7 @@
 // Import Libraries
 const Me = imports.misc.extensionUtils.getCurrentExtension();
 const {Atk, Clutter, Gio, GLib, GMenu, GObject, Gtk, Shell, St} = imports.gi;
+const IconGrid = imports.ui.iconGrid;
 const AccountsService = imports.gi.AccountsService;
 const AppFavorites = imports.ui.appFavorites;
 const Constants = Me.imports.constants;
@@ -1118,7 +1119,7 @@ var ApplicationMenuIcon = Utils.createClass({
         this._app = app;
         this.app = app;
        
-       
+        this.icon = new IconGrid.BaseIcon(app.get_name(), {createIcon: this._createIcon.bind(this), setSizeManually: true });
        
      
         this.actor.vertical = true;
@@ -1221,6 +1222,9 @@ var ApplicationMenuIcon = Utils.createClass({
         this._button.appMenuManager.addMenu(this.rightClickMenu);
         this.rightClickMenu.actor.hide();
         Main.uiGroup.add_actor(this.rightClickMenu.actor);
+    },
+    _createIcon(iconSize) {
+        return this.app.create_icon_texture(iconSize);
     },
     _onButtonPressEvent(actor, event) {
 		
@@ -1336,7 +1340,7 @@ var ApplicationMenuItem =Utils.createClass({
         this._settings = this._button._settings;
         this._iconBin = new St.Bin();
         this.actor.add_child(this._iconBin);
-
+        this.icon = new IconGrid.BaseIcon(app.get_name(), {createIcon: this._createIcon.bind(this), setSizeManually: true });
         let appLabel = new St.Label({
             text: app.get_name(),
             y_expand: true,
@@ -1424,7 +1428,9 @@ var ApplicationMenuItem =Utils.createClass({
     getDragActor() {
         return this._app.create_icon_texture(MEDIUM_ICON_SIZE);
     },
-
+    _createIcon(iconSize) {
+        return this.app.create_icon_texture(iconSize);
+    },
     // Returns the original actor that should align with the actor
     // we show as the item is being dragged.
     getDragActorSource() {
@@ -1477,13 +1483,41 @@ var SearchResultItem = Utils.createClass({
         this.app =app;
         this._path=path;
         if(app){
+            this.icon = new IconGrid.BaseIcon(app.get_name(), {createIcon: this._createIcon.bind(this), setSizeManually: true });
             this.rightClickMenu = new AppRightClickMenu(this.actor,this.app,this._button,false, this._path ? this._path: null);
             this._button.appMenuManager.addMenu(this.rightClickMenu);
             this.rightClickMenu.actor.hide();
             Main.uiGroup.add_actor(this.rightClickMenu.actor);
+            this._draggable = DND.makeDraggable(this.actor);
+            this.isDraggableApp = true;
+            this._draggable.connect('drag-begin', this._onDragBegin.bind(this));
+            this._draggable.connect('drag-cancelled', this._onDragCancelled.bind(this));
+            this._draggable.connect('drag-end', this._onDragEnd.bind(this));
         }
      
   
+    },
+    getDragActor() {
+        return this.app.create_icon_texture(MEDIUM_ICON_SIZE);
+    },
+    _createIcon(iconSize) {
+        return this.app.create_icon_texture(iconSize);
+    },
+    // Returns the original actor that should align with the actor
+    // we show as the item is being dragged.
+    getDragActorSource() {
+        return this.actor;
+    },
+    _onDragBegin() {
+        Main.overview.beginItemDrag(this);
+    },
+
+    _onDragCancelled() {
+        Main.overview.cancelledItemDrag(this);
+    },
+
+    _onDragEnd() {
+        Main.overview.endItemDrag(this);
     },
     _onButtonPressEvent(actor, event) {
 		
