@@ -66,6 +66,10 @@ var createMenu = class {
         this.mainBox._delegate = this.mainBox;
         this._mainBoxKeyPressId = this.mainBox.connect('key-press-event', this._onMainBoxKeyPress.bind(this));
         this.subMenuManager = mainButton.subMenuManager;
+        this._tree = new GMenu.Tree({ menu_basename: 'applications.menu' });
+        this._treeChangedId = this._tree.connect('changed', ()=>{
+            this._reload();
+        });
 
         //LAYOUT------------------------------------------------------------------------------------------------
         this.mainBox.vertical = true;
@@ -145,9 +149,9 @@ var createMenu = class {
         this.applicationsByCategory = {};
         this.categoryDirectories=[];
         
-        let tree = new GMenu.Tree({ menu_basename: 'applications.menu' });
-        tree.load_sync();
-        let root = tree.get_root_directory();
+       
+        this._tree.load_sync();
+        let root =  this._tree.get_root_directory();
         let iter = root.iter();
         let nextType;
         while ((nextType = iter.next()) != GMenu.TreeItemType.INVALID) {
@@ -208,6 +212,7 @@ var createMenu = class {
         
     }
     updateIcons(){
+     
     }
     // Create the menu layout
 
@@ -317,6 +322,11 @@ var createMenu = class {
         return applist;
     }
     destroy(){
+        if (this._treeChangedId > 0) {
+            this._tree.disconnect(this._treeChangedId);
+            this._treeChangedId = 0;
+            this._tree = null;
+        }
     }
         
 };

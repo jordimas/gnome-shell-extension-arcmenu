@@ -276,7 +276,10 @@ var createMenu = class{
 
 
     }
-    updateIcons(){       
+    updateIcons(){   
+        this._applicationsButtons.forEach((value,key,map)=>{
+            map.get(key)._updateIcon();
+        });    
     }
     _displayPlaces() {
     }

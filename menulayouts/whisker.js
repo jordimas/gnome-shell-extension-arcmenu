@@ -50,7 +50,6 @@ const _ = Gettext.gettext;
 
 var modernGnome = imports.misc.config.PACKAGE_VERSION >= '3.31.9';
 
-// Application Menu Button class (most of the menu logic is here)
 var createMenu = class {
     constructor(mainButton) {
         this.button = mainButton;
@@ -64,7 +63,10 @@ var createMenu = class {
         this.newSearch = new ArcSearch.SearchResults(this);      
         this.mainBox._delegate = this.mainBox;
         this._mainBoxKeyPressId = this.mainBox.connect('key-press-event', this._onMainBoxKeyPress.bind(this));
-
+        this._tree = new GMenu.Tree({ menu_basename: 'applications.menu' });
+        this._treeChangedId = this._tree.connect('changed', ()=>{
+            this._reload();
+        });
 
         //LAYOUT------------------------------------------------------------------------------------------------
         this.mainBox.vertical = true;
@@ -310,34 +312,23 @@ var createMenu = class {
         }
         updateStyle(){
             let addStyle=this._settings.get_boolean('enable-custom-arc-menu');
-  
-            if(addStyle){
-                if(this.newSearch){
-                    this.newSearch.setStyle('arc-menu-status-text');
-                    this.searchBox._stEntry.set_name('arc-search-entry');
-                }
-                if(this.actionsBox){
-                    this.actionsBox.get_children().forEach(function (actor) {
-                        if(actor instanceof St.Button){
-                            actor.add_style_class_name('arc-menu-action');
-                        }
-                    }.bind(this));
-                }
+            if(this.newSearch){
+                addStyle ? this.newSearch.setStyle('arc-menu-status-text') :  this.newSearch.setStyle('search-statustext'); 
+                addStyle ? this.searchBox._stEntry.set_name('arc-search-entry') : this.searchBox._stEntry.set_name('search-entry');
             }
-            else
-            {       
-                if(this.newSearch){ 
-                    this.newSearch.setStyle('search-statustext');            
-                    this.searchBox._stEntry.set_name('search-entry');
-                }
-                if(this.actionsBox){
-                    this.actionsBox.get_children().forEach(function (actor) {
-                        if(actor instanceof St.Button){
-                            actor.remove_style_class_name('arc-menu-action');
-                        }
-                    }.bind(this));
-                }
+            if(this.actionsBox){
+                this.actionsBox.get_children().forEach(function (actor) {
+                    if(actor instanceof St.Button){
+                        addStyle ? actor.add_style_class_name('arc-menu-action') : actor.remove_style_class_name('arc-menu-action');
+                    }
+                }.bind(this));
             }
+        }
+        _reload() {
+            this.applicationsBox.destroy_all_children();
+            this._applicationsButtons.clear();
+            this._loadCategories();
+            this._display();
         }
         // Display the menu
         _display() {
@@ -389,9 +380,9 @@ var createMenu = class {
                     this.applicationsByCategory["Frequent Apps"].push(mostUsed[i]);
             }
             
-            let tree = new GMenu.Tree({ menu_basename: 'applications.menu' });
-            tree.load_sync();
-            let root = tree.get_root_directory();
+           
+            this._tree.load_sync();
+            let root =  this._tree.get_root_directory();
             let iter = root.iter();
             let nextType;
             while ((nextType = iter.next()) != GMenu.TreeItemType.INVALID) {
@@ -446,26 +437,6 @@ var createMenu = class {
         }
         // Load menu place shortcuts
         _displayPlaces() {
-            let homePath = GLib.get_home_dir();
-            let placeInfo = new MW.PlaceInfo(Gio.File.new_for_path(homePath), _("Home"));
-            let addToMenu = this._settings.get_boolean('show-home-shortcut');
-            if(addToMenu){
-                let placeMenuItem = new MW.PlaceMenuItem(this, placeInfo);
-                this.shorcutsBox.add_actor(placeMenuItem.actor);
-            }    
-            let dirs = Constants.DEFAULT_DIRECTORIES.slice();
-            var SHORTCUT_TRANSLATIONS = [_("Documents"),_("Downloads"), _("Music"),_("Pictures"),_("Videos")];
-            for (let i = 0; i < dirs.length; i++) {
-                let path = GLib.get_user_special_dir(dirs[i]);
-                if (path == null || path == homePath)
-                    continue;
-                let placeInfo = new MW.PlaceInfo(Gio.File.new_for_path(path), _(SHORTCUT_TRANSLATIONS[i]));
-                addToMenu = this.getShouldShowShortcut(Constants.RIGHT_SIDE_SHORTCUTS[i+1]);
-                if(addToMenu){
-                    let placeMenuItem = new MW.PlaceMenuItem(this, placeInfo);
-                    this.shorcutsBox.add_actor(placeMenuItem.actor);
-                }
-            }
         }
         _loadFavorites() {
          
@@ -502,64 +473,10 @@ var createMenu = class {
             
         }
         placesAddSeparator(id){
-            this._sections[id].box.add(this._createHorizontalSeparator(true), {
-                x_expand: true,
-                y_expand:false,
-                x_fill: true,
-                y_fill: false,
-                y_align: St.Align.END
-            });  
         }
         _redisplayPlaces(id) {
-            if(this._sections[id].length>0){
-                this.bookmarksShorctus = false;
-                this.externalDevicesShorctus = false;
-                this.networkDevicesShorctus = false;
-                this._sections[id].removeAll();
-                this._sections[id].box.destroy_all_children();
-            }
-            this._createPlaces(id);
         }
     	_createPlaces(id) {
-            let places = this.placesManager.get(id);
-            if(this.placesManager.get('network').length>0)
-                this.networkDevicesShorctus = true; 
-            if(this.placesManager.get('devices').length>0)
-                this.externalDevicesShorctus=true;  
-            if(this.placesManager.get('bookmarks').length>0)
-                this.bookmarksShorctus = true;
-
-            if (this._settings.get_boolean('show-bookmarks')){
-                if(id=='bookmarks' && places.length>0){
-                    for (let i = 0; i < places.length; i++){
-                        let item = new PlaceDisplay.PlaceMenuItem(places[i],this);
-                        this._sections[id].addMenuItem(item); 
-                    } 
-                    //create a separator if bookmark and software shortcut are both shown
-                    if(this.bookmarksShorctus && this.softwareShortcuts){
-                        this.placesAddSeparator(id);
-                    }
-                }
-            }
-            if (this._settings.get_boolean('show-external-devices')){
-                if(id== 'devices'){
-                    for (let i = 0; i < places.length; i++){
-                        let item = new PlaceDisplay.PlaceMenuItem(places[i],this);
-                        this._sections[id].addMenuItem(item); 
-                    }
-                    if((this.externalDevicesShorctus &&  !this.networkDevicesShorctus)  
-                        &&  (this.bookmarksShorctus || this.softwareShortcuts))
-                            this.placesAddSeparator(id);
-                }
-                if(id== 'network'){
-                    for (let i = 0; i < places.length; i++){
-                        let item = new PlaceDisplay.PlaceMenuItem(places[i],this);
-                        this._sections[id].addMenuItem(item); 
-                    }
-                    if(this.networkDevicesShorctus &&  (this.bookmarksShorctus || this.softwareShortcuts))
-                            this.placesAddSeparator(id);                        
-                }
-            }
     	}
 
         //used to check if a shortcut should be displayed
@@ -591,12 +508,9 @@ var createMenu = class {
                 appsScrollBoxAdj.set_value(newScrollValue);
         }
         
-        setDefaultMenuView()
-        {
+        setDefaultMenuView(){
             this.searchBox.clear();
-                this._displayAllApps();
-
-
+            this._displayAllApps();
         }
         _setActiveCategory(){
 
@@ -741,16 +655,6 @@ var createMenu = class {
             return applist;
         }
         destroy(){
-            if(this.network!=null){
-                this.network.destroy();
-                this.networkMenuItem.destroy();
-            }
-            if(this.computer!=null){
-                this.computer.destroy();
-                this.computerMenuItem.destroy();
-            }
-            if(this.placesManager!=null)
-                this.placesManager.destroy();
             if(this.searchBox!=null){
                 if (this._searchBoxChangedId > 0) {
                     this.searchBox.disconnect(this._searchBoxChangedId);
@@ -773,62 +677,32 @@ var createMenu = class {
                     this._mainBoxKeyPressId = 0;
                 }
             }
+            if (this._treeChangedId > 0) {
+                this._tree.disconnect(this._treeChangedId);
+                this._treeChangedId = 0;
+                this._tree = null;
+            }
         }
-        //Create a horizontal separator
-        _createHorizontalSeparator(rightSide){
-            let hSep = new St.DrawingArea({
-                 x_expand:true,
-                 y_expand:false
-             });
-             if(rightSide)
-                 hSep.set_height(15); //increase height if on right side
-             else 
-                 hSep.set_height(10);
-             hSep.connect('repaint', ()=> {
-                 let cr = hSep.get_context();
-                 let [width, height] = hSep.get_surface_size();                 
-                 let b, stippleColor;                                                            
-                 [b,stippleColor] = Clutter.Color.from_string(this._settings.get_string('separator-color'));           
-                 if(rightSide){   
-                     cr.moveTo(width / 4, height-7.5);
-                     cr.lineTo(3 * width / 4, height-7.5);
-                 }   
-                 else{   
-                     cr.moveTo(25, height-4.5);
-                     cr.lineTo(width-25, height-4.5);
-                 }
-                 //adjust endpoints by 0.5 
-                 //see https://www.cairographics.org/FAQ/#sharp_lines
-                 Clutter.cairo_set_source_color(cr, stippleColor);
-                 cr.setLineWidth(1);
-                 cr.stroke();
-             });
-             hSep.queue_repaint();
-             return hSep;
-         }
-         // Create a vertical separator
-         _createVertSeparator(){      
-             let vertSep = new St.DrawingArea({
-                 x_expand:true,
-                 y_expand:true,
-                 style_class: 'vert-sep'
-             });
-             vertSep.connect('repaint', ()=> {
-                 if(this._settings.get_boolean('vert-separator'))  {
-                     let cr = vertSep.get_context();
-                     let [width, height] = vertSep.get_surface_size();
-                     let b, stippleColor;   
-                     [b,stippleColor] = Clutter.Color.from_string(this._settings.get_string('separator-color'));   
-                     let stippleWidth = 1;
-                     let x = Math.floor(width / 2) + 0.5;
-                     cr.moveTo(x,  0.5);
-                     cr.lineTo(x, height - 0.5);
-                     Clutter.cairo_set_source_color(cr, stippleColor);
-                     cr.setLineWidth(stippleWidth);
-                     cr.stroke();
-                 }
-             }); 
-             vertSep.queue_repaint();
-             return vertSep;
-         }
-    };
+          //Create a horizontal separator
+    _createHorizontalSeparator(style){
+        let alignment = Constants.SEPARATOR_ALIGNMENT.HORIZONTAL;
+        let hSep = new MW.SeparatorDrawingArea(this._settings,alignment,style,{
+            x_expand:true,
+            y_expand:false
+        });
+        hSep.queue_repaint();
+        return hSep;
+    }
+    // Create a vertical separator
+    _createVertSeparator(){    
+        let alignment = Constants.SEPARATOR_ALIGNMENT.VERTICAL;
+        let style = Constants.SEPARATOR_STYLE.NORMAL;
+        this.vertSep = new MW.SeparatorDrawingArea(this._settings,alignment,style,{
+            x_expand:true,
+            y_expand:true,
+            style_class: 'vert-sep'
+        });
+        this.vertSep.queue_repaint();
+        return  this.vertSep;
+    }
+};
