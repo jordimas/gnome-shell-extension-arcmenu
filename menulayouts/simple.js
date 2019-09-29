@@ -60,7 +60,7 @@ var createMenu = class {
         this.appMenuManager = mainButton.appMenuManager;
         this.leftClickMenu  = mainButton.leftClickMenu;
         this.currentMenu = Constants.CURRENT_MENU.FAVORITES; 
-        this._applicationsButtons = new Map();
+        this._applicationsButtons = [];
         this._session = new GnomeSession.SessionManager();
         this.leftClickMenu.actor.style = 'max-height: 60em;'
         this.mainBox._delegate = this.mainBox;
@@ -107,6 +107,13 @@ var createMenu = class {
             this._clearApplicationsBox(); 
         this._display();
     }
+    _reload() {
+        this.applicationsBox.destroy_all_children();
+        this._applicationsButtons = [];
+        this._createLeftBox();
+        this._loadCategories();
+        this._display(); 
+    }
     updateStyle(){
         if(this.categoryMenuItemArray){
             for(let i =0; i<this.categoryMenuItemArray.length;i++){
@@ -116,7 +123,6 @@ var createMenu = class {
     }
     // Display the menu
     _display() {
-        this._applicationsButtons.clear();
         this._displayCategories();
     }
     // Load menu category data for a single category
@@ -212,7 +218,11 @@ var createMenu = class {
         
     }
     updateIcons(){
-     
+        for(let i = 0; i<this._applicationsButtons.length;i++){
+            for(let l=0;l<this._applicationsButtons[i].length;l++){
+                this._applicationsButtons[i][l]._updateIcon();
+            }
+        }
     }
     // Create the menu layout
 
@@ -278,15 +288,18 @@ var createMenu = class {
     // Display application menu items
     _displayButtons(apps,categoryMenuItem) {
         if (apps) {
+            let array = [];
             let oldApp;
             for (let i = 0; i < apps.length; i++) {
                 let app = apps[i];
                 if(oldApp!=app){
                     let item = new MW.ApplicationMenuItem(this, app);
+                    array.push(item);
                     categoryMenuItem.applicationsBox.add_actor(item.actor); 
                 }
                 oldApp=app;
             }  
+            this._applicationsButtons.push(array);
         }
     }
     _displayAllApps(categoryMenuItem){
