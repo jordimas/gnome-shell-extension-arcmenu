@@ -58,22 +58,12 @@ class ArcSearchMaxWidthBin extends St.Bin {
     }
 });
 
-var SearchResult = class {
+var ListSearchResult = class  {
     constructor(provider, metaInfo, resultsView) {
-        this.provider = provider;
-        this._button= resultsView._button;
+        this._button = resultsView._button;
         this.metaInfo = metaInfo;
-        this._resultsView = resultsView;
-    }
-
-};
-Signals.addSignalMethods(SearchResult.prototype);
-
-var ListSearchResult = class extends SearchResult {
-    constructor(provider, metaInfo, resultsView) {
-        super(provider, metaInfo, resultsView);
-        let button = resultsView._button;
-        this._settings = button._settings;
+        this.provider = provider;
+        this._settings = this._button._settings;
         let app = appSys.lookup_app(this.metaInfo['id']);
         if(this.provider.id =='org.gnome.Nautilus.desktop'){
             this.menuItem = new MW.SearchResultItem(this._button,appSys.lookup_app(this.provider.id),this.metaInfo['description']);
@@ -134,12 +124,13 @@ var ListSearchResult = class extends SearchResult {
             this._resultsView.disconnect(this._termsChangedId);
         this._termsChangedId = 0;
     }
-};
+};Signals.addSignalMethods(ListSearchResult.prototype);
 
-var AppSearchResult = class extends SearchResult {
+var AppSearchResult = class  {
     constructor(provider, metaInfo, resultsView) {
-        super(provider, metaInfo, resultsView);
         this._button = resultsView._button;
+        this.metaInfo = metaInfo;
+        this.provider = provider;
         this._settings = this._button._settings;
         this.layout =this._settings.get_enum('menu-layout');
         let app = appSys.lookup_app(this.metaInfo['id']);
@@ -188,7 +179,7 @@ var AppSearchResult = class extends SearchResult {
         this.emit('activate', this.metaInfo.id);
     }
 
-};
+};Signals.addSignalMethods(AppSearchResult.prototype);
 var SearchResultsBase = class {
     constructor(provider, resultsView) {
         this.provider = provider;

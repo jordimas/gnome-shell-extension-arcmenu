@@ -1290,7 +1290,6 @@ var ApplicationMenuIcon = Utils.createClass({
     activate(event) {
         this._app.open_new_window(-1);
         this._button.leftClickMenu.toggle();
-        this.callParent('activate',event);
     },
 
    // Set button as active, scroll to the button
@@ -1496,6 +1495,11 @@ var SearchResultItem = Utils.createClass({
         }
      
   
+    },
+    activate(event) {
+        if(this.app)
+            this.app.open_new_window(-1);
+        this._button.leftClickMenu.toggle();
     },
     getDragActor() {
         return this.app.create_icon_texture(MEDIUM_ICON_SIZE);
