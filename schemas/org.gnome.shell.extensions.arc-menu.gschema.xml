@@ -59,6 +59,11 @@
       <summary>menu layout</summary>
       <description>Menu Layout</description>
     </key>
+    <key type="b" name="disable-hotkey-onkeyrelease">
+     <default>false</default>
+      <summary>disable hotkey on key release</summary>
+      <description>disable hotkey on key release.</description>
+    </key>
     <key type="b" name="disable-tooltips">
      <default>false</default>
       <summary>disable tooltips</summary>
@@ -138,6 +143,11 @@
      <default>290</default>
       <summary>Menu width</summary>
       <description>Menu width.</description>
+    </key>
+      <key type="i" name="menu-rightpanel-width">
+     <default>210</default>
+      <summary>Menu right panel width</summary>
+      <description>Menu right panel width</description>
     </key>
     <key type="b" name="enable-custom-arc-menu">
      <default>false</default>
@@ -294,6 +304,11 @@
       <summary>Enables the default menu button arrow.</summary>
       <description>Enables the default menu button arrow.</description>
     </key>
+    <key type="b" name="enable-large-icons">
+      <default>false</default>
+      <summary>Enables large icons for applications.</summary>
+      <description>Enables large icons for applications and search results.</description>
+    </key>
     <key type="s" name="custom-menu-button-text">
       <default>'Applications'</default>
       <summary>Text of the menu button.</summary>
@@ -319,6 +334,20 @@
       <summary>List of Apps Pinned to Menu</summary>
       <description>
         List of Apps Pinned to Menu
+      </description>
+    </key>
+     <key name="color-themes" type="aas">
+      <default>[['Arc Menu Theme', 'rgba(28, 28, 28, 0.98)', 'rgba(211, 218, 227, 1)', 'rgb(63,62,64)', 'rgba(238, 238, 236, 0.1)', 'rgb(63,62,64)', '9', '0', '0', '0', '0', 'false'], 
+      ['Dark Blue Theme', 'rgb(25,31,34)', 'rgb(189,230,251)', 'rgb(41,50,55)', 'rgb(41,50,55)', 'rgb(41,50,55)', '9', '1', '5', '15', '20', 'true'], 
+      ['Light Blue Theme', 'rgb(255,255,255)', 'rgb(51,51,51)', 'rgb(235,235,235)', 'rgba(189,230,251,0.9)', 'rgba(189,230,251,0.9)', '9', '1', '5', '15', '20', 'true']]</default>
+      <summary>List of color-themes</summary>
+      <description> List of color themes.
+      </description>
+    </key>
+    <key name="color-theme-index" type="i">
+      <default>0</default>
+      <summary>Color theme selected</summary>
+      <description> Color theme selected,used for color-themes.
       </description>
     </key>
   </schema>

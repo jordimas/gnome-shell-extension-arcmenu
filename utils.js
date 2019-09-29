@@ -21,21 +21,7 @@
  * Some code was also adapted from the upstream Gnome Shell source code.
  */
 
-const Clutter = imports.gi.Clutter;
-const GdkPixbuf = imports.gi.GdkPixbuf
-const Gi = imports._gi;
-const Gio = imports.gi.Gio;
 const GObject = imports.gi.GObject;
-const Gtk = imports.gi.Gtk;
-const Meta = imports.gi.Meta;
-const Shell = imports.gi.Shell;
-const St = imports.gi.St;
-const Mainloop = imports.mainloop;
-const Main = imports.ui.main;
-const Tweener = imports.ui.tweener;
-const Util = imports.misc.util;
-
-var TRANSLATION_DOMAIN = imports.misc.extensionUtils.getCurrentExtension().metadata['gettext-domain'];
 
 var defineClass = function (classDef) {
     let parentProto = classDef.Extends ? classDef.Extends.prototype : null;
@@ -118,7 +104,7 @@ var createClass = function (classDef) {
     }
     else if (imports.misc.config.PACKAGE_VERSION < '3.33') {
         let isGObject = parentProto instanceof GObject.Object;
-        let needsSuper = true;
+        let needsSuper = parentProto && !isGObject;
         let getParentArgs = function(args) {
             let parentArgs = [];
 

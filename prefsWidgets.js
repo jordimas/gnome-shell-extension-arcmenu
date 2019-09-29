@@ -20,11 +20,7 @@
  */
 
 // Import Libraries
-const GLib = imports.gi.GLib;
-const GObject = imports.gi.GObject;
-const Gio = imports.gi.Gio;
-const Gtk = imports.gi.Gtk;
-const GdkPixbuf = imports.gi.GdkPixbuf;
+const {GdkPixbuf, Gio, GLib, GObject, Gtk} = imports.gi;
 const Params = imports.misc.params;
 
 

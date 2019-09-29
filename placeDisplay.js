@@ -21,17 +21,18 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+const Me = imports.misc.extensionUtils.getCurrentExtension();
 const {St, Gio, GLib, Shell } = imports.gi;
-const Signals = imports.signals;
 const Clutter = imports.gi.Clutter;
-const Main = imports.ui.main;
-const ShellMountOperation = imports.ui.shellMountOperation;
-const PopupMenu = imports.ui.popupMenu;
-const GObject = imports.gi.GObject;
-const ExtensionUtils = imports.misc.extensionUtils;
-const Me = ExtensionUtils.getCurrentExtension();
 const Gettext = imports.gettext.domain(Me.metadata['gettext-domain']);
+const GObject = imports.gi.GObject;
+const Main = imports.ui.main;
+const PopupMenu = imports.ui.popupMenu;
+const ShellMountOperation = imports.ui.shellMountOperation;
+const Signals = imports.signals;
+const Utils =  Me.imports.utils;
 const _ = Gettext.gettext;
+
 const BACKGROUND_SCHEMA = 'org.gnome.desktop.background';
 const Hostname1Iface = '<node> \
 <interface name="org.freedesktop.hostname1"> \
@@ -39,7 +40,7 @@ const Hostname1Iface = '<node> \
 </interface> \
 </node>';
 const Hostname1 = Gio.DBusProxy.makeProxyWrapper(Hostname1Iface);
-const Utils =  Me.imports.utils;
+
 
 var PlaceMenuItem = Utils.createClass({
     Name: 'PlaceMenuItem2',

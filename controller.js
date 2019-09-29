@@ -20,21 +20,16 @@
  */
 
 // Import Libraries
-const Main = imports.ui.main;
-const Gio = imports.gi.Gio;
-const GLib = imports.gi.GLib;
-const St = imports.gi.St;
-const Clutter = imports.gi.Clutter;
-const ExtensionUtils = imports.misc.extensionUtils;
-const Me = ExtensionUtils.getCurrentExtension();
+const Me = imports.misc.extensionUtils.getCurrentExtension();
+
+const {Gdk, Gio, GLib} = imports.gi;
 const Constants = Me.imports.constants;
-const Helper = Me.imports.helper;
-const Menu = Me.imports.menu;
-const ExtensionSystem = imports.ui.extensionSystem;
 const Gettext = imports.gettext.domain(Me.metadata['gettext-domain']);
+const Helper = Me.imports.helper;
+const Main = imports.ui.main;
+const Menu = Me.imports.menu;
 const _ = Gettext.gettext;
-const Gtk = imports.gi.Gtk;
-const Gdk = imports.gi.Gdk;
+
 /**
  * The Menu Settings Controller class is responsible for changing and handling
  * the settings changes of the Arc Menu.
@@ -52,7 +47,11 @@ var MenuSettingsController = class {
         this._hotCornerManager = new Helper.HotCornerManager(this._settings);
         if(this.isMainPanel){
             this._menuHotKeybinder = new Helper.MenuHotKeybinder(() => {
-                this._onHotkey();
+                if(this._settings.get_boolean('disable-hotkey-onkeyrelease')){
+                    this.toggleMenus();
+                }
+                else
+                    this._onHotkey();
             });
             this._keybindingManager = new Helper.KeybindingManager(this._settings); 
         }
@@ -108,7 +107,11 @@ var MenuSettingsController = class {
             this._settings.connect('changed::pinned-app-list',this._updateFavorites.bind(this)),
             this._settings.connect('changed::enable-pinned-apps',this._updateMenuDefaultView.bind(this)),
             this._settings.connect('changed::menu-layout', this._updateMenuLayout.bind(this)),
+            this._settings.connect('changed::enable-large-icons', this.updateIcons.bind(this)),
         ];
+    }
+    updateIcons(){
+        this._menuButton.updateIcons();
     }
     _updateMenuLayout(){
         this._menuButton._updateMenuLayout();
@@ -188,7 +191,13 @@ var MenuSettingsController = class {
 
             if (hotKeyPos==3) {
                 this._keybindingManager.bind('menu-keybinding-text', 'menu-keybinding',
-                    () => this._onHotkey());
+                    () =>{
+                        if(this._settings.get_boolean('disable-hotkey-onkeyrelease')){
+                            this.toggleMenus();
+                        }
+                        else
+                            this._onHotkey();
+                    });
             }
             else if (hotKeyPos !== Constants.HOT_KEY.Undefined ) {
                 let hotKey = Constants.HOT_KEY[hotKeyPos];
@@ -196,9 +205,11 @@ var MenuSettingsController = class {
             }        
         } 
     }
+
     _onHotkey() {
-        let focusTarget = this._menuButton.leftClickMenu.isOpen ? 
-                          (this._menuButton.actor || this._menuButton) : 
+        let activeMenu = this._menuButton.getActiveMenu();
+        let focusTarget = activeMenu ? 
+                          (activeMenu.actor || activeMenu) : 
                           (this.panel.actor || this.panel);
         
         this.disconnectKeyRelease();
@@ -206,32 +217,7 @@ var MenuSettingsController = class {
         this.keyReleaseInfo = {
             id: focusTarget.connect('key-release-event', (actor, event) => {
                 this.disconnectKeyRelease();
-                this.toggleMenus()
-            }),
-            target: focusTarget
-        };
-
-        focusTarget.grab_key_focus();
-    }
-
-    disconnectKeyRelease() {
-        if (this.keyReleaseInfo) {
-            this.keyReleaseInfo.target.disconnect(this.keyReleaseInfo.id);
-            this.keyReleaseInfo = 0;
-        }
-    }
-
-    _onHotkey() {
-        let focusTarget = this._menuButton.leftClickMenu.isOpen ? 
-                          (this._menuButton.actor || this._menuButton) : 
-                          (this.panel.actor || this.panel);
-        
-        this.disconnectKeyRelease();
-
-        this.keyReleaseInfo = {
-            id: focusTarget.connect('key-release-event', (actor, event) => {
-                this.disconnectKeyRelease();
-                this.toggleMenus()
+                this.toggleMenus();
             }),
             target: focusTarget
         };
@@ -339,7 +325,6 @@ var MenuSettingsController = class {
         let display = Gdk.Display.get_default();
         let primaryMonitor =display.get_monitor(0);
         let scaleFactor = primaryMonitor.get_scale_factor();
-        //let scaleFactor = St.ThemeContext.get_for_stage(global.stage).scale_factor;
         let menuButtonWidget = this._menuButton.getWidget();
         let stIcon = menuButtonWidget.getPanelIcon();
         let iconSize = this._settings.get_double('custom-menu-button-icon-size');

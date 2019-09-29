@@ -31,18 +31,16 @@
 
 
 // Import Libraries
-const Main = imports.ui.main;
-const Dash = imports.ui.dash;
-const ExtensionSystem = imports.ui.extensionSystem;
-const ExtensionUtils = imports.misc.extensionUtils;
-const AppDisplay = imports.ui.appDisplay;
-const Gtk = imports.gi.Gtk;
-const Gdk = imports.gi.Gdk;
-
 const Me = imports.misc.extensionUtils.getCurrentExtension();
-const MW = Me.imports.menuWidgets;
+
+const AppDisplay = imports.ui.appDisplay;
+const Dash = imports.ui.dash;
 const Controller = Me.imports.controller;
 const Convenience = Me.imports.convenience;
+const ExtensionSystem = imports.ui.extensionSystem;
+const Main = imports.ui.main;
+const MW = Me.imports.menuWidgets;
+
 
 // Initialize panel button variables
 let settings;

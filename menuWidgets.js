@@ -20,30 +20,24 @@
  */
 
 // Import Libraries
-const Shell = imports.gi.Shell;
-const St = imports.gi.St;
-const Clutter = imports.gi.Clutter;
-const Main = imports.ui.main;
-const Tweener = imports.ui.tweener;
-const PopupMenu = imports.ui.popupMenu;
-const GLib = imports.gi.GLib;
-const Signals = imports.signals;
+const Me = imports.misc.extensionUtils.getCurrentExtension();
+const {Atk, Clutter, Gio, GLib, GMenu, GObject, Gtk, Shell, St} = imports.gi;
+const IconGrid = imports.ui.iconGrid;
 const AccountsService = imports.gi.AccountsService;
-const Gio = imports.gi.Gio;
-const GObject = imports.gi.GObject;
-const Util = imports.misc.util;
-const ExtensionUtils = imports.misc.extensionUtils;
-const Me = ExtensionUtils.getCurrentExtension();
-const Constants = Me.imports.constants;
-const Gettext = imports.gettext.domain(Me.metadata['gettext-domain']);
-const _ = Gettext.gettext;
-const DND = imports.ui.dnd;
-const Dash = imports.ui.dash;
-const LoginManager = imports.misc.loginManager;
-const Gdk = imports.gi.Gdk;
-const Gtk = imports.gi.Gtk;
 const AppFavorites = imports.ui.appFavorites;
+const Constants = Me.imports.constants;
+const Dash = imports.ui.dash;
+const DND = imports.ui.dnd;
+const Gettext = imports.gettext.domain(Me.metadata['gettext-domain']);
+const LoginManager = imports.misc.loginManager;
+const Main = imports.ui.main;
+const PopupMenu = imports.ui.popupMenu;
+const Signals = imports.signals;
+const Tweener = imports.ui.tweener;
+const Util = imports.misc.util;
 const Utils =  Me.imports.utils;
+const _ = Gettext.gettext;
+
 const SWITCHEROO_BUS_NAME = 'net.hadess.SwitcherooControl';
 const SWITCHEROO_OBJECT_PATH = '/net/hadess/SwitcherooControl';
 const SwitcherooProxyInterface = '<node> \
@@ -52,6 +46,7 @@ const SwitcherooProxyInterface = '<node> \
 </interface> \
 </node>';
 const SwitcherooProxy = Gio.DBusProxy.makeProxyWrapper(SwitcherooProxyInterface);
+
 // Menu Size variables
 const LARGE_ICON_SIZE = 34;
 const MEDIUM_ICON_SIZE = 25;
@@ -361,8 +356,52 @@ var AppRightClickMenu = class AppRightClickMenu extends PopupMenu.PopupMenu {
 
 };
 
-// Removing the default behaviour which selects a hovered item if the space key is pressed.
-// This avoids issues when searching for an app with a space character in its name.
+var SeparatorDrawingArea =  GObject.registerClass(class extends St.DrawingArea {
+    _init(settings,alignment,style,params) {
+        super._init(params);
+        this._settings = settings;
+        this._alignment = alignment;
+        this._style = style;
+
+        if(this._style == Constants.SEPARATOR_STYLE.SHORT)
+            this.set_height(15); //increase height if on right side
+        else if(this._style == Constants.SEPARATOR_STYLE.LONG)
+            this.set_height(10);
+    }
+    vfunc_repaint(){
+       
+        let shouldDraw = this._settings.get_boolean('vert-separator');
+        if((this._alignment == Constants.SEPARATOR_ALIGNMENT.VERTICAL && shouldDraw) || 
+            this._alignment == Constants.SEPARATOR_ALIGNMENT.HORIZONTAL){
+            let cr = this.get_context();
+            let [width, height] = this.get_surface_size();
+            let color = this._settings.get_string('separator-color')
+            let b, stippleColor;   
+            [b,stippleColor] = Clutter.Color.from_string(color);   
+            let stippleWidth = 1;
+            if(this._alignment == Constants.SEPARATOR_ALIGNMENT.VERTICAL){
+                let x = Math.floor(width / 2) + 0.5;
+                cr.moveTo(x,  0.5);
+                cr.lineTo(x, height - 0.5);
+            }
+            else if (this._alignment == Constants.SEPARATOR_ALIGNMENT.HORIZONTAL){
+                if(this._style == Constants.SEPARATOR_STYLE.SHORT){
+                    cr.moveTo(width / 4, height-7.5);
+                    cr.lineTo(3 * width / 4, height-7.5);
+                }
+                else if(this._style == Constants.SEPARATOR_STYLE.LONG){
+                    cr.moveTo(25, height-4.5);
+                    cr.lineTo(width-25, height-4.5);
+                }
+            }
+            Clutter.cairo_set_source_color(cr, stippleColor);
+            cr.setLineWidth(stippleWidth);
+            cr.stroke();
+            cr.$dispose();
+        }
+        return false;
+    }
+});
 
 // Menu item to launch GNOME activities overview
 var ActivitiesMenuItem =  Utils.createClass({
@@ -391,6 +430,16 @@ var ActivitiesMenuItem =  Utils.createClass({
         this._button.leftClickMenu.toggle();
         Main.overview.toggle();
         this.callParent('activate',event);
+    },
+    _onButtonPressEvent(actor, event) {
+		
+        return Clutter.EVENT_PROPAGATE;
+    },
+    _onButtonReleaseEvent(actor, event) {
+        if(event.get_button()==1){
+            this.activate(event);
+        }
+        return Clutter.EVENT_STOP;
     }
 });
 
@@ -710,6 +759,16 @@ var BackMenuItem = Utils.createClass({
             this._button._displayCategories();
         }
         this.callParent('activate',event);
+    },
+    _onButtonPressEvent(actor, event) {
+		
+        return Clutter.EVENT_PROPAGATE;
+    },
+    _onButtonReleaseEvent(actor, event) {
+        if(event.get_button()==1){
+            this.activate(event);
+        }
+        return Clutter.EVENT_STOP;
     }
 });
 
@@ -748,6 +807,16 @@ var ViewAllPrograms =Utils.createClass({
           this._button.currentMenu = Constants.CURRENT_MENU.SEARCH_RESULTS;
       }
       this.callParent('activate',event);
+    },
+    _onButtonPressEvent(actor, event) {
+		
+        return Clutter.EVENT_PROPAGATE;
+    },
+    _onButtonReleaseEvent(actor, event) {
+        if(event.get_button()==1){
+            this.activate(event);
+        }
+        return Clutter.EVENT_STOP;
     }
 });
 
@@ -781,6 +850,16 @@ var ShortcutMenuItem = Utils.createClass({
     },
     setIconSizeLarge(){
         this._icon.icon_size = MEDIUM_ICON_SIZE;
+    },
+    _onButtonPressEvent(actor, event) {
+		
+        return Clutter.EVENT_PROPAGATE;
+    },
+    _onButtonReleaseEvent(actor, event) {
+        if(event.get_button()==1){
+            this.activate(event);
+        }
+        return Clutter.EVENT_STOP;
     }
 });
 
@@ -850,12 +929,23 @@ var UserMenuItem =Utils.createClass({
             this._user.disconnect(this._userChangedId);
             this._userChangedId = 0;
         }
+    },
+    _onButtonPressEvent(actor, event) {
+		
+        return Clutter.EVENT_PROPAGATE;
+    },
+    _onButtonReleaseEvent(actor, event) {
+        if(event.get_button()==1){
+            this.activate(event);
+        }
+        return Clutter.EVENT_STOP;
     }
 });
 // Menu pinned apps/favorites item class
 var FavoritesMenuItem = Utils.createClass({
     Name: 'FavoritesMenuItem',
     Extends: PopupMenu.PopupBaseMenuItem, 
+    Signals: {'saveSettings': {}},
     // Initialize the menu item
     _init(button, name, icon, command) {
         this.callParent('_init');
@@ -899,7 +989,10 @@ var FavoritesMenuItem = Utils.createClass({
         this.rightClickMenu.actor.hide();
         Main.uiGroup.add_actor(this.rightClickMenu.actor);
     },
-
+    _onButtonPressEvent(actor, event) {
+		
+        return Clutter.EVENT_PROPAGATE;
+    },
     _onButtonReleaseEvent(actor, event) {
         if(event.get_button()==1){
                 this.activate(event); 
@@ -1026,7 +1119,7 @@ var ApplicationMenuIcon = Utils.createClass({
         this._app = app;
         this.app = app;
        
-       
+        this.icon = new IconGrid.BaseIcon(app.get_name(), {createIcon: this._createIcon.bind(this), setSizeManually: true });
        
      
         this.actor.vertical = true;
@@ -1130,7 +1223,13 @@ var ApplicationMenuIcon = Utils.createClass({
         this.rightClickMenu.actor.hide();
         Main.uiGroup.add_actor(this.rightClickMenu.actor);
     },
-   
+    _createIcon(iconSize) {
+        return this.app.create_icon_texture(iconSize);
+    },
+    _onButtonPressEvent(actor, event) {
+		
+        return Clutter.EVENT_PROPAGATE;
+    },
     _onButtonReleaseEvent(actor, event) {
         if(event.get_button()==1){
             this.activate(event);
@@ -1191,7 +1290,6 @@ var ApplicationMenuIcon = Utils.createClass({
     activate(event) {
         this._app.open_new_window(-1);
         this._button.leftClickMenu.toggle();
-        this.callParent('activate',event);
     },
 
    // Set button as active, scroll to the button
@@ -1238,9 +1336,10 @@ var ApplicationMenuItem =Utils.createClass({
         this.app = app;
         //global.log(app);
         this._button = button;
+        this._settings = this._button._settings;
         this._iconBin = new St.Bin();
         this.actor.add_child(this._iconBin);
-
+        this.icon = new IconGrid.BaseIcon(app.get_name(), {createIcon: this._createIcon.bind(this), setSizeManually: true });
         let appLabel = new St.Label({
             text: app.get_name(),
             y_expand: true,
@@ -1273,6 +1372,10 @@ var ApplicationMenuItem =Utils.createClass({
         this._button.appMenuManager.addMenu(this.rightClickMenu);
         this.rightClickMenu.actor.hide();
         Main.uiGroup.add_actor(this.rightClickMenu.actor);
+    },
+    _onButtonPressEvent(actor, event) {
+		
+        return Clutter.EVENT_PROPAGATE;
     },
 
     _onButtonReleaseEvent(actor, event) {
@@ -1324,7 +1427,9 @@ var ApplicationMenuItem =Utils.createClass({
     getDragActor() {
         return this._app.create_icon_texture(MEDIUM_ICON_SIZE);
     },
-
+    _createIcon(iconSize) {
+        return this.app.create_icon_texture(iconSize);
+    },
     // Returns the original actor that should align with the actor
     // we show as the item is being dragged.
     getDragActorSource() {
@@ -1361,7 +1466,8 @@ var ApplicationMenuItem =Utils.createClass({
 
     // Update the app icon in the menu
     _updateIcon() {
-        this._iconBin.set_child(this._app.create_icon_texture(SMALL_ICON_SIZE));
+        let largeIcons = this._settings.get_boolean('enable-large-icons');
+        this._iconBin.set_child(this._app.create_icon_texture(largeIcons ? MEDIUM_ICON_SIZE : SMALL_ICON_SIZE));
     },
     _onDestroy(){
     }
@@ -1375,17 +1481,53 @@ var SearchResultItem = Utils.createClass({
         this._button = button;
         this.app =app;
         this._path=path;
-        this.rightClickMenu = new AppRightClickMenu(this.actor,this.app,this._button,false, this._path ? this._path: null);
-        this._button.appMenuManager.addMenu(this.rightClickMenu);
-        this.rightClickMenu.actor.hide();
-        Main.uiGroup.add_actor(this.rightClickMenu.actor);
+        if(app){
+            this.icon = new IconGrid.BaseIcon(app.get_name(), {createIcon: this._createIcon.bind(this), setSizeManually: true });
+            this.rightClickMenu = new AppRightClickMenu(this.actor,this.app,this._button,false, this._path ? this._path: null);
+            this._button.appMenuManager.addMenu(this.rightClickMenu);
+            this.rightClickMenu.actor.hide();
+            Main.uiGroup.add_actor(this.rightClickMenu.actor);
+            this._draggable = DND.makeDraggable(this.actor);
+            this.isDraggableApp = true;
+            this._draggable.connect('drag-begin', this._onDragBegin.bind(this));
+            this._draggable.connect('drag-cancelled', this._onDragCancelled.bind(this));
+            this._draggable.connect('drag-end', this._onDragEnd.bind(this));
+        }
+     
   
     },
+    getDragActor() {
+        return this.app.create_icon_texture(MEDIUM_ICON_SIZE);
+    },
+    _createIcon(iconSize) {
+        return this.app.create_icon_texture(iconSize);
+    },
+    // Returns the original actor that should align with the actor
+    // we show as the item is being dragged.
+    getDragActorSource() {
+        return this.actor;
+    },
+    _onDragBegin() {
+        Main.overview.beginItemDrag(this);
+    },
+
+    _onDragCancelled() {
+        Main.overview.cancelledItemDrag(this);
+    },
+
+    _onDragEnd() {
+        Main.overview.endItemDrag(this);
+    },
+    _onButtonPressEvent(actor, event) {
+		
+        return Clutter.EVENT_PROPAGATE;
+    },
+
     _onButtonReleaseEvent(actor, event) {
         if(event.get_button()==1){
             this.activate(event);
         }
-        if(event.get_button()==3){
+        if(event.get_button()==3 && this.rightClickMenu!=undefined){
             
             if(!this.rightClickMenu.isOpen)
                 this.rightClickMenu.redisplay();
@@ -1466,7 +1608,16 @@ var CategoryMenuItem =  Utils.createClass({
   
 
     },
-
+    _onButtonPressEvent(actor, event) {
+		
+        return Clutter.EVENT_PROPAGATE;
+    },
+    _onButtonReleaseEvent(actor, event) {
+        if(event.get_button()==1){
+            this.activate(event);
+        }
+        return Clutter.EVENT_STOP;
+    },
     // Activate menu item (Display applications in category)
     activate(event) {
         if (this._category)
@@ -1689,7 +1840,8 @@ var SimpleMenuItem = Utils.createClass({
 // SubMenu Category item class
 var CategorySubMenuItem = Utils.createClass({
     Name: 'CategorySubMenuItem',
-    Extends: PopupMenu.PopupSubMenuMenuItem, 
+    Extends: PopupMenu.PopupSubMenuMenuItem,
+    ParentConstrParams: ['', true],
     // Initialize menu item
     _init(button, category, title=null) {
         this.callParent('_init','',true);
@@ -1863,6 +2015,16 @@ var PlaceMenuItem = Utils.createClass({
     _propertiesChanged(info) {
         this._icon.gicon = info.icon;
         this._label.text = info.name;
+    },
+    _onButtonPressEvent(actor, event) {
+		
+        return Clutter.EVENT_PROPAGATE;
+    },
+    _onButtonReleaseEvent(actor, event) {
+        if(event.get_button()==1){
+            this.activate(event);
+        }
+        return Clutter.EVENT_STOP;
     }
 });
 
@@ -1870,7 +2032,8 @@ var PlaceMenuItem = Utils.createClass({
  * This class represents a SearchBox.
  */
 var SearchBox = class {
-    constructor() {
+    constructor(button) {
+        this.newSearch= button.newSearch;
         this.actor = new St.BoxLayout({
             style_class: 'search-box search-box-padding'
         });
@@ -1984,6 +2147,7 @@ var SearchBox = class {
             this._unsetClearIcon();
             if (searchString == '' && this._previousInput() != '') {
                 this.emit('cleared');
+               
             }
         }
         this.emit('changed', searchString);
@@ -1994,7 +2158,9 @@ var SearchBox = class {
         if (symbol == Clutter.KEY_Return ||
             symbol == Clutter.KEY_KP_Enter) {
             if (!this.isEmpty()) {
-                this.emit('activate');
+                if (this.newSearch.getTopResult()) {
+                    this.newSearch.getTopResult().activate(event);
+                }
             }
             return Clutter.EVENT_STOP;
         }

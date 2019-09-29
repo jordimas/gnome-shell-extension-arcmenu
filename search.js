@@ -21,26 +21,26 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-const {Atk, Clutter, Gio, GLib, GObject, Shell, St } = imports.gi;
-const Signals = imports.signals;
+const Me = imports.misc.extensionUtils.getCurrentExtension();
+const {Clutter, Gio, GLib, GObject, Shell, St } = imports.gi;
 const AppDisplay = imports.ui.appDisplay;
-const IconGrid = imports.ui.iconGrid;
-const Main = imports.ui.main;
-const RemoteSearch = imports.ui.remoteSearch;
-const Util = imports.misc.util;
-const Params = imports.misc.params;
-const PopupMenu = imports.ui.popupMenu;
-const SEARCH_PROVIDERS_SCHEMA = 'org.gnome.desktop.search-providers';
-const ExtensionUtils = imports.misc.extensionUtils;
-const Me = ExtensionUtils.getCurrentExtension();
-const MW = Me.imports.menuWidgets;
-const Constants = Me.imports.constants;
 const appSys = Shell.AppSystem.get_default();
+const Constants = Me.imports.constants;
 const Gettext = imports.gettext.domain(Me.metadata['gettext-domain']);
-const _ = Gettext.gettext;
+const MW = Me.imports.menuWidgets;
+const PopupMenu = imports.ui.popupMenu;
+const RemoteSearch = imports.ui.remoteSearch;
+const Signals = imports.signals;
 const Utils =  Me.imports.utils;
+const _ = Gettext.gettext;
+
+const SEARCH_PROVIDERS_SCHEMA = 'org.gnome.desktop.search-providers';
+
 var MAX_LIST_SEARCH_RESULTS_ROWS = 6;
 var MAX_APPS_SEARCH_RESULTS_ROWS = 6;
+
+var MEDIUM_ICON_SIZE = 25;
+var SMALL_ICON_SIZE = 16;
 
 var ArcSearchMaxWidthBin = GObject.registerClass(
 class ArcSearchMaxWidthBin extends St.Bin {
@@ -58,31 +58,26 @@ class ArcSearchMaxWidthBin extends St.Bin {
     }
 });
 
-var SearchResult = class {
+var ListSearchResult = class  {
     constructor(provider, metaInfo, resultsView) {
-        this.provider = provider;
-        this._button= resultsView._button;
+        this._button = resultsView._button;
         this.metaInfo = metaInfo;
-        this._resultsView = resultsView;
-    }
-
-};
-Signals.addSignalMethods(SearchResult.prototype);
-
-var ListSearchResult = class extends SearchResult {
-    constructor(provider, metaInfo, resultsView) {
-        super(provider, metaInfo, resultsView);
-        let button = resultsView._button;
+        this.provider = provider;
+        this._settings = this._button._settings;
+        let app = appSys.lookup_app(this.metaInfo['id']);
         if(this.provider.id =='org.gnome.Nautilus.desktop'){
             this.menuItem = new MW.SearchResultItem(this._button,appSys.lookup_app(this.provider.id),this.metaInfo['description']);
         }
+        else if(app){
+            this.menuItem = new MW.SearchResultItem(this._button,app); 
+        }
         else{
-            this.menuItem = new PopupMenu.PopupBaseMenuItem();
+            this.menuItem = new MW.SearchResultItem(this._button);
         }
         this._termsChangedId = 0;
-        
-        // An icon for, or thumbnail of, content
-        let icon = this.metaInfo['createIcon'](16);
+
+        let largeIcons = this._settings.get_boolean('enable-large-icons');
+        let icon = this.metaInfo['createIcon'](largeIcons ? MEDIUM_ICON_SIZE : SMALL_ICON_SIZE);
         if (icon) {
              this.menuItem.actor.add_child(icon);
         }
@@ -129,47 +124,43 @@ var ListSearchResult = class extends SearchResult {
             this._resultsView.disconnect(this._termsChangedId);
         this._termsChangedId = 0;
     }
-};
+};Signals.addSignalMethods(ListSearchResult.prototype);
 
-var AppSearchResult = class extends SearchResult {
+var AppSearchResult = class  {
     constructor(provider, metaInfo, resultsView) {
-        super(provider, metaInfo, resultsView);
         this._button = resultsView._button;
-        this.layout = this._button._settings.get_enum('menu-layout');
+        this.metaInfo = metaInfo;
+        this.provider = provider;
+        this._settings = this._button._settings;
+        this.layout =this._settings.get_enum('menu-layout');
         let app = appSys.lookup_app(this.metaInfo['id']);
         if(app){
-            this.menuItem = new MW.ApplicationMenuItem(this._button, app);
+            this.menuItem = new MW.SearchResultItem(this._button, app);
         }
         else{
-            this.menuItem = new PopupMenu.PopupBaseMenuItem();
-            this.icon = this.metaInfo['createIcon'](16);
-            if (this.icon) {
-                  this.menuItem.actor.add_child(this.icon);
-            } 
-            else{
-                if(this.layout == Constants.MENU_LAYOUT.Elementary || this.layout == Constants.MENU_LAYOUT.UbuntuDash){
-                    this.menuItem.actor.style = "padding: 25px 0px;";
-                }
-                else if(this.layout == Constants.MENU_LAYOUT.Redmond){
-                    this.menuItem.actor.style = "padding: 20px 0px;";
-                }
-            }            
-            let label = new St.Label({
-                text: this.metaInfo['name'],
-                y_expand: true,
-                x_expand: true,
-                y_align: Clutter.ActorAlign.CENTER
-            });
-            this.menuItem.actor.add_child(label);
-            let isMenuItem=true;
-            if(this.metaInfo['description'] || ((app!=undefined) ? app.get_description() : false))
-            {
-                this.tooltip = new MW.Tooltip(this.menuItem.actor, this.metaInfo['description'] ? this.metaInfo['description']:  app.get_description(),isMenuItem,this._button._settings);
-                this.tooltip.hide();
-                this.menuItem.actor.connect('notify::hover', this._onHover.bind(this));
-            }
-            this.menuItem.connect('activate', this.activate.bind(this))
+            this.menuItem = new MW.SearchResultItem(this._button);
         }
+        let largeIcons = this._settings.get_boolean('enable-large-icons');
+        this.icon = this.metaInfo['createIcon'](largeIcons ? MEDIUM_ICON_SIZE : SMALL_ICON_SIZE);
+        if (this.icon) {
+                this.menuItem.actor.add_child(this.icon);
+        }         
+        let label = new St.Label({
+            text: this.metaInfo['name'],
+            y_expand: true,
+            x_expand: true,
+            y_align: Clutter.ActorAlign.CENTER
+        });
+        this.menuItem.actor.add_child(label);
+        let isMenuItem=true;
+        if(this.metaInfo['description'] || ((app!=undefined) ? app.get_description() : false))
+        {
+            this.tooltip = new MW.Tooltip(this.menuItem.actor, this.metaInfo['description'] ? this.metaInfo['description']:  app.get_description(),isMenuItem,this._button._settings);
+            this.tooltip.hide();
+            this.menuItem.actor.connect('notify::hover', this._onHover.bind(this));
+        }
+        this.menuItem.connect('activate', this.activate.bind(this));
+        
         
        
        
@@ -188,7 +179,7 @@ var AppSearchResult = class extends SearchResult {
         this.emit('activate', this.metaInfo.id);
     }
 
-};
+};Signals.addSignalMethods(AppSearchResult.prototype);
 var SearchResultsBase = class {
     constructor(provider, resultsView) {
         this.provider = provider;
@@ -715,15 +706,7 @@ var ArcSearchProviderInfo =Utils.createClass({
         this.callParent('_init');
         this.provider = provider;
         this._button = button;
-        this.layout = button._settings.get_enum('menu-layout');
      
-
-        if(this.layout == Constants.MENU_LAYOUT.Elementary || this.layout == Constants.MENU_LAYOUT.UbuntuDash){
-            this.actor.style = "padding: 25px 0px;";
-        }
-        else if(this.layout == Constants.MENU_LAYOUT.Redmond){
-            this.actor.style = "padding: 20px 0px;";
-        }
         this.nameLabel = new St.Label({ text: provider.appInfo.get_name() + ":",
                                        x_align: Clutter.ActorAlign.START,x_expand: true});
         this._moreText="";
@@ -751,6 +734,15 @@ var ArcSearchProviderInfo =Utils.createClass({
         this._moreText= ngettext("%d more", "%d more", count).format(count);
         if(count>0)
             this.nameLabel.text = this.provider.appInfo.get_name() + "  ("+ this._moreText+")";
+    },
+    _onButtonPressEvent(actor, event) {
+        return Clutter.EVENT_PROPAGATE;
+    },
+    _onButtonReleaseEvent(actor, event) {
+        if(event.get_button()==1){
+            this.activate(event);
+        }
+        return Clutter.EVENT_STOP;
     }
 });
 
