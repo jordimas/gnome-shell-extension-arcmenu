@@ -1488,6 +1488,17 @@ var  AppearanceSettingsPage = GObject.registerClass(
     }
     checkIfPresetMatch(){
         this.presetName="Custom Theme";
+        this.separatorColor = this._settings.get_string('separator-color');
+        this.verticalSeparator = this._settings.get_boolean('vert-separator');
+        this.menuColor = this._settings.get_string('menu-color');
+        this.menuForegroundColor = this._settings.get_string('menu-foreground-color');
+        this.borderColor = this._settings.get_string('border-color');
+        this.highlightColor = this._settings.get_string('highlight-color');
+        this.fontSize = this._settings.get_int('menu-font-size');
+        this.borderSize = this._settings.get_int('menu-border-size');
+        this.cornerRadius = this._settings.get_int('menu-corner-radius');
+        this.menuMargin = this._settings.get_int('menu-margin');
+        this.menuArrowSize = this._settings.get_int('menu-arrow-size');
         let currentSettingsArray = [this.menuColor, this.menuForegroundColor, this.borderColor, this.highlightColor, this.separatorColor, 
                     this.fontSize.toString(), this.borderSize.toString(), this.cornerRadius.toString(), this.menuArrowSize.toString(), 
                     this.menuMargin.toString(), this.verticalSeparator.toString()];
