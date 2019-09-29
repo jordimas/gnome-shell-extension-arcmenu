@@ -1321,31 +1321,36 @@ var  AppearanceSettingsPage = GObject.registerClass(
               dialog.show_all();
               dialog.connect('response', function(response)
               { 
-                  if(dialog.get_response())
-                  {
-                      this._settings.set_int('menu-height', dialog.heightValue);
-                      this._settings.set_string('separator-color',dialog.separatorColor);
-                      this._settings.set_boolean('vert-separator',dialog.verticalSeparator);
-                      this._settings.set_boolean('enable-custom-arc-menu', dialog.customArcMenu); 
-                      this._settings.set_string('menu-color',dialog.menuColor);
-                      this._settings.set_string('menu-foreground-color',dialog.menuForegroundColor);
-                      this._settings.set_string('border-color',dialog.borderColor);
-                      this._settings.set_string('highlight-color',dialog.highlightColor );
-                      this._settings.set_int('menu-font-size',dialog.fontSize);
-                      this._settings.set_int('menu-border-size',dialog.borderSize);
-                      this._settings.set_int('menu-corner-radius',dialog.cornerRadius);
-                      this._settings.set_int('menu-margin',dialog.menuMargin);
-                      this._settings.set_int('menu-arrow-size',dialog.menuArrowSize);
-                      this._settings.set_int('menu-width', dialog.menuWidth);
-                      this._settings.set_int('menu-rightpanel-width',dialog.menuRightWidth);
-                      saveCSS(this._settings);
-                      this._settings.set_boolean('reload-theme',true);
-                      this.presetName = dialog.presetName;
-                      currentPresetTextLabel.label = dialog.presetName;
-                      dialog.destroy();
-                  }
-                  else
-                      dialog.destroy();
+                
+                if(dialog.get_response())
+                {
+                    this._settings.set_int('menu-height', dialog.heightValue);
+                    this._settings.set_string('separator-color',dialog.separatorColor);
+                    this._settings.set_boolean('vert-separator',dialog.verticalSeparator);
+                    this._settings.set_boolean('enable-custom-arc-menu', dialog.customArcMenu); 
+                    this._settings.set_string('menu-color',dialog.menuColor);
+                    this._settings.set_string('menu-foreground-color',dialog.menuForegroundColor);
+                    this._settings.set_string('border-color',dialog.borderColor);
+                    this._settings.set_string('highlight-color',dialog.highlightColor );
+                    this._settings.set_int('menu-font-size',dialog.fontSize);
+                    this._settings.set_int('menu-border-size',dialog.borderSize);
+                    this._settings.set_int('menu-corner-radius',dialog.cornerRadius);
+                    this._settings.set_int('menu-margin',dialog.menuMargin);
+                    this._settings.set_int('menu-arrow-size',dialog.menuArrowSize);
+                    this._settings.set_int('menu-width', dialog.menuWidth);
+                    this._settings.set_int('menu-rightpanel-width',dialog.menuRightWidth);
+                    saveCSS(this._settings);
+                    this._settings.set_boolean('reload-theme',true);
+                    this.presetName = dialog.presetName;
+                    currentPresetTextLabel.label = dialog.presetName;
+                    dialog.destroy();
+                }
+                else{
+                    this.checkIfPresetMatch();
+                    currentPresetTextLabel.label = this.presetName;
+                    dialog.destroy();
+                }
+                      
               }.bind(this)); 
           });
           let overrideArcMenuSwitch = new Gtk.Switch({ halign: Gtk.Align.END});
@@ -2319,11 +2324,12 @@ var OverrideArcMenuThemeWindow = GObject.registerClass(
             menuBackgroudColorChooser.set_rgba(color);            
             menuBackgroudColorChooser.connect('color-set', ()=>{
                 this.menuColor = menuBackgroudColorChooser.get_rgba().to_string();
+                applyButton.set_sensitive(true);
                 if(this.shouldDeselect){
                     this.checkIfPresetMatch();
-                    deleteButton.set_sensitive(false);
+                    
                 }
-                applyButton.set_sensitive(true);
+               
             
                 resetButton.set_sensitive(true);
             });
@@ -2345,7 +2351,7 @@ var OverrideArcMenuThemeWindow = GObject.registerClass(
                 applyButton.set_sensitive(true);
                 if(this.shouldDeselect){
                     this.checkIfPresetMatch();
-                    deleteButton.set_sensitive(false);
+                    
                 }
                 resetButton.set_sensitive(true);
             });
@@ -2373,7 +2379,7 @@ var OverrideArcMenuThemeWindow = GObject.registerClass(
                 applyButton.set_sensitive(true);
                 if(this.shouldDeselect){
                     this.checkIfPresetMatch();
-                    deleteButton.set_sensitive(false);
+                    
                 }
                 resetButton.set_sensitive(true);
             });
@@ -2396,7 +2402,7 @@ var OverrideArcMenuThemeWindow = GObject.registerClass(
                 applyButton.set_sensitive(true);
                 if(this.shouldDeselect){
                     this.checkIfPresetMatch();
-                    deleteButton.set_sensitive(false);
+                    
                 }
                 resetButton.set_sensitive(true);
             });
@@ -2424,7 +2430,7 @@ var OverrideArcMenuThemeWindow = GObject.registerClass(
                 applyButton.set_sensitive(true);
                 if(this.shouldDeselect){
                     this.checkIfPresetMatch();
-                    deleteButton.set_sensitive(false);
+                    
                 }
                 
                 resetButton.set_sensitive(true);
@@ -2448,7 +2454,7 @@ var OverrideArcMenuThemeWindow = GObject.registerClass(
                 applyButton.set_sensitive(true);
                 if(this.shouldDeselect){
                     this.checkIfPresetMatch();
-                    deleteButton.set_sensitive(false);
+                    
                 }
                 
                 resetButton.set_sensitive(true);
@@ -2477,7 +2483,7 @@ var OverrideArcMenuThemeWindow = GObject.registerClass(
                 applyButton.set_sensitive(true);
                 if(this.shouldDeselect){
                     this.checkIfPresetMatch();
-                    deleteButton.set_sensitive(false);
+                    
                 }
                 
                 resetButton.set_sensitive(true);
@@ -2506,7 +2512,7 @@ var OverrideArcMenuThemeWindow = GObject.registerClass(
                 applyButton.set_sensitive(true);
                 if(this.shouldDeselect){
                     this.checkIfPresetMatch();
-                    deleteButton.set_sensitive(false);
+                    
                 }
                 
                 resetButton.set_sensitive(true);
@@ -2535,7 +2541,7 @@ var OverrideArcMenuThemeWindow = GObject.registerClass(
                 applyButton.set_sensitive(true);
                 if(this.shouldDeselect){
                     this.checkIfPresetMatch();
-                    deleteButton.set_sensitive(false);
+                    
                 }
                 
                 resetButton.set_sensitive(true);
@@ -2557,7 +2563,7 @@ var OverrideArcMenuThemeWindow = GObject.registerClass(
                  this.verticalSeparator = check.get_active();
                  if(this.shouldDeselect){
                     this.checkIfPresetMatch();
-                    deleteButton.set_sensitive(false);
+                    
                 }
                  applyButton.set_sensitive(true);
                  
@@ -2583,7 +2589,7 @@ var OverrideArcMenuThemeWindow = GObject.registerClass(
                 this.separatorColor = colorChooser.get_rgba().to_string();
                 applyButton.set_sensitive(true);
                 if(this.shouldDeselect){
-                    deleteButton.set_sensitive(false);
+                    
                     this.checkIfPresetMatch();
                 }
                 
@@ -3101,7 +3107,7 @@ var MiscPage = GObject.registerClass(
                         let settingsFile = Gio.File.new_for_path(filename);
                         let [ success, content, etags] = 
                         settingsFile.load_contents(null);
-                        global.log(content);
+                        //global.log(content);
                         let string = content.toString();
                         let themes = string.split("\n")
                         //global.log(string[0]);
@@ -3109,6 +3115,7 @@ var MiscPage = GObject.registerClass(
                         this.color_themes = [];
                         for(let i = 0; i < themes.length; i++){
                             let array = themes[i].split('//')
+                            array.pop();
                             this.color_themes.push(array);
                         }
                         let dialog = new ExportColorThemeDialogWindow(this._settings, this, this.color_themes);
@@ -3154,7 +3161,7 @@ var MiscPage = GObject.registerClass(
                                         let out = Gio.BufferedOutputStream.new_sized(raw, 4096);
                                         for(let i = 0; i<this.selectedThemes.length; i++){
                                             for(let x = 0; x<this.selectedThemes[i].length;x++){
-                                                out.write_all(this.selectedThemes[i][x].toString()+"//", null);
+                                                out.write_all((this.selectedThemes[i][x]).toString()+"//", null);
                                             }
                                             out.write_all("\n", null);
                                         }
