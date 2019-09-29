@@ -365,7 +365,7 @@ var ListSearchResults = class extends SearchResultsBase {
 
     _addItem(display) {
         //global.log(display.actor);
-        this._content.add_actor(display.menuItem.actor);
+        this._content.add_actor(display.menuItem);
         //this._button.applicationsBox.add(display.actor);
     }
 
@@ -398,7 +398,7 @@ var AppSearchResults = class extends SearchResultsBase {
     }
 
     _addItem(display) {
-      this._grid.add_actor(display.menuItem.actor);
+      this._grid.add_actor(display.menuItem);
     }
 
     getFirstResult() {

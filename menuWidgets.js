@@ -1496,11 +1496,6 @@ var SearchResultItem = Utils.createClass({
      
   
     },
-    activate(event) {
-        if(this.app)
-            this.app.open_new_window(-1);
-        this._button.leftClickMenu.toggle();
-    },
     getDragActor() {
         return this.app.create_icon_texture(MEDIUM_ICON_SIZE);
     },
@@ -2037,7 +2032,8 @@ var PlaceMenuItem = Utils.createClass({
  * This class represents a SearchBox.
  */
 var SearchBox = class {
-    constructor() {
+    constructor(button) {
+        this.newSearch= button.newSearch;
         this.actor = new St.BoxLayout({
             style_class: 'search-box search-box-padding'
         });
@@ -2151,6 +2147,7 @@ var SearchBox = class {
             this._unsetClearIcon();
             if (searchString == '' && this._previousInput() != '') {
                 this.emit('cleared');
+               
             }
         }
         this.emit('changed', searchString);
@@ -2161,7 +2158,9 @@ var SearchBox = class {
         if (symbol == Clutter.KEY_Return ||
             symbol == Clutter.KEY_KP_Enter) {
             if (!this.isEmpty()) {
-                this.emit('activate');
+                if (this.newSearch.getTopResult()) {
+                    this.newSearch.getTopResult().activate(event);
+                }
             }
             return Clutter.EVENT_STOP;
         }

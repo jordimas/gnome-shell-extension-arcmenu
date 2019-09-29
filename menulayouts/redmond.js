@@ -75,14 +75,13 @@ var createMenu = class {
   
         //Top Search Bar
         // Create search box
-        this.searchBox = new MW.SearchBox();
+        this.searchBox = new MW.SearchBox(this);
         this.searchBox.actor.style ="margin: 0px 10px 10px 10px;";
         this._firstAppItem = null;
         this._firstApp = null;
         this._tabbedOnce = false;
         this._searchBoxChangedId = this.searchBox.connect('changed', this._onSearchBoxChanged.bind(this));
         this._searchBoxKeyPressId = this.searchBox.connect('key-press-event', this._onSearchBoxKeyPress.bind(this));
-        this._searchBoxActivateId = this.searchBox.connect('activate', this._onSearchBoxActive.bind(this));
         this._searchBoxKeyFocusInId = this.searchBox.connect('key-focus-in', this._onSearchBoxKeyFocusIn.bind(this));
 
 
@@ -648,12 +647,6 @@ var createMenu = class {
                 this.newSearch.highlightDefault(true);
            }
         }
-   
-        _onSearchBoxActive() {
-            if (this.newSearch.getTopResult()) {
-                this.newSearch.getTopResult().activate();
-            }
-        }
 
         _onSearchBoxChanged(searchBox, searchString) {        
             if(this.currentMenu != Constants.CURRENT_MENU.SEARCH_RESULTS){              
@@ -809,10 +802,6 @@ var createMenu = class {
                 if (this._searchBoxKeyPressId > 0) {
                     this.searchBox.disconnect(this._searchBoxKeyPressId);
                     this._searchBoxKeyPressId = 0;
-                }
-                if (this._searchBoxActivateId > 0) {
-                    this.searchBox.disconnect(this._searchBoxActivateId);
-                    this._searchBoxActivateId = 0;
                 }
                 if (this._searchBoxKeyFocusInId > 0) {
                     this.searchBox.disconnect(this._searchBoxKeyFocusInId);
