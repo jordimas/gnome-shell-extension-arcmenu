@@ -1921,8 +1921,11 @@ var ExportColorThemeDialogWindow = GObject.registerClass(
             //this.resize(450,250);
         }
 
-        _createLayout(vbox) {    
+        _createLayout(vbox) {  
             //create a scrolledwindow for list of all apps
+            vbox.spacing = 0;
+            this.checkButtonArray = [];
+            this.shouldToggle =true;
             let themesListScrollWindow = new Gtk.ScrolledWindow();
             themesListScrollWindow.set_policy(Gtk.PolicyType.AUTOMATIC, Gtk.PolicyType.AUTOMATIC);
             themesListScrollWindow.set_max_content_height(300);
@@ -1950,7 +1953,42 @@ var ExportColorThemeDialogWindow = GObject.registerClass(
             // add the frames to the vbox
            
             themesListScrollWindow.add_with_viewport(this.mainFrame);
+            this.checkAllButton = new Gtk.CheckButton({
+                xalign:1,
+                margin_right: 23
+            });
+
+            this.checkAllButton.set_halign(Gtk.Align.END);
+            this.checkAllButton.set_active(true);
+            this.checkAllButton.connect('toggled', ()=>{   
+                let isActive = this.checkAllButton.get_active();
+                if(this.shouldToggle){
+                    for(let i = 0; i< this.checkButtonArray.length; i++){
+                        this.checkButtonArray[i].set_active(isActive);
+                    }
+                }
+               
+                
+            });
+            let checkAllRow = new PW.FrameBoxRow();
+            let fillerLabel = new Gtk.Label({
+                use_markup: false,
+                xalign: 0,
+                hexpand: true,
+                label: ""
+             });
+            let checkAllLabel = new Gtk.Label({
+                    use_markup: false,
+                    xalign: 0,
+                    hexpand: false,
+                    label: _("Select All")
+            });
+            checkAllRow.add(fillerLabel);
+            checkAllRow.add(checkAllLabel);
+            checkAllRow.add(this.checkAllButton);
+            vbox.add(checkAllRow);
             vbox.add(themesListScrollWindow);
+            vbox.add(new PW.FrameBoxRow());
             vbox.add(themesListButton);
 
             this.color_themes = this._themes ? this._themes : this._settings.get_value('color-themes').deep_unpack();
@@ -1968,8 +2006,7 @@ var ExportColorThemeDialogWindow = GObject.registerClass(
     
                 frameRow.add(frameLabel);
     
-                let checkButton = new Gtk.CheckButton(
-                {
+                let checkButton = new Gtk.CheckButton({
                     margin_right: 20
                 });
                 checkButton.connect('toggled', ()=>
@@ -1978,10 +2015,14 @@ var ExportColorThemeDialogWindow = GObject.registerClass(
                         this.selectedThemes.push(theme);
                     }
                     else{
+                        this.shouldToggle = false;
+                        this.checkAllButton.set_active(false);
+                        this.shouldToggle = true;
                       let index= this.selectedThemes.indexOf(theme);
                       this.selectedThemes.splice(index,1);
                     }
                 });
+                this.checkButtonArray.push(checkButton);
                 frameRow.add(checkButton);
                 this.mainFrame.add(frameRow);
                 checkButton.set_active(true);
