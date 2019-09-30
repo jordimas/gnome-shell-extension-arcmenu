@@ -307,13 +307,16 @@ var ApplicationsButton =   Utils.defineClass({
             return false;
         },
         _updateMenuLayout(){
-            this.section.actor.destroy_all_children();
+            this.section.destroy();
+            //Create Basic Layout ------------------------------------------------
+            this.section = new PopupMenu.PopupMenuSection();
+            this.leftClickMenu.addMenuItem(this.section);            
             this.mainBox = new St.BoxLayout({
                 vertical: false
-            });      
-            
+            });        
             this.mainBox.set_height(this._settings.get_int('menu-height'));               
-            this.section.actor.add_actor(this.mainBox);       
+            this.section.actor.add_actor(this.mainBox);          
+            //------------------------------------------------  
              
             //this.MenuLayout = null;
             let layout = this._settings.get_enum('menu-layout');
