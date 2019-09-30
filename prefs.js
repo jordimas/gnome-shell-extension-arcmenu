@@ -1541,7 +1541,7 @@ var ArcMenuLayoutWindow = GObject.registerClass(
             };
             this._tileGrid = new PW.TileGrid(this._params.maxColumns);
             super._init(_('Arc Menu Layout'), parent);
-            this.resize(685,480);
+            this.resize(690,480);
           
 
 

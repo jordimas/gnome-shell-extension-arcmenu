@@ -223,5 +223,6 @@ var Tile =  GObject.registerClass(
         this._vbox.add(this._image);
         this._vbox.add(this._label);
         this.add(this._vbox);
+        this.margin=1;
     }
 });
