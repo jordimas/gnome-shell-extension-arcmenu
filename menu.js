@@ -205,8 +205,11 @@ var ApplicationsButton =   Utils.defineClass({
                         Main.overview.toggle();
                     else{
                         this.leftClickMenu.toggle();	
-                        if(this.leftClickMenu.isOpen)
-                            this.mainBox.grab_key_focus();	
+                        if(this.leftClickMenu.isOpen){
+                            if(!(layout == Constants.MENU_LAYOUT.Simple || layout == Constants.MENU_LAYOUT.Simple2))
+                                this.mainBox.grab_key_focus();	
+                        }
+                           
                     }                
                 }    
                 else if(event.get_button()==3){                      
@@ -219,8 +222,10 @@ var ApplicationsButton =   Utils.defineClass({
                         Main.overview.toggle();
                     else{
                         this.leftClickMenu.toggle();	
-                        if(this.leftClickMenu.isOpen)
-                            this.mainBox.grab_key_focus();	
+                        if(this.leftClickMenu.isOpen){
+                            if(!(layout == Constants.MENU_LAYOUT.Simple || layout == Constants.MENU_LAYOUT.Simple2))
+                                this.mainBox.grab_key_focus();	
+                        }	
                     }         
             }
                     
@@ -239,8 +244,10 @@ var ApplicationsButton =   Utils.defineClass({
                 Main.overview.toggle();
             else{
                 this.leftClickMenu.toggle();
-                if(this.leftClickMenu.isOpen)
-                    this.mainBox.grab_key_focus();
+                if(this.leftClickMenu.isOpen){
+                    if(!(layout == Constants.MENU_LAYOUT.Simple || layout == Constants.MENU_LAYOUT.Simple2))
+                        this.mainBox.grab_key_focus();	
+                }
             }	  
 
         },
@@ -265,10 +272,12 @@ var ApplicationsButton =   Utils.defineClass({
         },
         updateHeight(){
             //set menu height
-            this.mainBox.set_height(this._settings.get_int('menu-height'));
             let layout = this._settings.get_enum('menu-layout');
-            if(layout == Constants.MENU_LAYOUT.Simple2) 
-                this.MenuLayout.updateHeight(this._settings.get_int('menu-height'));
+            
+            if(!(layout == Constants.MENU_LAYOUT.Simple || layout == Constants.MENU_LAYOUT.Simple2))
+                this.mainBox.set_height(this._settings.get_int('menu-height'));	
+            
+           
             this._redisplay();
             this._redisplayRightSide();
         },
@@ -405,8 +414,12 @@ var ApplicationsButton =   Utils.defineClass({
         // Handle changes in menu open state
         _onOpenStateChanged(menu, open) {
             if (menu == this.leftClickMenu) {
-                if(open)
-                    this.mainBox.show();  
+                if(open){
+                    let layout = this._settings.get_enum('menu-layout');
+                    if(!(layout == Constants.MENU_LAYOUT.Simple || layout == Constants.MENU_LAYOUT.Simple2))
+                        this.mainBox.show();  	
+                }
+                    
             }
             if (open)
                 modernGnome ?  this.add_style_pseudo_class('active') : this.actor.add_style_pseudo_class('active');

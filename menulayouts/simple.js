@@ -110,7 +110,7 @@ var createMenu = class {
     _reload() {
         this.applicationsBox.destroy_all_children();
         this._applicationsButtons = [];
-       // this._createLeftBox();
+        this._createLeftBox();
         this._loadCategories();
         this._display(); 
     }
@@ -227,29 +227,15 @@ var createMenu = class {
     // Create the menu layout
 
     _createLeftBox(){
-        //Applications Box - Contains Favorites, Categories or programs
-        this.applicationsScrollBox = new St.ScrollView({
-            x_fill: true,
-            y_fill: false,
-            y_align: St.Align.START,
-            style_class: 'apps-menu vfade left-scroll-area',
-            overlay_scrollbars: true
-        });                
-        this.applicationsScrollBox.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC);
-        let vscroll = this.applicationsScrollBox.get_vscroll_bar();
-        vscroll.connect('scroll-start', () => {
-            this.leftClickMenu.passEvents = true;
-        });
-        vscroll.connect('scroll-stop', () => {
-            this.leftClickMenu.passEvents = false;
-        });
-        this.mainBox.add(this.applicationsScrollBox, {
-            expand: true,
-            x_fill: true, y_fill: true,
-            y_align: 0
-        });
+        let actors = this.section.actor.get_children();
+        for (let i = 0; i < actors.length; i++) {
+            let actor = actors[i];
+            this.section.actor.remove_actor(actor);
+        }
         this.applicationsBox = new St.BoxLayout({ vertical: true });
-        this.applicationsScrollBox.add_actor(this.applicationsBox);
+
+        this.section.actor.add_actor(this.applicationsBox);  
+
     }
     placesAddSeparator(id){
 
