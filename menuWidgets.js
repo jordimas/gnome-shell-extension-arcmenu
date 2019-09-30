@@ -1872,7 +1872,6 @@ var CategorySubMenuItem = Utils.createClass({
         else if(!this._category){
             this.icon.icon_name= 'emblem-favorite-symbolic';
         }
-        this.actor.add_child(this.icon);
 
        
        
