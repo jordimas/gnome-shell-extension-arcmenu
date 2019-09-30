@@ -1873,52 +1873,9 @@ var CategorySubMenuItem = Utils.createClass({
             this.icon.icon_name= 'emblem-favorite-symbolic';
         }
 
-       
-       
-        this.actor.connect('notify::hover', this._onHover.bind(this));
+       this.menu.actor.style= "max-height: 150px;";
+  
 
-    },
-
-    // Activate menu item (Display applications in category)
-    activate(event) {
-        this.submenu.toggle();
-        this.callParent('activate',event);
-    },
-    _onHover() {
-        if (this.actor.hover) { // mouse pointer hovers over the button
-            this.actor.add_style_class_name('selected');
-        } else if(!this.actor.hover && !this._active) { // mouse pointer leaves the button area
-            this.actor.remove_style_class_name('selected');
-        }
-    },
-    // Set button as active, scroll to the button
-    setFakeActive(active, params) {
-        this._active = active;
-        if (active && !this.actor.hover) {
-            this.actor.add_style_class_name('selected');
-        }
-        else if (!active && !this.actor.hover){
-            this.actor.remove_style_class_name('selected');
-        }
-    },
-    // Set button as active, scroll to the button
-    setActive(active, params) {
-        //this._active = active;
-        if (active && !this.actor.hover) {
-            this._button.scrollToButton(this);
-            this.actor.add_style_class_name('selected');
-        }
-        //TODO add if statement
-        let activeChanged = active != !this._active;
-        if (activeChanged) {
-
-            if (active) {
-               
-            } else {
-                this.actor.remove_style_class_name('selected');
-            }
-        }
-        //super.setActive(active, params);
     }
 });
 
