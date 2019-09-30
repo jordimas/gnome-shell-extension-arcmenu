@@ -211,11 +211,10 @@ var TileGrid = GObject.registerClass(
  * Arc Menu Tile Grid
  */
 var Tile =  GObject.registerClass(
-    class extends Gtk.EventBox{
+    class Tile extends Gtk.Button{
 
      _init(label, file, width, height) {
         super._init();
-
         let pixbuf = GdkPixbuf.Pixbuf.new_from_file_at_size(file, width, height);
         this._image = new Gtk.Image({ pixbuf: pixbuf });
         this._label = new Gtk.Label({ label: label });
