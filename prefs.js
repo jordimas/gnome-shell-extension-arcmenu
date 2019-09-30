@@ -1541,7 +1541,7 @@ var ArcMenuLayoutWindow = GObject.registerClass(
             };
             this._tileGrid = new PW.TileGrid(this._params.maxColumns);
             super._init(_('Arc Menu Layout'), parent);
-            this.resize(660,480);
+            this.resize(690,480);
           
 
 
@@ -1550,9 +1550,10 @@ var ArcMenuLayoutWindow = GObject.registerClass(
         _createLayout(vbox) {         
             this._scrolled = new Gtk.ScrolledWindow();
             this._scrolled.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC);
-
+            let index = 0;
             this._params.styles.forEach(function(style){
-                this._addTile(style.name, Me.path + style.thumbnail);
+                this._addTile(style.name, Me.path + style.thumbnail,index);
+                index++;
             }.bind(this));
     
             this._scrolled.add(this._tileGrid);
@@ -1600,11 +1601,13 @@ var ArcMenuLayoutWindow = GObject.registerClass(
            applyButton.set_sensitive(false);
             
         }
-        _addTile(name, thumbnail) {
+        _addTile(name, thumbnail, index) {
             let tile = new PW.Tile(name, thumbnail, this._params.thumbnailWidth, this._params.thumbnailHeight);
             this._tileGrid.add(tile);
-            tile.connect('button-press-event', ()=> {
-                //TODO
+           
+            tile.connect('clicked', ()=> {
+                let temp = this._tileGrid.get_child_at_index(index);
+                this._tileGrid.select_child(temp);  
             });
         }
    

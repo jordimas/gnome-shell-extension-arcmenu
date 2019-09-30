@@ -56,22 +56,20 @@ var createMenu = class {
         this.button = mainButton;
         this._settings = mainButton._settings;
         this.section = mainButton.section;
-        this.mainBox = mainButton.mainBox; 
         this.appMenuManager = mainButton.appMenuManager;
         this.leftClickMenu  = mainButton.leftClickMenu;
         this.currentMenu = Constants.CURRENT_MENU.FAVORITES; 
         this._applicationsButtons = [];
         this._session = new GnomeSession.SessionManager();
-        this.leftClickMenu.actor.style = 'max-height: 60em;'
-        this.mainBox._delegate = this.mainBox;
-        this._mainBoxKeyPressId = this.mainBox.connect('key-press-event', this._onMainBoxKeyPress.bind(this));
+        this.leftClickMenu.removeAll();
+
         this._tree = new GMenu.Tree({ menu_basename: 'applications.menu' });
         this._treeChangedId = this._tree.connect('changed', ()=>{
             this._reload();
         });
 
         //LAYOUT------------------------------------------------------------------------------------------------
-        this.mainBox.vertical = true;
+
         
         this._firstAppItem = null;
         this._firstApp = null;
@@ -80,6 +78,7 @@ var createMenu = class {
         this._createLeftBox();
         this._loadCategories();
         this._display(); 
+        this.leftClickMenu.actor.style = 'max-height: '+(this.leftClickMenu.actor.height + 250)+'px;';
     }
     _onMainBoxKeyPress(mainBox, event) {
         return Clutter.EVENT_PROPAGATE;
@@ -94,20 +93,15 @@ var createMenu = class {
         this.setDefaultMenuView();  
     }
     _redisplayRightSide(){
-        this._createLeftBox();
-        this._displayCategories();
-        this.updateStyle();
+
     }
     // Redisplay the menu
     _redisplay() {
-        if (this.applicationsBox)
-            this._clearApplicationsBox();
-        this._display();
+  
     }
     _reload() {
-        this.section.destroy_all_children();
+        this.leftClickMenu.removeAll()
         this._applicationsButtons = [];
-        this._createLeftBox();
         this._loadCategories();
         this._display(); 
     }
@@ -183,7 +177,7 @@ var createMenu = class {
     _displayCategories(){
         this._clearApplicationsBox();
         for(let i = 0; i < this.categoryMenuItemArray.length; i++){
-            this.section.addMenuItem(this.categoryMenuItemArray[i]);
+            this.leftClickMenu.addMenuItem(this.categoryMenuItemArray[i]);
         }
     }
     _displayGnomeFavorites(categoryMenuItem){
@@ -207,11 +201,7 @@ var createMenu = class {
     // Create the menu layout
 
     _createLeftBox(){
-        let actors = this.section.actor.get_children();
-        for (let i = 0; i < actors.length; i++) {
-            let actor = actors[i];
-            this.section.actor.remove_actor(actor);
-        }            
+  
     }
     placesAddSeparator(id){
         
@@ -252,11 +242,7 @@ var createMenu = class {
     
     // Clear the applications menu box
     _clearApplicationsBox() {
-        let actors = this.section.actor.get_children();
-        for (let i = 0; i < actors.length; i++) {
-            let actor = actors[i];
-            this.section.actor.remove_actor(actor);
-        }            
+        this.leftClickMenu.removeAll();      
     }
 
     // Select a category or show category overview if no category specified

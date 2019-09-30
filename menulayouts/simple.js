@@ -97,7 +97,7 @@ var createMenu = class {
     }
     _redisplayRightSide(){
         this._clearApplicationsBox();
-        this._createLeftBox();
+        //this._createLeftBox();
         this._displayCategories();
         this.updateStyle();
     }
@@ -233,7 +233,9 @@ var createMenu = class {
             this.section.actor.remove_actor(actor);
         }
         this.applicationsBox = new St.BoxLayout({ vertical: true });
+
         this.section.actor.add_actor(this.applicationsBox);  
+
     }
     placesAddSeparator(id){
 
