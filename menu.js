@@ -308,6 +308,7 @@ var ApplicationsButton =   Utils.defineClass({
         },
         _updateMenuLayout(){
             this.section.destroy();
+            this.leftClickMenu.actor.style = '';
             //Create Basic Layout ------------------------------------------------
             this.section = new PopupMenu.PopupMenuSection();
             this.leftClickMenu.addMenuItem(this.section);            
