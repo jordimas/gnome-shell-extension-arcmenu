@@ -266,6 +266,9 @@ var ApplicationsButton =   Utils.defineClass({
         updateHeight(){
             //set menu height
             this.mainBox.set_height(this._settings.get_int('menu-height'));
+            let layout = this._settings.get_enum('menu-layout');
+            if(layout == Constants.MENU_LAYOUT.Simple2) 
+                this.MenuLayout.updateHeight(this._settings.get_int('menu-height'));
             this._redisplay();
             this._redisplayRightSide();
         },
@@ -307,7 +310,7 @@ var ApplicationsButton =   Utils.defineClass({
             return false;
         },
         _updateMenuLayout(){
-            this.section.destroy();
+            this.leftClickMenu.removeAll();
             this.leftClickMenu.actor.style = '';
             //Create Basic Layout ------------------------------------------------
             this.section = new PopupMenu.PopupMenuSection();

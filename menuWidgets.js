@@ -1872,10 +1872,7 @@ var CategorySubMenuItem = Utils.createClass({
         else if(!this._category){
             this.icon.icon_name= 'emblem-favorite-symbolic';
         }
-
-       this.menu.actor.style= "max-height: 150px;";
-  
-
+        //this.menu.actor.style = 'max-height: 150px;';
     }
 });
 

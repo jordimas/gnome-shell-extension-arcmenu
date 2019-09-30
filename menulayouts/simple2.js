@@ -62,7 +62,9 @@ var createMenu = class {
         this.currentMenu = Constants.CURRENT_MENU.FAVORITES; 
         this._applicationsButtons = [];
         this._session = new GnomeSession.SessionManager();
-        this.leftClickMenu.actor.style = 'height: 575px;'
+        let height = this._settings.get_int('menu-height');
+        this.leftClickMenu.actor.style = 'max-height: '+(height + 150)+'px; height:' + height+'px;';
+        this.section.actor.style = 'max-height: '+(height + 150)+'px; height:' + height+'px;';
         this.mainBox._delegate = this.mainBox;
         this._mainBoxKeyPressId = this.mainBox.connect('key-press-event', this._onMainBoxKeyPress.bind(this));
         this._tree = new GMenu.Tree({ menu_basename: 'applications.menu' });
@@ -86,6 +88,10 @@ var createMenu = class {
     }
     setCurrentMenu(menu){
         this.currentMenu = menu;
+    }
+    updateHeight(height){
+        this.leftClickMenu.actor.style = 'max-height: '+(height + 150)+'px; height:' + height+'px;';
+        this.section.actor.style = 'max-height: '+(height + 150)+'px; height:' + height+'px;';
     }
     getCurrentMenu(){
         return this.currentMenu;
