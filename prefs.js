@@ -1850,7 +1850,7 @@ var ColorThemeDialogWindow = GObject.registerClass(
             this.addResponse = false;
             this.isSave = isSave;
             this.themeName = themeName;
-            super._init( isSave? _('Color Theme Name') : _('Delete Theme "') + themeName +'?' , parent);
+            super._init( isSave? _('Color Theme Name') : _('Delete Theme')+' "' + themeName +'?' , parent);
             //this.resize(450,250);
         }
 
@@ -1881,7 +1881,7 @@ var ColorThemeDialogWindow = GObject.registerClass(
                 });
             }
             else{
-                nameFrameLabel.label = _('Are you sure you want to delete theme ')+ '"' + this.themeName +'"?';
+                nameFrameLabel.label = _('Are you sure you want to delete theme')+ ' "' + this.themeName +'"?';
             }
             
             vbox.add(nameFrameRow);
@@ -3155,7 +3155,7 @@ var MiscPage = GObject.registerClass(
             });
             importColorPresetButton.connect('clicked', ()=> {
                 this._showFileChooser(
-                    _('Import theme preset'),
+                    _('Import Theme Preset'),
                     { action: Gtk.FileChooserAction.OPEN },
                     Gtk.STOCK_OPEN,
                     filename => {
@@ -3206,7 +3206,7 @@ var MiscPage = GObject.registerClass(
                     if(dialog.get_response()){
                        this.selectedThemes = dialog.selectedThemes;
                        this._showFileChooser(
-                            _('Export theme preset'),
+                            _('Export Theme Preset'),
                                 { action: Gtk.FileChooserAction.SAVE,
                                     do_overwrite_confirmation: true },
                                     Gtk.STOCK_SAVE,
