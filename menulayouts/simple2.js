@@ -157,12 +157,12 @@ var createMenu = class {
             }
         }
         this.categoryMenuItemArray=[];
-        let categoryMenuItem = new MW.CategorySubMenuItem(this, "","All Programs");
-        this._displayAllApps(categoryMenuItem);
-        this.categoryMenuItemArray.push(categoryMenuItem);
-
-        categoryMenuItem = new MW.CategorySubMenuItem(this, "","Favorites");
+        let categoryMenuItem = new MW.CategorySubMenuItem(this, "","Favorites");
         this._displayGnomeFavorites(categoryMenuItem);
+        this.categoryMenuItemArray.push(categoryMenuItem);
+        categoryMenuItem = new MW.CategorySubMenuItem(this, "","All Programs");
+        this._displayAllApps(categoryMenuItem);
+        
         this.categoryMenuItemArray.push(categoryMenuItem);
         
         for(var categoryDir of this.categoryDirectories){

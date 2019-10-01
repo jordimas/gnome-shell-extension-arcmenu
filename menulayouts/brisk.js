@@ -60,7 +60,6 @@ var createMenu = class{
         this._session = new GnomeSession.SessionManager();
         this.currentMenu = Constants.CURRENT_MENU.FAVORITES; 
         this._applicationsButtons = new Map();
-        this.allApps = [];
         this.newSearch = new ArcSearch.SearchResults(this);      
         this.mainBox._delegate = this.mainBox;
         this._mainBoxKeyPressId = this.mainBox.connect('key-press-event', this._onMainBoxKeyPress.bind(this));
@@ -145,7 +144,7 @@ var createMenu = class{
             y_align: St.Align.START
         });
         this._loadCategories();
-        this._loadAllMenuItems();
+
 
         this._display(); 
     }
@@ -222,14 +221,12 @@ var createMenu = class{
         if (this.applicationsBox)
             this._clearApplicationsBox();
         this._applicationsButtons.clear();
-        this._loadAllMenuItems();
         this._display();
     }
     _reload() {
         this.applicationsBox.destroy_all_children();
         this._applicationsButtons.clear();
         this._loadCategories();
-        this._loadAllMenuItems();
         this._display();
     }
     updateStyle(){
@@ -251,7 +248,7 @@ var createMenu = class{
         //this.mainBox.hide();
         //this._applicationsButtons.clear();
         this._displayCategories();
-        this._displayAllApps();
+        this._displayGnomeFavorites();
         
         if(this.vertSep!=null)
             this.vertSep.queue_repaint(); 
@@ -260,7 +257,6 @@ var createMenu = class{
     _loadCategories(){
         this.applicationsByCategory = {};
         this.categoryDirectories=[];
-        this.allApps = [];
         
         this.categoryDirectories.push("");
         this.applicationsByCategory["Frequent Apps"] = [];
@@ -303,7 +299,11 @@ var createMenu = class{
                 let app = appSys.lookup_app(id);
                 if (app){
                     this.applicationsByCategory[categoryId].push(app);
-                    this.allApps.push(app);
+                    let item = this._applicationsButtons.get(app);
+                    if (!item) {
+                        item = new MW.ApplicationMenuItem(this, app);
+                        this._applicationsButtons.set(app, item);
+                    }
                 }
                     
             } else if (nextType == GMenu.TreeItemType.DIRECTORY) {
@@ -318,11 +318,11 @@ var createMenu = class{
         this._clearApplicationsBox();
         this.categoryMenuItemArray=[];
         
-        let categoryMenuItem = new MW.CategoryMenuItem(this, "","All Programs");
+        let categoryMenuItem = new MW.CategoryMenuItem(this, "","Favorites");
         this.categoryMenuItemArray.push(categoryMenuItem);
         this.applicationsBox.add_actor(categoryMenuItem.actor);	
         categoryMenuItem.setFakeActive(true);
-        categoryMenuItem = new MW.CategoryMenuItem(this, "","Favorites");
+        categoryMenuItem = new MW.CategoryMenuItem(this, "","All Programs");
         this.categoryMenuItemArray.push(categoryMenuItem);
         this.applicationsBox.add_actor(categoryMenuItem.actor);	
         for(var categoryDir of this.categoryDirectories){
@@ -505,7 +505,7 @@ var createMenu = class{
         this.searchBox.clear();
         let setDefaultActive = true;
         this._setActiveCategory(setDefaultActive);
-        this._displayAllApps();
+        this._displayGnomeFavorites();
     }
     _setActiveCategory(setDefaultActive=false){
 
@@ -599,22 +599,12 @@ var createMenu = class{
             }
         }
     }
-    _loadAllMenuItems() {
-        let apps= this.allApps;
-        apps.sort(function (a, b) {
-            return a.get_name().toLowerCase() > b.get_name().toLowerCase();
-        });  
-        for (let i = 0; i < apps.length; i++) {
-            let app = apps[i];
-            let item = this._applicationsButtons.get(app);
-            if (!item) {
-                item = new MW.ApplicationMenuItem(this, app);
-                this._applicationsButtons.set(app, item);
-            }
-        } 
-    }
+
     _displayAllApps(){
-        let appList= this.allApps;
+        let appList= []
+        this._applicationsButtons.forEach((value,key,map) => {
+            appList.push(key);
+        });
         appList.sort(function (a, b) {
             return a.get_name().toLowerCase() > b.get_name().toLowerCase();
         });

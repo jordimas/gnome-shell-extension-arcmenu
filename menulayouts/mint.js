@@ -351,7 +351,7 @@ var createMenu =class{
     // Display the menu
     _display() {
         this._displayCategories();
-        this._displayAllApps();
+        this._displayGnomeFavorites();
         
         if(this.vertSep!=null)
             this.vertSep.queue_repaint(); 
@@ -371,8 +371,15 @@ var createMenu =class{
                     continue;
                 }
                 let app = appSys.lookup_app(id);
-                if (app && app.get_app_info().should_show())
+                if (app){
                     this.applicationsByCategory[categoryId].push(app);
+                    let item = this._applicationsButtons.get(app);
+                    if (!item) {
+                        item = new MW.ApplicationMenuItem(this, app);
+                        this._applicationsButtons.set(app, item);
+                    }
+                }
+                    
             } else if (nextType == GMenu.TreeItemType.DIRECTORY) {
                 let subdir = iter.get_directory();
                 if (!subdir.get_is_nodisplay())
@@ -417,11 +424,12 @@ var createMenu =class{
         this._clearApplicationsBox();
         this.categoryMenuItemArray=[];
         
-        let categoryMenuItem = new MW.CategoryMenuItem(this, "","All Programs");
+        let categoryMenuItem = new MW.CategoryMenuItem(this, "","Favorites");
         this.categoryMenuItemArray.push(categoryMenuItem);
         this.applicationsBox.add_actor(categoryMenuItem.actor);	
         categoryMenuItem.setFakeActive(true);
-        categoryMenuItem = new MW.CategoryMenuItem(this, "","Favorites");
+
+        categoryMenuItem = new MW.CategoryMenuItem(this, "","All Programs");
         this.categoryMenuItemArray.push(categoryMenuItem);
         this.applicationsBox.add_actor(categoryMenuItem.actor);	
         for(var categoryDir of this.categoryDirectories){
@@ -497,7 +505,7 @@ var createMenu =class{
     
     setDefaultMenuView(){
         this.searchBox.clear();
-        this._displayAllApps();
+        this._displayGnomeFavorites();
         let setDefaultActive = true;
         this._setActiveCategory(setDefaultActive);
     }
@@ -580,10 +588,6 @@ var createMenu =class{
             for (let i = 0; i < apps.length; i++) {
                 let app = apps[i];
                 let item = this._applicationsButtons.get(app);
-                if (!item) {
-                    item = new MW.ApplicationMenuItem(this, app);
-                    this._applicationsButtons.set(app, item);
-                }
                 if (!item.actor.get_parent()) {
                         this.shorcutsBox.add_actor(item.actor);	
                 }
@@ -595,10 +599,10 @@ var createMenu =class{
         }
     }
     _displayAllApps(){
-        let appList=[];
-        for(let directory in this.applicationsByCategory){
-            appList = appList.concat(this.applicationsByCategory[directory]);
-        }
+        let appList= []
+        this._applicationsButtons.forEach((value,key,map) => {
+            appList.push(key);
+        });
         appList.sort(function (a, b) {
             return a.get_name().toLowerCase() > b.get_name().toLowerCase();
         });
