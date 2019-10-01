@@ -60,7 +60,6 @@ var createMenu = class{
         this._session = new GnomeSession.SessionManager();
         this.currentMenu = Constants.CURRENT_MENU.FAVORITES; 
         this._applicationsButtons = new Map();
-        this.allApps = [];
         this.newSearch = new ArcSearch.SearchResults(this);      
         this.mainBox._delegate = this.mainBox;
         this._mainBoxKeyPressId = this.mainBox.connect('key-press-event', this._onMainBoxKeyPress.bind(this));
@@ -118,13 +117,6 @@ var createMenu = class{
         });   
         this.shortcutsScrollBox.set_width(275);  
         this.shortcutsScrollBox.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC);
-        let vscroll2 =  this.shortcutsScrollBox.get_vscroll_bar();
-        vscroll2.connect('scroll-start', () => {
-            this.leftClickMenu.passEvents = true;
-        });
-        vscroll2.connect('scroll-stop', () => {
-            this.leftClickMenu.passEvents = false;
-        }); 
         this.shortcutsScrollBox.add_actor( this.shorcutsBox);
         this.rightBox.add( this.shortcutsScrollBox);
         // Left Box
@@ -152,7 +144,7 @@ var createMenu = class{
             y_align: St.Align.START
         });
         this._loadCategories();
-        this._loadAllMenuItems();
+
 
         this._display(); 
     }
@@ -229,14 +221,12 @@ var createMenu = class{
         if (this.applicationsBox)
             this._clearApplicationsBox();
         this._applicationsButtons.clear();
-        this._loadAllMenuItems();
         this._display();
     }
     _reload() {
         this.applicationsBox.destroy_all_children();
         this._applicationsButtons.clear();
         this._loadCategories();
-        this._loadAllMenuItems();
         this._display();
     }
     updateStyle(){
@@ -258,7 +248,7 @@ var createMenu = class{
         //this.mainBox.hide();
         //this._applicationsButtons.clear();
         this._displayCategories();
-        this._displayAllApps();
+        this._displayGnomeFavorites();
         
         if(this.vertSep!=null)
             this.vertSep.queue_repaint(); 
@@ -267,7 +257,6 @@ var createMenu = class{
     _loadCategories(){
         this.applicationsByCategory = {};
         this.categoryDirectories=[];
-        this.allApps = [];
         
         this.categoryDirectories.push("");
         this.applicationsByCategory["Frequent Apps"] = [];
@@ -310,7 +299,11 @@ var createMenu = class{
                 let app = appSys.lookup_app(id);
                 if (app){
                     this.applicationsByCategory[categoryId].push(app);
-                    this.allApps.push(app);
+                    let item = this._applicationsButtons.get(app);
+                    if (!item) {
+                        item = new MW.ApplicationMenuItem(this, app);
+                        this._applicationsButtons.set(app, item);
+                    }
                 }
                     
             } else if (nextType == GMenu.TreeItemType.DIRECTORY) {
@@ -325,11 +318,11 @@ var createMenu = class{
         this._clearApplicationsBox();
         this.categoryMenuItemArray=[];
         
-        let categoryMenuItem = new MW.CategoryMenuItem(this, "","All Programs");
+        let categoryMenuItem = new MW.CategoryMenuItem(this, "","Favorites");
         this.categoryMenuItemArray.push(categoryMenuItem);
         this.applicationsBox.add_actor(categoryMenuItem.actor);	
         categoryMenuItem.setFakeActive(true);
-        categoryMenuItem = new MW.CategoryMenuItem(this, "","Favorites");
+        categoryMenuItem = new MW.CategoryMenuItem(this, "","All Programs");
         this.categoryMenuItemArray.push(categoryMenuItem);
         this.applicationsBox.add_actor(categoryMenuItem.actor);	
         for(var categoryDir of this.categoryDirectories){
@@ -342,8 +335,6 @@ var createMenu = class{
                 this.applicationsBox.add_actor(categoryMenuItem.actor);	
             }
         }
-
-        
         this.updateStyle();
     }
     _displayGnomeFavorites(){
@@ -380,13 +371,6 @@ var createMenu = class{
         
         this.applicationsScrollBox.set_width(225);  
         this.applicationsScrollBox.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC);
-        let vscroll =  this.applicationsScrollBox.get_vscroll_bar();
-        vscroll.connect('scroll-start', () => {
-            this.leftClickMenu.passEvents = true;
-        });
-        vscroll.connect('scroll-stop', () => {
-            this.leftClickMenu.passEvents = false;
-        });
         this.leftBox.add( this.applicationsScrollBox, {
             expand: true,
             x_fill: true, y_fill: true,
@@ -519,13 +503,15 @@ var createMenu = class{
     setDefaultMenuView()
     {
         this.searchBox.clear();
-        this._displayAllApps();
+        let setDefaultActive = true;
+        this._setActiveCategory(setDefaultActive);
+        this._displayGnomeFavorites();
     }
-    _setActiveCategory(){
+    _setActiveCategory(setDefaultActive=false){
 
         for (let i = 0; i < this.categoryMenuItemArray.length; i++) {
             let actor = this.categoryMenuItemArray[i];
-            actor.setFakeActive(false);
+            setDefaultActive ? actor.setFakeActive(i==0 ? true : false) : actor.setFakeActive(false);
             //actor.remove_style_class_name('active');
         }
     }
@@ -613,22 +599,12 @@ var createMenu = class{
             }
         }
     }
-    _loadAllMenuItems() {
-        let apps= this.allApps;
-        apps.sort(function (a, b) {
-            return a.get_name().toLowerCase() > b.get_name().toLowerCase();
-        });  
-        for (let i = 0; i < apps.length; i++) {
-            let app = apps[i];
-            let item = this._applicationsButtons.get(app);
-            if (!item) {
-                item = new MW.ApplicationMenuItem(this, app);
-                this._applicationsButtons.set(app, item);
-            }
-        } 
-    }
+
     _displayAllApps(){
-        let appList= this.allApps;
+        let appList= []
+        this._applicationsButtons.forEach((value,key,map) => {
+            appList.push(key);
+        });
         appList.sort(function (a, b) {
             return a.get_name().toLowerCase() > b.get_name().toLowerCase();
         });

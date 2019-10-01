@@ -59,7 +59,6 @@ var createMenu = class {
         this.leftClickMenu  = mainButton.leftClickMenu;
         this.currentMenu = Constants.CURRENT_MENU.FAVORITES; 
         this._applicationsButtons = new Map();
-        this.allApps = [];
         this.newSearch = new ArcSearch.SearchResults(this);      
         this.mainBox._delegate = this.mainBox;
         this._mainBoxKeyPressId = this.mainBox.connect('key-press-event', this._onMainBoxKeyPress.bind(this));
@@ -86,13 +85,6 @@ var createMenu = class {
             overlay_scrollbars: true
         });                
         this.applicationsScrollBox.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC);
-        let vscroll = this.applicationsScrollBox.get_vscroll_bar();
-        vscroll.connect('scroll-start', () => {
-            this.leftClickMenu.passEvents = true;
-        });
-        vscroll.connect('scroll-stop', () => {
-            this.leftClickMenu.passEvents = false;
-        });
         this.leftBox.add(this.applicationsScrollBox, {
             expand: true,
             x_fill: true, y_fill: true,
@@ -158,7 +150,6 @@ var createMenu = class {
             style_class: 'right-box'
         });
         this._loadCategories();
-        this._loadAllMenuItems();
         this._createRightBox();
         this.mainBox.add(this.rightBox);  
         this._loadFavorites();
@@ -198,13 +189,6 @@ var createMenu = class {
             overlay_scrollbars: true
         });     
         this.shortcutsScrollBox.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC);
-        let vscroll2 = this.shortcutsScrollBox.get_vscroll_bar();
-        vscroll2.connect('scroll-start', () => {
-            this.leftClickMenu.passEvents = true;
-        });
-        vscroll2.connect('scroll-stop', () => {
-            this.leftClickMenu.passEvents = false;
-        }); 
         this.shortcutsScrollBox.add_actor(this.shorcutsBox);
         this.rightBox.add(this.shortcutsScrollBox);
         // Add place shortcuts to menu (Home,Documents,Downloads,Music,Pictures,Videos)
@@ -397,7 +381,6 @@ var createMenu = class {
         this._applicationsButtons.clear();
         this._loadCategories();
         this._loadFavorites();
-        this._loadAllMenuItems();
         this._display();
     }
     // Display the menu
@@ -431,7 +414,6 @@ var createMenu = class {
     _loadCategories(){
         this.applicationsByCategory = {};
         this.categoryDirectories=[];
-        this.allApps = [];
         
         this.categoryDirectories.push("");
         this.applicationsByCategory["Frequent Apps"] = [];
@@ -474,8 +456,13 @@ var createMenu = class {
                 let app = appSys.lookup_app(id);
                 if (app){
                     this.applicationsByCategory[categoryId].push(app);
-                    this.allApps.push(app);
+                    let item = this._applicationsButtons.get(app);
+                    if (!item) {
+                        item = new MW.ApplicationMenuItem(this, app);
+                        this._applicationsButtons.set(app, item);
+                    }
                 }
+              
                     
             } else if (nextType == GMenu.TreeItemType.DIRECTORY) {
                 let subdir = iter.get_directory();
@@ -486,7 +473,7 @@ var createMenu = class {
     }
         
     _displayCategories(){
-        this.applicationsBox.destroy_all_children();
+        this._clearApplicationsBox();
             
         this.viewProgramsButton.actor.hide();
         if(this._settings.get_boolean('enable-pinned-apps'))
@@ -671,28 +658,19 @@ var createMenu = class {
                 item.actor.grab_key_focus();
         }
     }
-    _loadAllMenuItems() {
-        let apps= this.allApps;
-        apps.sort(function (a, b) {
-            return a.get_name().toLowerCase() > b.get_name().toLowerCase();
-        });  
-        for (let i = 0; i < apps.length; i++) {
-            let app = apps[i];
-            let item = this._applicationsButtons.get(app);
-            if (!item) {
-                item = new MW.ApplicationMenuItem(this, app);
-                this._applicationsButtons.set(app, item);
-            }
-        }  
-    }
+
     _displayAllApps(){
-        let appList= this.allApps;
+
+        let appList= []
+        this._applicationsButtons.forEach((value,key,map) => {
+            appList.push(key);
+        });
         appList.sort(function (a, b) {
             return a.get_name().toLowerCase() > b.get_name().toLowerCase();
         });
         this._clearApplicationsBox();
         this._displayButtons(appList);
-        this.updateStyle();   
+        this.updateStyle(); 
         this.backButton.actor.show();
         this.viewProgramsButton.actor.hide();
         
