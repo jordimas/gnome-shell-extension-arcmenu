@@ -496,14 +496,15 @@ var createMenu = class {
         
         setDefaultMenuView(){
             this.searchBox.clear();
+            let setDefaultActive = true;
+            this._setActiveCategory(setDefaultActive);
             this._displayAllApps();
         }
-        _setActiveCategory(){
+        _setActiveCategory(setDefaultActive=false){
 
             for (let i = 0; i < this.categoryMenuItemArray.length; i++) {
                 let actor = this.categoryMenuItemArray[i];
-                actor.setFakeActive(false);
-                //actor.remove_style_class_name('active');
+                setDefaultActive ? actor.setFakeActive(i==0 ? true : false) : actor.setFakeActive(false);
             }
         }
         _onSearchBoxKeyPress(searchBox, event) {
