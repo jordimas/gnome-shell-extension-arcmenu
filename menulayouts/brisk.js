@@ -118,13 +118,6 @@ var createMenu = class{
         });   
         this.shortcutsScrollBox.set_width(275);  
         this.shortcutsScrollBox.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC);
-        let vscroll2 =  this.shortcutsScrollBox.get_vscroll_bar();
-        vscroll2.connect('scroll-start', () => {
-            this.leftClickMenu.passEvents = true;
-        });
-        vscroll2.connect('scroll-stop', () => {
-            this.leftClickMenu.passEvents = false;
-        }); 
         this.shortcutsScrollBox.add_actor( this.shorcutsBox);
         this.rightBox.add( this.shortcutsScrollBox);
         // Left Box
@@ -380,13 +373,6 @@ var createMenu = class{
         
         this.applicationsScrollBox.set_width(225);  
         this.applicationsScrollBox.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC);
-        let vscroll =  this.applicationsScrollBox.get_vscroll_bar();
-        vscroll.connect('scroll-start', () => {
-            this.leftClickMenu.passEvents = true;
-        });
-        vscroll.connect('scroll-stop', () => {
-            this.leftClickMenu.passEvents = false;
-        });
         this.leftBox.add( this.applicationsScrollBox, {
             expand: true,
             x_fill: true, y_fill: true,

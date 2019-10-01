@@ -116,13 +116,6 @@ var createMenu = class {
         });   
         this.shortcutsScrollBox.set_width(450);  
         this.shortcutsScrollBox.set_policy(Gtk.PolicyType.AUTOMATIC, Gtk.PolicyType.AUTOMATIC);
-        let vscroll2 =  this.shortcutsScrollBox.get_vscroll_bar();
-        vscroll2.connect('scroll-start', () => {
-            this.leftClickMenu.passEvents = true;
-        });
-        vscroll2.connect('scroll-stop', () => {
-            this.leftClickMenu.passEvents = false;
-        }); 
         this.shortcutsScrollBox.add_actor( this.shorcutsBox);
         
       
@@ -371,13 +364,6 @@ var createMenu = class {
                 overlay_scrollbars: true
             });     
             this.placesScrollBox.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC);
-            let vscroll2 = this.placesScrollBox.get_vscroll_bar();
-            vscroll2.connect('scroll-start', () => {
-                this.leftClickMenu.passEvents = true;
-            });
-            vscroll2.connect('scroll-stop', () => {
-                this.leftClickMenu.passEvents = false;
-            }); 
 	        this.placesScrollBox.add_actor(this.placesBox);
 	        this.rightBox.add(this.placesScrollBox);
             // Add place shortcuts to menu (Home,Documents,Downloads,Music,Pictures,Videos)
