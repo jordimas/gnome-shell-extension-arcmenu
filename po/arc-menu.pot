@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-10-01 14:32-0400\n"
+"POT-Creation-Date: 2019-10-01 18:03-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -662,15 +662,19 @@ msgstr ""
 msgid "About"
 msgstr ""
 
-#: prefs.js:3315
+#: prefs.js:3314
 msgid "Arc-Menu"
 msgstr ""
 
-#: prefs.js:3320
+#: prefs.js:3319
 msgid "version: "
 msgstr ""
 
-#: prefs.js:3328
+#: prefs.js:3323
+msgid "The new applications menu for Gnome 3"
+msgstr ""
+
+#: prefs.js:3327
 msgid "GitLab Page"
 msgstr ""
 

@@ -3289,7 +3289,6 @@ var AboutPage = GObject.registerClass(
             // Use meta information from metadata.json
             let releaseVersion = Me.metadata.version || 'unknown';
             let projectName = Me.metadata.name;
-            let projectDescription = Me.metadata.description;
             let projectUrl = Me.metadata.url;
 
             // Create GUI elements
@@ -3321,7 +3320,7 @@ var AboutPage = GObject.registerClass(
                 expand: false
             });
             let projectDescriptionLabel = new Gtk.Label({
-                label: _(projectDescription),
+                label: _('The new applications menu for Gnome 3'),
                 expand: false
             });
             let projectLinkButton = new Gtk.LinkButton({
