@@ -177,3 +177,8 @@ Additional credits: This extension also leverages the work from [Giovanni Campag
 **- @[Nilvus](https://gitlab.com/Nilvus) - French** | **- @[Etamuk](https://gitlab.com/Etamuk) - German** | **- @[alex4401](https://gitlab.com/alex4401) - Polish** | **- @[vmalta10](https://gitlab.com/vmalta10) - Brazilian Portuguese** | **- @[sigbjokj](https://gitlab.com/sigbjokj) - Norwegian** |
 
 -----
+
+ **- @[AlexHi](https://gitlab.com/AlexHi) - Russian** | **- @[gkkulik](https://gitlab.com/gkkulik) - Silesian** | **- @[vikaig](https://gitlab.com/vikaig) - Ukrainian** | **- @[jordim](https://gitlab.com/jordim) - Catalan** | **- @[m.yaman9898](https://gitlab.com/m.yaman9898) - Turkish** |
+ 
+-----
+- 
