@@ -113,11 +113,13 @@ var createMenu = class{
             x_fill: true,
             y_fill: false,
             y_align: St.Align.START,
-            overlay_scrollbars: true
+            overlay_scrollbars: true,
+            style_class: 'vfade'
         });   
         this.shortcutsScrollBox.set_width(275);  
         this.shortcutsScrollBox.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC);
         this.shortcutsScrollBox.add_actor( this.shorcutsBox);
+        this.shortcutsScrollBox.clip_to_allocation = true;
         this.rightBox.add( this.shortcutsScrollBox);
         // Left Box
         //Menus Left Box container
@@ -366,7 +368,8 @@ var createMenu = class{
             x_fill: true,
             y_fill: true,
             y_align: St.Align.START,
-            overlay_scrollbars: true
+            overlay_scrollbars: true,
+            style_class: 'vfade'
         });
         
         this.applicationsScrollBox.set_width(225);  
@@ -378,6 +381,7 @@ var createMenu = class{
         });
         this.applicationsBox = new St.BoxLayout({ vertical: true });
         this.applicationsScrollBox.add_actor( this.applicationsBox);
+        this.applicationsScrollBox.clip_to_allocation = true;
         
         this.shortcutsBox = new St.BoxLayout({ vertical: true });
         //Add Horizontal Separator

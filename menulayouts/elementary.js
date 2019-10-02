@@ -114,16 +114,13 @@ var createMenu = class{
             y_fill: false,
             y_align: St.Align.START,
             x_align: St.Align.START,
-            overlay_scrollbars: true
+            overlay_scrollbars: true,
+            style_class: 'vfade'
         });   
         this.shortcutsScrollBox.set_width(750);  
         this.shortcutsScrollBox.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC);
-        this.shortcutsScrollBox.add_actor( this.shorcutsBox, {
-            expand: false,
-            x_fill: true,
-            y_fill: true,
-            x_align: St.Align.START
-        });
+        this.shortcutsScrollBox.add_actor( this.shorcutsBox);
+        this.shortcutsScrollBox.clip_to_allocation = true;
         
       
         //this.shorcutsBox.add(this.iconGrid.actor);
