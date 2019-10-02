@@ -78,7 +78,8 @@ var createMenu =class{
             x_fill: true,
             y_fill: false,
             y_align: St.Align.START,
-            overlay_scrollbars: true
+            overlay_scrollbars: true,
+            style_class: 'vfade'
         });   
         this.actionsScrollBox.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC);
         this.actionsBox = new St.BoxLayout({ 
@@ -86,6 +87,7 @@ var createMenu =class{
             width: 60
         });
         this.actionsScrollBox.add_actor( this.actionsBox);
+        this.actionsScrollBox.clip_to_allocation = true;
         
         this.actionsBox.style = "background-color:rgba(186, 196,201, 0.1) ;border-color:rgba(186, 196,201, 0.2) ; border-width: 1px; border-radius: 5px;margin: 0px 20px; width: 30px; spacing: 5px; padding: 5px 0px;";
         //check if custom arc menu is enabled
@@ -217,12 +219,14 @@ var createMenu =class{
             x_fill: true,
             y_fill: false,
             y_align: St.Align.START,
-            overlay_scrollbars: true
+            overlay_scrollbars: true,
+            style_class: 'vfade'
         });   
         this.shortcutsScrollBox.set_width(250);  
         this.shortcutsScrollBox.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC);
 
         this.shortcutsScrollBox.add_actor( this.shorcutsBox);
+        this.shortcutsScrollBox.clip_to_allocation = true;
         this.rightBox.add( this.shortcutsScrollBox);
         // Left Box
         //Menus Left Box container
@@ -478,6 +482,7 @@ var createMenu =class{
         });
         this.applicationsBox = new St.BoxLayout({ vertical: true });
         this.applicationsScrollBox.add_actor( this.applicationsBox);  
+        this.applicationsScrollBox.clip_to_allocation = true;
     }
     placesAddSeparator(id){
     }
