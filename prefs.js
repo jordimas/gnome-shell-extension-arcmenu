@@ -1793,7 +1793,6 @@ var ArcMenuCustomizationWindow = GObject.registerClass(
                 this.largeIcons = false;
                 hscale.set_value(this.heightValue);
                 menuWidthScale.set_value(this.menuWidth);
-                menuRightWidthScale.set_value(this.menuRightWidth);
                 vertSeparatorSwitch.set_active(this.verticalSeparator);
                 largeIconsSwitch.set_active(this.largeIcons);
                 color.parse(this.separatorColor);
@@ -1833,7 +1832,6 @@ var ArcMenuCustomizationWindow = GObject.registerClass(
         checkIfResetButtonSensitive(){
             return (this.heightValue != 550 ||
                 this.menuWidth != 290 ||
-                this.menuRightWidth != 200 ||
                 this.separatorColor != "rgb(63,62,64)"||
                 this.verticalSeparator != false||
                 this.largeIcons != false) ? true : false
@@ -1845,12 +1843,11 @@ var ArcMenuCustomizationWindow = GObject.registerClass(
 var ColorThemeDialogWindow = GObject.registerClass(
     class ColorThemeDialogWindow extends PW.DialogWindow {
 
-        _init(settings, parent, isSave, themeName="") {
+        _init(settings, parent, themeName="") {
             this._settings = settings;
             this.addResponse = false;
-            this.isSave = isSave;
             this.themeName = themeName;
-            super._init( isSave? _('Color Theme Name') : _('Delete Theme')+' "' + themeName +'?' , parent);
+            super._init(_('Color Theme Name'), parent);
             //this.resize(450,250);
         }
 
@@ -1864,36 +1861,31 @@ var ColorThemeDialogWindow = GObject.registerClass(
                 selectable: false
             });
             nameFrameRow.add(nameFrameLabel);
-            if(this.isSave){
-                this.nameEntry = new Gtk.Entry();
-                this.nameEntry.set_width_chars(35);
-                
-                nameFrameRow.add(this.nameEntry);
-                this.nameEntry.grab_focus();
-                if(this.themeName!=""){
-                    this.nameEntry.set_text(this.themeName);
-                }
-                this.nameEntry.connect('changed',()=>{
-                    if(this.nameEntry.get_text().length > 0)
-                        saveButton.set_sensitive(true);
-                    else
-                        saveButton.set_sensitive(false);
-                });
+            this.nameEntry = new Gtk.Entry();
+            this.nameEntry.set_width_chars(35);
+            
+            nameFrameRow.add(this.nameEntry);
+            this.nameEntry.grab_focus();
+            if(this.themeName!=""){
+                this.nameEntry.set_text(this.themeName);
             }
-            else{
-                nameFrameLabel.label = _('Are you sure you want to delete theme')+ ' "' + this.themeName +'"?';
-            }
+            this.nameEntry.connect('changed',()=>{
+                if(this.nameEntry.get_text().length > 0)
+                    saveButton.set_sensitive(true);
+                else
+                    saveButton.set_sensitive(false);
+            });
+        
             
             vbox.add(nameFrameRow);
             let buttonRow = new PW.FrameBoxRow();
             let saveButton = new Gtk.Button({
-                label: this.isSave ? _("Save Theme") : _("Delete Theme"),
+                label: _("Save Theme"),
                 xalign:0
             });   
-            saveButton.set_sensitive(this.isSave ? false : true);
+            saveButton.set_sensitive(false);
             saveButton.connect('clicked', ()=> {
-                if(this.isSave)
-                    this.themeName = this.nameEntry.get_text();
+                this.themeName = this.nameEntry.get_text();
                 this.addResponse=true;
                 this.response(-10);
             });
@@ -2123,7 +2115,7 @@ var ManageColorThemeDialogWindow = GObject.registerClass(
                 });
                 editButton.connect('clicked', ()=>
                 {
-                    let dialog = new ColorThemeDialogWindow(this._settings, this, true,theme[0]);
+                    let dialog = new ColorThemeDialogWindow(this._settings, this, theme[0]);
                     dialog.show_all();
                     dialog.connect('response', function(response){ 
                         if(dialog.get_response()){
@@ -2311,7 +2303,7 @@ var OverrideArcMenuThemeWindow = GObject.registerClass(
                  /*let defaultArray = ["Theme Name","Background Color", "Foreground Color","Border Color", "Highlight Color", "Separator Color"
                                  , "Font Size", "Border Size", "Corner Radius", "Arrow Size", "Menu Displacement", "Vertical Separator"];*/
               
-                 let dialog = new ColorThemeDialogWindow(this._settings, this, true);
+                 let dialog = new ColorThemeDialogWindow(this._settings, this);
                  dialog.show_all();
                  dialog.connect('response', function(response){ 
                      if(dialog.get_response()){
