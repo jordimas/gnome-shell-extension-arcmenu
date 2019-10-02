@@ -72,7 +72,7 @@ var createMenu =class{
         //LAYOUT------------------------------------------------------------------------------------------------
         this.mainBox.vertical = false;
 
-
+    
         //create new section for Power, Lock, Logout, Suspend Buttons
         this.actionsScrollBox = new St.ScrollView({
             x_fill: true,
@@ -83,13 +83,13 @@ var createMenu =class{
         });   
         this.actionsScrollBox.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC);
         this.actionsBox = new St.BoxLayout({ 
-            vertical: true,
-            width: 60
+            vertical: true
         });
         this.actionsScrollBox.add_actor( this.actionsBox);
         this.actionsScrollBox.clip_to_allocation = true;
         
-        this.actionsBox.style = "background-color:rgba(186, 196,201, 0.1) ;border-color:rgba(186, 196,201, 0.2) ; border-width: 1px; border-radius: 5px;margin: 0px 20px; width: 30px; spacing: 5px; padding: 5px 0px;";
+        this.actionsScrollBox.style = "width:60px; margin: 0px 20px;";
+        this.actionsBox.style = "background-color:rgba(186, 196,201, 0.1) ;border-color:rgba(186, 196,201, 0.2) ; border-width: 1px; border-radius: 5px;margin: 0px 0px; spacing: 5px; padding: 5px 0px;";
         //check if custom arc menu is enabled
         if( this._settings.get_boolean('enable-custom-arc-menu'))
             this.actionsBox.add_style_class_name('arc-menu');
@@ -169,7 +169,7 @@ var createMenu =class{
             y_fill: false,
             y_align: St.Align.MIDDLE
         });
-
+      
         
         this.rightMenuBox= new St.BoxLayout({ vertical: true }); //STORES SEARCH AND SUBMAINBOX
         this.mainBox.add(this.rightMenuBox, {
@@ -222,7 +222,7 @@ var createMenu =class{
             overlay_scrollbars: true,
             style_class: 'vfade'
         });   
-        this.shortcutsScrollBox.set_width(250);  
+        this.shortcutsScrollBox.style = "width:250px;";
         this.shortcutsScrollBox.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC);
 
         this.shortcutsScrollBox.add_actor( this.shorcutsBox);

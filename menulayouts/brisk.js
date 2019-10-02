@@ -116,7 +116,7 @@ var createMenu = class{
             overlay_scrollbars: true,
             style_class: 'vfade'
         });   
-        this.shortcutsScrollBox.set_width(275);  
+        this.shortcutsScrollBox.style = "width:275px;";
         this.shortcutsScrollBox.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC);
         this.shortcutsScrollBox.add_actor( this.shorcutsBox);
         this.shortcutsScrollBox.clip_to_allocation = true;
@@ -371,8 +371,7 @@ var createMenu = class{
             overlay_scrollbars: true,
             style_class: 'vfade'
         });
-        
-        this.applicationsScrollBox.set_width(225);  
+        this.applicationsScrollBox.style = "width:225px;";
         this.applicationsScrollBox.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC);
         this.leftBox.add( this.applicationsScrollBox, {
             expand: true,

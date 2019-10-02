@@ -101,7 +101,7 @@ var createMenu = class{
             overlay_scrollbars: true,
             style_class: 'vfade'
         });   
-        this.shortcutsScrollBox.set_width(250);  
+        this.shortcutsScrollBox.style = "width:250px;"; 
         this.shortcutsScrollBox.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC);
 
         this.shortcutsScrollBox.add_actor( this.shorcutsBox);
