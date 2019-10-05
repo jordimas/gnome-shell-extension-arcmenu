@@ -1665,7 +1665,7 @@ var CategoryMenuItem =  Utils.createClass({
     // Set button as active, scroll to the button
     setFakeActive(active, params) {
         this._active = active;
-        if (active && !this.actor.hover) {
+        if (active) {
             this.actor.add_style_class_name('selected');
         }
         else if (!active && !this.actor.hover){
