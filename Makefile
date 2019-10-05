@@ -33,7 +33,7 @@ CSS=*.css
 MD=*.md
 JSON=*.json
 TXT=AUTHORS COPYING
-DIRS=schemas media
+DIRS=schemas media menulayouts
 MSG_SRC=$(wildcard ./po/*.po)
 
 

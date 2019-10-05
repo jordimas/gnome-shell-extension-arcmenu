@@ -20,12 +20,9 @@
  */
 
 // Import Libraries
-const GLib = imports.gi.GLib;
-const GObject = imports.gi.GObject;
-const Gio = imports.gi.Gio;
-const Gtk = imports.gi.Gtk;
-const GdkPixbuf = imports.gi.GdkPixbuf;
+const {GdkPixbuf, Gio, GLib, GObject, Gtk} = imports.gi;
 const Params = imports.misc.params;
+
 
 /**
  * The module prefsWidgets.js contains all the customized GUI elements
@@ -190,3 +187,42 @@ var FrameBoxRow = GObject.registerClass(
             this._grid.add(widget);
         }
     });
+
+
+    /**
+ * Arc Menu Tile Grid
+ */
+var TileGrid = GObject.registerClass(
+    class extends Gtk.FlowBox{
+
+    _init(maxColumns) {
+        super._init({
+            row_spacing: 5,
+            column_spacing: 5,
+            max_children_per_line: maxColumns,
+            vexpand: true,
+            valign: Gtk.Align.START,
+            selection_mode: Gtk.SelectionMode.NONE
+        });
+    }
+});
+
+/**
+ * Arc Menu Tile Grid
+ */
+var Tile =  GObject.registerClass(
+    class Tile extends Gtk.Button{
+
+     _init(label, file, width, height) {
+        super._init();
+        let pixbuf = GdkPixbuf.Pixbuf.new_from_file_at_size(file, width, height);
+        this._image = new Gtk.Image({ pixbuf: pixbuf });
+        this._label = new Gtk.Label({ label: label });
+
+        this._vbox = new Gtk.Box({ orientation: Gtk.Orientation.VERTICAL });
+        this._vbox.add(this._image);
+        this._vbox.add(this._label);
+        this.add(this._vbox);
+        this.margin=1;
+    }
+});

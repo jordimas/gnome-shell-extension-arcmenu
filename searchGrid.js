@@ -39,11 +39,8 @@ const SEARCH_PROVIDERS_SCHEMA = 'org.gnome.desktop.search-providers';
 var MAX_LIST_SEARCH_RESULTS_ROWS = 6;
 var MAX_APPS_SEARCH_RESULTS_ROWS = 6;
 
-var MEDIUM_ICON_SIZE = 25;
-var SMALL_ICON_SIZE = 16;
-
 var ArcSearchMaxWidthBin = GObject.registerClass(
-class ArcSearchMaxWidthBin extends St.Bin {
+class ArcSearchMaxWidthBin2 extends St.Bin {
     vfunc_allocate(box, flags) {
         let themeNode = this.get_theme_node();
         let maxWidth = themeNode.get_max_width();
@@ -58,11 +55,12 @@ class ArcSearchMaxWidthBin extends St.Bin {
     }
 });
 
-var ListSearchResult = class  {
+var ListSearchResult = class {
     constructor(provider, metaInfo, resultsView) {
-        this._button = resultsView._button;
-        this.metaInfo = metaInfo;
         this.provider = provider;
+        this._button= resultsView._button;
+        this.metaInfo = metaInfo;
+        this._resultsView = resultsView;
         this._settings = this._button._settings;
         let app = appSys.lookup_app(this.metaInfo['id']);
         if(this.provider.id =='org.gnome.Nautilus.desktop'){
@@ -72,38 +70,39 @@ var ListSearchResult = class  {
             this.menuItem = new MW.SearchResultItem(this._button,app); 
         }
         else{
-            this.menuItem = new MW.SearchResultItem(this._button);
+            this.menuItem =  new MW.SearchResultItem(this._button); 
         }
-        this._termsChangedId = 0;
-
-        let largeIcons = this._settings.get_boolean('enable-large-icons');
-        let icon = this.metaInfo['createIcon'](largeIcons ? MEDIUM_ICON_SIZE : SMALL_ICON_SIZE);
-        if (icon) {
-             this.menuItem.actor.add_child(icon);
-        }
-
-        let title = new St.Label({ text: this.metaInfo['name'],x_expand: true,y_align: Clutter.ActorAlign.CENTER });
-        this.menuItem.actor.add_child(title);
-
-        if (this.metaInfo['description']&&  this.provider.appInfo.get_name() == "Calculator") {
-            title.text = this.metaInfo['name'] + "   " + this.metaInfo['description'];
-        }
-        this.menuItem.connect('destroy', this._onDestroy.bind(this));
-        
+       
         this.menuItem.connect('activate', this.activate.bind(this));
 
         let isMenuItem=true;
         if(this.metaInfo['description'] || ((app!=undefined) ? app.get_description() : false))
         {
-            this.tooltip = new MW.Tooltip(this.menuItem.actor, this.metaInfo['description'] ? this.metaInfo['description']:  app.get_description(),isMenuItem,this._button._settings);
+            this.tooltip = new MW.Tooltip(this.menuItem.actor, this.metaInfo['description'] ? this.metaInfo['description']:  app.get_description(),isMenuItem,this._settings);
             this.tooltip.hide();
             this.menuItem.actor.connect('notify::hover', this._onHover.bind(this));
         }
+        this._termsChangedId = 0;
+        
+        this.layout = this._settings.get_enum('menu-layout');
+        let ICON_SIZE = 32;
 
-    }
-    activate() {
-        //global.log('activate');
-        this.emit('activate', this.metaInfo.id);
+        
+        // An icon for, or thumbnail of, content
+        let icon = this.metaInfo['createIcon'](ICON_SIZE);
+        if (icon) 
+             this.menuItem.actor.add_child(icon);
+        else
+            this.menuItem.actor.style = "padding: 12px 0px;";
+
+        let title = new St.Label({ text: this.metaInfo['name'],x_expand: true,y_align: Clutter.ActorAlign.CENTER });
+        this.menuItem.actor.add_child(title);
+        this.menuItem.actor.style = "width:275px;";
+
+        if (this.metaInfo['description']&&  this.provider.appInfo.get_name() == "Calculator") {
+            title.text = this.metaInfo['name'] + "   " + this.metaInfo['description'];
+        }
+        this.menuItem.connect('destroy', this._onDestroy.bind(this));
     }
     _onHover() {
 
@@ -113,7 +112,10 @@ var ListSearchResult = class  {
             this.tooltip.hide();
         }
     }
-  
+    activate() {
+        //global.log('activate');
+        this.emit('activate', this.metaInfo.id);
+    }
     _highlightTerms() {
         let markup = this._resultsView.highlightTerms(this.metaInfo['description'].split('\n')[0]);
         this._descriptionLabel.clutter_text.set_markup(markup);
@@ -126,46 +128,71 @@ var ListSearchResult = class  {
     }
 };Signals.addSignalMethods(ListSearchResult.prototype);
 
-var AppSearchResult = class  {
+var AppSearchResult = class {
     constructor(provider, metaInfo, resultsView) {
-        this._button = resultsView._button;
-        this.metaInfo = metaInfo;
         this.provider = provider;
+        this._button= resultsView._button;
+        this.metaInfo = metaInfo;
+        this._resultsView = resultsView;
         this._settings = this._button._settings;
-        this.layout =this._settings.get_enum('menu-layout');
+        this.layout = this._settings.get_enum('menu-layout');
         let app = appSys.lookup_app(this.metaInfo['id']);
         if(app){
-            this.menuItem = new MW.SearchResultItem(this._button, app);
+            this.menuItem = new MW.ApplicationMenuIcon(this._button, app);
         }
         else{
-            this.menuItem = new MW.SearchResultItem(this._button);
+            let ICON_SIZE = 16;
+            this.menuItem = new MW.SearchResultItem(this._button); 
+            this.menuItem.actor.vertical = true;
+            if(this.layout == Constants.MENU_LAYOUT.Elementary || this.layout == Constants.MENU_LAYOUT.UbuntuDash){
+                this.menuItem.actor.style ='padding: 5px; spacing: 0px; width:95px; height:95px;';
+                ICON_SIZE = 52;
+            }
+            else if(this.layout == Constants.MENU_LAYOUT.Redmond){
+                this.menuItem.actor.style ='padding: 5px; spacing: 0px; width:80px;height:80px;';
+                ICON_SIZE = 36;
+            } 
+            this._iconBin = new St.Bin({
+                y_align: St.Align.END,
+                x_align: St.Align.MIDDLE
+            });
+            this.icon=this.metaInfo['createIcon'](ICON_SIZE)
+            this._iconBin.set_child(this.icon);    
+           
+            if (this.icon) {
+                this.menuItem.actor.add_child(this._iconBin);
+            } 
+            else{
+                if(this.layout == Constants.MENU_LAYOUT.Elementary || this.layout == Constants.MENU_LAYOUT.UbuntuDash){
+                    this.menuItem.actor.style = "padding: 25px 0px;";
+                }
+                else if(this.layout == Constants.MENU_LAYOUT.Redmond){
+                    this.menuItem.actor.style = "padding: 20px 0px;";
+                }
+            }            
+         
+            let label = new St.Label({
+                text: this.metaInfo['name'],
+                y_expand: false,
+                y_align: St.Align.END,
+                x_align: St.Align.END
+            });
+            this.menuItem.actor.add_child(label);
+            let isMenuItem=true;
+            if(this.metaInfo['description'] || ((app!=undefined) ? app.get_description() : false))
+            {
+                this.tooltip = new MW.Tooltip(this.menuItem.actor, this.metaInfo['description'] ? this.metaInfo['description']:  app.get_description(),isMenuItem,this._button._settings);
+                this.tooltip.hide();
+                this.menuItem.actor.connect('notify::hover', this._onHover.bind(this));
+            }
+            this.menuItem.connect('activate', this.activate.bind(this))
         }
-        let largeIcons = this._settings.get_boolean('enable-large-icons');
-        this.icon = this.metaInfo['createIcon'](largeIcons ? MEDIUM_ICON_SIZE : SMALL_ICON_SIZE);
-        if (this.icon) {
-                this.menuItem.actor.add_child(this.icon);
-        }         
-        let label = new St.Label({
-            text: this.metaInfo['name'],
-            y_expand: true,
-            x_expand: true,
-            y_align: Clutter.ActorAlign.CENTER
-        });
-        this.menuItem.actor.add_child(label);
-        let isMenuItem=true;
-        if(this.metaInfo['description'] || ((app!=undefined) ? app.get_description() : false))
-        {
-            this.tooltip = new MW.Tooltip(this.menuItem.actor, this.metaInfo['description'] ? this.metaInfo['description']:  app.get_description(),isMenuItem,this._button._settings);
-            this.tooltip.hide();
-            this.menuItem.actor.connect('notify::hover', this._onHover.bind(this));
-        }
-        this.menuItem.connect('activate', this.activate.bind(this));
-        
-        
-       
        
     }
-
+    activate() {
+        //global.log('activate');
+        this.emit('activate', this.metaInfo.id);
+    }
     _onHover() {
 
         if (this.menuItem.actor.hover) { // mouse pointer hovers over the button
@@ -174,11 +201,6 @@ var AppSearchResult = class  {
             this.tooltip.hide();
         }
     }
-    activate() {
-        //global.log('activate');
-        this.emit('activate', this.metaInfo.id);
-    }
-
 };Signals.addSignalMethods(AppSearchResult.prototype);
 var SearchResultsBase = class {
     constructor(provider, resultsView) {
@@ -325,7 +347,7 @@ var ListSearchResults = class extends SearchResultsBase {
     constructor(provider, resultsView) {
         super(provider, resultsView);
         this._button= resultsView._button;
-        this._container = new St.BoxLayout({ style_class: 'arc-search',vertical: true,x_align: St.Align.START });
+        this._container = new St.BoxLayout({ style_class: 'arc-search',vertical: false,x_align: St.Align.START });
         this.providerInfo = new ArcSearchProviderInfo(provider,this._button);
         this.providerInfo.connect('key-focus-in', this._keyFocusIn.bind(this));
         this.providerInfo.connect('activate', () => {
@@ -341,8 +363,8 @@ var ListSearchResults = class extends SearchResultsBase {
 
         this._content = new St.BoxLayout({ style_class: 'arc-search',
                                            vertical: true });
-        this._container.add(this._content, { expand: true});
-
+        this._container.add(this._content, { expand: true,x_fill:true});
+        this._container.style = "padding: 10px;"
         this._resultDisplayBin.set_child(this._container);
     }
 
@@ -381,8 +403,9 @@ var AppSearchResults = class extends SearchResultsBase {
       constructor(provider, resultsView) {
         super(provider, resultsView);
         this._parentContainer = resultsView.actor;
-        this._grid = new St.BoxLayout({vertical: true });
-        this._resultDisplayBin.set_child(this._grid);
+        this._grid = new St.BoxLayout({vertical: false });
+        this._grid.style = "padding: 10px;"
+        this._resultDisplayBin.set_child(this._grid);  
     }
 
     _getMaxDisplayedResults() {
@@ -422,7 +445,7 @@ var SearchResults = class {
                                              y_fill: true,
                                              child: this._content, });
         let scrollChild = new St.BoxLayout();
-        scrollChild.add(this._contentBin, { expand: true,x_align: St.Align.START });
+        scrollChild.add(this._contentBin, { expand: true, x_fill: true,x_align: St.Align.START });
         this.actor.add(scrollChild);
        
         this._statusText = new St.Label();
@@ -700,18 +723,26 @@ var SearchResults = class {
 Signals.addSignalMethods(SearchResults.prototype);
 
 var ArcSearchProviderInfo =Utils.createClass({
-    Name: 'ArcSearchProviderInfo',
+    Name: 'ArcSearchProviderInfo2',
     Extends: PopupMenu.PopupBaseMenuItem, 
     _init(provider,button) {
         this.callParent('_init');
         this.provider = provider;
         this._button = button;
-     
+        this.layout = button._settings.get_enum('menu-layout');
+        this._content = new St.BoxLayout({ vertical: false });
+        this._content.style = "spacing: 5px;";
+        this.actor.style = "spacing: 0px; width: 120px;";
+        this.actor.vertical = false;
+        this.actor.add_child(this._content);
         this.nameLabel = new St.Label({ text: provider.appInfo.get_name() + ":",
-                                       x_align: Clutter.ActorAlign.START,x_expand: true});
+                                       x_align: Clutter.ActorAlign.START,x_expand: true,y_align: .5});
         this._moreText="";
-        this.actor.add_child(this.nameLabel);
-
+        
+        let icon = new St.Icon({ icon_size: 32,
+            gicon: provider.appInfo.get_icon() });
+        this._content.add_actor(icon);
+        this._content.add_actor(this.nameLabel);
         let isMenuItem = true;
         if(provider.appInfo.get_description()!=null){
             this.tooltip = new MW.Tooltip(this.actor, provider.appInfo.get_description(),isMenuItem,this._button._settings);
@@ -733,7 +764,7 @@ var ArcSearchProviderInfo =Utils.createClass({
     setMoreCount(count) {
         this._moreText= ngettext("%d more", "%d more", count).format(count);
         if(count>0)
-            this.nameLabel.text = this.provider.appInfo.get_name() + "  ("+ this._moreText+")";
+            this.nameLabel.text = this.provider.appInfo.get_name() + "\n("+ this._moreText+")";
     },
     _onButtonPressEvent(actor, event) {
         return Clutter.EVENT_PROPAGATE;
@@ -743,6 +774,6 @@ var ArcSearchProviderInfo =Utils.createClass({
             this.activate(event);
         }
         return Clutter.EVENT_STOP;
-    }
+    },
 });
 
