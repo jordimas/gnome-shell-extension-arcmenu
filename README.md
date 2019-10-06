@@ -2,7 +2,7 @@
 
 -----
 
-![](https://gitlab.com/LinxGem33/Neon/raw/master/dptscreen.png)
+![](https://gitlab.com/LinxGem33/Neon/raw/master/arcmenu-browser.png)
 
 -----
 ### Introduction
@@ -31,15 +31,8 @@ This extension could be even better with your help! Any items in the issue track
 
 -----
 
-![](https://gitlab.com/LinxGem33/Neon/raw/master/dptscreen.png)
+![](https://gitlab.com/LinxGem33/Neon/raw/master/comp-screen-arcmenu-wide.png)
 
------
-
-#### Arc Menu integrated with [Dash-to-Dock](https://extensions.gnome.org/extension/307/dash-to-dock/)
-
------
-
-![](https://gitlab.com/LinxGem33/Neon/raw/master/dtdscreen.png)
 
 -----
 
