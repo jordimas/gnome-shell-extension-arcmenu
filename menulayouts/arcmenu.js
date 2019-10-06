@@ -647,6 +647,10 @@ var createMenu = class {
         for (let i = 0; i < apps.length; i++) {
             let app = apps[i];
             let item = this._applicationsButtons.get(app);
+            if (!item) {
+                item = new MW.ApplicationMenuItem(this, app);
+                this._applicationsButtons.set(app, item);
+            }
             if (!item.actor.get_parent()) 
                 this.applicationsBox.add_actor(item.actor);
             if(i==0)
