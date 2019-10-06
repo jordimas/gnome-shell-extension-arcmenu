@@ -356,7 +356,7 @@ var AppRightClickMenu = class AppRightClickMenu extends PopupMenu.PopupMenu {
 
 };
 
-var SeparatorDrawingArea =  GObject.registerClass(class extends St.DrawingArea {
+var SeparatorDrawingArea =  GObject.registerClass(class SeparatorDrawingArea extends St.DrawingArea {
     _init(settings,alignment,style,params) {
         super._init(params);
         this._settings = settings;

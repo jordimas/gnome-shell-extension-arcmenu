@@ -389,17 +389,6 @@ var createMenu =class{
         this.applicationsByCategory = {};
         this.categoryDirectories=[];
         
-        this.categoryDirectories.push("");
-        this.applicationsByCategory["Frequent Apps"] = [];
-
-        this._usage = Shell.AppUsage.get_default();
-        let mostUsed =  modernGnome ?  this._usage.get_most_used() : this._usage.get_most_used("");
-        for (let i = 0; i < mostUsed.length; i++) {
-            if (mostUsed[i] && mostUsed[i].get_app_info().should_show())
-                this.applicationsByCategory["Frequent Apps"].push(mostUsed[i]);
-        }
-        
-        
         this._tree.load_sync();
         let root = this._tree.get_root_directory();
         let iter = root.iter();
