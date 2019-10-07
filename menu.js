@@ -98,7 +98,7 @@ var ApplicationsButton =   Utils.defineClass({
             this.extensionChangedId = (Main.extensionManager || ExtensionSystem).connect('extension-state-changed', (data, extension) => {
                 if (extension.uuid === 'dash-to-panel@jderose9.github.com' && extension.state === 1) {
                     this.rightClickMenu.addDTPSettings();   
-                    this.dtpSettings = Convenience.getDTPSettings('org.gnome.shell.extensions.dash-to-panel',this.dtp);
+                    this.dtpSettings = Convenience.getDTPSettings('org.gnome.shell.extensions.dash-to-panel',extension);
                     let side = this.dtpSettings.get_string('panel-position');
                     this.updateArrowSide(side ? side : 'TOP');
                     this.dtpPostionChangedID = this.dtpSettings.connect('changed::panel-position', ()=> {
