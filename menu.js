@@ -36,6 +36,7 @@ const Me = imports.misc.extensionUtils.getCurrentExtension();
 const {Atk, Clutter, GMenu, Gtk, Shell, St} = imports.gi;
 const appSys = Shell.AppSystem.get_default();
 const Constants = Me.imports.constants;
+const Convenience = Me.imports.convenience;
 const ExtensionSystem = imports.ui.extensionSystem;
 const Gettext = imports.gettext.domain(Me.metadata['gettext-domain']);
 const GnomeSession = imports.misc.gnomeSession;
@@ -49,7 +50,7 @@ const Utils =  Me.imports.utils;
 const _ = Gettext.gettext;
 
 var modernGnome = imports.misc.config.PACKAGE_VERSION >= '3.31.9';
-
+var DASH_TO_PANEL_UUID = 'dash-to-panel@jderose9.github.com';
 // Application Menu Button class (most of the menu logic is here)
 var ApplicationsButton =   Utils.defineClass({
     Name: 'ArcMenu_ApplicationsButton',
@@ -89,15 +90,40 @@ var ApplicationsButton =   Utils.defineClass({
             this.appMenuManager._changeMenu = (menu) => {};
             //-------------------------------------------------------------------------
 
-            //Create Dash to Panel Settings Menu Item on Right Click Menu----------------------
+            //Dash to Panel Integration----------------------------------------------------------------------
+            this.dtp = Main.extensionManager ?
+                        Main.extensionManager.lookup(DASH_TO_PANEL_UUID) : 
+                        ExtensionUtils.extensions[DASH_TO_PANEL_UUID];
             this.extensionChangedId = (Main.extensionManager || ExtensionSystem).connect('extension-state-changed', (data, extension) => {
-                if (extension.uuid === 'dash-to-panel@jderose9.github.com' && extension.state === 1) 
-                    this.rightClickMenu.addDTPSettings();
-                if (extension.uuid === 'dash-to-panel@jderose9.github.com' && extension.state === 2) 
+                if (extension.uuid === 'dash-to-panel@jderose9.github.com' && extension.state === 1) {
+                    this.rightClickMenu.addDTPSettings();   
+                    this.dtpSettings = Convenience.getDTPSettings('org.gnome.shell.extensions.dash-to-panel',this.dtp);
+                    let side = this.dtpSettings.get_string('panel-position');
+                    this.updateArrowSide(side ? side : 'TOP');
+                    this.dtpPostionChangedID = this.dtpSettings.connect('changed::panel-position', ()=> {
+                        let side = this.dtpSettings.get_string('panel-position');
+                        this.updateArrowSide(side ? side : 'TOP');
+                    });
+                }
+                if (extension.uuid === 'dash-to-panel@jderose9.github.com' && extension.state === 2) {
                     this.rightClickMenu.removeDTPSettings();
+                    this.updateArrowSide('TOP');
+                    if(this.dtpPostionChangedID>0 && this.dtpSettings){
+                        this.dtpSettings.disconnect(this.dtpPostionChangedID);
+                        this.dtpPostionChangedID = 0;
+                    }
+                }  
             });
-            if(global.dashToPanel)
-                this.rightClickMenu.addDTPSettings();
+            if(this.dtp){
+                this.rightClickMenu.addDTPSettings();  
+                this.dtpSettings = Convenience.getDTPSettings('org.gnome.shell.extensions.dash-to-panel',this.dtp);
+                let side = this.dtpSettings.get_string('panel-position');
+                this.updateArrowSide(side ? side : 'TOP');
+                this.dtpPostionChangedID = this.dtpSettings.connect('changed::panel-position', ()=> {
+                    let side = this.dtpSettings.get_string('panel-position');
+                    this.updateArrowSide(side ? side : 'TOP');
+                });
+            }  
             //----------------------------------------------------------------------------------
 
             //Update Categories on 'installed-changed' event-------------------------------------
@@ -171,6 +197,25 @@ var ApplicationsButton =   Utils.defineClass({
         },
         getMenu(){
             return this.MenuLayout;
+        },
+        updateArrowSide(side){
+            global.log(side);
+            if (side == 'TOP') 
+                side =  St.Side.TOP;
+            else if (side == 'RIGHT') 
+                side =  St.Side.RIGHT;
+             else if (side == 'BOTTOM') 
+                side =  St.Side.BOTTOM;
+            else
+                side =  St.Side.LEFT;
+            this.rightClickMenu._arrowSide = side;
+            this.rightClickMenu._boxPointer._arrowSide = side;
+            this.rightClickMenu._boxPointer._userArrowSide = side;
+            this.rightClickMenu._boxPointer._border.queue_repaint();
+            this.leftClickMenu._arrowSide = side;
+            this.leftClickMenu._boxPointer._arrowSide = side;
+            this.leftClickMenu._boxPointer._userArrowSide = side;
+            this.leftClickMenu._boxPointer._border.queue_repaint();
         },
         updateStyle(){
             this.MenuLayout.updateStyle();
@@ -292,6 +337,10 @@ var ApplicationsButton =   Utils.defineClass({
             if (this._showingId > 0) {
                 Main.overview.disconnect(this._showingId);
                 this._showingId = 0;
+            }
+            if(this.dtpPostionChangedID>0 && this.dtpSettings){
+                this.dtpSettings.disconnect(this.dtpPostionChangedID);
+                this.dtpPostionChangedID = 0;
             }
             if (this._hidingId > 0) {
                 Main.overview.disconnect(this._hidingId);
