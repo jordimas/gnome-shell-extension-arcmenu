@@ -200,22 +200,32 @@ var ApplicationsButton =   Utils.defineClass({
             return this.MenuLayout;
         },
         updateArrowSide(side){
-            global.log(side);
+            let arrowAlignment = 0;
             if (side == 'TOP') 
                 side =  St.Side.TOP;
-            else if (side == 'RIGHT') 
+            else if (side == 'RIGHT') {
+                arrowAlignment = 1;
                 side =  St.Side.RIGHT;
+            }
              else if (side == 'BOTTOM') 
                 side =  St.Side.BOTTOM;
-            else
+            else{
+                arrowAlignment = 1;
                 side =  St.Side.LEFT;
+            }
+               
             this.rightClickMenu._arrowSide = side;
             this.rightClickMenu._boxPointer._arrowSide = side;
             this.rightClickMenu._boxPointer._userArrowSide = side;
+            this.rightClickMenu._boxPointer.setSourceAlignment(arrowAlignment);
+            this.rightClickMenu._arrowAlignment = arrowAlignment
             this.rightClickMenu._boxPointer._border.queue_repaint();
+
             this.leftClickMenu._arrowSide = side;
             this.leftClickMenu._boxPointer._arrowSide = side;
             this.leftClickMenu._boxPointer._userArrowSide = side;
+            this.leftClickMenu._boxPointer.setSourceAlignment(arrowAlignment);
+            this.leftClickMenu._arrowAlignment = arrowAlignment
             this.leftClickMenu._boxPointer._border.queue_repaint();
         },
         updateStyle(){
