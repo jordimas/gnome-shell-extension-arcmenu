@@ -43,18 +43,8 @@ var modernGnome = imports.misc.config.PACKAGE_VERSION >= '3.31.9';
 
 var createMenu = class {
     constructor(mainButton) {
-        this.button = mainButton;
-        this._settings = mainButton._settings;
-        this.mainBox = mainButton.mainBox; 
-        this.appMenuManager = mainButton.appMenuManager;
-        this.leftClickMenu  = mainButton.leftClickMenu;
-        this.currentMenu = Constants.CURRENT_MENU.FAVORITES; 
-        this._applicationsButtons = new Map();
-        this.mainBox._delegate = this.mainBox;
-        this._mainBoxKeyPressId = this.mainBox.connect('key-press-event', this._onMainBoxKeyPress.bind(this));
     }
     _onMainBoxKeyPress(mainBox, event) {
-        return Clutter.EVENT_PROPAGATE;
     }
     updateIcons(){       
     }

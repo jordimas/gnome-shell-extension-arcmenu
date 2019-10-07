@@ -52,7 +52,7 @@ var modernGnome = imports.misc.config.PACKAGE_VERSION >= '3.31.9';
 
 // Application Menu Button class (most of the menu logic is here)
 var ApplicationsButton =   Utils.defineClass({
-    Name: 'ApplicationsButton',
+    Name: 'ArcMenu_ApplicationsButton',
     Extends: PanelMenu.Button,
     // Initialize the menu
         _init(settings, panel) {
@@ -428,7 +428,7 @@ var ApplicationsButton =   Utils.defineClass({
         }
     });
 // Aplication menu class
-const ApplicationsMenu = class extends PopupMenu.PopupMenu {
+const ApplicationsMenu = class ArcMenu_ApplicationsMenu extends PopupMenu.PopupMenu {
     // Initialize the menu
     constructor(sourceActor, arrowAlignment, arrowSide, button, settings) {
         super(sourceActor, arrowAlignment, arrowSide);
@@ -458,7 +458,7 @@ const ApplicationsMenu = class extends PopupMenu.PopupMenu {
     }
 };
 // Aplication menu class
-const RightClickMenu = class extends PopupMenu.PopupMenu {
+const RightClickMenu = class ArcMenu_RightClickMenu extends PopupMenu.PopupMenu {
     // Initialize the menu
     constructor(sourceActor, arrowAlignment, arrowSide, button, settings) {
         super(sourceActor, arrowAlignment, arrowSide);

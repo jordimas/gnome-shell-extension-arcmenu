@@ -38,7 +38,7 @@ const GSET = 'gnome-shell-extension-tool';
  * Pinned Apps Page
  */
 var PinnedAppsPage = GObject.registerClass(
-    class PinnedAppsPage extends PW.NotebookPage {
+    class ArcMenu_PinnedAppsPage extends PW.NotebookPage {
         _init(settings) {
             super._init(_('Pinned Apps'));
             this._settings = settings;
@@ -296,7 +296,7 @@ var PinnedAppsPage = GObject.registerClass(
 });
 //Dialog Window for Adding Apps to Pinned Apps List   
 var AddAppsToPinnedListWindow = GObject.registerClass(
-    class AddAppsToPinnedListWindow extends PW.DialogWindow {
+    class ArcMenu_AddAppsToPinnedListWindow extends PW.DialogWindow {
 
         _init(settings, parent) {
             this._settings = settings;
@@ -424,7 +424,7 @@ var AddAppsToPinnedListWindow = GObject.registerClass(
     
 //Dialog Window for Adding Custom Links to Pinned Apps List    
 var AddCustomLinkDialogWindow = GObject.registerClass(
-    class AddCustomLinkDialogWindow extends PW.DialogWindow {
+    class ArcMenu_AddCustomLinkDialogWindow extends PW.DialogWindow {
 
         _init(settings, parent, isAppEdit=false, appArray=null) {
             this._settings = settings;
@@ -545,7 +545,7 @@ var AddCustomLinkDialogWindow = GObject.registerClass(
  * General Settings Page
  */
 var GeneralSettingsPage = GObject.registerClass(
-    class GeneralSettingsPage extends PW.NotebookPage {
+    class ArcMenu_GeneralSettingsPage extends PW.NotebookPage {
         _init(settings) {
             super._init(_('General'));
             this._settings = settings;
@@ -872,7 +872,7 @@ var GeneralSettingsPage = GObject.registerClass(
 
 //DialogWindow for Custom Shortcut
 var CustomShortcutDialogWindow = GObject.registerClass(
-    class CustomShortcutDialogWindow extends PW.DialogWindow {
+    class ArcMenu_CustomShortcutDialogWindow extends PW.DialogWindow {
 
         _init(settings, parent) {
             this._settings = settings;
@@ -1024,7 +1024,7 @@ var CustomShortcutDialogWindow = GObject.registerClass(
 });
 //DialogWindow for Menu Button Customization
 var MenuButtonCustomizationWindow = GObject.registerClass(
-    class MenuButtonCustomizationWindow extends PW.DialogWindow {
+    class ArcMenu_MenuButtonCustomizationWindow extends PW.DialogWindow {
 
         _init(settings, parent) {
             this._settings = settings;
@@ -1195,7 +1195,7 @@ var MenuButtonCustomizationWindow = GObject.registerClass(
 });
 //Appearance Page
 var  AppearanceSettingsPage = GObject.registerClass(
-    class AppearanceSettingsPage extends PW.NotebookPage {
+    class ArcMenu_AppearanceSettingsPage extends PW.NotebookPage {
 
       _init(settings) {
           super._init(_('Appearance'));
@@ -1523,7 +1523,7 @@ var  AppearanceSettingsPage = GObject.registerClass(
 
 //Dialog Window for Arc Menu Customization    
 var ArcMenuLayoutWindow = GObject.registerClass(
-    class ArcMenuLayoutWindow extends PW.DialogWindow {
+    class ArcMenu_ArcMenuLayoutWindow extends PW.DialogWindow {
 
         _init(settings, parent) {
             this._settings = settings;
@@ -1623,7 +1623,7 @@ var ArcMenuLayoutWindow = GObject.registerClass(
 
 //Dialog Window for Arc Menu Customization    
 var ArcMenuCustomizationWindow = GObject.registerClass(
-    class ArcMenuCustomizationWindow extends PW.DialogWindow {
+    class ArcMenu_ArcMenuCustomizationWindow extends PW.DialogWindow {
 
         _init(settings, parent) {
             this._settings = settings;
@@ -1841,7 +1841,7 @@ var ArcMenuCustomizationWindow = GObject.registerClass(
 });
 //Dialog Window for Arc Menu Customization    
 var ColorThemeDialogWindow = GObject.registerClass(
-    class ColorThemeDialogWindow extends PW.DialogWindow {
+    class ArcMenu_ColorThemeDialogWindow extends PW.DialogWindow {
 
         _init(settings, parent, themeName="") {
             this._settings = settings;
@@ -1905,7 +1905,7 @@ var ColorThemeDialogWindow = GObject.registerClass(
 
 //Dialog Window for Arc Menu Customization    
 var ExportColorThemeDialogWindow = GObject.registerClass(
-    class ExportColorThemeDialogWindow extends PW.DialogWindow {
+    class ArcMenu_ExportColorThemeDialogWindow extends PW.DialogWindow {
 
         _init(settings, parent, themes=null) {
             this._settings = settings;
@@ -2030,7 +2030,7 @@ var ExportColorThemeDialogWindow = GObject.registerClass(
 });
 //Dialog Window for Arc Menu Customization    
 var ManageColorThemeDialogWindow = GObject.registerClass(
-    class ManageColorThemeDialogWindow extends PW.DialogWindow {
+    class ArcMenu_ManageColorThemeDialogWindow extends PW.DialogWindow {
 
         _init(settings, parent) {
             this._settings = settings;
@@ -2190,7 +2190,7 @@ var ManageColorThemeDialogWindow = GObject.registerClass(
 });
 //Dialog Window for Arc Menu Customization    
 var OverrideArcMenuThemeWindow = GObject.registerClass(
-    class OverrideArcMenuThemeWindow extends PW.DialogWindow {
+    class ArcMenu_OverrideArcMenuThemeWindow extends PW.DialogWindow {
 
         _init(settings, parent) {
             this._settings = settings;
@@ -2768,7 +2768,7 @@ var OverrideArcMenuThemeWindow = GObject.registerClass(
 });
 
 var ConfigureSettingsPage = GObject.registerClass(
-    class ConfigureSettingsPage extends PW.NotebookPage {
+    class ArcMenu_ConfigureSettingsPage extends PW.NotebookPage {
     _init(settings) {
         super._init(_('Configure'));
         this._settings = settings;
@@ -3012,7 +3012,7 @@ var ConfigureSettingsPage = GObject.registerClass(
  * Misc Page
  */
 var MiscPage = GObject.registerClass(
-    class MiscPage extends PW.NotebookPage {
+    class ArcMenu_MiscPage extends PW.NotebookPage {
         _init(settings) {
             super._init(_('Misc'));
             this._settings = settings;
@@ -3273,7 +3273,7 @@ var MiscPage = GObject.registerClass(
  * About Page
  */
 var AboutPage = GObject.registerClass(
-    class AboutPage extends PW.NotebookPage {
+    class ArcMenu_AboutPage extends PW.NotebookPage {
         _init(settings) {
             super._init(_('About'));
             this._settings = settings;
@@ -3364,7 +3364,7 @@ var AboutPage = GObject.registerClass(
  * Arc Menu Preferences Widget
  */
 var ArcMenuPreferencesWidget = GObject.registerClass(
-class ArcMenuPreferencesWidget extends Gtk.Box{
+class ArcMenu_ArcMenuPreferencesWidget extends Gtk.Box{
 
 
     _init() {

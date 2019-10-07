@@ -40,7 +40,7 @@ var MAX_LIST_SEARCH_RESULTS_ROWS = 6;
 var MAX_APPS_SEARCH_RESULTS_ROWS = 6;
 
 var ArcSearchMaxWidthBin = GObject.registerClass(
-class ArcSearchMaxWidthBin2 extends St.Bin {
+class ArcMenu_SearchMaxWidthBin2 extends St.Bin {
     vfunc_allocate(box, flags) {
         let themeNode = this.get_theme_node();
         let maxWidth = themeNode.get_max_width();
@@ -723,7 +723,7 @@ var SearchResults = class {
 Signals.addSignalMethods(SearchResults.prototype);
 
 var ArcSearchProviderInfo =Utils.createClass({
-    Name: 'ArcSearchProviderInfo2',
+    Name: 'ArcMenu_ArcSearchProviderInfo2',
     Extends: PopupMenu.PopupBaseMenuItem, 
     _init(provider,button) {
         this.callParent('_init');

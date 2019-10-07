@@ -65,7 +65,7 @@ function setIconAsync(icon, gioFile, fallback_icon_name) {
         }
     });
 }
-var AppRightClickMenu = class AppRightClickMenu extends PopupMenu.PopupMenu {
+var AppRightClickMenu = class ArcMenu_AppRightClickMenu extends PopupMenu.PopupMenu {
     constructor(actor,app,button, isPinnedApp,path){
         super(actor,.45,St.Side.TOP);
         this._button = button;
@@ -356,7 +356,7 @@ var AppRightClickMenu = class AppRightClickMenu extends PopupMenu.PopupMenu {
 
 };
 
-var SeparatorDrawingArea =  GObject.registerClass(class SeparatorDrawingArea extends St.DrawingArea {
+var SeparatorDrawingArea =  GObject.registerClass(class ArcMenu_SeparatorDrawingArea extends St.DrawingArea {
     _init(settings,alignment,style,params) {
         super._init(params);
         this._settings = settings;
@@ -405,7 +405,7 @@ var SeparatorDrawingArea =  GObject.registerClass(class SeparatorDrawingArea ext
 
 // Menu item to launch GNOME activities overview
 var ActivitiesMenuItem =  Utils.createClass({
-    Name: 'ActivitiesMenuItem',
+    Name: 'ArcMenu_ActivitiesMenuItem',
     Extends: PopupMenu.PopupBaseMenuItem, 
     // Initialize the menu item
     _init(button) {
@@ -707,7 +707,7 @@ var LockButton = class extends SessionButton {
 
 // Menu item to go back to category view
 var BackMenuItem = Utils.createClass({
-    Name: 'BackMenuItem',
+    Name: 'ArcMenu_BackMenuItem',
     Extends: PopupMenu.PopupBaseMenuItem,
     // Initialize the button
     _init(button) {
@@ -774,7 +774,7 @@ var BackMenuItem = Utils.createClass({
 
 // Menu item to view all apps
 var ViewAllPrograms =Utils.createClass({
-    Name: 'ViewAllPrograms',
+    Name: 'ArcMenu_ViewAllPrograms',
     Extends: PopupMenu.PopupBaseMenuItem, 
     // Initialize the button
     _init(button) {
@@ -822,7 +822,7 @@ var ViewAllPrograms =Utils.createClass({
 
 // Menu shortcut item class
 var ShortcutMenuItem = Utils.createClass({
-    Name: 'ShortcutMenuItem',
+    Name: 'ArcMenu_ShortcutMenuItem',
     Extends: PopupMenu.PopupBaseMenuItem,
     // Initialize the menu item
     _init(button, name, icon, command) {
@@ -865,7 +865,7 @@ var ShortcutMenuItem = Utils.createClass({
 
 // Menu item which displays the current user
 var UserMenuItem =Utils.createClass({
-    Name: 'UserMenuItem',
+    Name: 'ArcMenu_UserMenuItem',
     Extends: PopupMenu.PopupBaseMenuItem, 
     // Initialize the menu item
     _init(button) {
@@ -943,7 +943,7 @@ var UserMenuItem =Utils.createClass({
 });
 // Menu pinned apps/favorites item class
 var FavoritesMenuItem = Utils.createClass({
-    Name: 'FavoritesMenuItem',
+    Name: 'ArcMenu_FavoritesMenuItem',
     Extends: PopupMenu.PopupBaseMenuItem, 
     Signals: {'saveSettings': {}},
     // Initialize the menu item
@@ -1098,7 +1098,7 @@ var FavoritesMenuItem = Utils.createClass({
 });
 // Menu application item class
 var ApplicationMenuIcon = Utils.createClass({
-    Name: 'ApplicationMenuIcon',
+    Name: 'ArcMenu_ApplicationMenuIcon',
     Extends: PopupMenu.PopupBaseMenuItem,
     // Initialize menu item
     _init(button, app) {
@@ -1327,7 +1327,7 @@ var ApplicationMenuIcon = Utils.createClass({
     }
 });
 var ApplicationMenuItem =Utils.createClass({
-    Name: 'ApplicationMenuItem',
+    Name: 'ArcMenu_ApplicationMenuItem',
     Extends: PopupMenu.PopupBaseMenuItem,
     // Initialize menu item
     _init(button, app) {
@@ -1473,7 +1473,7 @@ var ApplicationMenuItem =Utils.createClass({
     }
 });
 var SearchResultItem = Utils.createClass({
-    Name: 'SearchResultItem',
+    Name: 'ArcMenu_SearchResultItem',
     Extends: PopupMenu.PopupBaseMenuItem,
     // Initialize menu item
     _init(button, app,path) {
@@ -1550,7 +1550,7 @@ var SearchResultItem = Utils.createClass({
 });
 // Menu Category item class
 var CategoryMenuItem =  Utils.createClass({
-    Name: 'CategoryMenuItem',
+    Name: 'ArcMenu_CategoryMenuItem',
     Extends: PopupMenu.PopupBaseMenuItem,
     // Initialize menu item
     _init(button, category, title=null) {
@@ -1694,7 +1694,7 @@ var CategoryMenuItem =  Utils.createClass({
 });
 // Simple Menu item class
 var SimpleMenuItem = Utils.createClass({
-    Name: 'SimpleMenuItem',
+    Name: 'ArcMenu_SimpleMenuItem',
     Extends: PopupMenu.PopupBaseMenuItem,
     // Initialize menu item
     _init(button, category, title=null) {
@@ -1839,7 +1839,7 @@ var SimpleMenuItem = Utils.createClass({
 });
 // SubMenu Category item class
 var CategorySubMenuItem = Utils.createClass({
-    Name: 'CategorySubMenuItem',
+    Name: 'ArcMenu_CategorySubMenuItem',
     Extends: PopupMenu.PopupSubMenuMenuItem,
     ParentConstrParams: ['', true],
     // Initialize menu item
@@ -1926,7 +1926,7 @@ Signals.addSignalMethods(PlaceInfo.prototype);
 
 // Menu Place Shortcut item class
 var PlaceMenuItem = Utils.createClass({
-    Name: 'PlaceMenuItem',
+    Name: 'ArcMenu_PlaceMenuItem',
     Extends: PopupMenu.PopupBaseMenuItem,
     // Initialize menu item
     _init(button, info) {
