@@ -38,6 +38,7 @@ const appSys = Shell.AppSystem.get_default();
 const Constants = Me.imports.constants;
 const Convenience = Me.imports.convenience;
 const ExtensionSystem = imports.ui.extensionSystem;
+const ExtensionUtils = imports.misc.extensionUtils;
 const Gettext = imports.gettext.domain(Me.metadata['gettext-domain']);
 const GnomeSession = imports.misc.gnomeSession;
 const Main = imports.ui.main;
