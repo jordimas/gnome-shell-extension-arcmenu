@@ -9,8 +9,17 @@
 
 Arc Menu is a Gnome shell extension designed to replace the standard menu found in Gnome 3 this application menu extension has  some added benefits over the standard menu found in Gnome 3, these include the long awaited search functionality as well as quick access to files on your system and also the current logged in user along with quick access to the software centre and system settings and other features which can be accessed from the settings menu.
 
+-----
+
+### Donation
+
+ArcMenu is provided free of charge. If it has improved your workflow, or you had a great support experience, feel free to say thanks by making a donation to the developers. (If you would like your donation to go to a specific developer, you may mention it in the note field during payment)
+
+[![Donate via Paypal](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=2NQVF9C8FBP4N&source=url)
 
 -----
+
+
 
 ### Volunteers needed!
 
