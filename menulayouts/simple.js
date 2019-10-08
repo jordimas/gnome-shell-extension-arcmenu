@@ -55,7 +55,6 @@ var createMenu = class {
         this._applicationsButtons = [];
         this._session = new GnomeSession.SessionManager();
         this.leftClickMenu.actor.style = 'max-height: 60em;'
-        this.mainBox._delegate = this.mainBox;
         this._mainBoxKeyPressId = this.mainBox.connect('key-press-event', this._onMainBoxKeyPress.bind(this));
         this.subMenuManager = mainButton.subMenuManager;
         this._tree = new GMenu.Tree({ menu_basename: 'applications.menu' });

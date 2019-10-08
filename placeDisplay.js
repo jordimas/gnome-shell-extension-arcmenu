@@ -43,7 +43,7 @@ const Hostname1 = Gio.DBusProxy.makeProxyWrapper(Hostname1Iface);
 
 
 var PlaceMenuItem = Utils.createClass({
-    Name: 'PlaceMenuItem2',
+    Name: 'ArcMenu_PlaceMenuItem2',
     Extends: PopupMenu.PopupBaseMenuItem,
     _init(info,button) {
         this.callParent('_init');

@@ -53,7 +53,6 @@ var createMenu = class{
         this.currentMenu = Constants.CURRENT_MENU.FAVORITES; 
         this._applicationsButtons = new Map();
         this.newSearch = new ArcSearch.SearchResults(this);      
-        this.mainBox._delegate = this.mainBox;
         this._mainBoxKeyPressId = this.mainBox.connect('key-press-event', this._onMainBoxKeyPress.bind(this));
 
         this._tree = new GMenu.Tree({ menu_basename: 'applications.menu' });
@@ -573,7 +572,10 @@ var createMenu = class{
             for (let i = 0; i < apps.length; i++) {
                 let app = apps[i];
                 let item = this._applicationsButtons.get(app);
-
+                if (!item) {
+                    item = new MW.ApplicationMenuItem(this, app);
+                    this._applicationsButtons.set(app, item);
+                }
                 if (!item.actor.get_parent()) {
                     this.shorcutsBox.add_actor(item.actor);
                     if(!fakeactive){

@@ -35,7 +35,7 @@ const Params = imports.misc.params;
  * Arc Menu Notebook
  */
 var Notebook = GObject.registerClass(
-    class ArcMenuNotebook extends Gtk.Notebook{
+    class ArcMenu_Notebook extends Gtk.Notebook{
 
     _init() {
         super._init({
@@ -57,7 +57,7 @@ var Notebook = GObject.registerClass(
  * Arc Menu Notebook Page
  */
 var NotebookPage =GObject.registerClass(
-    class ArcMenuNotebookPage extends Gtk.Box {
+    class ArcMenu_NotebookPage extends Gtk.Box {
 
     _init(title) {
         super._init({
@@ -82,7 +82,7 @@ var NotebookPage =GObject.registerClass(
  * Arc Menu icon Button
  */
 var IconButton = GObject.registerClass(
-    class extends Gtk.Button {
+    class ArcMenu_IconButton extends Gtk.Button {
 
     _init(params) {
         super._init();
@@ -108,7 +108,7 @@ var IconButton = GObject.registerClass(
  * Arc Menu Dialog Window
  */
 var DialogWindow = GObject.registerClass(
-    class extends Gtk.Dialog {
+    class ArcMenu_DialogWindow extends Gtk.Dialog {
         _init(title, parent) {
             super._init({
                 title: title,
@@ -136,7 +136,7 @@ var DialogWindow = GObject.registerClass(
  * Arc Menu Frame Box
  */
 var FrameBox = GObject.registerClass(
-    class extends Gtk.Frame {
+    class ArcMenu_FrameBox extends Gtk.Frame {
         _init() {
             super._init({ label_yalign: 0.50 });
             this._listBox = new Gtk.ListBox();
@@ -172,7 +172,7 @@ var FrameBox = GObject.registerClass(
  * Arc Menu Frame Box Row
  */
 var FrameBoxRow = GObject.registerClass(
-    class extends Gtk.ListBoxRow {
+    class ArcMenu_FrameBoxRow extends Gtk.ListBoxRow {
         _init() {
             super._init({});
             this._grid = new Gtk.Grid({
@@ -193,7 +193,7 @@ var FrameBoxRow = GObject.registerClass(
  * Arc Menu Tile Grid
  */
 var TileGrid = GObject.registerClass(
-    class extends Gtk.FlowBox{
+    class ArcMenu_TileGrid extends Gtk.FlowBox{
 
     _init(maxColumns) {
         super._init({
@@ -211,7 +211,7 @@ var TileGrid = GObject.registerClass(
  * Arc Menu Tile Grid
  */
 var Tile =  GObject.registerClass(
-    class Tile extends Gtk.Button{
+    class ArcMenu_Tile extends Gtk.Button{
 
      _init(label, file, width, height) {
         super._init();

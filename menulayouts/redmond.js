@@ -54,7 +54,6 @@ var createMenu = class {
         this._applications=[];
         this._session = new GnomeSession.SessionManager();
         this.newSearch = new ArcSearch.SearchResults(this);      
-        this.mainBox._delegate = this.mainBox;
         this._mainBoxKeyPressId = this.mainBox.connect('key-press-event', this._onMainBoxKeyPress.bind(this));
         
         this._tree = new GMenu.Tree({ menu_basename: 'applications.menu' });
@@ -694,7 +693,10 @@ var createMenu = class {
                 for (let i = 0; i < apps.length; i++) {
                     let app = apps[i];
                     let item = this._applicationsButtons.get(app);
-                    
+                    if (!item) {
+                        item = new MW.ApplicationMenuItem(this, app);
+                        this._applicationsButtons.set(app, item);
+                    }
                         
                         if(count%4==0){ //create a new row every 5 app icons
                             this.rowBox= new St.BoxLayout({

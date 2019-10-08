@@ -43,7 +43,7 @@ var MEDIUM_ICON_SIZE = 25;
 var SMALL_ICON_SIZE = 16;
 
 var ArcSearchMaxWidthBin = GObject.registerClass(
-class ArcSearchMaxWidthBin extends St.Bin {
+class ArcMenu_SearchMaxWidthBin extends St.Bin {
     vfunc_allocate(box, flags) {
         let themeNode = this.get_theme_node();
         let maxWidth = themeNode.get_max_width();
@@ -700,7 +700,7 @@ var SearchResults = class {
 Signals.addSignalMethods(SearchResults.prototype);
 
 var ArcSearchProviderInfo =Utils.createClass({
-    Name: 'ArcSearchProviderInfo',
+    Name: 'ArcMenu_ArcSearchProviderInfo',
     Extends: PopupMenu.PopupBaseMenuItem, 
     _init(provider,button) {
         this.callParent('_init');
