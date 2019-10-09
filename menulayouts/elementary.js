@@ -196,7 +196,6 @@ var createMenu = class{
     }
     _reload() {
         this.appsBox.destroy_all_children();
-        this._applications = [];
         this._loadCategories();
         this._displayAllApps();
         this._display();
@@ -211,7 +210,6 @@ var createMenu = class{
     // Display the menu
     _display() {
         //this.mainBox.hide();
-        //this._applications = [];
         this._displayAppIcons();
         
         if(this.vertSep!=null)

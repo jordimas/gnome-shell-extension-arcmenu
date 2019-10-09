@@ -210,7 +210,6 @@ var createMenu = class {
         }
         _reload() {
             this.shorcutsBox.destroy_all_children();
-            this._applicationsButtons.clear();
             this._loadCategories();
             this._displayAllApps();
     

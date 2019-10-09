@@ -155,7 +155,6 @@ var createMenu = class{
     }
     _reload() {
         this.applicationsBox.destroy_all_children();
-        this._applicationsButtons.clear();
         this._loadCategories();
         this._display();
     }
@@ -163,8 +162,6 @@ var createMenu = class{
     }
     // Display the menu
     _display() {
-        //this.mainBox.hide();
-        //this._applicationsButtons.clear();
         this._displayCategories();
         this._displayGnomeFavorites();
         

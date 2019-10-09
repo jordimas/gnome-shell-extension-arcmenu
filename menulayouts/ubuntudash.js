@@ -228,7 +228,6 @@ var createMenu = class{
     }
     _reload() {
         this.appsBox.destroy_all_children();
-        this._applications = [];
         this._loadCategories();
         this._displayAllApps();
         this._display();

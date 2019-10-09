@@ -93,7 +93,6 @@ var createMenu = class {
     }
     _reload() {
         this.leftClickMenu.removeAll()
-        this._applicationsButtons = [];
         this._loadCategories();
         this._display(); 
     }

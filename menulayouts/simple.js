@@ -100,7 +100,6 @@ var createMenu = class {
     }
     _reload() {
         this.applicationsBox.destroy_all_children();
-        this._applicationsButtons = [];
         this._createLeftBox();
         this._loadCategories();
         this._display(); 
