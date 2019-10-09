@@ -11,7 +11,7 @@ Arc Menu is a Gnome shell extension designed to replace the standard menu found 
 
 -----
 
-### Donation
+### Donation 
 
 ArcMenu is provided free of charge. If it has improved your workflow, or you had a great support experience, feel free to say thanks by making a donation to the Project. (If you would like your donation to go to a specific developer, you may mention it in the note field during payment)
 
@@ -19,7 +19,14 @@ ArcMenu is provided free of charge. If it has improved your workflow, or you had
 
 -----
 
+### Official ![](https://gitlab.com/LinxGem33/Neon/raw/master/artwork/yt-channel.png)YouTube Channel
 
+*Maintained by **LinxGem33** aka **Andy***
+
+ArcMenu now has a Official [**YouTube Channel**](https://www.youtube.com/channel/UCXfwH1E6zf-Jbsoq_Z7nIxA), you can find tips hints and information about new releases of ArcMenu and we will hopefully also cover other extensions and Linux news and tutorials, please share subscribe and leave us any feedback of what videos you may want us to publish and don't forget to hit that bell to be notified when we publish new videos, 
+also we are looking for anyone to contribute by posting or by helping with video production also tutorial videos will be posted as soon as we can purchase a good quality mic.
+
+-----
 
 ### Volunteers needed!
 
