@@ -209,7 +209,7 @@ var createMenu = class {
             this._display();
         }
         _reload() {
-            this.shorcutsBox.destroy_all_children();
+
             this._loadCategories();
             this._displayAllApps();
     
@@ -682,7 +682,18 @@ var createMenu = class {
         // Display application menu items
         _displayButtons(apps) {
             if (apps) {
-               
+                if(this.appsBox){
+                    let inner =  this.appsBox.get_children();
+                    for (let i = 0; i < inner.length; i++) {
+                        let actors =  inner[i].get_children();
+                        for (let j = 0; j < actors.length; j++) {
+                            let actor = actors[j];
+                            inner[i].remove_actor(actor);
+                        }
+                    }
+                    this.appsBox.destroy_all_children();
+                }
+
             
                 this.appsBox= new St.BoxLayout({
                     vertical: true
@@ -696,37 +707,31 @@ var createMenu = class {
                         item = new MW.ApplicationMenuItem(this, app);
                         this._applicationsButtons.set(app, item);
                     }
-                        
-                        if(count%4==0){ //create a new row every 5 app icons
-                            this.rowBox= new St.BoxLayout({
-                                vertical: false
-                            });
-                            this.rowBox.style ='spacing: 10px; margin: 5px 0px;'
-                            this.appsBox.add(this.rowBox, {
-                                expand: false,
-                                x_fill: false,
-                                y_fill: false,
-                                x_align: St.Align.MIDDLE,
-                                y_align: St.Align.MIDDLE
-                            });
-                        }
-                        count++;
-                        
-                
-    
-                        this.rowBox.add(item.actor, {
+                    if(count%4==0){ //create a new row every 5 app icons
+                        this.rowBox= new St.BoxLayout({
+                            vertical: false
+                        });
+                        this.rowBox.style ='spacing: 10px; margin: 5px 0px;'
+                        this.appsBox.add(this.rowBox, {
                             expand: false,
                             x_fill: false,
                             y_fill: false,
                             x_align: St.Align.MIDDLE,
                             y_align: St.Align.MIDDLE
                         });
-                        if(count==0)
-                        item.actor.grab_key_focus();
                     }
-                   
-                
-    
+                    count++;
+
+                    this.rowBox.add(item.actor, {
+                        expand: false,
+                        x_fill: false,
+                        y_fill: false,
+                        x_align: St.Align.MIDDLE,
+                        y_align: St.Align.MIDDLE
+                    });
+                    if(count==0)
+                        item.actor.grab_key_focus();
+                }
             }
         }
         _displayAppIcons(){
