@@ -280,7 +280,7 @@ var createMenu = class{
                         this._applicationsButtons.set(app, item);
                     }
                     if(item.actor.get_parent()){
-                        item.actor.get_parent().remove_actor(item);
+                        item.actor.get_parent().remove_actor(item.actor);
                     }
                     if (!item.actor.get_parent()) {
                         categoryMenuItem.applicationsBox.add_actor(item.actor); 

@@ -91,6 +91,7 @@ var createMenu = class{
   
     }
     _reload() {
+        this._clearApplicationsBox();
         this._loadCategories();
         this._display(); 
     }
@@ -154,7 +155,7 @@ var createMenu = class{
     }
     _displayCategories(){
 
-        this._clearApplicationsBox();
+       
         
         let categoryMenuItem = new MW.CategorySubMenuItem(this, "","Favorites");
         this.leftClickMenu.addMenuItem(categoryMenuItem);	
