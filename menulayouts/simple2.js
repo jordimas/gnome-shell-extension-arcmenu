@@ -155,20 +155,16 @@ var createMenu = class{
     _displayCategories(){
 
         this._clearApplicationsBox();
-        this.categoryMenuItemArray=[];
         
         let categoryMenuItem = new MW.CategorySubMenuItem(this, "","Favorites");
-        this.categoryMenuItemArray.push(categoryMenuItem);
         this.leftClickMenu.addMenuItem(categoryMenuItem);	
         
         categoryMenuItem = new MW.CategorySubMenuItem(this, "","All Programs");
-        this.categoryMenuItemArray.push(categoryMenuItem);
         this.leftClickMenu.addMenuItem(categoryMenuItem);	
         for(var categoryDir of this.categoryDirectories){
             if(categoryDir){
-                let categoryMenuItem = new MW.CategorySubMenuItem(this, categoryDir);
-                this.categoryMenuItemArray.push(categoryMenuItem);
-                this.leftClickMenu.addMenuItem(categoryMenuItem.actor);	
+                categoryMenuItem = new MW.CategorySubMenuItem(this, categoryDir);
+                this.leftClickMenu.addMenuItem(categoryMenuItem);	
             }
         }
 
@@ -251,7 +247,7 @@ var createMenu = class{
                         this._applicationsButtons.set(app, item);
                     }
                     if(item.actor.get_parent()){
-                        item.actor.get_parent().remove_actor(item);
+                        item.actor.get_parent().remove_actor(item.actor);
                     }
                     if (!item.actor.get_parent()) {
                          categoryMenuItem.menu.addMenuItem(item);
