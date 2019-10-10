@@ -125,28 +125,25 @@ Additional credits: This extension also leverages the work from [Giovanni Campag
 
 ### Current Active Developers
 
-|Status|Active|Unavailable|Inactive|
-|-----|:-----:|:-----:|:-----:|
-|Status icon|![](https://gitlab.com/LinxGem33/Neon/raw/master/artwork/done.svg.png)|![](https://gitlab.com/LinxGem33/Neon/raw/master/artwork/in-progress.png)|![](https://gitlab.com/LinxGem33/Neon/raw/master/artwork/refused.svg.png)|
-|Explanation|Active means the developer is maintaining or offering support or developing the code base.|Unavailable means that the developer is no longer adding code or offering support but is still excepting pull requests and merge requests.|Inactive means there is no code being added or support offered and is no longer accepting pull requests.|
+-----
 
+### @[LinxGem33](https://gitlab.com/LinxGem33) | Maintainer - Developer - Digital Art Designer |
 
+*Hi I'm LinxGem33 aka Andy and the founder of Arc menu, my role on the project is to manage and plan the technical and digital production and distribution of the Arc menu software, as you can imagine I’m a open source and Linux software enthusiast as well as a digital art designer and amateur GTK3 theme developer,I also like to contribute to other projects where i can.*
 
-|Developer|Current Task|Status|Short/Bio|
-|:-----:|:-----:|:-----:|:-----|
-|@[LinxGem33](https://gitlab.com/LinxGem33)|Maintainer - Developer - Digital Art Designer|![](https://gitlab.com/LinxGem33/Neon/raw/master/artwork/in-progress.png)|Hi I'm LinxGem33 aka Andy and the founder of Arc menu, my role on the project is to manage and plan the technical and digital production and distribution of the Arc menu software, as you can imagine I’m a open source and Linux software enthusiast as well as a digital art designer and amateur GTK3 theme developer,I also like to contribute to other projects where i can. |
-|@[Andrew  Zaech](https://gitlab.com/AndrewZaech)|Developer - UI/Backend|![](https://gitlab.com/LinxGem33/Neon/raw/master/artwork/done.svg.png)|Hi, I’m Andrew. My role on the project is to design, create, and implement features for the ArcMenu extension. I’m also involved in the code review process and front-end work, as well as improving the UX of ArcMenu. I also work on performance improvements and bug fixes, and provide help to our users with any issues related to ArcMenu.|
+-----
 
+### @[Andrew  Zaech](https://gitlab.com/AndrewZaech) | Project JS Developer - UI/Backend |
+
+*|Hi, I’m Andrew. My role on the project is to design, create, and implement features for the ArcMenu extension. I’m also involved in the code review process and front-end work, as well as improving the UX of ArcMenu. I also work on performance improvements and bug fixes, and provide help to our users with any issues related to ArcMenu.*
 
 -----
 
 ### Top Project Contributors
 
-#### @[Andrew Zaech](https://gitlab.com/AndrewZaech) - **Project Developer** - Developer
+#### @[lexruee](https://github.com/lexruee) - **Project Contributor** - UI/UX Designer | - @[Thomas Ingvarsson](https://gitlab.com/tingvarsson) - **Project Contributor** - Developer
 
-#### @[lexruee](https://github.com/lexruee) - **Project Contributor** - UI/UX Designer
-
-#### @[Thomas Ingvarsson](https://gitlab.com/tingvarsson) - **Project Contributor** - Developer
+#### @[charlesg99](https://github.com/charlesg99) - **Project Contributor** - Developer 
 
 -----
 
@@ -158,15 +155,17 @@ Additional credits: This extension also leverages the work from [Giovanni Campag
 
 #### Thanks to the following people for contributing via pull requests:
 
-- **@[fishears](https://github.com/fishears/Arc-Menu)** 
-- **@[JasonLG1979](https://github.com/JasonLG1979)** 
-- **@[itmitica](https://github.com/itmitica)**
+-----
+
+**@[fishears](https://github.com/fishears/Arc-Menu)** | **@[JasonLG1979](https://github.com/JasonLG1979)** | **@[itmitica](https://github.com/itmitica)**
+
+-----
 
 #### Bug Fixes:
 
-- **@[JasonLG1979](https://github.com/JasonLG1979)** 
-- **@[lexruee](https://github.com/lexruee/Arc-Menu)** 
-- **@[charlesg99](https://github.com/charlesg99)**
+-----
+
+**@[JasonLG1979](https://github.com/JasonLG1979)**  | **@[lexruee](https://github.com/lexruee/Arc-Menu)**
 
 -----
 
