@@ -92,6 +92,7 @@ var createMenu = class{
     }
     _reload() {
         this._clearApplicationsBox();
+
         this._loadCategories();
         this._display(); 
     }
@@ -243,7 +244,11 @@ var createMenu = class{
     // Display application menu items
     _displayButtons(apps, categoryMenuItem) {
         if (apps) {
-   
+            let children = categoryMenuItem.menu.box.get_children();
+            for (let i = 0; i < children.length; i++) {
+                let item = children[i];
+                categoryMenuItem.menu.box.remove_actor(item);
+            }
                 for (let i = 0; i < apps.length; i++) {
                     let app = apps[i];
                     let item = this._applicationsButtons.get(app);

@@ -271,7 +271,11 @@ var createMenu = class{
     // Display application menu items
     _displayButtons(apps, categoryMenuItem) {
         if (apps) {
-   
+            let children = categoryMenuItem.applicationsBox.get_children();
+            for (let i = 0; i < children.length; i++) {
+                let item = children[i];
+                categoryMenuItem.applicationsBox.remove_actor(item);
+            }
                 for (let i = 0; i < apps.length; i++) {
                     let app = apps[i];
                     let item = this._applicationsButtons.get(app);
