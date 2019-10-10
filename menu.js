@@ -367,7 +367,8 @@ var ApplicationsButton =   Utils.defineClass({
             if (this.rightClickMenu) {
                 this.rightClickMenu.destroy();
             }
-            modernGnome ? this.callParent('destroy') : this.emit('destroy');
+            this.container.child = null;
+            this.container.destroy();
         },
 
         // Handle captured event
