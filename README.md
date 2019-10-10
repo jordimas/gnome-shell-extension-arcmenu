@@ -183,3 +183,5 @@ Additional credits: This extension also leverages the work from [Giovanni Campag
  
 -----
 
+ **- @[MorganAntonsson](https://gitlab.com/MorganAntonsson) - Swedish** |
+
