@@ -127,13 +127,13 @@ Additional credits: This extension also leverages the work from [Giovanni Campag
 
 -----
 
-### @[LinxGem33](https://gitlab.com/LinxGem33) | Maintainer - Developer - Digital Art Designer |
+### @[LinxGem33](https://gitlab.com/LinxGem33) | Founder - Maintainer -  Digital Art Designer |
 
 *Hi I'm LinxGem33 aka Andy and the founder of Arc menu, my role on the project is to manage and plan the technical and digital production and distribution of the Arc menu software, as you can imagine I’m a open source and Linux software enthusiast as well as a digital art designer and amateur GTK3 theme developer,I also like to contribute to other projects where i can.*
 
 -----
 
-### @[Andrew  Zaech](https://gitlab.com/AndrewZaech) | Project JS Developer - UI/Backend |
+### @[Andrew  Zaech](https://gitlab.com/AndrewZaech) | Project JS Developer - UX/Backend |
 
 *|Hi, I’m Andrew. My role on the project is to design, create, and implement features for the ArcMenu extension. I’m also involved in the code review process and front-end work, as well as improving the UX of ArcMenu. I also work on performance improvements and bug fixes, and provide help to our users with any issues related to ArcMenu.*
 
