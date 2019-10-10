@@ -135,7 +135,7 @@ Additional credits: This extension also leverages the work from [Giovanni Campag
 
 ### @[Andrew  Zaech](https://gitlab.com/AndrewZaech) | Project JS Developer - UX/Backend |
 
-*|Hi, I’m Andrew. My role on the project is to design, create, and implement features for the ArcMenu extension. I’m also involved in the code review process and front-end work, as well as improving the UX of ArcMenu. I also work on performance improvements and bug fixes, and provide help to our users with any issues related to ArcMenu.*
+*Hi, I’m Andrew. My role on the project is to design, create, and implement features for the ArcMenu extension. I’m also involved in the code review process and front-end work, as well as improving the UX of ArcMenu. I also work on performance improvements and bug fixes, and provide help to our users with any issues related to ArcMenu.*
 
 -----
 
