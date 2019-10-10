@@ -218,7 +218,11 @@ var createMenu = class{
     
     // Clear the applications menu box
     _clearApplicationsBox() {
-      this.leftClickMenu.removeAll();  
+        let children = this.leftClickMenu.box.get_children();
+        for (let i = 0; i < children.length; i++) {
+            let item = children[i];
+            this.leftClickMenu.box.remove_actor(item);
+        }
     }
 
     // Select a category or show category overview if no category specified
