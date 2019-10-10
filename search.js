@@ -711,19 +711,21 @@ var ArcSearchProviderInfo =Utils.createClass({
                                        x_align: Clutter.ActorAlign.START,x_expand: true});
         this._moreText="";
         this.actor.add_child(this.nameLabel);
-
+        this.actor.connect('notify::hover', this._onHover.bind(this));
         let isMenuItem = true;
         if(provider.appInfo.get_description()!=null){
             this.tooltip = new MW.Tooltip(this.actor, provider.appInfo.get_description(),isMenuItem,this._button._settings);
             this.tooltip.hide();
-            this.actor.connect('notify::hover', this._onHover.bind(this));
+            
         }
     },
     _onHover() {
-        if ( this.hover) { // mouse pointer hovers over the button
-            this.tooltip.show();
+        if(this._button.newSearch._highlightDefault)
+            this._button.newSearch.highlightDefault(false);
+        if (this.hover) { // mouse pointer hovers over the button
+            this.tooltip ? this.tooltip.show(): '';
         } else { // mouse pointer leaves the button area
-            this.tooltip.hide();
+            this.tooltip ? this.tooltip.hide(): '';
         }
     },
     animateLaunch() {

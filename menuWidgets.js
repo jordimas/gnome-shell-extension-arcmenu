@@ -1205,12 +1205,12 @@ var ApplicationMenuIcon = Utils.createClass({
             textureCache.disconnect(iconThemeChangedId);
         });
         this._updateIcon();
-
+        this.actor.connect('notify::hover', this._onHover.bind(this));
         let isMenuItem=true;
         if( app.get_description()){
             this.tooltip = new Tooltip(this.actor, app.get_description(),isMenuItem,this._button._settings);
             this.tooltip.hide();
-            this.actor.connect('notify::hover', this._onHover.bind(this));
+            
         }
         this._draggable = DND.makeDraggable(this.actor);
         this.isDraggableApp = true;
@@ -1243,11 +1243,12 @@ var ApplicationMenuIcon = Utils.createClass({
         return Clutter.EVENT_STOP;
     },
     _onHover() {
-
+        if(this._button.newSearch._highlightDefault)
+            this._button.newSearch.highlightDefault(false);
         if ( this.actor.hover) { // mouse pointer hovers over the button
-            this.tooltip.show();
+            this.tooltip ? this.tooltip.show(): '';
         } else { // mouse pointer leaves the button area
-            this.tooltip.hide();
+            this.tooltip ? this.tooltip.hide(): '';
         }
     },
     _onDragBegin() {
@@ -1481,6 +1482,7 @@ var SearchResultItem = Utils.createClass({
         this._button = button;
         this.app =app;
         this._path=path;
+        this.actor.connect('notify::hover', this._onHover.bind(this));
         if(app){
             this.icon = new IconGrid.BaseIcon(app.get_name(), {createIcon: this._createIcon.bind(this), setSizeManually: true });
             this.rightClickMenu = new AppRightClickMenu(this.actor,this.app,this._button,false, this._path ? this._path: null);
@@ -1495,6 +1497,10 @@ var SearchResultItem = Utils.createClass({
         }
      
   
+    },
+    _onHover(){
+        if(this._button.newSearch._highlightDefault)
+            this._button.newSearch.highlightDefault(false);
     },
     getDragActor() {
         return this.app.create_icon_texture(MEDIUM_ICON_SIZE);
@@ -1820,6 +1826,14 @@ var SimpleMenuItem = Utils.createClass({
     _onHover() {
         if (this.actor.hover) { // mouse pointer hovers over the button
             this.actor.add_style_class_name('selected');
+            if (this._category)
+                this._button.selectCategory(this._category,this);
+            else if(this.title =="All Programs")
+                this._button._displayAllApps(this);
+            else if(this.title == "Favorites")
+                this._button._displayGnomeFavorites(this);
+            else
+                this._button.selectCategory("Frequent Apps",this);
             this.subMenu.toggle();
         } else if(!this.actor.hover && !this._active) { // mouse pointer leaves the button area
             this.actor.remove_style_class_name('selected');
@@ -1872,7 +1886,22 @@ var CategorySubMenuItem = Utils.createClass({
         else if(!this._category){
             this.icon.icon_name= 'emblem-favorite-symbolic';
         }
-        this.menu.actor.style = 'max-height: 250px;';
+        
+    },
+    _setOpenState(open) {
+        if(open){
+            if (this._category)
+                this._button.selectCategory(this._category,this);
+            else if(this.title =="All Programs")
+                this._button._displayAllApps(this);
+            else if(this.title == "Favorites")
+                this._button._displayGnomeFavorites(this);
+            else
+                this._button.selectCategory("Frequent Apps",this);
+            this.menu.actor.style = 'max-height: 250px;';
+        }
+
+        this.setSubmenuShown(open);
     }
 });
 
