@@ -42,31 +42,30 @@ const _ = Gettext.gettext;
 
 var modernGnome = imports.misc.config.PACKAGE_VERSION >= '3.31.9';
 
-// Application Menu Button class (most of the menu logic is here)
-var createMenu = class {
+var createMenu = class{
     constructor(mainButton) {
         this.button = mainButton;
         this._settings = mainButton._settings;
         this.section = mainButton.section;
+        this.mainBox = mainButton.mainBox; 
         this.appMenuManager = mainButton.appMenuManager;
         this.leftClickMenu  = mainButton.leftClickMenu;
-        this.currentMenu = Constants.CURRENT_MENU.FAVORITES; 
-        this._applicationsButtons = [];
+
+
+        this._applicationsButtons = new Map();
         this._session = new GnomeSession.SessionManager();
-        this.leftClickMenu.removeAll();
+       this.leftClickMenu.removeAll();
 
         this._tree = new GMenu.Tree({ menu_basename: 'applications.menu' });
         this._treeChangedId = this._tree.connect('changed', ()=>{
             this._reload();
         });
-
         //LAYOUT------------------------------------------------------------------------------------------------
-
         
         this._firstAppItem = null;
         this._firstApp = null;
         this._tabbedOnce = false;
-
+        
         this._createLeftBox();
         this._loadCategories();
         this._display(); 
@@ -85,22 +84,21 @@ var createMenu = class {
         this.setDefaultMenuView();  
     }
     _redisplayRightSide(){
-
+      
     }
     // Redisplay the menu
     _redisplay() {
   
     }
     _reload() {
-        this.leftClickMenu.removeAll()
         this._loadCategories();
         this._display(); 
     }
     updateStyle(){
-    }
+     }
     // Display the menu
     _display() {
-        this._displayCategories();           
+        this._displayCategories();       
     }
     // Load menu category data for a single category
     _loadCategory(categoryId, dir) {
@@ -116,10 +114,16 @@ var createMenu = class {
                     continue;
                 }
                 let app = appSys.lookup_app(id);
-                if (app && app.get_app_info().should_show())
+                if (app ){
                     this.applicationsByCategory[categoryId].push(app);
-            } 
-            else if (nextType == GMenu.TreeItemType.DIRECTORY) {
+                    let item = this._applicationsButtons.get(app);
+                    if (!item) {
+                        item = new MW.ApplicationMenuItem(this, app);
+                        this._applicationsButtons.set(app, item);
+                    }
+                }
+                    
+            } else if (nextType == GMenu.TreeItemType.DIRECTORY) {
                 let subdir = iter.get_directory();
                 if (!subdir.get_is_nodisplay())
                     this._loadCategory(categoryId, subdir);
@@ -131,7 +135,7 @@ var createMenu = class {
     _loadCategories() {
         this.applicationsByCategory = {};
         this.categoryDirectories=[];
-
+                
         this._tree.load_sync();
         let root = this._tree.get_root_directory();
         let iter = root.iter();
@@ -147,29 +151,29 @@ var createMenu = class {
                 }
             }
         }
-        this.categoryMenuItemArray=[];
-        let categoryMenuItem = new MW.CategorySubMenuItem(this, "","Favorites");
-        this._displayGnomeFavorites(categoryMenuItem);
-        this.categoryMenuItemArray.push(categoryMenuItem);
-        categoryMenuItem = new MW.CategorySubMenuItem(this, "","All Programs");
-        this._displayAllApps(categoryMenuItem);
-        
-        this.categoryMenuItemArray.push(categoryMenuItem);
-        
-        for(var categoryDir of this.categoryDirectories){
-            if(categoryDir){
-                let categoryMenuItem = new MW.CategorySubMenuItem(this, categoryDir); 
-                this.selectCategory(categoryDir,categoryMenuItem);
-                this.categoryMenuItemArray.push(categoryMenuItem);    
-            }
-        }
-        this.updateStyle();
     }
     _displayCategories(){
+
         this._clearApplicationsBox();
-        for(let i = 0; i < this.categoryMenuItemArray.length; i++){
-            this.leftClickMenu.addMenuItem(this.categoryMenuItemArray[i]);
+        this.categoryMenuItemArray=[];
+        
+        let categoryMenuItem = new MW.CategorySubMenuItem(this, "","Favorites");
+        this.categoryMenuItemArray.push(categoryMenuItem);
+        this.leftClickMenu.addMenuItem(categoryMenuItem);	
+        
+        categoryMenuItem = new MW.CategorySubMenuItem(this, "","All Programs");
+        this.categoryMenuItemArray.push(categoryMenuItem);
+        this.leftClickMenu.addMenuItem(categoryMenuItem);	
+        for(var categoryDir of this.categoryDirectories){
+            if(categoryDir){
+                let categoryMenuItem = new MW.CategorySubMenuItem(this, categoryDir);
+                this.categoryMenuItemArray.push(categoryMenuItem);
+                this.leftClickMenu.addMenuItem(categoryMenuItem.actor);	
+            }
         }
+
+        
+        this.updateStyle();
     }
     _displayGnomeFavorites(categoryMenuItem){
         let appList = AppFavorites.getAppFavorites().getFavorites();
@@ -179,96 +183,91 @@ var createMenu = class {
         this._displayButtons(appList,categoryMenuItem);
         this.updateStyle(); 
     }
-    // Load menu place shortcuts
+    updateIcons(){   
+        this._applicationsButtons.forEach((value,key,map)=>{
+            map.get(key)._updateIcon();
+        });    
+    }
     _displayPlaces() {
-        
     }
-    _loadFavorites() {
-        
+    _loadFavorites() {  
     }
-    _displayFavorites() {
-        
+    _displayFavorites() {     
     }
     // Create the menu layout
 
     _createLeftBox(){
   
     }
-    placesAddSeparator(id){
-        
+    placesAddSeparator(id){ 
     }
     _redisplayPlaces(id) {
-        
     }
     _createPlaces(id) {
-        
     }
-    updateIcons(){
-        for(let i = 0; i<this._applicationsButtons.length;i++){
-            for(let l=0;l<this._applicationsButtons[i].length;l++){
-                this._applicationsButtons[i][l]._updateIcon();
-            }
-        }
-    }
-    //used to check if a shortcut should be displayed
     getShouldShowShortcut(shortcutName){
-        
     }
     // Scroll to a specific button (menu item) in the applications scroll view
     scrollToButton(button) {
-    
+
     }
     
     setDefaultMenuView(){
-    
+
     }
     _setActiveCategory(){
 
-        for (let i = 0; i < this.categoryMenuItemArray.length; i++) {
-            let actor = this.categoryMenuItemArray[i];
-            actor.setFakeActive(false);
-            //actor.remove_style_class_name('active');
-        }
     }
     
     // Clear the applications menu box
     _clearApplicationsBox() {
-        this.leftClickMenu.removeAll();      
+      this.leftClickMenu.removeAll();  
     }
 
     // Select a category or show category overview if no category specified
-    selectCategory(dir,categoryMenuItem) {
+    selectCategory(dir, categoryMenuItem) {
         if (dir!="Frequent Apps") {
-            this._displayButtons(this._listApplications(dir.get_menu_id()),categoryMenuItem);
+            this._displayButtons(this._listApplications(dir.get_menu_id()), categoryMenuItem);
         }
         else if(dir=="Frequent Apps") {
-            this._displayButtons(this._listApplications("Frequent Apps"),categoryMenuItem);
+            this._displayButtons(this._listApplications("Frequent Apps"), categoryMenuItem);
+
+        }
+        else {
+            //this._displayCategories();
         }
         this.updateStyle();
     }
 
     // Display application menu items
-    _displayButtons(apps,categoryMenuItem) {
+    _displayButtons(apps, categoryMenuItem) {
         if (apps) {
-            let oldApp;
-            let array = [];
-            for (let i = 0; i < apps.length; i++) {
-                let app = apps[i];
-                if(oldApp!=app){
-                    let item = new MW.ApplicationMenuItem(this, app);
-                    array.push(item);
-                    categoryMenuItem.menu.addMenuItem(item);	
+   
+                for (let i = 0; i < apps.length; i++) {
+                    let app = apps[i];
+                    let item = this._applicationsButtons.get(app);
+                    if (!item) {
+                        item = new MW.ApplicationMenuItem(this, app);
+                        this._applicationsButtons.set(app, item);
+                    }
+                    if(item.actor.get_parent()){
+                        item.actor.get_parent().remove_actor(item);
+                    }
+                    if (!item.actor.get_parent()) {
+                         categoryMenuItem.menu.addMenuItem(item);
+                    }
+                    if(i==0){
+                        item.setFakeActive(true);
+                        item.grabKeyFocus();
+                    }
                 }
-                oldApp=app;
-            }
-            this._applicationsButtons.push(array);
         }
     }
     _displayAllApps(categoryMenuItem){
-        let appList=[];
-        for(let directory in this.applicationsByCategory){
-            appList = appList.concat(this.applicationsByCategory[directory]);
-        }
+        let appList= []
+        this._applicationsButtons.forEach((value,key,map) => {
+            appList.push(key);
+        });
         appList.sort(function (a, b) {
             return a.get_name().toLowerCase() > b.get_name().toLowerCase();
         });
@@ -303,4 +302,5 @@ var createMenu = class {
             this._tree = null;
         }
     }
+
 };

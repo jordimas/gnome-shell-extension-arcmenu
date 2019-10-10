@@ -1826,6 +1826,14 @@ var SimpleMenuItem = Utils.createClass({
     _onHover() {
         if (this.actor.hover) { // mouse pointer hovers over the button
             this.actor.add_style_class_name('selected');
+            if (this._category)
+                this._button.selectCategory(this._category,this);
+            else if(this.title =="All Programs")
+                this._button._displayAllApps(this);
+            else if(this.title == "Favorites")
+                this._button._displayGnomeFavorites(this);
+            else
+                this._button.selectCategory("Frequent Apps",this);
             this.subMenu.toggle();
         } else if(!this.actor.hover && !this._active) { // mouse pointer leaves the button area
             this.actor.remove_style_class_name('selected');
@@ -1878,7 +1886,22 @@ var CategorySubMenuItem = Utils.createClass({
         else if(!this._category){
             this.icon.icon_name= 'emblem-favorite-symbolic';
         }
-        this.menu.actor.style = 'max-height: 250px;';
+        
+    },
+    _setOpenState(open) {
+        if(open){
+            if (this._category)
+                this._button.selectCategory(this._category,this);
+            else if(this.title =="All Programs")
+                this._button._displayAllApps(this);
+            else if(this.title == "Favorites")
+                this._button._displayGnomeFavorites(this);
+            else
+                this._button.selectCategory("Frequent Apps",this);
+            this.menu.actor.style = 'max-height: 250px;';
+        }
+
+        this.setSubmenuShown(open);
     }
 });
 
