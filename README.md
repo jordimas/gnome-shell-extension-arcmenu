@@ -19,15 +19,6 @@ ArcMenu is provided free of charge. If it has improved your workflow, or you had
 
 -----
 
-### Official ![](https://gitlab.com/LinxGem33/Neon/raw/master/artwork/yt-channel.png)YouTube Channel
-
-*Maintained by **LinxGem33** aka **Andy***
-
-ArcMenu now has a Official [**YouTube Channel**](https://www.youtube.com/channel/UCXfwH1E6zf-Jbsoq_Z7nIxA), you can find tips hints and information about new releases of ArcMenu and we will hopefully also cover other extensions and Linux news and tutorials, please share subscribe and leave us any feedback of what videos you may want us to publish and don't forget to hit that bell to be notified when we publish new videos, 
-also we are looking for anyone to contribute by posting or by helping with video production also tutorial videos will be posted as soon as we can purchase a good quality mic.
-
------
-
 ### Volunteers needed!
 
 This extension could be even better with your help! Any items in the issue tracker labelled **Help Needed** or **Good First Issue** are open for contribution and help. For more info, see the [Contributing Feature List](https://gitlab.com/LinxGem33/Arc-Menu/issues/54) for more details on current issues or features which need your help.
