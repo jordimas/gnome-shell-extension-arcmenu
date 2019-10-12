@@ -15,7 +15,7 @@ Arc Menu is a Gnome shell extension designed to replace the standard menu found 
 
 ArcMenu is provided free of charge. If it has improved your workflow, or you had a great support experience, feel free to say thanks by making a donation to the Project. (If you would like your donation to go to a specific developer, you may mention it in the note field during payment)
 
-[![Donate via Paypal](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=2NQVF9C8FBP4N&source=url)
+[![Donate via Paypal](https://gitlab.com/LinxGem33/Neon/raw/master/artwork/donate-button.png)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=2NQVF9C8FBP4N&source=url)
 
 -----
 
@@ -174,5 +174,5 @@ Additional credits: This extension also leverages the work from [Giovanni Campag
  
 -----
 
- **- @[MorganAntonsson](https://gitlab.com/MorganAntonsson) - Swedish** | **- @[jiri.doubravsky](https://gitlab.com/jiri.doubravsky) - czech** |
+ **- @[MorganAntonsson](https://gitlab.com/MorganAntonsson) - Swedish** | **- @[jiri.doubravsky](https://gitlab.com/jiri.doubravsky) - czech** | **- @[juanlucer](https://gitlab.com/juanlucer) - Spanish** |
 
