@@ -1445,8 +1445,37 @@ var  AppearanceSettingsPage = GObject.registerClass(
                         dialog.destroy();
                 }.bind(this)); 
             });
+            //TODO_______________________-
+            layoutButton.set_sensitive(this._settings.get_boolean('enable-custom-arc-menu-layout'));
+            let layoutSwitch = new Gtk.Switch({ halign: Gtk.Align.END});
+            layoutSwitch.set_active(this._settings.get_boolean('enable-custom-arc-menu-layout'));
+            layoutSwitch.connect('notify::active', function (check) {
+                this._settings.set_boolean('enable-custom-arc-menu-layout',check.get_active());
+                layoutButton.set_sensitive(check.get_active());
+                if(check.get_active() && layoutFrame.count==1){
+                    layoutFrame.add(currentLayoutRow);
+                    layoutFrame.add(messageRow);
+                    layoutFrame.show();
+                }
+                if(!check.get_active() && layoutFrame.count>1){
+                    layoutFrame.remove(currentLayoutRow);
+                    layoutFrame.remove(messageRow);
+                }
+                if(!check.get_active()){
+                    if(this._settings.get_enum('menu-layout')!=0)
+                        this._settings.set_enum('menu-layout', 0);
+                    currentStyleLabel.label = Constants.MENU_STYLE_CHOOSER.Styles[0].name;
+                }
+                if(check.get_active()){
+                    let index = this._settings.get_enum('menu-layout');
+                    currentStyleLabel.label = Constants.MENU_STYLE_CHOOSER.Styles[index].name;
+                }
+                   
+            }.bind(this));
+            //______________________________--
             layoutRow.add(layoutLabel);
             layoutRow.add(layoutButton);
+            layoutRow.add(layoutSwitch);
             layoutFrame.add(layoutRow);
     
             let currentLayoutRow = new PW.FrameBoxRow();
@@ -1466,7 +1495,8 @@ var  AppearanceSettingsPage = GObject.registerClass(
             currentStyleLabel.label = Constants.MENU_STYLE_CHOOSER.Styles[index].name;
             currentLayoutRow.add(currentLayoutLabel);
             currentLayoutRow.add(currentStyleLabel);
-            layoutFrame.add(currentLayoutRow);
+            if(this._settings.get_boolean('enable-custom-arc-menu-layout'))
+                layoutFrame.add(currentLayoutRow);
 
             let messageRow = new PW.FrameBoxRow();
             let messageLabel = new Gtk.Label({
@@ -1479,7 +1509,12 @@ var  AppearanceSettingsPage = GObject.registerClass(
             }); 
             messageLabel.set_sensitive(false);
             messageRow.add(messageLabel);
-            layoutFrame.add(messageRow);
+            if(this._settings.get_boolean('enable-custom-arc-menu-layout'))
+                layoutFrame.add(messageRow);
+
+        
+
+
             this.add(layoutFrame);
             
         
