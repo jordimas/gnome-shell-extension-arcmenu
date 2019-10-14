@@ -1445,7 +1445,6 @@ var  AppearanceSettingsPage = GObject.registerClass(
                         dialog.destroy();
                 }.bind(this)); 
             });
-            //TODO_______________________-
             layoutButton.set_sensitive(this._settings.get_boolean('enable-custom-arc-menu-layout'));
             let layoutSwitch = new Gtk.Switch({ halign: Gtk.Align.END});
             layoutSwitch.set_active(this._settings.get_boolean('enable-custom-arc-menu-layout'));
@@ -1461,18 +1460,13 @@ var  AppearanceSettingsPage = GObject.registerClass(
                     layoutFrame.remove(currentLayoutRow);
                     layoutFrame.remove(messageRow);
                 }
-                if(!check.get_active()){
-                    if(this._settings.get_enum('menu-layout')!=0)
-                        this._settings.set_enum('menu-layout', 0);
-                    currentStyleLabel.label = Constants.MENU_STYLE_CHOOSER.Styles[0].name;
-                }
+
                 if(check.get_active()){
                     let index = this._settings.get_enum('menu-layout');
                     currentStyleLabel.label = Constants.MENU_STYLE_CHOOSER.Styles[index].name;
                 }
                    
             }.bind(this));
-            //______________________________--
             layoutRow.add(layoutLabel);
             layoutRow.add(layoutButton);
             layoutRow.add(layoutSwitch);

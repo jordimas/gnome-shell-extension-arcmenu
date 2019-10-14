@@ -1212,6 +1212,9 @@ var ApplicationMenuIcon = Utils.createClass({
             this.tooltip.hide();
             
         }
+        this.actor.connect('notify::active',()=>{
+            this._button.activeMenuItem = this;
+        });
         this._draggable = DND.makeDraggable(this.actor);
         this.isDraggableApp = true;
         this._draggable.connect('drag-begin', this._onDragBegin.bind(this));
@@ -1293,16 +1296,9 @@ var ApplicationMenuIcon = Utils.createClass({
         this._button.leftClickMenu.toggle();
     },
 
-   // Set button as active, scroll to the button
-    setActive(active, params) {
-        if (active && !this.actor.hover)
-            this._button.scrollToButton(this);
-        this.callParent('setActive',active, params);
-    },
 
     setFakeActive(active) {
         if (active) {
-            this._button.scrollToButton(this);
             this.actor.add_style_class_name('selected');
         } else {
             this.actor.remove_style_class_name('selected');
@@ -1373,6 +1369,9 @@ var ApplicationMenuItem =Utils.createClass({
         this._button.appMenuManager.addMenu(this.rightClickMenu);
         this.rightClickMenu.actor.hide();
         Main.uiGroup.add_actor(this.rightClickMenu.actor);
+        this.actor.connect('notify::active',()=>{
+            this._button.activeMenuItem = this;
+        });
     },
     _onButtonPressEvent(actor, event) {
 		
@@ -1444,16 +1443,8 @@ var ApplicationMenuItem =Utils.createClass({
         this.callParent('activate',event);
     },
 
-   // Set button as active, scroll to the button
-    setActive(active, params) {
-        if (active && !this.actor.hover)
-            this._button.scrollToButton(this);
-        this.callParent('setActive',active, params);
-    },
-
     setFakeActive(active) {
         if (active) {
-            this._button.scrollToButton(this);
             this.actor.add_style_class_name('selected');
         } else {
             this.actor.remove_style_class_name('selected');
@@ -1495,6 +1486,9 @@ var SearchResultItem = Utils.createClass({
             this._draggable.connect('drag-cancelled', this._onDragCancelled.bind(this));
             this._draggable.connect('drag-end', this._onDragEnd.bind(this));
         }
+        this.actor.connect('notify::active',()=>{
+            this._button.activeMenuItem = this;
+        });
      
   
     },
@@ -1611,7 +1605,9 @@ var CategoryMenuItem =  Utils.createClass({
         this.actor.add_child(this._arrowIcon);
         this.actor.label_actor = categoryLabel;
         this.actor.connect('notify::hover', this._onHover.bind(this));
-  
+        this.actor.connect('notify::active',()=>{
+            this._button.activeMenuItem = this;
+        });
 
     },
     _onButtonPressEvent(actor, event) {
@@ -1677,25 +1673,6 @@ var CategoryMenuItem =  Utils.createClass({
         else if (!active && !this.actor.hover){
             this.actor.remove_style_class_name('selected');
         }
-    },
-    // Set button as active, scroll to the button
-    setActive(active, params) {
-        //this._active = active;
-        if (active && !this.actor.hover) {
-            this._button.scrollToButton(this);
-            this.actor.add_style_class_name('selected');
-        }
-        //TODO add if statement
-        let activeChanged = active != !this._active;
-        if (activeChanged) {
-
-            if (active) {
-               
-            } else {
-                this.actor.remove_style_class_name('selected');
-            }
-        }
-        //super.setActive(active, params);
     }
 });
 // Simple Menu item class
@@ -1771,6 +1748,13 @@ var SimpleMenuItem = Utils.createClass({
             style_class: 'apps-menu vfade left-scroll-area',
             overlay_scrollbars: true
         });                
+        this.applicationsScrollBox.connect('key-press-event',(actor,event)=>{
+            let key = event.get_key_symbol();
+            if(key == Clutter.Up || key == Clutter.KP_Up)
+                this.scrollToItem(this._button.activeMenuItem, this.applicationsScrollBox, Constants.DIRECTION.UP);
+            else if(key == Clutter.Down || key == Clutter.KP_Down)
+                this.scrollToItem(this._button.activeMenuItem, this.applicationsScrollBox, Constants.DIRECTION.DOWN);
+        }) ;   
         this.applicationsScrollBox.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC);
         this._button.subMenuManager.addMenu(this.subMenu);
         this.applicationsBox = new St.BoxLayout({ vertical: true });
@@ -1784,6 +1768,14 @@ var SimpleMenuItem = Utils.createClass({
         //if(!this.subMenu.isOpen)
            // this.subMenu.redisplay();
         //this.subMenu.toggle();
+    },
+    scrollToItem(button,scrollView, direction) {
+        let appsScrollBoxAdj = scrollView.get_vscroll_bar().get_adjustment();
+        let currentScrollValue = appsScrollBoxAdj.get_value();
+        let box = button.actor.get_allocation_box();
+        let buttonHeight = box.y1 - box.y2;
+        direction == Constants.DIRECTION.UP ? buttonHeight = buttonHeight : buttonHeight = -buttonHeight;
+        appsScrollBoxAdj.set_value(currentScrollValue + buttonHeight );
     },
     updateStyle(){
         let addStyle=this._button._settings.get_boolean('enable-custom-arc-menu');
@@ -1843,10 +1835,6 @@ var SimpleMenuItem = Utils.createClass({
     setFakeActive(active, params) {
 
     },
-    // Set button as active, scroll to the button
-    setActive(active, params) {
-
-    },
     _onDestroy(){
 
     }
@@ -1886,7 +1874,21 @@ var CategorySubMenuItem = Utils.createClass({
         else if(!this._category){
             this.icon.icon_name= 'emblem-favorite-symbolic';
         }
-        
+        this.menu.actor.connect('key-press-event',(actor,event)=>{
+            let key = event.get_key_symbol();
+            if(key == Clutter.Up || key == Clutter.KP_Up)
+                this.scrollToItem(this._button.activeMenuItem, this.menu.actor, Constants.DIRECTION.UP);
+            else if(key == Clutter.Down || key == Clutter.KP_Down)
+                this.scrollToItem(this._button.activeMenuItem, this.menu.actor, Constants.DIRECTION.DOWN);
+        }) ; 
+    },
+    scrollToItem(button,scrollView, direction) {
+        let appsScrollBoxAdj = scrollView.get_vscroll_bar().get_adjustment();
+        let currentScrollValue = appsScrollBoxAdj.get_value();
+        let box = button.actor.get_allocation_box();
+        let buttonHeight = box.y1 - box.y2;
+        direction == Constants.DIRECTION.UP ? buttonHeight = buttonHeight : buttonHeight = -buttonHeight;
+        appsScrollBoxAdj.set_value(currentScrollValue + buttonHeight );
     },
     _setOpenState(open) {
         if(open){
