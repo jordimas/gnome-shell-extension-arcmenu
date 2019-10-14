@@ -1226,6 +1226,13 @@ var ApplicationMenuIcon = Utils.createClass({
         this.rightClickMenu.actor.hide();
         Main.uiGroup.add_actor(this.rightClickMenu.actor);
     },
+    //g-s 3.28 support
+    setActive(active){
+        if(active){
+            this._button.activeMenuItem = this;
+        }
+        this.callParent('setActive',active);
+    },
     _createIcon(iconSize) {
         return this.app.create_icon_texture(iconSize);
     },
@@ -1372,12 +1379,19 @@ var ApplicationMenuItem =Utils.createClass({
         this.actor.connect('notify::active',()=>{
             this._button.activeMenuItem = this;
         });
+
     },
     _onButtonPressEvent(actor, event) {
 		
         return Clutter.EVENT_PROPAGATE;
     },
-
+    //g-s 3.28 support
+    setActive(active){
+        if(active){
+            this._button.activeMenuItem = this;
+        }
+        this.callParent('setActive',active);
+    },
     _onButtonReleaseEvent(actor, event) {
         if(event.get_button()==1){
             this.activate(event);
@@ -1491,6 +1505,13 @@ var SearchResultItem = Utils.createClass({
         });
      
   
+    },
+    //g-s 3.28 support
+    setActive(active){
+        if(active){
+            this._button.activeMenuItem = this;
+        }
+        this.callParent('setActive',active);
     },
     _onHover(){
         if(this._button.newSearch._highlightDefault)
@@ -1609,6 +1630,13 @@ var CategoryMenuItem =  Utils.createClass({
             this._button.activeMenuItem = this;
         });
 
+    },
+    //g-s 3.28 support
+    setActive(active){
+        if(active){
+            this._button.activeMenuItem = this;
+        }
+        this.callParent('setActive',active);
     },
     _onButtonPressEvent(actor, event) {
 		
