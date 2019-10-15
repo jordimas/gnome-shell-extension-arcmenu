@@ -107,6 +107,13 @@ var createMenu = class{
             overlay_scrollbars: true,
             style_class: 'vfade'
         });   
+        this.shortcutsScrollBox.connect('key-press-event',(actor,event)=>{
+            let key = event.get_key_symbol();
+            if(key == Clutter.Up || key == Clutter.KP_Up)
+                this.scrollToItem(this.activeMenuItem, this.shortcutsScrollBox, Constants.DIRECTION.UP);
+            else if(key == Clutter.Down || key == Clutter.KP_Down)
+                this.scrollToItem(this.activeMenuItem, this.shortcutsScrollBox, Constants.DIRECTION.DOWN);
+        }) ;  
         this.shortcutsScrollBox.style = "width:275px;";
         this.shortcutsScrollBox.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC);
         this.shortcutsScrollBox.add_actor( this.shorcutsBox);
@@ -140,6 +147,14 @@ var createMenu = class{
 
 
         this._display(); 
+    }
+    scrollToItem(button,scrollView, direction) {
+        let appsScrollBoxAdj = scrollView.get_vscroll_bar().get_adjustment();
+        let currentScrollValue = appsScrollBoxAdj.get_value();
+        let box = button.actor.get_allocation_box();
+        let buttonHeight = box.y1 - box.y2;
+        direction == Constants.DIRECTION.UP ? buttonHeight = buttonHeight : buttonHeight = -buttonHeight;
+        appsScrollBoxAdj.set_value(currentScrollValue + buttonHeight );
     }
     _onMainBoxKeyPress(mainBox, event) {
         if (!this.searchBox) {
@@ -356,6 +371,13 @@ var createMenu = class{
             x_fill: true, y_fill: true,
             y_align: St.Align.START
         });
+        this.applicationsScrollBox.connect('key-press-event',(actor,event)=>{
+            let key = event.get_key_symbol();
+            if(key == Clutter.Up || key == Clutter.KP_Up)
+                this.scrollToItem(this.activeMenuItem, this.applicationsScrollBox, Constants.DIRECTION.UP);
+            else if(key == Clutter.Down || key == Clutter.KP_Down)
+                this.scrollToItem(this.activeMenuItem, this.applicationsScrollBox, Constants.DIRECTION.DOWN);
+        }) ;       
         this.applicationsBox = new St.BoxLayout({ vertical: true });
         this.applicationsScrollBox.add_actor( this.applicationsBox);
         this.applicationsScrollBox.clip_to_allocation = true;
@@ -465,22 +487,7 @@ var createMenu = class{
     //used to check if a shortcut should be displayed
     getShouldShowShortcut(shortcutName){
     }
-    // Scroll to a specific button (menu item) in the applications scroll view
-    scrollToButton(button) {
-        let appsScrollBoxAdj = this.applicationsScrollBox.get_vscroll_bar().get_adjustment();
-        let appsScrollBoxAlloc = this.applicationsScrollBox.get_allocation_box();
-        let currentScrollValue = appsScrollBoxAdj.get_value();
-        let boxHeight = appsScrollBoxAlloc.y2 - appsScrollBoxAlloc.y1;
-        let buttonAlloc = button.actor.get_allocation_box();
-        let newScrollValue = currentScrollValue;
-        if (currentScrollValue > buttonAlloc.y1 - 10)
-            newScrollValue = buttonAlloc.y1 - 10;
-        if (boxHeight + currentScrollValue < buttonAlloc.y2 + 10)
-            newScrollValue = buttonAlloc.y2 - boxHeight + 10;
-        if (newScrollValue != currentScrollValue)
-            appsScrollBoxAdj.set_value(newScrollValue);
-    }
-        
+       
     setDefaultMenuView()
     {
         this.searchBox.clear();
