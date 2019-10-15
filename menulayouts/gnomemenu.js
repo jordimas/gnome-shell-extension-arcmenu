@@ -92,6 +92,13 @@ var createMenu = class{
             overlay_scrollbars: true,
             style_class: 'vfade'
         });   
+        this.shortcutsScrollBox.connect('key-press-event',(actor,event)=>{
+            let key = event.get_key_symbol();
+            if(key == Clutter.Up || key == Clutter.KP_Up)
+                this.scrollToItem(this.activeMenuItem, this.shortcutsScrollBox, Constants.DIRECTION.UP);
+            else if(key == Clutter.Down || key == Clutter.KP_Down)
+                this.scrollToItem(this.activeMenuItem, this.shortcutsScrollBox, Constants.DIRECTION.DOWN);
+        }) ;  
         this.shortcutsScrollBox.style = "width:250px;"; 
         this.shortcutsScrollBox.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC);
 
@@ -278,6 +285,13 @@ var createMenu = class{
             style_class: 'apps-menu vfade left-scroll-area',
             overlay_scrollbars: true
         });
+        this.applicationsScrollBox.connect('key-press-event',(actor,event)=>{
+            let key = event.get_key_symbol();
+            if(key == Clutter.Up || key == Clutter.KP_Up)
+                this.scrollToItem(this.activeMenuItem, this.applicationsScrollBox, Constants.DIRECTION.UP);
+            else if(key == Clutter.Down || key == Clutter.KP_Down)
+                this.scrollToItem(this.activeMenuItem, this.applicationsScrollBox, Constants.DIRECTION.DOWN);
+        }) ;      
         this.applicationsScrollBox.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC);
 
         this.leftBox.add( this.applicationsScrollBox, {
@@ -311,20 +325,13 @@ var createMenu = class{
     }
     getShouldShowShortcut(shortcutName){
     }
-    // Scroll to a specific button (menu item) in the applications scroll view
-    scrollToButton(button) {
-        let appsScrollBoxAdj = this.applicationsScrollBox.get_vscroll_bar().get_adjustment();
-        let appsScrollBoxAlloc = this.applicationsScrollBox.get_allocation_box();
+    scrollToItem(button,scrollView, direction) {
+        let appsScrollBoxAdj = scrollView.get_vscroll_bar().get_adjustment();
         let currentScrollValue = appsScrollBoxAdj.get_value();
-        let boxHeight = appsScrollBoxAlloc.y2 - appsScrollBoxAlloc.y1;
-        let buttonAlloc = button.actor.get_allocation_box();
-        let newScrollValue = currentScrollValue;
-        if (currentScrollValue > buttonAlloc.y1 - 10)
-            newScrollValue = buttonAlloc.y1 - 10;
-        if (boxHeight + currentScrollValue < buttonAlloc.y2 + 10)
-            newScrollValue = buttonAlloc.y2 - boxHeight + 10;
-        if (newScrollValue != currentScrollValue)
-            appsScrollBoxAdj.set_value(newScrollValue);
+        let box = button.actor.get_allocation_box();
+        let buttonHeight = box.y1 - box.y2;
+        direction == Constants.DIRECTION.UP ? buttonHeight = buttonHeight : buttonHeight = -buttonHeight;
+        appsScrollBoxAdj.set_value(currentScrollValue + buttonHeight );
     }
     
     setDefaultMenuView(){

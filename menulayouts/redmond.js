@@ -106,6 +106,13 @@ var createMenu = class {
             overlay_scrollbars: true,
             style_class: 'vfade'
         });   
+        this.shortcutsScrollBox.connect('key-press-event',(actor,event)=>{
+            let key = event.get_key_symbol();
+            if(key == Clutter.Up || key == Clutter.KP_Up)
+                this.scrollToItem(this.activeMenuItem, Constants.DIRECTION.UP);
+            else if(key == Clutter.Down || key == Clutter.KP_Down)
+                this.scrollToItem(this.activeMenuItem,Constants.DIRECTION.DOWN);
+        }) ;  
         this.shortcutsScrollBox.style = "width:450px;";   
         this.shortcutsScrollBox.set_policy(Gtk.PolicyType.AUTOMATIC, Gtk.PolicyType.AUTOMATIC);
         this.shortcutsScrollBox.add_actor( this.shorcutsBox);
@@ -587,19 +594,13 @@ var createMenu = class {
       	    return addToMenu;
         }
         // Scroll to a specific button (menu item) in the applications scroll view
-        scrollToButton(button) {
+        scrollToItem(button,direction) {
             let appsScrollBoxAdj = this.shortcutsScrollBox.get_vscroll_bar().get_adjustment();
-            let appsScrollBoxAlloc = this.shortcutsScrollBox.get_allocation_box();
             let currentScrollValue = appsScrollBoxAdj.get_value();
-            let boxHeight = appsScrollBoxAlloc.y2 - appsScrollBoxAlloc.y1;
-            let buttonAlloc = button.actor.get_allocation_box();
-            let newScrollValue = currentScrollValue;
-            if (currentScrollValue > buttonAlloc.y1 - 10)
-                newScrollValue = buttonAlloc.y1 - 10;
-            if (boxHeight + currentScrollValue < buttonAlloc.y2 + 10)
-                newScrollValue = buttonAlloc.y2 - boxHeight + 10;
-            if (newScrollValue != currentScrollValue)
-                appsScrollBoxAdj.set_value(newScrollValue);
+            let box = button.actor.get_allocation_box();
+            let buttonHeight = box.y1 - box.y2;
+            direction == Constants.DIRECTION.UP ? buttonHeight = buttonHeight : buttonHeight = -buttonHeight;
+            appsScrollBoxAdj.set_value(currentScrollValue + buttonHeight );
         }
         
         setDefaultMenuView(){

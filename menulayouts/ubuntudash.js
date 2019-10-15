@@ -106,6 +106,13 @@ var createMenu = class{
             overlay_scrollbars: true,
             style_class: 'vfade'
         });   
+        this.shortcutsScrollBox.connect('key-press-event',(actor,event)=>{
+            let key = event.get_key_symbol();
+            if(key == Clutter.Up || key == Clutter.KP_Up)
+                this.scrollToItem(this.activeMenuItem, Constants.DIRECTION.UP);
+            else if(key == Clutter.Down || key == Clutter.KP_Down)
+                this.scrollToItem(this.activeMenuItem,Constants.DIRECTION.DOWN);
+        }) ;
         this.shortcutsScrollBox.style = "width:750px;";   
         this.shortcutsScrollBox.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC);
         this.shortcutsScrollBox.add_actor( this.shorcutsBox);
@@ -328,9 +335,14 @@ var createMenu = class{
     	}
         getShouldShowShortcut(shortcutName){
         }
-        scrollToButton(button) {
+        scrollToItem(button,direction) {
+            let appsScrollBoxAdj = this.shortcutsScrollBox.get_vscroll_bar().get_adjustment();
+            let currentScrollValue = appsScrollBoxAdj.get_value();
+            let box = button.actor.get_allocation_box();
+            let buttonHeight = box.y1 - box.y2;
+            direction == Constants.DIRECTION.UP ? buttonHeight = buttonHeight : buttonHeight = -buttonHeight;
+            appsScrollBoxAdj.set_value(currentScrollValue + buttonHeight );
         }
-        
         setDefaultMenuView(){
             this.searchBox.clear();
             this._clearApplicationsBox();

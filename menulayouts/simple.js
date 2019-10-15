@@ -232,10 +232,6 @@ var createMenu = class{
     }
     getShouldShowShortcut(shortcutName){
     }
-    // Scroll to a specific button (menu item) in the applications scroll view
-    scrollToButton(button) {
-
-    }
     
     setDefaultMenuView(){
 

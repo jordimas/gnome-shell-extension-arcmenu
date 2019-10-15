@@ -154,6 +154,11 @@
       <summary>Enable Custom Arc Menu Theme</summary>
       <description>Enable Custom Arc Menu Theme.</description>
     </key>
+    <key type="b" name="enable-custom-arc-menu-layout">
+     <default>false</default>
+      <summary>Enable Custom Arc Menu Layout</summary>
+      <description>Enable Custom Arc Menu Layout.</description>
+    </key>
 	<key type="b" name="show-computer-shortcut">
      <default>false</default>
       <summary>Show Computer Shortcut</summary>

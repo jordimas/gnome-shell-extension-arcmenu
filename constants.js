@@ -31,7 +31,10 @@ var COLOR_PRESET = {
     Path: '/media/color-preset.svg',
     Size: [200, 35] // width, height
 };
-
+var DIRECTION = {
+    UP: 0,
+    DOWN: 1
+}
 var CURRENT_MENU = {
     FAVORITES: 0,
     CATEGORIES: 1,
