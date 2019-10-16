@@ -160,6 +160,10 @@ Additional credits: This extension also leverages the work from [Giovanni Campag
 
 -----
 
+### Translations
+
+-----
+
 #### Please refer to the Wiki section for a [Translation Guide](https://gitlab.com/LinxGem33/Arc-Menu/wikis/Translation-Guide)
 
 - **Current translated languages and translators..**
