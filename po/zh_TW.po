@@ -1,0 +1,685 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2019-10-02 18:48-0400\n"
+"PO-Revision-Date: 2019-10-15 18:13+0800\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Poedit 2.2.1\n"
+"Last-Translator: Pin-Hsien Lee <pspeter9931@gmail.com>\n"
+"Language: zh_TW\n"
+
+#: controller.js:294 menuWidgets.js:2165
+msgid "Applications"
+msgstr "應用程式"
+
+#: menu.js:472 menuWidgets.js:959
+msgid "Arc Menu Settings"
+msgstr "Arc Menu 設定"
+
+#: menu.js:481
+msgid "Arc Menu on GitLab"
+msgstr "GitLab 上的 Arc Menu"
+
+#: menu.js:486
+msgid "About Arc Menu"
+msgstr "關於 Arc Menu"
+
+#: menu.js:494
+msgid "Dash to Panel Settings"
+msgstr "Dash to Panel 設定"
+
+#: menuWidgets.js:127
+msgid "Open Folder Location"
+msgstr "開啟資料夾位置"
+
+#: menuWidgets.js:143
+msgid "Current Windows:"
+msgstr "目前視窗："
+
+#: menuWidgets.js:162
+msgid "New Window"
+msgstr "新視窗"
+
+#: menuWidgets.js:172
+msgid "Launch using Dedicated Graphics Card"
+msgstr "以專用顯示卡啟動"
+
+#: menuWidgets.js:195
+msgid "Remove from Favorites"
+msgstr "自喜好中移除"
+
+#: menuWidgets.js:201
+msgid "Add to Favorites"
+msgstr "加入喜好"
+
+#: menuWidgets.js:222 menuWidgets.js:274
+msgid "Unpin from Arc Menu"
+msgstr "自 Arc Menu 中取消釘選"
+
+#: menuWidgets.js:236
+msgid "Pin to Arc Menu"
+msgstr "釘選至 Arc Menu"
+
+#: menuWidgets.js:249
+msgid "Show Details"
+msgstr "顯示詳細資訊"
+
+#: menuWidgets.js:425 prefs.js:2886
+msgid "Activities Overview"
+msgstr "活動概覽"
+
+#: menuWidgets.js:586
+msgid "Firefox"
+msgstr "Firefox"
+
+#: menuWidgets.js:598
+msgid "Files"
+msgstr "檔案"
+
+#: menuWidgets.js:610 prefs.js:2886
+msgid "Software"
+msgstr "軟體"
+
+#: menuWidgets.js:622 menuWidgets.js:960 prefs.js:2886
+msgid "Terminal"
+msgstr "終端機"
+
+#: menuWidgets.js:635 prefs.js:2886
+msgid "Settings"
+msgstr "設定"
+
+#: menuWidgets.js:647
+msgid "Users"
+msgstr "使用者"
+
+#: menuWidgets.js:659 prefs.js:2984
+msgid "Power Off"
+msgstr "關機"
+
+#: menuWidgets.js:672 prefs.js:2966
+msgid "Log Out"
+msgstr "登出"
+
+#: menuWidgets.js:685 prefs.js:2930
+msgid "Suspend"
+msgstr "暫停"
+
+#: menuWidgets.js:703 prefs.js:2948
+msgid "Lock"
+msgstr "鎖定"
+
+#: menuWidgets.js:727
+msgid "Back"
+msgstr "後退"
+
+#: menuWidgets.js:795 menuWidgets.js:1573 menuWidgets.js:1715
+#: menuWidgets.js:1862
+msgid "All Programs"
+msgstr "所有程式"
+
+#: menuWidgets.js:1573 menuWidgets.js:1715 menuWidgets.js:1862
+msgid "Favorites"
+msgstr "喜好"
+
+#: menuWidgets.js:1576 menuWidgets.js:1718 menuWidgets.js:1865
+msgid "Frequent Apps"
+msgstr "常用程式"
+
+#: menuWidgets.js:1999
+msgid "Type to search…"
+msgstr "輸入以搜尋…"
+
+#: placeDisplay.js:143
+#, javascript-format
+msgid "Failed to launch “%s”"
+msgstr "啟動「%s」失敗"
+
+#: placeDisplay.js:158
+#, javascript-format
+msgid "Failed to mount volume for “%s”"
+msgstr "掛載卷冊「%s」失敗"
+
+#: placeDisplay.js:242 placeDisplay.js:265 prefs.js:2790
+msgid "Computer"
+msgstr "電腦"
+
+#: placeDisplay.js:326
+#, javascript-format
+msgid "Ejecting drive “%s” failed:"
+msgstr "退出裝置「%s」失敗："
+
+#: placeDisplay.js:452 prefs.js:2790
+msgid "Home"
+msgstr "家目錄"
+
+#: prefs.js:43 prefs.js:679
+msgid "Pinned Apps"
+msgstr "釘選程式"
+
+#: prefs.js:48
+msgid "Your Pinned Apps:"
+msgstr "您的釘選程式："
+
+#: prefs.js:72
+msgid "Add More Apps"
+msgstr "加入更多程式"
+
+#: prefs.js:116
+msgid "Add Custom Shortcut"
+msgstr "加入自訂快捷鍵"
+
+#: prefs.js:150 prefs.js:506
+msgid "Save"
+msgstr "儲存"
+
+#: prefs.js:303
+msgid "Select Apps to add to Pinned Apps List"
+msgstr "選擇程式並加入「釘選程式」清單"
+
+#: prefs.js:323 prefs.js:506
+msgid "Add"
+msgstr "加入"
+
+#: prefs.js:435
+msgid "Edit Pinned App"
+msgstr "編輯釘選程式"
+
+#: prefs.js:435
+msgid "Add a Custom Shortcut"
+msgstr "加入自訂快捷鍵"
+
+#: prefs.js:445
+msgid "Shortcut Name:"
+msgstr "快捷鍵名稱："
+
+#: prefs.js:460
+msgid "Icon:"
+msgstr "圖示："
+
+#: prefs.js:473 prefs.js:1128
+msgid "Please select an image icon"
+msgstr "請選擇一個圖示"
+
+#: prefs.js:492
+msgid "Terminal Command:"
+msgstr "終端機指令："
+
+#: prefs.js:550
+msgid "General"
+msgstr "一般"
+
+#: prefs.js:559
+msgid "Menu Button Position in Panel"
+msgstr "面板內的選單按鈕位置"
+
+#: prefs.js:566
+msgid "Left"
+msgstr "左"
+
+#: prefs.js:569
+msgid "Center"
+msgstr "中"
+
+#: prefs.js:573
+msgid "Right"
+msgstr "右"
+
+#: prefs.js:611
+msgid "Display on all monitors when using Dash to Panel"
+msgstr "使用 Dash to Panel 時，於所有螢幕上顯示"
+
+#: prefs.js:632
+msgid "Disable Tooltips"
+msgstr "停用工具提示"
+
+#: prefs.js:654
+msgid "Disable activities hot corner"
+msgstr "停用活動區熱角"
+
+#: prefs.js:673
+msgid "Choose Arc Menus Default View"
+msgstr "選擇 Arc Menu 的預設檢視"
+
+#: prefs.js:680
+msgid "Categories List"
+msgstr "類別清單"
+
+#: prefs.js:701
+msgid "Hotkey activation"
+msgstr "熱鍵啟動於"
+
+#: prefs.js:707
+msgid "Key Release"
+msgstr "放開按鍵時"
+
+#: prefs.js:708
+msgid "Key Press"
+msgstr "按下按鍵時"
+
+#: prefs.js:732
+msgid "Set Menu Hotkey"
+msgstr "設定選單熱鍵"
+
+#: prefs.js:742
+msgid "Left Super Key"
+msgstr "左 Super 鍵"
+
+#: prefs.js:748
+msgid "Right Super Key"
+msgstr "右 Super 鍵"
+
+#: prefs.js:753
+msgid "Custom"
+msgstr "自訂"
+
+#: prefs.js:758
+msgid "None"
+msgstr "無"
+
+#: prefs.js:853
+msgid "Current Hotkey"
+msgstr "目前熱鍵"
+
+#: prefs.js:880
+msgid "Set Custom Shortcut"
+msgstr "設定自訂快捷鍵"
+
+#: prefs.js:889
+msgid "Press a key"
+msgstr "請按下任意鍵"
+
+#: prefs.js:914
+msgid "Modifiers"
+msgstr "修飾鍵"
+
+#: prefs.js:919
+msgid "Ctrl"
+msgstr "Ctrl"
+
+#: prefs.js:924
+msgid "Super"
+msgstr "Super"
+
+#: prefs.js:928
+msgid "Shift"
+msgstr "Shift"
+
+#: prefs.js:932
+msgid "Alt"
+msgstr "Alt"
+
+#: prefs.js:996 prefs.js:1577 prefs.js:1815 prefs.js:2058 prefs.js:2705
+msgid "Apply"
+msgstr "套用"
+
+#: prefs.js:1031
+msgid "Button appearance"
+msgstr "按鈕外觀"
+
+#: prefs.js:1043
+msgid "Text for the menu button"
+msgstr "選單按鈕的文字"
+
+#: prefs.js:1049
+msgid "System text"
+msgstr "系統文字"
+
+#: prefs.js:1052
+msgid "Custom text"
+msgstr "自訂文字"
+
+#: prefs.js:1076
+msgid "Set custom text for the menu button"
+msgstr "為選單按鈕設定自訂文字"
+
+#: prefs.js:1096
+msgid "Enable the arrow icon beside the button text"
+msgstr "啟用按鈕文字旁的箭頭圖示"
+
+#: prefs.js:1118
+msgid "Select icon for the menu button"
+msgstr "挑選選單按鈕的圖示"
+
+#: prefs.js:1133
+msgid "Arc Menu Icon"
+msgstr "Arc Menu 圖示"
+
+#: prefs.js:1134
+msgid "System Icon"
+msgstr "系統圖示"
+
+#: prefs.js:1135
+msgid "Custom Icon"
+msgstr "自訂圖示"
+
+#: prefs.js:1161
+msgid "Icon size"
+msgstr "圖示大小"
+
+#: prefs.js:1161
+msgid "default is"
+msgstr "預設為"
+
+#: prefs.js:1201
+msgid "Appearance"
+msgstr "外觀"
+
+#: prefs.js:1223
+msgid "Customize Menu Button Appearance"
+msgstr "自訂選單按鈕外觀"
+
+#: prefs.js:1233
+msgid "Icon"
+msgstr "圖示"
+
+#: prefs.js:1234
+msgid "Text"
+msgstr "文字"
+
+#: prefs.js:1235
+msgid "Icon and Text"
+msgstr "圖示和文字"
+
+#: prefs.js:1236
+msgid "Text and Icon"
+msgstr "文字和圖示"
+
+#: prefs.js:1259 prefs.js:1647
+msgid "Customize Arc Menu Appearance"
+msgstr "自訂 Arc Menu 外觀"
+
+#: prefs.js:1309 prefs.js:2215
+msgid "Override Arc Menu Theme"
+msgstr "覆蓋 Arc Menu 主題"
+
+#: prefs.js:1374
+msgid "Current Color Theme"
+msgstr "目前色彩主題"
+
+#: prefs.js:1398
+msgid "Choose Avatar Icon Shape"
+msgstr "選擇頭像圖示形狀"
+
+#: prefs.js:1403
+msgid "Circular"
+msgstr "圓形"
+
+#: prefs.js:1404
+msgid "Square"
+msgstr "方形"
+
+#: prefs.js:1422
+msgid "Choose Menu Layout"
+msgstr "挑選選單布局"
+
+#: prefs.js:1454
+msgid "Current Layout"
+msgstr "目前布局"
+
+#: prefs.js:1473
+msgid "Each layout is different in behaviour and style."
+msgstr "每個布局的行為及樣式皆有所不同。"
+
+#: prefs.js:1474
+msgid "All layouts can be modified by customization settings."
+msgstr "所有布局可由自訂設定更改。"
+
+#: prefs.js:1475
+msgid "However, some settings are specifc to Arc Menu layout."
+msgstr "不過，某些設定僅供 Arc Menu 布局使用。"
+
+#: prefs.js:1534
+msgid "Menu style chooser"
+msgstr "選單主題挑選器"
+
+#: prefs.js:1543
+msgid "Arc Menu Layout"
+msgstr "Arc Menu 布局"
+
+#: prefs.js:1665
+msgid "Menu Height"
+msgstr "選單高度"
+
+#: prefs.js:1697
+msgid "Left-Panel Width"
+msgstr "左側面板寛度"
+
+#: prefs.js:1722
+msgid "Large Application Icons"
+msgstr "大型應用程式圖示"
+
+#: prefs.js:1741 prefs.js:2601
+msgid "Enable Vertical Separator"
+msgstr "啟用垂直分隔線"
+
+#: prefs.js:1760 prefs.js:2625
+msgid "Separator Color"
+msgstr "分隔線顏色"
+
+#: prefs.js:1782 prefs.js:2651
+msgid "Reset"
+msgstr "重設"
+
+#: prefs.js:1850
+msgid "Color Theme Name"
+msgstr "色彩主題名稱"
+
+#: prefs.js:1857
+msgid "Name:"
+msgstr "名稱："
+
+#: prefs.js:1883
+msgid "Save Theme"
+msgstr "儲存主題"
+
+#: prefs.js:1915
+msgid "Select Themes to Import"
+msgstr "選擇要匯入的主題"
+
+#: prefs.js:1915
+msgid "Select Themes to Export"
+msgstr "選擇要匯出的主題"
+
+#: prefs.js:1937
+msgid "Import"
+msgstr "匯入"
+
+#: prefs.js:1937
+msgid "Export"
+msgstr "匯出"
+
+#: prefs.js:1979
+msgid "Select All"
+msgstr "選擇全部"
+
+#: prefs.js:2039
+msgid "Manage Themes"
+msgstr "管理主題"
+
+#: prefs.js:2228
+msgid "Color Theme Presets"
+msgstr "色彩主題預置"
+
+#: prefs.js:2238
+msgid "Save as Preset"
+msgstr "儲存為預置"
+
+#: prefs.js:2333
+msgid "Manage Presets"
+msgstr "管理預置"
+
+#: prefs.js:2364
+msgid "Menu Background Color"
+msgstr "選單背景顏色"
+
+#: prefs.js:2389
+msgid "Menu Foreground Color"
+msgstr "選單前景顏色"
+
+#: prefs.js:2411
+msgid "Font Size"
+msgstr "字型大小"
+
+#: prefs.js:2439
+msgid "Border Color"
+msgstr "邊框顏色"
+
+#: prefs.js:2462
+msgid "Border Size"
+msgstr "邊框大小"
+
+#: prefs.js:2491
+msgid "Highlighted Item Color"
+msgstr "標亮項目顏色"
+
+#: prefs.js:2515
+msgid "Corner Radius"
+msgstr "邊角半徑"
+
+#: prefs.js:2544
+msgid "Menu Arrow Size"
+msgstr "選單箭頭大小"
+
+#: prefs.js:2573
+msgid "Menu Displacement"
+msgstr "選單位移"
+
+#: prefs.js:2773
+msgid "Configure"
+msgstr "設定"
+
+#: prefs.js:2780
+msgid "Enable/Disable shortcuts"
+msgstr "啟用/禁用快捷鍵"
+
+#: prefs.js:2790
+msgid "Documents"
+msgstr "文件"
+
+#: prefs.js:2790
+msgid "Downloads"
+msgstr "下載"
+
+#: prefs.js:2790
+msgid "Music"
+msgstr "音樂"
+
+#: prefs.js:2790
+msgid "Pictures"
+msgstr "圖片"
+
+#: prefs.js:2790
+msgid "Videos"
+msgstr "影片"
+
+#: prefs.js:2791
+msgid "Network"
+msgstr "網路"
+
+#: prefs.js:2835
+msgid "External Devices"
+msgstr "外部裝置"
+
+#: prefs.js:2858
+msgid "Bookmarks"
+msgstr "書籤"
+
+#: prefs.js:2886
+msgid "Tweaks"
+msgstr "調校"
+
+#: prefs.js:3017
+msgid "Misc"
+msgstr "其他"
+
+#: prefs.js:3023
+msgid "Export and Import Arc Menu Settings"
+msgstr "匯出及匯入 Arc Menu 設定"
+
+#: prefs.js:3030
+msgid "All current Arc Menu settings will be changed when importing from file."
+msgstr "從檔案匯入時，所有目前 Arc Menu 的設定將被更改。"
+
+#: prefs.js:3031
+msgid "This includes all saved pinned apps."
+msgstr "這也包括所有已儲存的釘選程式。"
+
+#: prefs.js:3040
+msgid "Import from File"
+msgstr "從檔案匯入"
+
+#: prefs.js:3046
+msgid "Import settings"
+msgstr "匯入設定"
+
+#: prefs.js:3075
+msgid "Export to File"
+msgstr "匯出至檔案"
+
+#: prefs.js:3082
+msgid "Export settings"
+msgstr "匯出設定"
+
+#: prefs.js:3113
+msgid "Color Theme Presets - Export/Import"
+msgstr "色彩主題預置 - 匯出/匯入"
+
+#: prefs.js:3132
+msgid "Imported theme presets are located on the Appearance Tab"
+msgstr "已匯入的主題預置位於「外觀」分頁"
+
+#: prefs.js:3133
+msgid "in Override Arc Menu Theme"
+msgstr "「覆蓋 Arc Menu 主題」底下"
+
+#: prefs.js:3144 prefs.js:3150
+msgid "Import Theme Preset"
+msgstr "匯入主題預置"
+
+#: prefs.js:3190 prefs.js:3201
+msgid "Export Theme Preset"
+msgstr "匯出主題預置"
+
+#: prefs.js:3278
+msgid "About"
+msgstr "關於"
+
+#: prefs.js:3306
+msgid "Arc-Menu"
+msgstr "Arc-Menu"
+
+#: prefs.js:3311
+msgid "version: "
+msgstr "版本： "
+
+#: prefs.js:3315
+msgid "The new applications menu for Gnome 3"
+msgstr "為 Gnome 3 設計的新應用程式選單"
+
+#: prefs.js:3319
+msgid "GitLab Page"
+msgstr "GitLab 頁面"
+
+#: searchGrid.js:676 search.js:653
+msgid "Searching..."
+msgstr "搜尋..."
+
+#: searchGrid.js:678 search.js:655
+msgid "No results."
+msgstr "没有結果。"
+
+#: searchGrid.js:765 search.js:734
+#, javascript-format
+msgid "%d more"
+msgid_plural "%d more"
+msgstr[0] "還有 %d 個"
