@@ -105,6 +105,8 @@ Arc Menu is available under the terms of the GPL-2.0 license See [`COPYING`](htt
 
 Arc-Menu is Free Software: You can use, study share and improve it at your will. Specifically you can redistribute and/or modify it under the terms of the [GNU General Public License](https://www.gnu.org/licenses/gpl.html) as published by the Free Software Foundation, either version 2 of the License, or (at your option) any later version. 
 
+All ArcMenu's Image assets including all wiki images and application image assets are created by [LinxGem33](https://gitlab.com/LinxGem33) and licensed under the; [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/)
+
 -----
 
 ### Credits
