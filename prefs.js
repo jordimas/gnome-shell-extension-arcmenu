@@ -3553,7 +3553,8 @@ function saveCSS(settings){
         +"-arrow-base:"+  menuMargin+"px;\n"
         +"-arrow-rise:"+  menuArrowSize+"px;\n"
         +"-arrow-box-shadow: 0 1px 3px black;\n }"
-
+        +"\n.arc-menu .popup-menu-content\n {\nmargin: 0;\nbackground-color: transparent;\nborder-radius: 0px;\nbox-shadow: 0;\n}\n"
+        
         +"\n.arc-menu-sep {\nheight: 1px;\nmargin: 5px 20px;\nbackground-color: transparent;"
         +"\nborder-color:"+  separatorColor+";\n border-bottom-width: 1px;\nborder-bottom-style: solid;\n }"
 
@@ -3575,6 +3576,7 @@ function saveCSS(settings){
         +"-arrow-base:"+  menuMargin+"px;\n"
         +"-arrow-rise:"+  menuArrowSize+"px;\n"
         +"-arrow-box-shadow: 0 1px 3px black;\n }"
+        +"\n.arc-right-click .popup-menu-content\n {\nmargin: 0;\nbackground-color: transparent;\nborder-radius: 0px;\nbox-shadow: 0;\n}\n"
         
         +"\n.app-right-click-sep {\nheight: 1px;\nmargin: 2px 35px;\nbackground-color: transparent;"
         +"\nborder-color:"+  lighten_rgb(separatorColor,0.05) +";\nborder-bottom-width: 1px;\nborder-bottom-style: solid; \n}";
