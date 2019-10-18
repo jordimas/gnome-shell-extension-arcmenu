@@ -114,6 +114,14 @@ color: rgba(255,255,255,1);
 -arrow-rise:0px;
 -arrow-box-shadow: 0 1px 3px black;
  }
+.arc-menu .popup-menu-content
+ {
+margin: 0;
+background-color: transparent;
+border-radius: 0px;
+box-shadow: 0;
+}
+
 .arc-menu-sep {
 height: 1px;
 margin: 5px 20px;
@@ -169,6 +177,14 @@ color: rgba(255,255,255,1);
 -arrow-rise:0px;
 -arrow-box-shadow: 0 1px 3px black;
  }
+.arc-right-click .popup-menu-content
+ {
+margin: 0;
+background-color: transparent;
+border-radius: 0px;
+box-shadow: 0;
+}
+
 .app-right-click-sep {
 height: 1px;
 margin: 2px 35px;
