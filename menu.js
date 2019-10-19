@@ -139,6 +139,12 @@ var ApplicationsButton =   Utils.defineClass({
                 this.name = 'panelApplications';
                 this.connect('captured-event', this._onCapturedEvent.bind(this));
                 this.connect('destroy', this.destroy.bind(this));
+                this._showingId = Main.overview.connect('showing', () => {
+                    this.add_accessible_state(Atk.StateType.CHECKED);
+                });
+                this._hidingId = Main.overview.connect('hiding', () => {
+                    this.remove_accessible_state(Atk.StateType.CHECKED);
+                });
             }
             else{
                 this.actor.accessible_role = Atk.Role.LABEL;            
@@ -146,15 +152,14 @@ var ApplicationsButton =   Utils.defineClass({
                 this.actor.name = 'panelApplications';
                 this.actor.connect('captured-event', this._onCapturedEvent.bind(this));
                 this.actor.connect('destroy', this.destroy.bind(this));
+                this._showingId = Main.overview.connect('showing', () => {
+                    this.actor.add_accessible_state(Atk.StateType.CHECKED);
+                });
+                this._hidingId = Main.overview.connect('hiding', () => {
+                    this.actor.remove_accessible_state(Atk.StateType.CHECKED);
+                });
             }
 
-            this._showingId = Main.overview.connect('showing', () => {
-                this.actor.add_accessible_state(Atk.StateType.CHECKED);
-            });
-            this._hidingId = Main.overview.connect('hiding', () => {
-                this.actor.remove_accessible_state(Atk.StateType.CHECKED);
-            });
-            
             this.reloadFlag = false;
             if (this.sourceActor)
                 this._keyReleaseId = this.sourceActor.connect('key-release-event', this._onKeyRelease.bind(this));  
@@ -479,13 +484,17 @@ var ApplicationsButton =   Utils.defineClass({
                     let layout = this._settings.get_enum('menu-layout');
                     if(!(layout == Constants.MENU_LAYOUT.Simple || layout == Constants.MENU_LAYOUT.Simple2))
                         this.mainBox.show();  	
-                }
-                    
+                } 
             }
-            if (open)
+            if (open){
+                if(this.menuManager.activeMenu) 
+                    this.menuManager.activeMenu.close(1 << 1);
                 modernGnome ?  this.add_style_pseudo_class('active') : this.actor.add_style_pseudo_class('active');
-            else
+            }      
+            else{
                 modernGnome ? this.remove_style_pseudo_class('active'): this.actor.remove_style_pseudo_class('active');
+            }
+             
         }
     });
 // Aplication menu class
