@@ -131,8 +131,8 @@ var ApplicationsButton =   Utils.defineClass({
             });
             //-----------------------------------------------------------------------------------
             
-             //Add Menu Button Widget to Button
-            (this.actor || this).add_actor(this._menuButtonWidget.actor);
+            //Add Menu Button Widget to Button
+            sourceActor.add_actor(this._menuButtonWidget.actor);
 
             //Create Basic Layout ------------------------------------------------
             this.section = new PopupMenu.PopupMenuSection();
