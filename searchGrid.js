@@ -753,12 +753,13 @@ var ArcSearchProviderInfo =Utils.createClass({
         this._content.add_actor(icon);
         this._content.add_actor(this.nameLabel);
         let isMenuItem = true;
-        this.actor.connect('notify::hover', this._onHover.bind(this));
+        this.hoverID = this.actor.connect('notify::hover', this._onHover.bind(this));
         if(provider.appInfo.get_description()!=null){
             this.tooltip = new MW.Tooltip(this.actor, provider.appInfo.get_description(),isMenuItem,this._button._settings);
             this.tooltip.hide();
             
         }
+        this.actor.connect('destroy', this._destroy.bind(this));
     },
     _onHover() {
         if(this._button.newSearch._highlightDefault)
