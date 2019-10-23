@@ -57,7 +57,7 @@ class ArcMenu_SearchMaxWidthBin2 extends St.Bin {
 
 var ListSearchResult = class {
     constructor(provider, metaInfo, resultsView) {
-        this.provider = provider;
+    this.provider = provider;
         this._button= resultsView._button;
         this.metaInfo = metaInfo;
         this._resultsView = resultsView;
@@ -72,10 +72,11 @@ var ListSearchResult = class {
         else{
             this.menuItem =  new MW.SearchResultItem(this._button); 
         }
-       
+
+        this.menuItem.connect('destroy', this._onDestroy.bind(this));
         this.menuItem.connect('activate', this.activate.bind(this));
 
-        let isMenuItem=true;
+          let isMenuItem=true;
         if(this.metaInfo['description'] || ((app!=undefined) ? app.get_description() : false))
         {
             this.tooltip = new MW.Tooltip(this.menuItem.actor, this.metaInfo['description'] ? this.metaInfo['description']:  app.get_description(),isMenuItem,this._settings);
@@ -112,7 +113,7 @@ var ListSearchResult = class {
             this.tooltip.hide();
         }
     }
-    activate() {
+      activate() {
         //global.log('activate');
         this.emit('activate', this.metaInfo.id);
     }
@@ -122,9 +123,9 @@ var ListSearchResult = class {
     }
 
     _onDestroy() {
-        if (this._termsChangedId)
-            this._resultsView.disconnect(this._termsChangedId);
-        this._termsChangedId = 0;
+        if(this.tooltip!=undefined){
+            this.tooltip.destroy();
+        }
     }
 };Signals.addSignalMethods(ListSearchResult.prototype);
 
@@ -177,21 +178,27 @@ var AppSearchResult = class {
                 y_align: St.Align.END,
                 x_align: St.Align.END
             });
-            this.menuItem.actor.add_child(label);
-            let isMenuItem=true;
-            if(this.metaInfo['description'] || ((app!=undefined) ? app.get_description() : false))
-            {
-                this.tooltip = new MW.Tooltip(this.menuItem.actor, this.metaInfo['description'] ? this.metaInfo['description']:  app.get_description(),isMenuItem,this._button._settings);
-                this.tooltip.hide();
-                this.menuItem.actor.connect('notify::hover', this._onHover.bind(this));
-            }
-            this.menuItem.connect('activate', this.activate.bind(this))
+        this.menuItem.actor.add_child(label);
+        let isMenuItem=true;
+        if(this.metaInfo['description'] || ((app!=undefined) ? app.get_description() : false))
+        {
+            this.tooltip = new MW.Tooltip(this.menuItem.actor, this.metaInfo['description'] ? this.metaInfo['description']:  app.get_description(),isMenuItem,this._button._settings);
+            this.tooltip.hide();
+            this.menuItem.actor.connect('notify::hover', this._onHover.bind(this));
+        }
+        this.menuItem.connect('activate', this.activate.bind(this));
+        this.menuItem.connect('destroy', this._onDestroy.bind(this));
         }
        
     }
     activate() {
         //global.log('activate');
         this.emit('activate', this.metaInfo.id);
+    }
+    _onDestroy() {
+        if(this.tooltip!=undefined){
+            this.tooltip.destroy();
+        }
     }
     _onHover() {
 
@@ -224,7 +231,7 @@ var SearchResultsBase = class {
     }
 
     destroy() {
-        this.actor.destroy();
+        this.actor.destroy_all_children();
         this._terms = [];
     }
 
@@ -384,7 +391,14 @@ var ListSearchResults = class extends SearchResultsBase {
         return super._createResultDisplay(meta, this._resultsView) ||
                new ListSearchResult(this.provider, meta, this._resultsView);
     }
-
+    clear() {
+        this.providerInfo.destroy();
+        super.clear();
+    }
+    destroy() {
+        this.providerInfo.destroy();
+        super.destroy();
+    }
     _addItem(display) {
         //global.log(display.actor);
         this._content.add_actor(display.menuItem.actor);
@@ -405,7 +419,7 @@ var AppSearchResults = class extends SearchResultsBase {
         this._parentContainer = resultsView.actor;
         this._grid = new St.BoxLayout({vertical: false });
         this._grid.style = "padding: 10px;"
-        this._resultDisplayBin.set_child(this._grid);  
+        this._resultDisplayBin.set_child(this._grid);
     }
 
     _getMaxDisplayedResults() {
@@ -445,7 +459,7 @@ var SearchResults = class {
                                              y_fill: true,
                                              child: this._content, });
         let scrollChild = new St.BoxLayout();
-        scrollChild.add(this._contentBin, { expand: true, x_fill: true,x_align: St.Align.START });
+ scrollChild.add(this._contentBin, { expand: true, x_fill: true,x_align: St.Align.START });
         this.actor.add(scrollChild);
        
         this._statusText = new St.Label();
@@ -470,23 +484,22 @@ var SearchResults = class {
         this._highlightRegex = null;
 
         this._searchSettings = new Gio.Settings({ schema_id: SEARCH_PROVIDERS_SCHEMA });
-        this._searchSettings.connect('changed::disabled', this._reloadRemoteProviders.bind(this));
-        this._searchSettings.connect('changed::enabled', this._reloadRemoteProviders.bind(this));
-        this._searchSettings.connect('changed::disable-external', this._reloadRemoteProviders.bind(this));
-        this._searchSettings.connect('changed::sort-order', this._reloadRemoteProviders.bind(this));
 
         this._searchTimeoutId = 0;
         this._cancellable = new Gio.Cancellable();
 
         this._registerProvider(new AppDisplay.AppSearchProvider());
 
-        appSys.connect('installed-changed', this._reloadRemoteProviders.bind(this));
         this._reloadRemoteProviders();
     }
     setStyle(style){
         this._statusText.style_class = style;
     }
-
+    destroy(){
+        this._providers.forEach(provider => {
+            provider.display.destroy();
+        });
+    }
     _reloadRemoteProviders() {
         let remoteProviders = this._providers.filter(p => p.isRemoteProvider);
         remoteProviders.forEach(provider => {
@@ -723,7 +736,7 @@ var SearchResults = class {
 Signals.addSignalMethods(SearchResults.prototype);
 
 var ArcSearchProviderInfo =Utils.createClass({
-    Name: 'ArcMenu_ArcSearchProviderInfo2',
+     Name: 'ArcMenu_ArcSearchProviderInfo2',
     Extends: PopupMenu.PopupBaseMenuItem, 
     _init(provider,button) {
         this.callParent('_init');
@@ -767,8 +780,8 @@ var ArcSearchProviderInfo =Utils.createClass({
     setMoreCount(count) {
         this._moreText= ngettext("%d more", "%d more", count).format(count);
         if(count>0)
-            this.nameLabel.text = this.provider.appInfo.get_name() + "\n("+ this._moreText+")";
-    },
+        this.nameLabel.text = this.provider.appInfo.get_name() + "\n("+ this._moreText+")";
+     },
     _onButtonPressEvent(actor, event) {
         return Clutter.EVENT_PROPAGATE;
     },
@@ -778,5 +791,12 @@ var ArcSearchProviderInfo =Utils.createClass({
         }
         return Clutter.EVENT_STOP;
     },
+    _destroy(){
+        this.actor.disconnect(this.hoverID);
+        if(this.tooltip != undefined){
+            this.tooltip.destroy();
+        }
+        this.callParent('destroy');
+    }
 });
 

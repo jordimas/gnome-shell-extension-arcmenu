@@ -1113,31 +1113,22 @@ var ApplicationMenuIcon = Utils.createClass({
             this.layoutWidth = 85;
         }
             
-        
         this._app = app;
-        this.app = app;
-       
-        this.icon = new IconGrid.BaseIcon(app.get_name(), {createIcon: this._createIcon.bind(this), setSizeManually: true });
-       
-     
+
         this.actor.vertical = true;
             
-      
         this._iconBin = new St.Bin({
             y_align: St.Align.END,
             x_align: St.Align.MIDDLE
         });
         this.actor.add_child(this._iconBin);
 
-
         let wordCount = app.get_name().split(" ");
-       
 
         this.labelArray=[];
         if(wordCount.length > 1){
             let firstLineCount = wordCount[0].length + wordCount[1].length; 
-            if(firstLineCount<14){
-                
+            if(firstLineCount<14){  
                 let label = new St.Label({
                     text: wordCount[0]+ " " + wordCount[1],
                     y_expand: false,
@@ -1175,10 +1166,8 @@ var ApplicationMenuIcon = Utils.createClass({
                 for(let i = 2; i < wordCount.length; i++){
                     label.text+= " " + wordCount[i];
                 }
-                
             }
         }
-        
         else {
             for(let i = 0; i < wordCount.length; i++){
                 this.labelArray.push(new St.Label({
@@ -1190,17 +1179,16 @@ var ApplicationMenuIcon = Utils.createClass({
                 this.actor.add(this.labelArray[i]);
             }
         }
-            
-        
- 
-         
-      
 
         let textureCache = St.TextureCache.get_default();
         let iconThemeChangedId = textureCache.connect('icon-theme-changed',
             this._updateIcon.bind(this));
         this.actor.connect('destroy', () => {
-            textureCache.disconnect(iconThemeChangedId);
+                textureCache.disconnect(iconThemeChangedId);
+                this.rightClickMenu.destroy();
+                if(this.tooltip!=undefined){
+                    this.tooltip.destroy();
+            }
         });
         this._updateIcon();
         this.actor.connect('notify::hover', this._onHover.bind(this));
@@ -1213,13 +1201,8 @@ var ApplicationMenuIcon = Utils.createClass({
         this.actor.connect('notify::active',()=>{
             this._button.activeMenuItem = this;
         });
-        this._draggable = DND.makeDraggable(this.actor);
-        this.isDraggableApp = true;
-        this._draggable.connect('drag-begin', this._onDragBegin.bind(this));
-        this._draggable.connect('drag-cancelled', this._onDragCancelled.bind(this));
-        this._draggable.connect('drag-end', this._onDragEnd.bind(this));
 
-        this.rightClickMenu = new AppRightClickMenu(this.actor,this.app,this._button);
+        this.rightClickMenu = new AppRightClickMenu(this.actor,this._app,this._button);
         this._button.appMenuManager.addMenu(this.rightClickMenu);
         this.rightClickMenu.actor.hide();
         Main.uiGroup.add_actor(this.rightClickMenu.actor);
@@ -1232,7 +1215,7 @@ var ApplicationMenuIcon = Utils.createClass({
         this.callParent('setActive',active);
     },
     _createIcon(iconSize) {
-        return this.app.create_icon_texture(iconSize);
+        return this._app.create_icon_texture(iconSize);
     },
     _onButtonPressEvent(actor, event) {
 		
@@ -1259,17 +1242,6 @@ var ApplicationMenuIcon = Utils.createClass({
             this.tooltip ? this.tooltip.hide(): '';
         }
     },
-    _onDragBegin() {
-        Main.overview.beginItemDrag(this);
-    },
-
-    _onDragCancelled() {
-        Main.overview.cancelledItemDrag(this);
-    },
-
-    _onDragEnd() {
-        Main.overview.endItemDrag(this);
-    },
 
     _onKeyPressEvent(actor, event) {
         let symbol = event.get_key_symbol();
@@ -1285,15 +1257,6 @@ var ApplicationMenuIcon = Utils.createClass({
         return this._app.get_id();
     },
 
-    getDragActor() {
-        return this._app.create_icon_texture(MEDIUM_ICON_SIZE);
-    },
-
-    // Returns the original actor that should align with the actor
-    // we show as the item is being dragged.
-    getDragActorSource() {
-        return this.actor;
-    },
 
     // Activate menu item (Launch application)
     activate(event) {
