@@ -391,10 +391,6 @@ var ListSearchResults = class extends SearchResultsBase {
         return super._createResultDisplay(meta, this._resultsView) ||
                new ListSearchResult(this.provider, meta, this._resultsView);
     }
-    clear() {
-        this.providerInfo.destroy();
-        super.clear();
-    }
     destroy() {
         this.providerInfo.destroy();
         super.destroy();

@@ -222,10 +222,6 @@ var createMenu = class{
 
     }
     _redisplayRightSide(){
-        this.leftBox.destroy_all_children();
-        this._createLeftBox();
-        this._displayCategories();
-        this.updateStyle();
     }
     // Redisplay the menu
     _redisplay() {
