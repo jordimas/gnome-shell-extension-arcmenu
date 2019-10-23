@@ -1286,9 +1286,6 @@ var ApplicationMenuIcon = Utils.createClass({
             this._iconBin.set_child(this._app.create_icon_texture(52));
         else
             this._iconBin.set_child(this._app.create_icon_texture(36));    
-    },
-    _onDestroy(){
-
     }
 });
 var ApplicationMenuItem =Utils.createClass({
