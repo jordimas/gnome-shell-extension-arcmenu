@@ -64,7 +64,7 @@ var ApplicationsButton =   Utils.defineClass({
 
             //Create Main Button Left and Right Click Menus---------------------------------------------------
             let sourceActor =  modernGnome ?  this : this.actor;
-
+ 
             this.rightClickMenu = new RightClickMenu(sourceActor,1.0,St.Side.TOP);	
             this.rightClickMenu.connect('open-state-changed', this._onOpenStateChanged.bind(this));
            
@@ -145,7 +145,7 @@ var ApplicationsButton =   Utils.defineClass({
             //--------------------------------------------------------------------
 
             //Create Menu Layout--------------------------------------------------
-            let layout = this._settings.get_enum('menu-layout');
+           let layout = this._settings.get_enum('menu-layout');
             if(layout == Constants.MENU_LAYOUT.Default)
                 this.MenuLayout =  new MenuLayouts.arcmenu.createMenu(this);
             else if(layout == Constants.MENU_LAYOUT.Brisk)
@@ -167,7 +167,7 @@ var ApplicationsButton =   Utils.defineClass({
             else if (layout == Constants.MENU_LAYOUT.Simple2)
                 this.MenuLayout = new MenuLayouts.simple2.createMenu(this);  
             else if (layout == Constants.MENU_LAYOUT.UbuntuDash)
-                this.MenuLayout = new MenuLayouts.ubuntudash.createMenu(this);  
+                this.MenuLayout = new MenuLayouts.ubuntudash.createMenu(this); 
             ///--------------------------------------------------------------------
             this.updateStyle();
         },
@@ -229,7 +229,7 @@ var ApplicationsButton =   Utils.defineClass({
         },
         _onEvent(actor, event) {
     
-            if (event.type() == Clutter.EventType.BUTTON_PRESS){   
+             if (event.type() == Clutter.EventType.BUTTON_PRESS){   
                 if(event.get_button()==1){    
                     let layout = this._settings.get_enum('menu-layout');
                     if(layout == Constants.MENU_LAYOUT.GnomeDash)
@@ -303,7 +303,7 @@ var ApplicationsButton =   Utils.defineClass({
         },
         updateHeight(){
             //set menu height
-            let layout = this._settings.get_enum('menu-layout');
+             let layout = this._settings.get_enum('menu-layout');
             
             if(!(layout == Constants.MENU_LAYOUT.Simple || layout == Constants.MENU_LAYOUT.Simple2))
                 this.mainBox.set_height(this._settings.get_int('menu-height'));	
@@ -313,24 +313,16 @@ var ApplicationsButton =   Utils.defineClass({
             this._redisplayRightSide();
         },
         // Destroy the menu button
-        destroy() {
+        destroy() {  
             this.MenuLayout.destroy();
 
             if ( this.extensionChangedId > 0) {
                 (Main.extensionManager || ExtensionSystem).disconnect(this.extensionChangedId);
                 this.extensionChangedId = 0;
             }
-            if (this._showingId > 0) {
-                Main.overview.disconnect(this._showingId);
-                this._showingId = 0;
-            }
             if(this.dtpPostionChangedID>0 && this.dtpSettings){
                 this.dtpSettings.disconnect(this.dtpPostionChangedID);
                 this.dtpPostionChangedID = 0;
-            }
-            if (this._hidingId > 0) {
-                Main.overview.disconnect(this._hidingId);
-                this._hidingId = 0;
             }
             if (this._installedChangedId > 0) {
                 appSys.disconnect(this._installedChangedId);
@@ -346,7 +338,7 @@ var ApplicationsButton =   Utils.defineClass({
             this.container.destroy();
         },
         _updateMenuLayout(){
-            this.leftClickMenu.removeAll();
+             this.leftClickMenu.removeAll();
             this.leftClickMenu.actor.style = '';
             //Create Basic Layout ------------------------------------------------
             this.section = new PopupMenu.PopupMenuSection();
@@ -445,21 +437,20 @@ var ApplicationsButton =   Utils.defineClass({
                     this.menuManager.activeMenu.close(1 << 1);
                 modernGnome ?  this.add_style_pseudo_class('active') : this.actor.add_style_pseudo_class('active');
             }      
-            else{
+            else{ 
                 modernGnome ? this.remove_style_pseudo_class('active'): this.actor.remove_style_pseudo_class('active');
             }
-
             if (menu == this.leftClickMenu) {
                 if(open){
                     let layout = this._settings.get_enum('menu-layout');
                     if(!(layout == Constants.MENU_LAYOUT.Simple || layout == Constants.MENU_LAYOUT.Simple2))
-                        this.mainBox.show();  	
-                } 
-            } 
+                        this.mainBox.show();  
+                }
+            }
         }
     });
 // Aplication menu class
-const ApplicationsMenu = class ArcMenu_ApplicationsMenu extends PopupMenu.PopupMenu {
+var ApplicationsMenu = class ArcMenu_ApplicationsMenu extends PopupMenu.PopupMenu {
     // Initialize the menu
     constructor(sourceActor, arrowAlignment, arrowSide, button, settings) {
         super(sourceActor, arrowAlignment, arrowSide);
@@ -485,11 +476,12 @@ const ApplicationsMenu = class ArcMenu_ApplicationsMenu extends PopupMenu.PopupM
         if(this._button.subMenuManager.activeMenu)
             this._button.subMenuManager.activeMenu.toggle();
         super.close(animate);   
-        this._button.setDefaultMenuView();  
+        if(this._button.MenuLayout.isRunning)
+            this._button.setDefaultMenuView();  
     }
 };
 // Aplication menu class
-const RightClickMenu = class ArcMenu_RightClickMenu extends PopupMenu.PopupMenu {
+var RightClickMenu = class ArcMenu_RightClickMenu extends PopupMenu.PopupMenu {
     // Initialize the menu
     constructor(sourceActor, arrowAlignment, arrowSide, button, settings) {
         super(sourceActor, arrowAlignment, arrowSide);
