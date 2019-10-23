@@ -51,11 +51,12 @@ var createMenu = class {
         this.leftClickMenu  = mainButton.leftClickMenu;
         this.currentMenu = Constants.CURRENT_MENU.FAVORITES; 
         this._applicationsButtons = new Map();
-        this._applications=[];
+
         this._session = new GnomeSession.SessionManager();
         this.newSearch = new ArcSearch.SearchResults(this);      
         this._mainBoxKeyPressId = this.mainBox.connect('key-press-event', this._onMainBoxKeyPress.bind(this));
-        
+        this.isRunning=true;
+
         this._tree = new GMenu.Tree({ menu_basename: 'applications.menu' });
         this._treeChangedId = this._tree.connect('changed', ()=>{
             this._reload();
@@ -202,7 +203,9 @@ var createMenu = class {
     }
     resetSearch(){ //used by back button to clear results -- gets called on menu close
         this.searchBox.clear();
-        this.setDefaultMenuView();  
+        this.setDefaultMenuView();
+        this.newSearch._reloadRemoteProviders(); 
+  
     }
     _redisplayRightSide(){
         this.rightBox.destroy_all_children();
@@ -277,8 +280,8 @@ var createMenu = class {
 
         // Load data for all menu categories
         _loadCategories() {
+            this.applicationsByCategory = null;
             this.applicationsByCategory = {};
-            this.categoryDirectories=[];
             
            
             this._tree.load_sync();
@@ -292,7 +295,6 @@ var createMenu = class {
                         let categoryId = dir.get_menu_id();
                         this.applicationsByCategory[categoryId] = [];
                         this._loadCategory(categoryId, dir);
-                        this.categoryDirectories.push(dir);  
                     }
                 }
             }
@@ -609,12 +611,6 @@ var createMenu = class {
             this._displayAppIcons();
         }
         _setActiveCategory(){
-
-            for (let i = 0; i < this.categoryMenuItemArray.length; i++) {
-                let actor = this.categoryMenuItemArray[i];
-                actor.setFakeActive(false);
-                //actor.remove_style_class_name('active');
-            }
         }
         _onSearchBoxKeyPress(searchBox, event) {
             let symbol = event.get_key_symbol();
@@ -778,6 +774,11 @@ var createMenu = class {
             return applist;
         }
         destroy(){
+            this._applicationsButtons.forEach((value,key,map)=>{
+                value.destroy();
+            });
+            this._applicationsButtons=null;
+
             if(this.network!=null){
                 this.network.destroy();
                 this.networkMenuItem.destroy();
@@ -806,11 +807,17 @@ var createMenu = class {
                     this._mainBoxKeyPressId = 0;
                 }
             }
+            if(this.newSearch){
+                this.newSearch.destroy();
+            }
+
             if (this._treeChangedId > 0) {
                 this._tree.disconnect(this._treeChangedId);
                 this._treeChangedId = 0;
                 this._tree = null;
             }
+            this.isRunning=false;
+
         }
     //Create a horizontal separator
     _createHorizontalSeparator(style){
