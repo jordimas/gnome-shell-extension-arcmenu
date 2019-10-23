@@ -116,7 +116,7 @@ var PlaceMenuItem = Utils.createClass({
     }
 });
 
-var PlaceInfo = class PlaceInfo {
+var PlaceInfo = class ArcMenu_PlaceInfo2 {
     constructor() {
         this._init.apply(this, arguments);
     }
@@ -237,7 +237,7 @@ var PlaceInfo = class PlaceInfo {
 }
 Signals.addSignalMethods(PlaceInfo.prototype);
 
-var RootInfo = class RootInfo extends PlaceInfo {
+var RootInfo = class ArcMenu_RootInfo extends PlaceInfo {
     _init() {
         super._init('devices', Gio.File.new_for_path('/'), _('Computer'));
 
@@ -277,7 +277,7 @@ var RootInfo = class RootInfo extends PlaceInfo {
 };
 
 
-var PlaceDeviceInfo = class PlaceDeviceInfo extends PlaceInfo {
+var PlaceDeviceInfo = class ArcMenu_PlaceDeviceInfo extends PlaceInfo {
     _init(kind, mount) {
         this._mount = mount;
         super._init(kind, mount.get_root(), mount.get_name());
@@ -328,7 +328,7 @@ var PlaceDeviceInfo = class PlaceDeviceInfo extends PlaceInfo {
     }
 };
 
-var PlaceVolumeInfo = class PlaceVolumeInfo extends PlaceInfo {
+var PlaceVolumeInfo = class ArcMenu_PlaceVolumeInfo extends PlaceInfo {
     _init(kind, volume) {
         this._volume = volume;
         super._init(kind, volume.get_activation_root(), volume.get_name());
@@ -362,7 +362,7 @@ const DEFAULT_DIRECTORIES = [
     GLib.UserDirectory.DIRECTORY_VIDEOS,
 ];
 
-var PlacesManager = class {
+var PlacesManager = class ArcMenu_PlacesManager {
     constructor() {
         this._places = {
             special: [],

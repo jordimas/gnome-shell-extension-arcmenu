@@ -445,7 +445,7 @@ var ActivitiesMenuItem =  Utils.createClass({
 /**
  * A class representing a Tooltip.
  */
-var Tooltip = class {
+var Tooltip = class ArcMenu_Tooltip{
     constructor(sourceActor, text, isMenuItem=false, settings) {
         this.sourceActor = sourceActor;
         this.isMenuItem = isMenuItem;
@@ -508,7 +508,7 @@ var Tooltip = class {
 /**
  * A base class for custom session buttons.
  */
-var SessionButton = class {
+var SessionButton = class ArcMenu_SessionButton{
     constructor(button, accessible_name, icon_name, gicon) {
         this._button = button;
 
@@ -560,7 +560,7 @@ var SessionButton = class {
     }
 };
 // Menu Place Button Shortcut item class
-var PlaceButtonItem = class extends SessionButton {
+var PlaceButtonItem = class ArcMenu_PlaceButtonItem extends SessionButton {
     // Initialize menu item
     constructor(button, info) {
         super(button, _(info.name), null, info.icon);
@@ -574,7 +574,7 @@ var PlaceButtonItem = class extends SessionButton {
 
 };
 // Firefox Button
-var FirefoxButton = class extends SessionButton {
+var FirefoxButton = class ArcMenu_FirefoxButton extends SessionButton {
     // Initialize the button
     constructor(button) {
         super(button, _("Firefox"), 'firefox');
@@ -586,7 +586,7 @@ var FirefoxButton = class extends SessionButton {
     }
 };
 // Files Button
-var FilesButton = class extends SessionButton {
+var FilesButton = class ArcMenu_FilesButton extends SessionButton {
     // Initialize the button
     constructor(button) {
         super(button, _("Files"), 'system-file-manager');
@@ -598,7 +598,7 @@ var FilesButton = class extends SessionButton {
     }
 };
 // Software Button
-var SoftwareButton = class extends SessionButton {
+var SoftwareButton = class ArcMenu_SoftwareButton extends SessionButton {
     // Initialize the button
     constructor(button) {
         super(button, _("Software"), 'org.gnome.Software-symbolic');
@@ -610,7 +610,7 @@ var SoftwareButton = class extends SessionButton {
     }
 };
 // Terminal Button
-var TerminalButton = class extends SessionButton {
+var TerminalButton = class ArcMenu_TerminalButton extends SessionButton {
     // Initialize the button
     constructor(button) {
         super(button, _("Terminal"), 'gnome-terminal');
@@ -623,7 +623,7 @@ var TerminalButton = class extends SessionButton {
 };
 
 // Settings Button
-var SettingsButton = class extends SessionButton {
+var SettingsButton = class ArcMenu_SettingsButton extends SessionButton {
     // Initialize the button
     constructor(button) {
         super(button, _("Settings"), 'emblem-system-symbolic');
@@ -635,7 +635,7 @@ var SettingsButton = class extends SessionButton {
     }
 };
 // User Button
-var UserButton = class extends SessionButton {
+var UserButton = class ArcMenu_UserButton extends SessionButton {
     // Initialize the button
     constructor(button) {
         super(button, _("Users"), 'system-users-symbolic');
@@ -647,7 +647,7 @@ var UserButton = class extends SessionButton {
     }
 };
 // Power Button
-var PowerButton = class extends SessionButton {
+var PowerButton = class ArcMenu_PowerButton extends SessionButton {
     // Initialize the button
     constructor(button) {
         super(button, _("Power Off"), 'system-shutdown-symbolic');
@@ -660,7 +660,7 @@ var PowerButton = class extends SessionButton {
 };
 
 // Logout Button
-var LogoutButton = class extends SessionButton {
+var LogoutButton = class ArcMenu_LogoutButton extends SessionButton {
     // Initialize the button
     constructor(button) {
         super(button, _("Log Out"), 'application-exit-symbolic');
@@ -673,7 +673,7 @@ var LogoutButton = class extends SessionButton {
 };
 
 // Suspend Button
-var SuspendButton = class extends SessionButton {
+var SuspendButton = class ArcMenu_SuspendButton extends SessionButton {
     // Initialize the button
     constructor(button) {
         super(button, _("Suspend"), 'media-playback-pause-symbolic');
@@ -691,7 +691,7 @@ var SuspendButton = class extends SessionButton {
 };
 
 // Lock Screen Button
-var LockButton = class extends SessionButton {
+var LockButton = class ArcMenu_LockButton extends SessionButton {
     // Initialize the button
     constructor(button) {
         super(button, _("Lock"), 'changes-prevent-symbolic');
@@ -1830,7 +1830,7 @@ var CategorySubMenuItem = Utils.createClass({
 
 
 // Place Info class
-var PlaceInfo = class {
+var PlaceInfo = class ArcMenu_PlaceInfo {
     // Initialize place info
     constructor(file, name, icon) {
         this.file = file;
@@ -1935,7 +1935,7 @@ var PlaceMenuItem = Utils.createClass({
 /**
  * This class represents a SearchBox.
  */
-var SearchBox = class {
+var SearchBox = class ArcMenu_SearchBox{
     constructor(button) {
         this.newSearch= button.newSearch;
         this.actor = new St.BoxLayout({
@@ -2097,7 +2097,7 @@ Signals.addSignalMethods(SearchBox.prototype);
 /**
  * This class is responsible for the appearance of the menu button.
  */
-var MenuButtonWidget = class {
+var MenuButtonWidget = class ArcMenu_MenuButtonWidget{
     constructor() {
         this.actor = new St.BoxLayout({
             style_class: 'panel-status-menu-box',
