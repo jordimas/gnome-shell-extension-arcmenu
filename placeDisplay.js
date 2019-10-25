@@ -71,6 +71,9 @@ var PlaceMenuItem = Utils.createClass({
 
         this._changedId = info.connect('changed',
                                        this._propertiesChanged.bind(this));
+        this.actor.connect('destroy',()=>{
+            this.destroy();
+        });
     },
 
     destroy() {
@@ -248,10 +251,11 @@ var RootInfo = class ArcMenu_RootInfo extends PlaceInfo {
                 return;
 
             this._proxy = obj;
-            this._proxy.connect('g-properties-changed',
+            this._proxyID = this._proxy.connect('g-properties-changed',
                                 this._propertiesChanged.bind(this));
             this._propertiesChanged(obj);
         });
+
     }
 
     getIcon() {
@@ -268,6 +272,10 @@ var RootInfo = class ArcMenu_RootInfo extends PlaceInfo {
     }
 
     destroy() {
+        if (this._proxyID) {
+            this._proxy.disconnect(this._proxyID);
+            this._proxy = 0;
+        }
         if (this._proxy) {
             this._proxy.run_dispose();
             this._proxy = null;
