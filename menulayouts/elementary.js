@@ -338,17 +338,13 @@ var createMenu = class{
             	this.newSearch.actor.hide();
             }            
             else{         
-                    let actors = this.shorcutsBox.get_children();
-                        for (let i = 0; i < actors.length; i++) {
-                            let actor = actors[i];
-                            this.shorcutsBox.remove_actor(actor);
-                    }
+                   this._clearApplicationsBox();
                     this.shorcutsBox.add(this.newSearch.actor, {
-                        x_expand: true,
+                        x_expand: false,
                         y_expand:false,
                         x_fill: false,
                         y_fill: false,
-                        x_align: St.Align.START
+                        x_align: St.Align.MIDDLE
                     });    
                  
                 this.newSearch.highlightDefault(true);

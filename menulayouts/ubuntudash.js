@@ -56,7 +56,7 @@ var createMenu = class{
         this._mainBoxKeyPressId = this.mainBox.connect('key-press-event', this._onMainBoxKeyPress.bind(this));
         this.isRunning=true;
 
-
+        
         this._tree = new GMenu.Tree({ menu_basename: 'applications.menu' });
         this._treeChangedId = this._tree.connect('changed', ()=>{
             this._reload();
@@ -299,8 +299,8 @@ var createMenu = class{
         // Load data for all menu categories
         _loadCategories() {
             this.applicationsByCategory = null;
-            this.applicationsByCategory = {};         
-           
+            this.applicationsByCategory = {};
+
             this._tree.load_sync();
             let root = this._tree.get_root_directory();
             let iter = root.iter();
@@ -379,18 +379,14 @@ var createMenu = class{
             	this.newSearch.actor.hide();
             }            
             else{         
-                    let actors = this.shorcutsBox.get_children();
-                        for (let i = 0; i < actors.length; i++) {
-                            let actor = actors[i];
-                            this.shorcutsBox.remove_actor(actor);
-                    }
-                    this.shorcutsBox.add(this.newSearch.actor, {
-                        x_expand: true,
-                        y_expand:false,
-                        x_fill: false,
-                        y_fill: false,
-                        x_align: St.Align.START
-                    });    
+                this._clearApplicationsBox();
+                this.shorcutsBox.add(this.newSearch.actor, {
+                    x_expand: false,
+                    y_expand:false,
+                    x_fill: false,
+                    y_fill: false,
+                    x_align: St.Align.MIDDLE
+                });    
                  
                 this.newSearch.highlightDefault(true);
  		        this.newSearch.actor.show();         
@@ -493,23 +489,7 @@ var createMenu = class{
         }
         // Get a list of applications for the specified category or search query
         _listApplications(category_menu_id) {
-            let applist;
 
-            // Get applications in a category or all categories
-            if (category_menu_id) {
-                applist = this.applicationsByCategory[category_menu_id];
-            } else {
-                applist = [];
-                for (let directory in this.applicationsByCategory)
-                    applist = applist.concat(this.applicationsByCategory[directory]);
-            }
-            if(category_menu_id != "Frequent Apps"){
-                applist.sort(function (a, b) {
-                    return a.get_name().toLowerCase() > b.get_name().toLowerCase();
-                });
-            }
-            
-            return applist;
         }
         destroy(){
             this._applicationsButtons.forEach((value,key,map)=>{

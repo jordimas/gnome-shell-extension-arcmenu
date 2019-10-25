@@ -87,18 +87,25 @@ var ListSearchResult = class {
         
         this.layout = this._settings.get_enum('menu-layout');
         let ICON_SIZE = 32;
-
+        if(this.layout == Constants.MENU_LAYOUT.Elementary || this.layout == Constants.MENU_LAYOUT.UbuntuDash){
+            ICON_SIZE = 32;
+            this.menuItem.actor.style = "width:275px;";
+        }
+        else if(this.layout == Constants.MENU_LAYOUT.Redmond){
+            this.menuItem.actor.style = "width:180px;";
+            ICON_SIZE = 24;
+        } 
         
         // An icon for, or thumbnail of, content
         let icon = this.metaInfo['createIcon'](ICON_SIZE);
         if (icon) 
              this.menuItem.actor.add_child(icon);
         else
-            this.menuItem.actor.style = "padding: 12px 0px;";
+            this.menuItem.actor.style = (ICON_SIZE==32) ?  "padding: 12px 0px;width:310px;":  "padding: 9px 0px;width:215px;";
 
-        let title = new St.Label({ text: this.metaInfo['name'],x_expand: true,y_align: Clutter.ActorAlign.CENTER });
+        let title = new St.Label({ text: this.metaInfo['name'],y_align: Clutter.ActorAlign.CENTER });
         this.menuItem.actor.add_child(title);
-        this.menuItem.actor.style = "width:275px;";
+        
 
         if (this.metaInfo['description']&&  this.provider.appInfo.get_name() == "Calculator") {
             title.text = this.metaInfo['name'] + "   " + this.metaInfo['description'];
@@ -216,12 +223,11 @@ var SearchResultsBase = class {
         this._button= resultsView._button;
         this._terms = [];
 
-        this.actor = new St.BoxLayout({ style_class: 'arc-search',
+        this.actor = new St.BoxLayout({ style_class: '',
                                         vertical: true });
 
-        this._resultDisplayBin = new St.Bin({ style_class: 'arc-search',x_fill: true,
-                                              y_fill: true });
-        this.actor.add(this._resultDisplayBin, { expand: true,x_fill:true });
+        this._resultDisplayBin = new St.Bin();
+        this.actor.add(this._resultDisplayBin);
 
         this._resultDisplays = {};
 
@@ -354,7 +360,7 @@ var ListSearchResults = class extends SearchResultsBase {
     constructor(provider, resultsView) {
         super(provider, resultsView);
         this._button= resultsView._button;
-        this._container = new St.BoxLayout({ style_class: 'arc-search',vertical: false,x_align: St.Align.START });
+        this._container = new St.BoxLayout({ style_class: '',vertical: false,x_align: St.Align.START });
         this.providerInfo = new ArcSearchProviderInfo(provider,this._button);
         this.providerInfo.connect('key-focus-in', this._keyFocusIn.bind(this));
         this.providerInfo.connect('activate', () => {
@@ -362,15 +368,14 @@ var ListSearchResults = class extends SearchResultsBase {
             provider.launchSearch(this._terms);
             this._button.leftClickMenu.toggle();
         });
-        this._container.add(this.providerInfo.actor, { x_fill: true,
+        this._container.add(this.providerInfo.actor, { x_fill: false,
                                                  y_fill: false,
                                                  x_align: St.Align.START,
-                                                 y_align: St.Align.START,
-                                                 xexpand:true });
+                                                 y_align: St.Align.START});
 
-        this._content = new St.BoxLayout({ style_class: 'arc-search',
+        this._content = new St.BoxLayout({ style_class: '',
                                            vertical: true });
-        this._container.add(this._content, { expand: true,x_fill:true});
+        this._container.add(this._content);
         this._container.style = "padding: 10px;"
         this._resultDisplayBin.set_child(this._container);
     }
@@ -413,7 +418,7 @@ var AppSearchResults = class extends SearchResultsBase {
       constructor(provider, resultsView) {
         super(provider, resultsView);
         this._parentContainer = resultsView.actor;
-        this._grid = new St.BoxLayout({vertical: false });
+        this._grid = new St.BoxLayout({vertical: false});
         this._grid.style = "padding: 10px;"
         this._resultDisplayBin.set_child(this._grid);
     }
@@ -445,19 +450,21 @@ Signals.addSignalMethods(AppSearchResults.prototype);
 
 var SearchResults = class {
     constructor(button) {
-        this.actor = new St.BoxLayout({ name: 'arc-search',
+        this.actor = new St.BoxLayout({ name: '',
                                         vertical: true });
         this._button = button;
-        this._content = new St.BoxLayout({ name: 'arc-search',
+        this.layout = button._settings.get_enum('menu-layout');
+        this._content = new St.BoxLayout({ name: '',
                                            vertical: true });
-        this._contentBin = new ArcSearchMaxWidthBin({ name: 'arc-search',
-                                             x_fill: true,
-                                             y_fill: true,
-                                             child: this._content, });
-        let scrollChild = new St.BoxLayout();
- scrollChild.add(this._contentBin, { expand: true, x_fill: true,x_align: St.Align.START });
-        this.actor.add(scrollChild);
-       
+
+        this.actor.add(this._content);
+        if(this.layout == Constants.MENU_LAYOUT.Elementary || this.layout == Constants.MENU_LAYOUT.UbuntuDash){
+            MAX_APPS_SEARCH_RESULTS_ROWS = 6;
+        }
+        else if(this.layout == Constants.MENU_LAYOUT.Redmond){
+
+            MAX_APPS_SEARCH_RESULTS_ROWS = 4;
+        } 
         this._statusText = new St.Label();
         this._statusBin = new St.Bin({ x_align: St.Align.MIDDLE,
                                        y_align: St.Align.MIDDLE });
@@ -465,7 +472,7 @@ var SearchResults = class {
             this._statusText.add_style_class_name('arc-menu-status-text');
         else
             this._statusText.add_style_class_name('search-statustext');
-        this.actor.add(this._statusBin, { expand: true });
+        this.actor.add(this._statusBin);
         this._statusBin.add_actor(this._statusText);
 
         this._highlightDefault = false;
@@ -741,16 +748,24 @@ var ArcSearchProviderInfo =Utils.createClass({
         this.layout = button._settings.get_enum('menu-layout');
         this._content = new St.BoxLayout({ vertical: false });
         this._content.style = "spacing: 5px;";
-        this.actor.style = "spacing: 0px; width: 120px;";
-        this.actor.vertical = false;
-        this.actor.add_child(this._content);
-        this.nameLabel = new St.Label({ text: provider.appInfo.get_name() + ":",
-                                       x_align: Clutter.ActorAlign.START,x_expand: true,y_align: .5});
-        this._moreText="";
-        
         let icon = new St.Icon({ icon_size: 32,
             gicon: provider.appInfo.get_icon() });
         this._content.add_actor(icon);
+        if(this.layout == Constants.MENU_LAYOUT.Elementary || this.layout == Constants.MENU_LAYOUT.UbuntuDash){
+            this.actor.style = "spacing: 0px; width: 190px;";
+            icon.icon_size = 32;
+        }
+        else if(this.layout == Constants.MENU_LAYOUT.Redmond){
+            this.actor.style = "spacing: 0px; width: 150px;";
+            icon.icon_size = 24;
+        } 
+        this.actor.vertical = false;
+        this.actor.add_child(this._content);
+        this.nameLabel = new St.Label({ text: provider.appInfo.get_name() + ":",
+                                       x_align: Clutter.ActorAlign.START,y_align: .5});
+        this._moreText="";
+        
+        
         this._content.add_actor(this.nameLabel);
         let isMenuItem = true;
         this.hoverID = this.actor.connect('notify::hover', this._onHover.bind(this));
