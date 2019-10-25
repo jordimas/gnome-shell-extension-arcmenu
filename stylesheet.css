@@ -67,6 +67,7 @@ color:rgba(255,255,255,1);
 #tooltip-menu-item{
  padding: 2px 5px;
 max-width:550px;
+ min-height: 0px;
 }.search-box-padding { 
 padding-top: 0.75em;
 padding-bottom: 0.25em;
