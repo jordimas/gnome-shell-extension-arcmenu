@@ -105,7 +105,6 @@ var MenuSettingsController = class {
             this._settings.connect('changed::menu-button-icon', this._setButtonIcon.bind(this)),
             this._settings.connect('changed::custom-menu-button-icon', this._setButtonIcon.bind(this)),
             this._settings.connect('changed::custom-menu-button-icon-size', this._setButtonIconSize.bind(this)),
-            this._settings.connect('changed::enable-menu-button-arrow', this._setMenuButtonArrow.bind(this)),
             this._settings.connect('changed::enable-custom-arc-menu', this._enableCustomArcMenu.bind(this)),
             this._settings.connect('changed::show-home-shortcut', this._redisplayRightSide.bind(this)),
             this._settings.connect('changed::show-documents-shortcut', this._redisplayRightSide.bind(this)),
@@ -289,17 +288,7 @@ var MenuSettingsController = class {
                 menuButtonWidget.hidePanelText();
                 menuButtonWidget.showPanelIcon();
         }
-        this._setMenuButtonArrow();
-    }
 
-    _setMenuButtonArrow() {
-        let menuButtonWidget = this._menuButton.getWidget();
-        if (this._settings.get_boolean('enable-menu-button-arrow')) {
-            menuButtonWidget.hideArrowIcon();
-            menuButtonWidget.showArrowIcon();
-        } else {
-            menuButtonWidget.hideArrowIcon();
-        }
     }
 
     // Update the text of the menu button as specified in the settings
@@ -308,16 +297,8 @@ var MenuSettingsController = class {
         let menuButtonWidget = this._menuButton.getWidget();
         let label = menuButtonWidget.getPanelLabel();
 
-        switch (this._settings.get_enum('menu-button-text')) {
-            case Constants.MENU_BUTTON_TEXT.Custom:
-                let customTextLabel = this._settings.get_string('custom-menu-button-text');
-                label.set_text(customTextLabel);
-                break;
-            case Constants.MENU_BUTTON_TEXT.System: /* falls through */
-            default:
-                let systemTextLabel = _('Applications');
-                label.set_text(systemTextLabel);
-        }
+        let customTextLabel = this._settings.get_string('custom-menu-button-text');
+        label.set_text(customTextLabel);
     }
 
     // Update the icon of the menu button as specified in the settings

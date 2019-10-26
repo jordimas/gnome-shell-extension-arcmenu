@@ -2109,10 +2109,12 @@ var MenuButtonWidget = class ArcMenu_MenuButtonWidget{
             style_class: 'panel-status-menu-box',
             pack_start: false
         });
-        this._arrowIcon = PopupMenu.arrowIcon(St.Side.BOTTOM);
+        
         this._icon = new St.Icon({
             icon_name: 'start-here-symbolic',
-            style_class: 'popup-menu-icon'
+            style_class: 'arc-menu-icon',
+            track_hover:true,
+            reactive: true
         });
         this._label = new St.Label({
             text: _("Applications"),
@@ -2122,7 +2124,6 @@ var MenuButtonWidget = class ArcMenu_MenuButtonWidget{
 
         this.actor.add_child(this._icon);
         this.actor.add_child(this._label);
-        this.actor.add_child(this._arrowIcon);
     }
 
     getPanelLabel() {
@@ -2131,18 +2132,6 @@ var MenuButtonWidget = class ArcMenu_MenuButtonWidget{
 
     getPanelIcon() {
         return this._icon;
-    }
-
-    showArrowIcon() {
-        if (!this.actor.contains(this._arrowIcon)) {
-            this.actor.add_child(this._arrowIcon);
-        }
-    }
-
-    hideArrowIcon() {
-        if (this.actor.contains(this._arrowIcon)) {
-            this.actor.remove_child(this._arrowIcon);
-        }
     }
 
     showPanelIcon() {

@@ -304,11 +304,6 @@
       <summary>Text of the menu button.</summary>
       <description>Text of the menu button.</description>
     </key>
-    <key type="b" name="enable-menu-button-arrow">
-      <default>false</default>
-      <summary>Enables the default menu button arrow.</summary>
-      <description>Enables the default menu button arrow.</description>
-    </key>
     <key type="b" name="enable-large-icons">
       <default>false</default>
       <summary>Enables large icons for applications.</summary>
@@ -333,6 +328,16 @@
       <default>22</default>
       <summary>Size of the icon in percentage.</summary>
       <description>Size of the icon in percentage.</description>
+    </key>
+    <key type="s" name="menu-button-color">
+      <default>'rgb(240,240,240)'</default>
+      <summary>Color for for the menu button icon</summary>
+      <description>Color for for the menu button icon.</description>
+    </key>
+        <key type="s" name="menu-button-active-color">
+      <default>'rgb(214,214,214)'</default>
+      <summary>Active color for for the menu button icon</summary>
+      <description>Active for color for the menu button icon.</description>
     </key>
     <key name="pinned-app-list" type="as">
       <default>["ArcMenu_WebBrowser","WebBrowser", "WebBrowser","Terminal", "utilities-terminal", "org.gnome.Terminal.desktop","Arc Menu Settings", "emblem-system-symbolic", "gnome-shell-extension-prefs arc-menu@linxgem33.com"]</default>
