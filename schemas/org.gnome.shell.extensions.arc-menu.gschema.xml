@@ -304,6 +304,11 @@
       <summary>Text of the menu button.</summary>
       <description>Text of the menu button.</description>
     </key>
+    <key type="b" name="enable-menu-button-arrow">
+      <default>false</default>
+      <summary>Enables the default menu button arrow.</summary>
+      <description>Enables the default menu button arrow.</description>
+    </key>
     <key type="b" name="enable-large-icons">
       <default>false</default>
       <summary>Enables large icons for applications.</summary>
