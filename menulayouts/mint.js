@@ -85,13 +85,23 @@ var createMenu =class{
         //check if custom arc menu is enabled
         if( this._settings.get_boolean('enable-custom-arc-menu'))
             this.actionsBox.add_style_class_name('arc-menu');
-        //firefox  Button
-        let firefox = new MW.FirefoxButton( this);
-        this.actionsBox.add(firefox.actor, {
-            expand: true,
-            x_fill: false,
-            y_align: St.Align.MIDDLE
-        });
+        
+        //WebBroswer  Button
+        //Check which WebBroswer is default
+        let [res, stdout, stderr, status] = GLib.spawn_command_line_sync("xdg-settings get default-web-browser");
+        let webBrowser = String.fromCharCode.apply(null, stdout);
+        let browserName = webBrowser.split(".desktop")[0];
+        browserName+=".desktop";
+        let app = appSys.lookup_app(browserName);
+        if(app){
+            let webBrowserButton = new MW.WebBrowserButton(this, app);
+            this.actionsBox.add(webBrowserButton.actor, {
+                expand: true,
+                x_fill: false,
+                y_align: St.Align.MIDDLE
+            });
+        }
+
           
         //terminal Button
         let terminal = new MW.TerminalButton( this);
@@ -109,14 +119,14 @@ var createMenu =class{
             y_align: St.Align.MIDDLE
         });
        
-        //Power Button
+        //Software Button
         let software = new MW.SoftwareButton( this);
         this.actionsBox.add(software.actor, {
             expand: true,
             x_fill: false,
             y_align: St.Align.MIDDLE
         });
-        //Logout Button
+        //Files Button
         let files = new MW.FilesButton( this);
         this.actionsBox.add(files.actor, {
             expand: true,

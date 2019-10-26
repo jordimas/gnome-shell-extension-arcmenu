@@ -573,16 +573,23 @@ var PlaceButtonItem = class ArcMenu_PlaceButtonItem extends SessionButton {
     }
 
 };
-// Firefox Button
-var FirefoxButton = class ArcMenu_FirefoxButton extends SessionButton {
+// Web Browser Button
+var WebBrowserButton = class ArcMenu_WebBrowserButton extends SessionButton {
     // Initialize the button
-    constructor(button) {
-        super(button, _("Firefox"), 'firefox');
+    constructor(button, app) {
+        super(button, app.get_name(), null, null);
+        this._app = app;
+        this._iconBin = new St.Bin({
+            y_align: St.Align.END,
+            x_align: St.Align.MIDDLE
+        });
+        this.actor.child = this._iconBin;
+        this._iconBin.set_child(this._app.create_icon_texture(21));
     }
 
     // Activate the button (Shutdown)
     activate() {
-        Util.spawnCommandLine('firefox');
+        this._app.open_new_window(-1);
     }
 };
 // Files Button
@@ -602,11 +609,18 @@ var SoftwareButton = class ArcMenu_SoftwareButton extends SessionButton {
     // Initialize the button
     constructor(button) {
         super(button, _("Software"), 'org.gnome.Software-symbolic');
+        //check if gnome-software or pamac
+        this.command = '';
+        if(GLib.find_program_in_path('gnome-software'))
+            this.command='gnome-software';
+        else if(GLib.find_program_in_path('pamac-manager')){
+            this.command='pamac-manager';
+        }
     }
 
     // Activate the button (Shutdown)
     activate() {
-        Util.spawnCommandLine('gnome-software');
+        Util.spawnCommandLine(this.command);
     }
 };
 // Terminal Button
@@ -970,17 +984,9 @@ var FavoritesMenuItem = Utils.createClass({
         this._draggable.connect('drag-cancelled', this._onDragCancelled.bind(this));
         this._draggable.connect('drag-end', this._onDragEnd.bind(this));
         
-        let sys = Shell.AppSystem.get_default();
-        this._app = sys.lookup_app(this._command);
-        if(this._command == "firefox.desktop" && !this._app){
-            //check if Firefox ESR
-            this._app = sys.lookup_app("firefox-esr.desktop");
-            if(this._app){
-                this._iconPath = "firefox-esr";
-                this._command = "firefox-esr.desktop";
-                this._icon.gicon = Gio.icon_new_for_string("firefox-esr");
-            }
-        }
+        let appSys = Shell.AppSystem.get_default();
+        this._app = appSys.lookup_app(this._command);
+
         this.rightClickMenu = new AppRightClickMenu(this.actor,this._app ? this._app : this._command ,this._button,true);
 
         this._button.appMenuManager.addMenu(this.rightClickMenu);
