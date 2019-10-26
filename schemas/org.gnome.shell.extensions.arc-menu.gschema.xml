@@ -334,8 +334,18 @@
       <summary>Size of the icon in percentage.</summary>
       <description>Size of the icon in percentage.</description>
     </key>
+    <key type="s" name="menu-button-color">
+      <default>'rgb(240,240,240)'</default>
+      <summary>Color for for the menu button icon</summary>
+      <description>Color for for the menu button icon.</description>
+    </key>
+        <key type="s" name="menu-button-active-color">
+      <default>'rgb(214,214,214)'</default>
+      <summary>Active color for for the menu button icon</summary>
+      <description>Active for color for the menu button icon.</description>
+    </key>
     <key name="pinned-app-list" type="as">
-      <default>["Firefox","firefox", "firefox.desktop","Terminal", "utilities-terminal", "org.gnome.Terminal.desktop","Arc Menu Settings", "emblem-system-symbolic", "gnome-shell-extension-prefs arc-menu@linxgem33.com"]</default>
+      <default>["ArcMenu_WebBrowser","WebBrowser", "WebBrowser","Terminal", "utilities-terminal", "org.gnome.Terminal.desktop","Arc Menu Settings", "emblem-system-symbolic", "gnome-shell-extension-prefs arc-menu@linxgem33.com"]</default>
       <summary>List of Apps Pinned to Menu</summary>
       <description>
         List of Apps Pinned to Menu

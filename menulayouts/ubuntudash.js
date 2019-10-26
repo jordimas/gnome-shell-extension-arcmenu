@@ -50,12 +50,13 @@ var createMenu = class{
         this.leftClickMenu  = mainButton.leftClickMenu;
         this.currentMenu = Constants.CURRENT_MENU.FAVORITES; 
         this._applicationsButtons = new Map();
-        this._applications=[];
+
         this._session = new GnomeSession.SessionManager();
         this.newSearch = new ArcSearch.SearchResults(this);      
         this._mainBoxKeyPressId = this.mainBox.connect('key-press-event', this._onMainBoxKeyPress.bind(this));
-        
+        this.isRunning=true;
 
+        
         this._tree = new GMenu.Tree({ menu_basename: 'applications.menu' });
         this._treeChangedId = this._tree.connect('changed', ()=>{
             this._reload();
@@ -226,6 +227,8 @@ var createMenu = class{
     resetSearch(){ //used by back button to clear results -- gets called on menu close
         this.searchBox.clear();
         this.setDefaultMenuView();  
+        this.newSearch._reloadRemoteProviders(); 
+
     }
     _redisplayRightSide(){
 
@@ -295,10 +298,9 @@ var createMenu = class{
 
         // Load data for all menu categories
         _loadCategories() {
+            this.applicationsByCategory = null;
             this.applicationsByCategory = {};
-            this.categoryDirectories=[];
-            
-           
+
             this._tree.load_sync();
             let root = this._tree.get_root_directory();
             let iter = root.iter();
@@ -310,7 +312,6 @@ var createMenu = class{
                         let categoryId = dir.get_menu_id();
                         this.applicationsByCategory[categoryId] = [];
                         this._loadCategory(categoryId, dir);
-                        this.categoryDirectories.push(dir);  
                     }
                 }
             }
@@ -347,13 +348,11 @@ var createMenu = class{
             this.searchBox.clear();
             this._clearApplicationsBox();
             this._displayAppIcons();
+            let appsScrollBoxAdj = this.shortcutsScrollBox.get_vscroll_bar().get_adjustment();
+            appsScrollBoxAdj.set_value(0);
         }
         _setActiveCategory(){
-            for (let i = 0; i < this.categoryMenuItemArray.length; i++) {
-                let actor = this.categoryMenuItemArray[i];
-                actor.setFakeActive(false);
-                //actor.remove_style_class_name('active');
-            }
+
         }
         _onSearchBoxKeyPress(searchBox, event) {
             let symbol = event.get_key_symbol();
@@ -382,18 +381,14 @@ var createMenu = class{
             	this.newSearch.actor.hide();
             }            
             else{         
-                    let actors = this.shorcutsBox.get_children();
-                        for (let i = 0; i < actors.length; i++) {
-                            let actor = actors[i];
-                            this.shorcutsBox.remove_actor(actor);
-                    }
-                    this.shorcutsBox.add(this.newSearch.actor, {
-                        x_expand: true,
-                        y_expand:false,
-                        x_fill: false,
-                        y_fill: false,
-                        x_align: St.Align.START
-                    });    
+                this._clearApplicationsBox();
+                this.shorcutsBox.add(this.newSearch.actor, {
+                    x_expand: false,
+                    y_expand:false,
+                    x_fill: false,
+                    y_fill: false,
+                    x_align: St.Align.MIDDLE
+                });    
                  
                 this.newSearch.highlightDefault(true);
  		        this.newSearch.actor.show();         
@@ -496,25 +491,14 @@ var createMenu = class{
         }
         // Get a list of applications for the specified category or search query
         _listApplications(category_menu_id) {
-            let applist;
 
-            // Get applications in a category or all categories
-            if (category_menu_id) {
-                applist = this.applicationsByCategory[category_menu_id];
-            } else {
-                applist = [];
-                for (let directory in this.applicationsByCategory)
-                    applist = applist.concat(this.applicationsByCategory[directory]);
-            }
-            if(category_menu_id != "Frequent Apps"){
-                applist.sort(function (a, b) {
-                    return a.get_name().toLowerCase() > b.get_name().toLowerCase();
-                });
-            }
-            
-            return applist;
         }
         destroy(){
+            this._applicationsButtons.forEach((value,key,map)=>{
+                value.destroy();
+            });
+            this._applicationsButtons=null;
+
             if(this.searchBox!=null){
                 if (this._searchBoxChangedId > 0) {
                     this.searchBox.disconnect(this._searchBoxChangedId);
@@ -533,10 +517,15 @@ var createMenu = class{
                     this._mainBoxKeyPressId = 0;
                 }
             }
+            if(this.newSearch){
+                this.newSearch.destroy();
+            }
             if (this._treeChangedId > 0) {
                 this._tree.disconnect(this._treeChangedId);
                 this._treeChangedId = 0;
                 this._tree = null;
             }
+            this.isRunning=false;
+
         }
 };

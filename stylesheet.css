@@ -57,6 +57,14 @@ font-size:9pt;
 #arc-search-entry:focus { 
 border-color:rgba(127,126,128,1);
 }
+.arc-menu-icon{
+color: rgb(240,240,240);
+}
+
+.arc-menu-icon:hover,
+.arc-menu-icon:active{
+color: rgb(214,214,214);
+}
 .arc-menu-action{
 color:rgba(211, 218, 227, 1);
 }
@@ -67,6 +75,7 @@ color:rgba(255,255,255,1);
 #tooltip-menu-item{
  padding: 2px 5px;
 max-width:550px;
+ min-height: 0px;
 }.search-box-padding { 
 padding-top: 0.75em;
 padding-bottom: 0.25em;
@@ -114,6 +123,14 @@ color: rgba(255,255,255,1);
 -arrow-rise:0px;
 -arrow-box-shadow: 0 1px 3px black;
  }
+.arc-menu .popup-menu-content
+ {
+margin: 0;
+background-color: transparent;
+border-radius: 0px;
+box-shadow: 0;
+}
+
 .arc-menu-sep {
 height: 1px;
 margin: 5px 20px;
@@ -169,6 +186,14 @@ color: rgba(255,255,255,1);
 -arrow-rise:0px;
 -arrow-box-shadow: 0 1px 3px black;
  }
+.arc-right-click .popup-menu-content
+ {
+margin: 0;
+background-color: transparent;
+border-radius: 0px;
+box-shadow: 0;
+}
+
 .app-right-click-sep {
 height: 1px;
 margin: 2px 35px;

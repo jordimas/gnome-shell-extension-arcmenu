@@ -74,8 +74,7 @@ var ListSearchResult = class  {
         else{
             this.menuItem = new MW.SearchResultItem(this._button);
         }
-        this._termsChangedId = 0;
-
+ 
         let largeIcons = this._settings.get_boolean('enable-large-icons');
         let icon = this.metaInfo['createIcon'](largeIcons ? MEDIUM_ICON_SIZE : SMALL_ICON_SIZE);
         if (icon) {
@@ -120,9 +119,9 @@ var ListSearchResult = class  {
     }
 
     _onDestroy() {
-        if (this._termsChangedId)
-            this._resultsView.disconnect(this._termsChangedId);
-        this._termsChangedId = 0;
+        if(this.tooltip!=undefined){
+            this.tooltip.destroy();
+        }
     }
 };Signals.addSignalMethods(ListSearchResult.prototype);
 
@@ -160,12 +159,16 @@ var AppSearchResult = class  {
             this.menuItem.actor.connect('notify::hover', this._onHover.bind(this));
         }
         this.menuItem.connect('activate', this.activate.bind(this));
-        
+        this.menuItem.connect('destroy', this._onDestroy.bind(this));
         
        
        
     }
-
+    _onDestroy() {
+        if(this.tooltip!=undefined){
+            this.tooltip.destroy();
+        }
+    }
     _onHover() {
 
         if (this.menuItem.actor.hover) { // mouse pointer hovers over the button
@@ -202,7 +205,7 @@ var SearchResultsBase = class {
     }
 
     destroy() {
-        this.actor.destroy();
+        this.actor.destroy_all_children();
         this._terms = [];
     }
 
@@ -362,7 +365,10 @@ var ListSearchResults = class extends SearchResultsBase {
         return super._createResultDisplay(meta, this._resultsView) ||
                new ListSearchResult(this.provider, meta, this._resultsView);
     }
-
+    destroy() {
+        this.providerInfo.destroy();
+        super.destroy();
+    }
     _addItem(display) {
         //global.log(display.actor);
         this._content.add_actor(display.menuItem.actor);
@@ -447,23 +453,22 @@ var SearchResults = class {
         this._highlightRegex = null;
 
         this._searchSettings = new Gio.Settings({ schema_id: SEARCH_PROVIDERS_SCHEMA });
-        this._searchSettings.connect('changed::disabled', this._reloadRemoteProviders.bind(this));
-        this._searchSettings.connect('changed::enabled', this._reloadRemoteProviders.bind(this));
-        this._searchSettings.connect('changed::disable-external', this._reloadRemoteProviders.bind(this));
-        this._searchSettings.connect('changed::sort-order', this._reloadRemoteProviders.bind(this));
 
         this._searchTimeoutId = 0;
         this._cancellable = new Gio.Cancellable();
 
         this._registerProvider(new AppDisplay.AppSearchProvider());
 
-        appSys.connect('installed-changed', this._reloadRemoteProviders.bind(this));
         this._reloadRemoteProviders();
     }
     setStyle(style){
         this._statusText.style_class = style;
     }
-
+    destroy(){
+        this._providers.forEach(provider => {
+            provider.display.destroy();
+        });
+    }
     _reloadRemoteProviders() {
         let remoteProviders = this._providers.filter(p => p.isRemoteProvider);
         remoteProviders.forEach(provider => {
@@ -711,7 +716,7 @@ var ArcSearchProviderInfo =Utils.createClass({
                                        x_align: Clutter.ActorAlign.START,x_expand: true});
         this._moreText="";
         this.actor.add_child(this.nameLabel);
-        this.actor.connect('notify::hover', this._onHover.bind(this));
+        this.hoverID = this.actor.connect('notify::hover', this._onHover.bind(this));
         let isMenuItem = true;
         if(provider.appInfo.get_description()!=null){
             this.tooltip = new MW.Tooltip(this.actor, provider.appInfo.get_description(),isMenuItem,this._button._settings);
@@ -745,6 +750,16 @@ var ArcSearchProviderInfo =Utils.createClass({
             this.activate(event);
         }
         return Clutter.EVENT_STOP;
+    },
+    _destroy(){
+        this.actor.disconnect(this.hoverID);
+        if(this.tooltip != undefined){
+            this.tooltip.destroy();
+        }
+        this.callParent('destroy');
     }
+
+       
+    
 });
 
