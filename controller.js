@@ -22,7 +22,7 @@
 // Import Libraries
 const Me = imports.misc.extensionUtils.getCurrentExtension();
 
-const {Gdk, Gio, GLib} = imports.gi;
+const {Gdk, Gio, GLib, Shell} = imports.gi;
 const Constants = Me.imports.constants;
 const Gettext = imports.gettext.domain(Me.metadata['gettext-domain']);
 const Helper = Me.imports.helper;
@@ -42,7 +42,9 @@ var MenuSettingsController = class {
         this.isMainPanel = isMainPanel;
         this._activitiesButton = this.panel.statusArea.activities;
         this._settingsControllers = settingsControllers
-        // Create the button, a Hot Corner Manager, a Menu Keybinder as well as a Keybinding Manager
+       
+        this.updatePinnedAppsWebBrowser();
+         // Create the button, a Hot Corner Manager, a Menu Keybinder as well as a Keybinding Manager
         this._menuButton = new Menu.ApplicationsButton(settings, panel);
         this._hotCornerManager = new Helper.HotCornerManager(this._settings);
         if(this.isMainPanel){
@@ -68,7 +70,29 @@ var MenuSettingsController = class {
         this._setButtonIcon();
         this._setButtonIconSize();
     }
-
+    updatePinnedAppsWebBrowser(){
+        //Find the Default Web Browser, if found add to pinned apps list, if not found delete the placeholder.
+        //Will only run if placeholder is found. Placeholder only found with default settings set.
+        let pinnedApps = this._settings.get_strv('pinned-app-list');
+        if(pinnedApps[0]=="ArcMenu_WebBrowser")
+        {     
+            let [res, stdout, stderr, status] = GLib.spawn_command_line_sync("xdg-settings get default-web-browser");
+            let webBrowser = String.fromCharCode.apply(null, stdout);
+            let browserName = webBrowser.split(".desktop")[0];
+            browserName+=".desktop";
+            let appSys = Shell.AppSystem.get_default();
+            this._app = appSys.lookup_app(browserName);
+            if(this._app){
+                pinnedApps[0] = this._app.get_name();
+                pinnedApps[1] = this._app.create_icon_texture(25).gicon.to_string();
+                pinnedApps[2] = this._app.get_id();
+            }
+            else{
+                pinnedApps.splice(0,3);
+            }
+            this._settings.set_strv('pinned-app-list',pinnedApps);
+        }
+    }
     // Bind the callbacks for handling the settings changes to the event signals
     bindSettingsChanges() {
         this.settingsChangeIds = [
@@ -81,7 +105,6 @@ var MenuSettingsController = class {
             this._settings.connect('changed::menu-button-icon', this._setButtonIcon.bind(this)),
             this._settings.connect('changed::custom-menu-button-icon', this._setButtonIcon.bind(this)),
             this._settings.connect('changed::custom-menu-button-icon-size', this._setButtonIconSize.bind(this)),
-            this._settings.connect('changed::enable-menu-button-arrow', this._setMenuButtonArrow.bind(this)),
             this._settings.connect('changed::enable-custom-arc-menu', this._enableCustomArcMenu.bind(this)),
             this._settings.connect('changed::show-home-shortcut', this._redisplayRightSide.bind(this)),
             this._settings.connect('changed::show-documents-shortcut', this._redisplayRightSide.bind(this)),
@@ -265,17 +288,7 @@ var MenuSettingsController = class {
                 menuButtonWidget.hidePanelText();
                 menuButtonWidget.showPanelIcon();
         }
-        this._setMenuButtonArrow();
-    }
 
-    _setMenuButtonArrow() {
-        let menuButtonWidget = this._menuButton.getWidget();
-        if (this._settings.get_boolean('enable-menu-button-arrow')) {
-            menuButtonWidget.hideArrowIcon();
-            menuButtonWidget.showArrowIcon();
-        } else {
-            menuButtonWidget.hideArrowIcon();
-        }
     }
 
     // Update the text of the menu button as specified in the settings
@@ -284,16 +297,8 @@ var MenuSettingsController = class {
         let menuButtonWidget = this._menuButton.getWidget();
         let label = menuButtonWidget.getPanelLabel();
 
-        switch (this._settings.get_enum('menu-button-text')) {
-            case Constants.MENU_BUTTON_TEXT.Custom:
-                let customTextLabel = this._settings.get_string('custom-menu-button-text');
-                label.set_text(customTextLabel);
-                break;
-            case Constants.MENU_BUTTON_TEXT.System: /* falls through */
-            default:
-                let systemTextLabel = _('Applications');
-                label.set_text(systemTextLabel);
-        }
+        let customTextLabel = this._settings.get_string('custom-menu-button-text');
+        label.set_text(customTextLabel);
     }
 
     // Update the icon of the menu button as specified in the settings
