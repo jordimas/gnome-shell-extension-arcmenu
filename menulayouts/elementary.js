@@ -307,6 +307,8 @@ var createMenu = class{
             this.searchBox.clear();
             this._clearApplicationsBox();
             this._displayAppIcons();
+            let appsScrollBoxAdj = this.shortcutsScrollBox.get_vscroll_bar().get_adjustment();
+            appsScrollBoxAdj.set_value(0);
         }
         _setActiveCategory(){
 

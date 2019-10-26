@@ -368,6 +368,10 @@ var createMenu = class {
         }
         this.backButton.actor.hide();
         this.viewProgramsButton.actor.show();
+        let appsScrollBoxAdj = this.applicationsScrollBox.get_vscroll_bar().get_adjustment();
+        appsScrollBoxAdj.set_value(0);
+        appsScrollBoxAdj = this.shortcutsScrollBox.get_vscroll_bar().get_adjustment();
+        appsScrollBoxAdj.set_value(0);
     }
     _redisplayRightSide(){
         this.rightBox.destroy_all_children();

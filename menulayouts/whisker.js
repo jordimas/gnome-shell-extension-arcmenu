@@ -483,6 +483,10 @@ var createMenu = class {
             let setDefaultActive = true;
             this._setActiveCategory(setDefaultActive);
             this._displayGnomeFavorites();
+            let appsScrollBoxAdj = this.applicationsScrollBox.get_vscroll_bar().get_adjustment();
+            appsScrollBoxAdj.set_value(0);
+            appsScrollBoxAdj = this.shortcutsScrollBox.get_vscroll_bar().get_adjustment();
+            appsScrollBoxAdj.set_value(0);
         }
         _setActiveCategory(setDefaultActive=false){
 
