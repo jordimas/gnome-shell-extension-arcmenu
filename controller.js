@@ -105,6 +105,7 @@ var MenuSettingsController = class {
             this._settings.connect('changed::menu-button-icon', this._setButtonIcon.bind(this)),
             this._settings.connect('changed::custom-menu-button-icon', this._setButtonIcon.bind(this)),
             this._settings.connect('changed::custom-menu-button-icon-size', this._setButtonIconSize.bind(this)),
+            this._settings.connect('changed::enable-menu-button-arrow', this._setMenuButtonArrow.bind(this)),
             this._settings.connect('changed::enable-custom-arc-menu', this._enableCustomArcMenu.bind(this)),
             this._settings.connect('changed::show-home-shortcut', this._redisplayRightSide.bind(this)),
             this._settings.connect('changed::show-documents-shortcut', this._redisplayRightSide.bind(this)),
@@ -288,7 +289,17 @@ var MenuSettingsController = class {
                 menuButtonWidget.hidePanelText();
                 menuButtonWidget.showPanelIcon();
         }
+        this._setMenuButtonArrow();
 
+    }
+    _setMenuButtonArrow() {
+        let menuButtonWidget = this._menuButton.getWidget();
+        if (this._settings.get_boolean('enable-menu-button-arrow')) {
+            menuButtonWidget.hideArrowIcon();
+            menuButtonWidget.showArrowIcon();
+        } else {
+            menuButtonWidget.hideArrowIcon();
+        }
     }
 
     // Update the text of the menu button as specified in the settings

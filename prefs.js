@@ -1084,6 +1084,23 @@ var MenuButtonCustomizationWindow = GObject.registerClass(
             menuButtonCustomTextBoxRow.add(menuButtonCustomTextLabel);
             menuButtonCustomTextBoxRow.add(menuButtonCustomTextEntry);
             menuButtonFrame.add(menuButtonCustomTextBoxRow);
+            // third row
+            let menuButtonArrowIconBoxRow = new PW.FrameBoxRow();
+            let menuButtonArrowIconLabel = new Gtk.Label({
+                label: _('Arrow beside Menu Button'),
+                use_markup: true,
+                xalign: 0,
+                hexpand: true
+            });
+            let enableArrowIconSwitch = new Gtk.Switch({ halign: Gtk.Align.END });
+            enableArrowIconSwitch.set_active(this._settings.get_boolean('enable-menu-button-arrow'));
+            enableArrowIconSwitch.connect('notify::active', function (check) {
+                this._settings.set_boolean('enable-menu-button-arrow', check.get_active());
+                resetButton.set_sensitive(true);  
+            }.bind(this));
+            menuButtonArrowIconBoxRow.add(menuButtonArrowIconLabel);
+            menuButtonArrowIconBoxRow.add(enableArrowIconSwitch);
+            menuButtonFrame.add(menuButtonArrowIconBoxRow);
 
 
             // third row
@@ -1253,7 +1270,8 @@ var MenuButtonCustomizationWindow = GObject.registerClass(
                 menuButtonColorChooser.set_rgba(color);
                 color.parse('rgb(214,214,214)');
                 menuButtonActiveColorChooser.set_rgba(color);
-
+                //this._settings.set_boolean('enable-menu-button-arrow',false);
+                enableArrowIconSwitch.set_active(false);
                 this._settings.set_string('menu-button-active-color','rgb(214,214,214)');
                 this._settings.set_string('menu-button-color','rgb(240,240,240)');
                 saveCSS(this._settings);
@@ -1271,7 +1289,8 @@ var MenuButtonCustomizationWindow = GObject.registerClass(
                 this._settings.get_string('custom-menu-button-icon') != '' ||
                 this._settings.get_enum('menu-button-icon') != 0 ||
                 this._settings.get_string('custom-menu-button-text') != 'Applications' ||
-                this._settings.get_enum('menu-button-appearance') != 0)
+                this._settings.get_enum('menu-button-appearance') != 0||
+                this._settings.get_boolean('enable-menu-button-arrow') != false)
                     return true;
             else
                 return false;
