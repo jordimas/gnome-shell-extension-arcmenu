@@ -1286,10 +1286,9 @@ var MenuButtonCustomizationWindow = GObject.registerClass(
            if(  this._settings.get_string('menu-button-active-color') != 'rgb(214,214,214)' ||
                 this._settings.get_string('menu-button-color') != 'rgb(240,240,240)' ||
                 this._settings.get_double('custom-menu-button-icon-size') != 22 ||
-                this._settings.get_string('custom-menu-button-icon') != '' ||
                 this._settings.get_enum('menu-button-icon') != 0 ||
                 this._settings.get_string('custom-menu-button-text') != 'Applications' ||
-                this._settings.get_enum('menu-button-appearance') != 0||
+                this._settings.get_enum('menu-button-appearance') != 0 ||
                 this._settings.get_boolean('enable-menu-button-arrow') != false)
                     return true;
             else
