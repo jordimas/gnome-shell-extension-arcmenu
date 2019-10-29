@@ -344,14 +344,11 @@ var MenuSettingsController = class {
 
     // Update the icon of the menu button as specified in the settings
     _setButtonIconSize() {
-        let display = Gdk.Display.get_default();
-        let primaryMonitor =display.get_monitor(0);
-        let scaleFactor = primaryMonitor.get_scale_factor();
         let menuButtonWidget = this._menuButton.getWidget();
         let stIcon = menuButtonWidget.getPanelIcon();
         let iconSize = this._settings.get_double('custom-menu-button-icon-size');
-        let size = iconSize * scaleFactor;
-        stIcon.set_icon_size(size);
+        let size = iconSize;
+        stIcon.icon_size = size;
     }
 
     // Get the current position of the menu button and its associated position order

@@ -1775,15 +1775,10 @@ var ArcMenuCustomizationWindow = GObject.registerClass(
 
         _createLayout(vbox) {
             let mainFrame = new PW.FrameBox();
-            //let screenHeight = Gdk.Display.get_default().get_primary_monitor().get_geometry().height;
-            //let scaleFactor = Gdk.Display.get_default().get_primary_monitor().get_scale_factor();
-            let display = Gdk.Display.get_default();
-            let primaryMonitor =display.get_monitor(0);
-            let screenHeight = primaryMonitor.get_geometry().height;
-            let scaleFactor = primaryMonitor.get_scale_factor();
-            screenHeight = screenHeight * scaleFactor;
-            //global.log(scaleFactor);
-            //global.log(screenHeight);
+            let screen = Gdk.Screen.get_default();
+            let rect = screen.get_monitor_geometry(0);
+            let scaleFactor = screen.get_monitor_scale_factor(0);
+            let screenHeight = rect.height * scaleFactor;
             //first row  - Name of Custom link
             let heightRow = new PW.FrameBoxRow();
             let heightLabel = new Gtk.Label({
