@@ -31,6 +31,7 @@ const MW = Me.imports.menuWidgets;
 const PopupMenu = imports.ui.popupMenu;
 const RemoteSearch = imports.ui.remoteSearch;
 const Signals = imports.signals;
+const SystemActions = imports.misc.systemActions;
 const Utils =  Me.imports.utils;
 const _ = Gettext.gettext;
 
@@ -273,14 +274,17 @@ var SearchResultsBase = class ArcMenu_SearchResultsBaseGrid{
             this.provider.activateResult(id, this._terms);
             if (result.metaInfo.clipboardText)
                 this._clipboard.set_text(St.ClipboardType.CLIPBOARD, result.metaInfo.clipboardText);
+            this._button.leftClickMenu.toggle();
         }
         else{
-            let temp = this.provider.createResultObject(result.metaInfo, this._resultsView);
-            this.actor.add(temp.actor);
-            temp.actor.hide();
-            temp.activate();
+            this._button.leftClickMenu.toggle();
+            if (id.endsWith('.desktop')) {
+                let app = appSys.lookup_app(id);
+                app.open_new_window(-1);
+            }
+            else
+                SystemActions.getDefault().activateAction(id);
         }
-        this._button.leftClickMenu.toggle();
     }
 
     _setMoreCount(count) {
