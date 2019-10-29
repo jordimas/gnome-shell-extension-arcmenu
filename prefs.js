@@ -3378,7 +3378,7 @@ var MiscPage = GObject.registerClass(
                 try {
                     acceptHandler(dialog.get_filename());
                 } catch(e) {
-                    log('error from dash-to-panel filechooser: ' + e);
+                    log('error from arc-menu filechooser: ' + e);
                 }
             }
     
