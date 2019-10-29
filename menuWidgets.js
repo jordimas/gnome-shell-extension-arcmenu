@@ -1232,7 +1232,8 @@ var ApplicationMenuIcon = Utils.createClass({
             this.activate(event);
         }
         if(event.get_button()==3){
-            
+            if(this.tooltip!=undefined)
+                this.tooltip.hide();
             if(!this.rightClickMenu.isOpen)
                 this.rightClickMenu.redisplay();
             this.rightClickMenu.toggle();
@@ -1356,6 +1357,8 @@ var ApplicationMenuItem =Utils.createClass({
             this.activate(event);
         }
         if(event.get_button()==3){ 
+            if(this.tooltip!=undefined)
+                this.tooltip.hide();
             if(!this.rightClickMenu.isOpen)
                 this.rightClickMenu.redisplay();
             this.rightClickMenu.toggle();
