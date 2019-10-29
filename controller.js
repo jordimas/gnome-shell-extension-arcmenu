@@ -83,8 +83,14 @@ var MenuSettingsController = class {
             let appSys = Shell.AppSystem.get_default();
             this._app = appSys.lookup_app(browserName);
             if(this._app){
+                let appIcon = this._app.create_icon_texture(25);
+                let iconName = '';
+                if(appIcon.icon_name)
+                    iconName = appIcon.icon_name;
+                else if(appIcon.gicon)
+                    iconName = appIcon.gicon.to_string();
                 pinnedApps[0] = this._app.get_name();
-                pinnedApps[1] = this._app.create_icon_texture(25).gicon.to_string();
+                pinnedApps[1] = iconName;
                 pinnedApps[2] = this._app.get_id();
             }
             else{
