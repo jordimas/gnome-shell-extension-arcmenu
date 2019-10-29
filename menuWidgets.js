@@ -1407,6 +1407,7 @@ var ApplicationMenuItem =Utils.createClass({
 var SearchResultItem = Utils.createClass({
     Name: 'ArcMenu_SearchResultItem',
     Extends: PopupMenu.PopupBaseMenuItem,
+    Signals: {'hideTooltip': {}},
     // Initialize menu item
     _init(button, app,path) {
         this.callParent('_init');
@@ -1454,6 +1455,7 @@ var SearchResultItem = Utils.createClass({
             if(!this.rightClickMenu.isOpen)
                 this.rightClickMenu.redisplay();
             this.rightClickMenu.toggle();
+            this.emit('hideTooltip');
 	    }   
         return Clutter.EVENT_STOP;
     },

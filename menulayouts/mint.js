@@ -321,7 +321,6 @@ var createMenu =class{
     resetSearch(){ //used by back button to clear results -- gets called on menu close
         this.searchBox.clear();
         this.setDefaultMenuView();  
-        this.newSearch._reloadRemoteProviders();
     }
     _redisplayRightSide(){
 
@@ -500,6 +499,7 @@ var createMenu =class{
     
     setDefaultMenuView(){
         this.searchBox.clear();
+        this.newSearch._reset();
         this._displayGnomeFavorites();
         let setDefaultActive = true;
         this._setActiveCategory(setDefaultActive);

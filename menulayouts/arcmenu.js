@@ -352,12 +352,11 @@ var createMenu = class {
     resetSearch(){ //used by back button to clear results
         this.searchBox.clear();
         this.setDefaultMenuView();  
-        this.newSearch._reloadRemoteProviders();
     }
     setDefaultMenuView(){
         this.searchBox.clear();
+        this.newSearch._reset();
         this._clearApplicationsBox();
-        
         if(this._settings.get_boolean('enable-pinned-apps')){
             this.currentMenu = Constants.CURRENT_MENU.FAVORITES;
             this._displayFavorites();
