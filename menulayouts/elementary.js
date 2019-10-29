@@ -192,7 +192,6 @@ var createMenu = class{
     resetSearch(){ //used by back button to clear results -- gets called on menu close
         this.searchBox.clear();
         this.setDefaultMenuView();  
-        this.newSearch._reloadRemoteProviders(); 
     }
     _redisplayRightSide(){
 
@@ -305,6 +304,7 @@ var createMenu = class{
         
         setDefaultMenuView(){
             this.searchBox.clear();
+            this.newSearch._reset();
             this._clearApplicationsBox();
             this._displayAppIcons();
             let appsScrollBoxAdj = this.shortcutsScrollBox.get_vscroll_bar().get_adjustment();
@@ -335,7 +335,8 @@ var createMenu = class{
             if(this.currentMenu != Constants.CURRENT_MENU.SEARCH_RESULTS){              
             	this.currentMenu = Constants.CURRENT_MENU.SEARCH_RESULTS;        
             }
-            if(searchBox.isEmpty()){  
+            if(searchBox.isEmpty()){ 
+                this.newSearch.setTerms(['']);  
                 this.setDefaultMenuView();                     	          	
             	this.newSearch.actor.hide();
             }            

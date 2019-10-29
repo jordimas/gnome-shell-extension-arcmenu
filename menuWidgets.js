@@ -1232,7 +1232,8 @@ var ApplicationMenuIcon = Utils.createClass({
             this.activate(event);
         }
         if(event.get_button()==3){
-            
+            if(this.tooltip!=undefined)
+                this.tooltip.hide();
             if(!this.rightClickMenu.isOpen)
                 this.rightClickMenu.redisplay();
             this.rightClickMenu.toggle();
@@ -1356,6 +1357,8 @@ var ApplicationMenuItem =Utils.createClass({
             this.activate(event);
         }
         if(event.get_button()==3){ 
+            if(this.tooltip!=undefined)
+                this.tooltip.hide();
             if(!this.rightClickMenu.isOpen)
                 this.rightClickMenu.redisplay();
             this.rightClickMenu.toggle();
@@ -1407,6 +1410,7 @@ var ApplicationMenuItem =Utils.createClass({
 var SearchResultItem = Utils.createClass({
     Name: 'ArcMenu_SearchResultItem',
     Extends: PopupMenu.PopupBaseMenuItem,
+    Signals: {'hideTooltip': {}},
     // Initialize menu item
     _init(button, app,path) {
         this.callParent('_init');
@@ -1454,6 +1458,7 @@ var SearchResultItem = Utils.createClass({
             if(!this.rightClickMenu.isOpen)
                 this.rightClickMenu.redisplay();
             this.rightClickMenu.toggle();
+            this.emit('hideTooltip');
 	    }   
         return Clutter.EVENT_STOP;
     },

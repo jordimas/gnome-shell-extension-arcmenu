@@ -140,7 +140,10 @@ var ApplicationsButton =   Utils.defineClass({
             this.mainBox = new St.BoxLayout({
                 vertical: false
             });        
-            this.mainBox.set_height(this._settings.get_int('menu-height'));               
+            let themeContext = St.ThemeContext.get_for_stage(global.stage);
+            let scaleFactor = themeContext.scale_factor;
+            let height =  Math.round(this._settings.get_int('menu-height') / scaleFactor);
+            this.mainBox.style = `height: ${height}px`;        
             this.section.actor.add_actor(this.mainBox);          
             //--------------------------------------------------------------------
 
@@ -303,10 +306,12 @@ var ApplicationsButton =   Utils.defineClass({
         },
         updateHeight(){
             //set menu height
-             let layout = this._settings.get_enum('menu-layout');
-            
+            let layout = this._settings.get_enum('menu-layout');
+            let themeContext = St.ThemeContext.get_for_stage(global.stage);
+            let scaleFactor = themeContext.scale_factor;
+            let height =  Math.round(this._settings.get_int('menu-height') / scaleFactor);
             if(!(layout == Constants.MENU_LAYOUT.Simple || layout == Constants.MENU_LAYOUT.Simple2))
-                this.mainBox.set_height(this._settings.get_int('menu-height'));	
+                this.mainBox.style = `height: ${height}px`;
             
            
             this._redisplay();
@@ -346,7 +351,10 @@ var ApplicationsButton =   Utils.defineClass({
             this.mainBox = new St.BoxLayout({
                 vertical: false
             });        
-            this.mainBox.set_height(this._settings.get_int('menu-height'));               
+            let themeContext = St.ThemeContext.get_for_stage(global.stage);
+            let scaleFactor = themeContext.scale_factor;
+            let height =  Math.round(this._settings.get_int('menu-height') / scaleFactor);
+            this.mainBox.style = `height: ${height}px`;        
             this.section.actor.add_actor(this.mainBox);          
             //------------------------------------------------  
              

@@ -352,12 +352,11 @@ var createMenu = class {
     resetSearch(){ //used by back button to clear results
         this.searchBox.clear();
         this.setDefaultMenuView();  
-        this.newSearch._reloadRemoteProviders();
     }
     setDefaultMenuView(){
         this.searchBox.clear();
+        this.newSearch._reset();
         this._clearApplicationsBox();
-        
         if(this._settings.get_boolean('enable-pinned-apps')){
             this.currentMenu = Constants.CURRENT_MENU.FAVORITES;
             this._displayFavorites();
@@ -750,6 +749,7 @@ var createMenu = class {
             this.currentMenu = Constants.CURRENT_MENU.SEARCH_RESULTS;        
         }
         if(searchBox.isEmpty()){  
+            this.newSearch.setTerms(['']); 
             this.setDefaultMenuView();                     	          	
             this.newSearch.actor.hide();
         }            

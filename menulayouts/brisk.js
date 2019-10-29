@@ -218,8 +218,6 @@ var createMenu = class{
     resetSearch(){ //used by back button to clear results
         this.searchBox.clear();
         this.setDefaultMenuView();  
-        this.newSearch._reloadRemoteProviders();
-
     }
     _redisplayRightSide(){
     }
@@ -485,6 +483,7 @@ var createMenu = class{
     setDefaultMenuView()
     {
         this.searchBox.clear();
+        this.newSearch._reset();
         let setDefaultActive = true;
         this._setActiveCategory(setDefaultActive);
         this._displayGnomeFavorites();
@@ -523,6 +522,7 @@ var createMenu = class{
             this.currentMenu = Constants.CURRENT_MENU.SEARCH_RESULTS;        
         }
         if(searchBox.isEmpty()){  
+            this.newSearch.setTerms(['']); 
             this.setDefaultMenuView();                     	          	
             this.newSearch.actor.hide();
         }            

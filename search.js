@@ -31,6 +31,7 @@ const MW = Me.imports.menuWidgets;
 const PopupMenu = imports.ui.popupMenu;
 const RemoteSearch = imports.ui.remoteSearch;
 const Signals = imports.signals;
+const SystemActions = imports.misc.systemActions;
 const Utils =  Me.imports.utils;
 const _ = Gettext.gettext;
 
@@ -58,7 +59,7 @@ class ArcMenu_SearchMaxWidthBin extends St.Bin {
     }
 });
 
-var ListSearchResult = class  {
+var ListSearchResult = class ArcMenu_ListSearchResult {
     constructor(provider, metaInfo, resultsView) {
         this._button = resultsView._button;
         this.metaInfo = metaInfo;
@@ -97,6 +98,9 @@ var ListSearchResult = class  {
             this.tooltip = new MW.Tooltip(this.menuItem.actor, this.metaInfo['description'] ? this.metaInfo['description']:  app.get_description(),isMenuItem,this._button._settings);
             this.tooltip.hide();
             this.menuItem.actor.connect('notify::hover', this._onHover.bind(this));
+            this.menuItem.connect('hideTooltip',() => {
+                this.tooltip.hide();
+            });
         }
 
     }
@@ -125,13 +129,12 @@ var ListSearchResult = class  {
     }
 };Signals.addSignalMethods(ListSearchResult.prototype);
 
-var AppSearchResult = class  {
+var AppSearchResult = class  ArcMenu_AppSearchResult {
     constructor(provider, metaInfo, resultsView) {
         this._button = resultsView._button;
         this.metaInfo = metaInfo;
         this.provider = provider;
         this._settings = this._button._settings;
-        this.layout =this._settings.get_enum('menu-layout');
         let app = appSys.lookup_app(this.metaInfo['id']);
         if(app){
             this.menuItem = new MW.SearchResultItem(this._button, app);
@@ -157,6 +160,9 @@ var AppSearchResult = class  {
             this.tooltip = new MW.Tooltip(this.menuItem.actor, this.metaInfo['description'] ? this.metaInfo['description']:  app.get_description(),isMenuItem,this._button._settings);
             this.tooltip.hide();
             this.menuItem.actor.connect('notify::hover', this._onHover.bind(this));
+            this.menuItem.connect('hideTooltip',() => {
+                this.tooltip.hide();
+            });
         }
         this.menuItem.connect('activate', this.activate.bind(this));
         this.menuItem.connect('destroy', this._onDestroy.bind(this));
@@ -183,7 +189,7 @@ var AppSearchResult = class  {
     }
 
 };Signals.addSignalMethods(AppSearchResult.prototype);
-var SearchResultsBase = class {
+var SearchResultsBase = class ArcMenu_SearchResultsBase{
     constructor(provider, resultsView) {
         this.provider = provider;
         this._resultsView = resultsView;
@@ -202,10 +208,10 @@ var SearchResultsBase = class {
         this._clipboard = St.Clipboard.get_default();
 
         this._cancellable = new Gio.Cancellable();
+        this.actor.connect('destroy', this._onDestroy.bind(this));
     }
 
-    destroy() {
-        this.actor.destroy_all_children();
+    _onDestroy() {
         this._terms = [];
     }
 
@@ -234,14 +240,18 @@ var SearchResultsBase = class {
             this.provider.activateResult(id, this._terms);
             if (result.metaInfo.clipboardText)
                 this._clipboard.set_text(St.ClipboardType.CLIPBOARD, result.metaInfo.clipboardText);
+            this._button.leftClickMenu.toggle();
         }
         else{
-            let temp = this.provider.createResultObject(result.metaInfo, this._resultsView);
-            this.actor.add(temp.actor);
-            temp.actor.hide();
-            temp.activate();
+            this._button.leftClickMenu.toggle();
+            if (id.endsWith('.desktop')) {
+                let app = appSys.lookup_app(id);
+                app.open_new_window(-1);
+            }
+            else
+                SystemActions.getDefault().activateAction(id);
         }
-        this._button.leftClickMenu.toggle();
+      
     }
 
     _setMoreCount(count) {
@@ -324,7 +334,7 @@ var SearchResultsBase = class {
     }
 };
 
-var ListSearchResults = class extends SearchResultsBase {
+var ListSearchResults = class ArcMenu_ListSearchResults extends SearchResultsBase {
     constructor(provider, resultsView) {
         super(provider, resultsView);
         this._button= resultsView._button;
@@ -365,10 +375,6 @@ var ListSearchResults = class extends SearchResultsBase {
         return super._createResultDisplay(meta, this._resultsView) ||
                new ListSearchResult(this.provider, meta, this._resultsView);
     }
-    destroy() {
-        this.providerInfo.destroy();
-        super.destroy();
-    }
     _addItem(display) {
         //global.log(display.actor);
         this._content.add_actor(display.menuItem.actor);
@@ -383,7 +389,7 @@ var ListSearchResults = class extends SearchResultsBase {
     }
 };
 Signals.addSignalMethods(ListSearchResults.prototype);
-var AppSearchResults = class extends SearchResultsBase {
+var AppSearchResults = class ArcMenu_AppSearchResults extends SearchResultsBase {
       constructor(provider, resultsView) {
         super(provider, resultsView);
         this._parentContainer = resultsView.actor;
@@ -398,7 +404,7 @@ var AppSearchResults = class extends SearchResultsBase {
     _clearResultDisplay() {
         this._grid.remove_all_children();
     }
-
+    
     _createResultDisplay(meta) {
         return  new AppSearchResult(this.provider, meta, this._resultsView);
     }
@@ -416,7 +422,7 @@ var AppSearchResults = class extends SearchResultsBase {
 };
 Signals.addSignalMethods(AppSearchResults.prototype);
 
-var SearchResults = class {
+var SearchResults = class ArcMenu_SearchResults {
     constructor(button) {
         this.actor = new St.BoxLayout({ name: 'arc-search',
                                         vertical: true });
@@ -453,11 +459,18 @@ var SearchResults = class {
         this._highlightRegex = null;
 
         this._searchSettings = new Gio.Settings({ schema_id: SEARCH_PROVIDERS_SCHEMA });
+        this._searchSettings.connect('changed::disabled', this._reloadRemoteProviders.bind(this));
+        this._searchSettings.connect('changed::enabled', this._reloadRemoteProviders.bind(this));
+        this._searchSettings.connect('changed::disable-external', this._reloadRemoteProviders.bind(this));
+        this._searchSettings.connect('changed::sort-order', this._reloadRemoteProviders.bind(this));
+
 
         this._searchTimeoutId = 0;
         this._cancellable = new Gio.Cancellable();
 
         this._registerProvider(new AppDisplay.AppSearchProvider());
+
+        appSys.connect('installed-changed', this._reloadRemoteProviders.bind(this));
 
         this._reloadRemoteProviders();
     }
@@ -466,7 +479,7 @@ var SearchResults = class {
     }
     destroy(){
         this._providers.forEach(provider => {
-            provider.display.destroy();
+            provider.display.actor.destroy();
         });
     }
     _reloadRemoteProviders() {
@@ -490,8 +503,9 @@ var SearchResults = class {
         let index = this._providers.indexOf(provider);
         this._providers.splice(index, 1);
 
-        if (provider.display)
-            provider.display.destroy();
+        if (provider.display){
+            provider.display.actor.destroy();
+        }
     }
 
     _gotResults(results, provider) {
@@ -720,9 +734,9 @@ var ArcSearchProviderInfo =Utils.createClass({
         let isMenuItem = true;
         if(provider.appInfo.get_description()!=null){
             this.tooltip = new MW.Tooltip(this.actor, provider.appInfo.get_description(),isMenuItem,this._button._settings);
-            this.tooltip.hide();
-            
+            this.tooltip.hide();            
         }
+        this.actor.connect("destroy", ()=>{this._onDestroy()});
     },
     _onHover() {
         if(this._button.newSearch._highlightDefault)
@@ -751,12 +765,11 @@ var ArcSearchProviderInfo =Utils.createClass({
         }
         return Clutter.EVENT_STOP;
     },
-    _destroy(){
-        this.actor.disconnect(this.hoverID);
-        if(this.tooltip != undefined){
-            this.tooltip.destroy();
+    _onDestroy(){
+        if(this.hoverID>0){
+            this.actor.disconnect(this.hoverID);
+            this.hoverID=0;
         }
-        this.callParent('destroy');
     }
 
        
