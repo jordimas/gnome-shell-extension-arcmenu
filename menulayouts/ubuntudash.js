@@ -376,6 +376,7 @@ var createMenu = class{
             	this.currentMenu = Constants.CURRENT_MENU.SEARCH_RESULTS;        
             }
             if(searchBox.isEmpty()){  
+                this.newSearch.setTerms(['']); 
                 this.setDefaultMenuView();                     	          	
             	this.newSearch.actor.hide();
             }            

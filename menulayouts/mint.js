@@ -540,7 +540,8 @@ var createMenu =class{
         if(this.currentMenu != Constants.CURRENT_MENU.SEARCH_RESULTS){              
             this.currentMenu = Constants.CURRENT_MENU.SEARCH_RESULTS;        
         }
-        if(searchBox.isEmpty()){  
+        if(searchBox.isEmpty()){ 
+            this.newSearch.setTerms(['']);  
             this.setDefaultMenuView();                     	          	
             this.newSearch.actor.hide();
         }            
