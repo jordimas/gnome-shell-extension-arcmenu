@@ -142,7 +142,7 @@ Additional credits: This extension also leverages the work from [Giovanni Campag
 
 -----
 
-**@[fishears](https://github.com/fishears/Arc-Menu)** | **@[JasonLG1979](https://github.com/JasonLG1979)** | **@[itmitica](https://github.com/itmitica)**
+**@[fishears](https://github.com/fishears/Arc-Menu)** | **@[JasonLG1979](https://github.com/JasonLG1979)** | **@[itmitica](https://github.com/itmitica)** | **@[vikaig](https://gitlab.com/vikaig)**
 
 -----
 
