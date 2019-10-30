@@ -1862,7 +1862,7 @@ var PlaceInfo = class ArcMenu_PlaceInfo {
             return info.get_symbolic_icon();
 
         } catch (e) {
-            if (e instanceof GioIOErrorEnum) {
+            if (e instanceof Gio.IOErrorEnum) {
                 if (!this.file.is_native()) {
                     return new Gio.ThemedIcon({ name: 'folder-remote-symbolic' });
                 } else {
