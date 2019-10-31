@@ -1,0 +1,674 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Arc Menu\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2019-10-26 18:17-0400\n"
+"PO-Revision-Date: 2019-10-31 18:28+0200\n"
+"Language-Team: estonian\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Poedit 2.2.4\n"
+"Last-Translator: rimas <rihvast@gmail.com>\n"
+"Language: et_EE\n"
+
+#: menu.js:497 menuWidgets.js:967
+msgid "Arc Menu Settings"
+msgstr "Arc menüü sätted"
+
+#: menu.js:506
+msgid "Arc Menu on GitLab"
+msgstr "Arc menüü GitLabis"
+
+#: menu.js:511
+msgid "About Arc Menu"
+msgstr "Arc menüü info"
+
+#: menu.js:519
+msgid "Dash to Panel Settings"
+msgstr "Laienduse 'Dash to Panel' sätted"
+
+#: menuWidgets.js:126
+msgid "Open Folder Location"
+msgstr "Ava kausta asukoht"
+
+#: menuWidgets.js:142
+msgid "Current Windows:"
+msgstr "Praegused aknad:"
+
+#: menuWidgets.js:161
+msgid "New Window"
+msgstr "Uus aken"
+
+#: menuWidgets.js:171
+msgid "Launch using Dedicated Graphics Card"
+msgstr "Käivita spetsiaalse videokaardi abil"
+
+#: menuWidgets.js:194
+msgid "Remove from Favorites"
+msgstr "Eemalda lemmikutest"
+
+#: menuWidgets.js:200
+msgid "Add to Favorites"
+msgstr "Lisa lemmikutesse"
+
+#: menuWidgets.js:221 menuWidgets.js:273
+msgid "Unpin from Arc Menu"
+msgstr "Vabasta Arc menüüst"
+
+#: menuWidgets.js:235
+msgid "Pin to Arc Menu"
+msgstr "Kinnita Arc menüüsse"
+
+#: menuWidgets.js:248
+msgid "Show Details"
+msgstr "Kuva üksikasjad"
+
+#: menuWidgets.js:420 prefs.js:3012
+msgid "Activities Overview"
+msgstr "Tegevuste ülevaade"
+
+#: menuWidgets.js:599
+msgid "Files"
+msgstr "Failid"
+
+#: menuWidgets.js:611 prefs.js:3012
+msgid "Software"
+msgstr "Tarkvara"
+
+#: menuWidgets.js:630 menuWidgets.js:968 prefs.js:3012
+msgid "Terminal"
+msgstr "Terminal"
+
+#: menuWidgets.js:643 prefs.js:3012
+msgid "Settings"
+msgstr "Sätted"
+
+#: menuWidgets.js:655
+msgid "Users"
+msgstr "Kasutajad"
+
+#: menuWidgets.js:667 prefs.js:3110
+msgid "Power Off"
+msgstr "Lülita välja"
+
+#: menuWidgets.js:680 prefs.js:3092
+msgid "Log Out"
+msgstr "Logi välja"
+
+#: menuWidgets.js:693 prefs.js:3056
+msgid "Suspend"
+msgstr "Uinak"
+
+#: menuWidgets.js:711 prefs.js:3074
+msgid "Lock"
+msgstr "Lukusta"
+
+#: menuWidgets.js:735
+msgid "Back"
+msgstr "Tagasi"
+
+#: menuWidgets.js:803 menuWidgets.js:1488 menuWidgets.js:1620
+#: menuWidgets.js:1786
+msgid "All Programs"
+msgstr "Kõik programmid"
+
+#: menuWidgets.js:1488 menuWidgets.js:1620 menuWidgets.js:1786
+msgid "Favorites"
+msgstr "Lemmikud"
+
+#: menuWidgets.js:1491 menuWidgets.js:1623 menuWidgets.js:1789
+msgid "Frequent Apps"
+msgstr "Sagedased"
+
+#: menuWidgets.js:1952
+msgid "Type to search…"
+msgstr "Sisesta otsitav…"
+
+#: menuWidgets.js:2121
+msgid "Applications"
+msgstr "Rakendused"
+
+#: placeDisplay.js:146
+#, javascript-format
+msgid "Failed to launch “%s”"
+msgstr "“%s” käivitamine nurjus"
+
+#: placeDisplay.js:161
+#, javascript-format
+msgid "Failed to mount volume for “%s”"
+msgstr "Ketta “%s” haakimine nurjus"
+
+#: placeDisplay.js:245 placeDisplay.js:269 prefs.js:2916
+msgid "Computer"
+msgstr "Arvuti"
+
+#: placeDisplay.js:334
+#, javascript-format
+msgid "Ejecting drive “%s” failed:"
+msgstr "Kettaseadme „%s” väljutamine nurjus:"
+
+#: placeDisplay.js:460 prefs.js:2916
+msgid "Home"
+msgstr "Kodu"
+
+#: prefs.js:43 prefs.js:679
+msgid "Pinned Apps"
+msgstr "Kinnitatud rakendused"
+
+#: prefs.js:48
+msgid "Your Pinned Apps:"
+msgstr "Kinnitatud rakendused:"
+
+#: prefs.js:72
+msgid "Add More Apps"
+msgstr "Lisa rakendusi"
+
+#: prefs.js:116
+msgid "Add Custom Shortcut"
+msgstr "Lisa kohandatud otsetee"
+
+#: prefs.js:150 prefs.js:506
+msgid "Save"
+msgstr "Salvesta"
+
+#: prefs.js:303
+msgid "Select Apps to add to Pinned Apps List"
+msgstr "Lisa kinnitatud rakenduste loendisse lisatavad rakendused"
+
+#: prefs.js:323 prefs.js:506
+msgid "Add"
+msgstr "Lisa"
+
+#: prefs.js:435
+msgid "Edit Pinned App"
+msgstr "Muuda kinnitatud rakendust"
+
+#: prefs.js:435
+msgid "Add a Custom Shortcut"
+msgstr "Lisa kohandatud otsetee"
+
+#: prefs.js:445
+msgid "Shortcut Name:"
+msgstr "Otsetee nimi:"
+
+#: prefs.js:460
+msgid "Icon:"
+msgstr "Ikoon:"
+
+#: prefs.js:473 prefs.js:1119
+msgid "Please select an image icon"
+msgstr "Määra ikoon"
+
+#: prefs.js:492
+msgid "Terminal Command:"
+msgstr "Terminali käsk:"
+
+#: prefs.js:550
+msgid "General"
+msgstr "Üldine"
+
+#: prefs.js:559
+msgid "Menu Button Position in Panel"
+msgstr "Menüünupu asukoht paneelil"
+
+#: prefs.js:566
+msgid "Left"
+msgstr "Vasakul"
+
+#: prefs.js:569
+msgid "Center"
+msgstr "Keskel"
+
+#: prefs.js:573
+msgid "Right"
+msgstr "Paremal"
+
+#: prefs.js:611
+msgid "Display on all monitors when using Dash to Panel"
+msgstr "Kasutades laiendust 'Dash to Panel' kuva kõigil ekraanidel"
+
+#: prefs.js:632
+msgid "Disable Tooltips"
+msgstr "Keela kohtspikrid"
+
+#: prefs.js:654
+msgid "Disable activities hot corner"
+msgstr "Keela tegevuste kuum nurk"
+
+#: prefs.js:673
+msgid "Choose Arc Menus Default View"
+msgstr "Vali Arc menüü vaikevaade"
+
+#: prefs.js:680
+msgid "Categories List"
+msgstr "Kategooriad"
+
+#: prefs.js:701
+msgid "Hotkey activation"
+msgstr "Kiirklahvi aktiveerimine"
+
+#: prefs.js:707
+msgid "Key Release"
+msgstr "Klahvi vabastus"
+
+#: prefs.js:708
+msgid "Key Press"
+msgstr "Klahvi vajutus"
+
+#: prefs.js:732
+msgid "Set Menu Hotkey"
+msgstr "Määra menüü kiirklahv"
+
+#: prefs.js:742
+msgid "Left Super Key"
+msgstr "Vasak Super klahv"
+
+#: prefs.js:748
+msgid "Right Super Key"
+msgstr "Parem Super klahv"
+
+#: prefs.js:753
+msgid "Custom"
+msgstr "Kohandatud"
+
+#: prefs.js:758
+msgid "None"
+msgstr "Puudub"
+
+#: prefs.js:853
+msgid "Current Hotkey"
+msgstr "Praegune kiirklahv"
+
+#: prefs.js:880
+msgid "Set Custom Shortcut"
+msgstr "Lisa kohandatud otsetee"
+
+#: prefs.js:889
+msgid "Press a key"
+msgstr "Vajuta klahvi"
+
+#: prefs.js:914
+msgid "Modifiers"
+msgstr "Muuteklahvid"
+
+#: prefs.js:919
+msgid "Ctrl"
+msgstr "Ctrl"
+
+#: prefs.js:924
+msgid "Super"
+msgstr "Super"
+
+#: prefs.js:928
+msgid "Shift"
+msgstr "Shift"
+
+#: prefs.js:932
+msgid "Alt"
+msgstr "Alt"
+
+#: prefs.js:996 prefs.js:1703 prefs.js:1941 prefs.js:2184 prefs.js:2831
+msgid "Apply"
+msgstr "Rakenda"
+
+#: prefs.js:1033 prefs.js:1056 prefs.js:1328
+msgid "Menu Button Appearance"
+msgstr "Menüünupu välimus"
+
+#: prefs.js:1044
+msgid "Icon"
+msgstr "Ikoon"
+
+#: prefs.js:1045
+msgid "Text"
+msgstr "Tekst"
+
+#: prefs.js:1046
+msgid "Icon and Text"
+msgstr "Ikoon ja tekst"
+
+#: prefs.js:1047
+msgid "Text and Icon"
+msgstr "Tekst ja ikoon"
+
+#: prefs.js:1070
+msgid "Menu Button Text"
+msgstr "Menüünupu tekst"
+
+#: prefs.js:1090
+msgid "Arrow beside Menu Button"
+msgstr "Nool menüünupu kõrval"
+
+#: prefs.js:1109
+msgid "Menu Button Icon"
+msgstr "Menüünupu ikoon"
+
+#: prefs.js:1124
+msgid "Arc Menu Icon"
+msgstr "Arc menüü ikoon"
+
+#: prefs.js:1125
+msgid "System Icon"
+msgstr "Süsteemiikoon"
+
+#: prefs.js:1126
+msgid "Custom Icon"
+msgstr "Kohandatud ikoon"
+
+#: prefs.js:1164
+msgid "Icon Size"
+msgstr "Ikooni suurus"
+
+#: prefs.js:1196
+msgid "Icon Color"
+msgstr "Ikooni värv"
+
+#: prefs.js:1217
+msgid "Active Icon Color"
+msgstr "Aktiivse ikooni värv"
+
+#: prefs.js:1237
+msgid "Icon color options will only work with files ending with \"-symbolic.svg\""
+msgstr "Ikooni värvivalikud töötavad ainult failidega, mille lõpp on \"-symbolic.svg\""
+
+#: prefs.js:1250 prefs.js:1908 prefs.js:2777
+msgid "Reset"
+msgstr "Lähtesta"
+
+#: prefs.js:1306
+msgid "Appearance"
+msgstr "Välimus"
+
+#: prefs.js:1356 prefs.js:1773
+msgid "Customize Arc Menu Appearance"
+msgstr "Kohanda Arc menüü välimust"
+
+#: prefs.js:1406 prefs.js:2341
+msgid "Override Arc Menu Theme"
+msgstr "Alista Arc menüü teema"
+
+#: prefs.js:1471
+msgid "Current Color Theme"
+msgstr "Praegune värviteema"
+
+#: prefs.js:1495
+msgid "Choose Avatar Icon Shape"
+msgstr "Vali avatari ikooni kuju"
+
+#: prefs.js:1500
+msgid "Circular"
+msgstr "Ümar"
+
+#: prefs.js:1501
+msgid "Square"
+msgstr "Ruut"
+
+#: prefs.js:1519
+msgid "Choose Menu Layout"
+msgstr "Vali menüü paigutus"
+
+#: prefs.js:1574
+msgid "Current Layout"
+msgstr "Praegune paigutus"
+
+#: prefs.js:1594
+msgid "Each layout is different in behaviour and style."
+msgstr "Iga paigutus on käitumise ja stiili poolest erinev."
+
+#: prefs.js:1595
+msgid "All layouts can be modified by customization settings."
+msgstr "Kõiki paigutusi saab kohandada ja muuta."
+
+#: prefs.js:1596
+msgid "However, some settings are specifc to Arc Menu layout."
+msgstr "Kuid mõned sätted kehtivad ainult konkreetsele Arc menüü paigutusele."
+
+#: prefs.js:1660
+msgid "Menu style chooser"
+msgstr "Menüü stiili valik"
+
+#: prefs.js:1669
+msgid "Arc Menu Layout"
+msgstr "Arc menüü paigutus"
+
+#: prefs.js:1791
+msgid "Menu Height"
+msgstr "Menüü kõrgus"
+
+#: prefs.js:1823
+msgid "Left-Panel Width"
+msgstr "Vasakpoolse paneeli laius"
+
+#: prefs.js:1848
+msgid "Large Application Icons"
+msgstr "Suured rakenduseikoonid"
+
+#: prefs.js:1867 prefs.js:2727
+msgid "Enable Vertical Separator"
+msgstr "Luba vertikaalne eraldaja"
+
+#: prefs.js:1886 prefs.js:2751
+msgid "Separator Color"
+msgstr "Eraldaja värv"
+
+#: prefs.js:1976
+msgid "Color Theme Name"
+msgstr "Värviteema nimi"
+
+#: prefs.js:1983
+msgid "Name:"
+msgstr "Nimi:"
+
+#: prefs.js:2009
+msgid "Save Theme"
+msgstr "Salvesta teema"
+
+#: prefs.js:2041
+msgid "Select Themes to Import"
+msgstr "Vali imporditavad teemad"
+
+#: prefs.js:2041
+msgid "Select Themes to Export"
+msgstr "Vali eksporditavad teemad"
+
+#: prefs.js:2063
+msgid "Import"
+msgstr "Import"
+
+#: prefs.js:2063
+msgid "Export"
+msgstr "Eksport"
+
+#: prefs.js:2105
+msgid "Select All"
+msgstr "Vali kõik"
+
+#: prefs.js:2165
+msgid "Manage Themes"
+msgstr "Halda teemasi"
+
+#: prefs.js:2354
+msgid "Color Theme Presets"
+msgstr "Värviteema eelseadistused"
+
+#: prefs.js:2364
+msgid "Save as Preset"
+msgstr "Salvesta eelseadistusena"
+
+#: prefs.js:2459
+msgid "Manage Presets"
+msgstr "Halda eelseadistusi"
+
+#: prefs.js:2490
+msgid "Menu Background Color"
+msgstr "Menüü tagaplaani värv"
+
+#: prefs.js:2515
+msgid "Menu Foreground Color"
+msgstr "Menüü esiplaani värv"
+
+#: prefs.js:2537
+msgid "Font Size"
+msgstr "Tähesuurus"
+
+#: prefs.js:2565
+msgid "Border Color"
+msgstr "Äärise värv"
+
+#: prefs.js:2588
+msgid "Border Size"
+msgstr "Äärise suurus"
+
+#: prefs.js:2617
+msgid "Highlighted Item Color"
+msgstr "Esiletõstetud üksuse värv"
+
+#: prefs.js:2641
+msgid "Corner Radius"
+msgstr "Nurga raadius"
+
+#: prefs.js:2670
+msgid "Menu Arrow Size"
+msgstr "Menüü noole suurus"
+
+#: prefs.js:2699
+msgid "Menu Displacement"
+msgstr "Menüü nihutamine"
+
+#: prefs.js:2899
+msgid "Configure"
+msgstr "Seadista"
+
+#: prefs.js:2906
+msgid "Enable/Disable shortcuts"
+msgstr "Luba/keela otseteed"
+
+#: prefs.js:2916
+msgid "Documents"
+msgstr "Dokumendid"
+
+#: prefs.js:2916
+msgid "Downloads"
+msgstr "Allalaadimised"
+
+#: prefs.js:2916
+msgid "Music"
+msgstr "Muusika"
+
+#: prefs.js:2916
+msgid "Pictures"
+msgstr "Pildid"
+
+#: prefs.js:2916
+msgid "Videos"
+msgstr "Videod"
+
+#: prefs.js:2917
+msgid "Network"
+msgstr "Võrk"
+
+#: prefs.js:2961
+msgid "External Devices"
+msgstr "Välised seadmed"
+
+#: prefs.js:2984
+msgid "Bookmarks"
+msgstr "Järjehoidjad"
+
+#: prefs.js:3012
+msgid "Tweaks"
+msgstr "Kohandused"
+
+#: prefs.js:3143
+msgid "Misc"
+msgstr "Muud"
+
+#: prefs.js:3149
+msgid "Export and Import Arc Menu Settings"
+msgstr "Ekspordi ja impordi Arc menüü sätted"
+
+#: prefs.js:3156
+msgid "All current Arc Menu settings will be changed when importing from file."
+msgstr "Faili importimisel muudetakse kõiki praeguseid Arc menüü sätteid."
+
+#: prefs.js:3157
+msgid "This includes all saved pinned apps."
+msgstr "See hõlmab kõiki salvestatud kinnitatud rakendusi."
+
+#: prefs.js:3166
+msgid "Import from File"
+msgstr "Impordi failist"
+
+#: prefs.js:3172
+msgid "Import settings"
+msgstr "Impordi sätted"
+
+#: prefs.js:3201
+msgid "Export to File"
+msgstr "Ekspordi faili"
+
+#: prefs.js:3208
+msgid "Export settings"
+msgstr "Ekspordi sätted"
+
+#: prefs.js:3239
+msgid "Color Theme Presets - Export/Import"
+msgstr "Värviteema eelseadistused - Eksport/import"
+
+#: prefs.js:3258
+msgid "Imported theme presets are located on the Appearance Tab"
+msgstr "Imporditud teema eelseadistused asuvad vahekaardil 'Välimus'"
+
+#: prefs.js:3259
+msgid "in Override Arc Menu Theme"
+msgstr "jaotises 'Alista Arc menüü teema'"
+
+#: prefs.js:3270 prefs.js:3276
+msgid "Import Theme Preset"
+msgstr "Impordi teema eelseadistus"
+
+#: prefs.js:3316 prefs.js:3327
+msgid "Export Theme Preset"
+msgstr "Ekspordi teema eelseadistus"
+
+#: prefs.js:3404
+msgid "About"
+msgstr "Info"
+
+#: prefs.js:3432
+msgid "Arc-Menu"
+msgstr "Arc menüü"
+
+#: prefs.js:3437
+msgid "version: "
+msgstr "versioon: "
+
+#: prefs.js:3441
+msgid "The new applications menu for Gnome 3"
+msgstr "Gnome 3 uus rakenduste menüü"
+
+#: prefs.js:3445
+msgid "GitLab Page"
+msgstr "GitLab leht"
+
+#: searchGrid.js:692 search.js:658
+msgid "Searching..."
+msgstr "Otsing..."
+
+#: searchGrid.js:694 search.js:660
+msgid "No results."
+msgstr "Vasteid pole."
+
+#: searchGrid.js:793 search.js:741
+#, javascript-format
+msgid "%d more"
+msgid_plural "%d more"
+msgstr[0] "%d veel"
+msgstr[1] "%d veel"
