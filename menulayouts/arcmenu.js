@@ -290,7 +290,7 @@ var createMenu = class {
             });
         }
             
-               //create new section for Power, Lock, Logout, Suspend Buttons
+        //create new section for Power, Lock, Logout, Suspend Buttons
         this.actionsBox = new PopupMenu.PopupBaseMenuItem({
             reactive: false,
             can_focus: false
@@ -532,8 +532,11 @@ var createMenu = class {
         let pinnedApps = this._settings.get_strv('pinned-app-list');
         this.favoritesArray=null;
         this.favoritesArray=[];
-        for(let i = 0;i<pinnedApps.length;i+=3)
-        {
+        for(let i = 0;i<pinnedApps.length;i+=3){
+            if(pinnedApps[i]=="ArcMenu_WebBrowser"){
+                this.updatePinnedAppsWebBrowser(pinnedApps);
+                break;
+            }
             let favoritesMenuItem = new MW.FavoritesMenuItem(this, pinnedApps[i], pinnedApps[i+1], pinnedApps[i+2]);
             favoritesMenuItem.connect('saveSettings', ()=>{
                 let array = [];
@@ -546,8 +549,34 @@ var createMenu = class {
                 this._settings.set_strv('pinned-app-list',array);
             });
             this.favoritesArray.push(favoritesMenuItem);
+        }   
+    }
+    updatePinnedAppsWebBrowser(pinnedApps){
+        //Find the Default Web Browser, if found add to pinned apps list, if not found delete the placeholder.
+        //Will only run if placeholder is found. Placeholder only found with default settings set.
+        if(pinnedApps[0]=="ArcMenu_WebBrowser")
+        {     
+            let [res, stdout, stderr, status] = GLib.spawn_command_line_sync("xdg-settings get default-web-browser");
+            let webBrowser = String.fromCharCode.apply(null, stdout);
+            let browserName = webBrowser.split(".desktop")[0];
+            browserName+=".desktop";
+            this._app = appSys.lookup_app(browserName);
+            if(this._app){
+                let appIcon = this._app.create_icon_texture(25);
+                let iconName = '';
+                if(appIcon.icon_name)
+                    iconName = appIcon.icon_name;
+                else if(appIcon.gicon)
+                    iconName = appIcon.gicon.to_string();
+                pinnedApps[0] = this._app.get_name();
+                pinnedApps[1] = iconName;
+                pinnedApps[2] = this._app.get_id();
+            }
+            else{
+                pinnedApps.splice(0,3);
+            }
+            this._settings.set_strv('pinned-app-list',pinnedApps);
         }
-        
     }
     _displayFavorites() {
         //global.log('display favs');
