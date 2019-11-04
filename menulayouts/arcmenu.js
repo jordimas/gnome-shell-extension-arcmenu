@@ -530,27 +530,25 @@ var createMenu = class {
         }
     }
     _loadFavorites() {
-        if(this.shouldLoadFavorites){
-            let pinnedApps = this._settings.get_strv('pinned-app-list');
-            this.favoritesArray=null;
-            this.favoritesArray=[];
-            for(let i = 0;i<pinnedApps.length;i+=3){
-                if(pinnedApps[i]=="ArcMenu_WebBrowser")
-                    this.updatePinnedAppsWebBrowser(pinnedApps);
-                let favoritesMenuItem = new MW.FavoritesMenuItem(this, pinnedApps[i], pinnedApps[i+1], pinnedApps[i+2]);
-                favoritesMenuItem.connect('saveSettings', ()=>{
-                    let array = [];
-                    for(let i = 0;i < this.favoritesArray.length; i++)
-                    {
-                        array.push(this.favoritesArray[i]._name);
-                        array.push(this.favoritesArray[i]._iconPath);
-                        array.push(this.favoritesArray[i]._command);		   
-                    }
-                    this._settings.set_strv('pinned-app-list',array);
-                });
-                this.favoritesArray.push(favoritesMenuItem);
-            }   
-        }
+        let pinnedApps = this._settings.get_strv('pinned-app-list');
+        this.favoritesArray=null;
+        this.favoritesArray=[];
+        for(let i = 0;i<pinnedApps.length;i+=3){
+            if(i == 0 && pinnedApps[0]=="ArcMenu_WebBrowser")
+                this.updatePinnedAppsWebBrowser(pinnedApps);
+            let favoritesMenuItem = new MW.FavoritesMenuItem(this, pinnedApps[i], pinnedApps[i+1], pinnedApps[i+2]);
+            favoritesMenuItem.connect('saveSettings', ()=>{
+                let array = [];
+                for(let i = 0;i < this.favoritesArray.length; i++)
+                {
+                    array.push(this.favoritesArray[i]._name);
+                    array.push(this.favoritesArray[i]._iconPath);
+                    array.push(this.favoritesArray[i]._command);		   
+                }
+                this._settings.set_strv('pinned-app-list',array);
+            });
+            this.favoritesArray.push(favoritesMenuItem);
+        }   
     }
     updatePinnedAppsWebBrowser(pinnedApps){
         //Find the Default Web Browser, if found add to pinned apps list, if not found delete the placeholder.
