@@ -52,6 +52,7 @@ var createMenu = class {
         this.currentMenu = Constants.CURRENT_MENU.FAVORITES; 
         this._applicationsButtons = new Map();
         this.isRunning=true;
+        this.shouldLoadFavorites = true;
         this.newSearch = new ArcSearch.SearchResults(this);     
         this._mainBoxKeyPressId = this.mainBox.connect('key-press-event', this._onMainBoxKeyPress.bind(this));
 
@@ -529,27 +530,27 @@ var createMenu = class {
         }
     }
     _loadFavorites() {
-        let pinnedApps = this._settings.get_strv('pinned-app-list');
-        this.favoritesArray=null;
-        this.favoritesArray=[];
-        for(let i = 0;i<pinnedApps.length;i+=3){
-            if(pinnedApps[i]=="ArcMenu_WebBrowser"){
-                this.updatePinnedAppsWebBrowser(pinnedApps);
-                break;
-            }
-            let favoritesMenuItem = new MW.FavoritesMenuItem(this, pinnedApps[i], pinnedApps[i+1], pinnedApps[i+2]);
-            favoritesMenuItem.connect('saveSettings', ()=>{
-                let array = [];
-                for(let i = 0;i < this.favoritesArray.length; i++)
-                {
-                    array.push(this.favoritesArray[i]._name);
-                    array.push(this.favoritesArray[i]._iconPath);
-                    array.push(this.favoritesArray[i]._command);		   
-                }
-                this._settings.set_strv('pinned-app-list',array);
-            });
-            this.favoritesArray.push(favoritesMenuItem);
-        }   
+        if(this.shouldLoadFavorites){
+            let pinnedApps = this._settings.get_strv('pinned-app-list');
+            this.favoritesArray=null;
+            this.favoritesArray=[];
+            for(let i = 0;i<pinnedApps.length;i+=3){
+                if(pinnedApps[i]=="ArcMenu_WebBrowser")
+                    this.updatePinnedAppsWebBrowser(pinnedApps);
+                let favoritesMenuItem = new MW.FavoritesMenuItem(this, pinnedApps[i], pinnedApps[i+1], pinnedApps[i+2]);
+                favoritesMenuItem.connect('saveSettings', ()=>{
+                    let array = [];
+                    for(let i = 0;i < this.favoritesArray.length; i++)
+                    {
+                        array.push(this.favoritesArray[i]._name);
+                        array.push(this.favoritesArray[i]._iconPath);
+                        array.push(this.favoritesArray[i]._command);		   
+                    }
+                    this._settings.set_strv('pinned-app-list',array);
+                });
+                this.favoritesArray.push(favoritesMenuItem);
+            }   
+        }
     }
     updatePinnedAppsWebBrowser(pinnedApps){
         //Find the Default Web Browser, if found add to pinned apps list, if not found delete the placeholder.
@@ -575,7 +576,9 @@ var createMenu = class {
             else{
                 pinnedApps.splice(0,3);
             }
+            this.shouldLoadFavorites = false; // We don't want to trigger a setting changed event
             this._settings.set_strv('pinned-app-list',pinnedApps);
+            this.shouldLoadFavorites = true;
         }
     }
     _displayFavorites() {
