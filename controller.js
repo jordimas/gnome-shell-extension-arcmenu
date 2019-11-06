@@ -117,7 +117,7 @@ var MenuSettingsController = class {
         this._menuButton._updateMenuLayout();
     }
     toggleMenus(){
-        if(this._settings.get_boolean('multi-monitor')){
+        if(this._settings.get_boolean('multi-monitor') && global.dashToPanel){
             let screen = Gdk.Screen.get_default();
             //global.log( global.get_pointer());
             let pointer = global.get_pointer();
@@ -160,7 +160,8 @@ var MenuSettingsController = class {
     }
     _updateFavorites(){
         if(this._settings.get_enum('menu-layout') == Constants.MENU_LAYOUT.Default){
-            this._menuButton._loadFavorites();
+            if(this._menuButton.shouldLoadFavorites)
+                this._menuButton._loadFavorites();
             if(this._menuButton.getCurrentMenu() == Constants.CURRENT_MENU.FAVORITES)
                this._menuButton._displayFavorites();
         }

@@ -52,6 +52,7 @@ var createMenu = class {
         this.currentMenu = Constants.CURRENT_MENU.FAVORITES; 
         this._applicationsButtons = new Map();
         this.isRunning=true;
+        this.shouldLoadFavorites = true;
         this.newSearch = new ArcSearch.SearchResults(this);     
         this._mainBoxKeyPressId = this.mainBox.connect('key-press-event', this._onMainBoxKeyPress.bind(this));
 
@@ -533,10 +534,8 @@ var createMenu = class {
         this.favoritesArray=null;
         this.favoritesArray=[];
         for(let i = 0;i<pinnedApps.length;i+=3){
-            if(pinnedApps[i]=="ArcMenu_WebBrowser"){
+            if(i == 0 && pinnedApps[0]=="ArcMenu_WebBrowser")
                 this.updatePinnedAppsWebBrowser(pinnedApps);
-                break;
-            }
             let favoritesMenuItem = new MW.FavoritesMenuItem(this, pinnedApps[i], pinnedApps[i+1], pinnedApps[i+2]);
             favoritesMenuItem.connect('saveSettings', ()=>{
                 let array = [];
@@ -575,7 +574,9 @@ var createMenu = class {
             else{
                 pinnedApps.splice(0,3);
             }
+            this.shouldLoadFavorites = false; // We don't want to trigger a setting changed event
             this._settings.set_strv('pinned-app-list',pinnedApps);
+            this.shouldLoadFavorites = true;
         }
     }
     _displayFavorites() {

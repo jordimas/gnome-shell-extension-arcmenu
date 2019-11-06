@@ -29,23 +29,16 @@
  * https://github.com/The-Panacea-Projects/Gnomenu
  */
 
-
-// Import Libraries
 const Me = imports.misc.extensionUtils.getCurrentExtension();
 
-const AppDisplay = imports.ui.appDisplay;
-const Dash = imports.ui.dash;
 const Controller = Me.imports.controller;
 const Convenience = Me.imports.convenience;
 const ExtensionSystem = imports.ui.extensionSystem;
 const Main = imports.ui.main;
-const MW = Me.imports.menuWidgets;
-
 
 // Initialize panel button variables
 let settings;
 let settingsControllers;
-let oldGetAppFromSource;
 let extensionChangedId;
 
 // Initialize menu language translations
@@ -59,14 +52,17 @@ function enable() {
     settings.connect('changed::multi-monitor', () => _onMultiMonitorChange());
     settingsControllers = [];
 
-    oldGetAppFromSource = Dash.getAppFromSource;
-    Dash.getAppFromSource = getAppFromSource;
+
 
     _enableButtons();
     
     // dash to panel might get enabled after Arc-Menu
     extensionChangedId = (Main.extensionManager || ExtensionSystem).connect('extension-state-changed', (data, extension) => {
         if (extension.uuid === 'dash-to-panel@jderose9.github.com' && extension.state === 1) {
+            _disconnectDtpSignals();
+            settingsControllers.forEach(sc => _disableButton(sc));
+            settingsControllers = null;
+            settingsControllers = [];
             _connectDtpSignals();
             _enableButtons();
         }
@@ -92,19 +88,9 @@ function disable() {
     settings.run_dispose();
     settings = null;
     
-    Dash.getAppFromSource = oldGetAppFromSource;
-    oldGetAppFromSource = null;
+
 }
 
-function getAppFromSource(source) {
-    if (source instanceof AppDisplay.AppIcon) {
-        return source.app;
-    } else if (source instanceof MW.ApplicationMenuItem) {
-        return source._app;
-    } else {
-        return null;
-    }
-}
 
 function _connectDtpSignals() {
     if (global.dashToPanel) {
@@ -120,16 +106,9 @@ function _disconnectDtpSignals() {
 }
 
 function _onMultiMonitorChange() {
-    if (!settings.get_boolean('multi-monitor')) {
-        for (let i = settingsControllers.length - 1; i >= 0; --i) {
-            let sc = settingsControllers[i];
-
-            if (sc.panel != Main.panel) {
-                _disableButton(sc, 1);
-            }
-        }
-    }
-
+    settingsControllers.forEach(sc => _disableButton(sc));
+    settingsControllers = null;
+    settingsControllers = [];
     _enableButtons();
 }
 
@@ -137,9 +116,7 @@ function _enableButtons() {
     (settings.get_boolean('multi-monitor') && global.dashToPanel ? 
      global.dashToPanel.panels.map(pw => pw.panel || pw) : 
      [Main.panel]).forEach(panel => {
-        if (settingsControllers.filter(sc => sc.panel == panel).length)
-            return;
-
+  
         // Create a Menu Controller that is responsible for controlling
         // and managing the menu as well as the menu button.
         let isMainPanel = ('isSecondary' in panel && !panel.isSecondary) || panel == Main.panel;
