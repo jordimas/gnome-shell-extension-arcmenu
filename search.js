@@ -96,7 +96,6 @@ var ListSearchResult = class ArcMenu_ListSearchResult {
         {
             this.tooltip = new MW.Tooltip(this.menuItem.actor, this.metaInfo['description'] ? this.metaInfo['description']:  app.get_description(),isMenuItem,this._button._settings);
             this.tooltip.hide();
-            this.menuItem.actor.connect('notify::hover', this._onHover.bind(this));
             this.menuItem.connect('hideTooltip',() => {
                 this.tooltip.hide();
             });
@@ -106,16 +105,7 @@ var ListSearchResult = class ArcMenu_ListSearchResult {
     activate() {
         //global.log('activate');
         this.emit('activate', this.metaInfo.id);
-    }
-    _onHover() {
-
-        if (this.menuItem.actor.hover) { // mouse pointer hovers over the button
-            this.tooltip.show();
-        } else { // mouse pointer leaves the button area
-            this.tooltip.hide();
-        }
-    }
-  
+    }  
     _highlightTerms() {
         let markup = this._resultsView.highlightTerms(this.metaInfo['description'].split('\n')[0]);
         this._descriptionLabel.clutter_text.set_markup(markup);
@@ -152,20 +142,11 @@ var AppSearchResult = class  ArcMenu_AppSearchResult {
         {
             this.tooltip = new MW.Tooltip(this.menuItem.actor, this.metaInfo['description'] ? this.metaInfo['description']:  app.get_description(),isMenuItem,this._button._settings);
             this.tooltip.hide();
-            this.menuItem.actor.connect('notify::hover', this._onHover.bind(this));
             this.menuItem.connect('hideTooltip',() => {
                 this.tooltip.hide();
             });
         }
         this.menuItem.connect('activate', this.activate.bind(this)); 
-    }
-    _onHover() {
-
-        if (this.menuItem.actor.hover) { // mouse pointer hovers over the button
-            this.tooltip.show();
-        } else { // mouse pointer leaves the button area
-            this.tooltip.hide();
-        }
     }
     activate() {
         //global.log('activate');
@@ -739,16 +720,10 @@ var ArcSearchProviderInfo =Utils.createClass({
             this.tooltip = new MW.Tooltip(this.actor, provider.appInfo.get_description(),isMenuItem,this._button._settings);
             this.tooltip.hide();            
         }
-        this.actor.connect("destroy", ()=>{this._onDestroy()});
     },
     _onHover() {
         if(this._button.newSearch._highlightDefault)
             this._button.newSearch.highlightDefault(false);
-        if (this.hover) { // mouse pointer hovers over the button
-            this.tooltip ? this.tooltip.show(): '';
-        } else { // mouse pointer leaves the button area
-            this.tooltip ? this.tooltip.hide(): '';
-        }
     },
     animateLaunch() {
         let app = appSys.lookup_app(this.provider.appInfo.get_id());
@@ -768,14 +743,6 @@ var ArcSearchProviderInfo =Utils.createClass({
         }
         return Clutter.EVENT_STOP;
     },
-    _onDestroy(){
-        if(this.hoverID>0){
-            this.actor.disconnect(this.hoverID);
-            this.hoverID=0;
-        }
-    }
 
-       
-    
 });
 

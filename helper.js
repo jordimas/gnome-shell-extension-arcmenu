@@ -209,9 +209,9 @@ var HotCornerManager = class {
 
     // Destroy this object
     destroy() {
-        if (this._hotCornersChangedId) {
+        if (this._hotCornersChangedId>0) {
             Main.layoutManager.disconnect(this._hotCornersChangedId);
-            this._hotCornersChangedId = null;
+            this._hotCornersChangedId = 0;
         }
 
         // Clean up and restore the default behaviour
