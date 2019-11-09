@@ -1,6 +1,14 @@
-# SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the Arc Menu package.
+# Turkish translation for Arc-Menu Gnome Shell Extension
+# Copyright (C) 2017-2019 THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the Arc Menu Gnome Shell Extension package.
+#
+# Hüseyin Karacabey <neynefes@ubuntu-tr.net>, 2017.
+# Serdar Sağlam <teknomobil@yandex.com>, 2019.
+# Mustafa Yaman <m.yaman9898@gmail.com>, 2019.
+# Sabri Ünal <libreajans@gmail.com>, 2019.
+#
+# Importent Note For Turkish Translators
+# Lütfen Gnome Takımı tarafından tamamlanmış olan GNOME ve GNOME Shell çevirilerini temel alınız.
 #
 msgid ""
 msgstr ""
@@ -67,7 +75,7 @@ msgstr "Uç Birim"
 
 #: menuWidgets.js:129
 msgid "Current Windows:"
-msgstr "Şuanki Pencereler:"
+msgstr "Geçerli Pencereler:"
 
 #: menuWidgets.js:150
 msgid "New Window"
@@ -95,15 +103,15 @@ msgstr "Arc Menuye Sabitle"
 
 #: menuWidgets.js:245
 msgid "Show Details"
-msgstr "Detayları Göster"
+msgstr "Ayrıntıları Göster"
 
 #: menuWidgets.js:403 prefs.js:1899
 msgid "Activities Overview"
-msgstr "Aktivitelere Genel Bakış"
+msgstr "Etkinlikler Genel Görünümü"
 
 #: menuWidgets.js:529
 msgid "Power Off"
-msgstr "Sistemi Kapat"
+msgstr "Bilgisayarı Kapat"
 
 #: menuWidgets.js:542 prefs.js:1973
 msgid "Log Out"
@@ -135,17 +143,17 @@ msgstr "Sık Kullanılan Uygulamalar"
 
 #: menuWidgets.js:1269
 msgid "Type to search…"
-msgstr "Aramak İçin Yazınız..."
+msgstr "Aramak için yazın…"
 
 #: placeDisplay.js:138
 #, javascript-format
 msgid "Failed to launch “%s”"
-msgstr "Başlatma Başarısız “%s”"
+msgstr "“%s” başlatılamadı"
 
 #: placeDisplay.js:153
 #, javascript-format
 msgid "Failed to mount volume for “%s”"
-msgstr "Disk bağlama başarısız “%s”"
+msgstr "“%s” bölümü bağlanamadı"
 
 #: placeDisplay.js:237 placeDisplay.js:260 prefs.js:1803
 msgid "Computer"
@@ -154,7 +162,7 @@ msgstr "Bilgisayar"
 #: placeDisplay.js:321
 #, javascript-format
 msgid "Ejecting drive “%s” failed:"
-msgstr "“%s” adlı sürücü çıkartılamadı:"
+msgstr "“%s” sürücüsü çıkartılamadı:"
 
 #: prefs.js:46 prefs.js:620
 msgid "Pinned Apps"
@@ -170,7 +178,7 @@ msgstr "Daha Fazla Uygulama Ekle"
 
 #: prefs.js:119
 msgid "Add Custom Shortcut"
-msgstr "Kişisel Kısayol Ekle"
+msgstr "Özel Kısayol Ekle"
 
 #: prefs.js:153
 msgid "Save"
@@ -178,7 +186,7 @@ msgstr "Kaydet"
 
 #: prefs.js:278
 msgid "Select Apps to add to Pinned Apps List"
-msgstr "Sabitlenmiş Uygulamalar Listesinden Uygulama Seç"
+msgstr "Sabitlenmiş Uygulamalar Listesine eklemek için Uygulama Seç"
 
 #: prefs.js:298 prefs.js:457
 msgid "Add"
@@ -186,7 +194,7 @@ msgstr "Ekle"
 
 #: prefs.js:406
 msgid "Add a Custom Shortcut"
-msgstr "Kişisel Kısayol Ekle"
+msgstr "Özel Kısayol Ekle"
 
 #: prefs.js:416
 msgid "Shortcut Name:"
@@ -194,7 +202,7 @@ msgstr "Kısayol Adı:"
 
 #: prefs.js:430
 msgid "Icon Path/Icon Symbolic:"
-msgstr "İkon Yolu/Sembolik İkon:"
+msgstr "Simge Yolu/Sembolik Simge:"
 
 #: prefs.js:444
 msgid "Terminal Command:"
@@ -206,7 +214,7 @@ msgstr "Genel"
 
 #: prefs.js:500
 msgid "Menu Button Position in Panel"
-msgstr "Menü Tuşu Pozisyonu"
+msgstr "Menü Düğmesinin Paneldeki Konumu"
 
 #: prefs.js:507
 msgid "Left"
@@ -222,7 +230,7 @@ msgstr "Sağ"
 
 #: prefs.js:552
 msgid "Display on all monitors when using Dash to Panel"
-msgstr "Dash To Panel kullanırken Tüm Ekranlarda Göster"
+msgstr "Dash To Panel kullanırken tüm ekranlarda göster"
 
 #: prefs.js:573
 msgid "Disable Tooltips"
@@ -230,11 +238,11 @@ msgstr "Araç İpuçlarını Devre Dışı Bırak"
 
 #: prefs.js:595
 msgid "Disable activities hot corner"
-msgstr "Aktivite Etkin Köşesini Devre Dışı Bırak"
+msgstr "Etkinlikler köşesini devre dışı bırak"
 
 #: prefs.js:614
 msgid "Choose Arc Menus Default View"
-msgstr "Arc Menu'nün Varsayılan Görüntüsünü Seç"
+msgstr "Arc Menu'nün Varsayılan Görünümünü Seç"
 
 #: prefs.js:621
 msgid "Categories List"
@@ -242,7 +250,7 @@ msgstr "Katagori Listesi"
 
 #: prefs.js:646
 msgid "Set Menu Hotkey"
-msgstr "Menu Kısayol Tuşu Ayarla"
+msgstr "Menü Kısayol Tuşunu Ayarla"
 
 #: prefs.js:656
 msgid "Left Super Key"
@@ -250,11 +258,11 @@ msgstr "Sol Super Tuşu"
 
 #: prefs.js:662
 msgid "Right Super Key"
-msgstr "Sağ Super tuşu"
+msgstr "Sağ Super Tuşu"
 
 #: prefs.js:667
 msgid "Custom"
-msgstr "Kişisel"
+msgstr "Özel"
 
 #: prefs.js:672
 msgid "None"
@@ -262,15 +270,15 @@ msgstr "Yok"
 
 #: prefs.js:764
 msgid "Current Hotkey"
-msgstr "Şuanki Kısayol"
+msgstr "Geçerli Kısayol"
 
 #: prefs.js:790
 msgid "Set Custom Shortcut"
-msgstr "Kısayol Oluştur"
+msgstr "Özel Kısayol Oluştur"
 
 #: prefs.js:799
 msgid "Press a key"
-msgstr "Bir Tuşa Basınız"
+msgstr "Bir Tuşa Basın"
 
 #: prefs.js:824
 msgid "Modifiers"
@@ -294,55 +302,55 @@ msgstr "Alt"
 
 #: prefs.js:906 prefs.js:1447 prefs.js:1752
 msgid "Apply"
-msgstr "Onayla"
+msgstr "Uygula"
 
 #: prefs.js:941
 msgid "Button appearance"
-msgstr "Buton görüntüsü"
+msgstr "Düğme görünümü"
 
 #: prefs.js:953
 msgid "Text for the menu button"
-msgstr "Menü için yazı"
+msgstr "Menü düğmesi metni"
 
 #: prefs.js:959
 msgid "System text"
-msgstr "Sistem Yazısı"
+msgstr "Sistem metni"
 
 #: prefs.js:962
 msgid "Custom text"
-msgstr "Kişisel Yazı"
+msgstr "Kişisel metin"
 
 #: prefs.js:986
 msgid "Set custom text for the menu button"
-msgstr "Menü için kişisel yazı belirle"
+msgstr "Menü için özel metin belirle"
 
 #: prefs.js:1006
 msgid "Enable the arrow icon beside the button text"
-msgstr "Buton yazıları için ok işaretini aktif et"
+msgstr "Düğme metinleri için ok işaretini etkinleştir"
 
 #: prefs.js:1028
 msgid "Select icon for the menu button"
-msgstr "Menü için icon seç"
+msgstr "Menü düğmesi için simge seç"
 
 #: prefs.js:1038
 msgid "Please select an image icon"
-msgstr "Lütfen icon seçiniz"
+msgstr "Lütfen simge seçin"
 
 #: prefs.js:1043
 msgid "Arc Menu Icon"
-msgstr "Arc Menu ikonu"
+msgstr "Arc Menü Simgesi"
 
 #: prefs.js:1044
 msgid "System Icon"
-msgstr "Sistem İkonu"
+msgstr "Sistem Simgesi"
 
 #: prefs.js:1045
 msgid "Custom Icon"
-msgstr "Kişisel İkon"
+msgstr "Özel Simge"
 
 #: prefs.js:1071
 msgid "Icon size"
-msgstr "İkon Boyutu"
+msgstr "Simge Boyutu"
 
 #: prefs.js:1071
 msgid "default is"
@@ -354,23 +362,23 @@ msgstr "Görüntü"
 
 #: prefs.js:1120
 msgid "Customize Menu Button Appearance"
-msgstr "Menü Tuşu Götüntüsünü Kişiselleştir"
+msgstr "Menü Düğmesi Görünümünü Özelleştir"
 
 #: prefs.js:1130
 msgid "Icon"
-msgstr "İkon"
+msgstr "Simge"
 
 #: prefs.js:1131
 msgid "Text"
-msgstr "Yazı"
+msgstr "Metin"
 
 #: prefs.js:1132
 msgid "Icon and Text"
-msgstr "İkon ve Yazı"
+msgstr "Simge ve Metin"
 
 #: prefs.js:1133
 msgid "Text and Icon"
-msgstr "Yazı ve İkon"
+msgstr "Metin ve Simge"
 
 #: prefs.js:1156 prefs.js:1303
 msgid "Customize Arc Menu Appearance"
@@ -382,11 +390,11 @@ msgstr "Arc Menu temasını değiştir"
 
 #: prefs.js:1262
 msgid "Choose Avatar Icon Shape"
-msgstr "Avatar İkonu Seç"
+msgstr "Avatar Simge Şeklini Seç"
 
 #: prefs.js:1267
 msgid "Circular"
-msgstr "Yuvarlar"
+msgstr "Yuvarlak"
 
 #: prefs.js:1268
 msgid "Square"
@@ -394,7 +402,7 @@ msgstr "Kare"
 
 #: prefs.js:1321
 msgid "Menu Height"
-msgstr "Menu Boyu"
+msgstr "Menu Yüksekliği"
 
 #: prefs.js:1353
 msgid "Left-Panel Width"
@@ -422,7 +430,7 @@ msgstr "Menu Önplan Rengi"
 
 #: prefs.js:1545
 msgid "Font Size"
-msgstr "Yazı Boyutu"
+msgstr "Yazı Tipi Boyutu"
 
 #: prefs.js:1569
 msgid "Border Color"
@@ -434,7 +442,7 @@ msgstr "Çerçeve Boyutu"
 
 #: prefs.js:1612
 msgid "Highlighted Item Color"
-msgstr "Vurgulanmış Seçenek Rengi"
+msgstr "Vurgulanmış Nesne Rengi"
 
 #: prefs.js:1631
 msgid "Corner Radius"
@@ -474,7 +482,7 @@ msgstr "Arc-Menu"
 
 #: prefs.js:2039
 msgid "version: "
-msgstr "versiyon: "
+msgstr "sürüm: "
 
 #: prefs.js:2047
 msgid "GitLab Page"
@@ -486,7 +494,7 @@ msgstr "Aranıyor..."
 
 #: search.js:628
 msgid "No results."
-msgstr "Sonuç Bulunamadı."
+msgstr "Sonuç bulunamadı."
 
 #: search.js:706
 #, javascript-format
@@ -497,7 +505,7 @@ msgstr[1] "%d daha"
 
 #: twoMenuButton.js:86
 msgid "Arc Menu on GitLab"
-msgstr "GitLab da Arc Menu"
+msgstr "Arc Menu GitLab Sayfası"
 
 #: twoMenuButton.js:91
 msgid "About Arc Menu"
