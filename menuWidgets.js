@@ -222,6 +222,7 @@ var AppRightClickMenu = class ArcMenu_AppRightClickMenu extends PopupMenu.PopupM
                             item.connect('activate', ()=>{
                                 for(let i = 0;i<pinnedApps.length;i+=3){
                                     if(pinnedApps[i+2]==this._app.get_id()){
+                                        this.close();
                                         pinnedApps.splice(i,3);
                                         this._button.applicationsBox.remove_actor(this._button.favoritesArray[ i / 3 ].actor)
                                         this._settings.set_strv('pinned-app-list',pinnedApps);
@@ -275,6 +276,7 @@ var AppRightClickMenu = class ArcMenu_AppRightClickMenu extends PopupMenu.PopupM
                         let pinnedApps = this._settings.get_strv('pinned-app-list');
                             for(let i = 0;i<pinnedApps.length;i+=3){
                                 if(pinnedApps[i+2]==this._app){
+                                    this.close();
                                     pinnedApps.splice(i,3);
                                     this._button.applicationsBox.remove_actor(this._button.favoritesArray[ i / 3 ].actor)
                                     this._button.favoritesArray.splice(i / 3, 1);
@@ -458,7 +460,7 @@ var Tooltip = class ArcMenu_Tooltip{
         });
         this.actor.set_name('tooltip-menu-item');
         global.stage.add_actor(this.actor);
-        this.actor.show();
+        this.sourceActor.connect('destroy',this.destroy.bind(this));
         this._useTooltips = ! this._settings.get_boolean('disable-tooltips');
         this.toggleID = this._settings.connect('changed::disable-tooltips', this.disableTooltips.bind(this));
     }
@@ -500,7 +502,11 @@ var Tooltip = class ArcMenu_Tooltip{
 
     destroy() {
         global.stage.remove_actor(this.actor);
-        this._settings.disconnect(this.toggleID);
+        this.actor.destroy();
+        if(this.toggleID>0){
+            this._settings.disconnect(this.toggleID);
+            this.toggleID = 0;
+        }
     }
 };
 
@@ -1190,11 +1196,8 @@ var ApplicationMenuIcon = Utils.createClass({
         let iconThemeChangedId = textureCache.connect('icon-theme-changed',
             this._updateIcon.bind(this));
         this.actor.connect('destroy', () => {
-                textureCache.disconnect(iconThemeChangedId);
-                this.rightClickMenu.destroy();
-                if(this.tooltip!=undefined){
-                    this.tooltip.destroy();
-            }
+            textureCache.disconnect(iconThemeChangedId);
+            this.rightClickMenu.destroy();
         });
         this._updateIcon();
         this.actor.connect('notify::hover', this._onHover.bind(this));
@@ -1321,9 +1324,6 @@ var ApplicationMenuItem =Utils.createClass({
         this.actor.connect('destroy', () => {
             textureCache.disconnect(iconThemeChangedId);
             this.rightClickMenu.destroy();
-            if(this.tooltip!=undefined){
-                this.tooltip.destroy();
-        }
         });
         this._updateIcon();
 

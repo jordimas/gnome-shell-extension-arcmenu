@@ -72,17 +72,11 @@ var PlaceMenuItem = Utils.createClass({
         this._changedId = info.connect('changed',
                                        this._propertiesChanged.bind(this));
         this.actor.connect('destroy',()=>{
-            this.destroy();
+            if (this._changedId) {
+                this._info.disconnect(this._changedId);
+                this._changedId = 0;
+            }
         });
-    },
-
-    destroy() {
-        if (this._changedId) {
-            this._info.disconnect(this._changedId);
-            this._changedId = 0;
-        }
-        this.callParent('destroy');
- 
     },
     _onKeyPressEvent(actor, event) {
         let symbol = event.get_key_symbol();
