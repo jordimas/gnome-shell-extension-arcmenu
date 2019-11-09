@@ -168,7 +168,7 @@ Additional credits: This extension also leverages the work from [Giovanni Campag
 
 -----
 
- **- @[AlexHi](https://gitlab.com/AlexHi) - Russian** | **- @[gkkulik](https://gitlab.com/gkkulik) - Silesian** | **- @[vikaig](https://gitlab.com/vikaig) - Ukrainian** | **- @[jordim](https://gitlab.com/jordim) - Catalan** | **- @[m.yaman9898](https://gitlab.com/m.yaman9898) - Turkish** | **- @[Vombato](https://gitlab.com/Vombato) - Italian** |
+ **- @[AlexHi](https://gitlab.com/AlexHi) - Russian** | **- @[gkkulik](https://gitlab.com/gkkulik) - Silesian** | **- @[vikaig](https://gitlab.com/vikaig) - Ukrainian** | **- @[jordim](https://gitlab.com/jordim) - Catalan** | **- @[libreajans](https://gitlab.com/libreajans) - Turkish** | **- @[Vombato](https://gitlab.com/Vombato) - Italian** |
  
 -----
 
