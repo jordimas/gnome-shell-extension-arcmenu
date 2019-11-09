@@ -392,14 +392,13 @@ var MenuSettingsController = class {
     // Destroy this object
     destroy() {
         this.settingsChangeIds.forEach(id => this._settings.disconnect(id));
-        
+        this._hotCornerManager.destroy();
         this.disconnectKeyRelease();
 
         // Clean up and restore the default behaviour
         if (this._isButtonEnabled()) {
             this._disableButton();
         }
-        this._hotCornerManager.destroy();
         if(this.isMainPanel){
             this._menuHotKeybinder.destroy();
             this._keybindingManager.destroy();
