@@ -47,7 +47,7 @@ var MenuSettingsController = class {
         this._menuButton = new Menu.ApplicationsButton(settings, panel);
         this._hotCornerManager = new Helper.HotCornerManager(this._settings);
         if(this.isMainPanel){
-            this._menuHotKeybinder = new Helper.MenuHotKeybinder(() => this._onHotkey());
+            this._menuHotKeybinder = new Helper.MenuHotKeybinder(() => this.toggleMenus());
             this._keybindingManager = new Helper.KeybindingManager(this._settings); 
         }
         this._applySettings();
