@@ -429,7 +429,7 @@ var ActivitiesMenuItem =  Utils.createClass({
     // Activate the menu item (Open activities overview)
     activate(event) {
         this._button.leftClickMenu.toggle();
-        Main.overview.toggle();
+        Main.overview.show();
         this.callParent('activate',event);
     },
     _onButtonPressEvent(actor, event) {
