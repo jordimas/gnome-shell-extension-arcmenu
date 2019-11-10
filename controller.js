@@ -219,8 +219,9 @@ var MenuSettingsController = class {
         
         this.disconnectKeyRelease();
 
-        this.keyReleaseInfo = {
-            id: focusTarget.connect('key-release-event', (actor, event) => {
+        this.keyInfo = {
+            pressId: focusTarget.connect('key-press-event', _ => this.disconnectKeyRelease()),
+            releaseId: focusTarget.connect('key-release-event', (actor, event) => {
                 this.disconnectKeyRelease();
 
                 if (this._menuKeyBindingKey == event.get_key_symbol()) {
@@ -234,9 +235,10 @@ var MenuSettingsController = class {
     }
 
     disconnectKeyRelease() {
-        if (this.keyReleaseInfo) {
-            this.keyReleaseInfo.target.disconnect(this.keyReleaseInfo.id);
-            this.keyReleaseInfo = 0;
+        if (this.keyInfo) {
+            this.keyInfo.target.disconnect(this.keyInfo.pressId);
+            this.keyInfo.target.disconnect(this.keyInfo.releaseId);
+            this.keyInfo = 0;
         }
     }
 
