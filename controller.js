@@ -212,7 +212,7 @@ var MenuSettingsController = class {
     }
 
     _onHotkeyRelease() {
-        let activeMenu = this._menuButton.getActiveMenu();
+        let activeMenu = this._settingsControllers[this.currentMonitorIndex]._menuButton.getActiveMenu();
         let focusTarget = activeMenu ? 
                           (activeMenu.actor || activeMenu) : 
                           (this.panel.actor || this.panel);
