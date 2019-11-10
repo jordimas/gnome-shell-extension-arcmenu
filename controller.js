@@ -22,7 +22,7 @@
 // Import Libraries
 const Me = imports.misc.extensionUtils.getCurrentExtension();
 
-const {Gdk, Gio, GLib} = imports.gi;
+const {Gdk, Gio, GLib, Gtk} = imports.gi;
 const Constants = Me.imports.constants;
 const Gettext = imports.gettext.domain(Me.metadata['gettext-domain']);
 const Helper = Me.imports.helper;
@@ -47,13 +47,7 @@ var MenuSettingsController = class {
         this._menuButton = new Menu.ApplicationsButton(settings, panel);
         this._hotCornerManager = new Helper.HotCornerManager(this._settings);
         if(this.isMainPanel){
-            this._menuHotKeybinder = new Helper.MenuHotKeybinder(() => {
-                if(this._settings.get_boolean('disable-hotkey-onkeyrelease')){
-                    this.toggleMenus();
-                }
-                else
-                    this._onHotkey();
-            });
+            this._menuHotKeybinder = new Helper.MenuHotKeybinder(() => this._onHotkey());
             this._keybindingManager = new Helper.KeybindingManager(this._settings); 
         }
         this._applySettings();
@@ -185,40 +179,54 @@ var MenuSettingsController = class {
     }
 
     _updateHotKeyBinder() {
-        if(this.isMainPanel){
-            this._keybindingManager.unbind('menu-keybinding-text');
-            this._menuHotKeybinder.disableHotKey();
+        if (this.isMainPanel) {
+            let hotkeySettingsKey = 'menu-keybinding-text';
+            let menuKeyBinding = '';
             let hotKeyPos = this._settings.get_enum('menu-hotkey');
 
+            this._keybindingManager.unbind(hotkeySettingsKey);
+            this._menuHotKeybinder.disableHotKey();
+            this._menuKeyBindingKey = 0;
+            
             if (hotKeyPos==3) {
-                this._keybindingManager.bind('menu-keybinding-text', 'menu-keybinding',
-                    () =>{
-                        if(this._settings.get_boolean('disable-hotkey-onkeyrelease')){
-                            this.toggleMenus();
-                        }
-                        else
-                            this._onHotkey();
-                    });
+                this._keybindingManager.bind(hotkeySettingsKey, 'menu-keybinding', () => this._onHotkey());
+                menuKeyBinding = this._settings.get_string(hotkeySettingsKey);
             }
             else if (hotKeyPos !== Constants.HOT_KEY.Undefined ) {
                 let hotKey = Constants.HOT_KEY[hotKeyPos];
                 this._menuHotKeybinder.enableHotKey(hotKey);
-            }        
+                menuKeyBinding = hotKey;
+            }
+
+            if (menuKeyBinding) {
+                this._menuKeyBindingKey = Gtk.accelerator_parse(menuKeyBinding)[0];
+            }
         } 
     }
 
     _onHotkey() {
-        let activeMenu = this._menuButton.getActiveMenu();
+        if (this._settings.get_boolean('disable-hotkey-onkeyrelease'))
+            this.toggleMenus();
+        else
+            this._onHotkeyRelease();
+    }
+
+    _onHotkeyRelease() {
+        let activeMenu = this._settingsControllers[this.currentMonitorIndex]._menuButton.getActiveMenu();
         let focusTarget = activeMenu ? 
                           (activeMenu.actor || activeMenu) : 
                           (this.panel.actor || this.panel);
         
         this.disconnectKeyRelease();
 
-        this.keyReleaseInfo = {
-            id: focusTarget.connect('key-release-event', (actor, event) => {
+        this.keyInfo = {
+            pressId: focusTarget.connect('key-press-event', _ => this.disconnectKeyRelease()),
+            releaseId: focusTarget.connect('key-release-event', (actor, event) => {
                 this.disconnectKeyRelease();
-                this.toggleMenus();
+
+                if (this._menuKeyBindingKey == event.get_key_symbol()) {
+                    this.toggleMenus();
+                }
             }),
             target: focusTarget
         };
@@ -227,9 +235,10 @@ var MenuSettingsController = class {
     }
 
     disconnectKeyRelease() {
-        if (this.keyReleaseInfo) {
-            this.keyReleaseInfo.target.disconnect(this.keyReleaseInfo.id);
-            this.keyReleaseInfo = 0;
+        if (this.keyInfo) {
+            this.keyInfo.target.disconnect(this.keyInfo.pressId);
+            this.keyInfo.target.disconnect(this.keyInfo.releaseId);
+            this.keyInfo = 0;
         }
     }
 
