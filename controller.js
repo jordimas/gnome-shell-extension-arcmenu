@@ -154,7 +154,7 @@ var MenuSettingsController = class {
     }
     _updateFavorites(){
         if(this._settings.get_enum('menu-layout') == Constants.MENU_LAYOUT.Default){
-            if(this._menuButton.shouldLoadFavorites)
+           if(this._menuButton.getShouldLoadFavorites())
                 this._menuButton._loadFavorites();
             if(this._menuButton.getCurrentMenu() == Constants.CURRENT_MENU.FAVORITES)
                this._menuButton._displayFavorites();
