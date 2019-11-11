@@ -432,6 +432,9 @@ var ApplicationsButton =   Utils.defineClass({
         getCurrentMenu(){
             return this.MenuLayout.getCurrentMenu();
         },
+        getShouldLoadFavorites(){
+            return this.MenuLayout.shouldLoadFavorites;
+        },
         resetSearch(){ //used by back button to clear results
             this.MenuLayout.resetSearch();
         },

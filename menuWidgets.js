@@ -222,6 +222,7 @@ var AppRightClickMenu = class ArcMenu_AppRightClickMenu extends PopupMenu.PopupM
                             item.connect('activate', ()=>{
                                 for(let i = 0;i<pinnedApps.length;i+=3){
                                     if(pinnedApps[i+2]==this._app.get_id()){
+                                        this.close();
                                         pinnedApps.splice(i,3);
                                         this._button.applicationsBox.remove_actor(this._button.favoritesArray[ i / 3 ].actor)
                                         this._settings.set_strv('pinned-app-list',pinnedApps);
@@ -275,6 +276,7 @@ var AppRightClickMenu = class ArcMenu_AppRightClickMenu extends PopupMenu.PopupM
                         let pinnedApps = this._settings.get_strv('pinned-app-list');
                             for(let i = 0;i<pinnedApps.length;i+=3){
                                 if(pinnedApps[i+2]==this._app){
+                                    this.close();
                                     pinnedApps.splice(i,3);
                                     this._button.applicationsBox.remove_actor(this._button.favoritesArray[ i / 3 ].actor)
                                     this._button.favoritesArray.splice(i / 3, 1);
@@ -458,14 +460,21 @@ var Tooltip = class ArcMenu_Tooltip{
         });
         this.actor.set_name('tooltip-menu-item');
         global.stage.add_actor(this.actor);
-        this.actor.show();
+        this.sourceActor.connect('destroy',this.destroy.bind(this));
+        this.hoverID = this.sourceActor.connect('notify::hover', this._onHover.bind(this));
         this._useTooltips = ! this._settings.get_boolean('disable-tooltips');
         this.toggleID = this._settings.connect('changed::disable-tooltips', this.disableTooltips.bind(this));
     }
     disableTooltips() {
         this._useTooltips = ! this._settings.get_boolean('disable-tooltips');
     }
-    
+    _onHover() {
+        if (this.sourceActor.hover) {
+            this.show();
+        } else {
+            this.hide();
+        }
+    }
 
     show() {
         if(this._useTooltips){
@@ -500,7 +509,15 @@ var Tooltip = class ArcMenu_Tooltip{
 
     destroy() {
         global.stage.remove_actor(this.actor);
-        this._settings.disconnect(this.toggleID);
+        this.actor.destroy();
+        if(this.toggleID>0){
+            this._settings.disconnect(this.toggleID);
+            this.toggleID = 0;
+        }
+        if(this.hoverID>0){
+            this.sourceActor.disconnect(this.hoverID);
+            this.hoverID = 0;
+        }
     }
 };
 
@@ -538,7 +555,6 @@ var SessionButton = class ArcMenu_SessionButton{
             this._icon.icon_name = icon_name ? icon_name : "";
         this.actor.child = this._icon;
         this.actor.connect('clicked', this._onClick.bind(this));
-        this.actor.connect('notify::hover', this._onHover.bind(this));
     }
 
 
@@ -549,14 +565,6 @@ var SessionButton = class ArcMenu_SessionButton{
 
     activate() {
         // Button specific action
-    }
-
-    _onHover() {
-        if (this.actor.hover) { // mouse pointer hovers over the button
-            this.tooltip.show();
-        } else { // mouse pointer leaves the button area
-            this.tooltip.hide();
-        }
     }
 };
 // Menu Place Button Shortcut item class
@@ -1190,11 +1198,8 @@ var ApplicationMenuIcon = Utils.createClass({
         let iconThemeChangedId = textureCache.connect('icon-theme-changed',
             this._updateIcon.bind(this));
         this.actor.connect('destroy', () => {
-                textureCache.disconnect(iconThemeChangedId);
-                this.rightClickMenu.destroy();
-                if(this.tooltip!=undefined){
-                    this.tooltip.destroy();
-            }
+            textureCache.disconnect(iconThemeChangedId);
+            this.rightClickMenu.destroy();
         });
         this._updateIcon();
         this.actor.connect('notify::hover', this._onHover.bind(this));
@@ -1243,11 +1248,6 @@ var ApplicationMenuIcon = Utils.createClass({
     _onHover() {
         if(this._button.newSearch._highlightDefault)
             this._button.newSearch.highlightDefault(false);
-        if ( this.actor.hover) { // mouse pointer hovers over the button
-            this.tooltip ? this.tooltip.show(): '';
-        } else { // mouse pointer leaves the button area
-            this.tooltip ? this.tooltip.hide(): '';
-        }
     },
 
     _onKeyPressEvent(actor, event) {
@@ -1321,9 +1321,6 @@ var ApplicationMenuItem =Utils.createClass({
         this.actor.connect('destroy', () => {
             textureCache.disconnect(iconThemeChangedId);
             this.rightClickMenu.destroy();
-            if(this.tooltip!=undefined){
-                this.tooltip.destroy();
-        }
         });
         this._updateIcon();
 
@@ -1331,7 +1328,6 @@ var ApplicationMenuItem =Utils.createClass({
         if( app.get_description()){
             this.tooltip = new Tooltip(this.actor, app.get_description(),isMenuItem,this._button._settings);
             this.tooltip.hide();
-            this.actor.connect('notify::hover', this._onHover.bind(this));
         }
        
         this.rightClickMenu = new AppRightClickMenu(this.actor,this._app,this._button);
@@ -1364,13 +1360,6 @@ var ApplicationMenuItem =Utils.createClass({
             this.rightClickMenu.toggle();
 	    }   
         return Clutter.EVENT_STOP;
-    },
-    _onHover() {
-        if ( this.actor.hover) { // mouse pointer hovers over the button
-            this.tooltip.show();
-        } else { // mouse pointer leaves the button area
-            this.tooltip.hide();
-        }
     },
     _onKeyPressEvent(actor, event) {
         let symbol = event.get_key_symbol();

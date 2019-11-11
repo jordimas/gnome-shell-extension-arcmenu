@@ -88,7 +88,6 @@ var ListSearchResult = class ArcMenu_ListSearchResult {
         if (this.metaInfo['description']&&  this.provider.appInfo.get_name() == "Calculator") {
             title.text = this.metaInfo['name'] + "   " + this.metaInfo['description'];
         }
-        this.menuItem.connect('destroy', this._onDestroy.bind(this));
         
         this.menuItem.connect('activate', this.activate.bind(this));
 
@@ -97,7 +96,6 @@ var ListSearchResult = class ArcMenu_ListSearchResult {
         {
             this.tooltip = new MW.Tooltip(this.menuItem.actor, this.metaInfo['description'] ? this.metaInfo['description']:  app.get_description(),isMenuItem,this._button._settings);
             this.tooltip.hide();
-            this.menuItem.actor.connect('notify::hover', this._onHover.bind(this));
             this.menuItem.connect('hideTooltip',() => {
                 this.tooltip.hide();
             });
@@ -107,25 +105,10 @@ var ListSearchResult = class ArcMenu_ListSearchResult {
     activate() {
         //global.log('activate');
         this.emit('activate', this.metaInfo.id);
-    }
-    _onHover() {
-
-        if (this.menuItem.actor.hover) { // mouse pointer hovers over the button
-            this.tooltip.show();
-        } else { // mouse pointer leaves the button area
-            this.tooltip.hide();
-        }
-    }
-  
+    }  
     _highlightTerms() {
         let markup = this._resultsView.highlightTerms(this.metaInfo['description'].split('\n')[0]);
         this._descriptionLabel.clutter_text.set_markup(markup);
-    }
-
-    _onDestroy() {
-        if(this.tooltip!=undefined){
-            this.tooltip.destroy();
-        }
     }
 };Signals.addSignalMethods(ListSearchResult.prototype);
 
@@ -159,29 +142,11 @@ var AppSearchResult = class  ArcMenu_AppSearchResult {
         {
             this.tooltip = new MW.Tooltip(this.menuItem.actor, this.metaInfo['description'] ? this.metaInfo['description']:  app.get_description(),isMenuItem,this._button._settings);
             this.tooltip.hide();
-            this.menuItem.actor.connect('notify::hover', this._onHover.bind(this));
             this.menuItem.connect('hideTooltip',() => {
                 this.tooltip.hide();
             });
         }
-        this.menuItem.connect('activate', this.activate.bind(this));
-        this.menuItem.connect('destroy', this._onDestroy.bind(this));
-        
-       
-       
-    }
-    _onDestroy() {
-        if(this.tooltip!=undefined){
-            this.tooltip.destroy();
-        }
-    }
-    _onHover() {
-
-        if (this.menuItem.actor.hover) { // mouse pointer hovers over the button
-            this.tooltip.show();
-        } else { // mouse pointer leaves the button area
-            this.tooltip.hide();
-        }
+        this.menuItem.connect('activate', this.activate.bind(this)); 
     }
     activate() {
         //global.log('activate');
@@ -459,18 +424,17 @@ var SearchResults = class ArcMenu_SearchResults {
         this._highlightRegex = null;
 
         this._searchSettings = new Gio.Settings({ schema_id: SEARCH_PROVIDERS_SCHEMA });
-        this._searchSettings.connect('changed::disabled', this._reloadRemoteProviders.bind(this));
-        this._searchSettings.connect('changed::enabled', this._reloadRemoteProviders.bind(this));
-        this._searchSettings.connect('changed::disable-external', this._reloadRemoteProviders.bind(this));
-        this._searchSettings.connect('changed::sort-order', this._reloadRemoteProviders.bind(this));
-
+        this.disabledID = this._searchSettings.connect('changed::disabled', this._reloadRemoteProviders.bind(this));
+        this.enabledID =  this._searchSettings.connect('changed::enabled', this._reloadRemoteProviders.bind(this));
+        this.disablExternalID = this._searchSettings.connect('changed::disable-external', this._reloadRemoteProviders.bind(this));
+        this.sortOrderID = this._searchSettings.connect('changed::sort-order', this._reloadRemoteProviders.bind(this));
 
         this._searchTimeoutId = 0;
         this._cancellable = new Gio.Cancellable();
 
         this._registerProvider(new AppDisplay.AppSearchProvider());
 
-        appSys.connect('installed-changed', this._reloadRemoteProviders.bind(this));
+        this.installChangedID = appSys.connect('installed-changed', this._reloadRemoteProviders.bind(this));
 
         this._reloadRemoteProviders();
     }
@@ -481,6 +445,26 @@ var SearchResults = class ArcMenu_SearchResults {
         this._providers.forEach(provider => {
             provider.display.actor.destroy();
         });
+        if(this.disabledID>0){
+            this._searchSettings.disconnect(this.disabledID);
+            this.disabledID=0;
+        }
+        if(this.enabledID>0){
+            this._searchSettings.disconnect(this.enabledID);
+            this.enabledID=0;
+        }
+        if(this.disablExternalID>0){
+            this._searchSettings.disconnect(this.disablExternalID);
+            this.disablExternalID=0;
+        }
+        if(this.sortOrderID>0){
+            this._searchSettings.disconnect(this.sortOrderID);
+            this.sortOrderID=0;
+        }
+        if(this.installChangedID>0){
+            appSys.disconnect(this.installChangedID);
+            this.installChangedID=0;
+        }     
     }
     _reloadRemoteProviders() {
         let remoteProviders = this._providers.filter(p => p.isRemoteProvider);
@@ -736,16 +720,10 @@ var ArcSearchProviderInfo =Utils.createClass({
             this.tooltip = new MW.Tooltip(this.actor, provider.appInfo.get_description(),isMenuItem,this._button._settings);
             this.tooltip.hide();            
         }
-        this.actor.connect("destroy", ()=>{this._onDestroy()});
     },
     _onHover() {
         if(this._button.newSearch._highlightDefault)
             this._button.newSearch.highlightDefault(false);
-        if (this.hover) { // mouse pointer hovers over the button
-            this.tooltip ? this.tooltip.show(): '';
-        } else { // mouse pointer leaves the button area
-            this.tooltip ? this.tooltip.hide(): '';
-        }
     },
     animateLaunch() {
         let app = appSys.lookup_app(this.provider.appInfo.get_id());
@@ -765,14 +743,6 @@ var ArcSearchProviderInfo =Utils.createClass({
         }
         return Clutter.EVENT_STOP;
     },
-    _onDestroy(){
-        if(this.hoverID>0){
-            this.actor.disconnect(this.hoverID);
-            this.hoverID=0;
-        }
-    }
 
-       
-    
 });
 

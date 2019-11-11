@@ -154,7 +154,7 @@ var MenuSettingsController = class {
     }
     _updateFavorites(){
         if(this._settings.get_enum('menu-layout') == Constants.MENU_LAYOUT.Default){
-            if(this._menuButton.shouldLoadFavorites)
+           if(this._menuButton.getShouldLoadFavorites())
                 this._menuButton._loadFavorites();
             if(this._menuButton.getCurrentMenu() == Constants.CURRENT_MENU.FAVORITES)
                this._menuButton._displayFavorites();
@@ -401,14 +401,14 @@ var MenuSettingsController = class {
     // Destroy this object
     destroy() {
         this.settingsChangeIds.forEach(id => this._settings.disconnect(id));
-        
+        this._hotCornerManager.destroy();
         this.disconnectKeyRelease();
 
         // Clean up and restore the default behaviour
         if (this._isButtonEnabled()) {
             this._disableButton();
         }
-        this._hotCornerManager.destroy();
+
         if(this.isMainPanel){
             this._menuHotKeybinder.destroy();
             this._keybindingManager.destroy();
