@@ -27,6 +27,7 @@ const Main = imports.ui.main;
 
 // Local constants
 const MUTTER_SCHEMA = 'org.gnome.mutter';
+const WM_KEYBINDINGS_SCHEMA = 'org.gnome.desktop.wm.keybindings';
 
 /**
  * The Menu HotKeybinder class helps us to bind and unbind a menu hotkey
@@ -37,43 +38,69 @@ var MenuHotKeybinder = class {
     constructor(menuToggler) {
         this._menuToggler = menuToggler;
         this._mutterSettings = new Gio.Settings({ 'schema': MUTTER_SCHEMA });
-        this.oldOverviewToggle = Main.overview.toggle;
-        this._hotkeyMenuToggleId = Main.layoutManager.connect('startup-complete',
-            this._updateHotkeyMenuToggle.bind(this));
-        this._updateHotkeyMenuToggle();
+        this._wmKeybindings = new Gio.Settings({ 'schema': WM_KEYBINDINGS_SCHEMA });
+        this._keybindingHandlerId = Main.layoutManager.connect('startup-complete',
+            this._setKeybindingHandler.bind(this));
+        this._setKeybindingHandler();
     }
 
-    // Set Main.overview.toggle to toggle Arc Menu instead
+    // Enable a hot key for opening the menu
     enableHotKey(hotkey) {
-        this._mutterSettings.set_string('overlay-key', hotkey);
-        Main.wm.allowKeybinding('overlay-key', Shell.ActionMode.NORMAL |
-            Shell.ActionMode.OVERVIEW | Shell.ActionMode.POPUP);
-        Main.overview.toggle = this._menuToggler.bind(this);
+        if (hotkey == Constants.SUPER_L) {
+            this._disableOverlayKey();
+        } else {
+            this._enableOverlayKey();
+        }
+        this._wmKeybindings.set_strv('panel-main-menu', [hotkey]);
     }
 
-    // Set Main.overview.toggle to default function and default hotkey
+    // Disable the set hot key for opening the menu
     disableHotKey() {
-        this._mutterSettings.set_value('overlay-key', this._getDefaultOverlayKey());
-        Main.overview.toggle = this.oldOverviewToggle;
+        // Restore the default settings
+        if (this._isOverlayKeyDisabled()) {
+            this._enableOverlayKey();
+        }
+        let defaultPanelMainMenu = this._wmKeybindings.get_default_value('panel-main-menu');
+        this._wmKeybindings.set_value('panel-main-menu', defaultPanelMainMenu);
     }
 
-    // Update hotkey menu toggle function
-    _updateHotkeyMenuToggle() {
-        Main.wm.allowKeybinding('overlay-key', Shell.ActionMode.NORMAL |
-            Shell.ActionMode.OVERVIEW | Shell.ActionMode.POPUP);
-        Main.overview.toggle = this._menuToggler.bind(this);
+    // Set the menu keybinding handler
+    _setKeybindingHandler() {
+        Main.wm.setCustomKeybindingHandler('panel-main-menu',
+            Shell.ActionMode.NORMAL | Shell.ActionMode.OVERVIEW | Shell.ActionMode.POPUP,
+            this._menuToggler.bind(this));
     }
+
+    // Check if the overlay keybinding is disabled in mutter
+    _isOverlayKeyDisabled() {
+        return this._mutterSettings.get_string('overlay-key') == Constants.EMPTY_STRING;
+    }
+
+    // Disable the overlay keybinding in mutter
+    _disableOverlayKey() {
+        // Simple hack to deactivate the overlay key by setting
+        // the keybinding of the overlay key to an empty string
+        this._mutterSettings.set_string('overlay-key', Constants.EMPTY_STRING);
+    }
+
+    // Enable and restore the default settings of the overlay key in mutter
+    _enableOverlayKey() {
+        this._mutterSettings.set_value('overlay-key', this._getDefaultOverlayKey());
+    }
+
+    // Get the default overelay keybinding from mutter
     _getDefaultOverlayKey() {
         return this._mutterSettings.get_default_value('overlay-key');
     }
+
     // Destroy this object
     destroy() {
         // Clean up and restore the default behaviour
         this.disableHotKey();
-        if (this._hotkeyMenuToggleId) {
+        if (this._keybindingHandlerId) {
             // Disconnect the keybinding handler
-            Main.layoutManager.disconnect(this._hotkeyMenuToggleId);
-            this._hotkeyMenuToggleId = null;
+            Main.layoutManager.disconnect(this._keybindingHandlerId);
+            this._keybindingHandlerId = null;
         }
     }
 };
