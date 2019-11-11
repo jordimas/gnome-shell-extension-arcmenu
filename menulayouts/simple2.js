@@ -70,7 +70,7 @@ var createMenu = class{
         this._createLeftBox();
         this._loadCategories();
         this._display(); 
-        this.leftClickMenu.actor.style = 'max-height: '+(this.leftClickMenu.actor.height + 250)+'px;';
+        this.leftClickMenu.actor.style += 'max-height: '+(this.leftClickMenu.actor.height + 250)+'px;';
     }
     _onMainBoxKeyPress(mainBox, event) {
         return Clutter.EVENT_PROPAGATE;
@@ -299,7 +299,7 @@ var createMenu = class{
         return applist;
     }
     destroy(){
-
+        this.leftClickMenu.actor.style -= 'max-height: '+(this.leftClickMenu.actor.height + 250)+'px;';
         this._applicationsButtons.forEach((value,key,map)=>{
             value.destroy();
         });

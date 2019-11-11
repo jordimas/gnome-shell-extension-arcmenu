@@ -179,14 +179,22 @@ var ApplicationsButton =   Utils.defineClass({
         },
         updateArrowSide(side){
             let arrowAlignment = 0;
+            let layout = this._settings.get_enum('menu-layout');
+            if(layout == Constants.MENU_LAYOUT.Simple2)
+                this.leftClickMenu.actor.style = 'max-height: '+(this.leftClickMenu.actor.height + 250)+'px;';
+            else
+                this.leftClickMenu.actor.style = "";
             if (side == 'TOP') 
                 side =  St.Side.TOP;
             else if (side == 'RIGHT') {
                 arrowAlignment = 1;
                 side =  St.Side.RIGHT;
             }
-             else if (side == 'BOTTOM') 
+             else if (side == 'BOTTOM') {
                 side =  St.Side.BOTTOM;
+                this.leftClickMenu.actor.style += "-boxpointer-gap: -1px;";
+             }
+                
             else{
                 arrowAlignment = 1;
                 side =  St.Side.LEFT;
@@ -343,8 +351,7 @@ var ApplicationsButton =   Utils.defineClass({
             this.container.destroy();
         },
         _updateMenuLayout(){
-             this.leftClickMenu.removeAll();
-            this.leftClickMenu.actor.style = '';
+            this.leftClickMenu.removeAll();
             //Create Basic Layout ------------------------------------------------
             this.section = new PopupMenu.PopupMenuSection();
             this.leftClickMenu.addMenuItem(this.section);            
