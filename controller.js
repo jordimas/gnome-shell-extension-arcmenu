@@ -111,37 +111,33 @@ var MenuSettingsController = class {
         this._menuButton._updateMenuLayout();
     }
     toggleMenus(){
-        if(Main.overview.visible)
-            Main.overview.hide();
-        else{
-            if(this._settings.get_boolean('multi-monitor') && global.dashToPanel){
-                let screen = Gdk.Screen.get_default();
-                //global.log( global.get_pointer());
-                let pointer = global.get_pointer();
-                let currentMonitor = screen.get_monitor_at_point(pointer[0],pointer[1]);
-                for(let i = 0;i<screen.get_n_monitors();i++){
-                    if(i==currentMonitor)
-                        this.currentMonitorIndex=i;
+        if(this._settings.get_boolean('multi-monitor') && global.dashToPanel){
+            let screen = Gdk.Screen.get_default();
+            //global.log( global.get_pointer());
+            let pointer = global.get_pointer();
+            let currentMonitor = screen.get_monitor_at_point(pointer[0],pointer[1]);
+            for(let i = 0;i<screen.get_n_monitors();i++){
+                if(i==currentMonitor)
+                    this.currentMonitorIndex=i;
+            }
+            //close current menus that are open on monitors other than current monitor
+            for (let i = 0; i < this._settingsControllers.length; i++) {
+                if(i!=this.currentMonitorIndex){
+                if(this._settingsControllers[i]._menuButton.leftClickMenu.isOpen)
+                    this._settingsControllers[i]._menuButton.toggleMenu();
+                if(this._settingsControllers[i]._menuButton.rightClickMenu.isOpen)
+                    this._settingsControllers[i]._menuButton.toggleRightClickMenu();
                 }
-                //close current menus that are open on monitors other than current monitor
-                for (let i = 0; i < this._settingsControllers.length; i++) {
-                    if(i!=this.currentMonitorIndex){
-                    if(this._settingsControllers[i]._menuButton.leftClickMenu.isOpen)
-                        this._settingsControllers[i]._menuButton.toggleMenu();
-                    if(this._settingsControllers[i]._menuButton.rightClickMenu.isOpen)
-                        this._settingsControllers[i]._menuButton.toggleRightClickMenu();
-                    }
-                }  
-                //toggle menu on current monitor
-                for (let i = 0; i < this._settingsControllers.length; i++) {
-                    if(i==this.currentMonitorIndex)
-                        this._settingsControllers[i]._menuButton.toggleMenu();
-                }   
-            }
-            else {
-                //global.log("no dash to panel")
-                this._menuButton.toggleMenu();
-            }
+            }  
+            //toggle menu on current monitor
+            for (let i = 0; i < this._settingsControllers.length; i++) {
+                if(i==this.currentMonitorIndex)
+                    this._settingsControllers[i]._menuButton.toggleMenu();
+            }   
+        }
+        else {
+            //global.log("no dash to panel")
+            this._menuButton.toggleMenu();
         }
     }
     _reloadExtension(){
