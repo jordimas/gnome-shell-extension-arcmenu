@@ -1190,6 +1190,37 @@ var MenuButtonCustomizationWindow = GObject.registerClass(
             menuButtonIconScaleBoxRow.add(hscale);
             menuButtonFrame.add(menuButtonIconScaleBoxRow);
 
+            let menuButtonIconPaddingBoxRow = new PW.FrameBoxRow();
+            let iconPadding = this._settings.get_int('button-icon-padding');
+            let menuButtonIconPaddingBoxLabel = new Gtk.Label({
+                label: _('Icon Padding'),
+                use_markup: true,
+                xalign: 0,
+                hexpand: true
+            });
+            let paddingScale = new Gtk.HScale({
+                adjustment: new Gtk.Adjustment({
+                    lower: 0,
+                    upper: 25,
+                    step_increment: 1,
+                    page_increment: 1,
+                    page_size: 0
+                }),
+                digits: 0,
+                round_digits: 0,
+                hexpand: true,
+                value_pos: Gtk.PositionType.RIGHT
+            });
+            paddingScale.connect('format-value', (scale, value) => { return value.toString() + ' px'; });
+            paddingScale.set_value(iconPadding);
+            paddingScale.connect('value-changed', () => {
+                resetButton.set_sensitive(true); 
+                this._settings.set_int('button-icon-padding', paddingScale.get_value());
+            });
+
+            menuButtonIconPaddingBoxRow.add(menuButtonIconPaddingBoxLabel);
+            menuButtonIconPaddingBoxRow.add(paddingScale);
+            menuButtonFrame.add(menuButtonIconPaddingBoxRow);
 
             let menuButtonColorRow = new PW.FrameBoxRow();
             let menuButtonColorLabel = new Gtk.Label({
@@ -1265,6 +1296,7 @@ var MenuButtonCustomizationWindow = GObject.registerClass(
                 menuButtonCustomTextEntry.set_text('Applications');
                 menuButtonIconCombo.set_active(0);
                 fileChooserButton.set_filename('None');
+                paddingScale.set_value(0);
                 hscale.set_value(22);
                 color.parse('rgb(240,240,240)');
                 menuButtonColorChooser.set_rgba(color);
@@ -1286,6 +1318,7 @@ var MenuButtonCustomizationWindow = GObject.registerClass(
            if(  this._settings.get_string('menu-button-active-color') != 'rgb(214,214,214)' ||
                 this._settings.get_string('menu-button-color') != 'rgb(240,240,240)' ||
                 this._settings.get_double('custom-menu-button-icon-size') != 22 ||
+                this._settings.get_int('button-icon-padding') != 0 ||
                 this._settings.get_enum('menu-button-icon') != 0 ||
                 this._settings.get_string('custom-menu-button-text') != 'Applications' ||
                 this._settings.get_enum('menu-button-appearance') != 0 ||
