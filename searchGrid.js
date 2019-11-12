@@ -74,7 +74,6 @@ var ListSearchResult = class ArcMenu_ListSearchResultGrid {
             this.menuItem =  new MW.SearchResultItem(this._button); 
         }
 
-        this.menuItem.connect('destroy', this._onDestroy.bind(this));
         this.menuItem.connect('activate', this.activate.bind(this));
 
           let isMenuItem=true;

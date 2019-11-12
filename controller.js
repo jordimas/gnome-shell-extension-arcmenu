@@ -47,7 +47,7 @@ var MenuSettingsController = class {
         this._menuButton = new Menu.ApplicationsButton(settings, panel);
         this._hotCornerManager = new Helper.HotCornerManager(this._settings);
         if(this.isMainPanel){
-            this._menuHotKeybinder = new Helper.MenuHotKeybinder(() => this._onHotkey());
+           this._menuHotKeybinder = new Helper.MenuHotKeybinder(() => this._onHotkey());
             this._keybindingManager = new Helper.KeybindingManager(this._settings); 
         }
         this._applySettings();
@@ -62,6 +62,7 @@ var MenuSettingsController = class {
         this._setButtonText();
         this._setButtonIcon();
         this._setButtonIconSize();
+        this._setButtonIconPadding();
     }
     // Bind the callbacks for handling the settings changes to the event signals
     bindSettingsChanges() {
@@ -75,6 +76,7 @@ var MenuSettingsController = class {
             this._settings.connect('changed::menu-button-icon', this._setButtonIcon.bind(this)),
             this._settings.connect('changed::custom-menu-button-icon', this._setButtonIcon.bind(this)),
             this._settings.connect('changed::custom-menu-button-icon-size', this._setButtonIconSize.bind(this)),
+            this._settings.connect('changed::button-icon-padding', this._setButtonIconPadding.bind(this)),
             this._settings.connect('changed::enable-menu-button-arrow', this._setMenuButtonArrow.bind(this)),
             this._settings.connect('changed::enable-custom-arc-menu', this._enableCustomArcMenu.bind(this)),
             this._settings.connect('changed::show-home-shortcut', this._redisplayRightSide.bind(this)),
@@ -154,7 +156,7 @@ var MenuSettingsController = class {
     }
     _updateFavorites(){
         if(this._settings.get_enum('menu-layout') == Constants.MENU_LAYOUT.Default){
-           if(this._menuButton.getShouldLoadFavorites())
+            if(this._menuButton.getShouldLoadFavorites())
                 this._menuButton._loadFavorites();
             if(this._menuButton.getCurrentMenu() == Constants.CURRENT_MENU.FAVORITES)
                this._menuButton._displayFavorites();
@@ -329,6 +331,12 @@ var MenuSettingsController = class {
         let iconSize = this._settings.get_double('custom-menu-button-icon-size');
         let size = iconSize;
         stIcon.icon_size = size;
+    }
+    _setButtonIconPadding() {
+        let menuButtonWidget = this._menuButton.getWidget();
+        let stIcon = menuButtonWidget.getPanelIcon();
+        let iconPadding = this._settings.get_int('button-icon-padding');
+        stIcon.style = "padding: 0 "+iconPadding+"px;";
     }
 
     // Get the current position of the menu button and its associated position order

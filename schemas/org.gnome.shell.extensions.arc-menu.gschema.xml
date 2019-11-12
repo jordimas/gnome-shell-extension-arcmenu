@@ -144,6 +144,11 @@
       <summary>Menu width</summary>
       <description>Menu width.</description>
     </key>
+      <key type="i" name="gap-adjustment">
+     <default>0</default>
+      <summary>Gap Adjustment</summary>
+      <description>Gap Adjustment</description>
+    </key>
       <key type="i" name="menu-rightpanel-width">
      <default>210</default>
       <summary>Menu right panel width</summary>
@@ -334,6 +339,12 @@
       <summary>Size of the icon in percentage.</summary>
       <description>Size of the icon in percentage.</description>
     </key>
+    <key type="i" name="button-icon-padding">
+      <default>0</default>
+      <summary>Button Icon Padding.</summary>
+      <description>Button Icon Padding.</description>
+    </key>
+
     <key type="s" name="menu-button-color">
       <default>'rgb(240,240,240)'</default>
       <summary>Color for for the menu button icon</summary>

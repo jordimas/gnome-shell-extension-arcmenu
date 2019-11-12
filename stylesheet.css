@@ -84,6 +84,7 @@ padding-left: 1em;
  margin-right: .5em;
 }
 .arc-menu{
+-boxpointer-gap: 0px;
 min-width: 15em;
 color: #D3DAE3;
 border-image: none;

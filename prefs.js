@@ -1190,6 +1190,37 @@ var MenuButtonCustomizationWindow = GObject.registerClass(
             menuButtonIconScaleBoxRow.add(hscale);
             menuButtonFrame.add(menuButtonIconScaleBoxRow);
 
+            let menuButtonIconPaddingBoxRow = new PW.FrameBoxRow();
+            let iconPadding = this._settings.get_int('button-icon-padding');
+            let menuButtonIconPaddingBoxLabel = new Gtk.Label({
+                label: _('Icon Padding'),
+                use_markup: true,
+                xalign: 0,
+                hexpand: true
+            });
+            let paddingScale = new Gtk.HScale({
+                adjustment: new Gtk.Adjustment({
+                    lower: 0,
+                    upper: 25,
+                    step_increment: 1,
+                    page_increment: 1,
+                    page_size: 0
+                }),
+                digits: 0,
+                round_digits: 0,
+                hexpand: true,
+                value_pos: Gtk.PositionType.RIGHT
+            });
+            paddingScale.connect('format-value', (scale, value) => { return value.toString() + ' px'; });
+            paddingScale.set_value(iconPadding);
+            paddingScale.connect('value-changed', () => {
+                resetButton.set_sensitive(true); 
+                this._settings.set_int('button-icon-padding', paddingScale.get_value());
+            });
+
+            menuButtonIconPaddingBoxRow.add(menuButtonIconPaddingBoxLabel);
+            menuButtonIconPaddingBoxRow.add(paddingScale);
+            menuButtonFrame.add(menuButtonIconPaddingBoxRow);
 
             let menuButtonColorRow = new PW.FrameBoxRow();
             let menuButtonColorLabel = new Gtk.Label({
@@ -1265,6 +1296,7 @@ var MenuButtonCustomizationWindow = GObject.registerClass(
                 menuButtonCustomTextEntry.set_text('Applications');
                 menuButtonIconCombo.set_active(0);
                 fileChooserButton.set_filename('None');
+                paddingScale.set_value(0);
                 hscale.set_value(22);
                 color.parse('rgb(240,240,240)');
                 menuButtonColorChooser.set_rgba(color);
@@ -1286,6 +1318,7 @@ var MenuButtonCustomizationWindow = GObject.registerClass(
            if(  this._settings.get_string('menu-button-active-color') != 'rgb(214,214,214)' ||
                 this._settings.get_string('menu-button-color') != 'rgb(240,240,240)' ||
                 this._settings.get_double('custom-menu-button-icon-size') != 22 ||
+                this._settings.get_int('button-icon-padding') != 0 ||
                 this._settings.get_enum('menu-button-icon') != 0 ||
                 this._settings.get_string('custom-menu-button-text') != 'Applications' ||
                 this._settings.get_enum('menu-button-appearance') != 0 ||
@@ -1384,6 +1417,7 @@ var  AppearanceSettingsPage = GObject.registerClass(
                       this._settings.set_int('menu-width', dialog.menuWidth);
                       this._settings.set_int('menu-rightpanel-width',dialog.menuRightWidth);
                       this._settings.set_boolean('enable-large-icons',dialog.largeIcons);
+                      this._settings.set_int('gap-adjustment',dialog.gapAdjustment);
                       saveCSS(this._settings);
                       this._settings.set_boolean('reload-theme',true);
                       dialog.destroy();
@@ -1769,6 +1803,7 @@ var ArcMenuCustomizationWindow = GObject.registerClass(
             this.menuMargin = this._settings.get_int('menu-margin');
             this.menuArrowSize = this._settings.get_int('menu-arrow-size');
             this.largeIcons = this._settings.get_boolean('enable-large-icons');
+            this.gapAdjustment = this._settings.get_int('gap-adjustment');
             super._init(_('Customize Arc Menu Appearance'), parent);
 	        this.resize(450,250);
         }
@@ -1895,56 +1930,91 @@ var ArcMenuCustomizationWindow = GObject.registerClass(
             separatorColorRow.add(separatorColorLabel);            
             separatorColorRow.add(colorChooser);             
             mainFrame.add(separatorColorRow);
-            
-           // Button Row -------------------------------------------------------
-           let buttonRow = new PW.FrameBoxRow();
-           let resetButton = new Gtk.Button({
-               label: _("Reset"),
-               xalign:0
-           });   
-           resetButton.set_sensitive( this.checkIfResetButtonSensitive());
-           resetButton.connect('clicked', ()=> {
-               
-                this.heightValue = 550;
-                this.menuWidth = 290;
-                this.menuRightWidth = 200;
-                this.separatorColor = "rgb(63,62,64)";
-                this.verticalSeparator = false;
-                this.largeIcons = false;
-                hscale.set_value(this.heightValue);
-                menuWidthScale.set_value(this.menuWidth);
-                vertSeparatorSwitch.set_active(this.verticalSeparator);
-                largeIconsSwitch.set_active(this.largeIcons);
-                color.parse(this.separatorColor);
-                colorChooser.set_rgba(color);    
+            //GAP ADJUSTMENT--------------------------------------------------   
+            let fineTuneFrame = new PW.FrameBox();
+            let fineTuneLabelRow = new PW.FrameBoxRow();
+            let fineTuneLabel = new Gtk.Label({
+                label: _('Fine Tune'),
+                xalign:0,
+                hexpand: false,
+            });   
+            fineTuneLabel.set_sensitive(false);
+            fineTuneLabelRow.add(fineTuneLabel);
+            let gapAdjustmentRow = new PW.FrameBoxRow();
+            let gapAdjustmentLabel = new Gtk.Label({
+                label: _('Gap Adjustment'),
+                xalign:0,
+                hexpand: false,
+            });   
+            let gapAdjustmentScale = new Gtk.HScale({
+                adjustment: new Gtk.Adjustment({
+                    lower: -1,upper: 1, step_increment: 1, page_increment: 1, page_size: 0
+                }),
+                digits: 0,round_digits: 0,hexpand: true,
+                value_pos: Gtk.PositionType.RIGHT
+            });
+            gapAdjustmentScale.connect('format-value', function (scale, value) { return value.toString() + 'px'; });
+            gapAdjustmentScale.set_value(this.gapAdjustment);
+            gapAdjustmentScale.connect('value-changed', () => {
+                this.gapAdjustment = gapAdjustmentScale.get_value();
+                applyButton.set_sensitive(true);
+                resetButton.set_sensitive(true);
+            });
+            gapAdjustmentRow.add(gapAdjustmentLabel);
+            gapAdjustmentRow.add(gapAdjustmentScale);
+            fineTuneFrame.add(fineTuneLabelRow);
+            fineTuneFrame.add(gapAdjustmentRow);
+            // Button Row -------------------------------------------------------
+            let buttonRow = new PW.FrameBoxRow();
+            let resetButton = new Gtk.Button({
+                label: _("Reset"),
+                xalign:0
+            });   
+            resetButton.set_sensitive( this.checkIfResetButtonSensitive());
+            resetButton.connect('clicked', ()=> {
+                    this.gapAdjustment = 0;
+                    this.heightValue = 550;
+                    this.menuWidth = 290;
+                    this.menuRightWidth = 200;
+                    this.separatorColor = "rgb(63,62,64)";
+                    this.verticalSeparator = false;
+                    this.largeIcons = false;
+                    hscale.set_value(this.heightValue);
+                    menuWidthScale.set_value(this.menuWidth);
+                    gapAdjustmentScale.set_value(0);
+                    vertSeparatorSwitch.set_active(this.verticalSeparator);
+                    largeIconsSwitch.set_active(this.largeIcons);
+                    color.parse(this.separatorColor);
+                    colorChooser.set_rgba(color);    
 
-                resetButton.set_sensitive(false);
-                applyButton.set_sensitive(true);               
-           });
+                    resetButton.set_sensitive(false);
+                    applyButton.set_sensitive(true);               
+            });
 
-           buttonRow.add(resetButton);
+            buttonRow.add(resetButton);
           
-           let fillerLabel = new Gtk.Label({
-               label: '',
-               xalign:0,
-               hexpand: true,
-           });   
-           buttonRow.add(fillerLabel);
+            let fillerLabel = new Gtk.Label({
+                label: '',
+                xalign:0,
+                hexpand: true,
+            });   
+            buttonRow.add(fillerLabel);
 
-           let applyButton = new Gtk.Button({
-               label: _("Apply"),
-               xalign:1
-           });
-           applyButton.connect('clicked', ()=> {
-              this.addResponse = true;
-              this.response(-10);
-           });
-           applyButton.set_halign(Gtk.Align.END);
-           applyButton.set_sensitive(false);
-           buttonRow.add(applyButton);
+            let applyButton = new Gtk.Button({
+                label: _("Apply"),
+                xalign:1
+            });
+            applyButton.connect('clicked', ()=> {
+                this.addResponse = true;
+                this.response(-10);
+            });
+            applyButton.set_halign(Gtk.Align.END);
+            applyButton.set_sensitive(false);
+            buttonRow.add(applyButton);
 
-           vbox.add(mainFrame);
-           vbox.add(buttonRow);
+            vbox.add(mainFrame);
+            vbox.add(fineTuneFrame);
+            vbox.add(buttonRow);
         }
         get_response(){
             return this.addResponse;
@@ -1954,7 +2024,8 @@ var ArcMenuCustomizationWindow = GObject.registerClass(
                 this.menuWidth != 290 ||
                 this.separatorColor != "rgb(63,62,64)"||
                 this.verticalSeparator != false||
-                this.largeIcons != false) ? true : false
+                this.largeIcons != false||
+                this.gapAdjustment != 0) ? true : false
             
         }
    
@@ -3596,6 +3667,7 @@ function saveCSS(settings){
     let avatarRadius = avatarStyle == 0 ? 999 : 0;
     let menuButtonColor = this._settings.get_string('menu-button-color');
     let menuButtonActiveColor =  this._settings.get_string('menu-button-active-color');
+    let gapAdjustment = this._settings.get_int('gap-adjustment');
     
     let menuLayout =  this._settings.get_enum('menu-layout');
     let searchBoxPadding;
@@ -3603,9 +3675,6 @@ function saveCSS(settings){
         searchBoxPadding = ".search-box-padding { \npadding-top: 0.75em;\n"+"padding-bottom: 0.25em;\npadding-left: 1em;\n padding-right: 0.25em;\n margin-right: .5em;\n}\n";
     else 
         searchBoxPadding = ".search-box-padding { \npadding-top: 0.0em;\n"+"padding-bottom: 0.5em;\npadding-left: 0.4em;\n padding-right: 0.4em;\n margin-right: 0em;\n}\n";
-
-
-   
 
     let tooltipForegroundColor= customArcMenu ? "\n color:"+  menuForegroundColor+";\n" : "";
     let tooltipBackgroundColor= customArcMenu ? "\n background-color:"+lighten_rgb( menuColor,0.05)+";\n" : "";
@@ -3634,8 +3703,8 @@ function saveCSS(settings){
         +tooltipStyle
 
         +searchBoxPadding
-        
-        +".arc-menu{\nmin-width: 15em;\ncolor: #D3DAE3;\nborder-image: none;\nbox-shadow: none;\nfont-size:" + fontSize+"pt;\n}\n"
+
+        +".arc-menu{\n-boxpointer-gap: "+gapAdjustment+"px;\nmin-width: 15em;\ncolor: #D3DAE3;\nborder-image: none;\nbox-shadow: none;\nfont-size:" + fontSize+"pt;\n}\n"
         +".arc-menu .popup-sub-menu {\npadding-bottom: 1px;\nbackground-color: "+lighten_rgb( menuColor,0.05)+";\nborder-color: "+lighten_rgb( menuColor,0.10)+";\n border-width:1px;\n}\n"
         +".arc-menu .popup-menu-content {padding: 1em 0em;}\n .arc-menu .popup-menu-item {\nspacing: 12px; \nborder: 0;\ncolor:"+  menuForegroundColor+";\n }\n" 
         +".arc-menu .popup-menu-item:ltr {padding: .4em 1.75em .4em 0em; }\n.arc-menu .popup-menu-item:rtl {padding: .4em 0em .4em 1.75em;}\n"

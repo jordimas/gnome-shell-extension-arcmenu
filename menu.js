@@ -192,7 +192,6 @@ var ApplicationsButton =   Utils.defineClass({
             }
              else if (side == 'BOTTOM') {
                 side =  St.Side.BOTTOM;
-                this.leftClickMenu.actor.style += "-boxpointer-gap: -1px;";
              }
                 
             else{
