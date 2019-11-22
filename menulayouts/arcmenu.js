@@ -471,16 +471,16 @@ var createMenu = class {
                     continue;
                 }
                 let app = appSys.lookup_app(id);
-                if (app){
+                if (!app)
+                    app = new Shell.App({ app_info: entry.get_app_info() });
+                if (app.get_app_info().should_show()){
                     this.applicationsByCategory[categoryId].push(app);
                     let item = this._applicationsButtons.get(app);
                     if (!item) {
                         item = new MW.ApplicationMenuItem(this, app);
                         this._applicationsButtons.set(app, item);
                     }
-                }
-              
-                    
+                }             
             } else if (nextType == GMenu.TreeItemType.DIRECTORY) {
                 let subdir = iter.get_directory();
                 if (!subdir.get_is_nodisplay())

@@ -52,17 +52,11 @@ function enable() {
     settings.connect('changed::multi-monitor', () => _onMultiMonitorChange());
     settingsControllers = [];
 
-
-
     _enableButtons();
     
     // dash to panel might get enabled after Arc-Menu
     extensionChangedId = (Main.extensionManager || ExtensionSystem).connect('extension-state-changed', (data, extension) => {
         if (extension.uuid === 'dash-to-panel@jderose9.github.com' && extension.state === 1) {
-            _disconnectDtpSignals();
-            settingsControllers.forEach(sc => _disableButton(sc));
-            settingsControllers = null;
-            settingsControllers = [];
             _connectDtpSignals();
             _enableButtons();
         }
@@ -88,9 +82,7 @@ function disable() {
     settings.run_dispose();
     settings = null;
     
-
 }
-
 
 function _connectDtpSignals() {
     if (global.dashToPanel) {
@@ -106,20 +98,32 @@ function _disconnectDtpSignals() {
 }
 
 function _onMultiMonitorChange() {
-    settingsControllers.forEach(sc => _disableButton(sc));
-    settingsControllers = null;
-    settingsControllers = [];
+    if (!settings.get_boolean('multi-monitor')) {
+        for (let i = settingsControllers.length - 1; i >= 0; --i) {
+            let sc = settingsControllers[i];
+
+            if (sc.panel != Main.panel) {
+                _disableButton(sc, 1);
+            }
+        }
+    }
+
     _enableButtons();
 }
 
 function _enableButtons() {
-    (settings.get_boolean('multi-monitor') && global.dashToPanel ? 
-     global.dashToPanel.panels.map(pw => pw.panel || pw) : 
-     [Main.panel]).forEach(panel => {
-  
+    let panelArray = (settings.get_boolean('multi-monitor') && global.dashToPanel) ? 
+        global.dashToPanel.panels.map(pw => pw.panel || pw) : [Main.panel];
+    for(var i = 0; i<panelArray.length;i++){
+        let panel = panelArray[i];
+        let isMainPanel = ('isSecondary' in panel && !panel.isSecondary) || panel == Main.panel;
+
+        if (panel.statusArea['arc-menu'])
+           continue;
+
         // Create a Menu Controller that is responsible for controlling
         // and managing the menu as well as the menu button.
-        let isMainPanel = ('isSecondary' in panel && !panel.isSecondary) || panel == Main.panel;
+       
         let settingsController = new Controller.MenuSettingsController(settings, settingsControllers, panel, isMainPanel);
         
         if (!isMainPanel) {
@@ -129,7 +133,7 @@ function _enableButtons() {
         settingsController.enableButton();
         settingsController.bindSettingsChanges();
         settingsControllers.push(settingsController);
-    });
+    }
 }
 
 function _disableButton(controller, remove) {

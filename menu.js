@@ -135,6 +135,10 @@ var ApplicationsButton =   Utils.defineClass({
             sourceActor.add_actor(this._menuButtonWidget.actor);
 
             //Create Basic Layout ------------------------------------------------
+            this.createMenuLayout();
+            //--------------------------------------------------------------------
+        },
+        createMenuLayout(){
             this.section = new PopupMenu.PopupMenuSection();
             this.leftClickMenu.addMenuItem(this.section);            
             this.mainBox = new St.BoxLayout({
@@ -145,10 +149,8 @@ var ApplicationsButton =   Utils.defineClass({
             let height =  Math.round(this._settings.get_int('menu-height') / scaleFactor);
             this.mainBox.style = `height: ${height}px`;        
             this.section.actor.add_actor(this.mainBox);          
-            //--------------------------------------------------------------------
-
             //Create Menu Layout--------------------------------------------------
-           let layout = this._settings.get_enum('menu-layout');
+            let layout = this._settings.get_enum('menu-layout');
             if(layout == Constants.MENU_LAYOUT.Default)
                 this.MenuLayout =  new MenuLayouts.arcmenu.createMenu(this);
             else if(layout == Constants.MENU_LAYOUT.Brisk)
@@ -245,7 +247,7 @@ var ApplicationsButton =   Utils.defineClass({
                     if(layout == Constants.MENU_LAYOUT.GnomeDash)
                         Main.overview.toggle();
                     else{
-                        this.leftClickMenu.toggle();	
+                        this.leftClickMenu.toggle();
                         if(this.leftClickMenu.isOpen){
                             if(!(layout == Constants.MENU_LAYOUT.Simple || layout == Constants.MENU_LAYOUT.Simple2))
                                 this.mainBox.grab_key_focus();	
@@ -350,45 +352,10 @@ var ApplicationsButton =   Utils.defineClass({
             this.container.destroy();
         },
         _updateMenuLayout(){
+            this.MenuLayout.destroy();
+            this.MenuLayout = null;
             this.leftClickMenu.removeAll();
-            //Create Basic Layout ------------------------------------------------
-            this.section = new PopupMenu.PopupMenuSection();
-            this.leftClickMenu.addMenuItem(this.section);            
-            this.mainBox = new St.BoxLayout({
-                vertical: false
-            });        
-            let themeContext = St.ThemeContext.get_for_stage(global.stage);
-            let scaleFactor = themeContext.scale_factor;
-            let height =  Math.round(this._settings.get_int('menu-height') / scaleFactor);
-            this.mainBox.style = `height: ${height}px`;        
-            this.section.actor.add_actor(this.mainBox);          
-            //------------------------------------------------  
-             
-            //this.MenuLayout = null;
-            let layout = this._settings.get_enum('menu-layout');
-            if(layout == Constants.MENU_LAYOUT.Default)
-                this.MenuLayout =  new MenuLayouts.arcmenu.createMenu(this);
-            else if(layout == Constants.MENU_LAYOUT.Brisk)
-                this.MenuLayout =  new MenuLayouts.brisk.createMenu(this); 
-            else if(layout == Constants.MENU_LAYOUT.Whisker)
-                this.MenuLayout = new MenuLayouts.whisker.createMenu(this); 
-            else if (layout == Constants.MENU_LAYOUT.GnomeMenu)
-                this.MenuLayout = new MenuLayouts.gnomemenu.createMenu(this); 
-            else if (layout == Constants.MENU_LAYOUT.Mint)
-                this.MenuLayout = new MenuLayouts.mint.createMenu(this); 
-            else if (layout == Constants.MENU_LAYOUT.GnomeDash)
-                this.MenuLayout = new MenuLayouts.gnomedash.createMenu(this); 
-            else if (layout == Constants.MENU_LAYOUT.Elementary)
-                this.MenuLayout = new MenuLayouts.elementary.createMenu(this); 
-            else if (layout == Constants.MENU_LAYOUT.Redmond)
-                this.MenuLayout = new MenuLayouts.redmond.createMenu(this); 
-            else if (layout == Constants.MENU_LAYOUT.Simple)
-                this.MenuLayout = new MenuLayouts.simple.createMenu(this);  
-            else if (layout == Constants.MENU_LAYOUT.Simple2)
-                this.MenuLayout = new MenuLayouts.simple2.createMenu(this);  
-            else if (layout == Constants.MENU_LAYOUT.UbuntuDash)
-                this.MenuLayout = new MenuLayouts.ubuntudash.createMenu(this);  
-            this.updateStyle();
+            this.createMenuLayout();        
         },
         updateIcons(){
             this.MenuLayout.updateIcons();
@@ -469,7 +436,7 @@ var ApplicationsButton =   Utils.defineClass({
         }
     });
 // Aplication menu class
-var ApplicationsMenu = class ArcMenu_ApplicationsMenu extends PopupMenu.PopupMenu {
+var ApplicationsMenu = class ArcMenu_ApplicationsMenu extends PopupMenu.PopupMenu{
     // Initialize the menu
     constructor(sourceActor, arrowAlignment, arrowSide, button, settings) {
         super(sourceActor, arrowAlignment, arrowSide);
