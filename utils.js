@@ -1,6 +1,13 @@
 /*
- * Borrowed from Dash to Panel -- https://github.com/home-sweet-gnome/dash-to-panel
+ * Arc Menu - The new Application Menu for GNOME 3
  *
+ * Arc Menu Lead Developer
+ * Andrew Zaech https://gitlab.com/AndrewZaech
+ * 
+ * Arc Menu Founder/Maintainer/Graphic Designer
+ * LinxGem33 https://gitlab.com/LinxGem33
+ * 
+ * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 2 of the License, or
@@ -14,11 +21,17 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- *
  * Credits:
- * This file is based on code from the Dash to Dock extension by micheleg
- * and code from the Taskbar extension by Zorin OS
- * Some code was also adapted from the upstream Gnome Shell source code.
+ * Complete list of credits and previous developers - https://gitlab.com/LinxGem33/Arc-Menu#credits
+ * 
+ * This project uses modified code from Gnome-Shell-Extensions (Apps-Menu and Places-Menu)
+ * and modified code from Gnome-Shell source code.
+ * https://gitlab.gnome.org/GNOME/gnome-shell-extensions/tree/master/extensions
+ * https://github.com/GNOME/gnome-shell
+ * 
+ * Arc Menu also leverages some code from the Menu extension by Zorin OS and some utility 
+ * functions from Dash to Panel https://github.com/home-sweet-gnome/dash-to-panel
+ * 
  */
 
 const GObject = imports.gi.GObject;
