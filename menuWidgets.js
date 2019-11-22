@@ -71,9 +71,6 @@ var AppRightClickMenu = class ArcMenu_AppRightClickMenu extends PopupMenu.PopupM
         this._settings = this._button._settings;
         this._app = app;
         this.isPinnedApp = isPinnedApp;
-        //this.actor.style_class = 'app-right-click-boxpointer';
-        //this.actor.add_style_class_name('app-right-click');
-        //this.actor.width=250;
         this._path = path;
         this.layout =  this._settings.get_enum('menu-layout');
         this.discreteGpuAvailable = false;
@@ -1230,7 +1227,7 @@ var ApplicationMenuIcon = Utils.createClass({
         }
         if(event.get_button()==3){
             if(this.rightClickMenu == undefined){
-                this.rightClickMenu = new AppRightClickMenu(this.actor,this._app ? this._app : this._command ,this._button,true);
+                this.rightClickMenu = new AppRightClickMenu(this.actor,this._app,this._button);
 
                 this._button.appMenuManager.addMenu(this.rightClickMenu);
                 this.rightClickMenu.actor.hide();
@@ -1360,7 +1357,7 @@ var ApplicationMenuItem =Utils.createClass({
         }
         if(event.get_button()==3){ 
             if(this.rightClickMenu == undefined){
-                this.rightClickMenu = new AppRightClickMenu(this.actor,this._app ? this._app : this._command ,this._button,true);
+                this.rightClickMenu = new AppRightClickMenu(this.actor,this._app,this._button);
 
                 this._button.appMenuManager.addMenu(this.rightClickMenu);
                 this.rightClickMenu.actor.hide();
@@ -1451,7 +1448,7 @@ var SearchResultItem = Utils.createClass({
         }           
         if(event.get_button()==3 && this.rightClickMenu == undefined){
             if(this._app){
-                this.rightClickMenu = new AppRightClickMenu(this.actor,this._app ? this._app : this._command ,this._button,true);
+                this.rightClickMenu = new AppRightClickMenu(this.actor,this._app,this._button,false, this._path ? this._path: null);
 
                 this._button.appMenuManager.addMenu(this.rightClickMenu);
                 this.rightClickMenu.actor.hide();
