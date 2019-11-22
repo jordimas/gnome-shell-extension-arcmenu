@@ -429,7 +429,7 @@ var ActivitiesMenuItem =  Utils.createClass({
     // Activate the menu item (Open activities overview)
     activate(event) {
         this._button.leftClickMenu.toggle();
-        Main.overview.toggle();
+        Main.overview.show();
         this.callParent('activate',event);
     },
     _onButtonPressEvent(actor, event) {
@@ -480,7 +480,7 @@ var Tooltip = class ArcMenu_Tooltip{
         if(this._useTooltips){
             let [stageX, stageY] = this.sourceActor.get_transformed_position();
             let [width, height] = this.sourceActor.get_transformed_size();
-            let y = this.isMenuItem ? stageY + height: stageY -height;
+            let y = this.isMenuItem ? stageY + height: stageY - this.actor.get_height() - 5;
             
             let x = this.isMenuItem ? stageX   : stageX - Math.round((this.actor.get_width() - width) / 2);
 
@@ -995,14 +995,7 @@ var FavoritesMenuItem = Utils.createClass({
         let appSys = Shell.AppSystem.get_default();
         this._app = appSys.lookup_app(this._command);
 
-        this.rightClickMenu = new AppRightClickMenu(this.actor,this._app ? this._app : this._command ,this._button,true);
 
-        this._button.appMenuManager.addMenu(this.rightClickMenu);
-        this.rightClickMenu.actor.hide();
-        Main.uiGroup.add_actor(this.rightClickMenu.actor);
-        this.actor.connect('destroy', ()=>{
-            this.rightClickMenu.destroy();
-        });
     },
     _onButtonPressEvent(actor, event) {
 		
@@ -1013,7 +1006,16 @@ var FavoritesMenuItem = Utils.createClass({
                 this.activate(event); 
         }
   	    if(event.get_button()==3){
-            
+            if(this.rightClickMenu == undefined){
+                this.rightClickMenu = new AppRightClickMenu(this.actor,this._app ? this._app : this._command ,this._button,true);
+
+                this._button.appMenuManager.addMenu(this.rightClickMenu);
+                this.rightClickMenu.actor.hide();
+                Main.uiGroup.add_actor(this.rightClickMenu.actor);
+                this.actor.connect('destroy', ()=>{
+                    this.rightClickMenu.destroy();
+                });
+            }
             if(!this.rightClickMenu.isOpen)
                 this.rightClickMenu.redisplay();
             this.rightClickMenu.toggle();
@@ -1199,24 +1201,14 @@ var ApplicationMenuIcon = Utils.createClass({
             this._updateIcon.bind(this));
         this.actor.connect('destroy', () => {
             textureCache.disconnect(iconThemeChangedId);
-            this.rightClickMenu.destroy();
         });
         this._updateIcon();
         this.actor.connect('notify::hover', this._onHover.bind(this));
-        let isMenuItem=true;
-        if( app.get_description()){
-            this.tooltip = new Tooltip(this.actor, app.get_description(),isMenuItem,this._button._settings);
-            this.tooltip.hide();
-            
-        }
         this.actor.connect('notify::active',()=>{
             this._button.activeMenuItem = this;
         });
 
-        this.rightClickMenu = new AppRightClickMenu(this.actor,this._app,this._button);
-        this._button.appMenuManager.addMenu(this.rightClickMenu);
-        this.rightClickMenu.actor.hide();
-        Main.uiGroup.add_actor(this.rightClickMenu.actor);
+
     },
     //g-s 3.28 support
     setActive(active){
@@ -1237,6 +1229,16 @@ var ApplicationMenuIcon = Utils.createClass({
             this.activate(event);
         }
         if(event.get_button()==3){
+            if(this.rightClickMenu == undefined){
+                this.rightClickMenu = new AppRightClickMenu(this.actor,this._app ? this._app : this._command ,this._button,true);
+
+                this._button.appMenuManager.addMenu(this.rightClickMenu);
+                this.rightClickMenu.actor.hide();
+                Main.uiGroup.add_actor(this.rightClickMenu.actor);
+                this.actor.connect('destroy', ()=>{
+                    this.rightClickMenu.destroy();
+                });
+            }
             if(this.tooltip!=undefined)
                 this.tooltip.hide();
             if(!this.rightClickMenu.isOpen)
@@ -1248,6 +1250,12 @@ var ApplicationMenuIcon = Utils.createClass({
     _onHover() {
         if(this._button.newSearch._highlightDefault)
             this._button.newSearch.highlightDefault(false);
+        if(this.tooltip==undefined && this.actor.hover){
+            if(this._app.get_description()){
+                this.tooltip = new Tooltip(this.actor, this._app.get_description(),true,this._button._settings);
+                this.tooltip.show();
+            }
+        }
     },
 
     _onKeyPressEvent(actor, event) {
@@ -1320,26 +1328,24 @@ var ApplicationMenuItem =Utils.createClass({
             this._updateIcon.bind(this));
         this.actor.connect('destroy', () => {
             textureCache.disconnect(iconThemeChangedId);
-            this.rightClickMenu.destroy();
         });
         this._updateIcon();
 
-        let isMenuItem=true;
-        if( app.get_description()){
-            this.tooltip = new Tooltip(this.actor, app.get_description(),isMenuItem,this._button._settings);
-            this.tooltip.hide();
-        }
-       
-        this.rightClickMenu = new AppRightClickMenu(this.actor,this._app,this._button);
-        this._button.appMenuManager.addMenu(this.rightClickMenu);
-        this.rightClickMenu.actor.hide();
-        Main.uiGroup.add_actor(this.rightClickMenu.actor);
+        this.actor.connect('notify::hover', this._onHover.bind(this));
         this.actor.connect('notify::active',()=>{
             this._button.activeMenuItem = this;
         });
     },
     _onButtonPressEvent(actor, event) {	
         return Clutter.EVENT_PROPAGATE;
+    },    
+    _onHover() {
+        if(this.tooltip==undefined && this.actor.hover){
+            if(this._app.get_description()){
+                this.tooltip = new Tooltip(this.actor, this._app.get_description(),true,this._button._settings);
+                this.tooltip.show();
+            }
+        }
     },
     //g-s 3.28 support
     setActive(active){
@@ -1353,6 +1359,16 @@ var ApplicationMenuItem =Utils.createClass({
             this.activate(event);
         }
         if(event.get_button()==3){ 
+            if(this.rightClickMenu == undefined){
+                this.rightClickMenu = new AppRightClickMenu(this.actor,this._app ? this._app : this._command ,this._button,true);
+
+                this._button.appMenuManager.addMenu(this.rightClickMenu);
+                this.rightClickMenu.actor.hide();
+                Main.uiGroup.add_actor(this.rightClickMenu.actor);
+                this.actor.connect('destroy', ()=>{
+                    this.rightClickMenu.destroy();
+                });
+            }
             if(this.tooltip!=undefined)
                 this.tooltip.hide();
             if(!this.rightClickMenu.isOpen)
@@ -1407,20 +1423,10 @@ var SearchResultItem = Utils.createClass({
         this._app =app;
         this._path=path;
         this.actor.connect('notify::hover', this._onHover.bind(this));
-        if(app){
-            this.rightClickMenu = new AppRightClickMenu(this.actor,this._app,this._button,false, this._path ? this._path: null);
-            this._button.appMenuManager.addMenu(this.rightClickMenu);
-            this.rightClickMenu.actor.hide();
-            Main.uiGroup.add_actor(this.rightClickMenu.actor);
-        }
         this.actor.connect('notify::active',()=>{
             this._button.activeMenuItem = this;
         });
-        this.actor.connect('destroy', ()=>{
-            if(this.rightClickMenu!=undefined)
-                this.rightClickMenu.destroy();
-        });
-         },
+    },
     //g-s 3.28 support
     setActive(active){
         if(active){
@@ -1442,13 +1448,25 @@ var SearchResultItem = Utils.createClass({
     _onButtonReleaseEvent(actor, event) {
         if(event.get_button()==1){
             this.activate(event);
+        }           
+        if(event.get_button()==3 && this.rightClickMenu == undefined){
+            if(this._app){
+                this.rightClickMenu = new AppRightClickMenu(this.actor,this._app ? this._app : this._command ,this._button,true);
+
+                this._button.appMenuManager.addMenu(this.rightClickMenu);
+                this.rightClickMenu.actor.hide();
+                Main.uiGroup.add_actor(this.rightClickMenu.actor);
+                this.actor.connect('destroy', ()=>{
+                    this.rightClickMenu.destroy();
+                });
+            }
         }
         if(event.get_button()==3 && this.rightClickMenu!=undefined){ 
             if(!this.rightClickMenu.isOpen)
                 this.rightClickMenu.redisplay();
             this.rightClickMenu.toggle();
             this.emit('hideTooltip');
-	    }   
+        }   
         return Clutter.EVENT_STOP;
     },
     _onKeyPressEvent(actor, event) {

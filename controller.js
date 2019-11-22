@@ -47,7 +47,7 @@ var MenuSettingsController = class {
         this._menuButton = new Menu.ApplicationsButton(settings, panel);
         this._hotCornerManager = new Helper.HotCornerManager(this._settings);
         if(this.isMainPanel){
-           this._menuHotKeybinder = new Helper.MenuHotKeybinder(() => this._onHotkey());
+            this._menuHotKeybinder = new Helper.MenuHotKeybinder(() => this.toggleMenus());
             this._keybindingManager = new Helper.KeybindingManager(this._settings); 
         }
         this._applySettings();
@@ -113,33 +113,37 @@ var MenuSettingsController = class {
         this._menuButton._updateMenuLayout();
     }
     toggleMenus(){
-        if(this._settings.get_boolean('multi-monitor') && global.dashToPanel){
-            let screen = Gdk.Screen.get_default();
-            //global.log( global.get_pointer());
-            let pointer = global.get_pointer();
-            let currentMonitor = screen.get_monitor_at_point(pointer[0],pointer[1]);
-            for(let i = 0;i<screen.get_n_monitors();i++){
-                if(i==currentMonitor)
-                    this.currentMonitorIndex=i;
-            }
-            //close current menus that are open on monitors other than current monitor
-            for (let i = 0; i < this._settingsControllers.length; i++) {
-                if(i!=this.currentMonitorIndex){
-                if(this._settingsControllers[i]._menuButton.leftClickMenu.isOpen)
-                    this._settingsControllers[i]._menuButton.toggleMenu();
-                if(this._settingsControllers[i]._menuButton.rightClickMenu.isOpen)
-                    this._settingsControllers[i]._menuButton.toggleRightClickMenu();
+        if(Main.overview.visible)
+            Main.overview.hide();
+        else{
+            if(this._settings.get_boolean('multi-monitor') && global.dashToPanel){
+                let screen = Gdk.Screen.get_default();
+                //global.log( global.get_pointer());
+                let pointer = global.get_pointer();
+                let currentMonitor = screen.get_monitor_at_point(pointer[0],pointer[1]);
+                for(let i = 0;i<screen.get_n_monitors();i++){
+                    if(i==currentMonitor)
+                        this.currentMonitorIndex=i;
                 }
-            }  
-            //toggle menu on current monitor
-            for (let i = 0; i < this._settingsControllers.length; i++) {
-                if(i==this.currentMonitorIndex)
-                    this._settingsControllers[i]._menuButton.toggleMenu();
-            }   
-        }
-        else {
-            //global.log("no dash to panel")
-            this._menuButton.toggleMenu();
+                //close current menus that are open on monitors other than current monitor
+                for (let i = 0; i < this._settingsControllers.length; i++) {
+                    if(i!=this.currentMonitorIndex){
+                    if(this._settingsControllers[i]._menuButton.leftClickMenu.isOpen)
+                        this._settingsControllers[i]._menuButton.toggleMenu();
+                    if(this._settingsControllers[i]._menuButton.rightClickMenu.isOpen)
+                        this._settingsControllers[i]._menuButton.toggleRightClickMenu();
+                    }
+                }  
+                //toggle menu on current monitor
+                for (let i = 0; i < this._settingsControllers.length; i++) {
+                    if(i==this.currentMonitorIndex)
+                        this._settingsControllers[i]._menuButton.toggleMenu();
+                }   
+            }
+            else {
+                //global.log("no dash to panel")
+                this._menuButton.toggleMenu();
+            }
         }
     }
     _reloadExtension(){
@@ -410,14 +414,17 @@ var MenuSettingsController = class {
     destroy() {
         this.settingsChangeIds.forEach(id => this._settings.disconnect(id));
         this._hotCornerManager.destroy();
-        this.disconnectKeyRelease();
+
 
         // Clean up and restore the default behaviour
-        if (this._isButtonEnabled()) {
+        if(this.panel == undefined)
+            this._menuButton.destroy();
+        else if (this._isButtonEnabled()) {
             this._disableButton();
         }
 
         if(this.isMainPanel){
+            this.disconnectKeyRelease();
             this._menuHotKeybinder.destroy();
             this._keybindingManager.destroy();
         }

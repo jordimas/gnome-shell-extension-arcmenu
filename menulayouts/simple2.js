@@ -70,6 +70,7 @@ var createMenu = class{
         this._createLeftBox();
         this._loadCategories();
         this._display(); 
+        this.oldLeftClickMenuStyle = this.leftClickMenu.actor.style;
         this.leftClickMenu.actor.style += 'max-height: '+(this.leftClickMenu.actor.height + 250)+'px;';
     }
     _onMainBoxKeyPress(mainBox, event) {
@@ -299,7 +300,7 @@ var createMenu = class{
         return applist;
     }
     destroy(){
-        this.leftClickMenu.actor.style -= 'max-height: '+(this.leftClickMenu.actor.height + 250)+'px;';
+        this.leftClickMenu.actor.style = this.oldLeftClickMenuStyle;
         this._applicationsButtons.forEach((value,key,map)=>{
             value.destroy();
         });
