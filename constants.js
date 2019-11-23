@@ -36,33 +36,12 @@
 
 // Common constants that are used in this extension
 
-var ARC_MENU_LOGO = {
-    Path: '/media/ArcMenu-logo.svg',
-    Size: [175, 175] // width, height
-};
-var COLOR_PRESET = {
-    Path: '/media/color-preset.svg',
-    Size: [200, 35] // width, height
-};
-var DIRECTION = {
-    UP: 0,
-    DOWN: 1
-}
+
 var CURRENT_MENU = {
     FAVORITES: 0,
     CATEGORIES: 1,
     CATEGORY_APPLIST: 2,
     SEARCH_RESULTS: 3
-};
-
-var SEPARATOR_ALIGNMENT = {
-    VERTICAL: 0,
-    HORIZONTAL: 1
-};
-var SEPARATOR_STYLE = {
-    NORMAL: 0,
-    LONG: 1,
-    SHORT: 2
 };
 
 var DEFAULT_DIRECTORIES = [
@@ -73,52 +52,19 @@ var DEFAULT_DIRECTORIES = [
     imports.gi.GLib.UserDirectory.DIRECTORY_VIDEOS
 ];
 
-var DEFAULT_ICON_SIZE = 22;
-
-var SHORTCUTS = [
-    {
-        label: ("Software"),
-        symbolic: "org.gnome.Software-symbolic",
-        command: "gnome-software"
-    },
-    {
-        label: ("Software"),
-        symbolic: "org.gnome.Software-symbolic",
-        command: "pamac-manager"
-    },
-    {
-        label: ("Settings"),
-        symbolic: "preferences-system-symbolic",
-        command: "gnome-control-center"
-    },
-    {
-        label: ("Tweaks"), // Tweak Tool is called Tweaks in GNOME 3.26
-        symbolic: "org.gnome.tweaks-symbolic",
-        command: "gnome-tweaks"
-    },
-    {
-        label: ("Terminal"),
-        symbolic: "utilities-terminal-symbolic",
-        command: "gnome-terminal"
-    }
-];
-
-var RIGHT_SIDE_SHORTCUTS = ["Home", "Documents","Downloads", "Music","Pictures","Videos","Software", 
-"Settings","Tweaks", "Terminal", "Activities-Overview"];
-
-var SOFTWARE_SHORTCUTS = ["Software", "Settings","Tweaks", "Terminal", "Activities-Overview"];
-
-var SECTIONS = [
-    'devices',
-    'network',
-    'bookmarks',
-];
-
-var EMPTY_STRING = '';
-
-var SUPER_L = 'Super_L';
-
-var SUPER_R = 'Super_R';
+var DIRECTION = {
+    UP: 0,
+    DOWN: 1
+};
+var SEPARATOR_ALIGNMENT = {
+    VERTICAL: 0,
+    HORIZONTAL: 1
+};
+var SEPARATOR_STYLE = {
+    NORMAL: 0,
+    LONG: 1,
+    SHORT: 2
+};
 
 var HOT_KEY = { // See: org.gnome.shell.extensions.arc-menu.menu-hotkey
     Undefined: 0,
@@ -129,6 +75,44 @@ var HOT_KEY = { // See: org.gnome.shell.extensions.arc-menu.menu-hotkey
     1: SUPER_L,
     2: SUPER_R
 };
+var SUPER_L = 'Super_L';
+var SUPER_R = 'Super_R';
+var EMPTY_STRING = '';
+
+var SHORTCUTS= [{  label: ("Software"),
+                    symbolic: "org.gnome.Software-symbolic",
+                    command: "gnome-software"
+                    },
+                {   label: ("Software"),
+                    symbolic: "org.gnome.Software-symbolic",
+                    command: "pamac-manager"
+                    },
+                {   label: ("Settings"),
+                    symbolic: "preferences-system-symbolic",
+                    command: "gnome-control-center"
+                    },
+                {   label: ("Tweaks"),
+                    symbolic: "org.gnome.tweaks-symbolic",
+                    command: "gnome-tweaks"
+                    },
+                {   label: ("Terminal"),
+                    symbolic: "utilities-terminal-symbolic",
+                    command: "gnome-terminal"
+                    }
+            ];
+
+var RIGHT_SIDE_SHORTCUTS = ["Home", "Documents","Downloads", "Music","Pictures","Videos","Software", 
+                            "Settings","Tweaks", "Terminal", "Activities-Overview"];
+
+var SOFTWARE_SHORTCUTS = ["Software", "Settings","Tweaks", "Terminal", "Activities-Overview"];
+
+var SECTIONS = [
+    'devices',
+    'network',
+    'bookmarks',
+];
+
+
 
 var MENU_POSITION = { // See: org.gnome.shell.extensions.arc-menu.menu-position
     Left: 0,
@@ -157,51 +141,13 @@ var MENU_APPEARANCE = { // See: org.gnome.shell.extensions.arc-menu.menu-button-
     Text_Icon: 3
 };
 
-var MENU_BUTTON_TEXT = { // See: org.gnome.shell.extensions.arc-menu.menu-button-text
-    System: 0,
-    Custom: 1
-};
-
 var MENU_BUTTON_ICON = { // See: org.gnome.shell.extensions.arc-menu.menu-button-icon
     Arc_Menu: 0,
     System: 1,
     Custom: 2
 };
 
-var MENU_ICON_PATH = {
-    Arc_Menu: '/media/arc-menu-symbolic.svg'
-};
-
-var ICON_SIZES = [ 16, 24, 32, 40, 48 ];
-
-var KEYBOARD_LOGO = {
-    Path: '/media/keyboard.svg',
-    Size: [256, 72] // width, height
-};
-
-var CREDITS = '\n<b>Credits:</b>'+
-		'\n\nCurrent Developers'+
-		'\n <a href="https://gitlab.com/LinxGem33">@LinxGem33</a>  (Founder/Maintainer)'+
-		'\n<a href="https://gitlab.com/AndrewZaech">@AndrewZaech</a>  (Developer)'+
-		'\n\nPast Developers'+
-		'\n <a href="https://github.com/lexruee">@lexruee</a>  (Developer)'+
-		'\n\n\n<b>A Special Thanks To:</b>'+
-		'\n\nTranslators'+
-		'\n<a href="https://gitlab.com/LinxGem33/Arc-Menu#please-refer-to-the-wiki-section-for-a-translation-guide">Full List</a>'+
-		'\nPlease See Details'+
-		'\n\nOther'+
-		'\n<a href="https://gitlab.com/tingvarsson">@Thomas Ingvarsson</a>  (Contributor)'+
-		'\n<a href="https://github.com/charlesg99">@charlesg99</a>  (Contributor)'+
-		'\n<a href="https://github.com/JasonLG1979">@JasonLG1979</a>  (Contributor)'+
-		'\n<a href="https://github.com/fishears/Arc-Menu">@fishears</a>  (Contributor)'+
-        '\n';
-        
-var GNU_SOFTWARE = '<span size="small">' +
-    'This program comes with absolutely no warranty.\n' +
-    'See the <a href="https://gnu.org/licenses/old-licenses/gpl-2.0.html">' +
-	'GNU General Public License, version 2 or later</a> for details.' +
-	'</span>';
-
+//Used in prefs.js to display all menu layouts
 var MENU_STYLE_CHOOSER = {
     ThumbnailHeight: 200,
     ThumbnailWidth: 200,
@@ -242,4 +188,43 @@ var MENU_STYLE_CHOOSER = {
         }   
     ]
 };
-    
+
+//Path to some files
+var ARC_MENU_LOGO = {
+    Path: '/media/ArcMenu-logo.svg',
+    Size: [175, 175] // width, height
+};
+var COLOR_PRESET = {
+    Path: '/media/color-preset.svg',
+    Size: [200, 35] // width, height
+};
+var MENU_ICON_PATH = {
+    Arc_Menu: '/media/arc-menu-symbolic.svg'
+};
+var KEYBOARD_LOGO = {
+    Path: '/media/keyboard.svg',
+    Size: [256, 72] 
+};
+
+var CREDITS = '\n<b>Credits:</b>'+
+		'\n\nCurrent Developers'+
+		'\n <a href="https://gitlab.com/LinxGem33">@LinxGem33</a>  (Founder/Maintainer)'+
+		'\n<a href="https://gitlab.com/AndrewZaech">@AndrewZaech</a>  (Developer)'+
+		'\n\nPast Developers'+
+		'\n <a href="https://github.com/lexruee">@lexruee</a>  (Developer)'+
+		'\n\n\n<b>A Special Thanks To:</b>'+
+		'\n\nTranslators'+
+		'\n<a href="https://gitlab.com/LinxGem33/Arc-Menu#please-refer-to-the-wiki-section-for-a-translation-guide">Full List</a>'+
+		'\nPlease See Details'+
+		'\n\nOther'+
+		'\n<a href="https://gitlab.com/tingvarsson">@Thomas Ingvarsson</a>  (Contributor)'+
+		'\n<a href="https://github.com/charlesg99">@charlesg99</a>  (Contributor)'+
+		'\n<a href="https://github.com/JasonLG1979">@JasonLG1979</a>  (Contributor)'+
+		'\n<a href="https://github.com/fishears/Arc-Menu">@fishears</a>  (Contributor)'+
+        '\n';
+        
+var GNU_SOFTWARE = '<span size="small">' +
+    'This program comes with absolutely no warranty.\n' +
+    'See the <a href="https://gnu.org/licenses/old-licenses/gpl-2.0.html">' +
+	'GNU General Public License, version 2 or later</a> for details.' +
+	'</span>';

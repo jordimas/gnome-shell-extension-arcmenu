@@ -39,10 +39,6 @@
     <value value="0" nick="Circular"/>
     <value value="1" nick="Square"/>
   </enum>
-  <enum id='org.gnome.shell.extensions.arc-menu.menu-button-text'>
-    <value value="0" nick="System_Text"/>
-    <value value="1" nick="Custom_Text"/>
-  </enum>
   <enum id='org.gnome.shell.extensions.arc-menu.menu-button-icon'>
     <value value="0" nick="Arc_Menu_Icon"/>
     <value value="1" nick="System_Icon"/>
@@ -148,11 +144,6 @@
      <default>0</default>
       <summary>Gap Adjustment</summary>
       <description>Gap Adjustment</description>
-    </key>
-      <key type="i" name="menu-rightpanel-width">
-     <default>210</default>
-      <summary>Menu right panel width</summary>
-      <description>Menu right panel width</description>
     </key>
     <key type="b" name="enable-custom-arc-menu">
      <default>false</default>
@@ -304,11 +295,6 @@
       <summary>Appearance of the avatar icon.</summary>
       <description>Appearance of the avatar icon.</description>
     </key>
-    <key name="menu-button-text" enum="org.gnome.shell.extensions.arc-menu.menu-button-text">
-      <default>'System_Text'</default>
-      <summary>Text of the menu button.</summary>
-      <description>Text of the menu button.</description>
-    </key>
     <key type="b" name="enable-menu-button-arrow">
       <default>false</default>
       <summary>Enables the default menu button arrow.</summary>
@@ -368,12 +354,6 @@
       ['Light Blue Theme', 'rgb(255,255,255)', 'rgb(51,51,51)', 'rgb(235,235,235)', 'rgba(189,230,251,0.9)', 'rgba(189,230,251,0.9)', '9', '1', '5', '15', '20', 'true']]</default>
       <summary>List of color-themes</summary>
       <description> List of color themes.
-      </description>
-    </key>
-    <key name="color-theme-index" type="i">
-      <default>0</default>
-      <summary>Color theme selected</summary>
-      <description> Color theme selected,used for color-themes.
       </description>
     </key>
   </schema>

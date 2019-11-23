@@ -39,16 +39,8 @@ const {GdkPixbuf, Gio, GLib, GObject, Gtk} = imports.gi;
 const Params = imports.misc.params;
 
 
-/**
- * The module prefsWidgets.js contains all the customized GUI elements
- * for the preferences widget (prefs.js).
- * In order to have a consistent UI/UX, every GUI element in the preferences
- * should be based on a widget from this module.
- */
 
-/**
- * Arc Menu Notebook
- */
+//Arc Menu Notebook
 var Notebook = GObject.registerClass(
     class ArcMenu_Notebook extends Gtk.Notebook{
 
@@ -68,9 +60,8 @@ var Notebook = GObject.registerClass(
     }
 });
 
-/**
- * Arc Menu Notebook Page
- */
+
+// Arc Menu Notebook Page
 var NotebookPage =GObject.registerClass(
     class ArcMenu_NotebookPage extends Gtk.Box {
 
@@ -93,9 +84,7 @@ var NotebookPage =GObject.registerClass(
     }
 });
 
-/**
- * Arc Menu icon Button
- */
+//Icon Button
 var IconButton = GObject.registerClass(
     class ArcMenu_IconButton extends Gtk.Button {
 
@@ -119,9 +108,7 @@ var IconButton = GObject.registerClass(
     }
 });
 
-/**
- * Arc Menu Dialog Window
- */
+//Arc Menu Dialog Window
 var DialogWindow = GObject.registerClass(
     class ArcMenu_DialogWindow extends Gtk.Dialog {
         _init(title, parent) {
@@ -147,9 +134,7 @@ var DialogWindow = GObject.registerClass(
         }
     });
 
-/**
- * Arc Menu Frame Box
- */
+//Arc Menu Frame Box
 var FrameBox = GObject.registerClass(
     class ArcMenu_FrameBox extends Gtk.Frame {
         _init() {
@@ -183,9 +168,8 @@ var FrameBox = GObject.registerClass(
         }
     });
 
-/**
- * Arc Menu Frame Box Row
- */
+
+//Arc Menu Frame Box Row
 var FrameBoxRow = GObject.registerClass(
     class ArcMenu_FrameBoxRow extends Gtk.ListBoxRow {
         _init() {
@@ -204,9 +188,8 @@ var FrameBoxRow = GObject.registerClass(
     });
 
 
-    /**
- * Arc Menu Tile Grid
- */
+
+//Arc Menu Tile Grid
 var TileGrid = GObject.registerClass(
     class ArcMenu_TileGrid extends Gtk.FlowBox{
 
@@ -222,9 +205,8 @@ var TileGrid = GObject.registerClass(
     }
 });
 
-/**
- * Arc Menu Tile Grid
- */
+
+//Arc Menu Tile Grid
 var Tile =  GObject.registerClass(
     class ArcMenu_Tile extends Gtk.Button{
 
