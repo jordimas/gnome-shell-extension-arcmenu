@@ -66,6 +66,10 @@ var SEPARATOR_STYLE = {
     SHORT: 2
 };
 
+var SUPER_L = 'Super_L';
+var SUPER_R = 'Super_R';
+var EMPTY_STRING = '';
+
 var HOT_KEY = { // See: org.gnome.shell.extensions.arc-menu.menu-hotkey
     Undefined: 0,
     Super_L: 1,
@@ -75,9 +79,7 @@ var HOT_KEY = { // See: org.gnome.shell.extensions.arc-menu.menu-hotkey
     1: SUPER_L,
     2: SUPER_R
 };
-var SUPER_L = 'Super_L';
-var SUPER_R = 'Super_R';
-var EMPTY_STRING = '';
+
 
 var SHORTCUTS= [{  label: ("Software"),
                     symbolic: "org.gnome.Software-symbolic",
