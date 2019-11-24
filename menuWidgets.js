@@ -984,10 +984,20 @@ var FavoritesMenuItem = Utils.createClass({
         this._button = button;
         this._command = command;
         this._iconPath = icon;
-          this._name = name == "Arc Menu Settings" ? _("Arc Menu Settings") : name;
-        this._name = name == "Terminal" ? _("Terminal") : name;
+        this._name = name;
+        this._app = Shell.AppSystem.get_default().lookup_app(this._command);
+
+        //Modifiy the Default Pinned Apps---------------------
+        if(this._name == "Arc Menu Settings"){
+            this._name = _("Arc Menu Settings");
+        }
+        else if(this._name == "Terminal"){
+            this._name = _("Terminal");
+        }
+        //-------------------------------------------------------
+
         this._icon = new St.Icon({
-            gicon: Gio.icon_new_for_string(icon),
+            gicon: Gio.icon_new_for_string(this._iconPath),
             style_class: 'popup-menu-icon',
             icon_size: MEDIUM_ICON_SIZE
         })
@@ -1003,10 +1013,6 @@ var FavoritesMenuItem = Utils.createClass({
 	    this._draggable.connect('drag-begin', this._onDragBegin.bind(this));
         this._draggable.connect('drag-cancelled', this._onDragCancelled.bind(this));
         this._draggable.connect('drag-end', this._onDragEnd.bind(this));
-        
-        let appSys = Shell.AppSystem.get_default();
-        this._app = appSys.lookup_app(this._command);
-
 
     },
     _onButtonPressEvent(actor, event) {

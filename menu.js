@@ -37,7 +37,7 @@
 // Import Libraries
 const Me = imports.misc.extensionUtils.getCurrentExtension();
 
-const {Atk, Clutter, GMenu, Gtk, Shell, St} = imports.gi;
+const {Atk, Clutter, GLib, GMenu, Gtk, Shell, St} = imports.gi;
 const appSys = Shell.AppSystem.get_default();
 const Constants = Me.imports.constants;
 const Convenience = Me.imports.convenience;
@@ -139,7 +139,10 @@ var ApplicationsButton =   Utils.defineClass({
             sourceActor.add_actor(this._menuButtonWidget.actor);
 
             //Create Basic Layout ------------------------------------------------
-            this.createMenuLayout();
+            GLib.timeout_add(0, 100, () => {
+                this.createMenuLayout();
+                return GLib.SOURCE_REMOVE;
+            })
             //--------------------------------------------------------------------
         },
         createMenuLayout(){
@@ -359,7 +362,10 @@ var ApplicationsButton =   Utils.defineClass({
             this.MenuLayout.destroy();
             this.MenuLayout = null;
             this.leftClickMenu.removeAll();
-            this.createMenuLayout();        
+            GLib.timeout_add(0, 100, () => {
+                this.createMenuLayout();
+                return GLib.SOURCE_REMOVE;
+            })  
         },
         updateIcons(){
             this.MenuLayout.updateIcons();
