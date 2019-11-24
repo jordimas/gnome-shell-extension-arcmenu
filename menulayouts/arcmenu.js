@@ -132,6 +132,7 @@ var createMenu = class {
         });
         // Create search box
         this.searchBox = new MW.SearchBox(this);
+        this.searchBox.actor.style = "padding-top: 0.75em; padding-bottom: 0.25em;padding-left: 1em;padding-right: 0.25em;margin-right: .5em;";
         this._firstAppItem = null;
         this._firstApp = null;
         this._tabbedOnce = false;

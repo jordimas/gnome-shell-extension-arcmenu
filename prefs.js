@@ -40,6 +40,7 @@ const {Gdk, GdkPixbuf, Gio, GLib, GObject, Gtk} = imports.gi;
 const Constants = Me.imports.constants;
 const Convenience = Me.imports.convenience;
 const Gettext = imports.gettext.domain(Me.metadata['gettext-domain']);
+const LayoutTweaks = Me.imports.menulayouts.tweaks;
 const PW = Me.imports.prefsWidgets;
 const _ = Gettext.gettext;
 
@@ -503,7 +504,7 @@ var GeneralPage = GObject.registerClass(
             let menuPositionFrame = new PW.FrameBox();
             let menuPositionRow = new PW.FrameBoxRow();
             let menuPositionBoxLabel = new Gtk.Label({
-                label: _("Menu Button Position in Panel"),
+                label: _("Arc Menu Position in Panel"),
                 use_markup: true,
                 xalign: 0,
                 hexpand: true
@@ -612,7 +613,7 @@ var GeneralPage = GObject.registerClass(
             let defaultLeftBoxFrame = new PW.FrameBox();
             let defaultLeftBoxRow = new PW.FrameBoxRow();
             let defaultLeftBoxLabel = new Gtk.Label({
-                label: _("Arc Menus Default View"),
+                label: _("Arc Menu Default View"),
                 use_markup: true,
                 xalign: 0,
                 hexpand: true
@@ -1327,7 +1328,6 @@ var AppearancePage = GObject.registerClass(
                         this._settings.set_int('menu-margin',dialog.menuMargin);
                         this._settings.set_int('menu-arrow-size',dialog.menuArrowSize);
                         this._settings.set_int('menu-width', dialog.menuWidth);
-                        this._settings.set_int('menu-rightpanel-width',dialog.menuRightWidth);
                         this._settings.set_boolean('enable-large-icons',dialog.largeIcons);
                         this._settings.set_int('gap-adjustment',dialog.gapAdjustment);
                         saveCSS(this._settings);
@@ -1377,7 +1377,6 @@ var AppearancePage = GObject.registerClass(
                         this._settings.set_int('menu-margin',dialog.menuMargin);
                         this._settings.set_int('menu-arrow-size',dialog.menuArrowSize);
                         this._settings.set_int('menu-width', dialog.menuWidth);
-                        this._settings.set_int('menu-rightpanel-width',dialog.menuRightWidth);
                         saveCSS(this._settings);
                         this._settings.set_boolean('reload-theme',true);
                         this.presetName = dialog.presetName;
@@ -1470,6 +1469,7 @@ var AppearancePage = GObject.registerClass(
                     if(dialog.get_response()) {
                         this._settings.set_enum('menu-layout', dialog.index);
                         currentStyleLabel.label = Constants.MENU_STYLE_CHOOSER.Styles[dialog.index].name;
+                        tweaksLabel.label = currentStyleLabel.label +" " + _("Tweaks");
                         dialog.destroy();
                     }
                     else
@@ -1484,21 +1484,23 @@ var AppearancePage = GObject.registerClass(
                 layoutButton.set_sensitive(widget.get_active());
                 if(widget.get_active() && layoutFrame.count==1){
                     layoutFrame.add(currentLayoutRow);
-                    layoutFrame.add(messageRow);
+                    layoutFrame.add(tweaksRow);
                     layoutFrame.show();
                 }
                 if(!widget.get_active() && layoutFrame.count>1){
                     layoutFrame.remove(currentLayoutRow);
-                    layoutFrame.remove(messageRow);
+                    layoutFrame.remove(tweaksRow);
                 }
 
                 if(widget.get_active()){
                     let index = this._settings.get_enum('menu-layout');
                     currentStyleLabel.label = Constants.MENU_STYLE_CHOOSER.Styles[index].name;
+                    tweaksLabel.label = currentStyleLabel.label +" " + _("Tweaks");
                 }
                 if(!widget.get_active()){
                     this._settings.set_enum('menu-layout', 0);
                     currentStyleLabel.label = Constants.MENU_STYLE_CHOOSER.Styles[0].name;
+                    tweaksLabel.label = currentStyleLabel.label +" " + _("Tweaks");
                 }
                    
             });
@@ -1527,19 +1529,34 @@ var AppearancePage = GObject.registerClass(
             if(this._settings.get_boolean('enable-custom-arc-menu-layout'))
                 layoutFrame.add(currentLayoutRow);
 
-            let messageRow = new PW.FrameBoxRow();
-            let messageLabel = new Gtk.Label({
-                label: _("Each layout is different in behaviour and style.")+"\n"
-                    +_("All layouts can be modified by customization settings.")+"\n"
-                    +_("However, some settings are specifc to Arc Menu layout."),
+
+            let tweaksRow = new PW.FrameBoxRow();
+            let tweaksLabel = new Gtk.Label({
+                label: currentStyleLabel.label +" " + _("Tweaks"),
                 use_markup: true,
                 xalign: 0,
                 hexpand: true
             }); 
-            messageLabel.set_sensitive(false);
-            messageRow.add(messageLabel);
+
+            let menuTweaksButton = new PW.IconButton({
+                circular: true,
+                icon_name: 'emblem-system-symbolic'
+            });
+            menuTweaksButton.connect('clicked', () => {
+                let dialog = new LayoutTweaks.tweaks.TweaksDialog(this._settings, this, currentStyleLabel.label +" " + _("Tweaks"));
+                dialog.show_all();
+                dialog.connect('response', (response) => { 
+                    if(dialog.get_response()){
+                        dialog.destroy();
+                    }
+                    else
+                        dialog.destroy();
+                }); 
+            });
+            tweaksRow.add(tweaksLabel);
+            tweaksRow.add(menuTweaksButton);
             if(this._settings.get_boolean('enable-custom-arc-menu-layout'))
-                layoutFrame.add(messageRow);
+                layoutFrame.add(tweaksRow);
 
             this.add(layoutFrame);
     }
@@ -1664,7 +1681,6 @@ var ArcMenuCustomizationWindow = GObject.registerClass(
             this.addResponse = false;
             this.heightValue = this._settings.get_int('menu-height');
             this.menuWidth = this._settings.get_int('menu-width');
-            this.menuRightWidth = this._settings.get_int('menu-rightpanel-width');
             this.separatorColor = this._settings.get_string('separator-color');
             this.verticalSeparator = this._settings.get_boolean('vert-separator');
             this.customArcMenu = this._settings.get_boolean('enable-custom-arc-menu');
@@ -1842,15 +1858,13 @@ var ArcMenuCustomizationWindow = GObject.registerClass(
             // Button Row -------------------------------------------------------
             let buttonRow = new PW.FrameBoxRow();
             let resetButton = new Gtk.Button({
-                label: _("Reset"),
-                xalign:0
+                label: _("Reset")
             });   
             resetButton.set_sensitive( this.checkIfResetButtonSensitive());
             resetButton.connect('clicked', ()=> {
                     this.gapAdjustment = 0;
                     this.heightValue = 550;
                     this.menuWidth = 290;
-                    this.menuRightWidth = 200;
                     this.separatorColor = "rgb(63,62,64)";
                     this.verticalSeparator = false;
                     this.largeIcons = false;
@@ -1865,7 +1879,6 @@ var ArcMenuCustomizationWindow = GObject.registerClass(
                     resetButton.set_sensitive(false);
                     applyButton.set_sensitive(true);               
             });
-
             let applyButton = new Gtk.Button({
                 label: _("Apply"),
                 hexpand: true
@@ -1877,7 +1890,7 @@ var ArcMenuCustomizationWindow = GObject.registerClass(
             applyButton.set_halign(Gtk.Align.END);
             applyButton.set_sensitive(false);
             buttonRow.add(resetButton);
-            buttonRow._grid.attach(applyButton,1,0,1,1);
+            buttonRow.add(applyButton);
 
             vbox.add(mainFrame);
             vbox.add(fineTuneFrame);
@@ -2227,7 +2240,6 @@ var OverrideArcMenuThemeWindow = GObject.registerClass(
             this.menuMargin = this._settings.get_int('menu-margin');
             this.menuArrowSize = this._settings.get_int('menu-arrow-size');
             this.menuWidth = this._settings.get_int('menu-width');
-            this.menuRightWidth = this._settings.get_int('menu-rightpanel-width');
             this.updatePresetComboBox = true;
             super._init(_('Override Arc Menu Theme'), parent);
             this.resize(450,250);
@@ -2358,7 +2370,7 @@ var OverrideArcMenuThemeWindow = GObject.registerClass(
                 }); 
             });
             presetsButtonRow.add(manageButton);
-            presetsButtonRow._grid.attach(this.saveButton, 1, 0, 1, 1);
+            presetsButtonRow.add(this.saveButton);
             this.colorPresetFrame.add(presetsButtonRow);
             vbox.add(this.colorPresetFrame);
 
@@ -2622,8 +2634,7 @@ var OverrideArcMenuThemeWindow = GObject.registerClass(
             // Button Row -------------------------------------------------------
             let buttonRow = new PW.FrameBoxRow();
             let resetButton = new Gtk.Button({
-                label: _("Reset"),
-                xalign:0
+                label: _("Reset")
             });   
             resetButton.set_sensitive( this.checkIfResetButtonSensitive());
             resetButton.connect('clicked', ()=> {
@@ -2677,8 +2688,8 @@ var OverrideArcMenuThemeWindow = GObject.registerClass(
             });
             applyButton.set_halign(Gtk.Align.END);
             applyButton.set_sensitive(false);
-            buttonRow._grid.attach(resetButton, 0, 0, 1, 1);
-            buttonRow._grid.attach(applyButton, 1, 0, 1, 1);
+            buttonRow.add(resetButton);
+            buttonRow.add(applyButton);
 
             vbox.add(customArcMenuOptionsFrame);
             vbox.add(buttonRow);
@@ -3381,20 +3392,12 @@ function saveCSS(settings){
     let menuMargin = this._settings.get_int('menu-margin');
     let menuArrowSize = this._settings.get_int('menu-arrow-size');
     let menuWidth = this._settings.get_int('menu-width');
-    let menuRightWidth = this._settings.get_int('menu-rightpanel-width');
     let avatarStyle =  this._settings.get_enum('avatar-style');
     let avatarRadius = avatarStyle == 0 ? 999 : 0;
     let menuButtonColor = this._settings.get_string('menu-button-color');
     let menuButtonActiveColor =  this._settings.get_string('menu-button-active-color');
     let gapAdjustment = this._settings.get_int('gap-adjustment');
     
-    let menuLayout =  this._settings.get_enum('menu-layout');
-    let searchBoxPadding;
-    if(menuLayout == 0) 
-        searchBoxPadding = ".search-box-padding { \npadding-top: 0.75em;\n"+"padding-bottom: 0.25em;\npadding-left: 1em;\n padding-right: 0.25em;\n margin-right: .5em;\n}\n";
-    else 
-        searchBoxPadding = ".search-box-padding { \npadding-top: 0.0em;\n"+"padding-bottom: 0.5em;\npadding-left: 0.4em;\n padding-right: 0.4em;\n margin-right: 0em;\n}\n";
-
     let tooltipForegroundColor= customArcMenu ? "\n color:"+  menuForegroundColor+";\n" : "";
     let tooltipBackgroundColor= customArcMenu ? "\n background-color:"+lighten_rgb( menuColor,0.05)+";\n" : "";
     let tooltipStyle = customArcMenu ?   
@@ -3420,8 +3423,6 @@ function saveCSS(settings){
         +".arc-menu-action:hover, .arc-menu-action:focus {\ncolor:"+ lighten_rgb( menuForegroundColor,0.15)+";\n background-color:"+  highlightColor+";\n}\n"
 
         +tooltipStyle
-
-        +searchBoxPadding
 
         +".arc-menu{\n-boxpointer-gap: "+gapAdjustment+"px;\nmin-width: 15em;\ncolor: #D3DAE3;\nborder-image: none;\nbox-shadow: none;\nfont-size:" + fontSize+"pt;\n}\n"
         +".arc-menu .popup-sub-menu {\npadding-bottom: 1px;\nbackground-color: "+lighten_rgb( menuColor,0.05)+";\nborder-color: "+lighten_rgb( menuColor,0.10)+";\n border-width:1px;\n}\n"
