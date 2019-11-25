@@ -647,7 +647,7 @@ var SoftwareButton = class ArcMenu_SoftwareButton extends SessionButton {
 var TerminalButton = class ArcMenu_TerminalButton extends SessionButton {
     // Initialize the button
     constructor(button) {
-        super(button, _("Terminal"), 'gnome-terminal');
+        super(button, _("Terminal"), 'utilities-terminal');
     }
 
     // Activate the button (Shutdown)
