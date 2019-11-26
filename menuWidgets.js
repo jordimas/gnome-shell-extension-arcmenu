@@ -1507,7 +1507,6 @@ var CategoryMenuItem =  Utils.createClass({
         this._button = button;
         this.layout = this._button._settings.get_enum('menu-layout');
         this._category = category;
-        
         this.name = "";
         this.title = title;
         this._active = false;
@@ -1599,24 +1598,21 @@ var CategoryMenuItem =  Utils.createClass({
     _onHover() {
         if (this.actor.hover) { // mouse pointer hovers over the button
             this.actor.add_style_class_name('selected');
-                        if(this.layout == Constants.MENU_LAYOUT.GnomeMenu){
-            if (this._category)
-                this._button.selectCategory(this._category);
-            else if(this.title =="All Programs")
-                this._button._displayAllApps(this.actor);
-            else if(this.title == "Favorites")
-                this._button._displayGnomeFavorites();
-            else
-                this._button.selectCategory("Frequent Apps");
-            
-            
+            if((this.layout == Constants.MENU_LAYOUT.Brisk ||  this.layout==Constants.MENU_LAYOUT.Whisker || this.layout == Constants.MENU_LAYOUT.GnomeMenu
+                || this.layout == Constants.MENU_LAYOUT.Mint) && this._button._settings.get_boolean('activate-on-hover')){
+                if (this._category)
+                    this._button.selectCategory(this._category);
+                else if(this.title =="All Programs")
+                    this._button._displayAllApps(this.actor);
+                else if(this.title == "Favorites")
+                    this._button._displayGnomeFavorites();
+                else
+                    this._button.selectCategory("Frequent Apps");
                 this._button._setActiveCategory();
                 this.setFakeActive(true);
-            
-                
-           
-         }
-        } else if(!this.actor.hover && !this._active) { // mouse pointer leaves the button area
+            }
+        }   
+        else if(!this.actor.hover && !this._active) { // mouse pointer leaves the button area
             this.actor.remove_style_class_name('selected');
         }
     },
