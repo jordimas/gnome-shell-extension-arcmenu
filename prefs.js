@@ -282,9 +282,10 @@ var AddAppsToPinnedListWindow = GObject.registerClass(
             pinnedAppsScrollWindow.set_min_content_width(500);
             pinnedAppsScrollWindow.set_min_content_width(500);
             this.appsFrame = new PW.FrameBox();
+            let addAppsButton;
             if(!this.isMintLayout){
                 //Label and button to add apps to list
-                let addAppsButton = new Gtk.Button({
+                addAppsButton = new Gtk.Button({
                     label: _("Add"),
                     xalign:1
                 });
