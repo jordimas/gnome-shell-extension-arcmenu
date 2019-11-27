@@ -266,7 +266,7 @@ var AddAppsToPinnedListWindow = GObject.registerClass(
             this._settings = settings;
             this.isMintLayout = isMintLayout;
             if(isMintLayout)    
-                super._init(_('Choose an App'), parent);
+                super._init(_('Modify Mint Menu Layout Slot'), parent);
             else
                 super._init(_('Select Apps to add to Pinned Apps List'), parent);
             this.newPinnedAppsArray=[];
@@ -350,6 +350,7 @@ var AddAppsToPinnedListWindow = GObject.registerClass(
                         circular: false,
                         icon_name: 'list-add-symbolic'
                     });
+                    checkButton.margin_right = 20;
                     checkButton.connect('clicked', ()=> {
                         this.newPinnedAppsArray.push(frameRow._name, frameRow._icon, frameRow._cmd);
                         this.addResponse = true;
@@ -416,6 +417,7 @@ var AddAppsToPinnedListWindow = GObject.registerClass(
                             circular: false,
                             icon_name: 'list-add-symbolic'
                         });
+                        checkButton.margin_right = 20;
                         checkButton.connect('clicked', ()=> {
                             this.newPinnedAppsArray.push(frameRow._name, frameRow._icon, frameRow._cmd);
                             this.addResponse = true;
