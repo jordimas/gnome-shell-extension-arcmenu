@@ -121,7 +121,7 @@ var ApplicationsButton =   Utils.defineClass({
                 this._reload();
             });
             //-----------------------------------------------------------------------------------
-            
+            this._setMenuPositionAlignment();
             //Add Menu Button Widget to Button
             sourceActor.add_actor(this._menuButtonWidget.actor);
 
@@ -173,23 +173,41 @@ var ApplicationsButton =   Utils.defineClass({
         getMenu(){
             return this.MenuLayout;
         },
-        updateArrowSide(side){
+        _setMenuPositionAlignment(){
+            if(this._settings.get_enum('position-in-panel') == Constants.MENU_POSITION.Center){
+                let arrowAlignment = (this._settings.get_int('menu-position-alignment') / 100);
+                this.rightClickMenu._arrowAlignment = arrowAlignment
+                this.leftClickMenu._arrowAlignment = arrowAlignment
+                this.rightClickMenu._boxPointer.setSourceAlignment(.5);
+                this.leftClickMenu._boxPointer.setSourceAlignment(.5);
+            }
+            else if(this.dtp){
+                let side = this.dtpSettings.get_string('panel-position');
+                this.updateArrowSide(side ? side : 'TOP', false);
+            }  
+            else{
+                let arrowAlignment = 0;
+                this.rightClickMenu._arrowAlignment = arrowAlignment
+                this.leftClickMenu._arrowAlignment = arrowAlignment
+            }
+        },
+        updateArrowSide(side, setAlignment = true){
             let arrowAlignment = 0;
             let layout = this._settings.get_enum('menu-layout');
             if(layout == Constants.MENU_LAYOUT.Simple2)
                 this.leftClickMenu.actor.style = 'max-height: '+(this.leftClickMenu.actor.height + 250)+'px;';
             else
                 this.leftClickMenu.actor.style = "";
+
             if (side == 'TOP') 
                 side =  St.Side.TOP;
             else if (side == 'RIGHT') {
                 arrowAlignment = 1;
                 side =  St.Side.RIGHT;
             }
-             else if (side == 'BOTTOM') {
+            else if (side == 'BOTTOM') {
                 side =  St.Side.BOTTOM;
-             }
-                
+            } 
             else{
                 arrowAlignment = 1;
                 side =  St.Side.LEFT;
@@ -208,6 +226,11 @@ var ApplicationsButton =   Utils.defineClass({
             this.leftClickMenu._boxPointer.setSourceAlignment(arrowAlignment);
             this.leftClickMenu._arrowAlignment = arrowAlignment
             this.leftClickMenu._boxPointer._border.queue_repaint();
+            
+            if(setAlignment)
+                this._setMenuPositionAlignment();
+            
+               
         },
         updateStyle(){
             this.MenuLayout.updateStyle();
@@ -459,8 +482,13 @@ var ApplicationsMenu = class ArcMenu_ApplicationsMenu extends PopupMenu.PopupMen
         if(this._button.subMenuManager.activeMenu)
             this._button.subMenuManager.activeMenu.toggle();
         super.close(animate);   
-        if(this._button.MenuLayout.isRunning)
-            this._button.setDefaultMenuView();  
+
+        if(this._button.MenuLayout.isRunning){
+            GLib.timeout_add(0, 100, () => {
+                this._button.setDefaultMenuView();  
+                return GLib.SOURCE_REMOVE;
+            })
+        }
     }
 };
 // Aplication menu class
