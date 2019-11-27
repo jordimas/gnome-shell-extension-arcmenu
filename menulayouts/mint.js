@@ -242,7 +242,7 @@ var createMenu =class{
         pinnedApps.push(_("Settings"), "emblem-system-symbolic", "gnome-control-center.desktop");
         let software = '';
         if(GLib.find_program_in_path('gnome-software'))
-            software='gnome-software';
+            software='org.gnome.Software';
         else if(GLib.find_program_in_path('pamac-manager'))
             software='pamac-manager';
         pinnedApps.push(_("Software"), "org.gnome.Software", software+".desktop");
