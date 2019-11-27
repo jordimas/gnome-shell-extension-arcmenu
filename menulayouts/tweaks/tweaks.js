@@ -1,9 +1,12 @@
 /*
- * Arc Menu: The new applications menu for Gnome 3.
+ * Arc Menu - A traditional application menu for GNOME 3
  *
- * Copyright (C) 2019 Andrew Zaech
+ * Arc Menu Lead Developer
+ * Andrew Zaech https://gitlab.com/AndrewZaech
  * 
- *
+ * Arc Menu Founder/Maintainer/Graphic Designer
+ * LinxGem33 https://gitlab.com/LinxGem33
+ * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 2 of the License, or
@@ -104,6 +107,192 @@ var TweaksDialog = GObject.registerClass(
             let mintMenuTweaksFrame = new PW.FrameBox();
             mintMenuTweaksFrame.add(this._createActivateOnHoverRow());
             vbox.add(mintMenuTweaksFrame);
+
+            let pinnedAppsFrame = new PW.FrameBox();
+            
+            let pinnedAppsScrollWindow = new Gtk.ScrolledWindow();
+            pinnedAppsScrollWindow.set_policy(Gtk.PolicyType.AUTOMATIC, Gtk.PolicyType.AUTOMATIC);
+            pinnedAppsScrollWindow.set_max_content_height(300);
+            pinnedAppsScrollWindow.set_min_content_height(300);
+            //last row - save settings
+            let savePinnedAppsButton = new Gtk.Button({
+                label: _("Save"),
+            });
+            savePinnedAppsButton.connect('clicked', ()=> {
+                //iterate through each frame row (containing apps to pin) to create an array to save in settings
+                let array = [];
+                for(let x = 0;x < pinnedAppsFrame.count; x++) {
+                    array.push(pinnedAppsFrame.get_index(x)._name);
+                    array.push(pinnedAppsFrame.get_index(x)._icon);
+                    array.push(pinnedAppsFrame.get_index(x)._cmd);
+                }
+                this._settings.set_strv('mint-pinned-app-list',array);
+                savePinnedAppsButton.set_sensitive(false);
+            }); 
+            savePinnedAppsButton.set_halign(Gtk.Align.END);
+            savePinnedAppsButton.set_sensitive(false);
+            
+            //function to load all pinned apps
+            this._loadPinnedApps(this._settings.get_strv('mint-pinned-app-list'), pinnedAppsFrame, savePinnedAppsButton);
+            pinnedAppsScrollWindow.add_with_viewport(pinnedAppsFrame);
+            vbox.add(pinnedAppsScrollWindow);
+
+            vbox.add(savePinnedAppsButton);
+
+            let pinnedAppsSeparatorFrame = new PW.FrameBox();
+            let pinnedAppsSeparatorRow = new PW.FrameBoxRow();
+            let pinnedAppsSeparatorLabel = new Gtk.Label({
+                label: _("Separator Position Index"),
+                use_markup: true,
+                xalign: 0,
+                hexpand: true
+            });
+            let pinnedAppsSeparatorScale = new Gtk.HScale({
+                adjustment: new Gtk.Adjustment({
+                    lower: 0,upper: 7, step_increment: 1, page_increment: 1, page_size: 0
+                }),
+                digits: 0,round_digits: 0,hexpand: true,
+                value_pos: Gtk.PositionType.RIGHT
+            });
+            pinnedAppsSeparatorScale.set_value(this._settings.get_int('mint-separator-index'));
+            pinnedAppsSeparatorScale.connect('value-changed', (widget) => {
+                this._settings.set_int('mint-separator-index', widget.get_value());
+            }); 
+            pinnedAppsSeparatorRow.add(pinnedAppsSeparatorLabel);
+            pinnedAppsSeparatorRow.add(pinnedAppsSeparatorScale);
+            pinnedAppsSeparatorFrame.add(pinnedAppsSeparatorRow);
+            vbox.add(pinnedAppsSeparatorFrame);
+            
+            
+        }
+        _loadPinnedApps(array,frame, savePinnedAppsButton) {
+            for(let i = 0;i<array.length;i+=3) {
+                let frameRow = new PW.FrameBoxRow();
+                frameRow._name = array[i];
+                frameRow._icon = array[i+1];
+                frameRow._cmd = array[i+2];
+                
+                let arcMenuImage = new Gtk.Image( {
+                    gicon: Gio.icon_new_for_string(frameRow._icon),
+                    pixel_size: 22
+                });
+
+                let arcMenuImageBox = new Gtk.VBox({
+                    margin_left:5,
+                    expand: false
+                });
+                arcMenuImageBox.add(arcMenuImage);
+                frameRow.add(arcMenuImageBox);
+
+                let frameLabel = new Gtk.Label({
+                    use_markup: false,
+                    xalign: 0,
+                    hexpand: true
+                });
+
+                frameLabel.label = _(frameRow._name);
+                frameRow.add(frameLabel);
+                let buttonBox = new Gtk.Grid({
+                    margin_top:0,
+                    margin_bottom: 0,
+                    vexpand: false,
+                    hexpand: false,
+                    margin_right: 15,
+                    column_spacing: 2
+                });
+
+                //create the three buttons to handle the ordering of pinned apps
+                //and delete pinned apps
+                let addPinnedAppsButton = new PW.IconButton({
+                    circular: false,
+                    icon_name: 'list-add-symbolic'
+                });
+                addPinnedAppsButton.connect('clicked', ()=> {
+                    let isMintLayout = true;
+                    let dialog = new Prefs.AddAppsToPinnedListWindow(this._settings, this, isMintLayout);
+                    dialog.show_all();
+                    dialog.connect('response', ()=> { 
+                        if(dialog.get_response()) {
+                            //checked apps to add to pinned apps list - from dialog 'Add" button click event
+                            let newPinnedApps = dialog.get_newPinnedAppsArray();
+                            frameRow._name = newPinnedApps[0];
+                            frameRow._icon = newPinnedApps[1];
+                            frameRow._cmd = newPinnedApps[2];
+                            frameLabel.label = _(frameRow._name);
+                            arcMenuImage.gicon = Gio.icon_new_for_string(frameRow._icon);
+                            dialog.destroy();
+                            frame.show();
+                            savePinnedAppsButton.set_sensitive(true);
+                        }
+                        else
+                            dialog.destroy();
+                    }); 
+                });
+
+                let editButton = new PW.IconButton({
+                    circular: false,
+                    icon_name: 'emblem-system-symbolic'
+                });
+                let upButton = new PW.IconButton({
+                    circular: false,
+                    icon_name: 'go-up-symbolic'
+                });
+                let downButton = new PW.IconButton({
+                    circular: false,
+                    icon_name: 'go-down-symbolic'
+                });
+                editButton.connect('clicked', ()=> {
+                    let appArray = [frameRow._name,frameRow._icon,frameRow._cmd];
+                    let dialog = new Prefs.AddCustomLinkDialogWindow(this._settings, this, true, appArray);
+                    dialog.show_all();
+                    dialog.connect('response', ()=> { 
+                        if(dialog.get_response()) {
+                            let newPinnedApps = dialog.get_newPinnedAppsArray();
+                            frameRow._name = newPinnedApps[0];
+                            frameRow._icon = newPinnedApps[1];
+                            frameRow._cmd = newPinnedApps[2];
+                            frameLabel.label = _(frameRow._name);
+                            arcMenuImage.gicon = Gio.icon_new_for_string(frameRow._icon);
+                            dialog.destroy();
+                            frame.show();
+                            savePinnedAppsButton.set_sensitive(true);
+                        }
+                        else
+                            dialog.destroy();
+                    });  
+                });
+                upButton.connect('clicked', ()=> {
+                    //find index of frameRow in frame
+                    //remove and reinsert at new position
+                    let index = frameRow.get_index();
+                    if(index!=0) {
+                      frame.remove(frameRow);
+                      frame.insert(frameRow,index-1);
+                    }
+                    frame.show();
+                    savePinnedAppsButton.set_sensitive(true);
+                });
+
+                downButton.connect('clicked', ()=> {
+                    //find index of frameRow in frame
+                    //remove and reinsert at new position
+                    let index = frameRow.get_index();
+                    if(index+1<frame.count) {
+                      frame.remove(frameRow);
+                      frame.insert(frameRow,index+1);
+                    }
+                    frame.show();
+                    savePinnedAppsButton.set_sensitive(true);
+                });
+
+                //add everything to frame
+                buttonBox.add(addPinnedAppsButton);
+                buttonBox.add(editButton);
+                buttonBox.add(upButton);
+                buttonBox.add(downButton);
+                frameRow.add(buttonBox);
+                frame.add(frameRow);
+            }
         }
         _loadWhiskerMenuTweaks(vbox){
             let whiskerMenuTweaksFrame = new PW.FrameBox();

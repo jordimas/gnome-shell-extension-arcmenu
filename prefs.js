@@ -1,12 +1,11 @@
 /*
- * Arc Menu - The new Application Menu for GNOME 3
+ * Arc Menu - A traditional application menu for GNOME 3
  *
  * Arc Menu Lead Developer
  * Andrew Zaech https://gitlab.com/AndrewZaech
  * 
  * Arc Menu Founder/Maintainer/Graphic Designer
  * LinxGem33 https://gitlab.com/LinxGem33
- * 
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,18 +19,6 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- *
- * Credits:
- * Complete list of credits and previous developers - https://gitlab.com/LinxGem33/Arc-Menu#credits
- * 
- * This project uses modified code from Gnome-Shell-Extensions (Apps-Menu and Places-Menu)
- * and modified code from Gnome-Shell source code.
- * https://gitlab.gnome.org/GNOME/gnome-shell-extensions/tree/master/extensions
- * https://github.com/GNOME/gnome-shell
- * 
- * Arc Menu also leverages some code from the Menu extension by Zorin OS and some utility 
- * functions from Dash to Panel https://github.com/home-sweet-gnome/dash-to-panel
- * 
  */
 
 // Import Libraries
@@ -275,9 +262,13 @@ var PinnedAppsPage = GObject.registerClass(
 //Dialog Window for Adding Apps to Pinned Apps List   
 var AddAppsToPinnedListWindow = GObject.registerClass(
     class ArcMenu_AddAppsToPinnedListWindow extends PW.DialogWindow {
-        _init(settings, parent) {
+        _init(settings, parent, isMintLayout = false) {
             this._settings = settings;
-            super._init(_('Select Apps to add to Pinned Apps List'), parent);
+            this.isMintLayout = isMintLayout;
+            if(isMintLayout)    
+                super._init(_('Choose an App'), parent);
+            else
+                super._init(_('Select Apps to add to Pinned Apps List'), parent);
             this.newPinnedAppsArray=[];
             this.addResponse = false;
         }
@@ -291,24 +282,84 @@ var AddAppsToPinnedListWindow = GObject.registerClass(
             pinnedAppsScrollWindow.set_min_content_width(500);
             pinnedAppsScrollWindow.set_min_content_width(500);
             this.appsFrame = new PW.FrameBox();
+            if(!this.isMintLayout){
+                //Label and button to add apps to list
+                let addAppsButton = new Gtk.Button({
+                    label: _("Add"),
+                    xalign:1
+                });
 
-            //Label and button to add apps to list
-            let addAppsButton = new Gtk.Button({
-                label: _("Add"),
-                xalign:1
-            });
-
-            addAppsButton.connect('clicked', ()=> {
-                this.addResponse = true;
-                this.response(-10);
-            });
-	        addAppsButton.set_halign(Gtk.Align.END);
+                addAppsButton.connect('clicked', ()=> {
+                    this.addResponse = true;
+                    this.response(-10);
+                });
+                addAppsButton.set_halign(Gtk.Align.END);
+            }
+            
 
             // add the frames to the vbox
             this._loadCategories();
             pinnedAppsScrollWindow.add_with_viewport(this.appsFrame);
             vbox.add(pinnedAppsScrollWindow);
-            vbox.add(addAppsButton);
+            if(!this.isMintLayout)
+                vbox.add(addAppsButton);
+            else{
+                let sessionOptionsFrame = new PW.FrameBox();
+                for(let i = 0; i < 4; i++){
+                    let frameRow = new PW.FrameBoxRow();
+                    if(i==0){
+                        frameRow._name = "Lock";
+                        frameRow._icon = "changes-prevent-symbolic";
+                        frameRow._cmd =  "ArcMenu_Lock";
+                    }
+                    else if(i==1){
+                        frameRow._name = "Log Out";
+                        frameRow._icon = "application-exit-symbolic";
+                        frameRow._cmd =  "ArcMenu_LogOut";
+                    }
+                    else if(i==2){
+                        frameRow._name = "Power Off";
+                        frameRow._icon = "system-shutdown-symbolic";
+                        frameRow._cmd =  "ArcMenu_PowerOff";
+                    }
+                    else if(i==3){
+                        frameRow._name = "Suspend";
+                        frameRow._icon = "media-playback-pause-symbolic";
+                        frameRow._cmd =  "ArcMenu_Suspend";
+                    }
+                   
+                    let iconImage = new Gtk.Image( {
+                        gicon: Gio.icon_new_for_string(frameRow._icon),
+                        pixel_size: 22
+                    });
+                    let iconImageBox = new Gtk.VBox( {
+                        margin_left: 5,
+                        expand: false
+                    });
+                    iconImageBox.add(iconImage);
+                    frameRow.add(iconImageBox);
+                    let frameLabel = new Gtk.Label( {
+                        use_markup: false,
+                        xalign: 0,
+                        hexpand: true
+                    });
+                    frameLabel.label = frameRow._name;
+                    frameRow.add(frameLabel);
+                    let checkButton = new PW.IconButton({
+                        circular: false,
+                        icon_name: 'list-add-symbolic'
+                    });
+                    checkButton.connect('clicked', ()=> {
+                        this.newPinnedAppsArray.push(frameRow._name, frameRow._icon, frameRow._cmd);
+                        this.addResponse = true;
+                        this.response(-10);
+                    });
+                    frameRow.add(checkButton);
+                    sessionOptionsFrame.add(frameRow);
+                }
+                
+                vbox.add(sessionOptionsFrame);
+            }
         }
 
         //function to get the array of apps to add to list
@@ -359,22 +410,36 @@ var AddAppsToPinnedListWindow = GObject.registerClass(
                     });
                     frameLabel.label = frameRow._name;
                     frameRow.add(frameLabel);
+                    if(this.isMintLayout){
+                        let checkButton = new PW.IconButton({
+                            circular: false,
+                            icon_name: 'list-add-symbolic'
+                        });
+                        checkButton.connect('clicked', ()=> {
+                            this.newPinnedAppsArray.push(frameRow._name, frameRow._icon, frameRow._cmd);
+                            this.addResponse = true;
+                            this.response(-10);
+                        });
+                        frameRow.add(checkButton);
+                    }
+                    else{
+                        let checkButton = new Gtk.CheckButton({
+                            margin_right: 20
+                        });
+                        checkButton.connect('toggled', ()=> {
+                            //if checkbox is checked add the framerow to newPinnedAppsArray
+                            //else if unchecked remove it from the array
+                            if(checkButton.get_active()) {
+                                this.newPinnedAppsArray.push(frameRow);
+                            }
+                            else {
+                                let index= this.newPinnedAppsArray.indexOf(frameRow);
+                                this.newPinnedAppsArray.splice(index,1);
+                            }
+                        });
+                        frameRow.add(checkButton);
+                    }
 
-                    let checkButton = new Gtk.CheckButton({
-                        margin_right: 20
-                    });
-                    checkButton.connect('toggled', ()=> {
-                        //if checkbox is checked add the framerow to newPinnedAppsArray
-                        //else if unchecked remove it from the array
-                        if(checkButton.get_active()) {
-                            this.newPinnedAppsArray.push(frameRow);
-                        }
-                        else {
-                            let index= this.newPinnedAppsArray.indexOf(frameRow);
-                            this.newPinnedAppsArray.splice(index,1);
-                        }
-                    });
-                    frameRow.add(checkButton);
                     this.appsFrame.add(frameRow);
                 }
             }
@@ -524,12 +589,20 @@ var GeneralPage = GObject.registerClass(
             // callback handlers for the radio buttons
             menuPositionLeftButton.connect('clicked', () => {
                 this._settings.set_enum('position-in-panel', Constants.MENU_POSITION.Left);
+                if(menuPositionFrame.count == 2)
+                    menuPositionFrame.remove(menuPositionAdjustmentRow);
             });
             menuPositionCenterButton.connect('clicked', () => {
                 this._settings.set_enum('position-in-panel', Constants.MENU_POSITION.Center);
+                if(menuPositionFrame.count == 1){
+                    menuPositionFrame.add(menuPositionAdjustmentRow);
+                    menuPositionFrame.show();
+                }
             });
             menuPositionRightButton.connect('clicked', () => {
                 this._settings.set_enum('position-in-panel', Constants.MENU_POSITION.Right);
+                if(menuPositionFrame.count == 2)
+                    menuPositionFrame.remove(menuPositionAdjustmentRow);
             });
 
             switch (this._settings.get_enum('position-in-panel')) {
@@ -549,8 +622,32 @@ var GeneralPage = GObject.registerClass(
             menuPositionRow.add(menuPositionCenterButton);
             menuPositionRow.add(menuPositionRightButton);
             menuPositionFrame.add(menuPositionRow);
-
             
+            //Menu Alignment
+            let menuPositionAdjustmentRow = new PW.FrameBoxRow();
+            let menuPositionAdjustmentLabel = new Gtk.Label({
+                label: _("Menu Alignment to Button"),
+                use_markup: true,
+                xalign: 0,
+                hexpand: true
+            });
+            let alignmentScale = new Gtk.HScale({
+                adjustment: new Gtk.Adjustment({
+                    lower: 0,upper: 100, step_increment: 1, page_increment: 1, page_size: 0
+                }),
+                digits: 0,round_digits: 0,hexpand: true,
+                value_pos: Gtk.PositionType.RIGHT
+            });
+           // alignmentScale.connect('format-value', (scale, value) => { return value.toString() + 'px'; });
+            alignmentScale.set_value(this._settings.get_int('menu-position-alignment'));
+            alignmentScale.connect('value-changed', (widget) => {
+                this._settings.set_int('menu-position-alignment', widget.get_value());
+            }); 
+            menuPositionAdjustmentRow.add(menuPositionAdjustmentLabel);
+            menuPositionAdjustmentRow.add(alignmentScale);
+            if(this._settings.get_enum('position-in-panel') == Constants.MENU_POSITION.Center)
+                menuPositionFrame.add(menuPositionAdjustmentRow);
+
             //Multi-monitor
             let multiMonitorFrame = new PW.FrameBox();
             let multiMonitorRow = new PW.FrameBoxRow();
@@ -1595,11 +1692,12 @@ var ArcMenuLayoutWindow = GObject.registerClass(
             };
             this._tileGrid = new PW.TileGrid(this._params.maxColumns);
             super._init(_('Arc Menu Layout'), parent);
-            this.resize(690,480);
+            this.resize(725,480);
         }
 
         _createLayout(vbox) {         
             this._scrolled = new Gtk.ScrolledWindow();
+            this._scrolled.overlay_scrolling = false;
             this._scrolled.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC);
             let index = 0;
 

@@ -1,10 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <schemalist gettext-domain="arc-menu">
-  <enum id='org.gnome.shell.extensions.arc-menu.visible'>
-    <value value='0' nick='ALL'/>
-    <value value='1' nick='APPS_ONLY'/>
-    <value value='2' nick='SYSTEM_ONLY'/>
-  </enum>
     <enum id='org.gnome.shell.extensions.arc-menu.menulayout'>
     <value value='0' nick='Default'/>
     <value value='1' nick='Brisk'/>
@@ -45,10 +40,11 @@
     <value value="2" nick="Custom_Icon"/>
   </enum>
   <schema path="/org/gnome/shell/extensions/arc-menu/" id="org.gnome.shell.extensions.arc-menu">
-    <key name="visible-menus" enum="org.gnome.shell.extensions.arc-menu.visible">
-      <default>'ALL'</default>
-      <summary>Visible menus</summary>
-      <description>Which menus are visible within the Arc Menu popup.</description>
+    
+  <key type="i" name="menu-position-alignment">
+    <default>50</default>
+      <summary>Menu position alignment</summary>
+      <description>Menu position alignment 0 = Left, 50 = Center, 100 = Right</description>
     </key>
     <key name="menu-layout" enum="org.gnome.shell.extensions.arc-menu.menulayout">
       <default>'Default'</default>
@@ -347,11 +343,20 @@
       <description>Active for color for the menu button icon.</description>
     </key>
     <key name="pinned-app-list" type="as">
-      <default>["ArcMenu_WebBrowser","WebBrowser", "WebBrowser","Terminal", "utilities-terminal", "org.gnome.Terminal.desktop","Arc Menu Settings", "emblem-system-symbolic", "gnome-shell-extension-prefs arc-menu@linxgem33.com"]</default>
+      <default>["ArcMenu_WebBrowser","WebBrowser", "WebBrowser","Terminal", "utilities-terminal", "org.gnome.Terminal.desktop",
+                "Arc Menu Settings", "emblem-system-symbolic", "gnome-shell-extension-prefs arc-menu@linxgem33.com"]</default>
       <summary>List of Apps Pinned to Menu</summary>
-      <description>
-        List of Apps Pinned to Menu
-      </description>
+      <description>List of Apps Pinned to Menu</description>
+    </key>
+    <key name="mint-pinned-app-list" type="as">
+      <default>[]</default>
+      <summary>List of Mint Layout Pinned Apps</summary>
+      <description>List of Mint Layout Pinned Apps</description>
+    </key>
+      <key name="mint-separator-index" type="i">
+      <default>5</default>
+      <summary>Index of Mint Layout Pinned App Separator</summary>
+      <description>Index of Mint Layout Pinned App Separator, 0 = none</description>
     </key>
      <key name="color-themes" type="aas">
       <default>[['Arc Menu Theme', 'rgba(28, 28, 28, 0.98)', 'rgba(211, 218, 227, 1)', 'rgb(63,62,64)', 'rgba(238, 238, 236, 0.1)', 'rgb(63,62,64)', '9', '0', '0', '0', '0', 'false'], 

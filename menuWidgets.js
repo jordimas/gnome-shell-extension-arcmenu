@@ -1,12 +1,11 @@
 /*
- * Arc Menu - The new Application Menu for GNOME 3
+ * Arc Menu - A traditional application menu for GNOME 3
  *
  * Arc Menu Lead Developer
  * Andrew Zaech https://gitlab.com/AndrewZaech
  * 
  * Arc Menu Founder/Maintainer/Graphic Designer
  * LinxGem33 https://gitlab.com/LinxGem33
- * 
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,18 +19,6 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- *
- * Credits:
- * Complete list of credits and previous developers - https://gitlab.com/LinxGem33/Arc-Menu#credits
- * 
- * This project uses modified code from Gnome-Shell-Extensions (Apps-Menu and Places-Menu)
- * and modified code from Gnome-Shell source code.
- * https://gitlab.gnome.org/GNOME/gnome-shell-extensions/tree/master/extensions
- * https://github.com/GNOME/gnome-shell
- * 
- * Arc Menu also leverages some code from the Menu extension by Zorin OS and some utility 
- * functions from Dash to Panel https://github.com/home-sweet-gnome/dash-to-panel
- * 
  */
 
 // Import Libraries
@@ -655,7 +642,58 @@ var TerminalButton = class ArcMenu_TerminalButton extends SessionButton {
         Util.spawnCommandLine('gnome-terminal');
     }
 };
+// Settings Button
+var MintButton = class ArcMenu_MintButton extends SessionButton {
+    // Initialize the button
+    constructor(button, name, icon, command) {
+        super(button, name, icon);
+        this._command = command;
+        this._button = button;
+        this._app = Shell.AppSystem.get_default().lookup_app(this._command);
+        if(this._app){
+            this.actor.connect("button-release-event", this._onButtonReleaseEvent.bind(this));
+        }
+    }
+    _onButtonReleaseEvent(actor, event) {
+  	    if(event.get_button()==3){
+            if(this.rightClickMenu == undefined){
+                this.rightClickMenu = new AppRightClickMenu(this.actor,this._app ,this._button, false);
 
+                this._button.appMenuManager.addMenu(this.rightClickMenu);
+                this.rightClickMenu.actor.hide();
+                Main.uiGroup.add_actor(this.rightClickMenu.actor);
+                this.actor.connect('destroy', ()=>{
+                    this.rightClickMenu.destroy();
+                });
+            }
+            this.tooltip.hide();
+            if(!this.rightClickMenu.isOpen)
+                this.rightClickMenu.redisplay();
+            this.rightClickMenu.toggle();
+	    }   
+    }
+    // Activate the button (Shutdown)
+    activate() {
+        if(this._app)
+            this._app.open_new_window(-1);
+        else if(this._command == "ArcMenu_LogOut")
+            this._button._session.LogoutRemote(0);
+        else if(this._command == "ArcMenu_Lock")
+            Main.screenShield.lock(true);
+        else if(this._command == "ArcMenu_PowerOff")
+            this._button._session.ShutdownRemote(0);
+        else if(this._command == "ArcMenu_Suspend"){
+            let loginManager = LoginManager.getLoginManager();
+            loginManager.canSuspend(function (result) {
+                if (result) {
+                    loginManager.suspend();
+                }
+            }.bind(this));
+        }
+        else
+            Util.spawnCommandLine(this._command);
+    }
+};
 // Settings Button
 var SettingsButton = class ArcMenu_SettingsButton extends SessionButton {
     // Initialize the button

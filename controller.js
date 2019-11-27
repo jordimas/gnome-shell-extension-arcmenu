@@ -1,12 +1,11 @@
 /*
- * Arc Menu - The new Application Menu for GNOME 3
+ * Arc Menu - A traditional application menu for GNOME 3
  *
  * Arc Menu Lead Developer
  * Andrew Zaech https://gitlab.com/AndrewZaech
  * 
  * Arc Menu Founder/Maintainer/Graphic Designer
  * LinxGem33 https://gitlab.com/LinxGem33
- * 
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,18 +19,6 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- *
- * Credits:
- * Complete list of credits and previous developers - https://gitlab.com/LinxGem33/Arc-Menu#credits
- * 
- * This project uses modified code from Gnome-Shell-Extensions (Apps-Menu and Places-Menu)
- * and modified code from Gnome-Shell source code.
- * https://gitlab.gnome.org/GNOME/gnome-shell-extensions/tree/master/extensions
- * https://github.com/GNOME/gnome-shell
- * 
- * Arc Menu also leverages some code from the Menu extension by Zorin OS and some utility 
- * functions from Dash to Panel https://github.com/home-sweet-gnome/dash-to-panel
- * 
  */
 
 // Import Libraries
@@ -85,6 +72,7 @@ var MenuSettingsController = class {
             this._settings.connect('changed::disable-activities-hotcorner', this._updateHotCornerManager.bind(this)),
             this._settings.connect('changed::menu-hotkey', this._updateHotKeyBinder.bind(this)),
             this._settings.connect('changed::position-in-panel', this._setButtonPosition.bind(this)),
+            this._settings.connect('changed::menu-position-alignment', this._setMenuPositionAlignment.bind(this)),
             this._settings.connect('changed::menu-button-appearance', this._setButtonAppearance.bind(this)),
             this._settings.connect('changed::custom-menu-button-text', this._setButtonText.bind(this)),
             this._settings.connect('changed::menu-button-icon', this._setButtonIcon.bind(this)),
@@ -115,6 +103,8 @@ var MenuSettingsController = class {
             this._settings.connect('changed::menu-height', this._updateMenuHeight.bind(this)),
             this._settings.connect('changed::reload-theme',this._reloadExtension.bind(this)),
             this._settings.connect('changed::pinned-app-list',this._updateFavorites.bind(this)),
+            this._settings.connect('changed::mint-pinned-app-list',this._updateFavorites.bind(this)),
+            this._settings.connect('changed::mint-separator-index',this._updateFavorites.bind(this)),
             this._settings.connect('changed::enable-pinned-apps',this._updateMenuDefaultView.bind(this)),
             this._settings.connect('changed::menu-layout', this._updateMenuLayout.bind(this)),
             this._settings.connect('changed::enable-large-icons', this.updateIcons.bind(this)),
@@ -178,6 +168,10 @@ var MenuSettingsController = class {
                 this._menuButton._loadFavorites();
             if(this._menuButton.getCurrentMenu() == Constants.CURRENT_MENU.FAVORITES)
                this._menuButton._displayFavorites();
+        }
+        if(this._settings.get_enum('menu-layout') == Constants.MENU_LAYOUT.Mint){
+            if(this._menuButton.getShouldLoadFavorites())
+                this._menuButton._loadFavorites();
         }
 
     }
@@ -267,9 +261,12 @@ var MenuSettingsController = class {
         if (this._isButtonEnabled()) {
             this._removeMenuButtonFromMainPanel();
             this._addMenuButtonToMainPanel();
+            this._setMenuPositionAlignment();
         }
     }
-
+    _setMenuPositionAlignment(){
+        this._menuButton._setMenuPositionAlignment();
+    }
     // Change the menu button appearance as specified in the settings
     _setButtonAppearance() {
         let menuButtonWidget = this._menuButton.getWidget();
