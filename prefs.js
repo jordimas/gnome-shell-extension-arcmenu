@@ -1154,6 +1154,7 @@ var MenuButtonCustomizationWindow = GObject.registerClass(
 
             let menuButtonIconCombo = new Gtk.ComboBoxText({ halign: Gtk.Align.END });
             menuButtonIconCombo.append_text(_("Arc Menu Icon"));
+            menuButtonIconCombo.append_text(_("Arc Menu Alt Icon"));
             menuButtonIconCombo.append_text(_("System Icon"));
             menuButtonIconCombo.append_text(_("Custom Icon"));
             menuButtonIconCombo.set_active(this._settings.get_enum('menu-button-icon'));

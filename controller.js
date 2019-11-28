@@ -326,14 +326,20 @@ var MenuSettingsController = class {
                 if (GLib.file_test(iconFilepath, GLib.FileTest.EXISTS)) {
                     stIcon.set_gicon(Gio.icon_new_for_string(iconFilepath));
                     break;
-                } /* falls through */
+                }
             case Constants.MENU_BUTTON_ICON.Arc_Menu:
-                let arcMenuIconPath = Me.path + Constants.MENU_ICON_PATH.Arc_Menu;
+                let arcMenuIconPath = Me.path + Constants.ARC_MENU_SYMBOLIC.Path;
                 if (GLib.file_test(arcMenuIconPath, GLib.FileTest.EXISTS)) {
                     stIcon.set_gicon(Gio.icon_new_for_string(arcMenuIconPath));
                     break;
-                } /* falls through */
-            case Constants.MENU_BUTTON_ICON.System: /* falls through */
+                } 
+            case Constants.MENU_BUTTON_ICON.Arc_Menu_Alt:
+                let arcMenuAltIconPath = Me.path + Constants.ARC_MENU_ALT_SYMBOLIC.Path;
+                if (GLib.file_test(arcMenuAltIconPath, GLib.FileTest.EXISTS)) {
+                    stIcon.set_gicon(Gio.icon_new_for_string(arcMenuAltIconPath));
+                    break;
+                } 
+            case Constants.MENU_BUTTON_ICON.System: 
             default:
                 stIcon.set_icon_name('start-here-symbolic');
         }

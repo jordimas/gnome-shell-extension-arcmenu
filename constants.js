@@ -132,8 +132,9 @@ var MENU_APPEARANCE = { // See: org.gnome.shell.extensions.arc-menu.menu-button-
 
 var MENU_BUTTON_ICON = { // See: org.gnome.shell.extensions.arc-menu.menu-button-icon
     Arc_Menu: 0,
-    System: 1,
-    Custom: 2
+    Arc_Menu_Alt: 1,
+    System: 2,
+    Custom: 3
 };
 
 //Used in prefs.js to display all menu layouts
@@ -183,13 +184,19 @@ var ARC_MENU_LOGO = {
     Path: '/media/ArcMenu-logo.svg',
     Size: [175, 175] // width, height
 };
+
 var COLOR_PRESET = {
     Path: '/media/color-preset.svg',
     Size: [200, 35] // width, height
 };
-var MENU_ICON_PATH = {
-    Arc_Menu: '/media/arc-menu-symbolic.svg'
+
+var ARC_MENU_SYMBOLIC = {
+    Path: '/media/arc-menu-symbolic.svg'
 };
+var ARC_MENU_ALT_SYMBOLIC = {
+    Path: '/media/arc-menu-alt-symbolic.svg'
+};
+
 var KEYBOARD_LOGO = {
     Path: '/media/keyboard.svg',
     Size: [256, 72] 

@@ -233,7 +233,8 @@ var ApplicationsButton =   Utils.defineClass({
                
         },
         updateStyle(){
-            this.MenuLayout.updateStyle();
+            if(this.MenuLayout)
+                this.MenuLayout.updateStyle();
             let addStyle=this._settings.get_boolean('enable-custom-arc-menu');
 
             this.leftClickMenu.actor.style_class = addStyle ? 'arc-menu-boxpointer': 'popup-menu-boxpointer';
@@ -336,7 +337,7 @@ var ApplicationsButton =   Utils.defineClass({
             let themeContext = St.ThemeContext.get_for_stage(global.stage);
             let scaleFactor = themeContext.scale_factor;
             let height =  Math.round(this._settings.get_int('menu-height') / scaleFactor);
-            if(!(layout == Constants.MENU_LAYOUT.Simple || layout == Constants.MENU_LAYOUT.Simple2))
+            if(!(layout == Constants.MENU_LAYOUT.Simple || layout == Constants.MENU_LAYOUT.Simple2) && this.MenuLayout)
                 this.mainBox.style = `height: ${height}px`;
             
            
@@ -378,61 +379,80 @@ var ApplicationsButton =   Utils.defineClass({
             })  
         },
         updateIcons(){
-            this.MenuLayout.updateIcons();
+            if(this.MenuLayout)
+                this.MenuLayout.updateIcons();
         },
         _loadCategories(){
-            this.MenuLayout._loadCategories();
+            if(this.MenuLayout)
+                this.MenuLayout._loadCategories();
         },
         _clearApplicationsBox() {
-            this.MenuLayout._clearApplicationsBox();
+            if(this.MenuLayout)
+                this.MenuLayout._clearApplicationsBox();
         },
         _displayCategories() {
-            this.MenuLayout._displayCategories();
+            if(this.MenuLayout)
+                this.MenuLayout._displayCategories();
         },
         _displayFavorites() {
-            this.MenuLayout._displayFavorites();
+            if(this.MenuLayout)
+                this.MenuLayout._displayFavorites();
         },
         _loadFavorites() {
-            this.MenuLayout._loadFavorites();
+            if(this.MenuLayout)
+                this.MenuLayout._loadFavorites();
         },
         _displayAllApps() {
-            this.MenuLayout._displayAllApps();
+            if(this.MenuLayout)
+                this.MenuLayout._displayAllApps();
         },
         selectCategory(dir) {
-            this.MenuLayout.selectCategory(dir);
+            if(this.MenuLayout)
+                this.MenuLayout.selectCategory(dir);
         },
         _displayGnomeFavorites(){
-            this.MenuLayout._displayGnomeFavorites();
+            if(this.MenuLayout)
+                this.MenuLayout._displayGnomeFavorites();
         },
         _setActiveCategory(){
-            this.MenuLayout._setActiveCategory();
+            if(this.MenuLayout)
+                this.MenuLayout._setActiveCategory();
         },
         scrollToButton(button){
-            this.MenuLayout.scrollToButton(button);
+            if(this.MenuLayout)
+                this.MenuLayout.scrollToButton(button);
         },
         _redisplayRightSide(){
-            this.MenuLayout._redisplayRightSide();
+            if(this.MenuLayout)
+                this.MenuLayout._redisplayRightSide();
         },
         _redisplay() {
-            this.MenuLayout._redisplay();
+            if(this.MenuLayout)
+                this.MenuLayout._redisplay();
         },
         _reload(){
-            this.MenuLayout._reload();
+            if(this.MenuLayout)
+                this.MenuLayout._reload();
         },
         setCurrentMenu(menu) {
-            this.MenuLayout.setCurrentMenu(menu);
+            if(this.MenuLayout)
+                this.MenuLayout.setCurrentMenu(menu);
         },
         getCurrentMenu(){
-            return this.MenuLayout.getCurrentMenu();
+            if(this.MenuLayout)
+                return this.MenuLayout.getCurrentMenu();
         },
         getShouldLoadFavorites(){
-            return this.MenuLayout.shouldLoadFavorites;
+            if(this.MenuLayout)
+                return this.MenuLayout.shouldLoadFavorites;
         },
         resetSearch(){ //used by back button to clear results
-            this.MenuLayout.resetSearch();
+            if(this.MenuLayout)
+                this.MenuLayout.resetSearch();
         },
         setDefaultMenuView(){
-            this.MenuLayout.setDefaultMenuView();
+            if(this.MenuLayout)
+                this.MenuLayout.setDefaultMenuView();
         },
         // Handle changes in menu open state
         _onOpenStateChanged(menu, open) {
