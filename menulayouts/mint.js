@@ -79,7 +79,7 @@ var createMenu =class{
         this.actionsScrollBox.add_actor( this.actionsBox);
         this.actionsScrollBox.clip_to_allocation = true;
         
-        this.actionsScrollBox.style = "width:60px; margin: 40px 20px;";
+        this.actionsScrollBox.style = "width:60px; margin: 40px 20px 0 20px;";
         this.actionsBox.style = "background-color:rgba(186, 196,201, 0.1) ;border-color:rgba(186, 196,201, 0.2) ; border-width: 1px; border-radius: 5px;margin: 0px 0px; spacing: 5px; padding: 5px 0px;";
         //check if custom arc menu is enabled
         if( this._settings.get_boolean('enable-custom-arc-menu'))
