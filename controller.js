@@ -41,6 +41,7 @@ var MenuSettingsController = class {
         this._settings = settings;
         this.panel = panel;
         Me.imports.prefs.saveCSS(this._settings);
+        Main.loadTheme();
         this.currentMonitorIndex = 0;
         this.isMainPanel = isMainPanel;
         this._activitiesButton = this.panel.statusArea.activities;
