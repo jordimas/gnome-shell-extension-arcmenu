@@ -1,12 +1,12 @@
 /*
- * Arc Menu: The new applications menu for Gnome 3.
- * Copyright (C) 2017-2019 LinxGem33 
+ * Arc Menu - A traditional application menu for GNOME 3
  *
- * Copyright (C) 2019 Andrew Zaech 
- *
- * **Based off https://gitlab.gnome.org/GNOME/gnome-shell-extensions/tree/master/extensions/places-menu
- * Modified to better suit Arc Menu's needs.**
- *
+ * Arc Menu Lead Developer
+ * Andrew Zaech https://gitlab.com/AndrewZaech
+ * 
+ * Arc Menu Founder/Maintainer/Graphic Designer
+ * LinxGem33 https://gitlab.com/LinxGem33
+ * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 2 of the License, or

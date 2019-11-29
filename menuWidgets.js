@@ -1,10 +1,12 @@
 /*
- * Arc Menu: The new applications menu for Gnome 3.
+ * Arc Menu - A traditional application menu for GNOME 3
  *
- * Copyright (C) 2017 Alexander Rüedlinger
- * Copyright (C) 2017-2019 LinxGem33
- * Copyright (C) 2019 Andrew Zaech
- *
+ * Arc Menu Lead Developer
+ * Andrew Zaech https://gitlab.com/AndrewZaech
+ * 
+ * Arc Menu Founder/Maintainer/Graphic Designer
+ * LinxGem33 https://gitlab.com/LinxGem33
+ * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 2 of the License, or
@@ -632,7 +634,7 @@ var SoftwareButton = class ArcMenu_SoftwareButton extends SessionButton {
 var TerminalButton = class ArcMenu_TerminalButton extends SessionButton {
     // Initialize the button
     constructor(button) {
-        super(button, _("Terminal"), 'gnome-terminal');
+        super(button, _("Terminal"), 'utilities-terminal');
     }
 
     // Activate the button (Shutdown)
@@ -640,7 +642,58 @@ var TerminalButton = class ArcMenu_TerminalButton extends SessionButton {
         Util.spawnCommandLine('gnome-terminal');
     }
 };
+// Settings Button
+var MintButton = class ArcMenu_MintButton extends SessionButton {
+    // Initialize the button
+    constructor(button, name, icon, command) {
+        super(button, name, icon);
+        this._command = command;
+        this._button = button;
+        this._app = Shell.AppSystem.get_default().lookup_app(this._command);
+        if(this._app){
+            this.actor.connect("button-release-event", this._onButtonReleaseEvent.bind(this));
+        }
+    }
+    _onButtonReleaseEvent(actor, event) {
+  	    if(event.get_button()==3){
+            if(this.rightClickMenu == undefined){
+                this.rightClickMenu = new AppRightClickMenu(this.actor,this._app ,this._button, false);
 
+                this._button.appMenuManager.addMenu(this.rightClickMenu);
+                this.rightClickMenu.actor.hide();
+                Main.uiGroup.add_actor(this.rightClickMenu.actor);
+                this.actor.connect('destroy', ()=>{
+                    this.rightClickMenu.destroy();
+                });
+            }
+            this.tooltip.hide();
+            if(!this.rightClickMenu.isOpen)
+                this.rightClickMenu.redisplay();
+            this.rightClickMenu.toggle();
+	    }   
+    }
+    // Activate the button (Shutdown)
+    activate() {
+        if(this._app)
+            this._app.open_new_window(-1);
+        else if(this._command == "ArcMenu_LogOut")
+            this._button._session.LogoutRemote(0);
+        else if(this._command == "ArcMenu_Lock")
+            Main.screenShield.lock(true);
+        else if(this._command == "ArcMenu_PowerOff")
+            this._button._session.ShutdownRemote(0);
+        else if(this._command == "ArcMenu_Suspend"){
+            let loginManager = LoginManager.getLoginManager();
+            loginManager.canSuspend(function (result) {
+                if (result) {
+                    loginManager.suspend();
+                }
+            }.bind(this));
+        }
+        else
+            Util.spawnCommandLine(this._command);
+    }
+};
 // Settings Button
 var SettingsButton = class ArcMenu_SettingsButton extends SessionButton {
     // Initialize the button
@@ -969,10 +1022,20 @@ var FavoritesMenuItem = Utils.createClass({
         this._button = button;
         this._command = command;
         this._iconPath = icon;
-          this._name = name == "Arc Menu Settings" ? _("Arc Menu Settings") : name;
-        this._name = name == "Terminal" ? _("Terminal") : name;
+        this._name = name;
+        this._app = Shell.AppSystem.get_default().lookup_app(this._command);
+
+        //Modifiy the Default Pinned Apps---------------------
+        if(this._name == "Arc Menu Settings"){
+            this._name = _("Arc Menu Settings");
+        }
+        else if(this._name == "Terminal"){
+            this._name = _("Terminal");
+        }
+        //-------------------------------------------------------
+
         this._icon = new St.Icon({
-            gicon: Gio.icon_new_for_string(icon),
+            gicon: Gio.icon_new_for_string(this._iconPath),
             style_class: 'popup-menu-icon',
             icon_size: MEDIUM_ICON_SIZE
         })
@@ -988,10 +1051,6 @@ var FavoritesMenuItem = Utils.createClass({
 	    this._draggable.connect('drag-begin', this._onDragBegin.bind(this));
         this._draggable.connect('drag-cancelled', this._onDragCancelled.bind(this));
         this._draggable.connect('drag-end', this._onDragEnd.bind(this));
-        
-        let appSys = Shell.AppSystem.get_default();
-        this._app = appSys.lookup_app(this._command);
-
 
     },
     _onButtonPressEvent(actor, event) {
@@ -1486,7 +1545,6 @@ var CategoryMenuItem =  Utils.createClass({
         this._button = button;
         this.layout = this._button._settings.get_enum('menu-layout');
         this._category = category;
-        
         this.name = "";
         this.title = title;
         this._active = false;
@@ -1578,24 +1636,21 @@ var CategoryMenuItem =  Utils.createClass({
     _onHover() {
         if (this.actor.hover) { // mouse pointer hovers over the button
             this.actor.add_style_class_name('selected');
-                        if(this.layout == Constants.MENU_LAYOUT.GnomeMenu){
-            if (this._category)
-                this._button.selectCategory(this._category);
-            else if(this.title =="All Programs")
-                this._button._displayAllApps(this.actor);
-            else if(this.title == "Favorites")
-                this._button._displayGnomeFavorites();
-            else
-                this._button.selectCategory("Frequent Apps");
-            
-            
+            if((this.layout == Constants.MENU_LAYOUT.Brisk ||  this.layout==Constants.MENU_LAYOUT.Whisker || this.layout == Constants.MENU_LAYOUT.GnomeMenu
+                || this.layout == Constants.MENU_LAYOUT.Mint) && this._button._settings.get_boolean('activate-on-hover')){
+                if (this._category)
+                    this._button.selectCategory(this._category);
+                else if(this.title =="All Programs")
+                    this._button._displayAllApps(this.actor);
+                else if(this.title == "Favorites")
+                    this._button._displayGnomeFavorites();
+                else
+                    this._button.selectCategory("Frequent Apps");
                 this._button._setActiveCategory();
                 this.setFakeActive(true);
-            
-                
-           
-         }
-        } else if(!this.actor.hover && !this._active) { // mouse pointer leaves the button area
+            }
+        }   
+        else if(!this.actor.hover && !this._active) { // mouse pointer leaves the button area
             this.actor.remove_style_class_name('selected');
         }
     },

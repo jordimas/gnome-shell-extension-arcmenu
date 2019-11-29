@@ -1,10 +1,12 @@
 /*
- * Arc Menu: The new applications menu for Gnome 3.
+ * Arc Menu - A traditional application menu for GNOME 3
  *
- * Copyright (C) 2017 Alexander Rüedlinger
- * Copyright (C) 2017-2019 LinxGem33
- * Copyright (C) 2019 Andrew Zaech
- *
+ * Arc Menu Lead Developer
+ * Andrew Zaech https://gitlab.com/AndrewZaech
+ * 
+ * Arc Menu Founder/Maintainer/Graphic Designer
+ * LinxGem33 https://gitlab.com/LinxGem33
+ * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 2 of the License, or
@@ -38,6 +40,8 @@ var MenuSettingsController = class {
     constructor(settings, settingsControllers, panel, isMainPanel) {
         this._settings = settings;
         this.panel = panel;
+        Me.imports.prefs.saveCSS(this._settings);
+        Main.loadTheme();
         this.currentMonitorIndex = 0;
         this.isMainPanel = isMainPanel;
         this._activitiesButton = this.panel.statusArea.activities;
@@ -70,8 +74,8 @@ var MenuSettingsController = class {
             this._settings.connect('changed::disable-activities-hotcorner', this._updateHotCornerManager.bind(this)),
             this._settings.connect('changed::menu-hotkey', this._updateHotKeyBinder.bind(this)),
             this._settings.connect('changed::position-in-panel', this._setButtonPosition.bind(this)),
+            this._settings.connect('changed::menu-position-alignment', this._setMenuPositionAlignment.bind(this)),
             this._settings.connect('changed::menu-button-appearance', this._setButtonAppearance.bind(this)),
-            this._settings.connect('changed::menu-button-text', this._setButtonText.bind(this)),
             this._settings.connect('changed::custom-menu-button-text', this._setButtonText.bind(this)),
             this._settings.connect('changed::menu-button-icon', this._setButtonIcon.bind(this)),
             this._settings.connect('changed::custom-menu-button-icon', this._setButtonIcon.bind(this)),
@@ -101,6 +105,8 @@ var MenuSettingsController = class {
             this._settings.connect('changed::menu-height', this._updateMenuHeight.bind(this)),
             this._settings.connect('changed::reload-theme',this._reloadExtension.bind(this)),
             this._settings.connect('changed::pinned-app-list',this._updateFavorites.bind(this)),
+            this._settings.connect('changed::mint-pinned-app-list',this._updateFavorites.bind(this)),
+            this._settings.connect('changed::mint-separator-index',this._updateFavorites.bind(this)),
             this._settings.connect('changed::enable-pinned-apps',this._updateMenuDefaultView.bind(this)),
             this._settings.connect('changed::menu-layout', this._updateMenuLayout.bind(this)),
             this._settings.connect('changed::enable-large-icons', this.updateIcons.bind(this)),
@@ -164,6 +170,10 @@ var MenuSettingsController = class {
                 this._menuButton._loadFavorites();
             if(this._menuButton.getCurrentMenu() == Constants.CURRENT_MENU.FAVORITES)
                this._menuButton._displayFavorites();
+        }
+        if(this._settings.get_enum('menu-layout') == Constants.MENU_LAYOUT.Mint){
+            if(this._menuButton.getShouldLoadFavorites())
+                this._menuButton._loadFavorites();
         }
 
     }
@@ -253,9 +263,12 @@ var MenuSettingsController = class {
         if (this._isButtonEnabled()) {
             this._removeMenuButtonFromMainPanel();
             this._addMenuButtonToMainPanel();
+            this._setMenuPositionAlignment();
         }
     }
-
+    _setMenuPositionAlignment(){
+        this._menuButton._setMenuPositionAlignment();
+    }
     // Change the menu button appearance as specified in the settings
     _setButtonAppearance() {
         let menuButtonWidget = this._menuButton.getWidget();
@@ -315,14 +328,20 @@ var MenuSettingsController = class {
                 if (GLib.file_test(iconFilepath, GLib.FileTest.EXISTS)) {
                     stIcon.set_gicon(Gio.icon_new_for_string(iconFilepath));
                     break;
-                } /* falls through */
+                }
             case Constants.MENU_BUTTON_ICON.Arc_Menu:
-                let arcMenuIconPath = Me.path + Constants.MENU_ICON_PATH.Arc_Menu;
+                let arcMenuIconPath = Me.path + Constants.ARC_MENU_SYMBOLIC.Path;
                 if (GLib.file_test(arcMenuIconPath, GLib.FileTest.EXISTS)) {
                     stIcon.set_gicon(Gio.icon_new_for_string(arcMenuIconPath));
                     break;
-                } /* falls through */
-            case Constants.MENU_BUTTON_ICON.System: /* falls through */
+                } 
+            case Constants.MENU_BUTTON_ICON.Arc_Menu_Alt:
+                let arcMenuAltIconPath = Me.path + Constants.ARC_MENU_ALT_SYMBOLIC.Path;
+                if (GLib.file_test(arcMenuAltIconPath, GLib.FileTest.EXISTS)) {
+                    stIcon.set_gicon(Gio.icon_new_for_string(arcMenuAltIconPath));
+                    break;
+                } 
+            case Constants.MENU_BUTTON_ICON.System: 
             default:
                 stIcon.set_icon_name('start-here-symbolic');
         }
