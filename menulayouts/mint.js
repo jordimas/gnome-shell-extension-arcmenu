@@ -200,25 +200,28 @@ var createMenu =class{
         if(!pinnedApps.length || !Array.isArray(pinnedApps)){
             pinnedApps = this.updatePinnedAppsWebBrowser();
         }
-        this.actionsBox.destroy_all_children();   
+        this.actionsScrollBox.remove_actor(this.actionsBox);
+        this.actionsBox.destroy_all_children();
+        this.actionsBox.destroy();
+        this.actionsBox = new St.BoxLayout({ 
+            vertical: true
+        });
+        this.actionsBox.style = "background-color:rgba(186, 196,201, 0.1) ;border-color:rgba(186, 196,201, 0.2) ; border-width: 1px; border-radius: 5px;margin: 0px 0px; spacing: 5px; padding: 5px 0px;";
+        this.actionsScrollBox.add_actor(this.actionsBox);
+
+        let addStyle = this._settings.get_boolean('enable-custom-arc-menu');
         for(let i = 0;i<pinnedApps.length;i+=3){
             if(i == this._settings.get_int('mint-separator-index') * 3 && i != 0)
                 this._addSeparator();
             let favoritesMenuItem = new MW.MintButton(this, pinnedApps[i], pinnedApps[i+1], pinnedApps[i+2]);
+            if(addStyle) 
+                favoritesMenuItem.actor.add_style_class_name('arc-menu-action');
             this.actionsBox.add(favoritesMenuItem.actor, {
-                expand: true,
+                expand: false,
                 x_fill: false,
                 y_align: St.Align.MIDDLE
             });
         }   
-        let addStyle=this._settings.get_boolean('enable-custom-arc-menu');
-        if(this.actionsBox){
-            this.actionsBox.get_children().forEach(function (actor) {
-                if(actor instanceof St.Button){
-                    addStyle ? actor.add_style_class_name('arc-menu-action') : actor.remove_style_class_name('arc-menu-action');
-                }
-            }.bind(this));
-        }
     }
     updatePinnedAppsWebBrowser(){
         let pinnedApps = [];
