@@ -266,7 +266,7 @@ var AddAppsToPinnedListWindow = GObject.registerClass(
             this._settings = settings;
             this.isMintLayout = isMintLayout;
             if(isMintLayout)    
-                super._init(_('Modify Mint Menu Layout Slot'), parent);
+                super._init(_('Change Selected Pinned App'), parent);
             else
                 super._init(_('Select Apps to add to Pinned Apps List'), parent);
             this.newPinnedAppsArray=[];
