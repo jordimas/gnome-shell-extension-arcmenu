@@ -133,7 +133,7 @@ var ApplicationsButton =   Utils.defineClass({
             GLib.timeout_add(0, 100, () => {
                 this.createMenuLayout();
                 return GLib.SOURCE_REMOVE;
-            })
+            });
             //--------------------------------------------------------------------
         },
         createMenuLayout(){
@@ -378,7 +378,7 @@ var ApplicationsButton =   Utils.defineClass({
             GLib.timeout_add(0, 100, () => {
                 this.createMenuLayout();
                 return GLib.SOURCE_REMOVE;
-            })  
+            }); 
         },
         updateIcons(){
             if(this.MenuLayout)
@@ -509,7 +509,7 @@ var ApplicationsMenu = class ArcMenu_ApplicationsMenu extends PopupMenu.PopupMen
             GLib.timeout_add(0, 100, () => {
                 this._button.setDefaultMenuView();  
                 return GLib.SOURCE_REMOVE;
-            })
+            });
         }
     }
 };

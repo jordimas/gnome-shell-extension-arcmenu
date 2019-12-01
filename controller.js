@@ -40,8 +40,11 @@ var MenuSettingsController = class {
     constructor(settings, settingsControllers, panel, isMainPanel) {
         this._settings = settings;
         this.panel = panel;
-        Me.imports.prefs.saveCSS(this._settings);
-        Main.loadTheme();
+        GLib.timeout_add(0, 100, () => {
+            Me.imports.prefs.saveCSS(this._settings);
+            Main.loadTheme();
+            return GLib.SOURCE_REMOVE;
+        });
         this.currentMonitorIndex = 0;
         this.isMainPanel = isMainPanel;
         this._activitiesButton = this.panel.statusArea.activities;

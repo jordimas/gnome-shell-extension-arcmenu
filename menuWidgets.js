@@ -545,13 +545,13 @@ var SessionButton = class ArcMenu_SessionButton{
         else
             iconSize = SMALL_ICON_SIZE;
         this._icon = new St.Icon({ 
-            icon_name: icon_name ? icon_name : "",
+            gicon: icon_name ? Gio.icon_new_for_string(icon_name) : null,
             icon_size: iconSize  
         });
         if(gicon)
             this._icon.gicon = gicon;
         else
-            this._icon.icon_name = icon_name ? icon_name : "";
+            this._icon.gicon = icon_name ? Gio.icon_new_for_string(icon_name) : "";
         this.actor.child = this._icon;
         this.actor.connect('clicked', this._onClick.bind(this));
     }

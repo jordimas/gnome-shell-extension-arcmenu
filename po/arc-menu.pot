@@ -50,7 +50,7 @@ msgid "Save"
 msgstr ""
 
 #: prefs.js:269
-msgid "Modify Mint Menu Layout Slot"
+msgid "Change Selected Pinned App"
 msgstr ""
 
 #: prefs.js:271
