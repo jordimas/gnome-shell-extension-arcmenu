@@ -43,7 +43,7 @@ var modernGnome = imports.misc.config.PACKAGE_VERSION >= '3.31.9';
 
 var createMenu =class{
     constructor(mainButton) {
-        this.button = mainButton;
+        this._button = mainButton;
         this._settings = mainButton._settings;
         this.mainBox = mainButton.mainBox; 
         this.appMenuManager = mainButton.appMenuManager;

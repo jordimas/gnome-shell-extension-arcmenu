@@ -447,7 +447,8 @@ var ActivitiesMenuItem =  Utils.createClass({
  * A class representing a Tooltip.
  */
 var Tooltip = class ArcMenu_Tooltip{
-    constructor(sourceActor, text, isMenuItem=false, settings) {
+    constructor(menu, sourceActor, text, isMenuItem=false, settings) {
+        this._button = menu._button;
         this.sourceActor = sourceActor;
         this.isMenuItem = isMenuItem;
         this._settings = settings;
@@ -469,9 +470,33 @@ var Tooltip = class ArcMenu_Tooltip{
     }
     _onHover() {
         if (this.sourceActor.hover) {
-            this.show();
-        } else {
+            if(this._button.tooltipShowing){
+                this.show();
+            }
+            else{
+                this._button.tooltipShowingID = GLib.timeout_add(0, 750, () => {
+                    this.show();
+                    this._button.tooltipShowing = true;
+                    this._button.tooltipShowingID = 0;
+                    return GLib.SOURCE_REMOVE;
+                });
+            }
+            if (this._button.tooltipHidingID > 0) {
+                GLib.source_remove(this._button.tooltipHidingID);
+                this._button.tooltipHidingID = 0;
+            }
+        } 
+        else {
             this.hide();
+            if (this._button.tooltipShowingID > 0) {
+                GLib.source_remove(this._button.tooltipShowingID);
+                this._button.tooltipShowingID = 0;
+            }
+            this._button.tooltipHidingID = GLib.timeout_add(0, 750, () => {
+                this._button.tooltipShowing = false;
+                this._button.tooltipHidingID = 0;
+                return GLib.SOURCE_REMOVE;
+            });          
         }
     }
 
@@ -536,7 +561,7 @@ var SessionButton = class ArcMenu_SessionButton{
             style_class: 'system-menu-action'
         });
 
-        this.tooltip = new Tooltip(this.actor, accessible_name, false, this._button._settings);
+        this.tooltip = new Tooltip(this._button, this.actor, accessible_name, false, this._button._settings);
         this.tooltip.hide();
         let layout = this._button._settings.get_enum('menu-layout');
         let iconSize;
@@ -1041,17 +1066,29 @@ var FavoritesMenuItem = Utils.createClass({
         })
         this.actor.add_child(this._icon);
  
-        let label = new St.Label({
+        this.label = new St.Label({
             text: _(this._name), y_expand: true, x_expand: true,
             y_align: Clutter.ActorAlign.CENTER
         });
-        this.actor.add_child(label);
+        this.actor.add_child(this.label);
         this._draggable = DND.makeDraggable(this.actor);
         this.isDraggableApp = true;
 	    this._draggable.connect('drag-begin', this._onDragBegin.bind(this));
         this._draggable.connect('drag-cancelled', this._onDragCancelled.bind(this));
         this._draggable.connect('drag-end', this._onDragEnd.bind(this));
-
+      
+        this.actor.connect('notify::hover',this._onHover.bind(this));
+        
+    },
+    _onHover() {
+        let lbl = this.label.clutter_text;
+        lbl.get_allocation_box();
+        if(lbl.get_layout().is_ellipsized()){
+            if(this.tooltip==undefined && this.actor.hover){
+                this.tooltip = new Tooltip(this._button, this.actor, this._name , true ,this._button._settings);
+                this.tooltip._onHover();
+            }
+        }
     },
     _onButtonPressEvent(actor, event) {
 		
@@ -1059,7 +1096,7 @@ var FavoritesMenuItem = Utils.createClass({
     },
     _onButtonReleaseEvent(actor, event) {
         if(event.get_button()==1){
-                this.activate(event); 
+            this.activate(event); 
         }
   	    if(event.get_button()==3){
             if(this.rightClickMenu == undefined){
@@ -1072,6 +1109,8 @@ var FavoritesMenuItem = Utils.createClass({
                     this.rightClickMenu.destroy();
                 });
             }
+            if(this.tooltip!=undefined)
+                this.tooltip.hide();
             if(!this.rightClickMenu.isOpen)
                 this.rightClickMenu.redisplay();
             this.rightClickMenu.toggle();
@@ -1308,8 +1347,8 @@ var ApplicationMenuIcon = Utils.createClass({
             this._button.newSearch.highlightDefault(false);
         if(this.tooltip==undefined && this.actor.hover){
             if(this._app.get_description()){
-                this.tooltip = new Tooltip(this.actor, this._app.get_description(),true,this._button._settings);
-                this.tooltip.show();
+                this.tooltip = new Tooltip(this._button, this.actor, this._app.get_description(),true,this._button._settings);
+                this.tooltip._onHover();
             }
         }
     },
@@ -1398,8 +1437,8 @@ var ApplicationMenuItem =Utils.createClass({
     _onHover() {
         if(this.tooltip==undefined && this.actor.hover){
             if(this._app.get_description()){
-                this.tooltip = new Tooltip(this.actor, this._app.get_description(),true,this._button._settings);
-                this.tooltip.show();
+                this.tooltip = new Tooltip(this._button, this.actor, this._app.get_description(),true,this._button._settings);
+                this.tooltip._onHover();
             }
         }
     },
