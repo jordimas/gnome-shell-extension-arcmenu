@@ -85,7 +85,7 @@ var AppRightClickMenu = class ArcMenu_AppRightClickMenu extends PopupMenu.PopupM
             });
         this.redisplay();
     }
-
+    
     _updateDiscreteGpuAvailable() {
         if (!this._switcherooProxy)
             this.discreteGpuAvailable = false;
@@ -287,6 +287,14 @@ var AppRightClickMenu = class ArcMenu_AppRightClickMenu extends PopupMenu.PopupM
                     this.addMenuItem(item);
                 }
             }
+        }
+        //Check if rightclick app menu is outside of main main or within 10px
+        this.actor.get_allocation_box();
+        let [stageX, stageY] = this._button._button.leftClickMenu.actor.get_transformed_position();
+        let [stageX2, stageY2] = this.actor.get_transformed_position();
+        if((stageX2 - stageX) < 10){
+            this._arrowAlignment = 0.35
+            this._boxPointer._border.queue_repaint();
         }   
     }
 
@@ -504,9 +512,12 @@ var Tooltip = class ArcMenu_Tooltip{
         if(this._useTooltips){
             let [stageX, stageY] = this.sourceActor.get_transformed_position();
             let [width, height] = this.sourceActor.get_transformed_size();
+
+            let x = this.isMenuItem ? stageX: stageX - Math.round((this.actor.get_width() - width) / 2);
             let y = this.isMenuItem ? stageY + height: stageY - this.actor.get_height() - 5;
+            if(x <= 0)
+                x = 10;
             
-            let x = this.isMenuItem ? stageX   : stageX - Math.round((this.actor.get_width() - width) / 2);
 
             this.actor.show();
             this.actor.set_position(x, y);
