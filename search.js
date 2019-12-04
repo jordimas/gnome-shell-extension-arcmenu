@@ -94,7 +94,7 @@ var ListSearchResult = class ArcMenu_ListSearchResult {
         let isMenuItem=true;
         if(this.metaInfo['description'] || ((app!=undefined) ? app.get_description() : false))
         {
-            this.tooltip = new MW.Tooltip(this.menuItem.actor, this.metaInfo['description'] ? this.metaInfo['description']:  app.get_description(),isMenuItem,this._button._settings);
+            this.tooltip = new MW.Tooltip(this._button, this.menuItem.actor, this.metaInfo['description'] ? this.metaInfo['description']:  app.get_description(),isMenuItem,this._button._settings);
             this.tooltip.hide();
             this.menuItem.connect('hideTooltip',() => {
                 this.tooltip.hide();
@@ -140,7 +140,7 @@ var AppSearchResult = class  ArcMenu_AppSearchResult {
         let isMenuItem=true;
         if(this.metaInfo['description'] || ((app!=undefined) ? app.get_description() : false))
         {
-            this.tooltip = new MW.Tooltip(this.menuItem.actor, this.metaInfo['description'] ? this.metaInfo['description']:  app.get_description(),isMenuItem,this._button._settings);
+            this.tooltip = new MW.Tooltip(this._button, this.menuItem.actor, this.metaInfo['description'] ? this.metaInfo['description']:  app.get_description(),isMenuItem,this._button._settings);
             this.tooltip.hide();
             this.menuItem.connect('hideTooltip',() => {
                 this.tooltip.hide();
@@ -717,7 +717,7 @@ var ArcSearchProviderInfo =Utils.createClass({
         this.hoverID = this.actor.connect('notify::hover', this._onHover.bind(this));
         let isMenuItem = true;
         if(provider.appInfo.get_description()!=null){
-            this.tooltip = new MW.Tooltip(this.actor, provider.appInfo.get_description(),isMenuItem,this._button._settings);
+            this.tooltip = new MW.Tooltip(this._button, this.actor, provider.appInfo.get_description(),isMenuItem,this._button._settings);
             this.tooltip.hide();            
         }
     },

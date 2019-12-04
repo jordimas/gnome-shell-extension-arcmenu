@@ -52,6 +52,11 @@ var ApplicationsButton =   Utils.defineClass({
             this._settings = settings;
             this._panel = panel;
             this._menuButtonWidget = new MW.MenuButtonWidget();
+            
+            //Tooltip showing/hiding
+            this.tooltipShowing = false;
+            this.tooltipHidingID = 0;
+            this.tooltipShowingID = 0;
 
             //Create Main Button Left and Right Click Menus---------------------------------------------------
             let sourceActor =  modernGnome ?  this : this.actor;
@@ -172,6 +177,9 @@ var ApplicationsButton =   Utils.defineClass({
             else if (layout == Constants.MENU_LAYOUT.UbuntuDash)
                 this.MenuLayout = new MenuLayouts.ubuntudash.createMenu(this); 
             ///--------------------------------------------------------------------
+            this.tooltipShowing = false;
+            this.tooltipHidingID = 0;
+            this.tooltipShowingID = 0;
             this.updateStyle();
         },
         getMenu(){
@@ -378,7 +386,7 @@ var ApplicationsButton =   Utils.defineClass({
             GLib.timeout_add(0, 100, () => {
                 this.createMenuLayout();
                 return GLib.SOURCE_REMOVE;
-            }); 
+            });  
         },
         updateIcons(){
             if(this.MenuLayout)
