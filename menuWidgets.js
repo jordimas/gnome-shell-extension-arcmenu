@@ -512,12 +512,12 @@ var Tooltip = class ArcMenu_Tooltip{
         if(this._useTooltips){
             let [stageX, stageY] = this.sourceActor.get_transformed_position();
             let [width, height] = this.sourceActor.get_transformed_size();
+            let [menuX, menuY] = this._button.leftClickMenu.actor.get_transformed_position();
 
             let x = this.isMenuItem ? stageX: stageX - Math.round((this.actor.get_width() - width) / 2);
             let y = this.isMenuItem ? stageY + height: stageY - this.actor.get_height() - 5;
-            if(x <= 0)
-                x = 10;
-            
+            if((x <= 0) || (x - menuX) < 10)
+                x = menuX + 10;
 
             this.actor.show();
             this.actor.set_position(x, y);
@@ -1100,6 +1100,12 @@ var FavoritesMenuItem = Utils.createClass({
                 this.tooltip._onHover();
             }
         }
+        else{
+            if(this.tooltip){
+                this.tooltip.destroy();
+                this.tooltip = null;
+            }
+        }
     },
     _onButtonPressEvent(actor, event) {
 		
@@ -1625,13 +1631,13 @@ var CategoryMenuItem =  Utils.createClass({
         else{
             this.actor.style = "padding: 10px;"
         }
-        let categoryLabel = new St.Label({
+        this.label = new St.Label({
             text: this.name,
             y_expand: true,
             x_expand:true,
             y_align: Clutter.ActorAlign.CENTER
         });
-        this.actor.add_child(categoryLabel);
+        this.actor.add_child(this.label);
         this._arrowIcon = new St.Icon({
             icon_name: 'go-next-symbolic',
             style_class: 'popup-menu-icon',
@@ -1639,7 +1645,7 @@ var CategoryMenuItem =  Utils.createClass({
             icon_size: 12,
         });
         this.actor.add_child(this._arrowIcon);
-        this.actor.label_actor = categoryLabel;
+        this.actor.label_actor = this.label;
         this.actor.connect('notify::hover', this._onHover.bind(this));
         this.actor.connect('notify::active',()=>{
             this._button.activeMenuItem = this;
@@ -1698,6 +1704,20 @@ var CategoryMenuItem =  Utils.createClass({
                     this._button.selectCategory("Frequent Apps");
                 this._button._setActiveCategory();
                 this.setFakeActive(true);
+            }
+            let lbl = this.label.clutter_text;
+            lbl.get_allocation_box();
+            if(lbl.get_layout().is_ellipsized()){
+                if(this.tooltip==undefined){
+                    this.tooltip = new Tooltip(this._button, this.actor, this.name , true ,this._button._settings);
+                    this.tooltip._onHover();
+                }
+            }
+            else{
+                if(this.tooltip){
+                    this.tooltip.destroy();
+                    this.tooltip = null;
+                }
             }
         }   
         else if(!this.actor.hover && !this._active) { // mouse pointer leaves the button area
