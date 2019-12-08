@@ -1,7 +1,7 @@
 # Basic Makefile
 
 UUID = arc-menu@linxgem33.com
-BASE_MODULES = constants.js convenience.js extension.js helper.js metadata.json prefsWidgets.js README.md stylesheet.css utils.js 
+BASE_MODULES = AUTHORS constants.js convenience.js COPYING extension.js helper.js metadata.json prefsWidgets.js README.md stylesheet.css utils.js 
 EXTRA_MODULES = controller.js menu.js menuWidgets.js placeDisplay.js prefs.js search.js searchGrid.js 
 
 MENU_LAYOUTS = arcmenu.js brisk.js elementary.js gnomedash.js gnomemenu.js mint.js redmond.js simple.js simple2.js ubuntudash.js whisker.js
