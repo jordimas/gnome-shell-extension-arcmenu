@@ -67,7 +67,7 @@ var createMenu = class {
         // Create search box
         this.searchBox = new MW.SearchBox(this);
         // Set equal margin of the searchbar.
-        this.searchBox.actor.style ="margin: 0px 10px 5px 10px;";
+        this.searchBox.actor.style ="margin: 0px 10px 15px 10px;";
         // Remove border around searchbox.
         this.searchBox._stEntry.actor.style = "border: 0;";
         this._firstAppItem = null;
