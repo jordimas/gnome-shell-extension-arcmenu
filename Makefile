@@ -1,141 +1,91 @@
-# Basic Makefile with bits inspired by dash-to-dock
+# Basic Makefile
 
-UUID=arc-menu@linxgem33.com
-POT_FILEPATH=./po/arc-menu.pot
-MO_FILE=arc-menu.mo
-GSCHEMA_FILE=org.gnome.shell.extensions.arc-menu.gschema.xml
-TO_LOCALIZE=prefs.js menu.js menuWidgets.js search.js placeDisplay.js controller.js
+UUID = arc-menu@linxgem33.com
+BASE_MODULES = AUTHORS constants.js convenience.js COPYING extension.js helper.js metadata.json prefsWidgets.js README.md stylesheet.css utils.js 
+EXTRA_MODULES = controller.js menu.js menuWidgets.js placeDisplay.js prefs.js search.js searchGrid.js 
 
-GIT_HEAD=$(shell git rev-parse HEAD)
-LAST_RELEASE=$(shell git describe --abbrev=0 --tags --match v[0-9]*)
-GIT_LAST_TAG=$(shell git show-ref -s $(LAST_RELEASE))
+MENU_LAYOUTS = arcmenu.js brisk.js elementary.js gnomedash.js gnomemenu.js mint.js redmond.js simple.js simple2.js ubuntudash.js whisker.js
+MENU_TWEAKS = menulayouts/tweaks/tweaks.js
 
-# define VERSION and VSTRING
-ifeq ($(GIT_LAST_TAG),$(GIT_HEAD))
-	VERSION=$(subst v,,$(LAST_RELEASE))
-	VSTRING=$(LAST_RELEASE)
+TOLOCALIZE = $(EXTRA_MODULES) $(addprefix menulayouts/, $(MENU_LAYOUTS)) $(MENU_TWEAKS)
+EXTRA_DIRECTORIES = media menulayouts
+MSGSRC = $(wildcard po/*.po)
+ifeq ($(strip $(DESTDIR)),)
+	INSTALLBASE = $(HOME)/.local/share/gnome-shell/extensions
 else
-	VERSION=$(shell git rev-parse --short HEAD)
-	VSTRING=$(VERSION)
+	INSTALLBASE = $(DESTDIR)/usr/share/gnome-shell/extensions
+endif
+INSTALLNAME = arc-menu@linxgem33.com
+
+# The command line passed variable VERSION is used to set the version string
+# in the metadata and in the generated zip-file. If no VERSION is passed, the
+# version is pulled from the latest git tag and the current commit SHA1 is 
+# added to the metadata
+ifdef VERSION
+	FILESUFFIX = _v$(VERSION)
+else
+	LATEST_TAG = $(shell git describe --match "v[0-9]*" --abbrev=0 --tags HEAD)
+	VERSION = $(LATEST_TAG:v%=%)
+	COMMIT = $(shell git rev-parse HEAD)
+	FILESUFFIX =
 endif
 
-ifeq ($(strip $(INSTALL)),system) # check if INSTALL == system
-	INSTALL_TYPE=system
-	SHARE_PREFIX=$(DESTDIR)/usr/share
-	INSTALL_BASE=$(SHARE_PREFIX)/gnome-shell/extensions
-else
-	INSTALL_TYPE=local
-	INSTALL_BASE=~/.local/share/gnome-shell/extensions
-endif
-
-JS=*.js
-CSS=*.css
-MD=*.md
-JSON=*.json
-TXT=AUTHORS COPYING
-DIRS=schemas media menulayouts
-MSG_SRC=$(wildcard ./po/*.po)
-
-
-all: build
-
-help:
-	@echo "Usage: make [help | all | clean | install | jshint | compile |"
-	@echo "             enable | disable | zip-file]"
-	@echo ""
-	@echo "all          build the project and create the build directory"
-	@echo "clean        delete the build directory"
-	@echo "install      install the extension"
-	@echo "uninstall    uninstall the extension"
-	@echo "enable       enable the extension"
-	@echo "disable      disable the extension"
-	@echo "jshint       run jshint"
-	@echo "compile      compile the gschema xml file"
-	@echo "zip-file     create a deployable zip file"
-	@echo "tgz-file     create a tar.gz file"
-
-enable:
-	-gnome-shell-extension-tool -e $(UUID)
-
-disable:
-	-gnome-shell-extension-tool -d $(UUID)
+all: extension
 
 clean:
 	rm -f ./schemas/gschemas.compiled
-	rm -rf ./build
-	rm -f ./$(UUID)*.zip
-	rm -f ./$(UUID)*.tar.gz
-	rm -f MD5SUMS SHA1SUMS SHA256SUMS SHA512SUMS
 
-jshint:
-	jshint $(JS)
+extension: ./schemas/gschemas.compiled $(MSGSRC:.po=.mo)
 
-test: jshint
+./schemas/gschemas.compiled: ./schemas/org.gnome.shell.extensions.arc-menu.gschema.xml
+	glib-compile-schemas ./schemas/
 
-install: build
-	mkdir -p $(INSTALL_BASE)/$(UUID)
-	cp -r ./build/* $(INSTALL_BASE)/$(UUID)
-ifeq ($(INSTALL_TYPE),system)
-	mkdir -p $(SHARE_PREFIX)/glib-2.0/schemas $(SHARE_PREFIX)/locale
-	cp -r ./schemas/$(GSCHEMA_FILE) $(SHARE_PREFIX)/glib-2.0/schemas
-	cp -r ./build/locale/* $(SHARE_PREFIX)/locale
-endif
-	rm -rf ./build
+potfile: ./po/arc-menu.pot
 
-uninstall:
-	rm -rf $(INSTALL_BASE)/$(UUID)
-ifeq ($(INSTALL_TYPE),system)
-	rm -f $(SHARE_PREFIX)/glib-2.0/schemas/$(GSCHEMA_FILE)
-	find $(SHARE_PREFIX)/locale -name $(MO_FILE) -type f -delete
-endif
-
-translations: $(POT_FILEPATH)
-	for l in $(MSG_SRC); do \
-		msgmerge -U $$l $(POT_FILEPATH); \
+mergepo: potfile
+	for l in $(MSGSRC); do \
+		msgmerge -U $$l ./po/arc-menu.pot; \
 	done;
 
-potfile: $(POT_FILEPATH)
-
-$(POT_FILEPATH): $(TO_LOCALIZE) FORCE
-	echo $(POT_FILEPATH)
-	xgettext --from-code=UTF-8 -k --keyword=_ --keyword=N_ --add-comments='Translators:' \
-		-o $(POT_FILEPATH) --package-name "Arc Menu" $(TO_LOCALIZE)
+./po/arc-menu.pot: $(TOLOCALIZE)
+	mkdir -p po
+	xgettext -k_ -kN_ -o po/arc-menu.pot --package-name "Arc Menu" $(TOLOCALIZE) 
 
 ./po/%.mo: ./po/%.po
 	msgfmt -c $< -o $@
 
-compile:
-	glib-compile-schemas ./schemas
+install: install-local
 
-build: translations compile $(MSG_SRC:.po=.mo)
-	mkdir -p ./build
-	cp $(JS) $(CSS) $(JSON) $(MD) $(TXT) ./build
-	cp -r $(DIRS) ./build
-	mkdir -p ./build/locale
-	for l in $(MSG_SRC:.po=.mo) ; do \
-		lf=./build/locale/`basename $$l .mo`; \
+install-local: _build
+	rm -rf $(INSTALLBASE)/$(INSTALLNAME)
+	mkdir -p $(INSTALLBASE)/$(INSTALLNAME)
+	cp -r ./_build/* $(INSTALLBASE)/$(INSTALLNAME)/
+	-rm -fR _build
+	echo done
+
+zip-file: _build
+	cd _build ; \
+	zip -qr "$(UUID)$(FILESUFFIX).zip" .
+	mv _build/$(UUID)$(FILESUFFIX).zip ./
+	-rm -fR _build
+
+_build: all
+	-rm -fR ./_build
+	mkdir -p _build
+	cp $(BASE_MODULES) $(EXTRA_MODULES) _build
+	cp -r $(EXTRA_DIRECTORIES) _build
+	mkdir -p _build/schemas
+	cp schemas/*.xml _build/schemas/
+	cp schemas/gschemas.compiled _build/schemas/
+	mkdir -p _build/locale
+	for l in $(MSGSRC:.po=.mo) ; do \
+		lf=_build/locale/`basename $$l .mo`; \
+		mkdir -p $$lf; \
 		mkdir -p $$lf/LC_MESSAGES; \
 		cp $$l $$lf/LC_MESSAGES/arc-menu.mo; \
 	done;
-	sed -i 's/"version": -1/"version": "$(VERSION)"/'  build/metadata.json;
-
-zip-file: build
-	mv ./build ./Arc-Menu-$(VSTRING)
-	zip -qr $(UUID)_$(VSTRING).zip Arc-Menu-$(VSTRING)
-	rm -rf ./Arc-Menu-$(VSTRING)
-	$(MAKE) _checksums ARCHIVE_FILE=*.zip
-
-tgz-file: build
-	mv ./build ./Arc-Menu-$(VSTRING)
-	tar -zcf $(UUID)_$(VSTRING).tar.gz Arc-Menu-$(VSTRING)
-	rm -rf ./Arc-Menu-$(VSTRING)
-	$(MAKE) _checksums ARCHIVE_FILE=*.tar.gz
-
-_checksums:
-	md5sum $(ARCHIVE_FILE) >> MD5SUMS
-	sha1sum $(ARCHIVE_FILE) >> SHA1SUMS
-	sha256sum $(ARCHIVE_FILE) >> SHA256SUMS
-	sha512sum $(ARCHIVE_FILE) >> SHA512SUMS
-
-.PHONY: FORCE
-FORCE:
+ifneq ($(and $(COMMIT),$(VERSION)),)
+	sed -i 's/"version": [[:digit:]][[:digit:]]*/"version": $(VERSION),\n"commit": "$(COMMIT)"/'  _build/metadata.json;
+else ifneq ($(VERSION),)
+	sed -i 's/"version": [[:digit:]][[:digit:]]*/"version": $(VERSION)/'  _build/metadata.json;
+endif
