@@ -375,6 +375,8 @@ var SeparatorDrawingArea =  GObject.registerClass(class ArcMenu_SeparatorDrawing
             this.set_height(15); //increase height if on right side
         else if(this._style == Constants.SEPARATOR_STYLE.LONG)
             this.set_height(10);
+        else if(this._style == Constants.SEPARATOR_STYLE.MAX)
+            this.set_height(1);
     }
     vfunc_repaint(){
        
@@ -400,6 +402,10 @@ var SeparatorDrawingArea =  GObject.registerClass(class ArcMenu_SeparatorDrawing
                 else if(this._style == Constants.SEPARATOR_STYLE.LONG){
                     cr.moveTo(25, height-4.5);
                     cr.lineTo(width-25, height-4.5);
+                }
+                else if(this._style == Constants.SEPARATOR_STYLE.MAX){
+                    cr.moveTo(0, 0);
+                    cr.lineTo(width, 1);
                 }
             }
             Clutter.cairo_set_source_color(cr, stippleColor);

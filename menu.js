@@ -176,6 +176,8 @@ var ApplicationsButton =   Utils.defineClass({
                 this.MenuLayout = new MenuLayouts.simple2.createMenu(this);  
             else if (layout == Constants.MENU_LAYOUT.UbuntuDash)
                 this.MenuLayout = new MenuLayouts.ubuntudash.createMenu(this); 
+            else if (layout == Constants.MENU_LAYOUT.Budgie)
+                this.MenuLayout = new MenuLayouts.budgie.createMenu(this);
             ///--------------------------------------------------------------------
             this.tooltipShowing = false;
             this.tooltipHidingID = 0;
