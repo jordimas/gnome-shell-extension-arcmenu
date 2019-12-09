@@ -69,6 +69,8 @@ var TweaksDialog = GObject.registerClass(
                 this._loadRedmondMenuTweaks(vbox)
             else if(menuLayout == Constants.MENU_LAYOUT.UbuntuDash)
                 this._loadPlaceHolderTweaks(vbox);
+            else if(menuLayout == Constants.MENU_LAYOUT.Budgie)
+                this._loadPlaceHolderTweaks(vbox);
             else
                 this._loadPlaceHolderTweaks(vbox);
         }

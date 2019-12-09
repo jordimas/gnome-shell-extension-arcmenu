@@ -12,6 +12,7 @@
     <value value='8' nick='Simple2'/>
     <value value='9' nick='Redmond'/>
     <value value='10' nick='UbuntuDash'/>
+    <value value='11' nick='Budgie'/>
   </enum>
   <enum id='org.gnome.shell.extensions.arc-menu.menu-hotkey'>
     <value value='0' nick='Undefined'/>

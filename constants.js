@@ -50,7 +50,8 @@ var SEPARATOR_ALIGNMENT = {
 var SEPARATOR_STYLE = {
     NORMAL: 0,
     LONG: 1,
-    SHORT: 2
+    SHORT: 2,
+    MAX: 3,
 };
 
 var SUPER_L = 'Super_L';
@@ -120,7 +121,8 @@ var MENU_LAYOUT = { // See: org.gnome.shell.extensions.arc-menu.menu-position
     Simple: 7,
     Simple2: 8,
     Redmond: 9,
-    UbuntuDash: 10
+    UbuntuDash: 10,
+    Budgie: 11
 };
 
 var MENU_APPEARANCE = { // See: org.gnome.shell.extensions.arc-menu.menu-button-icon
@@ -175,7 +177,10 @@ var MENU_STYLE_CHOOSER = {
         },
         {   thumbnail: '/media/layouts/ubuntu-dash-menu.svg',
             name: 'Ubuntu Dash Style'
-        }   
+        },
+        {   thumbnail: '/media/layouts/budgie-menu.svg',
+            name: 'Budgie Desktop Style'
+        }
     ]
 };
 
