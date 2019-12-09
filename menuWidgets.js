@@ -404,8 +404,8 @@ var SeparatorDrawingArea =  GObject.registerClass(class ArcMenu_SeparatorDrawing
                     cr.lineTo(width-25, height-4.5);
                 }
                 else if(this._style == Constants.SEPARATOR_STYLE.MAX){
-                    cr.moveTo(0, 0);
-                    cr.lineTo(width, 1);
+                    cr.moveTo(0, 0.5);
+                    cr.lineTo(width, 0.5);
                 }
             }
             Clutter.cairo_set_source_color(cr, stippleColor);
@@ -1687,7 +1687,7 @@ var CategoryMenuItem =  Utils.createClass({
             this._button.selectCategory("Frequent Apps");   
                     
         if(this.layout == Constants.MENU_LAYOUT.Brisk ||  this.layout==Constants.MENU_LAYOUT.Whisker || this.layout == Constants.MENU_LAYOUT.GnomeMenu
-            || this.layout == Constants.MENU_LAYOUT.Mint){
+            || this.layout == Constants.MENU_LAYOUT.Mint ||  this.layout==Constants.MENU_LAYOUT.Budgie){
             this._button._setActiveCategory();
             this.setFakeActive(true);
         }
@@ -1699,7 +1699,8 @@ var CategoryMenuItem =  Utils.createClass({
         if (this.actor.hover) { // mouse pointer hovers over the button
             this.actor.add_style_class_name('selected');
             if((this.layout == Constants.MENU_LAYOUT.Brisk ||  this.layout==Constants.MENU_LAYOUT.Whisker || this.layout == Constants.MENU_LAYOUT.GnomeMenu
-                || this.layout == Constants.MENU_LAYOUT.Mint) && this._button._settings.get_boolean('activate-on-hover')){
+                    || this.layout == Constants.MENU_LAYOUT.Mint ||  this.layout==Constants.MENU_LAYOUT.Budgie) 
+                        && this._button._settings.get_boolean('activate-on-hover')){
                 if (this._category)
                     this._button.selectCategory(this._category);
                 else if(this.title =="All Programs")

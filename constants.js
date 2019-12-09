@@ -179,7 +179,7 @@ var MENU_STYLE_CHOOSER = {
             name: 'Ubuntu Dash Style'
         },
         {   thumbnail: '/media/layouts/budgie-menu.svg',
-            name: 'Budgie Desktop Style'
+            name: 'Budgie Style'
         }
     ]
 };

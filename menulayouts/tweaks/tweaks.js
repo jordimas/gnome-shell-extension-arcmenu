@@ -70,7 +70,7 @@ var TweaksDialog = GObject.registerClass(
             else if(menuLayout == Constants.MENU_LAYOUT.UbuntuDash)
                 this._loadPlaceHolderTweaks(vbox);
             else if(menuLayout == Constants.MENU_LAYOUT.Budgie)
-                this._loadPlaceHolderTweaks(vbox);
+                this._loadBudgieMenuTweaks(vbox);
             else
                 this._loadPlaceHolderTweaks(vbox);
         }
@@ -104,6 +104,11 @@ var TweaksDialog = GObject.registerClass(
             let briskMenuTweaksFrame = new PW.FrameBox();
             briskMenuTweaksFrame.add(this._createActivateOnHoverRow());
             vbox.add(briskMenuTweaksFrame);
+        }
+        _loadBudgieMenuTweaks(vbox){
+            let budgieMenuTweaksFrame = new PW.FrameBox();
+            budgieMenuTweaksFrame.add(this._createActivateOnHoverRow());
+            vbox.add(budgieMenuTweaksFrame);
         }
         _loadMintMenuTweaks(vbox){
             let mintMenuTweaksFrame = new PW.FrameBox();
