@@ -211,11 +211,11 @@ var createMenu = class{
         this._display();
      }
      _createFavoritesMenu(){
-        let alignment = this.leftClickMenu._arrowAlignment;
-        let sourceActor =  modernGnome ?  this._button : this._button.actor;
-        this.favoritesMenu = new PopupMenu.PopupMenu(sourceActor, alignment, St.Side.TOP);
-        this.favoritesMenu._boxPointer.setSourceAlignment(alignment);
-        this.favoritesMenu._boxPointer._border.queue_repaint();
+      
+        this.dummyCursor = new St.Widget({ width: 0, height: 0, opacity: 0 });
+        let sourceActor =  modernGnome ?  this.dummyCursor : this.dummyCursor.actor;
+        Main.uiGroup.add_actor(this.dummyCursor);
+        this.favoritesMenu = new PopupMenu.PopupMenu(sourceActor, 0, St.Side.TOP);
         this.section = new PopupMenu.PopupMenuSection();
         this.favoritesMenu.addMenuItem(this.section);  
         
@@ -263,12 +263,7 @@ var createMenu = class{
         }
         if (GLib.find_program_in_path("gnome-control-center")) {
             let shortcutMenuItem = new MW.ShortcutMenuItem(this, _("Settings"), "preferences-system-symbolic", "gnome-control-center");
-            this.leftPanelShortcutsBox.add_actor(shortcutMenuItem.actor, {
-                expand: false,
-                x_fill: true,
-                y_fill: false,
-                y_align: St.Align.START,
-            });
+            this.leftPanelShortcutsBox.add_actor(shortcutMenuItem.actor);
            
         }
         let themeContext = St.ThemeContext.get_for_stage(global.stage);
@@ -282,12 +277,29 @@ var createMenu = class{
         Main.uiGroup.add_actor(this.favoritesMenu.actor);
      }
      toggleFavoritesMenu(){
-        let addStyle=this._settings.get_boolean('enable-custom-arc-menu');
+        let appsScrollBoxAdj = this.applicationsScrollBox.get_vscroll_bar().get_adjustment();
+        appsScrollBoxAdj.set_value(0);
 
+
+        let addStyle=this._settings.get_boolean('enable-custom-arc-menu');
+        
         this.favoritesMenu.actor.style_class = addStyle ? 'arc-menu-boxpointer': 'popup-menu-boxpointer';
         this.favoritesMenu.actor.add_style_class_name( addStyle ? 'arc-menu' : 'popup-menu');
-        this.favoritesMenu.actor.style = "-arrow-border-color:rgba(0,0,0,0); width: 250px;";  
+        this.favoritesMenu.actor.style = "-arrow-border-color:rgba(0,0,0,0); width: 250px;-arrow-base:0px;-arrow-rise:0px;";  
         this.favoritesButton.tooltip.hide();
+        let themeNode = this.leftClickMenu.actor.get_theme_node();
+        let rise = themeNode.get_length('-arrow-rise');
+        let base = themeNode.get_length('-arrow-base');
+        let borderRadius = themeNode.get_length('-arrow-border-radius');
+        this.leftClickMenu.actor.get_allocation_box();
+        let [x, y] = this.leftClickMenu.actor.get_transformed_position();
+        if(this.leftClickMenu._arrowSide == St.Side.TOP)
+            y += rise;
+        if(this.leftClickMenu._arrowSide == St.Side.LEFT)
+            x= x+(borderRadius * 2) + rise + 1;
+        else
+            x = x+(borderRadius * 2) + 1;
+        this.dummyCursor.set_position(Math.round(x), Math.round(y));
         this.favoritesMenu.toggle();
      }
 
