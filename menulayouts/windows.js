@@ -109,6 +109,7 @@ var createMenu = class{
             x_align: St.Align.END,
             margin:5,
         });
+        this.placesBottomBox.style = "spacing: 5px;";
         let path = GLib.get_user_special_dir(imports.gi.GLib.UserDirectory.DIRECTORY_DOCUMENTS);
         if (path != null){
             let placeInfo = new MW.PlaceInfo(Gio.File.new_for_path(path), _("Documents"));
@@ -211,7 +212,8 @@ var createMenu = class{
      }
      _createFavoritesMenu(){
         let alignment = this.leftClickMenu._arrowAlignment;
-        this.favoritesMenu = new PopupMenu.PopupMenu(this._button, alignment, St.Side.TOP);
+        let sourceActor =  modernGnome ?  this._button : this._button.actor;
+        this.favoritesMenu = new PopupMenu.PopupMenu(sourceActor, alignment, St.Side.TOP);
         this.favoritesMenu._boxPointer.setSourceAlignment(alignment);
         this.favoritesMenu._boxPointer._border.queue_repaint();
         this.section = new PopupMenu.PopupMenuSection();
@@ -246,6 +248,7 @@ var createMenu = class{
         this.leftPanelShortcutsBox = new St.BoxLayout({
             vertical: true
         });     
+
         this.leftPanelPopup.add(this.leftPanelShortcutsBox,{
             expand:true,
             x_fill:true,
