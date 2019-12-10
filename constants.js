@@ -182,7 +182,7 @@ var MENU_STYLE_CHOOSER = {
         {   thumbnail: '/media/layouts/budgie-menu.svg',
             name: 'Budgie Style'
         },
-        {   thumbnail: '/media/layouts/arc-menu.svg',
+        {   thumbnail: '/media/layouts/windows-10.svg',
             name: 'Windows 10 Style'
         }
     ]
