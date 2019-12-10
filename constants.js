@@ -122,7 +122,8 @@ var MENU_LAYOUT = { // See: org.gnome.shell.extensions.arc-menu.menu-position
     Simple2: 8,
     Redmond: 9,
     UbuntuDash: 10,
-    Budgie: 11
+    Budgie: 11,
+    Windows: 12
 };
 
 var MENU_APPEARANCE = { // See: org.gnome.shell.extensions.arc-menu.menu-button-icon
@@ -180,6 +181,9 @@ var MENU_STYLE_CHOOSER = {
         },
         {   thumbnail: '/media/layouts/budgie-menu.svg',
             name: 'Budgie Style'
+        },
+        {   thumbnail: '/media/layouts/arc-menu.svg',
+            name: 'Windows 10 Style'
         }
     ]
 };

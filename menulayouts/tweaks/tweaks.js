@@ -71,6 +71,8 @@ var TweaksDialog = GObject.registerClass(
                 this._loadPlaceHolderTweaks(vbox);
             else if(menuLayout == Constants.MENU_LAYOUT.Budgie)
                 this._loadBudgieMenuTweaks(vbox);
+            else if(menuLayout == Constants.MENU_LAYOUT.Windows)
+                this._loadWindowsMenuTweaks(vbox);
             else
                 this._loadPlaceHolderTweaks(vbox);
         }
@@ -99,6 +101,26 @@ var TweaksDialog = GObject.registerClass(
             activateOnHoverRow.add(activateOnHoverLabel);
             activateOnHoverRow.add(activateOnHoverCombo);
             return activateOnHoverRow;
+        }
+        _createAvatarShapeRow(){
+            let avatarStyleRow = new PW.FrameBoxRow();
+            let avatarStyleLabel = new Gtk.Label({
+                label: _('Avatar Icon Shape'),
+                xalign:0,
+                hexpand: true,
+            });   
+            let avatarStyleCombo = new Gtk.ComboBoxText({ halign: Gtk.Align.END });
+            avatarStyleCombo.append_text(_("Circular"));
+            avatarStyleCombo.append_text(_("Square"));
+            avatarStyleCombo.set_active(this._settings.get_enum('avatar-style'));
+            avatarStyleCombo.connect('changed', (widget) => {
+                this._settings.set_enum('avatar-style', widget.get_active());
+                Prefs.saveCSS(this._settings);
+                this._settings.set_boolean('reload-theme',true);
+            });
+            avatarStyleRow.add(avatarStyleLabel);
+            avatarStyleRow.add(avatarStyleCombo);
+            return avatarStyleRow 
         }
         _loadBriskMenuTweaks(vbox){
             let briskMenuTweaksFrame = new PW.FrameBox();
@@ -305,50 +327,23 @@ var TweaksDialog = GObject.registerClass(
             let whiskerMenuTweaksFrame = new PW.FrameBox();
             whiskerMenuTweaksFrame.add(this._createActivateOnHoverRow());
 
-            let avatarStyleRow = new PW.FrameBoxRow();
-            let avatarStyleLabel = new Gtk.Label({
-                label: _('Avatar Icon Shape'),
-                xalign:0,
-                hexpand: true,
-            });   
-            let avatarStyleCombo = new Gtk.ComboBoxText({ halign: Gtk.Align.END });
-            avatarStyleCombo.append_text(_("Circular"));
-            avatarStyleCombo.append_text(_("Square"));
-            avatarStyleCombo.set_active(this._settings.get_enum('avatar-style'));
-            avatarStyleCombo.connect('changed', (widget) => {
-                this._settings.set_enum('avatar-style', widget.get_active());
-                Prefs.saveCSS(this._settings);
-                this._settings.set_boolean('reload-theme',true);
-            });
-            avatarStyleRow.add(avatarStyleLabel);
-            avatarStyleRow.add(avatarStyleCombo);
-            whiskerMenuTweaksFrame.add(avatarStyleRow);
+            whiskerMenuTweaksFrame.add(this._createAvatarShapeRow());
 
             vbox.add(whiskerMenuTweaksFrame);
         }
         _loadRedmondMenuTweaks(vbox){
             let redmondMenuTweaksFrame = new PW.FrameBox();
 
-            let avatarStyleRow = new PW.FrameBoxRow();
-            let avatarStyleLabel = new Gtk.Label({
-                label: _('Avatar Icon Shape'),
-                xalign:0,
-                hexpand: true,
-            });   
-            let avatarStyleCombo = new Gtk.ComboBoxText({ halign: Gtk.Align.END });
-            avatarStyleCombo.append_text(_("Circular"));
-            avatarStyleCombo.append_text(_("Square"));
-            avatarStyleCombo.set_active(this._settings.get_enum('avatar-style'));
-            avatarStyleCombo.connect('changed', (widget) => {
-                this._settings.set_enum('avatar-style', widget.get_active());
-                Prefs.saveCSS(this._settings);
-                this._settings.set_boolean('reload-theme',true);
-            });
-            avatarStyleRow.add(avatarStyleLabel);
-            avatarStyleRow.add(avatarStyleCombo);
-            redmondMenuTweaksFrame.add(avatarStyleRow);
+            redmondMenuTweaksFrame.add(this._createAvatarShapeRow());
 
             vbox.add(redmondMenuTweaksFrame);
+        }
+        _loadWindowsMenuTweaks(vbox){
+            let windowsMenuTweaksFrame = new PW.FrameBox();
+
+            windowsMenuTweaksFrame.add(this._createAvatarShapeRow());
+
+            vbox.add(windowsMenuTweaksFrame);
         }
         _loadGnomeMenuTweaks(vbox){
             let gnomeMenuTweaksFrame = new PW.FrameBox();
@@ -396,24 +391,7 @@ var TweaksDialog = GObject.registerClass(
             defaultLeftBoxRow.add(defaultLeftBoxCombo);
             arcMenuTweaksFrame.add(defaultLeftBoxRow);
 
-            let avatarStyleRow = new PW.FrameBoxRow();
-            let avatarStyleLabel = new Gtk.Label({
-                label: _('Avatar Icon Shape'),
-                xalign:0,
-                hexpand: true,
-            });   
-            let avatarStyleCombo = new Gtk.ComboBoxText({ halign: Gtk.Align.END });
-            avatarStyleCombo.append_text(_("Circular"));
-            avatarStyleCombo.append_text(_("Square"));
-            avatarStyleCombo.set_active(this._settings.get_enum('avatar-style'));
-            avatarStyleCombo.connect('changed', (widget) => {
-                this._settings.set_enum('avatar-style', widget.get_active());
-                Prefs.saveCSS(this._settings);
-                this._settings.set_boolean('reload-theme',true);
-            });
-            avatarStyleRow.add(avatarStyleLabel);
-            avatarStyleRow.add(avatarStyleCombo);
-            arcMenuTweaksFrame.add(avatarStyleRow);
+            arcMenuTweaksFrame.add(this._createAvatarShapeRow());
             vbox.add(arcMenuTweaksFrame);
         }
 });

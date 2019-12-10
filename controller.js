@@ -168,7 +168,8 @@ var MenuSettingsController = class {
         this._menuButton.updateHeight();
     }
     _updateFavorites(){
-        if(this._settings.get_enum('menu-layout') == Constants.MENU_LAYOUT.Default){
+        if(this._settings.get_enum('menu-layout') == Constants.MENU_LAYOUT.Default || 
+            this._settings.get_enum('menu-layout') == Constants.MENU_LAYOUT.Windows){
             if(this._menuButton.getShouldLoadFavorites())
                 this._menuButton._loadFavorites();
             if(this._menuButton.getCurrentMenu() == Constants.CURRENT_MENU.FAVORITES)
