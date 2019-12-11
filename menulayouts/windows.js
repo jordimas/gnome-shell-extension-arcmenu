@@ -295,8 +295,6 @@ var createMenu = class{
         let [x, y] = this.leftClickMenu.actor.get_transformed_position();
         if(this.leftClickMenu._arrowSide == St.Side.TOP)
             y += rise + 1;
-        else if(this.leftClickMenu._arrowSide == St.Side.BOTTOM)
-            y += 2;
         else 
             y += 1;
         if(this.leftClickMenu._arrowSide == St.Side.LEFT)
