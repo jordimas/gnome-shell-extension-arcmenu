@@ -339,11 +339,16 @@ var TweaksDialog = GObject.registerClass(
             vbox.add(redmondMenuTweaksFrame);
         }
         _loadWindowsMenuTweaks(vbox){
-            let windowsMenuTweaksFrame = new PW.FrameBox();
+            let notebook = new PW.Notebook();
 
+            let pinnedAppsPage = new Prefs.PinnedAppsPage(this._settings);
+            notebook.append_page(pinnedAppsPage);
+
+            let windowsMenuTweaksFrame = new PW.FrameBox();
             windowsMenuTweaksFrame.add(this._createAvatarShapeRow());
 
             vbox.add(windowsMenuTweaksFrame);
+            vbox.add(notebook);
         }
         _loadGnomeMenuTweaks(vbox){
             let gnomeMenuTweaksFrame = new PW.FrameBox();
