@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-11-29 09:29-0500\n"
+"POT-Creation-Date: 2019-12-11 17:18-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -33,7 +33,7 @@ msgid_plural "%d more"
 msgstr[0] ""
 msgstr[1] ""
 
-#: prefs.js:41 prefs.js:722 menulayouts/tweaks/tweaks.js:375
+#: prefs.js:41 prefs.js:722 menulayouts/tweaks/tweaks.js:382
 msgid "Pinned Apps"
 msgstr ""
 
@@ -45,7 +45,7 @@ msgstr ""
 msgid "Add Custom Shortcut"
 msgstr ""
 
-#: prefs.js:130 prefs.js:529 menulayouts/tweaks/tweaks.js:119
+#: prefs.js:130 prefs.js:529 menulayouts/tweaks/tweaks.js:148
 msgid "Save"
 msgstr ""
 
@@ -121,11 +121,11 @@ msgstr ""
 msgid "Disable activities hot corner"
 msgstr ""
 
-#: prefs.js:716 menulayouts/tweaks/tweaks.js:369
+#: prefs.js:716 menulayouts/tweaks/tweaks.js:376
 msgid "Arc Menu Default View"
 msgstr ""
 
-#: prefs.js:723 menulayouts/tweaks/tweaks.js:376
+#: prefs.js:723 menulayouts/tweaks/tweaks.js:383
 msgid "Categories List"
 msgstr ""
 
@@ -433,6 +433,7 @@ msgid "Home"
 msgstr ""
 
 #: prefs.js:2841 menulayouts/redmond.js:316 menulayouts/arcmenu.js:519
+#: menulayouts/windows.js:115 menulayouts/windows.js:259
 #: menulayouts/ubuntudash.js:150
 msgid "Documents"
 msgstr ""
@@ -473,39 +474,39 @@ msgstr ""
 msgid "Bookmarks"
 msgstr ""
 
-#: prefs.js:2927 menuWidgets.js:618 menulayouts/redmond.js:440
-#: menulayouts/brisk.js:392 menulayouts/arcmenu.js:264 menulayouts/mint.js:248
+#: prefs.js:2927 menulayouts/redmond.js:440 menulayouts/brisk.js:392
+#: menulayouts/arcmenu.js:264 menulayouts/mint.js:251
 msgid "Software"
 msgstr ""
 
-#: prefs.js:2927 menuWidgets.js:701 menulayouts/redmond.js:440
-#: menulayouts/brisk.js:392 menulayouts/arcmenu.js:264 menulayouts/mint.js:242
+#: prefs.js:2927 menuWidgets.js:683 menulayouts/redmond.js:440
+#: menulayouts/brisk.js:392 menulayouts/arcmenu.js:264
+#: menulayouts/windows.js:264 menulayouts/mint.js:245
 msgid "Settings"
 msgstr ""
 
-#: prefs.js:2927 menuWidgets.js:637 menuWidgets.js:1033
-#: menulayouts/redmond.js:440 menulayouts/arcmenu.js:264
-#: menulayouts/mint.js:241
+#: prefs.js:2927 menuWidgets.js:1108 menulayouts/redmond.js:440
+#: menulayouts/arcmenu.js:264 menulayouts/mint.js:244
 msgid "Terminal"
 msgstr ""
 
-#: prefs.js:2927 menuWidgets.js:421
+#: prefs.js:2927 menuWidgets.js:433
 msgid "Activities Overview"
 msgstr ""
 
-#: prefs.js:2964 menuWidgets.js:751
+#: prefs.js:2964 menuWidgets.js:799
 msgid "Suspend"
 msgstr ""
 
-#: prefs.js:2981 menuWidgets.js:769 menulayouts/mint.js:251
+#: prefs.js:2981 menuWidgets.js:816 menulayouts/mint.js:254
 msgid "Lock"
 msgstr ""
 
-#: prefs.js:2998 menuWidgets.js:738 menulayouts/mint.js:250
+#: prefs.js:2998 menuWidgets.js:787 menulayouts/mint.js:253
 msgid "Log Out"
 msgstr ""
 
-#: prefs.js:3015 menuWidgets.js:725 menulayouts/mint.js:252
+#: prefs.js:3015 menuWidgets.js:775 menulayouts/mint.js:255
 msgid "Power Off"
 msgstr ""
 
@@ -581,123 +582,121 @@ msgstr ""
 msgid "GitLab Page"
 msgstr ""
 
-#: menuWidgets.js:125
+#: menuWidgets.js:123
 msgid "Open Folder Location"
 msgstr ""
 
-#: menuWidgets.js:141
+#: menuWidgets.js:139
 msgid "Current Windows:"
 msgstr ""
 
-#: menuWidgets.js:160
+#: menuWidgets.js:158
 msgid "New Window"
 msgstr ""
 
-#: menuWidgets.js:170
+#: menuWidgets.js:168
 msgid "Launch using Dedicated Graphics Card"
 msgstr ""
 
-#: menuWidgets.js:193
+#: menuWidgets.js:191
 msgid "Remove from Favorites"
 msgstr ""
 
-#: menuWidgets.js:199
+#: menuWidgets.js:197
 msgid "Add to Favorites"
 msgstr ""
 
-#: menuWidgets.js:220 menuWidgets.js:273
+#: menuWidgets.js:218 menuWidgets.js:271
 msgid "Unpin from Arc Menu"
 msgstr ""
 
-#: menuWidgets.js:235
+#: menuWidgets.js:233
 msgid "Pin to Arc Menu"
 msgstr ""
 
-#: menuWidgets.js:248
+#: menuWidgets.js:246
 msgid "Show Details"
 msgstr ""
 
-#: menuWidgets.js:606 menulayouts/mint.js:249
-msgid "Files"
-msgstr ""
-
-#: menuWidgets.js:713
-msgid "Users"
-msgstr ""
-
-#: menuWidgets.js:793
-msgid "Back"
-msgstr ""
-
-#: menuWidgets.js:861 menuWidgets.js:1555 menuWidgets.js:1684
-#: menuWidgets.js:1850
-msgid "All Programs"
-msgstr ""
-
-#: menuWidgets.js:1030 menu.js:526
-msgid "Arc Menu Settings"
-msgstr ""
-
-#: menuWidgets.js:1555 menuWidgets.js:1684 menuWidgets.js:1850
+#: menuWidgets.js:695 menuWidgets.js:1651 menuWidgets.js:1795
+#: menuWidgets.js:1961
 msgid "Favorites"
 msgstr ""
 
-#: menuWidgets.js:1558 menuWidgets.js:1687 menuWidgets.js:1853
+#: menuWidgets.js:710
+msgid "Users"
+msgstr ""
+
+#: menuWidgets.js:839
+msgid "Back"
+msgstr ""
+
+#: menuWidgets.js:899 menuWidgets.js:1651 menuWidgets.js:1795
+#: menuWidgets.js:1961
+msgid "All Programs"
+msgstr ""
+
+#: menuWidgets.js:1105 menu.js:540
+msgid "Arc Menu Settings"
+msgstr ""
+
+#: menuWidgets.js:1654 menuWidgets.js:1798 menuWidgets.js:1964
 msgid "Frequent Apps"
 msgstr ""
 
-#: menuWidgets.js:2016
+#: menuWidgets.js:2127
 msgid "Type to search…"
 msgstr ""
 
-#: menuWidgets.js:2185
+#: menuWidgets.js:2296
 msgid "Applications"
 msgstr ""
 
-#: menu.js:535
+#: menu.js:549
 msgid "Arc Menu on GitLab"
 msgstr ""
 
-#: menu.js:540
+#: menu.js:554
 msgid "About Arc Menu"
 msgstr ""
 
-#: menu.js:548
+#: menu.js:562
 msgid "Dash to Panel Settings"
 msgstr ""
 
-#: menulayouts/tweaks/tweaks.js:78
+#: menulayouts/mint.js:252
+msgid "Files"
+msgstr ""
+
+#: menulayouts/tweaks/tweaks.js:82
 msgid "Category Activation"
 msgstr ""
 
-#: menulayouts/tweaks/tweaks.js:84
+#: menulayouts/tweaks/tweaks.js:88
 msgid "Mouse Click"
 msgstr ""
 
-#: menulayouts/tweaks/tweaks.js:85
+#: menulayouts/tweaks/tweaks.js:89
 msgid "Mouse Hover"
 msgstr ""
 
-#: menulayouts/tweaks/tweaks.js:145
-msgid "Separator Position Index"
-msgstr ""
-
-#: menulayouts/tweaks/tweaks.js:303 menulayouts/tweaks/tweaks.js:327
-#: menulayouts/tweaks/tweaks.js:394
+#: menulayouts/tweaks/tweaks.js:108
 msgid "Avatar Icon Shape"
 msgstr ""
 
-#: menulayouts/tweaks/tweaks.js:308 menulayouts/tweaks/tweaks.js:332
-#: menulayouts/tweaks/tweaks.js:399
+#: menulayouts/tweaks/tweaks.js:113
 msgid "Circular"
 msgstr ""
 
-#: menulayouts/tweaks/tweaks.js:309 menulayouts/tweaks/tweaks.js:333
-#: menulayouts/tweaks/tweaks.js:400
+#: menulayouts/tweaks/tweaks.js:114
 msgid "Square"
 msgstr ""
 
-#: menulayouts/tweaks/tweaks.js:355
+#: menulayouts/tweaks/tweaks.js:174
+msgid "Separator Position Index"
+msgstr ""
+
+#: menulayouts/tweaks/tweaks.js:362
 msgid "Nothing Yet!"
 msgstr ""
 
