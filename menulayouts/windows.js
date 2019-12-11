@@ -213,9 +213,8 @@ var createMenu = class{
      _createFavoritesMenu(){
       
         this.dummyCursor = new St.Widget({ width: 0, height: 0, opacity: 0 });
-        let sourceActor =  modernGnome ?  this.dummyCursor : this.dummyCursor.actor;
         Main.uiGroup.add_actor(this.dummyCursor);
-        this.favoritesMenu = new PopupMenu.PopupMenu(sourceActor, 0, St.Side.TOP);
+        this.favoritesMenu = new PopupMenu.PopupMenu(this.dummyCursor, 0, St.Side.TOP);
         this.section = new PopupMenu.PopupMenuSection();
         this.favoritesMenu.addMenuItem(this.section);  
         
@@ -285,7 +284,7 @@ var createMenu = class{
         
         this.favoritesMenu.actor.style_class = addStyle ? 'arc-menu-boxpointer': 'popup-menu-boxpointer';
         this.favoritesMenu.actor.add_style_class_name( addStyle ? 'arc-menu' : 'popup-menu');
-        this.favoritesMenu.actor.style = "-arrow-border-color:rgba(0,0,0,0); width: 250px;-arrow-base:0px;-arrow-rise:0px;";  
+        this.favoritesMenu.actor.style = "-boxpointer-gap: 0px; -arrow-border-color:rgba(0,0,0,0); -arrow-border-width:0px; width: 250px;-arrow-base:0px;-arrow-rise:0px;";  
         this.favoritesButton.tooltip.hide();
         let themeNode = this.leftClickMenu.actor.get_theme_node();
         let rise = themeNode.get_length('-arrow-rise');
@@ -294,7 +293,11 @@ var createMenu = class{
         this.leftClickMenu.actor.get_allocation_box();
         let [x, y] = this.leftClickMenu.actor.get_transformed_position();
         if(this.leftClickMenu._arrowSide == St.Side.TOP)
-            y += rise;
+            y += rise + 1;
+        else if(this.leftClickMenu._arrowSide == St.Side.BOTTOM)
+            y += 2;
+        else 
+            y += 1;
         if(this.leftClickMenu._arrowSide == St.Side.LEFT)
             x= x+(borderRadius * 2) + rise + 1;
         else
