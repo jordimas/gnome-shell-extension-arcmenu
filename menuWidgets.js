@@ -1182,7 +1182,8 @@ var FavoritesMenuItem = Utils.createClass({
         this.dragStartY = (this._draggable._dragStartY); 
         this._emptyDropTarget = new Dash.EmptyDropTargetItem();
         this._emptyDropTarget.setChild(new St.Bin({ style_class: 'arc-empty-dash-drop-target' }));  
-
+        if(this._button._settings.get_enum('menu-layout')== Constants.MENU_LAYOUT.Windows)
+            this._emptyDropTarget.style = "width: 250px;";
         let p = this._button.applicationsBox.get_transformed_position();
         this.posY= p[1];        
         this.rowHeight = this._button.applicationsBox.get_child_at_index(0).height;

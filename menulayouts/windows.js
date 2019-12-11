@@ -471,8 +471,7 @@ var createMenu = class{
                 let favoritesMenuItem = new MW.FavoritesMenuItem(this, pinnedApps[i], pinnedApps[i+1], pinnedApps[i+2]);
                 favoritesMenuItem.connect('saveSettings', ()=>{
                     let array = [];
-                    for(let i = 0;i < this.favoritesArray.length; i++)
-                    {
+                    for(let i = 0;i < this.favoritesArray.length; i++){
                         array.push(this.favoritesArray[i]._name);
                         array.push(this.favoritesArray[i]._iconPath);
                         array.push(this.favoritesArray[i]._command);		   
