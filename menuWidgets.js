@@ -692,7 +692,7 @@ var SettingsButton = class ArcMenu_SettingsButton extends SessionButton {
 var FavoritesButton = class ArcMenu_FavoritesButton extends SessionButton {
     // Initialize the button
     constructor(button) {
-        super(button, _("Favorites"), 'open-menu-symbolic');
+        super(button, _("Favorites"), Me.path + Constants.HAMBURGER.Path);
         super.disableMenuToggle();
     }
 

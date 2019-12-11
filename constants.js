@@ -205,7 +205,9 @@ var ARC_MENU_SYMBOLIC = {
 var ARC_MENU_ALT_SYMBOLIC = {
     Path: '/media/arc-menu-alt-symbolic.svg'
 };
-
+var HAMBURGER = {
+    Path: '/media/hamburger-symbolic.svg'
+};
 var KEYBOARD_LOGO = {
     Path: '/media/keyboard.svg',
     Size: [256, 72] 

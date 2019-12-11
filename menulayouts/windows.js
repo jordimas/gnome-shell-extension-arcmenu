@@ -289,6 +289,7 @@ var createMenu = class{
         let themeNode = this.leftClickMenu.actor.get_theme_node();
         let rise = themeNode.get_length('-arrow-rise');
         let base = themeNode.get_length('-arrow-base');
+        let borderWidth = themeNode.get_length('-arrow-border-width');
         let borderRadius = themeNode.get_length('-arrow-border-radius');
         this.leftClickMenu.actor.get_allocation_box();
         let [x, y] = this.leftClickMenu.actor.get_transformed_position();
@@ -301,8 +302,8 @@ var createMenu = class{
         if(this.leftClickMenu._arrowSide == St.Side.LEFT)
             x= x+(borderRadius * 2) + rise + 1;
         else
-            x = x+(borderRadius * 2) + 1;
-        this.dummyCursor.set_position(Math.round(x), Math.round(y));
+            x = x+(borderRadius * 2);
+        this.dummyCursor.set_position(Math.round(x+borderWidth), Math.round(y+borderWidth));
         this.favoritesMenu.toggle();
      }
 
