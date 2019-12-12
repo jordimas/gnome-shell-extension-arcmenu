@@ -83,7 +83,8 @@ var createMenu = class {
         this.leftClickMenu.actor.style = "-arrow-base:0px;-arrow-rise:0px;";
         this.leftClickMenu.sourceActor = this.dummyCursor;
         this.leftClickMenu.focusActor = this.dummyCursor;
-        this.leftClickMenu.actor.setPosition(this.dummyCursor,0);
+        this.leftClickMenu._boxPointer.setPosition(this.dummyCursor,0);
+        this.leftClickMenu._boxPointer.hide();
 
         this.mainBox.vertical = false;
         //Menus Left Box container
@@ -320,8 +321,8 @@ var createMenu = class {
         this.leftClickMenu.actor.style = this.oldMenuStlye;
         this.leftClickMenu.sourceActor = this.oldSourceActor;
         this.leftClickMenu.focusActor = this.oldFocusActor;
-        this.leftClickMenu.actor.setPosition(this.oldSourceActor, this.oldArrowAlignment);
-
+        this.leftClickMenu._boxPointer.setPosition(this.oldSourceActor, this.oldArrowAlignment);
+        this.leftClickMenu._boxPointer.hide();
         if(this.searchBox!=null){
             if (this._searchBoxChangedId > 0) {
                 this.searchBox.disconnect(this._searchBoxChangedId);
