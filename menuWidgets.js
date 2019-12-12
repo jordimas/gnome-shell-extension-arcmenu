@@ -464,6 +464,7 @@ var Tooltip = class ArcMenu_Tooltip{
         this.sourceActor = sourceActor;
         this.isMenuItem = isMenuItem;
         this._settings = settings;
+        this.flipY = false;
         this.actor = new St.Label({
             style_class: 'dash-label',
             text: text ? text : "",
@@ -520,6 +521,8 @@ var Tooltip = class ArcMenu_Tooltip{
 
             let x = this.isMenuItem ? stageX: stageX - Math.round((this.actor.get_width() - width) / 2);
             let y = this.isMenuItem ? stageY + height: stageY - this.actor.get_height() - 5;
+            if(this.flipY) 
+                y = stageY + height + 5;
             if((x <= 0) || (x - menuX) < 10)
                 x = menuX + 10;
 
@@ -686,6 +689,20 @@ var SettingsButton = class ArcMenu_SettingsButton extends SessionButton {
     // Activate the button (Shutdown)
     activate() {
         Util.spawnCommandLine('gnome-control-center');
+    }
+};
+
+// Arc Menu Settings Button
+var ArcMenuSettingsButton = class ArcMenu_ArcMenuSettingsButton extends SessionButton {
+    // Initialize the button
+    constructor(button) {
+        super(button, _("Arc Menu Settings"), 'emblem-system-symbolic');
+        this.tooltip.flipY = true;
+    }
+
+    // Activate the button (Shutdown)
+    activate() {
+        Util.spawnCommandLine('gnome-shell-extension-prefs arc-menu@linxgem33.com');
     }
 };
 

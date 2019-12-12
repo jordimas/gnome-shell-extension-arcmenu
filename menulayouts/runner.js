@@ -82,7 +82,7 @@ var createMenu = class {
         this.leftBox.style = "width: " + RUNNER_WIDTH + "px";
         // Create search box
         this.searchBox = new MW.SearchBox(this);
-        this.searchBox.actor.style = "padding-top: 0.75em; padding-bottom: 0.25em;padding-left: 1em;padding-right: 0.25em;margin-right: .5em;";
+        this.searchBox.actor.style = "padding-top: 0.5em; padding-bottom: 0.5em;padding-left: 1em;padding-right: .5em;";
         this._firstAppItem = null;
         this._firstApp = null;
         this._tabbedOnce = false;
@@ -128,6 +128,15 @@ var createMenu = class {
             x_fill: true,
             y_fill: true
         });
+        this.arcMenuSettingsButton = new MW.ArcMenuSettingsButton( this);
+        this.mainBox.add(this.arcMenuSettingsButton.actor, {
+            expand: false,
+            x_fill: false,
+            y_fill: false,
+            y_align: St.Align.START,
+            x_align: St.Align.CENTER
+        });
+        this.arcMenuSettingsButton.actor.style = "margin-right:5px;";
         this._display(); 
     }
     updateRunnerLocation(){
@@ -136,10 +145,10 @@ var createMenu = class {
         let [x, y] = this._button._menuButtonWidget.actor.get_transformed_position();
         let currentMonitor = screen.get_monitor_at_point(x,y);
         
-        let rect = screen.get_monitor_geometry(currentMonitor);
+        let rect = screen.get_monitor_workarea(currentMonitor);
         //Position the runner menu in the center of the current monitor, at top of screen.
         let positionX = Math.round(rect.x + (rect.width / 2) - (RUNNER_WIDTH / 2));
-        let positionY = 0;
+        let positionY = rect.y;
         if(this._settings.get_enum('runner-position') == 1)
             positionY = Math.round(rect.y + (rect.height / 2)-100);
         this.dummyCursor.set_position(positionX,  positionY);
@@ -180,6 +189,7 @@ var createMenu = class {
             addStyle ? this.newSearch.setStyle('arc-menu-status-text') :  this.newSearch.setStyle('search-statustext'); 
             addStyle ? this.searchBox._stEntry.set_name('arc-search-entry') : this.searchBox._stEntry.set_name('search-entry');
         }
+        addStyle ? this.arcMenuSettingsButton.actor.add_style_class_name('arc-menu-action') : this.arcMenuSettingsButton.remove_style_class_name('arc-menu-action');
     }
     _loadCategories(){
     }
