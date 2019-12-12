@@ -139,8 +139,10 @@ var createMenu = class {
         let rect = screen.get_monitor_geometry(currentMonitor);
         //Position the runner menu in the center of the current monitor, at top of screen.
         let positionX = Math.round(rect.x + (rect.width / 2) - (RUNNER_WIDTH / 2));
-
-        this.dummyCursor.set_position(positionX, 0);
+        let positionY = 0;
+        if(this._settings.get_enum('runner-position') == 1)
+            positionY = Math.round(rect.y + (rect.height / 2)-100);
+        this.dummyCursor.set_position(positionX,  positionY);
 
     }
     // Create the menu layout

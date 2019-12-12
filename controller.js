@@ -113,7 +113,11 @@ var MenuSettingsController = class {
             this._settings.connect('changed::enable-pinned-apps',this._updateMenuDefaultView.bind(this)),
             this._settings.connect('changed::menu-layout', this._updateMenuLayout.bind(this)),
             this._settings.connect('changed::enable-large-icons', this.updateIcons.bind(this)),
+            this._settings.connect('changed::runner-position', this.updateRunnerLocation.bind(this)),
         ];
+    }
+    updateRunnerLocation(){
+        this._menuButton.updateRunnerLocation();
     }
     updateIcons(){
         this._menuButton.updateIcons();

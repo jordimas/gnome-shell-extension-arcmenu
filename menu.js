@@ -183,6 +183,7 @@ var ApplicationsButton =   Utils.defineClass({
             else if (layout == Constants.MENU_LAYOUT.Runner)
                 this.MenuLayout = new MenuLayouts.runner.createMenu(this);
             ///--------------------------------------------------------------------
+            this._setMenuPositionAlignment();
             this.tooltipShowing = false;
             this.tooltipHidingID = 0;
             this.tooltipShowingID = 0;
@@ -192,7 +193,9 @@ var ApplicationsButton =   Utils.defineClass({
             return this.MenuLayout;
         },
         _setMenuPositionAlignment(){
-            if(this._settings.get_enum('position-in-panel') == Constants.MENU_POSITION.Center){
+            let layout = this._settings.get_enum('menu-layout');
+            if(this._settings.get_enum('position-in-panel') == Constants.MENU_POSITION.Center &&
+                    layout != Constants.MENU_LAYOUT.Runner){
                 let arrowAlignment = (this._settings.get_int('menu-position-alignment') / 100);
                 this.rightClickMenu._arrowAlignment = arrowAlignment
                 this.leftClickMenu._arrowAlignment = arrowAlignment
@@ -399,6 +402,9 @@ var ApplicationsButton =   Utils.defineClass({
                 this.createMenuLayout();
                 return GLib.SOURCE_REMOVE;
             });  
+        },
+        updateRunnerLocation(){
+            this.MenuLayout.updateRunnerLocation();
         },
         updateIcons(){
             if(this.MenuLayout)

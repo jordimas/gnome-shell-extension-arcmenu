@@ -43,6 +43,10 @@
     <value value="2" nick="System_Icon"/>
     <value value="3" nick="Custom_Icon"/>
   </enum>
+    <enum id='org.gnome.shell.extensions.arc-menu.runner-position'>
+    <value value="0" nick="Top"/>
+    <value value="1" nick="Centered"/>
+  </enum>
   <schema path="/org/gnome/shell/extensions/arc-menu/" id="org.gnome.shell.extensions.arc-menu">
     
   <key type="i" name="menu-position-alignment">
@@ -289,6 +293,11 @@
       <default>'Left'</default>
       <summary>The menu position in the panel</summary>
       <description>The menu position in the panel.</description>
+    </key>
+      <key name="runner-position" enum="org.gnome.shell.extensions.arc-menu.runner-position">
+      <default>'Top'</default>
+      <summary>KRunner Menu Position</summary>
+      <description>KRunner Menu Position.</description>
     </key>
     <key name="menu-button-appearance" enum="org.gnome.shell.extensions.arc-menu.menu-button-appearance">
       <default>'Icon'</default>

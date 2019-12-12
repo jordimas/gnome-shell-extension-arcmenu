@@ -73,6 +73,8 @@ var TweaksDialog = GObject.registerClass(
                 this._loadBudgieMenuTweaks(vbox);
             else if(menuLayout == Constants.MENU_LAYOUT.Windows)
                 this._loadWindowsMenuTweaks(vbox);
+            else if(menuLayout == Constants.MENU_LAYOUT.Runner)
+                this._loadKRunnerMenuTweaks(vbox);
             else
                 this._loadPlaceHolderTweaks(vbox);
         }
@@ -131,6 +133,27 @@ var TweaksDialog = GObject.registerClass(
             let budgieMenuTweaksFrame = new PW.FrameBox();
             budgieMenuTweaksFrame.add(this._createActivateOnHoverRow());
             vbox.add(budgieMenuTweaksFrame);
+        }
+        _loadKRunnerMenuTweaks(vbox){
+            let kRunnerMenuTweaksFrame = new PW.FrameBox();
+            let runnerPositionRow = new PW.FrameBoxRow();
+            let runnerPositionLabel = new Gtk.Label({
+                label: _('KRunner Position'),
+                xalign:0,
+                hexpand: true,
+            });   
+            let runnerPositionCombo = new Gtk.ComboBoxText({ halign: Gtk.Align.END });
+            runnerPositionCombo.append_text(_("Top"));
+            runnerPositionCombo.append_text(_("Centered"));
+            runnerPositionCombo.set_active(this._settings.get_enum('runner-position'));
+            runnerPositionCombo.connect('changed', (widget) => {
+                this._settings.set_enum('runner-position', widget.get_active());
+            });
+            runnerPositionRow.add(runnerPositionLabel);
+            runnerPositionRow.add(runnerPositionCombo);
+            kRunnerMenuTweaksFrame.add(runnerPositionRow);
+
+            vbox.add(kRunnerMenuTweaksFrame);
         }
         _loadMintMenuTweaks(vbox){
             let mintMenuTweaksFrame = new PW.FrameBox();
