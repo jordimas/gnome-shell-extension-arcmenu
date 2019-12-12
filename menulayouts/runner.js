@@ -56,23 +56,11 @@ var createMenu = class {
         this.newSearch = new ArcSearch.SearchResults(this);     
         this._mainBoxKeyPressId = this.mainBox.connect('key-press-event', this._onMainBoxKeyPress.bind(this));
         
-        this.mainBox.style = `max-height: 450px;`; 
-
-        //Get screen, find monitor at point of menuButton, get that monitors geometry
-        let screen = Gdk.Screen.get_default();
-        this.leftClickMenu.actor.get_allocation_box();
-        let [x, y] = this._button._menuButtonWidget.actor.get_transformed_position();
-        let currentMonitor = screen.get_monitor_at_point(x,y);
-        let rect = screen.get_monitor_geometry(currentMonitor);
-
-        //Position the runner menu in the center of the current monitor, at top of screen.
-        let positionX = Math.round((rect.width / 2) - (RUNNER_WIDTH / 2));
-
-          
+        this.mainBox.style = `max-height: 450px;`;       
 
         this.dummyCursor = new St.Widget({ width: 0, height: 0, opacity: 0 });
         Main.uiGroup.add_actor(this.dummyCursor);
-        this.dummyCursor.set_position(positionX, 0);
+        this.updateRunnerLocation();
 
         //store old leftClickMenu variables
         this.oldMenuStlye = this.leftClickMenu.actor.style;
@@ -141,6 +129,19 @@ var createMenu = class {
             y_fill: true
         });
         this._display(); 
+    }
+    updateRunnerLocation(){
+        //Get screen, find monitor at point of menuButton, get that monitors geometry
+        let screen = Gdk.Screen.get_default();
+        let [x, y] = this._button._menuButtonWidget.actor.get_transformed_position();
+        let currentMonitor = screen.get_monitor_at_point(x,y);
+        
+        let rect = screen.get_monitor_geometry(currentMonitor);
+        //Position the runner menu in the center of the current monitor, at top of screen.
+        let positionX = Math.round(rect.x + (rect.width / 2) - (RUNNER_WIDTH / 2));
+
+        this.dummyCursor.set_position(positionX, 0);
+
     }
     // Create the menu layout
     _createRightBox(){

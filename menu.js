@@ -281,6 +281,8 @@ var ApplicationsButton =   Utils.defineClass({
                     if(layout == Constants.MENU_LAYOUT.GnomeDash)
                         Main.overview.toggle();
                     else{
+                        if(layout == Constants.MENU_LAYOUT.Runner)
+                            this.MenuLayout.updateRunnerLocation();
                         this.leftClickMenu.toggle();
                         if(this.leftClickMenu.isOpen){
                             if(!(layout == Constants.MENU_LAYOUT.Simple || layout == Constants.MENU_LAYOUT.Simple2))
@@ -298,6 +300,8 @@ var ApplicationsButton =   Utils.defineClass({
                     if(layout == Constants.MENU_LAYOUT.GnomeDash)
                         Main.overview.toggle();
                     else{
+                        if(layout == Constants.MENU_LAYOUT.Runner)
+                            this.MenuLayout.updateRunnerLocation();
                         this.leftClickMenu.toggle();	
                         if(this.leftClickMenu.isOpen){
                             if(!(layout == Constants.MENU_LAYOUT.Simple || layout == Constants.MENU_LAYOUT.Simple2))
@@ -320,6 +324,8 @@ var ApplicationsButton =   Utils.defineClass({
             if(layout == Constants.MENU_LAYOUT.GnomeDash)
                 Main.overview.toggle();
             else{
+                if(layout == Constants.MENU_LAYOUT.Runner)
+                    this.MenuLayout.updateRunnerLocation();
                 this.leftClickMenu.toggle();
                 if(this.leftClickMenu.isOpen){
                     if(!(layout == Constants.MENU_LAYOUT.Simple || layout == Constants.MENU_LAYOUT.Simple2))
