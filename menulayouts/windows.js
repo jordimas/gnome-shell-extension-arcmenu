@@ -363,7 +363,10 @@ var createMenu = class{
         this.setDefaultMenuView();  
     }
     _redisplayRightSide(){
-
+        let themeContext = St.ThemeContext.get_for_stage(global.stage);
+        let scaleFactor = themeContext.scale_factor;
+        let height =  Math.round(this._settings.get_int('menu-height') / scaleFactor);
+        this.leftPanelPopup.style = `height: ${height}px`;     
     }
         // Redisplay the menu
         _redisplay() {

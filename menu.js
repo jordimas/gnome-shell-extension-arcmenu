@@ -180,6 +180,8 @@ var ApplicationsButton =   Utils.defineClass({
                 this.MenuLayout = new MenuLayouts.budgie.createMenu(this);
             else if (layout == Constants.MENU_LAYOUT.Windows)
                 this.MenuLayout = new MenuLayouts.windows.createMenu(this);
+            else if (layout == Constants.MENU_LAYOUT.Runner)
+                this.MenuLayout = new MenuLayouts.runner.createMenu(this);
             ///--------------------------------------------------------------------
             this.tooltipShowing = false;
             this.tooltipHidingID = 0;
@@ -351,7 +353,7 @@ var ApplicationsButton =   Utils.defineClass({
             let themeContext = St.ThemeContext.get_for_stage(global.stage);
             let scaleFactor = themeContext.scale_factor;
             let height =  Math.round(this._settings.get_int('menu-height') / scaleFactor);
-            if(!(layout == Constants.MENU_LAYOUT.Simple || layout == Constants.MENU_LAYOUT.Simple2) && this.MenuLayout)
+            if(!(layout == Constants.MENU_LAYOUT.Simple || layout == Constants.MENU_LAYOUT.Simple2 || layout == Constants.MENU_LAYOUT.Runner) && this.MenuLayout)
                 this.mainBox.style = `height: ${height}px`;
             
            
