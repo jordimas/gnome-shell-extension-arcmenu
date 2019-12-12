@@ -136,7 +136,7 @@ var createMenu = class {
             y_align: St.Align.START,
             x_align: St.Align.CENTER
         });
-        this.arcMenuSettingsButton.actor.style = "margin-right:5px;";
+        this.arcMenuSettingsButton.actor.style = "margin-right: .5em;";
         this._display(); 
     }
     updateRunnerLocation(){
