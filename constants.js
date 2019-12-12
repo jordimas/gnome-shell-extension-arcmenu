@@ -186,7 +186,7 @@ var MENU_STYLE_CHOOSER = {
         {   thumbnail: '/media/layouts/windows-10.svg',
             name: 'Windows 10 Style'
         },
-        {   thumbnail: '/media/layouts/windows-10.svg',
+        {   thumbnail: '/media/layouts/krunner-menu.svg',
             name: 'KRunner Style'
         }
     ]
