@@ -13,6 +13,8 @@
     <value value='9' nick='Redmond'/>
     <value value='10' nick='UbuntuDash'/>
     <value value='11' nick='Budgie'/>
+    <value value='12' nick='Windows'/>
+    <value value='13' nick='Runner'/>
   </enum>
   <enum id='org.gnome.shell.extensions.arc-menu.menu-hotkey'>
     <value value='0' nick='Undefined'/>
@@ -40,6 +42,10 @@
     <value value="1" nick="Arc_Menu_Alt_Icon"/>
     <value value="2" nick="System_Icon"/>
     <value value="3" nick="Custom_Icon"/>
+  </enum>
+    <enum id='org.gnome.shell.extensions.arc-menu.runner-position'>
+    <value value="0" nick="Top"/>
+    <value value="1" nick="Centered"/>
   </enum>
   <schema path="/org/gnome/shell/extensions/arc-menu/" id="org.gnome.shell.extensions.arc-menu">
     
@@ -287,6 +293,11 @@
       <default>'Left'</default>
       <summary>The menu position in the panel</summary>
       <description>The menu position in the panel.</description>
+    </key>
+      <key name="runner-position" enum="org.gnome.shell.extensions.arc-menu.runner-position">
+      <default>'Top'</default>
+      <summary>KRunner Menu Position</summary>
+      <description>KRunner Menu Position.</description>
     </key>
     <key name="menu-button-appearance" enum="org.gnome.shell.extensions.arc-menu.menu-button-appearance">
       <default>'Icon'</default>

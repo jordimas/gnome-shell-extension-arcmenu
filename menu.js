@@ -178,7 +178,12 @@ var ApplicationsButton =   Utils.defineClass({
                 this.MenuLayout = new MenuLayouts.ubuntudash.createMenu(this); 
             else if (layout == Constants.MENU_LAYOUT.Budgie)
                 this.MenuLayout = new MenuLayouts.budgie.createMenu(this);
+            else if (layout == Constants.MENU_LAYOUT.Windows)
+                this.MenuLayout = new MenuLayouts.windows.createMenu(this);
+            else if (layout == Constants.MENU_LAYOUT.Runner)
+                this.MenuLayout = new MenuLayouts.runner.createMenu(this);
             ///--------------------------------------------------------------------
+            this._setMenuPositionAlignment();
             this.tooltipShowing = false;
             this.tooltipHidingID = 0;
             this.tooltipShowingID = 0;
@@ -188,20 +193,27 @@ var ApplicationsButton =   Utils.defineClass({
             return this.MenuLayout;
         },
         _setMenuPositionAlignment(){
-            if(this._settings.get_enum('position-in-panel') == Constants.MENU_POSITION.Center){
-                let arrowAlignment = (this._settings.get_int('menu-position-alignment') / 100);
-                this.rightClickMenu._arrowAlignment = arrowAlignment
-                this.leftClickMenu._arrowAlignment = arrowAlignment
-                this.rightClickMenu._boxPointer.setSourceAlignment(.5);
-                this.leftClickMenu._boxPointer.setSourceAlignment(.5);
+            let layout = this._settings.get_enum('menu-layout');
+            if(layout != Constants.MENU_LAYOUT.Runner){
+                if(this._settings.get_enum('position-in-panel') == Constants.MENU_POSITION.Center){
+                    let arrowAlignment = (this._settings.get_int('menu-position-alignment') / 100);
+                    this.rightClickMenu._arrowAlignment = arrowAlignment
+                    this.leftClickMenu._arrowAlignment = arrowAlignment
+                    this.rightClickMenu._boxPointer.setSourceAlignment(.5);
+                    this.leftClickMenu._boxPointer.setSourceAlignment(.5);
+                }
+                else if(this.dtp){
+                    let side = this.dtpSettings.get_string('panel-position');
+                    this.updateArrowSide(side ? side : 'TOP', false);
+                }  
+                else{
+                    this.updateArrowSide('TOP', false);
+                }
             }
-            else if(this.dtp){
-                let side = this.dtpSettings.get_string('panel-position');
-                this.updateArrowSide(side ? side : 'TOP', false);
-            }  
             else{
                 this.updateArrowSide('TOP', false);
             }
+
         },
         updateArrowSide(side, setAlignment = true){
             let arrowAlignment = 0;
@@ -277,6 +289,8 @@ var ApplicationsButton =   Utils.defineClass({
                     if(layout == Constants.MENU_LAYOUT.GnomeDash)
                         Main.overview.toggle();
                     else{
+                        if(layout == Constants.MENU_LAYOUT.Runner)
+                            this.MenuLayout.updateRunnerLocation();
                         this.leftClickMenu.toggle();
                         if(this.leftClickMenu.isOpen){
                             if(!(layout == Constants.MENU_LAYOUT.Simple || layout == Constants.MENU_LAYOUT.Simple2))
@@ -294,6 +308,8 @@ var ApplicationsButton =   Utils.defineClass({
                     if(layout == Constants.MENU_LAYOUT.GnomeDash)
                         Main.overview.toggle();
                     else{
+                        if(layout == Constants.MENU_LAYOUT.Runner)
+                            this.MenuLayout.updateRunnerLocation();
                         this.leftClickMenu.toggle();	
                         if(this.leftClickMenu.isOpen){
                             if(!(layout == Constants.MENU_LAYOUT.Simple || layout == Constants.MENU_LAYOUT.Simple2))
@@ -316,6 +332,8 @@ var ApplicationsButton =   Utils.defineClass({
             if(layout == Constants.MENU_LAYOUT.GnomeDash)
                 Main.overview.toggle();
             else{
+                if(layout == Constants.MENU_LAYOUT.Runner)
+                    this.MenuLayout.updateRunnerLocation();
                 this.leftClickMenu.toggle();
                 if(this.leftClickMenu.isOpen){
                     if(!(layout == Constants.MENU_LAYOUT.Simple || layout == Constants.MENU_LAYOUT.Simple2))
@@ -349,7 +367,7 @@ var ApplicationsButton =   Utils.defineClass({
             let themeContext = St.ThemeContext.get_for_stage(global.stage);
             let scaleFactor = themeContext.scale_factor;
             let height =  Math.round(this._settings.get_int('menu-height') / scaleFactor);
-            if(!(layout == Constants.MENU_LAYOUT.Simple || layout == Constants.MENU_LAYOUT.Simple2) && this.MenuLayout)
+            if(!(layout == Constants.MENU_LAYOUT.Simple || layout == Constants.MENU_LAYOUT.Simple2 || layout == Constants.MENU_LAYOUT.Runner) && this.MenuLayout)
                 this.mainBox.style = `height: ${height}px`;
             
            
@@ -389,6 +407,9 @@ var ApplicationsButton =   Utils.defineClass({
                 this.createMenuLayout();
                 return GLib.SOURCE_REMOVE;
             });  
+        },
+        updateRunnerLocation(){
+            this.MenuLayout.updateRunnerLocation();
         },
         updateIcons(){
             if(this.MenuLayout)

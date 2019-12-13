@@ -122,7 +122,9 @@ var MENU_LAYOUT = { // See: org.gnome.shell.extensions.arc-menu.menu-position
     Simple2: 8,
     Redmond: 9,
     UbuntuDash: 10,
-    Budgie: 11
+    Budgie: 11,
+    Windows: 12,
+    Runner: 13
 };
 
 var MENU_APPEARANCE = { // See: org.gnome.shell.extensions.arc-menu.menu-button-icon
@@ -180,6 +182,12 @@ var MENU_STYLE_CHOOSER = {
         },
         {   thumbnail: '/media/layouts/budgie-menu.svg',
             name: 'Budgie Style'
+        },
+        {   thumbnail: '/media/layouts/windows-10.svg',
+            name: 'Windows 10 Style'
+        },
+        {   thumbnail: '/media/layouts/krunner-menu.svg',
+            name: 'KRunner Style'
         }
     ]
 };
@@ -201,7 +209,9 @@ var ARC_MENU_SYMBOLIC = {
 var ARC_MENU_ALT_SYMBOLIC = {
     Path: '/media/arc-menu-alt-symbolic.svg'
 };
-
+var HAMBURGER = {
+    Path: '/media/hamburger-symbolic.svg'
+};
 var KEYBOARD_LOGO = {
     Path: '/media/keyboard.svg',
     Size: [256, 72] 

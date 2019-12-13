@@ -71,6 +71,10 @@ var TweaksDialog = GObject.registerClass(
                 this._loadPlaceHolderTweaks(vbox);
             else if(menuLayout == Constants.MENU_LAYOUT.Budgie)
                 this._loadBudgieMenuTweaks(vbox);
+            else if(menuLayout == Constants.MENU_LAYOUT.Windows)
+                this._loadWindowsMenuTweaks(vbox);
+            else if(menuLayout == Constants.MENU_LAYOUT.Runner)
+                this._loadKRunnerMenuTweaks(vbox);
             else
                 this._loadPlaceHolderTweaks(vbox);
         }
@@ -100,6 +104,26 @@ var TweaksDialog = GObject.registerClass(
             activateOnHoverRow.add(activateOnHoverCombo);
             return activateOnHoverRow;
         }
+        _createAvatarShapeRow(){
+            let avatarStyleRow = new PW.FrameBoxRow();
+            let avatarStyleLabel = new Gtk.Label({
+                label: _('Avatar Icon Shape'),
+                xalign:0,
+                hexpand: true,
+            });   
+            let avatarStyleCombo = new Gtk.ComboBoxText({ halign: Gtk.Align.END });
+            avatarStyleCombo.append_text(_("Circular"));
+            avatarStyleCombo.append_text(_("Square"));
+            avatarStyleCombo.set_active(this._settings.get_enum('avatar-style'));
+            avatarStyleCombo.connect('changed', (widget) => {
+                this._settings.set_enum('avatar-style', widget.get_active());
+                Prefs.saveCSS(this._settings);
+                this._settings.set_boolean('reload-theme',true);
+            });
+            avatarStyleRow.add(avatarStyleLabel);
+            avatarStyleRow.add(avatarStyleCombo);
+            return avatarStyleRow 
+        }
         _loadBriskMenuTweaks(vbox){
             let briskMenuTweaksFrame = new PW.FrameBox();
             briskMenuTweaksFrame.add(this._createActivateOnHoverRow());
@@ -109,6 +133,27 @@ var TweaksDialog = GObject.registerClass(
             let budgieMenuTweaksFrame = new PW.FrameBox();
             budgieMenuTweaksFrame.add(this._createActivateOnHoverRow());
             vbox.add(budgieMenuTweaksFrame);
+        }
+        _loadKRunnerMenuTweaks(vbox){
+            let kRunnerMenuTweaksFrame = new PW.FrameBox();
+            let runnerPositionRow = new PW.FrameBoxRow();
+            let runnerPositionLabel = new Gtk.Label({
+                label: _('KRunner Position'),
+                xalign:0,
+                hexpand: true,
+            });   
+            let runnerPositionCombo = new Gtk.ComboBoxText({ halign: Gtk.Align.END });
+            runnerPositionCombo.append_text(_("Top"));
+            runnerPositionCombo.append_text(_("Centered"));
+            runnerPositionCombo.set_active(this._settings.get_enum('runner-position'));
+            runnerPositionCombo.connect('changed', (widget) => {
+                this._settings.set_enum('runner-position', widget.get_active());
+            });
+            runnerPositionRow.add(runnerPositionLabel);
+            runnerPositionRow.add(runnerPositionCombo);
+            kRunnerMenuTweaksFrame.add(runnerPositionRow);
+
+            vbox.add(kRunnerMenuTweaksFrame);
         }
         _loadMintMenuTweaks(vbox){
             let mintMenuTweaksFrame = new PW.FrameBox();
@@ -305,50 +350,28 @@ var TweaksDialog = GObject.registerClass(
             let whiskerMenuTweaksFrame = new PW.FrameBox();
             whiskerMenuTweaksFrame.add(this._createActivateOnHoverRow());
 
-            let avatarStyleRow = new PW.FrameBoxRow();
-            let avatarStyleLabel = new Gtk.Label({
-                label: _('Avatar Icon Shape'),
-                xalign:0,
-                hexpand: true,
-            });   
-            let avatarStyleCombo = new Gtk.ComboBoxText({ halign: Gtk.Align.END });
-            avatarStyleCombo.append_text(_("Circular"));
-            avatarStyleCombo.append_text(_("Square"));
-            avatarStyleCombo.set_active(this._settings.get_enum('avatar-style'));
-            avatarStyleCombo.connect('changed', (widget) => {
-                this._settings.set_enum('avatar-style', widget.get_active());
-                Prefs.saveCSS(this._settings);
-                this._settings.set_boolean('reload-theme',true);
-            });
-            avatarStyleRow.add(avatarStyleLabel);
-            avatarStyleRow.add(avatarStyleCombo);
-            whiskerMenuTweaksFrame.add(avatarStyleRow);
+            whiskerMenuTweaksFrame.add(this._createAvatarShapeRow());
 
             vbox.add(whiskerMenuTweaksFrame);
         }
         _loadRedmondMenuTweaks(vbox){
             let redmondMenuTweaksFrame = new PW.FrameBox();
 
-            let avatarStyleRow = new PW.FrameBoxRow();
-            let avatarStyleLabel = new Gtk.Label({
-                label: _('Avatar Icon Shape'),
-                xalign:0,
-                hexpand: true,
-            });   
-            let avatarStyleCombo = new Gtk.ComboBoxText({ halign: Gtk.Align.END });
-            avatarStyleCombo.append_text(_("Circular"));
-            avatarStyleCombo.append_text(_("Square"));
-            avatarStyleCombo.set_active(this._settings.get_enum('avatar-style'));
-            avatarStyleCombo.connect('changed', (widget) => {
-                this._settings.set_enum('avatar-style', widget.get_active());
-                Prefs.saveCSS(this._settings);
-                this._settings.set_boolean('reload-theme',true);
-            });
-            avatarStyleRow.add(avatarStyleLabel);
-            avatarStyleRow.add(avatarStyleCombo);
-            redmondMenuTweaksFrame.add(avatarStyleRow);
+            redmondMenuTweaksFrame.add(this._createAvatarShapeRow());
 
             vbox.add(redmondMenuTweaksFrame);
+        }
+        _loadWindowsMenuTweaks(vbox){
+            let notebook = new PW.Notebook();
+
+            let pinnedAppsPage = new Prefs.PinnedAppsPage(this._settings);
+            notebook.append_page(pinnedAppsPage);
+
+            let windowsMenuTweaksFrame = new PW.FrameBox();
+            windowsMenuTweaksFrame.add(this._createAvatarShapeRow());
+
+            vbox.add(windowsMenuTweaksFrame);
+            vbox.add(notebook);
         }
         _loadGnomeMenuTweaks(vbox){
             let gnomeMenuTweaksFrame = new PW.FrameBox();
@@ -396,24 +419,7 @@ var TweaksDialog = GObject.registerClass(
             defaultLeftBoxRow.add(defaultLeftBoxCombo);
             arcMenuTweaksFrame.add(defaultLeftBoxRow);
 
-            let avatarStyleRow = new PW.FrameBoxRow();
-            let avatarStyleLabel = new Gtk.Label({
-                label: _('Avatar Icon Shape'),
-                xalign:0,
-                hexpand: true,
-            });   
-            let avatarStyleCombo = new Gtk.ComboBoxText({ halign: Gtk.Align.END });
-            avatarStyleCombo.append_text(_("Circular"));
-            avatarStyleCombo.append_text(_("Square"));
-            avatarStyleCombo.set_active(this._settings.get_enum('avatar-style'));
-            avatarStyleCombo.connect('changed', (widget) => {
-                this._settings.set_enum('avatar-style', widget.get_active());
-                Prefs.saveCSS(this._settings);
-                this._settings.set_boolean('reload-theme',true);
-            });
-            avatarStyleRow.add(avatarStyleLabel);
-            avatarStyleRow.add(avatarStyleCombo);
-            arcMenuTweaksFrame.add(avatarStyleRow);
+            arcMenuTweaksFrame.add(this._createAvatarShapeRow());
             vbox.add(arcMenuTweaksFrame);
         }
 });

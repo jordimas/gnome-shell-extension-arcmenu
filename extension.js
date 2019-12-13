@@ -112,6 +112,8 @@ function _enableButtons() {
 
         if (panel.statusArea['arc-menu'])
            continue;
+        else if (settingsControllers[i])
+            _disableButton(settingsControllers[i], 1); 
 
         // Create a Menu Controller that is responsible for controlling
         // and managing the menu as well as the menu button.

@@ -3382,7 +3382,13 @@ class ArcMenu_ArcMenuPreferencesWidget extends Gtk.Box{
         this._settings = Convenience.getSettings(Me.metadata['settings-schema']);
 
         let notebook = new PW.Notebook();
-
+        notebook.connect('switch-page', (notebook, tab, index)=>{
+            if(index==3){
+                pinnedAppsPage.frame._listBox.foreach ((element) => pinnedAppsPage.frame.remove(element));
+                pinnedAppsPage._loadPinnedApps(this._settings.get_strv('pinned-app-list'));
+                pinnedAppsPage.frame.show();
+            }
+        });
         let generalPage = new GeneralPage(this._settings);
         notebook.append_page(generalPage);
 

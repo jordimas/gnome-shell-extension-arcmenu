@@ -93,7 +93,7 @@ var ListSearchResult = class ArcMenu_ListSearchResultGrid {
             ICON_SIZE = 32;
             this.menuItem.actor.style = "width:275px;";
         }
-        else if(this.layout == Constants.MENU_LAYOUT.Redmond){
+        else {
             this.menuItem.actor.style = "width:180px;";
             ICON_SIZE = 24;
         } 
@@ -144,7 +144,7 @@ var AppSearchResult = class  ArcMenu_AppSearchResultGrid {
                 this.menuItem.actor.style ='padding: 5px; spacing: 0px; width:95px; height:95px;';
                 ICON_SIZE = 52;
             }
-            else if(this.layout == Constants.MENU_LAYOUT.Redmond){
+            else {
                 this.menuItem.actor.style ='padding: 5px; spacing: 0px; width:80px;height:80px;';
                 ICON_SIZE = 36;
             } 
@@ -162,7 +162,7 @@ var AppSearchResult = class  ArcMenu_AppSearchResultGrid {
                 if(this.layout == Constants.MENU_LAYOUT.Elementary || this.layout == Constants.MENU_LAYOUT.UbuntuDash){
                     this.menuItem.actor.style = "padding: 25px 0px;";
                 }
-                else if(this.layout == Constants.MENU_LAYOUT.Redmond){
+                else {
                     this.menuItem.actor.style = "padding: 20px 0px;";
                 }
             } 
@@ -436,7 +436,7 @@ var SearchResults = class ArcMenu_SearchResultsGrid {
         if(this.layout == Constants.MENU_LAYOUT.Elementary || this.layout == Constants.MENU_LAYOUT.UbuntuDash){
             MAX_APPS_SEARCH_RESULTS_ROWS = 6;
         }
-        else if(this.layout == Constants.MENU_LAYOUT.Redmond){
+        else {
 
             MAX_APPS_SEARCH_RESULTS_ROWS = 4;
         } 
@@ -757,7 +757,7 @@ var ArcSearchProviderInfo =Utils.createClass({
             this.actor.style = "spacing: 0px; width: 190px;";
             icon.icon_size = 32;
         }
-        else if(this.layout == Constants.MENU_LAYOUT.Redmond){
+        else {
             this.actor.style = "spacing: 0px; width: 150px;";
             icon.icon_size = 24;
         } 
