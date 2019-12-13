@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-10-26 18:17-0400\n"
-"PO-Revision-Date: 2019-12-13 13:50+0800\n"
+"PO-Revision-Date: 2019-12-13 14:27+0800\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -32,7 +32,7 @@ msgstr "关于 Arc Menu"
 
 #: menu.js:519
 msgid "Dash to Panel Settings"
-msgstr "Dash to Panel Settings"
+msgstr "Dash to Panel 设置"
 
 #: menuWidgets.js:126
 msgid "Open Folder Location"
@@ -40,7 +40,7 @@ msgstr "打开文件夹位置"
 
 #: menuWidgets.js:142
 msgid "Current Windows:"
-msgstr "当前窗口:"
+msgstr "当前窗口："
 
 #: menuWidgets.js:161
 msgid "New Window"
@@ -60,11 +60,11 @@ msgstr "添加到收藏夹"
 
 #: menuWidgets.js:221 menuWidgets.js:273
 msgid "Unpin from Arc Menu"
-msgstr "从Arc Menu取消固定"
+msgstr "从 Arc Menu 取消固定"
 
 #: menuWidgets.js:235
 msgid "Pin to Arc Menu"
-msgstr "从Arc Menu固定"
+msgstr "从 Arc Menu 固定"
 
 #: menuWidgets.js:248
 msgid "Show Details"
@@ -164,7 +164,7 @@ msgstr "固定应用"
 
 #: prefs.js:48
 msgid "Your Pinned Apps:"
-msgstr "您的固定应用:"
+msgstr "您的固定应用："
 
 #: prefs.js:72
 msgid "Add More Apps"
@@ -208,7 +208,7 @@ msgstr "请选择一个图像图标"
 
 #: prefs.js:492
 msgid "Terminal Command:"
-msgstr "终端命令:"
+msgstr "终端命令："
 
 #: prefs.js:550
 msgid "General"
@@ -244,7 +244,7 @@ msgstr "禁用活动热点"
 
 #: prefs.js:673
 msgid "Choose Arc Menus Default View"
-msgstr "选择Arc Menus默认视图"
+msgstr "选择 Arc Menus 默认视图"
 
 #: prefs.js:680
 msgid "Categories List"
@@ -256,11 +256,11 @@ msgstr "热键激活"
 
 #: prefs.js:707
 msgid "Key Release"
-msgstr "按键释放"
+msgstr "按键释放时"
 
 #: prefs.js:708
 msgid "Key Press"
-msgstr "按键"
+msgstr "按键按下时"
 
 #: prefs.js:732
 msgid "Set Menu Hotkey"
@@ -296,7 +296,7 @@ msgstr "按任意一个键"
 
 #: prefs.js:914
 msgid "Modifiers"
-msgstr "修饰码"
+msgstr "修饰键"
 
 #: prefs.js:919
 msgid "Ctrl"
@@ -380,7 +380,7 @@ msgstr "图标颜色选项仅适用于以“ -symbolic.svg”结尾的文件"
 
 #: prefs.js:1250 prefs.js:1908 prefs.js:2777
 msgid "Reset"
-msgstr "重置"
+msgstr "重设"
 
 #: prefs.js:1306
 msgid "Appearance"
@@ -428,7 +428,7 @@ msgstr "可以通过自定义设置修改所有布局。"
 
 #: prefs.js:1596
 msgid "However, some settings are specifc to Arc Menu layout."
-msgstr "但是，某些设置特定于“Arc Menu”布局。"
+msgstr "但是，某些设置仅供“Arc Menu”布局使用。"
 
 #: prefs.js:1660
 msgid "Menu style chooser"
@@ -448,7 +448,7 @@ msgstr "左面板宽度"
 
 #: prefs.js:1848
 msgid "Large Application Icons"
-msgstr "超大应用程序图标"
+msgstr "超大应用图标"
 
 #: prefs.js:1867 prefs.js:2727
 msgid "Enable Vertical Separator"
@@ -464,7 +464,7 @@ msgstr "颜色主题名称"
 
 #: prefs.js:1983
 msgid "Name:"
-msgstr "名称:"
+msgstr "名称："
 
 #: prefs.js:2009
 msgid "Save Theme"
@@ -528,7 +528,7 @@ msgstr "边框尺寸"
 
 #: prefs.js:2617
 msgid "Highlighted Item Color"
-msgstr "突出显示的项目颜色"
+msgstr "高亮项目颜色"
 
 #: prefs.js:2641
 msgid "Corner Radius"
@@ -592,11 +592,11 @@ msgstr "杂项"
 
 #: prefs.js:3149
 msgid "Export and Import Arc Menu Settings"
-msgstr "导出和导入Arc Menu设置"
+msgstr "导出和导入 Arc Menu 设置"
 
 #: prefs.js:3156
 msgid "All current Arc Menu settings will be changed when importing from file."
-msgstr "从文件导入时，所有当前的Arc Menu设置都会更改。"
+msgstr "从文件导入时，所有当前的 Arc Menu 设置都会更改。"
 
 #: prefs.js:3157
 msgid "This includes all saved pinned apps."
@@ -628,7 +628,7 @@ msgstr "导入的主题预设位于外观选项卡上"
 
 #: prefs.js:3259
 msgid "in Override Arc Menu Theme"
-msgstr "在覆盖 Arc Menu 主题中"
+msgstr "覆盖 Arc Menu 主题"
 
 #: prefs.js:3270 prefs.js:3276
 msgid "Import Theme Preset"
@@ -652,7 +652,7 @@ msgstr "version: "
 
 #: prefs.js:3441
 msgid "The new applications menu for Gnome 3"
-msgstr "Gnome 3 的新应用程序菜单"
+msgstr "为 Gnome 3 设计的新应用菜单"
 
 #: prefs.js:3445
 msgid "GitLab Page"
