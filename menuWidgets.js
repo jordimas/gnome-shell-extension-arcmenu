@@ -68,7 +68,8 @@ function setIconAsync(icon, gioFile, fallback_icon_name) {
 }
 var AppRightClickMenu = class ArcMenu_AppRightClickMenu extends PopupMenu.PopupMenu {
     constructor(actor,app,button, isPinnedApp,path){
-        super(actor,.45,St.Side.TOP);
+        super(actor,0.0,St.Side.TOP);
+        this._boxPointer.setSourceAlignment(.20);
         this._button = button;
         this._settings = this._button._settings;
         this._app = app;
@@ -286,14 +287,6 @@ var AppRightClickMenu = class ArcMenu_AppRightClickMenu extends PopupMenu.PopupM
                 }
             }
         }
-        //Check if rightclick app menu is outside of main main or within 10px
-        this.actor.get_allocation_box();
-        let [stageX, stageY] = this._button._button.leftClickMenu.actor.get_transformed_position();
-        let [stageX2, stageY2] = this.actor.get_transformed_position();
-        if((stageX2 - stageX) < 10){
-            this._arrowAlignment = 0.35
-            this._boxPointer._border.queue_repaint();
-        }   
     }
 
     _appendSeparator() {
