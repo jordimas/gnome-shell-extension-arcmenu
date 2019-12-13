@@ -1,13 +1,12 @@
 /*
- * Arc Menu: The new applications menu for Gnome 3.
+ * Arc Menu - A traditional application menu for GNOME 3
  *
- * This file has been created specifically for ArcMenu under the terms of the GPLv2 licence by : 
- *
- * Original work: Copyright (C) 2019 Andrew Zaech 
- *
- * Artwork work: Copyright (C) 2017-2019 LinxGem33
+ * Arc Menu Lead Developer
+ * Andrew Zaech https://gitlab.com/AndrewZaech
  * 
- *
+ * Arc Menu Founder/Maintainer/Graphic Designer
+ * LinxGem33 https://gitlab.com/LinxGem33
+ * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 2 of the License, or
@@ -44,7 +43,7 @@ var modernGnome = imports.misc.config.PACKAGE_VERSION >= '3.31.9';
 
 var createMenu = class {
     constructor(mainButton) {
-        this.button = mainButton;
+        this._button = mainButton;
         this._settings = mainButton._settings;
         this.mainBox = mainButton.mainBox; 
         this.appMenuManager = mainButton.appMenuManager;
@@ -146,7 +145,7 @@ var createMenu = class {
         //Top Search Bar
         // Create search box
         this.searchBox = new MW.SearchBox(this);
-        this.searchBox.actor.style ="margin: 10px;";
+        this.searchBox.actor.style ="margin: 10px; padding-top: 0.0em; padding-bottom: 0.5em;padding-left: 0.4em;padding-right: 0.4em;";
         this._firstAppItem = null;
         this._firstApp = null;
         this._tabbedOnce = false;
@@ -284,7 +283,6 @@ var createMenu = class {
     resetSearch(){ //used by back button to clear results
         this.searchBox.clear();
         this.setDefaultMenuView();
-        this.newSearch._reloadRemoteProviders(); 
     }
     updateIcons(){
         this._applicationsButtons.forEach((value,key,map)=>{
@@ -480,6 +478,7 @@ var createMenu = class {
         
         setDefaultMenuView(){
             this.searchBox.clear();
+            this.newSearch._reset();
             let setDefaultActive = true;
             this._setActiveCategory(setDefaultActive);
             this._displayGnomeFavorites();
@@ -518,6 +517,7 @@ var createMenu = class {
             	this.currentMenu = Constants.CURRENT_MENU.SEARCH_RESULTS;        
             }
             if(searchBox.isEmpty()){  
+                this.newSearch.setTerms(['']); 
                 this.setDefaultMenuView();                     	          	
             	this.newSearch.actor.hide();
             }            

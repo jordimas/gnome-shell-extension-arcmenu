@@ -1,10 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <schemalist gettext-domain="arc-menu">
-  <enum id='org.gnome.shell.extensions.arc-menu.visible'>
-    <value value='0' nick='ALL'/>
-    <value value='1' nick='APPS_ONLY'/>
-    <value value='2' nick='SYSTEM_ONLY'/>
-  </enum>
     <enum id='org.gnome.shell.extensions.arc-menu.menulayout'>
     <value value='0' nick='Default'/>
     <value value='1' nick='Brisk'/>
@@ -17,6 +12,9 @@
     <value value='8' nick='Simple2'/>
     <value value='9' nick='Redmond'/>
     <value value='10' nick='UbuntuDash'/>
+    <value value='11' nick='Budgie'/>
+    <value value='12' nick='Windows'/>
+    <value value='13' nick='Runner'/>
   </enum>
   <enum id='org.gnome.shell.extensions.arc-menu.menu-hotkey'>
     <value value='0' nick='Undefined'/>
@@ -39,20 +37,22 @@
     <value value="0" nick="Circular"/>
     <value value="1" nick="Square"/>
   </enum>
-  <enum id='org.gnome.shell.extensions.arc-menu.menu-button-text'>
-    <value value="0" nick="System_Text"/>
-    <value value="1" nick="Custom_Text"/>
-  </enum>
   <enum id='org.gnome.shell.extensions.arc-menu.menu-button-icon'>
     <value value="0" nick="Arc_Menu_Icon"/>
-    <value value="1" nick="System_Icon"/>
-    <value value="2" nick="Custom_Icon"/>
+    <value value="1" nick="Arc_Menu_Alt_Icon"/>
+    <value value="2" nick="System_Icon"/>
+    <value value="3" nick="Custom_Icon"/>
+  </enum>
+    <enum id='org.gnome.shell.extensions.arc-menu.runner-position'>
+    <value value="0" nick="Top"/>
+    <value value="1" nick="Centered"/>
   </enum>
   <schema path="/org/gnome/shell/extensions/arc-menu/" id="org.gnome.shell.extensions.arc-menu">
-    <key name="visible-menus" enum="org.gnome.shell.extensions.arc-menu.visible">
-      <default>'ALL'</default>
-      <summary>Visible menus</summary>
-      <description>Which menus are visible within the Arc Menu popup.</description>
+    
+  <key type="i" name="menu-position-alignment">
+    <default>50</default>
+      <summary>Menu position alignment</summary>
+      <description>Menu position alignment 0 = Left, 50 = Center, 100 = Right</description>
     </key>
     <key name="menu-layout" enum="org.gnome.shell.extensions.arc-menu.menulayout">
       <default>'Default'</default>
@@ -63,6 +63,11 @@
      <default>false</default>
       <summary>disable hotkey on key release</summary>
       <description>disable hotkey on key release.</description>
+    </key>
+        <key type="b" name="activate-on-hover">
+     <default>false</default>
+      <summary>Activate Categories on Hover</summary>
+      <description>Activate Categories on Hover.</description>
     </key>
     <key type="b" name="disable-tooltips">
      <default>false</default>
@@ -144,10 +149,10 @@
       <summary>Menu width</summary>
       <description>Menu width.</description>
     </key>
-      <key type="i" name="menu-rightpanel-width">
-     <default>210</default>
-      <summary>Menu right panel width</summary>
-      <description>Menu right panel width</description>
+      <key type="i" name="gap-adjustment">
+     <default>0</default>
+      <summary>Gap Adjustment</summary>
+      <description>Gap Adjustment</description>
     </key>
     <key type="b" name="enable-custom-arc-menu">
      <default>false</default>
@@ -289,6 +294,11 @@
       <summary>The menu position in the panel</summary>
       <description>The menu position in the panel.</description>
     </key>
+      <key name="runner-position" enum="org.gnome.shell.extensions.arc-menu.runner-position">
+      <default>'Top'</default>
+      <summary>KRunner Menu Position</summary>
+      <description>KRunner Menu Position.</description>
+    </key>
     <key name="menu-button-appearance" enum="org.gnome.shell.extensions.arc-menu.menu-button-appearance">
       <default>'Icon'</default>
       <summary>Appearance of the menu button.</summary>
@@ -298,11 +308,6 @@
       <default>'Circular'</default>
       <summary>Appearance of the avatar icon.</summary>
       <description>Appearance of the avatar icon.</description>
-    </key>
-    <key name="menu-button-text" enum="org.gnome.shell.extensions.arc-menu.menu-button-text">
-      <default>'System_Text'</default>
-      <summary>Text of the menu button.</summary>
-      <description>Text of the menu button.</description>
     </key>
     <key type="b" name="enable-menu-button-arrow">
       <default>false</default>
@@ -334,6 +339,12 @@
       <summary>Size of the icon in percentage.</summary>
       <description>Size of the icon in percentage.</description>
     </key>
+    <key type="i" name="button-icon-padding">
+      <default>0</default>
+      <summary>Button Icon Padding.</summary>
+      <description>Button Icon Padding.</description>
+    </key>
+
     <key type="s" name="menu-button-color">
       <default>'rgb(240,240,240)'</default>
       <summary>Color for for the menu button icon</summary>
@@ -345,11 +356,20 @@
       <description>Active for color for the menu button icon.</description>
     </key>
     <key name="pinned-app-list" type="as">
-      <default>["ArcMenu_WebBrowser","WebBrowser", "WebBrowser","Terminal", "utilities-terminal", "org.gnome.Terminal.desktop","Arc Menu Settings", "emblem-system-symbolic", "gnome-shell-extension-prefs arc-menu@linxgem33.com"]</default>
+      <default>["ArcMenu_WebBrowser","WebBrowser", "WebBrowser","Terminal", "utilities-terminal", "org.gnome.Terminal.desktop",
+                "Arc Menu Settings", "emblem-system-symbolic", "gnome-shell-extension-prefs arc-menu@linxgem33.com"]</default>
       <summary>List of Apps Pinned to Menu</summary>
-      <description>
-        List of Apps Pinned to Menu
-      </description>
+      <description>List of Apps Pinned to Menu</description>
+    </key>
+    <key name="mint-pinned-app-list" type="as">
+      <default>[]</default>
+      <summary>List of Mint Layout Pinned Apps</summary>
+      <description>List of Mint Layout Pinned Apps</description>
+    </key>
+      <key name="mint-separator-index" type="i">
+      <default>5</default>
+      <summary>Index of Mint Layout Pinned App Separator</summary>
+      <description>Index of Mint Layout Pinned App Separator, 0 = none</description>
     </key>
      <key name="color-themes" type="aas">
       <default>[['Arc Menu Theme', 'rgba(28, 28, 28, 0.98)', 'rgba(211, 218, 227, 1)', 'rgb(63,62,64)', 'rgba(238, 238, 236, 0.1)', 'rgb(63,62,64)', '9', '0', '0', '0', '0', 'false'], 
@@ -357,12 +377,6 @@
       ['Light Blue Theme', 'rgb(255,255,255)', 'rgb(51,51,51)', 'rgb(235,235,235)', 'rgba(189,230,251,0.9)', 'rgba(189,230,251,0.9)', '9', '1', '5', '15', '20', 'true']]</default>
       <summary>List of color-themes</summary>
       <description> List of color themes.
-      </description>
-    </key>
-    <key name="color-theme-index" type="i">
-      <default>0</default>
-      <summary>Color theme selected</summary>
-      <description> Color theme selected,used for color-themes.
       </description>
     </key>
   </schema>

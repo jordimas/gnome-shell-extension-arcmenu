@@ -1,9 +1,12 @@
 /*
- * Arc Menu: The new applications menu for Gnome 3.
+ * Arc Menu - A traditional application menu for GNOME 3
  *
- * Copyright (C) 2017 LinxGem33
- * Copyright (C) 2017 Alexander Rüedlinger
- *
+ * Arc Menu Lead Developer
+ * Andrew Zaech https://gitlab.com/AndrewZaech
+ * 
+ * Arc Menu Founder/Maintainer/Graphic Designer
+ * LinxGem33 https://gitlab.com/LinxGem33
+ * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 2 of the License, or
@@ -20,14 +23,13 @@
 
 // Import Libraries
 const Me = imports.misc.extensionUtils.getCurrentExtension();
-const {Gio, Gtk, Meta, Shell} = imports.gi;
+const {Gio, GObject, Gtk, Meta, Shell} = imports.gi;
 const Constants = Me.imports.constants;
 const Main = imports.ui.main;
 
 
 // Local constants
 const MUTTER_SCHEMA = 'org.gnome.mutter';
-const WM_KEYBINDINGS_SCHEMA = 'org.gnome.desktop.wm.keybindings';
 
 /**
  * The Menu HotKeybinder class helps us to bind and unbind a menu hotkey
@@ -37,70 +39,74 @@ var MenuHotKeybinder = class {
 
     constructor(menuToggler) {
         this._menuToggler = menuToggler;
+        this.hotKeyEnabled = false;
+        this.overlayKeyID = 0;
+        this.defaultOverlayKeyID = 0;
         this._mutterSettings = new Gio.Settings({ 'schema': MUTTER_SCHEMA });
-        this._wmKeybindings = new Gio.Settings({ 'schema': WM_KEYBINDINGS_SCHEMA });
-        this._keybindingHandlerId = Main.layoutManager.connect('startup-complete',
-            this._setKeybindingHandler.bind(this));
-        this._setKeybindingHandler();
+        this._hotkeyMenuToggleId = Main.layoutManager.connect('startup-complete', ()=>{
+            this._updateHotkeyMenuToggle();
+        });
     }
 
-    // Enable a hot key for opening the menu
+    // Set Main.overview.toggle to toggle Arc Menu instead
     enableHotKey(hotkey) {
-        if (hotkey == Constants.SUPER_L) {
-            this._disableOverlayKey();
-        } else {
-            this._enableOverlayKey();
-        }
-        this._wmKeybindings.set_strv('panel-main-menu', [hotkey]);
+        this._mutterSettings.set_string('overlay-key', hotkey);
+        Main.wm.allowKeybinding('overlay-key', Shell.ActionMode.NORMAL |
+            Shell.ActionMode.OVERVIEW | Shell.ActionMode.POPUP);
+        this.hotKeyEnabled =  true;
+        if(!Main.layoutManager._startingUp)
+            this._updateHotkeyMenuToggle();
     }
 
-    // Disable the set hot key for opening the menu
+    // Set Main.overview.toggle to default function and default hotkey
     disableHotKey() {
-        // Restore the default settings
-        if (this._isOverlayKeyDisabled()) {
-            this._enableOverlayKey();
-        }
-        let defaultPanelMainMenu = this._wmKeybindings.get_default_value('panel-main-menu');
-        this._wmKeybindings.set_value('panel-main-menu', defaultPanelMainMenu);
-    }
-
-    // Set the menu keybinding handler
-    _setKeybindingHandler() {
-        Main.wm.setCustomKeybindingHandler('panel-main-menu',
-            Shell.ActionMode.NORMAL | Shell.ActionMode.OVERVIEW | Shell.ActionMode.POPUP,
-            this._menuToggler.bind(this));
-    }
-
-    // Check if the overlay keybinding is disabled in mutter
-    _isOverlayKeyDisabled() {
-        return this._mutterSettings.get_string('overlay-key') == Constants.EMPTY_STRING;
-    }
-
-    // Disable the overlay keybinding in mutter
-    _disableOverlayKey() {
-        // Simple hack to deactivate the overlay key by setting
-        // the keybinding of the overlay key to an empty string
-        this._mutterSettings.set_string('overlay-key', Constants.EMPTY_STRING);
-    }
-
-    // Enable and restore the default settings of the overlay key in mutter
-    _enableOverlayKey() {
         this._mutterSettings.set_value('overlay-key', this._getDefaultOverlayKey());
+        if(this.overlayKeyID > 0){
+            global.display.disconnect(this.overlayKeyID);
+            this.overlayKeyID = null;
+        }
+        if(this.defaultOverlayKeyID>0){
+            GObject.signal_handler_unblock(global.display, this.defaultOverlayKeyID);
+            this.defaultOverlayKeyID = null;
+        }
+        Main.wm.allowKeybinding('overlay-key', Shell.ActionMode.NORMAL |
+            Shell.ActionMode.OVERVIEW);
+        this.hotKeyEnabled = false;
+       
     }
 
-    // Get the default overelay keybinding from mutter
+    // Update hotkey menu toggle function
+    _updateHotkeyMenuToggle() {
+        if(this.hotKeyEnabled){
+            Main.wm.allowKeybinding('overlay-key', Shell.ActionMode.NORMAL |
+               Shell.ActionMode.OVERVIEW | Shell.ActionMode.POPUP);
+
+            //Find signal ID in Main.js that connects 'overlay-key' to global.display and toggles Main.overview
+            let [bool,signal_id, detail] = GObject.signal_parse_name('overlay-key', global.display, true);
+            this.defaultOverlayKeyID = GObject.signal_handler_find(global.display, GObject.SignalMatchType.ID, signal_id, detail, null, null, null); 
+
+            //If signal ID found, block it and connect new 'overlay-key' to toggle arc menu.
+            if(this.defaultOverlayKeyID>0){
+                GObject.signal_handler_block(global.display, this.defaultOverlayKeyID);
+                this.overlayKeyID = global.display.connect('overlay-key', () => {
+                    this._menuToggler();
+                });
+            }
+            else
+                global.log("Arc Menu ERROR - Failed to set Super_L hotkey");
+        }
+    }
     _getDefaultOverlayKey() {
         return this._mutterSettings.get_default_value('overlay-key');
     }
-
     // Destroy this object
     destroy() {
         // Clean up and restore the default behaviour
         this.disableHotKey();
-        if (this._keybindingHandlerId) {
+        if (this._hotkeyMenuToggleId) {
             // Disconnect the keybinding handler
-            Main.layoutManager.disconnect(this._keybindingHandlerId);
-            this._keybindingHandlerId = null;
+            Main.layoutManager.disconnect(this._hotkeyMenuToggleId);
+            this._hotkeyMenuToggleId = null;
         }
     }
 };
@@ -209,9 +215,9 @@ var HotCornerManager = class {
 
     // Destroy this object
     destroy() {
-        if (this._hotCornersChangedId) {
+        if (this._hotCornersChangedId>0) {
             Main.layoutManager.disconnect(this._hotCornersChangedId);
-            this._hotCornersChangedId = null;
+            this._hotCornersChangedId = 0;
         }
 
         // Clean up and restore the default behaviour

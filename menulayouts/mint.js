@@ -1,13 +1,12 @@
 /*
- * Arc Menu: The new applications menu for Gnome 3.
+ * Arc Menu - A traditional application menu for GNOME 3
  *
- * This file has been created specifically for ArcMenu under the terms of the GPLv2 licence by : 
- *
- * Original work: Copyright (C) 2019 Andrew Zaech 
- *
- * Artwork work: Copyright (C) 2017-2019 LinxGem33
+ * Arc Menu Lead Developer
+ * Andrew Zaech https://gitlab.com/AndrewZaech
  * 
- *
+ * Arc Menu Founder/Maintainer/Graphic Designer
+ * LinxGem33 https://gitlab.com/LinxGem33
+ * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 2 of the License, or
@@ -44,7 +43,7 @@ var modernGnome = imports.misc.config.PACKAGE_VERSION >= '3.31.9';
 
 var createMenu =class{
     constructor(mainButton) {
-        this.button = mainButton;
+        this._button = mainButton;
         this._settings = mainButton._settings;
         this.mainBox = mainButton.mainBox; 
         this.appMenuManager = mainButton.appMenuManager;
@@ -55,7 +54,7 @@ var createMenu =class{
         this.newSearch = new ArcSearch.SearchResults(this);      
         this._mainBoxKeyPressId = this.mainBox.connect('key-press-event', this._onMainBoxKeyPress.bind(this));
         this.isRunning=true;
-
+        this.shouldLoadFavorites = true;
         this._tree = new GMenu.Tree({ menu_basename: 'applications.menu' });
         this._treeChangedId = this._tree.connect('changed', ()=>{
             this._reload();
@@ -80,99 +79,20 @@ var createMenu =class{
         this.actionsScrollBox.add_actor( this.actionsBox);
         this.actionsScrollBox.clip_to_allocation = true;
         
-        this.actionsScrollBox.style = "width:60px; margin: 0px 20px;";
+        this.actionsScrollBox.style = "width:62px; margin: 40px 20px 0 20px;";
         this.actionsBox.style = "background-color:rgba(186, 196,201, 0.1) ;border-color:rgba(186, 196,201, 0.2) ; border-width: 1px; border-radius: 5px;margin: 0px 0px; spacing: 5px; padding: 5px 0px;";
         //check if custom arc menu is enabled
         if( this._settings.get_boolean('enable-custom-arc-menu'))
             this.actionsBox.add_style_class_name('arc-menu');
         
-        //WebBroswer  Button
-        //Check which WebBroswer is default
-        let [res, stdout, stderr, status] = GLib.spawn_command_line_sync("xdg-settings get default-web-browser");
-        let webBrowser = String.fromCharCode.apply(null, stdout);
-        let browserName = webBrowser.split(".desktop")[0];
-        browserName+=".desktop";
-        let app = appSys.lookup_app(browserName);
-        if(app){
-            let webBrowserButton = new MW.WebBrowserButton(this, app);
-            this.actionsBox.add(webBrowserButton.actor, {
-                expand: true,
-                x_fill: false,
-                y_align: St.Align.MIDDLE
-            });
-        }
+        this._loadFavorites();   
 
-          
-        //terminal Button
-        let terminal = new MW.TerminalButton( this);
-        this.actionsBox.add(terminal .actor, {
-            expand: true,
-            x_fill: false,
-            y_align: St.Align.MIDDLE
-        });
-        
-        //settings Button
-        let settings = new MW.SettingsButton( this);
-        this.actionsBox.add(settings.actor, {
-            expand: true,
-            x_fill: false,
-            y_align: St.Align.MIDDLE
-        });
-       
-        //Software Button
-        let software = new MW.SoftwareButton( this);
-        this.actionsBox.add(software.actor, {
-            expand: true,
-            x_fill: false,
-            y_align: St.Align.MIDDLE
-        });
-        //Files Button
-        let files = new MW.FilesButton( this);
-        this.actionsBox.add(files.actor, {
-            expand: true,
-            x_fill: false,
-            y_align: St.Align.MIDDLE
-        });
-        
-        this.actionsBox.add( this._createHorizontalSeparator(Constants.SEPARATOR_STYLE.SHORT), {
-            x_expand: true,
-            x_fill: true,
-            y_fill: true,
-            y_align: St.Align.END
-        });
-
-         //Logout Button
-         let logout = new MW.LogoutButton( this);
-         this.actionsBox.add(logout.actor, {
-             expand: true,
-             x_fill: false,
-             y_align: St.Align.MIDDLE
-         });
-           
-         //LockButton
-         let lock = new MW.LockButton( this);
-         this.actionsBox.add(lock.actor, {
-             expand: true,
-             x_fill: false,
-             y_align: St.Align.MIDDLE
-         });
-         
-        
-         //Power Button
-         let power = new MW.PowerButton( this);
-         this.actionsBox.add(power.actor, {
-             expand: true,
-             x_fill: false,
-             y_align: St.Align.MIDDLE
-         });
-         this.mainBox.add( this.actionsScrollBox, {
+        this.mainBox.add( this.actionsScrollBox, {
             expand: false,
             x_fill: true,
             y_fill: false,
-            y_align: St.Align.MIDDLE
+            y_align: St.Align.START
         });
-      
-        
         this.rightMenuBox= new St.BoxLayout({ vertical: true }); //STORES SEARCH AND SUBMAINBOX
         this.mainBox.add(this.rightMenuBox, {
             expand: true,
@@ -183,7 +103,7 @@ var createMenu =class{
         //Top Search Bar
         // Create search box
         this.searchBox = new MW.SearchBox(this);
-        this.searchBox.actor.style ="margin: 0px 10px 10px 10px;";
+        this.searchBox.actor.style ="margin: 0px 10px 10px 10px; padding-top: 0.0em; padding-bottom: 0.5em;padding-left: 0.4em;padding-right: 0.4em;";
         this._firstAppItem = null;
         this._firstApp = null;
         this._tabbedOnce = false;
@@ -267,6 +187,79 @@ var createMenu =class{
 
         this._display(); 
     }
+    _addSeparator(){
+        this.actionsBox.add( this._createHorizontalSeparator(Constants.SEPARATOR_STYLE.SHORT), {
+            x_expand: true,
+            x_fill: true,
+            y_fill: true,
+            y_align: St.Align.END
+        });
+    }
+    _loadFavorites() {
+        let pinnedApps = this._settings.get_strv('mint-pinned-app-list');
+        if(!pinnedApps.length || !Array.isArray(pinnedApps)){
+            pinnedApps = this.updatePinnedAppsWebBrowser();
+        }
+        this.actionsScrollBox.remove_actor(this.actionsBox);
+        this.actionsBox.destroy_all_children();
+        this.actionsBox.destroy();
+        this.actionsBox = new St.BoxLayout({ 
+            vertical: true
+        });
+        this.actionsBox.style = "background-color:rgba(186, 196,201, 0.1) ;border-color:rgba(186, 196,201, 0.2) ; border-width: 1px; border-radius: 5px;margin: 0px 0px; spacing: 5px; padding: 5px 0px;";
+        this.actionsScrollBox.add_actor(this.actionsBox);
+
+        let addStyle = this._settings.get_boolean('enable-custom-arc-menu');
+        for(let i = 0;i<pinnedApps.length;i+=3){
+            if(i == this._settings.get_int('mint-separator-index') * 3 && i != 0)
+                this._addSeparator();
+            let favoritesMenuItem = new MW.MintButton(this, pinnedApps[i], pinnedApps[i+1], pinnedApps[i+2]);
+            if(addStyle) 
+                favoritesMenuItem.actor.add_style_class_name('arc-menu-action');
+            this.actionsBox.add(favoritesMenuItem.actor, {
+                expand: false,
+                x_fill: false,
+                y_align: St.Align.MIDDLE
+            });
+        }   
+    }
+    updatePinnedAppsWebBrowser(){
+        let pinnedApps = [];
+        //Find the Default Web Browser, if found add to pinned apps list, if not found delete the placeholder.
+        //Will only run if placeholder is found. Placeholder only found with default settings set.  
+        let [res, stdout, stderr, status] = GLib.spawn_command_line_sync("xdg-settings get default-web-browser");
+        let webBrowser = String.fromCharCode.apply(null, stdout);
+        let browserName = webBrowser.split(".desktop")[0];
+        browserName+=".desktop";
+        this._app = appSys.lookup_app(browserName);
+        if(this._app){
+            let appIcon = this._app.create_icon_texture(25);
+            let iconName = '';
+            if(appIcon.icon_name)
+                iconName = appIcon.icon_name;
+            else if(appIcon.gicon)
+                iconName = appIcon.gicon.to_string();
+            pinnedApps.push(this._app.get_name(), iconName, this._app.get_id());
+        }
+        pinnedApps.push(_("Terminal"), "utilities-terminal", "org.gnome.Terminal.desktop");
+        pinnedApps.push(_("Settings"), "emblem-system-symbolic", "gnome-control-center.desktop");
+        let software = '';
+        if(GLib.find_program_in_path('gnome-software'))
+            software='org.gnome.Software';
+        else if(GLib.find_program_in_path('pamac-manager'))
+            software='pamac-manager';
+        pinnedApps.push(_("Software"), "org.gnome.Software", software+".desktop");
+        pinnedApps.push(_("Files"), "system-file-manager", "org.gnome.Nautilus.desktop");
+        pinnedApps.push(_("Log Out"), "application-exit-symbolic", "ArcMenu_LogOut");
+        pinnedApps.push(_("Lock"), "changes-prevent-symbolic", "ArcMenu_Lock");
+        pinnedApps.push(_("Power Off"), "system-shutdown-symbolic", "ArcMenu_PowerOff");
+
+        this.shouldLoadFavorites = false; // We don't want to trigger a setting changed event
+        this._settings.set_strv('mint-pinned-app-list', pinnedApps);
+        this.shouldLoadFavorites = true;
+        return pinnedApps;
+        
+    }
     _onMainBoxKeyPress(mainBox, event) {
         if (!this.searchBox) {
             return Clutter.EVENT_PROPAGATE;
@@ -321,7 +314,6 @@ var createMenu =class{
     resetSearch(){ //used by back button to clear results -- gets called on menu close
         this.searchBox.clear();
         this.setDefaultMenuView();  
-        this.newSearch._reloadRemoteProviders();
     }
     _redisplayRightSide(){
 
@@ -449,8 +441,6 @@ var createMenu =class{
     }
     _displayPlaces() {
     }
-    _loadFavorites() {
-    }
     _displayFavorites() {    
     }
 
@@ -500,6 +490,7 @@ var createMenu =class{
     
     setDefaultMenuView(){
         this.searchBox.clear();
+        this.newSearch._reset();
         this._displayGnomeFavorites();
         let setDefaultActive = true;
         this._setActiveCategory(setDefaultActive);
@@ -540,7 +531,8 @@ var createMenu =class{
         if(this.currentMenu != Constants.CURRENT_MENU.SEARCH_RESULTS){              
             this.currentMenu = Constants.CURRENT_MENU.SEARCH_RESULTS;        
         }
-        if(searchBox.isEmpty()){  
+        if(searchBox.isEmpty()){ 
+            this.newSearch.setTerms(['']);  
             this.setDefaultMenuView();                     	          	
             this.newSearch.actor.hide();
         }            

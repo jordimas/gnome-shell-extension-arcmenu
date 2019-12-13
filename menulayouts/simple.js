@@ -1,13 +1,12 @@
 /*
- * Arc Menu: The new applications menu for Gnome 3.
+ * Arc Menu - A traditional application menu for GNOME 3
  *
- * This file has been created specifically for ArcMenu under the terms of the GPLv2 licence by : 
- *
- * Original work: Copyright (C) 2019 Andrew Zaech 
- *
- * Artwork work: Copyright (C) 2017-2019 LinxGem33
+ * Arc Menu Lead Developer
+ * Andrew Zaech https://gitlab.com/AndrewZaech
  * 
- *
+ * Arc Menu Founder/Maintainer/Graphic Designer
+ * LinxGem33 https://gitlab.com/LinxGem33
+ * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 2 of the License, or
@@ -44,7 +43,7 @@ var modernGnome = imports.misc.config.PACKAGE_VERSION >= '3.31.9';
 
 var createMenu = class{
     constructor(mainButton) {
-        this.button = mainButton;
+        this._button = mainButton;
         this._settings = mainButton._settings;
         this.section = mainButton.section;
         this.mainBox = mainButton.mainBox; 

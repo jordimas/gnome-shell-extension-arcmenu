@@ -1,13 +1,12 @@
 /*
- * Arc Menu: The new applications menu for Gnome 3.
+ * Arc Menu - A traditional application menu for GNOME 3
  *
- * This file has been created specifically for ArcMenu under the terms of the GPLv2 licence by : 
- *
- * Original work: Copyright (C) 2019 Andrew Zaech 
- *
- * Artwork work: Copyright (C) 2017-2019 LinxGem33
+ * Arc Menu Lead Developer
+ * Andrew Zaech https://gitlab.com/AndrewZaech
  * 
- *
+ * Arc Menu Founder/Maintainer/Graphic Designer
+ * LinxGem33 https://gitlab.com/LinxGem33
+ * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 2 of the License, or
@@ -52,6 +51,7 @@ var createMenu = class {
         this.currentMenu = Constants.CURRENT_MENU.FAVORITES; 
         this._applicationsButtons = new Map();
         this.isRunning=true;
+        this.shouldLoadFavorites = true;
         this.newSearch = new ArcSearch.SearchResults(this);     
         this._mainBoxKeyPressId = this.mainBox.connect('key-press-event', this._onMainBoxKeyPress.bind(this));
 
@@ -119,6 +119,7 @@ var createMenu = class {
         });
         // Create search box
         this.searchBox = new MW.SearchBox(this);
+        this.searchBox.actor.style = "padding-top: 0.75em; padding-bottom: 0.25em;padding-left: 1em;padding-right: 0.25em;margin-right: .5em;";
         this._firstAppItem = null;
         this._firstApp = null;
         this._tabbedOnce = false;
@@ -290,7 +291,7 @@ var createMenu = class {
             });
         }
             
-               //create new section for Power, Lock, Logout, Suspend Buttons
+        //create new section for Power, Lock, Logout, Suspend Buttons
         this.actionsBox = new PopupMenu.PopupBaseMenuItem({
             reactive: false,
             can_focus: false
@@ -352,12 +353,11 @@ var createMenu = class {
     resetSearch(){ //used by back button to clear results
         this.searchBox.clear();
         this.setDefaultMenuView();  
-        this.newSearch._reloadRemoteProviders();
     }
     setDefaultMenuView(){
         this.searchBox.clear();
+        this.newSearch._reset();
         this._clearApplicationsBox();
-        
         if(this._settings.get_boolean('enable-pinned-apps')){
             this.currentMenu = Constants.CURRENT_MENU.FAVORITES;
             this._displayFavorites();
@@ -471,16 +471,16 @@ var createMenu = class {
                     continue;
                 }
                 let app = appSys.lookup_app(id);
-                if (app){
+                if (!app)
+                    app = new Shell.App({ app_info: entry.get_app_info() });
+                if (app.get_app_info().should_show()){
                     this.applicationsByCategory[categoryId].push(app);
                     let item = this._applicationsButtons.get(app);
                     if (!item) {
                         item = new MW.ApplicationMenuItem(this, app);
                         this._applicationsButtons.set(app, item);
                     }
-                }
-              
-                    
+                }             
             } else if (nextType == GMenu.TreeItemType.DIRECTORY) {
                 let subdir = iter.get_directory();
                 if (!subdir.get_is_nodisplay())
@@ -533,8 +533,9 @@ var createMenu = class {
         let pinnedApps = this._settings.get_strv('pinned-app-list');
         this.favoritesArray=null;
         this.favoritesArray=[];
-        for(let i = 0;i<pinnedApps.length;i+=3)
-        {
+        for(let i = 0;i<pinnedApps.length;i+=3){
+            if(i == 0 && pinnedApps[0]=="ArcMenu_WebBrowser")
+                this.updatePinnedAppsWebBrowser(pinnedApps);
             let favoritesMenuItem = new MW.FavoritesMenuItem(this, pinnedApps[i], pinnedApps[i+1], pinnedApps[i+2]);
             favoritesMenuItem.connect('saveSettings', ()=>{
                 let array = [];
@@ -547,8 +548,36 @@ var createMenu = class {
                 this._settings.set_strv('pinned-app-list',array);
             });
             this.favoritesArray.push(favoritesMenuItem);
+        }   
+    }
+    updatePinnedAppsWebBrowser(pinnedApps){
+        //Find the Default Web Browser, if found add to pinned apps list, if not found delete the placeholder.
+        //Will only run if placeholder is found. Placeholder only found with default settings set.
+        if(pinnedApps[0]=="ArcMenu_WebBrowser")
+        {     
+            let [res, stdout, stderr, status] = GLib.spawn_command_line_sync("xdg-settings get default-web-browser");
+            let webBrowser = String.fromCharCode.apply(null, stdout);
+            let browserName = webBrowser.split(".desktop")[0];
+            browserName+=".desktop";
+            this._app = appSys.lookup_app(browserName);
+            if(this._app){
+                let appIcon = this._app.create_icon_texture(25);
+                let iconName = '';
+                if(appIcon.icon_name)
+                    iconName = appIcon.icon_name;
+                else if(appIcon.gicon)
+                    iconName = appIcon.gicon.to_string();
+                pinnedApps[0] = this._app.get_name();
+                pinnedApps[1] = iconName;
+                pinnedApps[2] = this._app.get_id();
+            }
+            else{
+                pinnedApps.splice(0,3);
+            }
+            this.shouldLoadFavorites = false; // We don't want to trigger a setting changed event
+            this._settings.set_strv('pinned-app-list',pinnedApps);
+            this.shouldLoadFavorites = true;
         }
-        
     }
     _displayFavorites() {
         //global.log('display favs');
@@ -750,6 +779,7 @@ var createMenu = class {
             this.currentMenu = Constants.CURRENT_MENU.SEARCH_RESULTS;        
         }
         if(searchBox.isEmpty()){  
+            this.newSearch.setTerms(['']); 
             this.setDefaultMenuView();                     	          	
             this.newSearch.actor.hide();
         }            

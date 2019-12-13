@@ -1,12 +1,12 @@
 /*
- * Arc Menu: The new applications menu for Gnome 3.
+ * Arc Menu - A traditional application menu for GNOME 3
  *
- * Original work: Copyright (C) 2015 Giovanni Campagna
- * Modified work: Copyright (C) 2016-2017 Zorin OS Technologies Ltd.
- * Modified work: Copyright (C) 2017 Alexander Rüedlinger
- * Modified work: Copyright (C) 2017-2019 LinxGem33
- * Modified work: Copyright (C) 2019 Andrew Zaech
- *
+ * Arc Menu Lead Developer
+ * Andrew Zaech https://gitlab.com/AndrewZaech
+ * 
+ * Arc Menu Founder/Maintainer/Graphic Designer
+ * LinxGem33 https://gitlab.com/LinxGem33
+ * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 2 of the License, or
@@ -19,21 +19,12 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- *
- *
- * Credits:
- * This file is based on code from the Gnome Applications Menu Extension by Giovanni Campagna.
- * Some code was also referenced from the Gnome Places Status Indicator by Giovanni Campagna
- * and Gno-Menu by The Panacea Projects.
- * These extensions can be found at the following URLs:
- * http://git.gnome.org/browse/gnome-shell-extensions/
- * https://github.com/The-Panacea-Projects/Gnomenu
  */
 
 // Import Libraries
 const Me = imports.misc.extensionUtils.getCurrentExtension();
 
-const {Atk, Clutter, GMenu, Gtk, Shell, St} = imports.gi;
+const {Atk, Clutter, GLib, GMenu, Gtk, Shell, St} = imports.gi;
 const appSys = Shell.AppSystem.get_default();
 const Constants = Me.imports.constants;
 const Convenience = Me.imports.convenience;
@@ -61,6 +52,11 @@ var ApplicationsButton =   Utils.defineClass({
             this._settings = settings;
             this._panel = panel;
             this._menuButtonWidget = new MW.MenuButtonWidget();
+            
+            //Tooltip showing/hiding
+            this.tooltipShowing = false;
+            this.tooltipHidingID = 0;
+            this.tooltipShowingID = 0;
 
             //Create Main Button Left and Right Click Menus---------------------------------------------------
             let sourceActor =  modernGnome ?  this : this.actor;
@@ -95,6 +91,9 @@ var ApplicationsButton =   Utils.defineClass({
                         ExtensionUtils.extensions[DASH_TO_PANEL_UUID];
             this.extensionChangedId = (Main.extensionManager || ExtensionSystem).connect('extension-state-changed', (data, extension) => {
                 if (extension.uuid === DASH_TO_PANEL_UUID && extension.state === 1) {
+                    this.dtp = Main.extensionManager ?
+                                Main.extensionManager.lookup(DASH_TO_PANEL_UUID) : 
+                                ExtensionUtils.extensions[DASH_TO_PANEL_UUID];
                     this.rightClickMenu.addDTPSettings();   
                     this.dtpSettings = Convenience.getDTPSettings('org.gnome.shell.extensions.dash-to-panel',extension);
                     let side = this.dtpSettings.get_string('panel-position');
@@ -105,6 +104,7 @@ var ApplicationsButton =   Utils.defineClass({
                     });
                 }
                 if (extension.uuid === DASH_TO_PANEL_UUID && extension.state === 2) {
+                    this.dtp = null;
                     this.rightClickMenu.removeDTPSettings();
                     this.updateArrowSide('TOP');
                     if(this.dtpPostionChangedID>0 && this.dtpSettings){
@@ -130,22 +130,30 @@ var ApplicationsButton =   Utils.defineClass({
                 this._reload();
             });
             //-----------------------------------------------------------------------------------
-            
+            this._setMenuPositionAlignment();
             //Add Menu Button Widget to Button
             sourceActor.add_actor(this._menuButtonWidget.actor);
 
             //Create Basic Layout ------------------------------------------------
+            GLib.timeout_add(0, 100, () => {
+                this.createMenuLayout();
+                return GLib.SOURCE_REMOVE;
+            });
+            //--------------------------------------------------------------------
+        },
+        createMenuLayout(){
             this.section = new PopupMenu.PopupMenuSection();
             this.leftClickMenu.addMenuItem(this.section);            
             this.mainBox = new St.BoxLayout({
                 vertical: false
             });        
-            this.mainBox.set_height(this._settings.get_int('menu-height'));               
+            let themeContext = St.ThemeContext.get_for_stage(global.stage);
+            let scaleFactor = themeContext.scale_factor;
+            let height =  Math.round(this._settings.get_int('menu-height') / scaleFactor);
+            this.mainBox.style = `height: ${height}px`;        
             this.section.actor.add_actor(this.mainBox);          
-            //--------------------------------------------------------------------
-
             //Create Menu Layout--------------------------------------------------
-           let layout = this._settings.get_enum('menu-layout');
+            let layout = this._settings.get_enum('menu-layout');
             if(layout == Constants.MENU_LAYOUT.Default)
                 this.MenuLayout =  new MenuLayouts.arcmenu.createMenu(this);
             else if(layout == Constants.MENU_LAYOUT.Brisk)
@@ -168,22 +176,62 @@ var ApplicationsButton =   Utils.defineClass({
                 this.MenuLayout = new MenuLayouts.simple2.createMenu(this);  
             else if (layout == Constants.MENU_LAYOUT.UbuntuDash)
                 this.MenuLayout = new MenuLayouts.ubuntudash.createMenu(this); 
+            else if (layout == Constants.MENU_LAYOUT.Budgie)
+                this.MenuLayout = new MenuLayouts.budgie.createMenu(this);
+            else if (layout == Constants.MENU_LAYOUT.Windows)
+                this.MenuLayout = new MenuLayouts.windows.createMenu(this);
+            else if (layout == Constants.MENU_LAYOUT.Runner)
+                this.MenuLayout = new MenuLayouts.runner.createMenu(this);
             ///--------------------------------------------------------------------
+            this._setMenuPositionAlignment();
+            this.tooltipShowing = false;
+            this.tooltipHidingID = 0;
+            this.tooltipShowingID = 0;
             this.updateStyle();
         },
         getMenu(){
             return this.MenuLayout;
         },
-        updateArrowSide(side){
+        _setMenuPositionAlignment(){
+            let layout = this._settings.get_enum('menu-layout');
+            if(layout != Constants.MENU_LAYOUT.Runner){
+                if(this._settings.get_enum('position-in-panel') == Constants.MENU_POSITION.Center){
+                    let arrowAlignment = (this._settings.get_int('menu-position-alignment') / 100);
+                    this.rightClickMenu._arrowAlignment = arrowAlignment
+                    this.leftClickMenu._arrowAlignment = arrowAlignment
+                    this.rightClickMenu._boxPointer.setSourceAlignment(.5);
+                    this.leftClickMenu._boxPointer.setSourceAlignment(.5);
+                }
+                else if(this.dtp){
+                    let side = this.dtpSettings.get_string('panel-position');
+                    this.updateArrowSide(side ? side : 'TOP', false);
+                }  
+                else{
+                    this.updateArrowSide('TOP', false);
+                }
+            }
+            else{
+                this.updateArrowSide('TOP', false);
+            }
+
+        },
+        updateArrowSide(side, setAlignment = true){
             let arrowAlignment = 0;
+            let layout = this._settings.get_enum('menu-layout');
+            if(layout == Constants.MENU_LAYOUT.Simple2)
+                this.leftClickMenu.actor.style = 'max-height: '+(this.leftClickMenu.actor.height + 250)+'px;';
+            else
+                this.leftClickMenu.actor.style = "";
+
             if (side == 'TOP') 
                 side =  St.Side.TOP;
             else if (side == 'RIGHT') {
                 arrowAlignment = 1;
                 side =  St.Side.RIGHT;
             }
-             else if (side == 'BOTTOM') 
+            else if (side == 'BOTTOM') {
                 side =  St.Side.BOTTOM;
+            } 
             else{
                 arrowAlignment = 1;
                 side =  St.Side.LEFT;
@@ -202,9 +250,15 @@ var ApplicationsButton =   Utils.defineClass({
             this.leftClickMenu._boxPointer.setSourceAlignment(arrowAlignment);
             this.leftClickMenu._arrowAlignment = arrowAlignment
             this.leftClickMenu._boxPointer._border.queue_repaint();
+            
+            if(setAlignment)
+                this._setMenuPositionAlignment();
+            
+               
         },
         updateStyle(){
-            this.MenuLayout.updateStyle();
+            if(this.MenuLayout)
+                this.MenuLayout.updateStyle();
             let addStyle=this._settings.get_boolean('enable-custom-arc-menu');
 
             this.leftClickMenu.actor.style_class = addStyle ? 'arc-menu-boxpointer': 'popup-menu-boxpointer';
@@ -235,7 +289,9 @@ var ApplicationsButton =   Utils.defineClass({
                     if(layout == Constants.MENU_LAYOUT.GnomeDash)
                         Main.overview.toggle();
                     else{
-                        this.leftClickMenu.toggle();	
+                        if(layout == Constants.MENU_LAYOUT.Runner)
+                            this.MenuLayout.updateRunnerLocation();
+                        this.leftClickMenu.toggle();
                         if(this.leftClickMenu.isOpen){
                             if(!(layout == Constants.MENU_LAYOUT.Simple || layout == Constants.MENU_LAYOUT.Simple2))
                                 this.mainBox.grab_key_focus();	
@@ -252,6 +308,8 @@ var ApplicationsButton =   Utils.defineClass({
                     if(layout == Constants.MENU_LAYOUT.GnomeDash)
                         Main.overview.toggle();
                     else{
+                        if(layout == Constants.MENU_LAYOUT.Runner)
+                            this.MenuLayout.updateRunnerLocation();
                         this.leftClickMenu.toggle();	
                         if(this.leftClickMenu.isOpen){
                             if(!(layout == Constants.MENU_LAYOUT.Simple || layout == Constants.MENU_LAYOUT.Simple2))
@@ -274,6 +332,8 @@ var ApplicationsButton =   Utils.defineClass({
             if(layout == Constants.MENU_LAYOUT.GnomeDash)
                 Main.overview.toggle();
             else{
+                if(layout == Constants.MENU_LAYOUT.Runner)
+                    this.MenuLayout.updateRunnerLocation();
                 this.leftClickMenu.toggle();
                 if(this.leftClickMenu.isOpen){
                     if(!(layout == Constants.MENU_LAYOUT.Simple || layout == Constants.MENU_LAYOUT.Simple2))
@@ -303,10 +363,12 @@ var ApplicationsButton =   Utils.defineClass({
         },
         updateHeight(){
             //set menu height
-             let layout = this._settings.get_enum('menu-layout');
-            
-            if(!(layout == Constants.MENU_LAYOUT.Simple || layout == Constants.MENU_LAYOUT.Simple2))
-                this.mainBox.set_height(this._settings.get_int('menu-height'));	
+            let layout = this._settings.get_enum('menu-layout');
+            let themeContext = St.ThemeContext.get_for_stage(global.stage);
+            let scaleFactor = themeContext.scale_factor;
+            let height =  Math.round(this._settings.get_int('menu-height') / scaleFactor);
+            if(!(layout == Constants.MENU_LAYOUT.Simple || layout == Constants.MENU_LAYOUT.Simple2 || layout == Constants.MENU_LAYOUT.Runner) && this.MenuLayout)
+                this.mainBox.style = `height: ${height}px`;
             
            
             this._redisplay();
@@ -338,97 +400,92 @@ var ApplicationsButton =   Utils.defineClass({
             this.container.destroy();
         },
         _updateMenuLayout(){
-             this.leftClickMenu.removeAll();
-            this.leftClickMenu.actor.style = '';
-            //Create Basic Layout ------------------------------------------------
-            this.section = new PopupMenu.PopupMenuSection();
-            this.leftClickMenu.addMenuItem(this.section);            
-            this.mainBox = new St.BoxLayout({
-                vertical: false
-            });        
-            this.mainBox.set_height(this._settings.get_int('menu-height'));               
-            this.section.actor.add_actor(this.mainBox);          
-            //------------------------------------------------  
-             
-            //this.MenuLayout = null;
-            let layout = this._settings.get_enum('menu-layout');
-            if(layout == Constants.MENU_LAYOUT.Default)
-                this.MenuLayout =  new MenuLayouts.arcmenu.createMenu(this);
-            else if(layout == Constants.MENU_LAYOUT.Brisk)
-                this.MenuLayout =  new MenuLayouts.brisk.createMenu(this); 
-            else if(layout == Constants.MENU_LAYOUT.Whisker)
-                this.MenuLayout = new MenuLayouts.whisker.createMenu(this); 
-            else if (layout == Constants.MENU_LAYOUT.GnomeMenu)
-                this.MenuLayout = new MenuLayouts.gnomemenu.createMenu(this); 
-            else if (layout == Constants.MENU_LAYOUT.Mint)
-                this.MenuLayout = new MenuLayouts.mint.createMenu(this); 
-            else if (layout == Constants.MENU_LAYOUT.GnomeDash)
-                this.MenuLayout = new MenuLayouts.gnomedash.createMenu(this); 
-            else if (layout == Constants.MENU_LAYOUT.Elementary)
-                this.MenuLayout = new MenuLayouts.elementary.createMenu(this); 
-            else if (layout == Constants.MENU_LAYOUT.Redmond)
-                this.MenuLayout = new MenuLayouts.redmond.createMenu(this); 
-            else if (layout == Constants.MENU_LAYOUT.Simple)
-                this.MenuLayout = new MenuLayouts.simple.createMenu(this);  
-            else if (layout == Constants.MENU_LAYOUT.Simple2)
-                this.MenuLayout = new MenuLayouts.simple2.createMenu(this);  
-            else if (layout == Constants.MENU_LAYOUT.UbuntuDash)
-                this.MenuLayout = new MenuLayouts.ubuntudash.createMenu(this);  
-            this.updateStyle();
+            this.MenuLayout.destroy();
+            this.MenuLayout = null;
+            this.leftClickMenu.removeAll();
+            GLib.timeout_add(0, 100, () => {
+                this.createMenuLayout();
+                return GLib.SOURCE_REMOVE;
+            });  
+        },
+        updateRunnerLocation(){
+            this.MenuLayout.updateRunnerLocation();
         },
         updateIcons(){
-            this.MenuLayout.updateIcons();
+            if(this.MenuLayout)
+                this.MenuLayout.updateIcons();
         },
         _loadCategories(){
-            this.MenuLayout._loadCategories();
+            if(this.MenuLayout)
+                this.MenuLayout._loadCategories();
         },
         _clearApplicationsBox() {
-            this.MenuLayout._clearApplicationsBox();
+            if(this.MenuLayout)
+                this.MenuLayout._clearApplicationsBox();
         },
         _displayCategories() {
-            this.MenuLayout._displayCategories();
+            if(this.MenuLayout)
+                this.MenuLayout._displayCategories();
         },
         _displayFavorites() {
-            this.MenuLayout._displayFavorites();
+            if(this.MenuLayout)
+                this.MenuLayout._displayFavorites();
         },
         _loadFavorites() {
-            this.MenuLayout._loadFavorites();
+            if(this.MenuLayout)
+                this.MenuLayout._loadFavorites();
         },
         _displayAllApps() {
-            this.MenuLayout._displayAllApps();
+            if(this.MenuLayout)
+                this.MenuLayout._displayAllApps();
         },
         selectCategory(dir) {
-            this.MenuLayout.selectCategory(dir);
+            if(this.MenuLayout)
+                this.MenuLayout.selectCategory(dir);
         },
         _displayGnomeFavorites(){
-            this.MenuLayout._displayGnomeFavorites();
+            if(this.MenuLayout)
+                this.MenuLayout._displayGnomeFavorites();
         },
         _setActiveCategory(){
-            this.MenuLayout._setActiveCategory();
+            if(this.MenuLayout)
+                this.MenuLayout._setActiveCategory();
         },
         scrollToButton(button){
-            this.MenuLayout.scrollToButton(button);
+            if(this.MenuLayout)
+                this.MenuLayout.scrollToButton(button);
         },
         _redisplayRightSide(){
-            this.MenuLayout._redisplayRightSide();
+            if(this.MenuLayout)
+                this.MenuLayout._redisplayRightSide();
         },
         _redisplay() {
-            this.MenuLayout._redisplay();
+            if(this.MenuLayout)
+                this.MenuLayout._redisplay();
         },
         _reload(){
-            this.MenuLayout._reload();
+            if(this.MenuLayout)
+                this.MenuLayout._reload();
         },
         setCurrentMenu(menu) {
-            this.MenuLayout.setCurrentMenu(menu);
+            if(this.MenuLayout)
+                this.MenuLayout.setCurrentMenu(menu);
         },
         getCurrentMenu(){
-            return this.MenuLayout.getCurrentMenu();
+            if(this.MenuLayout)
+                return this.MenuLayout.getCurrentMenu();
+        },
+        getShouldLoadFavorites(){
+            if(this.MenuLayout)
+                return this.MenuLayout.shouldLoadFavorites;
         },
         resetSearch(){ //used by back button to clear results
-            this.MenuLayout.resetSearch();
+            if(this.MenuLayout)
+                this.MenuLayout.resetSearch();
         },
         setDefaultMenuView(){
-            this.MenuLayout.setDefaultMenuView();
+            if(this.MenuLayout)
+                this.MenuLayout.setDefaultMenuView();
         },
         // Handle changes in menu open state
         _onOpenStateChanged(menu, open) {
@@ -452,7 +509,7 @@ var ApplicationsButton =   Utils.defineClass({
         }
     });
 // Aplication menu class
-var ApplicationsMenu = class ArcMenu_ApplicationsMenu extends PopupMenu.PopupMenu {
+var ApplicationsMenu = class ArcMenu_ApplicationsMenu extends PopupMenu.PopupMenu{
     // Initialize the menu
     constructor(sourceActor, arrowAlignment, arrowSide, button, settings) {
         super(sourceActor, arrowAlignment, arrowSide);
@@ -478,8 +535,13 @@ var ApplicationsMenu = class ArcMenu_ApplicationsMenu extends PopupMenu.PopupMen
         if(this._button.subMenuManager.activeMenu)
             this._button.subMenuManager.activeMenu.toggle();
         super.close(animate);   
-        if(this._button.MenuLayout.isRunning)
-            this._button.setDefaultMenuView();  
+
+        if(this._button.MenuLayout.isRunning){
+            GLib.timeout_add(0, 100, () => {
+                this._button.setDefaultMenuView();  
+                return GLib.SOURCE_REMOVE;
+            });
+        }
     }
 };
 // Aplication menu class

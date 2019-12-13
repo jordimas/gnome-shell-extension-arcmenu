@@ -1,10 +1,12 @@
 /*
- * Arc Menu: The new applications menu for Gnome 3.
+ * Arc Menu - A traditional application menu for GNOME 3
  *
- * Copyright (C) 2017-2019 LinxGem33 
- *
- * Copyright (C) 2019 Andrew Zaech 
- *
+ * Arc Menu Lead Developer
+ * Andrew Zaech https://gitlab.com/AndrewZaech
+ * 
+ * Arc Menu Founder/Maintainer/Graphic Designer
+ * LinxGem33 https://gitlab.com/LinxGem33
+ * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 2 of the License, or
@@ -18,7 +20,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
+ 
 #arc-search{width: 290px;} 
 .arc-menu-status-text{
 color:rgba(211, 218, 227, 1);
@@ -76,14 +78,8 @@ color:rgba(255,255,255,1);
  padding: 2px 5px;
 max-width:550px;
  min-height: 0px;
-}.search-box-padding { 
-padding-top: 0.75em;
-padding-bottom: 0.25em;
-padding-left: 1em;
- padding-right: 0.25em;
- margin-right: .5em;
-}
-.arc-menu{
+}.arc-menu{
+-boxpointer-gap: 0px;
 min-width: 15em;
 color: #D3DAE3;
 border-image: none;
