@@ -354,7 +354,7 @@ var createMenu = class{
         this.currentMenu = menu;
     }
     getCurrentMenu(){
-        return this.currentMenu;
+        return Constants.CURRENT_MENU.FAVORITES;
     } 
     updateIcons(){
     }
@@ -574,9 +574,6 @@ var createMenu = class{
         }
 
         _onSearchBoxChanged(searchBox, searchString) {        
-            if(this.currentMenu != Constants.CURRENT_MENU.SEARCH_RESULTS){              
-            	this.currentMenu = Constants.CURRENT_MENU.SEARCH_RESULTS;        
-            }
             if(searchBox.isEmpty()){  
                 this.newSearch.setTerms(['']); 
                 this.setDefaultMenuView();                     	          	
