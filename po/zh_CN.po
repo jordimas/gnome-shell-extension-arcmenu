@@ -15,7 +15,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 "X-Generator: Poedit 2.2.4\n"
-"Last-Translator: \n"
+"Last-Translator: Jack ZHANG <skygmin#gmail.com>\n"
 "Language: zh_CN\n"
 
 #: menu.js:497 menuWidgets.js:967
