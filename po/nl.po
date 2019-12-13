@@ -1,0 +1,684 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2019-12-13 21:48+0100\n"
+"PO-Revision-Date: 2019-12-13 22:47+0100\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: nl\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Poedit 2.2.4\n"
+
+#: prefs.js:43 prefs.js:665
+msgid "Pinned Apps"
+msgstr ""
+
+#: prefs.js:61
+msgid "Add More Apps"
+msgstr ""
+
+#: prefs.js:105
+msgid "Add Custom Shortcut"
+msgstr ""
+
+#: prefs.js:139 prefs.js:494
+msgid "Save"
+msgstr "Opslaan"
+
+#: prefs.js:292
+msgid "Select Apps to add to Pinned Apps List"
+msgstr ""
+
+#: prefs.js:312 prefs.js:494
+msgid "Add"
+msgstr "Toevoegen"
+
+#: prefs.js:423
+msgid "Edit Pinned App"
+msgstr ""
+
+#: prefs.js:423
+msgid "Add a Custom Shortcut"
+msgstr ""
+
+#: prefs.js:433
+msgid "Shortcut Name:"
+msgstr ""
+
+#: prefs.js:448
+msgid "Icon:"
+msgstr "Icoon:"
+
+#: prefs.js:461 prefs.js:1102
+msgid "Please select an image icon"
+msgstr ""
+
+#: prefs.js:480
+msgid "Terminal Command:"
+msgstr ""
+
+#: prefs.js:536
+msgid "General"
+msgstr "Algemeen"
+
+#: prefs.js:545
+msgid "Menu Button Position in Panel"
+msgstr ""
+
+#: prefs.js:552
+msgid "Left"
+msgstr "Links"
+
+#: prefs.js:555
+msgid "Center"
+msgstr "Midden"
+
+#: prefs.js:559
+msgid "Right"
+msgstr "Rechs"
+
+#: prefs.js:597
+msgid "Display on all monitors when using Dash to Panel"
+msgstr ""
+
+#: prefs.js:618
+msgid "Disable Tooltips"
+msgstr ""
+
+#: prefs.js:640
+msgid "Disable activities hot corner"
+msgstr ""
+
+#: prefs.js:659
+#, fuzzy
+msgid "Arc Menus Default View"
+msgstr "Arc Menu Standaard Beeld"
+
+#: prefs.js:666
+msgid "Categories List"
+msgstr ""
+
+#: prefs.js:687
+msgid "Hotkey activation"
+msgstr ""
+
+#: prefs.js:693
+msgid "Key Release"
+msgstr ""
+
+#: prefs.js:694
+msgid "Key Press"
+msgstr ""
+
+#: prefs.js:718
+msgid "Set Menu Hotkey"
+msgstr ""
+
+#: prefs.js:728
+msgid "Left Super Key"
+msgstr ""
+
+#: prefs.js:734
+msgid "Right Super Key"
+msgstr ""
+
+#: prefs.js:739
+msgid "Custom"
+msgstr ""
+
+#: prefs.js:744
+msgid "None"
+msgstr ""
+
+#: prefs.js:839
+msgid "Current Hotkey"
+msgstr "Huidige sneltoetesen"
+
+#: prefs.js:863
+msgid "Set Custom Hotkey"
+msgstr "Aangepaste sneltoets instellen"
+
+#: prefs.js:872
+msgid "Press a key"
+msgstr "Druk op een toets"
+
+#: prefs.js:897
+msgid "Modifiers"
+msgstr ""
+
+#: prefs.js:902
+msgid "Ctrl"
+msgstr "Ctrl"
+
+#: prefs.js:907
+msgid "Super"
+msgstr "Super"
+
+#: prefs.js:911
+msgid "Shift"
+msgstr "Shift"
+
+#: prefs.js:915
+msgid "Alt"
+msgstr "Alt"
+
+#: prefs.js:979 prefs.js:1708 prefs.js:1976 prefs.js:2221 prefs.js:2866
+msgid "Apply"
+msgstr "Toepassen"
+
+#: prefs.js:1016 prefs.js:1039 prefs.js:1343
+msgid "Menu Button Appearance"
+msgstr "Menu-knop Uiterlijk"
+
+#: prefs.js:1027
+msgid "Icon"
+msgstr "Icoon"
+
+#: prefs.js:1028
+msgid "Text"
+msgstr "Tekst"
+
+#: prefs.js:1029
+msgid "Icon and Text"
+msgstr "Icoon en Tekst"
+
+#: prefs.js:1030
+msgid "Text and Icon"
+msgstr "Tekst en Icoon"
+
+#: prefs.js:1053
+msgid "Menu Button Text"
+msgstr "Menu-knop Tekst"
+
+#: prefs.js:1073
+msgid "Arrow beside Menu Button"
+msgstr "Pijl naast Menuknop"
+
+#: prefs.js:1092
+msgid "Menu Button Icon"
+msgstr "Menu-knop Icoon"
+
+#: prefs.js:1107
+msgid "Arc Menu Icon"
+msgstr "Arc Menu-icoon"
+
+# Systeemicoon is the formal spelling. "Systeem Icoon" might be more readable
+#: prefs.js:1108
+msgid "System Icon"
+msgstr "Systeem Icoon"
+
+#: prefs.js:1109
+msgid "Custom Icon"
+msgstr ""
+
+#: prefs.js:1147
+msgid "Icon Size"
+msgstr "Icoongrootte"
+
+#: prefs.js:1179
+msgid "Icon Padding"
+msgstr ""
+
+#: prefs.js:1210
+msgid "Icon Color"
+msgstr "Icoonkleur"
+
+#: prefs.js:1231
+msgid "Active Icon Color"
+msgstr ""
+
+#: prefs.js:1251
+msgid "Icon color options will only work with files ending with \"-symbolic.svg\""
+msgstr ""
+
+#: prefs.js:1264 prefs.js:1942 prefs.js:2812
+msgid "Reset"
+msgstr "Reset"
+
+# Gnome might have other default translations for this.
+#: prefs.js:1321
+msgid "Appearance"
+msgstr "Uiterlijk"
+
+#: prefs.js:1371 prefs.js:1779
+msgid "Customize Arc Menu Appearance"
+msgstr "Arc Menu uiterlijk aanpassen"
+
+#: prefs.js:1422 prefs.js:2378
+msgid "Override Arc Menu Theme"
+msgstr ""
+
+#: prefs.js:1483
+msgid "Current Color Theme"
+msgstr ""
+
+#: prefs.js:1507
+msgid "Avatar Icon Shape"
+msgstr ""
+
+#: prefs.js:1512
+msgid "Circular"
+msgstr "Rond"
+
+#: prefs.js:1513
+msgid "Square"
+msgstr "Vierkant"
+
+#: prefs.js:1531
+msgid "Menu Layout"
+msgstr "Menu-indeling"
+
+#: prefs.js:1586
+msgid "Current Layout"
+msgstr "Huidige menu-indeling"
+
+#: prefs.js:1606
+msgid "Each layout is different in behaviour and style."
+msgstr "Iedere indeling is verschillend in stijl en omgang."
+
+# It now literally says "All layouts can be modified via the settings". 
+# "Customization" and "modification", however, translate to the same dutch word. "All layouts can be modified via the modification settings" doesn't really sound as good.
+#: prefs.js:1607
+msgid "All layouts can be modified by customization settings."
+msgstr "Alle indelingen kunnen aangepast worden via de instellingen."
+
+#: prefs.js:1608
+msgid "However, some settings are specifc to Arc Menu layout."
+msgstr "Sommige instellingen zijn specifiek voor de Arc Menu indeling."
+
+#: prefs.js:1665
+msgid "Menu style chooser"
+msgstr "Menu-indelingkiezer"
+
+#: prefs.js:1674
+msgid "Arc Menu Layout"
+msgstr "Arc Menu indeling"
+
+#: prefs.js:1792
+msgid "Menu Height"
+msgstr "Menuhoogte"
+
+#: prefs.js:1824
+msgid "Left-Panel Width"
+msgstr "Breedte van linker paneel"
+
+#: prefs.js:1849
+msgid "Large Application Icons"
+msgstr "Grote applicatie-iconen"
+
+#: prefs.js:1868 prefs.js:2764
+msgid "Enable Vertical Separator"
+msgstr "Verticale scheidingslijn inschakelen"
+
+#: prefs.js:1887 prefs.js:2786
+msgid "Separator Color"
+msgstr "Kleur van scheidingslijn"
+
+#: prefs.js:1909
+msgid "Fine Tune"
+msgstr "Fijnstellen"
+
+# Don't know what this setting does exactly, so "gap" might have a more appropriate translation than "tussenruimte"
+#: prefs.js:1917
+msgid "Gap Adjustment"
+msgstr "Tussenruimte bijstellen"
+
+#: prefs.js:2013
+msgid "Color Theme Name"
+msgstr "Naam Kleurenthema"
+
+#: prefs.js:2020
+msgid "Name:"
+msgstr "Naam:"
+
+#: prefs.js:2046
+msgid "Save Theme"
+msgstr "Thema Opslaan"
+
+#: prefs.js:2078
+msgid "Select Themes to Import"
+msgstr "Selecteer Thema's om te Importeren"
+
+#: prefs.js:2078
+msgid "Select Themes to Export"
+msgstr "Selecteer Thema's om te Exporteren"
+
+#: prefs.js:2100
+msgid "Import"
+msgstr "Importeren"
+
+#: prefs.js:2100
+msgid "Export"
+msgstr "Exporteren"
+
+#: prefs.js:2142
+msgid "Select All"
+msgstr "Alles selecteren"
+
+#: prefs.js:2202
+msgid "Manage Themes"
+msgstr "Thema's beheren"
+
+#: prefs.js:2391
+msgid "Color Theme Presets"
+msgstr ""
+
+#: prefs.js:2401
+msgid "Save as Preset"
+msgstr ""
+
+#: prefs.js:2496
+msgid "Manage Presets"
+msgstr ""
+
+#: prefs.js:2527
+msgid "Menu Background Color"
+msgstr "Achtergrondkleur van Menu"
+
+#: prefs.js:2552
+msgid "Menu Foreground Color"
+msgstr "Voorgrondkleur van Menu"
+
+#: prefs.js:2574
+msgid "Font Size"
+msgstr "Fontgrootte"
+
+#: prefs.js:2602
+msgid "Border Color"
+msgstr ""
+
+#: prefs.js:2625
+msgid "Border Size"
+msgstr ""
+
+#: prefs.js:2654
+msgid "Highlighted Item Color"
+msgstr ""
+
+#: prefs.js:2678
+msgid "Corner Radius"
+msgstr "Hoek radius"
+
+#: prefs.js:2707
+msgid "Menu Arrow Size"
+msgstr "Menupijlgrootte"
+
+#: prefs.js:2736
+msgid "Menu Displacement"
+msgstr ""
+
+#: prefs.js:2934
+msgid "Shortcuts"
+msgstr ""
+
+# Again: the literal translation that might be different in other Gnome app
+#: prefs.js:2944 placeDisplay.js:454
+#, fuzzy
+msgid "Home"
+msgstr "Thuis"
+
+#: prefs.js:2944
+msgid "Documents"
+msgstr "Documenten"
+
+#: prefs.js:2944
+msgid "Downloads"
+msgstr "Downloads"
+
+#: prefs.js:2944
+msgid "Music"
+msgstr "Muziek"
+
+#: prefs.js:2944
+msgid "Pictures"
+msgstr "Afbeeldingen"
+
+#: prefs.js:2944
+msgid "Videos"
+msgstr "Video's"
+
+#: prefs.js:2944 placeDisplay.js:239 placeDisplay.js:263
+msgid "Computer"
+msgstr "Computer"
+
+#: prefs.js:2945
+msgid "Network"
+msgstr "Netwerk"
+
+#: prefs.js:2984
+msgid "External Devices"
+msgstr "Externe Apparaten"
+
+#: prefs.js:3006
+msgid "Bookmarks"
+msgstr "Bladwijzers"
+
+#: prefs.js:3033 menuWidgets.js:616
+msgid "Software"
+msgstr "Software"
+
+#: prefs.js:3033 menuWidgets.js:648
+msgid "Settings"
+msgstr "Instellingen"
+
+# It's an unofficial loanword from English, but there are certain truly Dutch words that sort of mean the same. Gnome Tweaks uses "afstellingen".
+#: prefs.js:3033
+msgid "Tweaks"
+msgstr "Tweaks"
+
+# I don't like this translation, but it's gnome terminal's own translation
+#: prefs.js:3033 menuWidgets.js:635 menuWidgets.js:973
+msgid "Terminal"
+msgstr "Terminalvenster"
+
+# Again, check whether or not this is the Gnome translation
+#: prefs.js:3033 menuWidgets.js:419
+msgid "Activities Overview"
+msgstr "Activiteitenoverzicht"
+
+#: prefs.js:3073 menuWidgets.js:698
+msgid "Suspend"
+msgstr "Slaapstand"
+
+#: prefs.js:3090 menuWidgets.js:716
+msgid "Lock"
+msgstr "Vergrendelen"
+
+#: prefs.js:3107 menuWidgets.js:685
+msgid "Log Out"
+msgstr "Uitloggen"
+
+#: prefs.js:3124 menuWidgets.js:672
+msgid "Power Off"
+msgstr "Uitschakelen"
+
+# The abbreviation of "Diversen" is "Div.", but it's not as commonly used as "Misc".
+#: prefs.js:3156
+msgid "Misc"
+msgstr "Diversen"
+
+#: prefs.js:3162
+msgid "Export and Import Arc Menu Settings"
+msgstr "Exporteren en Importeren van Arc Menu-instellingen"
+
+#: prefs.js:3169
+msgid "Importing settings from file may replace ALL saved settings."
+msgstr ""
+
+#: prefs.js:3170
+msgid "This includes all saved pinned apps."
+msgstr ""
+
+#: prefs.js:3179
+msgid "Import from File"
+msgstr "Importeren van Bestand"
+
+#: prefs.js:3185
+msgid "Import settings"
+msgstr "Instellingen Importeren"
+
+#: prefs.js:3214
+msgid "Export to File"
+msgstr "Exporteren naar Bestand"
+
+#: prefs.js:3221
+msgid "Export settings"
+msgstr "Instellingen Exporteren"
+
+#: prefs.js:3252
+msgid "Color Theme Presets - Export/Import"
+msgstr ""
+
+#: prefs.js:3271
+msgid "Imported theme presets are located on the Appearance Tab"
+msgstr ""
+
+#: prefs.js:3272
+msgid "in Override Arc Menu Theme"
+msgstr ""
+
+#: prefs.js:3283 prefs.js:3289
+msgid "Import Theme Preset"
+msgstr ""
+
+#: prefs.js:3329 prefs.js:3340
+msgid "Export Theme Preset"
+msgstr ""
+
+#: prefs.js:3417
+msgid "About"
+msgstr "Over Arc Menu"
+
+#: prefs.js:3445
+msgid "Arc-Menu"
+msgstr "Arc-Menu"
+
+#: prefs.js:3450
+msgid "version: "
+msgstr "versie: "
+
+#: prefs.js:3454
+msgid "A traditional application menu for GNOME"
+msgstr "Een traditioneel applicatiemenu voor Gnome 3"
+
+#: prefs.js:3458
+msgid "GitLab Page"
+msgstr "GitLab pagina"
+
+#: menuWidgets.js:123
+msgid "Open Folder Location"
+msgstr "Open folderlocatie"
+
+# "Vensters" is the literal (and Windows)  way of translating "Windows". Gnome could have other conventions, though
+#: menuWidgets.js:139
+msgid "Current Windows:"
+msgstr "Huidige Vensters:"
+
+#: menuWidgets.js:158
+msgid "New Window"
+msgstr "Nieuw Venster"
+
+#: menuWidgets.js:168
+msgid "Launch using Dedicated Graphics Card"
+msgstr "Opstarten met toegewezen grafische kaart"
+
+#: menuWidgets.js:191
+msgid "Remove from Favorites"
+msgstr "Verwijder van Favorieten"
+
+#: menuWidgets.js:197
+msgid "Add to Favorites"
+msgstr "Voeg toe aan Favorieten"
+
+#: menuWidgets.js:218 menuWidgets.js:271
+msgid "Unpin from Arc Menu"
+msgstr "Losmaken van Arc Menu"
+
+#: menuWidgets.js:233
+msgid "Pin to Arc Menu"
+msgstr "Vastpinnen aan Arc Menu"
+
+#: menuWidgets.js:246
+msgid "Show Details"
+msgstr "Toon Details"
+
+#: menuWidgets.js:604
+msgid "Files"
+msgstr "Bestanden"
+
+#: menuWidgets.js:660
+msgid "Users"
+msgstr "Gebruikers"
+
+#: menuWidgets.js:740
+msgid "Back"
+msgstr "Terug"
+
+#: menuWidgets.js:808 menuWidgets.js:1497 menuWidgets.js:1629
+#: menuWidgets.js:1795
+msgid "All Programs"
+msgstr "Alle Programma's"
+
+#: menuWidgets.js:972
+msgid "Arc Menu Settings"
+msgstr "Arc Menu Instellingen"
+
+#: menuWidgets.js:1497 menuWidgets.js:1629 menuWidgets.js:1795
+msgid "Favorites"
+msgstr "Favorieten"
+
+#: menuWidgets.js:1500 menuWidgets.js:1632 menuWidgets.js:1798
+msgid "Frequent Apps"
+msgstr "Veelgebruikte apps"
+
+#: menuWidgets.js:1961
+msgid "Type to search…"
+msgstr "Typ om te zoeken…"
+
+#: menuWidgets.js:2130
+msgid "Applications"
+msgstr "Applicaties"
+
+#: placeDisplay.js:140
+#, javascript-format
+msgid "Failed to launch “%s”"
+msgstr ""
+
+#: placeDisplay.js:155
+#, javascript-format
+msgid "Failed to mount volume for “%s”"
+msgstr ""
+
+#: placeDisplay.js:328
+#, javascript-format
+msgid "Ejecting drive “%s” failed:"
+msgstr ""
+
+#~ msgid "Arc Menu on GitLab"
+#~ msgstr "Arc Menu op GitLab"
+
+#~ msgid "About Arc Menu"
+#~ msgstr "Over Arc Menu"
+
+# Maybe "Dash to Panel" has a Dutch translation
+#, fuzzy
+#~ msgid "Dash to Panel Settings"
+#~ msgstr "Dash to Panel Instellingen"
+
+#~ msgid "Configure"
+#~ msgstr "Configureren"
+
+#~ msgid "Searching..."
+#~ msgstr "Zoeken..."
+
+#~ msgid "No results."
+#~ msgstr "Geen resultaten."
