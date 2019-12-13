@@ -105,6 +105,7 @@ All ArcMenu's Image assets including wiki images and application Image assets ar
 
 
 Additional credits: This extension also leverages the work from [Giovanni Campagna ](https://git.gnome.org//browse/gnome-shell-extensions) gnome Application Menu used in [Gnome 3](https://www.gnome.org/) to allow the menu to be embedded in the Gnome main panel This extension also leverages some of the work from [Zorin OS menu](https://zorinos.com/).
+This extension also leverages some code from the gnome-shell adapted to be used for ArcMenu and also uses adapted code from Dash to Panel's Utils.js to allow the ArcMenu to be used for different Gnome-shell versions.
 
 -----
 
@@ -142,7 +143,7 @@ Additional credits: This extension also leverages the work from [Giovanni Campag
 
 -----
 
-**@[fishears](https://github.com/fishears/Arc-Menu)** | **@[JasonLG1979](https://github.com/JasonLG1979)** | **@[itmitica](https://github.com/itmitica)** | **@[vikaig](https://gitlab.com/vikaig)**
+**@[fishears](https://github.com/fishears/Arc-Menu)** | **@[JasonLG1979](https://github.com/JasonLG1979)** | **@[itmitica](https://github.com/itmitica)** | **@[vikaig](https://gitlab.com/vikaig)** | **- @[MagneFire](https://gitlab.com/MagneFire)**
 
 -----
 
