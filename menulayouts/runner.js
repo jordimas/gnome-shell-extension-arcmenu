@@ -56,7 +56,7 @@ var createMenu = class {
         this.newSearch = new ArcSearch.SearchResults(this);     
         this._mainBoxKeyPressId = this.mainBox.connect('key-press-event', this._onMainBoxKeyPress.bind(this));
         
-        this.mainBox.style = `max-height: 450px;`;       
+        this.mainBox.style = `max-height: 400px;`;       
 
         this.dummyCursor = new St.Widget({ width: 0, height: 0, opacity: 0 });
         Main.uiGroup.add_actor(this.dummyCursor);
@@ -150,7 +150,7 @@ var createMenu = class {
         let positionX = Math.round(rect.x + (rect.width / 2) - (RUNNER_WIDTH / 2));
         let positionY = rect.y;
         if(this._settings.get_enum('runner-position') == 1)
-            positionY = Math.round(rect.y + (rect.height / 2)-100);
+            positionY = Math.round(rect.y + (rect.height / 2) - 125);
         this.dummyCursor.set_position(positionX,  positionY);
 
     }
@@ -190,6 +190,7 @@ var createMenu = class {
             addStyle ? this.searchBox._stEntry.set_name('arc-search-entry') : this.searchBox._stEntry.set_name('search-entry');
         }
         addStyle ? this.arcMenuSettingsButton.actor.add_style_class_name('arc-menu-action') : this.arcMenuSettingsButton.actor.remove_style_class_name('arc-menu-action');
+        this.leftClickMenu.actor.style = "-arrow-base:0px;-arrow-rise:0px;";
     }
     _loadCategories(){
     }

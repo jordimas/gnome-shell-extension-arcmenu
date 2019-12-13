@@ -194,21 +194,26 @@ var ApplicationsButton =   Utils.defineClass({
         },
         _setMenuPositionAlignment(){
             let layout = this._settings.get_enum('menu-layout');
-            if(this._settings.get_enum('position-in-panel') == Constants.MENU_POSITION.Center &&
-                    layout != Constants.MENU_LAYOUT.Runner){
-                let arrowAlignment = (this._settings.get_int('menu-position-alignment') / 100);
-                this.rightClickMenu._arrowAlignment = arrowAlignment
-                this.leftClickMenu._arrowAlignment = arrowAlignment
-                this.rightClickMenu._boxPointer.setSourceAlignment(.5);
-                this.leftClickMenu._boxPointer.setSourceAlignment(.5);
+            if(layout != Constants.MENU_LAYOUT.Runner){
+                if(this._settings.get_enum('position-in-panel') == Constants.MENU_POSITION.Center){
+                    let arrowAlignment = (this._settings.get_int('menu-position-alignment') / 100);
+                    this.rightClickMenu._arrowAlignment = arrowAlignment
+                    this.leftClickMenu._arrowAlignment = arrowAlignment
+                    this.rightClickMenu._boxPointer.setSourceAlignment(.5);
+                    this.leftClickMenu._boxPointer.setSourceAlignment(.5);
+                }
+                else if(this.dtp){
+                    let side = this.dtpSettings.get_string('panel-position');
+                    this.updateArrowSide(side ? side : 'TOP', false);
+                }  
+                else{
+                    this.updateArrowSide('TOP', false);
+                }
             }
-            else if(this.dtp){
-                let side = this.dtpSettings.get_string('panel-position');
-                this.updateArrowSide(side ? side : 'TOP', false);
-            }  
             else{
                 this.updateArrowSide('TOP', false);
             }
+
         },
         updateArrowSide(side, setAlignment = true){
             let arrowAlignment = 0;
