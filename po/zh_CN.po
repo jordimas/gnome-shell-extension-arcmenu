@@ -143,7 +143,7 @@ msgstr "无法启动 “%s”"
 #: placeDisplay.js:161
 #, javascript-format
 msgid "Failed to mount volume for “%s”"
-msgstr "无法挂载卷标“%s”"
+msgstr "无法挂载卷标 “%s”"
 
 #: placeDisplay.js:245 placeDisplay.js:269 prefs.js:2916
 msgid "Computer"
@@ -376,7 +376,7 @@ msgstr "活动图标颜色"
 
 #: prefs.js:1237
 msgid "Icon color options will only work with files ending with \"-symbolic.svg\""
-msgstr "图标颜色选项仅适用于以“ -symbolic.svg”结尾的文件"
+msgstr "图标颜色选项仅适用于以“-symbolic.svg”结尾的文件"
 
 #: prefs.js:1250 prefs.js:1908 prefs.js:2777
 msgid "Reset"
