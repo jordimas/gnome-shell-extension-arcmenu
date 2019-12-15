@@ -54,7 +54,7 @@ var MenuSettingsController = class {
         this._menuButton = new Menu.ApplicationsButton(settings, panel);
         this._hotCornerManager = new Helper.HotCornerManager(this._settings);
         if(this.isMainPanel){
-            this._menuHotKeybinder = new Helper.MenuHotKeybinder(() => this.toggleMenus());
+            this._menuHotKeybinder = new Helper.MenuHotKeybinder(() => this._onHotkey());
             this._keybindingManager = new Helper.KeybindingManager(this._settings); 
         }
         this._applySettings();
@@ -229,10 +229,16 @@ var MenuSettingsController = class {
     }
 
     _onHotkey() {
-        if (this._settings.get_boolean('disable-hotkey-onkeyrelease'))
+        let hotKeyPos = this._settings.get_enum('menu-hotkey');
+        if(hotKeyPos==1){
             this.toggleMenus();
-        else
-            this._onHotkeyRelease();
+        }
+        else{
+            if (this._settings.get_boolean('disable-hotkey-onkeyrelease'))
+                this.toggleMenus();
+            else
+                this._onHotkeyRelease();
+        }
     }
 
     _onHotkeyRelease() {
