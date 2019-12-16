@@ -147,7 +147,10 @@ var createMenu = class {
         
         let rect = screen.get_monitor_workarea(currentMonitor);
         //Position the runner menu in the center of the current monitor, at top of screen.
-        let positionX = Math.round(rect.x + (rect.width / 2) - (RUNNER_WIDTH / 2));
+        this.leftClickMenu.actor.show();
+        this.leftClickMenu.actor.hide();
+        this.leftClickMenu.actor.get_allocation_box();
+        let positionX = Math.round(rect.x + (rect.width / 2) - (this.leftClickMenu.actor.get_width() / 2));
         let positionY = rect.y;
         if(this._settings.get_enum('runner-position') == 1)
             positionY = Math.round(rect.y + (rect.height / 2) - 125);
