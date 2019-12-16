@@ -48,7 +48,7 @@ msgstr "新窗口"
 
 #: menuWidgets.js:171
 msgid "Launch using Dedicated Graphics Card"
-msgstr "使用专用显卡启动"
+msgstr "使用独显卡启动"
 
 #: menuWidgets.js:194
 msgid "Remove from Favorites"
@@ -72,7 +72,7 @@ msgstr "显示详细资料"
 
 #: menuWidgets.js:420 prefs.js:3012
 msgid "Activities Overview"
-msgstr "活动总览"
+msgstr "活动概览"
 
 #: menuWidgets.js:599
 msgid "Files"
@@ -584,7 +584,7 @@ msgstr "书签"
 
 #: prefs.js:3012
 msgid "Tweaks"
-msgstr "调整"
+msgstr "优化"
 
 #: prefs.js:3143
 msgid "Misc"
@@ -652,7 +652,7 @@ msgstr "version: "
 
 #: prefs.js:3441
 msgid "The new applications menu for Gnome 3"
-msgstr "为 Gnome 3 设计的新应用菜单"
+msgstr "为 Gnome 3 设计的全新应用菜单"
 
 #: prefs.js:3445
 msgid "GitLab Page"
@@ -670,4 +670,4 @@ msgstr "没有结果。"
 #, javascript-format
 msgid "%d more"
 msgid_plural "%d more"
-msgstr[0] "%d 更多"
+msgstr[0] "还有 %d 个"

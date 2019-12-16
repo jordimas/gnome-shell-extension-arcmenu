@@ -177,4 +177,4 @@ This extension also leverages some code from the gnome-shell adapted to be used 
 
 -----
 
-**- @[skygmin](https://gitlab.com/skygmin) - Simplified Chinese** |
+**- @[skygmin](https://gitlab.com/skygmin) - Simplified Chinese** | **- @[vinno97](https://gitlab.com/vinno97) - Dutch**

@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Arc Menu\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-11-29 09:29-0500\n"
-"PO-Revision-Date: 2019-12-01 20:08+0100\n"
+"POT-Creation-Date: 2019-12-13 08:23-0500\n"
+"PO-Revision-Date: 2019-12-16 10:38+0100\n"
 "Last-Translator: Onno Giesmann <nutzer3105@gmail.com>\n"
 "Language-Team: German <>\n"
 "Language: de\n"
@@ -19,24 +19,249 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Poedit 2.2.4\n"
 
-#: searchGrid.js:694 search.js:656
+#: search.js:656 searchGrid.js:694
 msgid "Searching..."
 msgstr "Suche läuft..."
 
-#: searchGrid.js:696 search.js:658
+#: search.js:658 searchGrid.js:696
 msgid "No results."
 msgstr "Keine Ergebnisse."
 
-#: searchGrid.js:788 search.js:733
+#: search.js:733 searchGrid.js:788
 #, javascript-format
 msgid "%d more"
 msgid_plural "%d more"
 msgstr[0] "%d mehr"
 msgstr[1] "%d mehr"
 
-#: prefs.js:41 prefs.js:722 menulayouts/tweaks/tweaks.js:375
+#: menulayouts/mint.js:244 menulayouts/arcmenu.js:264
+#: menulayouts/redmond.js:440 menuWidgets.js:1118 prefs.js:2927
+msgid "Terminal"
+msgstr "Terminal"
+
+#: menulayouts/mint.js:245 menulayouts/brisk.js:392 menulayouts/arcmenu.js:264
+#: menulayouts/redmond.js:440 menulayouts/windows.js:264 menuWidgets.js:679
+#: prefs.js:2927
+msgid "Settings"
+msgstr "Einstellungen"
+
+#: menulayouts/mint.js:251 menulayouts/brisk.js:392 menulayouts/arcmenu.js:264
+#: menulayouts/redmond.js:440 prefs.js:2927
+msgid "Software"
+msgstr "Software"
+
+#: menulayouts/mint.js:252
+msgid "Files"
+msgstr "Dateien"
+
+#: menulayouts/mint.js:253 menuWidgets.js:797 prefs.js:2998
+msgid "Log Out"
+msgstr "Abmelden"
+
+#: menulayouts/mint.js:254 menuWidgets.js:826 prefs.js:2981
+msgid "Lock"
+msgstr "Sperren"
+
+#: menulayouts/mint.js:255 menuWidgets.js:785 prefs.js:3015
+msgid "Power Off"
+msgstr "Ausschalten"
+
+#: menulayouts/tweaks/tweaks.js:84
+msgid "Category Activation"
+msgstr "Kategorien öffnen bei"
+
+#: menulayouts/tweaks/tweaks.js:90
+msgid "Mouse Click"
+msgstr "Mausklick"
+
+#: menulayouts/tweaks/tweaks.js:91
+msgid "Mouse Hover"
+msgstr "Mausberührung"
+
+#: menulayouts/tweaks/tweaks.js:110
+msgid "Avatar Icon Shape"
+msgstr "Form des Avatarsymbols"
+
+#: menulayouts/tweaks/tweaks.js:115
+msgid "Circular"
+msgstr "Kreisförmig"
+
+#: menulayouts/tweaks/tweaks.js:116
+msgid "Square"
+msgstr "Rechteckig"
+
+#: menulayouts/tweaks/tweaks.js:141
+msgid "KRunner Position"
+msgstr "KRunner-Position"
+
+#: menulayouts/tweaks/tweaks.js:146
+msgid "Top"
+msgstr "Oben"
+
+#: menulayouts/tweaks/tweaks.js:147
+msgid "Centered"
+msgstr "Mittig"
+
+#: menulayouts/tweaks/tweaks.js:171 prefs.js:130 prefs.js:529
+msgid "Save"
+msgstr "Speichern"
+
+#: menulayouts/tweaks/tweaks.js:197
+msgid "Separator Position Index"
+msgstr "Positionsindex der Trennlinie"
+
+#: menulayouts/tweaks/tweaks.js:385
+msgid "Nothing Yet!"
+msgstr "Noch nichts..."
+
+#: menulayouts/tweaks/tweaks.js:399 prefs.js:716
+msgid "Arc Menu Default View"
+msgstr "Standardansicht von Arc Menü"
+
+#: menulayouts/tweaks/tweaks.js:405 prefs.js:41 prefs.js:722
 msgid "Pinned Apps"
 msgstr "Angeheftete Anwendungen"
+
+#: menulayouts/tweaks/tweaks.js:406 prefs.js:723
+msgid "Categories List"
+msgstr "Kategorieliste"
+
+#: menulayouts/arcmenu.js:209 menulayouts/redmond.js:385 prefs.js:2841
+msgid "Network"
+msgstr "Netzwerk"
+
+#: menulayouts/arcmenu.js:264 menulayouts/redmond.js:440 prefs.js:1555
+#: prefs.js:1581 prefs.js:1586 prefs.js:1618 prefs.js:1629 prefs.js:2927
+msgid "Tweaks"
+msgstr "Optimierungen"
+
+#: menulayouts/arcmenu.js:512 menulayouts/redmond.js:309
+#: menulayouts/ubuntudash.js:143 placeDisplay.js:454 prefs.js:2841
+msgid "Home"
+msgstr "Persönlicher Ordner"
+
+#: menulayouts/arcmenu.js:519 menulayouts/redmond.js:316
+#: menulayouts/windows.js:115 menulayouts/windows.js:259
+#: menulayouts/ubuntudash.js:150 prefs.js:2841
+msgid "Documents"
+msgstr "Dokumente"
+
+#: menulayouts/arcmenu.js:519 menulayouts/redmond.js:316
+#: menulayouts/ubuntudash.js:150 prefs.js:2841
+msgid "Downloads"
+msgstr "Downloads"
+
+#: menulayouts/arcmenu.js:519 menulayouts/redmond.js:316
+#: menulayouts/ubuntudash.js:150 prefs.js:2841
+msgid "Music"
+msgstr "Musik"
+
+#: menulayouts/arcmenu.js:519 menulayouts/redmond.js:316
+#: menulayouts/ubuntudash.js:150 prefs.js:2841
+msgid "Pictures"
+msgstr "Bilder"
+
+#: menulayouts/arcmenu.js:519 menulayouts/redmond.js:316
+#: menulayouts/ubuntudash.js:150 prefs.js:2841
+msgid "Videos"
+msgstr "Videos"
+
+#: menuWidgets.js:124
+msgid "Open Folder Location"
+msgstr "Ordnerpfad öffnen"
+
+#: menuWidgets.js:140
+msgid "Current Windows:"
+msgstr "Aktuelle Fenster:"
+
+#: menuWidgets.js:159
+msgid "New Window"
+msgstr "Neues Fenster"
+
+#: menuWidgets.js:169
+msgid "Launch using Dedicated Graphics Card"
+msgstr "Starten mit dedizierter Grafikkarte"
+
+#: menuWidgets.js:192
+msgid "Remove from Favorites"
+msgstr "Aus Favoriten entfernen"
+
+#: menuWidgets.js:198
+msgid "Add to Favorites"
+msgstr "Zu Favoriten hinzufügen"
+
+#: menuWidgets.js:219 menuWidgets.js:272
+msgid "Unpin from Arc Menu"
+msgstr "Nicht mehr in Arc Menü anheften"
+
+#: menuWidgets.js:234
+msgid "Pin to Arc Menu"
+msgstr "In Arc Menü anheften"
+
+#: menuWidgets.js:247
+msgid "Show Details"
+msgstr "Details anzeigen"
+
+#: menuWidgets.js:426 prefs.js:2927
+msgid "Activities Overview"
+msgstr "Aktivitätenübersicht"
+
+#: menuWidgets.js:692 menuWidgets.js:1115 menu.js:559
+msgid "Arc Menu Settings"
+msgstr "Arc-Menü-Einstellungen"
+
+#: menuWidgets.js:705 menuWidgets.js:1661 menuWidgets.js:1805
+#: menuWidgets.js:1971
+msgid "Favorites"
+msgstr "Favoriten"
+
+#: menuWidgets.js:720
+msgid "Users"
+msgstr "Benutzer"
+
+#: menuWidgets.js:809 prefs.js:2964
+msgid "Suspend"
+msgstr "Bereitschaft"
+
+#: menuWidgets.js:849
+msgid "Back"
+msgstr "Zurück"
+
+#: menuWidgets.js:909 menuWidgets.js:1661 menuWidgets.js:1805
+#: menuWidgets.js:1971
+msgid "All Programs"
+msgstr "Alle Programme"
+
+#: menuWidgets.js:1664 menuWidgets.js:1808 menuWidgets.js:1974
+msgid "Frequent Apps"
+msgstr "Häufige Anwendungen"
+
+#: menuWidgets.js:2137
+msgid "Type to search…"
+msgstr "Suchbegriff eingeben…"
+
+#: menuWidgets.js:2306
+msgid "Applications"
+msgstr "Anwendungen"
+
+#: placeDisplay.js:140
+#, javascript-format
+msgid "Failed to launch “%s”"
+msgstr "Starten von “%s” fehlgeschlagen"
+
+#: placeDisplay.js:155
+#, javascript-format
+msgid "Failed to mount volume for “%s”"
+msgstr "Einhängen von Speicher “%s” fehlgeschlagen"
+
+#: placeDisplay.js:239 placeDisplay.js:263 prefs.js:2841
+msgid "Computer"
+msgstr "Rechner"
+
+#: placeDisplay.js:328
+#, javascript-format
+msgid "Ejecting drive “%s” failed:"
+msgstr "Auswerfen von Laufwerk “%s” fehlgeschlagen:"
 
 #: prefs.js:59
 msgid "Add More Apps"
@@ -45,10 +270,6 @@ msgstr "Weitere Anwendungen hinzufügen"
 #: prefs.js:99
 msgid "Add Custom Shortcut"
 msgstr "Benutzerdefinierte Verknüpfung hinzufügen"
-
-#: prefs.js:130 prefs.js:529 menulayouts/tweaks/tweaks.js:119
-msgid "Save"
-msgstr "Speichern"
 
 #: prefs.js:269
 msgid "Change Selected Pinned App"
@@ -121,14 +342,6 @@ msgstr "Tooltips deaktivieren"
 #: prefs.js:698
 msgid "Disable activities hot corner"
 msgstr "Aktive Ecke für Aktivitäten deaktivieren"
-
-#: prefs.js:716 menulayouts/tweaks/tweaks.js:369
-msgid "Arc Menu Default View"
-msgstr "Standardansicht von Arc Menü"
-
-#: prefs.js:723 menulayouts/tweaks/tweaks.js:376
-msgid "Categories List"
-msgstr "Kategorieliste"
 
 #: prefs.js:742
 msgid "Hotkey activation"
@@ -297,11 +510,6 @@ msgstr "Aktuelles Farbthema"
 msgid "Menu Layout"
 msgstr "Menü-Layout"
 
-#: prefs.js:1555 prefs.js:1581 prefs.js:1586 prefs.js:1618 prefs.js:1629
-#: prefs.js:2927 menulayouts/redmond.js:440 menulayouts/arcmenu.js:264
-msgid "Tweaks"
-msgstr "Optimierungen"
-
 #: prefs.js:1597
 msgid "Current Layout"
 msgstr "Aktuelles Layout"
@@ -430,44 +638,6 @@ msgstr "Menü-Verschiebung"
 msgid "Shortcuts"
 msgstr "Verknüpfungen"
 
-#: prefs.js:2841 menulayouts/redmond.js:309 menulayouts/arcmenu.js:512
-#: menulayouts/ubuntudash.js:143 placeDisplay.js:454
-msgid "Home"
-msgstr "Persönlicher Ordner"
-
-#: prefs.js:2841 menulayouts/redmond.js:316 menulayouts/arcmenu.js:519
-#: menulayouts/ubuntudash.js:150
-msgid "Documents"
-msgstr "Dokumente"
-
-#: prefs.js:2841 menulayouts/redmond.js:316 menulayouts/arcmenu.js:519
-#: menulayouts/ubuntudash.js:150
-msgid "Downloads"
-msgstr "Downloads"
-
-#: prefs.js:2841 menulayouts/redmond.js:316 menulayouts/arcmenu.js:519
-#: menulayouts/ubuntudash.js:150
-msgid "Music"
-msgstr "Musik"
-
-#: prefs.js:2841 menulayouts/redmond.js:316 menulayouts/arcmenu.js:519
-#: menulayouts/ubuntudash.js:150
-msgid "Pictures"
-msgstr "Bilder"
-
-#: prefs.js:2841 menulayouts/redmond.js:316 menulayouts/arcmenu.js:519
-#: menulayouts/ubuntudash.js:150
-msgid "Videos"
-msgstr "Videos"
-
-#: prefs.js:2841 placeDisplay.js:239 placeDisplay.js:263
-msgid "Computer"
-msgstr "Rechner"
-
-#: prefs.js:2841 menulayouts/redmond.js:385 menulayouts/arcmenu.js:209
-msgid "Network"
-msgstr "Netzwerk"
-
 #: prefs.js:2880
 msgid "External Devices"
 msgstr "Externe Laufwerke"
@@ -475,42 +645,6 @@ msgstr "Externe Laufwerke"
 #: prefs.js:2902
 msgid "Bookmarks"
 msgstr "Lesezeichen"
-
-#: prefs.js:2927 menuWidgets.js:618 menulayouts/redmond.js:440
-#: menulayouts/brisk.js:392 menulayouts/arcmenu.js:264 menulayouts/mint.js:248
-msgid "Software"
-msgstr "Software"
-
-#: prefs.js:2927 menuWidgets.js:701 menulayouts/redmond.js:440
-#: menulayouts/brisk.js:392 menulayouts/arcmenu.js:264 menulayouts/mint.js:242
-msgid "Settings"
-msgstr "Einstellungen"
-
-#: prefs.js:2927 menuWidgets.js:637 menuWidgets.js:1033
-#: menulayouts/redmond.js:440 menulayouts/arcmenu.js:264
-#: menulayouts/mint.js:241
-msgid "Terminal"
-msgstr "Terminal"
-
-#: prefs.js:2927 menuWidgets.js:421
-msgid "Activities Overview"
-msgstr "Aktivitätenübersicht"
-
-#: prefs.js:2964 menuWidgets.js:751
-msgid "Suspend"
-msgstr "Bereitschaft"
-
-#: prefs.js:2981 menuWidgets.js:769 menulayouts/mint.js:251
-msgid "Lock"
-msgstr "Sperren"
-
-#: prefs.js:2998 menuWidgets.js:738 menulayouts/mint.js:250
-msgid "Log Out"
-msgstr "Abmelden"
-
-#: prefs.js:3015 menuWidgets.js:725 menulayouts/mint.js:252
-msgid "Power Off"
-msgstr "Ausschalten"
 
 #: prefs.js:3042
 msgid "Misc"
@@ -587,140 +721,17 @@ msgstr "Ein traditionelles Anwendungsmenü für GNOME"
 msgid "GitLab Page"
 msgstr "GitLab-Seite"
 
-#: menuWidgets.js:125
-msgid "Open Folder Location"
-msgstr "Ordnerpfad öffnen"
-
-#: menuWidgets.js:141
-msgid "Current Windows:"
-msgstr "Aktuelle Fenster:"
-
-#: menuWidgets.js:160
-msgid "New Window"
-msgstr "Neues Fenster"
-
-#: menuWidgets.js:170
-msgid "Launch using Dedicated Graphics Card"
-msgstr "Starten mit dedizierter Grafikkarte"
-
-#: menuWidgets.js:193
-msgid "Remove from Favorites"
-msgstr "Aus Favoriten entfernen"
-
-#: menuWidgets.js:199
-msgid "Add to Favorites"
-msgstr "Zu Favoriten hinzufügen"
-
-#: menuWidgets.js:220 menuWidgets.js:273
-msgid "Unpin from Arc Menu"
-msgstr "Nicht mehr in Arc Menü anheften"
-
-#: menuWidgets.js:235
-msgid "Pin to Arc Menu"
-msgstr "In Arc Menü anheften"
-
-#: menuWidgets.js:248
-msgid "Show Details"
-msgstr "Details anzeigen"
-
-#: menuWidgets.js:606 menulayouts/mint.js:249
-msgid "Files"
-msgstr "Dateien"
-
-#: menuWidgets.js:713
-msgid "Users"
-msgstr "Benutzer"
-
-#: menuWidgets.js:793
-msgid "Back"
-msgstr "Zurück"
-
-#: menuWidgets.js:861 menuWidgets.js:1555 menuWidgets.js:1684
-#: menuWidgets.js:1850
-msgid "All Programs"
-msgstr "Alle Programme"
-
-#: menuWidgets.js:1030 menu.js:526
-msgid "Arc Menu Settings"
-msgstr "Arc-Menü-Einstellungen"
-
-#: menuWidgets.js:1555 menuWidgets.js:1684 menuWidgets.js:1850
-msgid "Favorites"
-msgstr "Favoriten"
-
-#: menuWidgets.js:1558 menuWidgets.js:1687 menuWidgets.js:1853
-msgid "Frequent Apps"
-msgstr "Häufige Anwendungen"
-
-#: menuWidgets.js:2016
-msgid "Type to search…"
-msgstr "Suchbegriff eingeben…"
-
-#: menuWidgets.js:2185
-msgid "Applications"
-msgstr "Anwendungen"
-
-#: menu.js:535
+#: menu.js:568
 msgid "Arc Menu on GitLab"
 msgstr "Arc Menü auf GitLab"
 
-#: menu.js:540
+#: menu.js:573
 msgid "About Arc Menu"
 msgstr "Über Arc Menü"
 
-#: menu.js:548
+#: menu.js:581
 msgid "Dash to Panel Settings"
 msgstr "Dash-to-Panel-Einstellungen"
-
-#: menulayouts/tweaks/tweaks.js:78
-msgid "Category Activation"
-msgstr "Kategorien öffnen bei"
-
-#: menulayouts/tweaks/tweaks.js:84
-msgid "Mouse Click"
-msgstr "Mausklick"
-
-#: menulayouts/tweaks/tweaks.js:85
-msgid "Mouse Hover"
-msgstr "Mausberührung"
-
-#: menulayouts/tweaks/tweaks.js:145
-msgid "Separator Position Index"
-msgstr "Positionsindex der Trennlinie"
-
-#: menulayouts/tweaks/tweaks.js:303 menulayouts/tweaks/tweaks.js:327
-#: menulayouts/tweaks/tweaks.js:394
-msgid "Avatar Icon Shape"
-msgstr "Form des Avatarsymbols"
-
-#: menulayouts/tweaks/tweaks.js:308 menulayouts/tweaks/tweaks.js:332
-#: menulayouts/tweaks/tweaks.js:399
-msgid "Circular"
-msgstr "Kreisförmig"
-
-#: menulayouts/tweaks/tweaks.js:309 menulayouts/tweaks/tweaks.js:333
-#: menulayouts/tweaks/tweaks.js:400
-msgid "Square"
-msgstr "Rechteckig"
-
-#: menulayouts/tweaks/tweaks.js:355
-msgid "Nothing Yet!"
-msgstr "Noch nichts..."
-
-#: placeDisplay.js:140
-#, javascript-format
-msgid "Failed to launch “%s”"
-msgstr "Starten von “%s” fehlgeschlagen"
-
-#: placeDisplay.js:155
-#, javascript-format
-msgid "Failed to mount volume for “%s”"
-msgstr "Einhängen von Speicher “%s” fehlgeschlagen"
-
-#: placeDisplay.js:328
-#, javascript-format
-msgid "Ejecting drive “%s” failed:"
-msgstr "Auswerfen von Laufwerk “%s” fehlgeschlagen:"
 
 #~ msgid "Modify Mint Menu Layout Slot"
 #~ msgstr "Plätze im Mint Menü Layout anpassen"
