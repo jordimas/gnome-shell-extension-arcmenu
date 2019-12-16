@@ -825,14 +825,22 @@ var GeneralPage = GObject.registerClass(
                 }
             });
             rightButton.connect('toggled', () => {
-                if(rightButton.get_active()){
-                    this._settings.set_enum('menu-hotkey', 2);                      
+                if(!rightButton.get_active() && this.menuKeybindingFrame.count>=3){
+                    this.menuKeybindingFrame.remove(keyReleaseRow);
+                }
+                else if(rightButton.get_active()){
+                    this.menuKeybindingFrame.add(keyReleaseRow);
+                    this.menuKeybindingFrame.show();
+                    this._settings.set_enum('menu-hotkey', 2);
                 }
             });
             customButton.connect('toggled', () => {
-                if(!customButton.get_active() && this.menuKeybindingFrame.count>=3){
+                if(!customButton.get_active() && this.menuKeybindingFrame.count>=4){
                     this.menuKeybindingFrame.remove(keyReleaseRow);
                     this.menuKeybindingFrame.remove(menuKeybindingRow);
+                }
+                else if(!customButton.get_active() && this.menuKeybindingFrame.count>=3){
+                    this.menuKeybindingFrame.remove(keyReleaseRow);
                 }
                 else if(customButton.get_active()){
                     this.menuKeybindingFrame.add(menuKeybindingRow);
@@ -889,8 +897,9 @@ var GeneralPage = GObject.registerClass(
                     }
                 }); 
             });
-
-            if(this._settings.get_enum('menu-hotkey')==3){
+            if(this._settings.get_enum('menu-hotkey')==2)
+                this.menuKeybindingFrame.add(keyReleaseRow);
+            if(this._settings.get_enum('menu-hotkey')==3 ){
                 this.menuKeybindingFrame.add(menuKeybindingRow);
                 this.menuKeybindingFrame.add(keyReleaseRow);
             }

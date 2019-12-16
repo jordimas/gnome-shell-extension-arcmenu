@@ -194,9 +194,9 @@ var ApplicationsButton =   Utils.defineClass({
         },
         _setMenuPositionAlignment(){
             let layout = this._settings.get_enum('menu-layout');
+            let arrowAlignment = (this._settings.get_int('menu-position-alignment') / 100);
             if(layout != Constants.MENU_LAYOUT.Runner){
                 if(this._settings.get_enum('position-in-panel') == Constants.MENU_POSITION.Center){
-                    let arrowAlignment = (this._settings.get_int('menu-position-alignment') / 100);
                     this.rightClickMenu._arrowAlignment = arrowAlignment
                     this.leftClickMenu._arrowAlignment = arrowAlignment
                     this.rightClickMenu._boxPointer.setSourceAlignment(.5);
@@ -212,6 +212,10 @@ var ApplicationsButton =   Utils.defineClass({
             }
             else{
                 this.updateArrowSide('TOP', false);
+                if(this._settings.get_enum('position-in-panel') == Constants.MENU_POSITION.Center){
+                    this.rightClickMenu._arrowAlignment = arrowAlignment
+                    this.rightClickMenu._boxPointer.setSourceAlignment(.5);
+                }
             }
 
         },

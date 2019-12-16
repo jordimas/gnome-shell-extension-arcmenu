@@ -30,6 +30,7 @@ const Main = imports.ui.main;
 
 // Local constants
 const MUTTER_SCHEMA = 'org.gnome.mutter';
+const WM_KEYBINDINGS_SCHEMA = 'org.gnome.desktop.wm.keybindings';
 
 /**
  * The Menu HotKeybinder class helps us to bind and unbind a menu hotkey
@@ -43,6 +44,7 @@ var MenuHotKeybinder = class {
         this.overlayKeyID = 0;
         this.defaultOverlayKeyID = 0;
         this._mutterSettings = new Gio.Settings({ 'schema': MUTTER_SCHEMA });
+        this._wmKeybindings = new Gio.Settings({ 'schema': WM_KEYBINDINGS_SCHEMA });
         this._hotkeyMenuToggleId = Main.layoutManager.connect('startup-complete', ()=>{
             this._updateHotkeyMenuToggle();
         });
@@ -50,12 +52,17 @@ var MenuHotKeybinder = class {
 
     // Set Main.overview.toggle to toggle Arc Menu instead
     enableHotKey(hotkey) {
-        this._mutterSettings.set_string('overlay-key', hotkey);
-        Main.wm.allowKeybinding('overlay-key', Shell.ActionMode.NORMAL |
-            Shell.ActionMode.OVERVIEW | Shell.ActionMode.POPUP);
-        this.hotKeyEnabled =  true;
-        if(!Main.layoutManager._startingUp)
-            this._updateHotkeyMenuToggle();
+        if (hotkey == Constants.SUPER_L) {
+            this._mutterSettings.set_string('overlay-key', hotkey);
+            Main.wm.allowKeybinding('overlay-key', Shell.ActionMode.NORMAL |
+                Shell.ActionMode.OVERVIEW | Shell.ActionMode.POPUP);
+            this.hotKeyEnabled =  true;
+            if(!Main.layoutManager._startingUp)
+                this._updateHotkeyMenuToggle();
+        }
+        else{
+            this._wmKeybindings.set_strv('panel-main-menu', [hotkey]);
+        }
     }
 
     // Set Main.overview.toggle to default function and default hotkey
@@ -72,14 +79,17 @@ var MenuHotKeybinder = class {
         Main.wm.allowKeybinding('overlay-key', Shell.ActionMode.NORMAL |
             Shell.ActionMode.OVERVIEW);
         this.hotKeyEnabled = false;
-       
+    
+
+        let defaultPanelMainMenu = this._wmKeybindings.get_default_value('panel-main-menu');
+        this._wmKeybindings.set_value('panel-main-menu', defaultPanelMainMenu);    
     }
 
     // Update hotkey menu toggle function
     _updateHotkeyMenuToggle() {
         if(this.hotKeyEnabled){
             Main.wm.allowKeybinding('overlay-key', Shell.ActionMode.NORMAL |
-               Shell.ActionMode.OVERVIEW | Shell.ActionMode.POPUP);
+            Shell.ActionMode.OVERVIEW | Shell.ActionMode.POPUP);
 
             //Find signal ID in Main.js that connects 'overlay-key' to global.display and toggles Main.overview
             let [bool,signal_id, detail] = GObject.signal_parse_name('overlay-key', global.display, true);
@@ -94,7 +104,10 @@ var MenuHotKeybinder = class {
             }
             else
                 global.log("Arc Menu ERROR - Failed to set Super_L hotkey");
-        }
+        }   
+        Main.wm.setCustomKeybindingHandler('panel-main-menu',
+            Shell.ActionMode.NORMAL | Shell.ActionMode.OVERVIEW | Shell.ActionMode.POPUP,
+            this._menuToggler.bind(this));
     }
     _getDefaultOverlayKey() {
         return this._mutterSettings.get_default_value('overlay-key');

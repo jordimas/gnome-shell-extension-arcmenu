@@ -71,7 +71,7 @@ var createMenu = class {
         this.leftClickMenu.actor.style = "-arrow-base:0px;-arrow-rise:0px;";
         this.leftClickMenu.sourceActor = this.dummyCursor;
         this.leftClickMenu.focusActor = this.dummyCursor;
-        this.leftClickMenu._boxPointer.setPosition(this.dummyCursor,0);
+        this.leftClickMenu._boxPointer.setPosition(this.dummyCursor, 0.5);
         this.leftClickMenu._boxPointer.hide();
 
         this.mainBox.vertical = false;
@@ -140,6 +140,9 @@ var createMenu = class {
         this._display(); 
     }
     updateRunnerLocation(){
+        this.leftClickMenu.actor.style = "-arrow-base:0px;-arrow-rise:0px;";
+        this.leftClickMenu._boxPointer.setSourceAlignment(0.5);
+        this.leftClickMenu._arrowAlignment = 0.5
         //Get screen, find monitor at point of menuButton, get that monitors geometry
         let screen = Gdk.Screen.get_default();
         let [x, y] = this._button._menuButtonWidget.actor.get_transformed_position();
@@ -147,7 +150,7 @@ var createMenu = class {
         
         let rect = screen.get_monitor_workarea(currentMonitor);
         //Position the runner menu in the center of the current monitor, at top of screen.
-        let positionX = Math.round(rect.x + (rect.width / 2) - (RUNNER_WIDTH / 2));
+        let positionX = Math.round(rect.x + (rect.width / 2));
         let positionY = rect.y;
         if(this._settings.get_enum('runner-position') == 1)
             positionY = Math.round(rect.y + (rect.height / 2) - 125);
