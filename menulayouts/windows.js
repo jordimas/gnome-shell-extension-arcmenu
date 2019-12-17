@@ -239,7 +239,7 @@ var createMenu = class{
         headerBox.style = "padding: 0px 0px 5px 30px";
         this.closeFavoritesMenuButton =  new MW.CloseFavoritesButton(this);
         this.closeFavoritesMenuButton._icon.icon_size = 16;
-        this.closeFavoritesMenuButton.actor.style = "padding: 5px; margin-right:10px;";
+        this.closeFavoritesMenuButton.actor.style = "padding: 5px; margin-right:10px; border:none;";
         headerBox.add(this.closeFavoritesMenuButton.actor,{
             x_fill: false,
             y_fill: false,
