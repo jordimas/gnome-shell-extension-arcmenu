@@ -221,6 +221,33 @@ var createMenu = class{
         this.leftPanelPopup = new St.BoxLayout({
             vertical: true
         });   
+        let headerBox = new St.BoxLayout({
+            vertical: false
+        });    
+        this.leftPanelPopup.add(headerBox,{
+            expand:false,
+            x_fill:true,
+            y_fill: false,
+            y_align: St.Align.START
+        })
+        headerBox.add(new St.Label({
+            text: _("Favorites"),
+            y_expand: false,
+            x_expand: true,
+            y_align: Clutter.ActorAlign.CENTER
+        }));
+        headerBox.style = "padding: 0px 0px 5px 30px";
+        this.closeFavoritesMenuButton =  new MW.CloseFavoritesButton(this);
+        this.closeFavoritesMenuButton._icon.icon_size = 16;
+        this.closeFavoritesMenuButton.actor.style = "padding: 5px; margin-right:10px;";
+        headerBox.add(this.closeFavoritesMenuButton.actor,{
+            x_fill: false,
+            y_fill: false,
+            y_align: St.Align.CENTER,
+            x_align: St.Align.END
+        });
+
+
         this.applicationsScrollBox = new St.ScrollView({
             x_fill: true,
             y_fill: false,
@@ -281,7 +308,7 @@ var createMenu = class{
 
 
         let addStyle=this._settings.get_boolean('enable-custom-arc-menu');
-        
+        addStyle ? this.closeFavoritesMenuButton.actor.add_style_class_name('arc-menu-action') : this.closeFavoritesMenuButton.actor.remove_style_class_name('arc-menu-action');
         this.favoritesMenu.actor.style_class = addStyle ? 'arc-menu-boxpointer': 'popup-menu-boxpointer';
         this.favoritesMenu.actor.add_style_class_name( addStyle ? 'arc-menu' : 'popup-menu');
         this.favoritesMenu.actor.style = "-boxpointer-gap: 0px; -arrow-border-color:rgba(0,0,0,0); -arrow-border-width:0px; width: 250px;-arrow-base:0px;-arrow-rise:0px;";  

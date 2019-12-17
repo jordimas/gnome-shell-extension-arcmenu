@@ -698,7 +698,21 @@ var ArcMenuSettingsButton = class ArcMenu_ArcMenuSettingsButton extends SessionB
         Util.spawnCommandLine('gnome-shell-extension-prefs arc-menu@linxgem33.com');
     }
 };
+//Close 'Windows' layout favorites panel
+var CloseFavoritesButton = class ArcMenu_CloseFavoritesButton extends SessionButton {
+    // Initialize menu item
+    constructor(button) {
+        super(button, _("Close"), "window-close-symbolic");
+        super.disableMenuToggle();
+        this._button = button;
+    }
+    // Activate (launch) the shortcut
+    activate() {
+        this._button.favoritesMenu.toggle();
+    }
 
+};
+//'Windows' layout favorites hamburger button
 var FavoritesButton = class ArcMenu_FavoritesButton extends SessionButton {
     // Initialize the button
     constructor(button) {
