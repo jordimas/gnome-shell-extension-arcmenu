@@ -63,7 +63,6 @@ var createMenu = class {
         this.updateRunnerLocation();
 
         //store old leftClickMenu variables
-        this.oldMenuStlye = this.leftClickMenu.actor.style;
         this.oldSourceActor = this.leftClickMenu.sourceActor;
         this.oldFocusActor = this.leftClickMenu.focusActor;
         this.oldArrowAlignment = this.leftClickMenu.actor._arrowAlignment;
@@ -335,7 +334,7 @@ var createMenu = class {
         return Clutter.EVENT_PROPAGATE;
     }
     destroy(){
-        this.leftClickMenu.actor.style = this.oldMenuStlye;
+        this.leftClickMenu.actor.style = null;
         this.leftClickMenu.sourceActor = this.oldSourceActor;
         this.leftClickMenu.focusActor = this.oldFocusActor;
         this.leftClickMenu._boxPointer.setPosition(this.oldSourceActor, this.oldArrowAlignment);

@@ -221,22 +221,15 @@ var ApplicationsButton =   Utils.defineClass({
         },
         updateArrowSide(side, setAlignment = true){
             let arrowAlignment = 0;
-            let layout = this._settings.get_enum('menu-layout');
-            if(layout == Constants.MENU_LAYOUT.Simple2)
-                this.leftClickMenu.actor.style = 'max-height: '+(this.leftClickMenu.actor.height + 250)+'px;';
-            else
-                this.leftClickMenu.actor.style = "";
-
             if (side == 'TOP') 
                 side =  St.Side.TOP;
             else if (side == 'RIGHT') {
                 arrowAlignment = 1;
                 side =  St.Side.RIGHT;
             }
-            else if (side == 'BOTTOM') {
+            else if (side == 'BOTTOM')
                 side =  St.Side.BOTTOM;
-            } 
-            else{
+            else {
                 arrowAlignment = 1;
                 side =  St.Side.LEFT;
             }
