@@ -773,7 +773,8 @@ var CurrentUserButton = class ArcMenu_CurrentUserButton extends SessionButton {
             } else {
                 this.iconBin.style = null;
                 this.iconBin.child = new St.Icon({ 
-                    icon_name: 'avatar-default-symbolic'
+                    icon_name: 'avatar-default-symbolic',
+                    icon_size: SMALL_ICON_SIZE
                 });
             }
         }    
