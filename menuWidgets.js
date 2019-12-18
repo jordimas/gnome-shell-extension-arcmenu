@@ -1853,7 +1853,7 @@ var SimpleMenuItem = Utils.createClass({
         
         
 
-        this.subMenu = new PopupMenu.PopupMenu(this.actor,.5,St.Side.RIGHT);
+        this.subMenu = new PopupMenu.PopupMenu(this.actor,.5,St.Side.LEFT);
         Main.uiGroup.add_actor(this.subMenu.actor);  
         this.section = new PopupMenu.PopupMenuSection();
         this.subMenu.addMenuItem(this.section);  

@@ -299,9 +299,9 @@ var createMenu = class{
     }
     destroy(){
         this.leftClickMenu.actor.style = null;
-        this._applicationsButtons.forEach((value,key,map)=>{
-            value.destroy();
-        });
+        for (let i = 0; i < this.categoryDirectories.length; i++) {
+            this.categoryDirectories[i].destroy();
+        }
         this.categoryDirectories=null;
         this._applicationsButtons=null;
 
