@@ -698,7 +698,21 @@ var ArcMenuSettingsButton = class ArcMenu_ArcMenuSettingsButton extends SessionB
         Util.spawnCommandLine('gnome-shell-extension-prefs arc-menu@linxgem33.com');
     }
 };
+//Close 'Windows' layout favorites panel
+var CloseFavoritesButton = class ArcMenu_CloseFavoritesButton extends SessionButton {
+    // Initialize menu item
+    constructor(button) {
+        super(button, _("Close"), "window-close-symbolic");
+        super.disableMenuToggle();
+        this._button = button;
+    }
+    // Activate (launch) the shortcut
+    activate() {
+        this._button.favoritesMenu.toggle();
+    }
 
+};
+//'Windows' layout favorites hamburger button
 var FavoritesButton = class ArcMenu_FavoritesButton extends SessionButton {
     // Initialize the button
     constructor(button) {
@@ -733,10 +747,9 @@ var CurrentUserButton = class ArcMenu_CurrentUserButton extends SessionButton {
         let username = GLib.get_user_name();
         this._user = AccountsService.UserManager.get_default().get_user(username);
         this.iconBin = new St.Bin({ 
-            style_class: 'menu-user-avatar',
-            width: SMALL_ICON_SIZE,
-            height: SMALL_ICON_SIZE
+            style_class: 'menu-user-avatar'
         });
+        this.iconBin.style = "width: "+SMALL_ICON_SIZE+"px; height: "+SMALL_ICON_SIZE+"px;";
         this._userLoadedId = this._user.connect('notify::is-loaded', this._onUserChanged.bind(this));
         this._userChangedId = this._user.connect('changed', this._onUserChanged.bind(this));
         this.actor.connect('destroy', this._onDestroy.bind(this));
@@ -756,11 +769,12 @@ var CurrentUserButton = class ArcMenu_CurrentUserButton extends SessionButton {
                 iconFileName = null;
             if (iconFileName) {
                 this.iconBin.child = null;
-                this.iconBin.style = 'background-image: url("%s");'.format(iconFileName);
+                this.iconBin.style = 'background-image: url("%s");'.format(iconFileName) + "width: "+SMALL_ICON_SIZE+"px; height: "+SMALL_ICON_SIZE+"px;";
             } else {
                 this.iconBin.style = null;
                 this.iconBin.child = new St.Icon({ 
-                    icon_name: 'avatar-default-symbolic'
+                    icon_name: 'avatar-default-symbolic',
+                    icon_size: SMALL_ICON_SIZE
                 });
             }
         }    
@@ -988,10 +1002,9 @@ var UserMenuItem =Utils.createClass({
         let username = GLib.get_user_name();
         this._user = AccountsService.UserManager.get_default().get_user(username);
         this.iconBin =  new St.Bin({ 
-            style_class: 'menu-user-avatar',
-            width: USER_AVATAR_SIZE,
-            height: USER_AVATAR_SIZE 
+            style_class: 'menu-user-avatar'
         });
+        this.iconBin.style = "width: "+USER_AVATAR_SIZE +"px; height: "+USER_AVATAR_SIZE +"px;";
         this.actor.add_child(this.iconBin);
         this._userLabel = new St.Label({
             text: GLib.get_real_name(),
@@ -1019,7 +1032,7 @@ var UserMenuItem =Utils.createClass({
                 iconFileName = null;
             if (iconFileName) {
                 this.iconBin.child = null;
-                this.iconBin.style = 'background-image: url("%s");'.format(iconFileName);
+                this.iconBin.style = 'background-image: url("%s");'.format(iconFileName) + "width: "+USER_AVATAR_SIZE +"px; height: "+USER_AVATAR_SIZE +"px;";
             } else {
                 this.iconBin.style = null;
                 this.iconBin.child = new St.Icon({ 
@@ -1057,10 +1070,9 @@ var UserMenuIcon =  class ArcMenu_UserMenuIcon{
         let username = GLib.get_user_name();
         this._user = AccountsService.UserManager.get_default().get_user(username);
         this.actor = new St.Bin({ 
-            style_class: 'menu-user-avatar',
-            width: 75,
-            height: 75 
+            style_class: 'menu-user-avatar'
         });
+        this.actor.style = "width: 75px; height: 75px;";
         this._userLoadedId = this._user.connect('notify::is-loaded', this._onUserChanged.bind(this));
         this._userChangedId = this._user.connect('changed', this._onUserChanged.bind(this));
         this.actor.connect('destroy', this._onDestroy.bind(this));
@@ -1074,7 +1086,7 @@ var UserMenuIcon =  class ArcMenu_UserMenuIcon{
                 iconFileName = null;
             if (iconFileName) {
                 this.actor.child = null;
-                this.actor.style = 'background-image: url("%s");'.format(iconFileName);
+                this.actor.style = 'background-image: url("%s");'.format(iconFileName) + "width: 75px; height: 75px;";
             } else {
                 this.actor.style = null;
                 this.actor.child = new St.Icon({ icon_name: 'avatar-default-symbolic',
@@ -1842,7 +1854,7 @@ var SimpleMenuItem = Utils.createClass({
         
         
 
-        this.subMenu = new PopupMenu.PopupMenu(this.actor,.5,St.Side.RIGHT);
+        this.subMenu = new PopupMenu.PopupMenu(this.actor,.5,St.Side.LEFT);
         Main.uiGroup.add_actor(this.subMenu.actor);  
         this.section = new PopupMenu.PopupMenuSection();
         this.subMenu.addMenuItem(this.section);  
