@@ -698,20 +698,6 @@ var ArcMenuSettingsButton = class ArcMenu_ArcMenuSettingsButton extends SessionB
         Util.spawnCommandLine('gnome-shell-extension-prefs arc-menu@linxgem33.com');
     }
 };
-//Close 'Windows' layout favorites panel
-var CloseFavoritesButton = class ArcMenu_CloseFavoritesButton extends SessionButton {
-    // Initialize menu item
-    constructor(button) {
-        super(button, _("Close"), "window-close-symbolic");
-        super.disableMenuToggle();
-        this._button = button;
-    }
-    // Activate (launch) the shortcut
-    activate() {
-        this._button.favoritesMenu.toggle();
-    }
-
-};
 //'Windows' layout favorites hamburger button
 var FavoritesButton = class ArcMenu_FavoritesButton extends SessionButton {
     // Initialize the button
@@ -868,7 +854,8 @@ var BackMenuItem = Utils.createClass({
     },
     // Activate the button (go back to category view)
     activate(event) {
-        this._button._clearApplicationsBox();
+        if(this._button.currentMenu !== Constants.CURRENT_MENU.FAVORITES)
+            this._button._clearApplicationsBox();
         if(this._button.currentMenu == Constants.CURRENT_MENU.SEARCH_RESULTS){ 
         	if(this._button._settings.get_boolean('enable-pinned-apps')){
          		this._button.currentMenu = Constants.CURRENT_MENU.FAVORITES;
@@ -890,6 +877,9 @@ var BackMenuItem = Utils.createClass({
         else if(this._button.currentMenu == Constants.CURRENT_MENU.CATEGORY_APPLIST){
             this._button.currentMenu = Constants.CURRENT_MENU.CATEGORIES;
             this._button._displayCategories();
+        }
+        else if(this._button.currentMenu == Constants.CURRENT_MENU.FAVORITES){
+            this._button.favoritesMenu.toggle();
         }
         this.callParent('activate',event);
     },
