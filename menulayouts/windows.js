@@ -222,7 +222,7 @@ var createMenu = class{
             vertical: true
         });   
         let headerBox = new St.BoxLayout({
-            vertical: false
+            vertical: true
         });    
         this.leftPanelPopup.add(headerBox,{
             expand:false,
@@ -230,24 +230,22 @@ var createMenu = class{
             y_fill: false,
             y_align: St.Align.START
         })
-        headerBox.add(new St.Label({
-            text: _("Favorites"),
-            y_expand: false,
-            x_expand: true,
-            y_align: Clutter.ActorAlign.CENTER
-        }));
-        headerBox.style = "padding: 0px 0px 5px 30px";
-        this.closeFavoritesMenuButton =  new MW.CloseFavoritesButton(this);
-        this.closeFavoritesMenuButton._icon.icon_size = 16;
-        this.closeFavoritesMenuButton.actor.style = "padding: 5px; margin-right:10px; border:none;";
-        headerBox.add(this.closeFavoritesMenuButton.actor,{
-            x_fill: false,
+        //Add back button to menu
+        this.backButton = new MW.BackMenuItem(this);
+        headerBox.add(this.backButton.actor, {
+            expand: false,
+            x_fill: true,
             y_fill: false,
-            y_align: St.Align.CENTER,
-            x_align: St.Align.END
+            y_align: St.Align.End
         });
 
-
+        //Add Horizontal Separator
+        headerBox.add(this._createHorizontalSeparator(Constants.SEPARATOR_STYLE.LONG), {
+            x_expand: true,
+            x_fill: true,
+            y_fill: false,
+            y_align: St.Align.END
+        });
         this.applicationsScrollBox = new St.ScrollView({
             x_fill: true,
             y_fill: false,
@@ -306,18 +304,38 @@ var createMenu = class{
         let appsScrollBoxAdj = this.applicationsScrollBox.get_vscroll_bar().get_adjustment();
         appsScrollBoxAdj.set_value(0);
 
-
         let addStyle=this._settings.get_boolean('enable-custom-arc-menu');
-        addStyle ? this.closeFavoritesMenuButton.actor.add_style_class_name('arc-menu-action') : this.closeFavoritesMenuButton.actor.remove_style_class_name('arc-menu-action');
         this.favoritesMenu.actor.style_class = addStyle ? 'arc-menu-boxpointer': 'popup-menu-boxpointer';
         this.favoritesMenu.actor.add_style_class_name( addStyle ? 'arc-menu' : 'popup-menu');
-        this.favoritesMenu.actor.style = "-boxpointer-gap: 0px; -arrow-border-color:rgba(0,0,0,0); -arrow-border-width:0px; width: 250px;-arrow-base:0px;-arrow-rise:0px;";  
         this.favoritesButton.tooltip.hide();
         let themeNode = this.leftClickMenu.actor.get_theme_node();
         let rise = themeNode.get_length('-arrow-rise');
+        let backgroundColor = themeNode.get_color('-arrow-background-color');
+        let shadeColor;
+        let drawBoxshadow = true;
+        if(backgroundColor.alpha ==0 || !backgroundColor || backgroundColor === Clutter.Color.TRANSPARENT){
+            backgroundColor = themeNode.get_color('background-color');
+            if(backgroundColor.alpha==0 || !backgroundColor || backgroundColor === Clutter.Color.TRANSPARENT){
+                    drawBoxshadow = false;
+            }
+                
+        }
+        let styleProperties;
+        if(drawBoxshadow){
+            shadeColor = backgroundColor.shade(.35);
+            backgroundColor = "rgba("+backgroundColor.red+","+backgroundColor.green+","+backgroundColor.blue+","+backgroundColor.alpha+")";
+            shadeColor ="rgba("+shadeColor.red+","+shadeColor.green+","+shadeColor.blue+","+shadeColor.alpha+")";
+            styleProperties = "box-shadow: 3px 0px 8px 0px "+shadeColor+";background-color: "+backgroundColor+";";
+        }
+
+        let borderRadius = themeNode.get_length('-arrow-border-radius');
+        this.favoritesMenu.actor.style = "-boxpointer-gap: 0px; -arrow-border-color:transparent; -arrow-border-width:0px; width: 250px;"
+                                            +"-arrow-base:0px;-arrow-rise:0px; -arrow-background-color:transparent;"
+                                            +" border-radius: "+borderRadius+"px;" + styleProperties;
+
         let base = themeNode.get_length('-arrow-base');
         let borderWidth = themeNode.get_length('-arrow-border-width');
-        let borderRadius = themeNode.get_length('-arrow-border-radius');
+
         this.leftClickMenu.actor.get_allocation_box();
         let [x, y] = this.leftClickMenu.actor.get_transformed_position();
         if(this.leftClickMenu._arrowSide == St.Side.TOP)
@@ -753,5 +771,15 @@ var createMenu = class{
             }
             this.isRunning=false;
 
+        }
+        //Create a horizontal separator
+        _createHorizontalSeparator(style){
+            let alignment = Constants.SEPARATOR_ALIGNMENT.HORIZONTAL;
+            let hSep = new MW.SeparatorDrawingArea(this._settings,alignment,style,{
+                x_expand:true,
+                y_expand:false
+            });
+            hSep.queue_repaint();
+            return hSep;
         }
 };
