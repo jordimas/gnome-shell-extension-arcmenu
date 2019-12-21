@@ -439,7 +439,8 @@ var SearchResults = class ArcMenu_SearchResults {
         this._reloadRemoteProviders();
     }
     setStyle(style){
-        this._statusText.style_class = style;
+        if(this._statusText)
+            this._statusText.style_class = style;
     }
     destroy(){
         this._providers.forEach(provider => {
