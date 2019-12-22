@@ -40,7 +40,7 @@ var MenuSettingsController = class {
     constructor(settings, settingsControllers, panel, isMainPanel) {
         this._settings = settings;
         this.panel = panel;
-        GLib.timeout_add(0, 100, () => {
+        this.updateThemeID = GLib.timeout_add(0, 100, () => {
             Me.imports.prefs.saveCSS(this._settings);
             Main.loadTheme();
             return GLib.SOURCE_REMOVE;
@@ -445,6 +445,10 @@ var MenuSettingsController = class {
 
     // Destroy this object
     destroy() {
+        if (this.updateThemeID > 0) {
+            GLib.source_remove(this.updateThemeID);
+            this.updateThemeID = 0;
+        }
         this.settingsChangeIds.forEach(id => this._settings.disconnect(id));
         this._hotCornerManager.destroy();
 

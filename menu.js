@@ -135,7 +135,7 @@ var ApplicationsButton =   Utils.defineClass({
             sourceActor.add_actor(this._menuButtonWidget.actor);
 
             //Create Basic Layout ------------------------------------------------
-            GLib.timeout_add(0, 100, () => {
+            this.createLayoutID = GLib.timeout_add(0, 100, () => {
                 this.createMenuLayout();
                 return GLib.SOURCE_REMOVE;
             });
@@ -373,7 +373,12 @@ var ApplicationsButton =   Utils.defineClass({
         },
         // Destroy the menu button
         destroy() {  
-            this.MenuLayout.destroy();
+            if (this.createLayoutID > 0) {
+                GLib.source_remove(this.createLayoutID);
+                this.createLayoutID = 0;
+            }
+            if(this.MenuLayout)
+                this.MenuLayout.destroy();
 
             if ( this.extensionChangedId > 0) {
                 (Main.extensionManager || ExtensionSystem).disconnect(this.extensionChangedId);
@@ -533,7 +538,7 @@ var ApplicationsMenu = class ArcMenu_ApplicationsMenu extends PopupMenu.PopupMen
             this._button.subMenuManager.activeMenu.toggle();
         super.close(animate);   
 
-        if(this._button.MenuLayout.isRunning){
+        if(this._button.MenuLayout && this._button.MenuLayout.isRunning){
             GLib.timeout_add(0, 100, () => {
                 this._button.setDefaultMenuView();  
                 return GLib.SOURCE_REMOVE;
