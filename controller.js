@@ -450,10 +450,13 @@ var MenuSettingsController = class {
 
 
         // Clean up and restore the default behaviour
-        if(this.panel == undefined)
-            this._menuButton.destroy();
-        else if (this._isButtonEnabled()) {
+        if (this._isButtonEnabled()) {
             this._disableButton();
+        }
+        else{
+            this.panel.menuManager.removeMenu(this._menuButton.leftClickMenu);
+            this.panel.menuManager.removeMenu(this._menuButton.rightClickMenu);
+            this._menuButton.destroy();
         }
 
         if(this.isMainPanel){
