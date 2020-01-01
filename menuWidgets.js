@@ -1965,7 +1965,7 @@ var CategorySubMenuItem = Utils.createClass({
         this.name = "";
         this.title = title;
         this._active = false;
-
+        this._applicationsButtons = new Map();
         if (this._category) {
             this.name = this._category.get_name();
         } 
@@ -1979,7 +1979,8 @@ var CategorySubMenuItem = Utils.createClass({
 
         this.icon.gicon = this._category ? this._category.get_icon() : null;
         this.icon.style_class= 'popup-menu-icon';
-        this.icon.icon_size=MEDIUM_ICON_SIZE;
+
+        this.icon.icon_size = MEDIUM_ICON_SIZE;
 
         if(title!=null){
             this.icon.icon_name = title == "All Programs" ?'emblem-system-symbolic': 'emblem-favorite-symbolic';
@@ -1994,6 +1995,59 @@ var CategorySubMenuItem = Utils.createClass({
             else if(key == Clutter.Down || key == Clutter.KP_Down)
                 this.scrollToItem(this._button.activeMenuItem, this.menu.actor, Constants.DIRECTION.DOWN);
         }) ; 
+        this._updateIcons();
+        this.menu.actor.style = 'max-height: 250px;';
+        this.menu.actor.overlay_scrollbars = true;
+        this.menu.actor.style_class = 'vfade popup-sub-menu';
+        let scrollbar = this.menu.actor.get_vscroll_bar();
+        scrollbar.style="padding-right:10px;";
+        this.menu._needsScrollbar = this._needsScrollbar.bind(this);
+    },
+    _updateIcons() {
+        let largeIcons = this._button._settings.get_boolean('enable-large-icons');
+        if(this._button._settings.get_enum('menu-layout') !== Constants.MENU_LAYOUT.Simple2){
+            this.icon.icon_size = largeIcons ? MEDIUM_ICON_SIZE : SMALL_ICON_SIZE;
+        } 
+    },
+    _updateIcon() {
+    },
+    _needsScrollbar() {
+        let topMenu = this.menu;
+        let [, topNaturalHeight] = topMenu.actor.get_preferred_height(-1);
+        let topThemeNode = topMenu.actor.get_theme_node();
+
+        let topMaxHeight = topThemeNode.get_max_height();
+        let needsScrollbar = topMaxHeight >= 0 && topNaturalHeight >= topMaxHeight;
+        if(needsScrollbar)
+            this.menu.actor.style = 'min-height:150px; max-height: 250px;';
+        else
+            this.menu.actor.style = 'max-height: 250px;';
+        return needsScrollbar;
+    },
+    loadMenu(){
+        let children = this.menu.box.get_children();
+        for (let i = 0; i < children.length; i++) {
+            let item = children[i];
+            this.menu.box.remove_actor(item);
+        }
+        let appList = [];
+        this._applicationsButtons.forEach((value,key,map) => {
+            appList.push(key);
+        });
+        appList.sort(function (a, b) {
+            return a.get_name().toLowerCase() > b.get_name().toLowerCase();
+        }); 
+        for (let i = 0; i < appList.length; i++) {
+            let app = appList[i];
+            let item = this._applicationsButtons.get(app);
+            if(item.actor.get_parent()){
+                item.actor.get_parent().remove_actor(item.actor);
+            }
+            if (!item.actor.get_parent()) {
+                this.menu.box.add_actor(item.actor);
+            }
+            
+        }
     },
     scrollToItem(button,scrollView, direction) {
         let appsScrollBoxAdj = scrollView.get_vscroll_bar().get_adjustment();
@@ -2004,18 +2058,27 @@ var CategorySubMenuItem = Utils.createClass({
         appsScrollBoxAdj.set_value(currentScrollValue + buttonHeight );
     },
     _setOpenState(open) {
-        if(open){
-            if (this._category)
-                this._button.selectCategory(this._category,this);
-            else if(this.title =="All Programs")
-                this._button._displayAllApps(this);
-            else if(this.title == "Favorites")
-                this._button._displayGnomeFavorites(this);
-            else
-                this._button.selectCategory("Frequent Apps",this);
-            this.menu.actor.style = 'max-height: 250px;';
+        if(this._button._settings.get_enum('menu-layout') == Constants.MENU_LAYOUT.Simple2){
+            if(open){
+                if (this._category)
+                    this._button.selectCategory(this._category,this);
+                else if(this.title =="All Programs")
+                    this._button._displayAllApps(this);
+                else if(this.title == "Favorites")
+                    this._button._displayGnomeFavorites(this);
+                else
+                    this._button.selectCategory("Frequent Apps",this);
+            }
         }
-
+        else{
+            if(open){
+                this.loadMenu();
+            }
+            else{
+                let scrollbar= this.menu.actor.get_vscroll_bar().get_adjustment();
+                scrollbar.set_value(0);
+            }
+        }
         this.setSubmenuShown(open);
     }
 });

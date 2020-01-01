@@ -458,7 +458,7 @@ var createMenu = class {
             }
         }
     }
-    _loadCategory(categoryId, dir) {
+    _loadCategory(categoryId, dir, submenuItem) {
         let iter = dir.iter();
         let nextType;
         while ((nextType = iter.next()) != GMenu.TreeItemType.INVALID) {
@@ -474,17 +474,31 @@ var createMenu = class {
                 if (!app)
                     app = new Shell.App({ app_info: entry.get_app_info() });
                 if (app.get_app_info().should_show()){
-                    this.applicationsByCategory[categoryId].push(app);
                     let item = this._applicationsButtons.get(app);
                     if (!item) {
                         item = new MW.ApplicationMenuItem(this, app);
+                    }
+                    if(!submenuItem){
                         this._applicationsButtons.set(app, item);
+                        this.applicationsByCategory[categoryId].push(app);
+                    }
+                    else{
+                        submenuItem._applicationsButtons.set(app, item);
                     }
                 }             
             } else if (nextType == GMenu.TreeItemType.DIRECTORY) {
                 let subdir = iter.get_directory();
-                if (!subdir.get_is_nodisplay())
-                    this._loadCategory(categoryId, subdir);
+                if (!subdir.get_is_nodisplay()){
+                    this.applicationsByCategory[categoryId].push(subdir);
+                    let submenuItem = this._applicationsButtons.get(subdir);
+                    if (!submenuItem) {
+                        submenuItem = new MW.CategorySubMenuItem(this, subdir);
+                        submenuItem._setParent(this.leftClickMenu);
+                        this._applicationsButtons.set(subdir, submenuItem);
+                    }
+                    this._loadCategory(categoryId, subdir, submenuItem);
+                }
+                    
             }
         }
     }
@@ -663,6 +677,8 @@ var createMenu = class {
         let actors = this.applicationsBox.get_children();
         for (let i = 0; i < actors.length; i++) {
             let actor = actors[i];
+            if(actor instanceof MW.CategorySubMenuItem)
+                actor.menu.close();
             this.applicationsBox.remove_actor(actor);
         }
     }
@@ -700,6 +716,10 @@ var createMenu = class {
             }
             if (!item.actor.get_parent()) 
                 this.applicationsBox.add_actor(item.actor);
+            if(item instanceof MW.CategorySubMenuItem){
+                this.applicationsBox.add_actor(item.menu.actor);
+                item._updateIcons();
+            }
             if(i==0){
                 item.setFakeActive(true);
                 item.actor.grab_key_focus();
