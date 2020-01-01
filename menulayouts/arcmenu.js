@@ -677,8 +677,8 @@ var createMenu = class {
         let actors = this.applicationsBox.get_children();
         for (let i = 0; i < actors.length; i++) {
             let actor = actors[i];
-            if(actor instanceof MW.CategorySubMenuItem)
-                actor.menu.close();
+            if(actor._delegate instanceof MW.CategorySubMenuItem)
+                actor._delegate.menu.close();
             this.applicationsBox.remove_actor(actor);
         }
     }

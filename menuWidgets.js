@@ -2003,6 +2003,13 @@ var CategorySubMenuItem = Utils.createClass({
         scrollbar.style="padding-right:10px;";
         this.menu._needsScrollbar = this._needsScrollbar.bind(this);
     },
+    setFakeActive(active) {
+        if (active) {
+            this.actor.add_style_class_name('selected');
+        } else {
+            this.actor.remove_style_class_name('selected');
+        }
+    },
     _updateIcons() {
         let largeIcons = this._button._settings.get_boolean('enable-large-icons');
         if(this._button._settings.get_enum('menu-layout') !== Constants.MENU_LAYOUT.Simple2){
