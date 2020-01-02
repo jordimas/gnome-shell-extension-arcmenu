@@ -198,7 +198,6 @@ var createMenu = class {
     }
     _loadCategory(categoryId, dir) {
     }
-        
     _displayCategories(){
     }
     _displayGnomeFavorites(){
@@ -226,20 +225,14 @@ var createMenu = class {
             this.applicationsBox.remove_actor(actor);
         }
     }
-    // Select a category or show category overview if no category specified
     selectCategory(dir) {
     }
-
-    // Display application menu items
     _displayButtons(apps) {               
     }
-
     _displayAllApps(){        
     }
-    // Get a list of applications for the specified category or search query
     _listApplications(category_menu_id) {
     }
-    //used to check if a shortcut should be displayed
     getShouldShowShortcut(shortcutName){
     }     
     _onSearchBoxKeyPress(searchBox, event) {

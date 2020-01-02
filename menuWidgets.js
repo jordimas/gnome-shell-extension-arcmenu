@@ -1963,6 +1963,7 @@ var CategorySubMenuItem = Utils.createClass({
         this._category = category;
         this._button = button;
         this.name = "";
+        this.isSimpleMenuItem = false;
         this.title = title;
         this._active = false;
         this._applicationsButtons = new Map();
@@ -2071,7 +2072,7 @@ var CategorySubMenuItem = Utils.createClass({
         appsScrollBoxAdj.set_value(currentScrollValue + buttonHeight );
     },
     _setOpenState(open) {
-        if(this._button._settings.get_enum('menu-layout') == Constants.MENU_LAYOUT.Simple2){
+        if(this.isSimpleMenuItem){
             if(open){
                 if (this._category)
                     this._button.selectCategory(this._category,this);
