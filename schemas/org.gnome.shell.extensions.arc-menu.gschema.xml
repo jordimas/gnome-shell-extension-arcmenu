@@ -64,7 +64,12 @@
       <summary>disable hotkey on key release</summary>
       <description>disable hotkey on key release.</description>
     </key>
-        <key type="b" name="activate-on-hover">
+    <key type="b" name="enable-sub-menus">
+     <default>false</default>
+      <summary>Enable Category Sub Menus</summary>
+      <description>Enable Category Sub Menus.</description>
+    </key>
+    <key type="b" name="activate-on-hover">
      <default>false</default>
       <summary>Activate Categories on Hover</summary>
       <description>Activate Categories on Hover.</description>

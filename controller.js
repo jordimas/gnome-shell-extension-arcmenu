@@ -114,8 +114,13 @@ var MenuSettingsController = class {
             this._settings.connect('changed::menu-layout', this._updateMenuLayout.bind(this)),
             this._settings.connect('changed::enable-large-icons', this.updateIcons.bind(this)),
             this._settings.connect('changed::runner-position', this.updateRunnerLocation.bind(this)),
+            this._settings.connect('changed::enable-sub-menus', this._reload.bind(this)),    
         ];
     }
+    _reload(){
+        this._menuButton._reload();
+    }
+
     updateRunnerLocation(){
         this._menuButton.updateRunnerLocation();
     }
