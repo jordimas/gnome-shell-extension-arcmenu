@@ -226,6 +226,12 @@ var createMenu = class {
         for (let i = 0; i < this.categoryDirectories.length; i++) {
             this.categoryDirectories[i].destroy();
         }
+        this._applicationsButtons.forEach((value,key,map) => {
+            if(key instanceof GMenu.TreeDirectory){
+                this._applicationsButtons.delete(key);
+                value.destroy();
+            }     
+        });
         this.applicationsBox.destroy_all_children();
         this._loadCategories();
         this._display();
@@ -329,11 +335,6 @@ var createMenu = class {
                         this._loadCategory(categoryId, subdir, submenuItem);
                     }
                     else{
-                        let submenuItem = this._applicationsButtons.get(subdir);
-                        if(submenuItem){
-                            this._applicationsButtons.delete(subdir);
-                            submenuItem.destroy();
-                        }
                         this._loadCategory(categoryId, subdir);
                     }
                 }
