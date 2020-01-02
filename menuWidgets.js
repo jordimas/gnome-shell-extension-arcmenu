@@ -2002,6 +2002,12 @@ var CategorySubMenuItem = Utils.createClass({
         let scrollbar = this.menu.actor.get_vscroll_bar();
         scrollbar.style="padding-right:10px;";
         this.menu._needsScrollbar = this._needsScrollbar.bind(this);
+        this.menu.connect('open-state-changed', () => {
+            if(!this.menu.isOpen){
+                let scrollbar= this.menu.actor.get_vscroll_bar().get_adjustment();
+                scrollbar.set_value(0);
+            }
+        });
     },
     setFakeActive(active) {
         if (active) {
@@ -2080,10 +2086,6 @@ var CategorySubMenuItem = Utils.createClass({
         else{
             if(open){
                 this.loadMenu();
-            }
-            else{
-                let scrollbar= this.menu.actor.get_vscroll_bar().get_adjustment();
-                scrollbar.set_value(0);
             }
         }
         this.setSubmenuShown(open);
