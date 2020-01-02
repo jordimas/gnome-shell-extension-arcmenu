@@ -392,10 +392,8 @@ var createMenu = class {
             this.favoritesArray[i].destroy();
         }
         this._applicationsButtons.forEach((value,key,map) => {
-            if(key instanceof GMenu.TreeDirectory){
-                this._applicationsButtons.delete(key);
-                value.destroy();
-            }     
+            this._applicationsButtons.delete(key);
+            value.destroy(); 
         });
         this.applicationsBox.destroy_all_children();
         this._loadCategories();
