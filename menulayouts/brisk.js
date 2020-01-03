@@ -450,7 +450,15 @@ var createMenu = class{
             this.applicationsBox.remove_actor(actor);
         }
     }
-
+    _clearShortcutsBox(){
+        let actors = this.shorcutsBox.get_children();
+        for (let i = 0; i < actors.length; i++) {
+            let actor = actors[i];
+            if(actor._delegate instanceof MW.CategorySubMenuItem)
+                actor._delegate.menu.close();
+            this.shorcutsBox.remove_actor(actor);
+        }
+    }
     // Select a category or show category overview if no category specified
     selectCategory(dir) {
         if (dir!="Frequent Apps") 
@@ -465,13 +473,7 @@ var createMenu = class{
     // Display application menu items
     _displayButtons(apps) {
         if (apps) {
-            let actors = this.shorcutsBox.get_children();
-            for (let i = 0; i < actors.length; i++) {
-                let actor = actors[i];
-                if(actor._delegate instanceof MW.CategorySubMenuItem)
-                    actor._delegate.menu.close();
-                this.shorcutsBox.remove_actor(actor);
-            }
+            this._clearShortcutsBox();
             for (let i = 0; i < apps.length; i++) {
                 let app = apps[i];
                 let item = this._applicationsButtons.get(app);
@@ -559,11 +561,7 @@ var createMenu = class{
             this.newSearch.actor.hide();
         }            
         else{         
-            let actors = this.shorcutsBox.get_children();
-                for (let i = 0; i < actors.length; i++) {
-                    let actor = actors[i];
-                    this.shorcutsBox.remove_actor(actor);
-            }
+            this._clearShortcutsBox();
             this.shorcutsBox.add(this.newSearch.actor); 
             this.newSearch.highlightDefault(true);
             this.newSearch.actor.show();         

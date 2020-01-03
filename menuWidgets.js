@@ -2001,7 +2001,7 @@ var CategorySubMenuItem = Utils.createClass({
         this.menu.actor.overlay_scrollbars = true;
         this.menu.actor.style_class = 'vfade popup-sub-menu';
         let scrollbar = this.menu.actor.get_vscroll_bar();
-        scrollbar.style="padding-right:10px;";
+        scrollbar.style="padding-right:15px;";
         this.menu._needsScrollbar = this._needsScrollbar.bind(this);
         this.menu.connect('open-state-changed', () => {
             if(!this.menu.isOpen){
