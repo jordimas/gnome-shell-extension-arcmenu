@@ -391,6 +391,10 @@ var createMenu = class {
         for (let i = 0; i < this.favoritesArray.length; i++) {
             this.favoritesArray[i].destroy();
         }
+        this._applicationsButtons.forEach((value,key,map) => {
+            this._applicationsButtons.delete(key);
+            value.destroy(); 
+        });
         this.applicationsBox.destroy_all_children();
         this._loadCategories();
         this._loadFavorites();
@@ -458,7 +462,7 @@ var createMenu = class {
             }
         }
     }
-    _loadCategory(categoryId, dir) {
+    _loadCategory(categoryId, dir, submenuItem) {
         let iter = dir.iter();
         let nextType;
         while ((nextType = iter.next()) != GMenu.TreeItemType.INVALID) {
@@ -474,17 +478,37 @@ var createMenu = class {
                 if (!app)
                     app = new Shell.App({ app_info: entry.get_app_info() });
                 if (app.get_app_info().should_show()){
-                    this.applicationsByCategory[categoryId].push(app);
                     let item = this._applicationsButtons.get(app);
                     if (!item) {
                         item = new MW.ApplicationMenuItem(this, app);
+                    }
+                    if(!submenuItem){
+                        this.applicationsByCategory[categoryId].push(app);
                         this._applicationsButtons.set(app, item);
+                    }
+                    else{
+                        submenuItem._applicationsButtons.set(app, item);
                     }
                 }             
             } else if (nextType == GMenu.TreeItemType.DIRECTORY) {
                 let subdir = iter.get_directory();
-                if (!subdir.get_is_nodisplay())
-                    this._loadCategory(categoryId, subdir);
+                if (!subdir.get_is_nodisplay()){
+                    if(this._settings.get_boolean('enable-sub-menus')){
+                        this.applicationsByCategory[categoryId].push(subdir);
+                        let submenuItem = this._applicationsButtons.get(subdir);
+                        if (!submenuItem) {
+                            submenuItem = new MW.CategorySubMenuItem(this, subdir);
+                            submenuItem._setParent(this.leftClickMenu);
+                            this._applicationsButtons.set(subdir, submenuItem);
+                        }
+                        this._loadCategory(categoryId, subdir, submenuItem);
+                    }
+                    else{
+                        this._loadCategory(categoryId, subdir);
+                    }
+
+                }
+                    
             }
         }
     }
@@ -580,7 +604,6 @@ var createMenu = class {
         }
     }
     _displayFavorites() {
-        //global.log('display favs');
         this._clearApplicationsBox();
         this.viewProgramsButton.actor.show();
         this.backButton.actor.hide();
@@ -663,6 +686,8 @@ var createMenu = class {
         let actors = this.applicationsBox.get_children();
         for (let i = 0; i < actors.length; i++) {
             let actor = actors[i];
+            if(actor._delegate instanceof MW.CategorySubMenuItem)
+                actor._delegate.menu.close();
             this.applicationsBox.remove_actor(actor);
         }
     }
@@ -698,8 +723,15 @@ var createMenu = class {
                 item = new MW.ApplicationMenuItem(this, app);
                 this._applicationsButtons.set(app, item);
             }
+            if(item.actor.get_parent()){
+                item.actor.get_parent().remove_actor(item.actor);
+            }
             if (!item.actor.get_parent()) 
                 this.applicationsBox.add_actor(item.actor);
+            if(item instanceof MW.CategorySubMenuItem){
+                this.applicationsBox.add_actor(item.menu.actor);
+                item._updateIcons();
+            }
             if(i==0){
                 item.setFakeActive(true);
                 item.actor.grab_key_focus();

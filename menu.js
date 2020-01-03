@@ -466,8 +466,12 @@ var ApplicationsButton =   Utils.defineClass({
                 this.MenuLayout._redisplay();
         },
         _reload(){
-            if(this.MenuLayout)
-                this.MenuLayout._reload();
+            if(this.MenuLayout){
+                GLib.timeout_add(0, 100, () => {
+                    this.MenuLayout._reload();
+                    return GLib.SOURCE_REMOVE;
+                });
+            }
         },
         setCurrentMenu(menu) {
             if(this.MenuLayout)

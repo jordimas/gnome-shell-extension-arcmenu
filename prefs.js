@@ -1443,6 +1443,7 @@ var AppearancePage = GObject.registerClass(
                         this._settings.set_int('menu-width', dialog.menuWidth);
                         this._settings.set_boolean('enable-large-icons',dialog.largeIcons);
                         this._settings.set_int('gap-adjustment',dialog.gapAdjustment);
+                        this._settings.set_boolean('enable-sub-menus', dialog.subMenus);
                         saveCSS(this._settings);
                         this._settings.set_boolean('reload-theme',true);
                         dialog.destroy();
@@ -1788,6 +1789,7 @@ var ArcMenuCustomizationWindow = GObject.registerClass(
             this.menuArrowSize = this._settings.get_int('menu-arrow-size');
             this.largeIcons = this._settings.get_boolean('enable-large-icons');
             this.gapAdjustment = this._settings.get_int('gap-adjustment');
+            this.subMenus = this._settings.get_boolean('enable-sub-menus');
             super._init(_('Customize Arc Menu Appearance'), parent);
 	        this.resize(450,250);
         }
@@ -1875,6 +1877,25 @@ var ArcMenuCustomizationWindow = GObject.registerClass(
             largeIconsRow.add(largeIconsSwitch);             
             mainFrame.add(largeIconsRow);
 
+            let subMenusRow = new PW.FrameBoxRow();
+            let subMenusLabel = new Gtk.Label({
+                label: _('Category Sub Menus'),
+                use_markup: true,
+                xalign: 0,
+                hexpand: true,
+                selectable: false
+             });   
+            let subMenusSwitch = new Gtk.Switch({ halign: Gtk.Align.END});
+            subMenusSwitch.set_active(this.subMenus);
+            subMenusSwitch.connect('notify::active', (widget) => {
+                 this.subMenus = widget.get_active();
+                 applyButton.set_sensitive(true);
+                 resetButton.set_sensitive(true);
+            });
+            subMenusRow.add(subMenusLabel);            
+            subMenusRow.add(subMenusSwitch);             
+            mainFrame.add(subMenusRow);
+
             let vertSeparatorRow = new PW.FrameBoxRow();
             let vertSeparatorLabel = new Gtk.Label({
                 label: _('Enable Vertical Separator'),
@@ -1961,9 +1982,11 @@ var ArcMenuCustomizationWindow = GObject.registerClass(
                     this.separatorColor = "rgb(63,62,64)";
                     this.verticalSeparator = false;
                     this.largeIcons = false;
+                    this.subMenus = false;
                     hscale.set_value(this.heightValue);
                     menuWidthScale.set_value(this.menuWidth);
                     gapAdjustmentScale.set_value(0);
+                    subMenusSwitch.set_active(this.subMenus);
                     vertSeparatorSwitch.set_active(this.verticalSeparator);
                     largeIconsSwitch.set_active(this.largeIcons);
                     color.parse(this.separatorColor);
@@ -1997,6 +2020,7 @@ var ArcMenuCustomizationWindow = GObject.registerClass(
                 this.menuWidth != 290 ||
                 this.separatorColor != "rgb(63,62,64)"||
                 this.verticalSeparator != false||
+                this.subMenus != false ||
                 this.largeIcons != false||
                 this.gapAdjustment != 0) ? true : false
             
@@ -3524,10 +3548,10 @@ function saveCSS(settings){
         +tooltipStyle
 
         +".arc-menu{\n-boxpointer-gap: "+gapAdjustment+"px;\nmin-width: 15em;\ncolor: #D3DAE3;\nborder-image: none;\nbox-shadow: none;\nfont-size:" + fontSize+"pt;\n}\n"
-        +".arc-menu .popup-sub-menu {\npadding-bottom: 1px;\nbackground-color: "+lighten_rgb( menuColor,0.05)+";\nborder-color: "+lighten_rgb( menuColor,0.10)+";\n border-width:1px;\n}\n"
+        +".arc-menu .popup-sub-menu {\npadding-bottom: 1px;\nbackground-color: "+lighten_rgb( menuColor,0.04)+";\n}\n"
         +".arc-menu .popup-menu-content {padding: 1em 0em;}\n .arc-menu .popup-menu-item {\nspacing: 12px; \nborder: 0;\ncolor:"+  menuForegroundColor+";\n }\n" 
         +".arc-menu .popup-menu-item:ltr {padding: .4em 1.75em .4em 0em; }\n.arc-menu .popup-menu-item:rtl {padding: .4em 0em .4em 1.75em;}\n"
-        +".arc-menu .popup-menu-item:checked {\nbackground-color:"+menuColor+";\n box-shadow: 0;\nfont-weight: bold;\n }\n"
+        +".arc-menu .popup-menu-item:checked {\nbackground-color:"+lighten_rgb( menuColor,0.04)+";\n box-shadow: 0;\nfont-weight: bold;\n border-color: "+lighten_rgb( menuColor,0.15)+";\n border-top-width:1px;\n}\n"
         +".arc-menu .popup-menu-item.selected, .arc-menu .popup-menu-item:active{\nbackground-color:"+  highlightColor+"; \ncolor: "+ lighten_rgb( menuForegroundColor,0.15)+";\n }\n" 
         +".arc-menu .popup-menu-item:disabled {color: rgba(238, 238, 236, 0.5); }\n"
         +".arc-menu-boxpointer{ \n-arrow-border-radius:"+  cornerRadius+"px;\n"
