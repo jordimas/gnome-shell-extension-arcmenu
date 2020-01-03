@@ -373,6 +373,10 @@ var ApplicationsButton =   Utils.defineClass({
         },
         // Destroy the menu button
         destroy() {  
+            if (this.reloadID > 0) {
+                GLib.source_remove(this.reloadID);
+                this.reloadID = 0;
+            }
             if (this.createLayoutID > 0) {
                 GLib.source_remove(this.createLayoutID);
                 this.createLayoutID = 0;
@@ -467,7 +471,7 @@ var ApplicationsButton =   Utils.defineClass({
         },
         _reload(){
             if(this.MenuLayout){
-                GLib.timeout_add(0, 100, () => {
+                this.reloadID = GLib.timeout_add(0, 100, () => {
                     this.MenuLayout._reload();
                     return GLib.SOURCE_REMOVE;
                 });
