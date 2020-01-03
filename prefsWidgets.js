@@ -79,7 +79,8 @@ var IconButton = GObject.registerClass(
         super._init();
         this._params = Params.parse(params, {
             circular: true,
-            icon_name: ''
+            icon_name: '',
+            tooltip_text: ''
         });
         if (this._params.circular) {
             let context = this.get_style_context();
@@ -91,6 +92,9 @@ var IconButton = GObject.registerClass(
                 xalign: 0.5
             });
             this.add(image);
+        }
+        if (this._params.tooltip_text){
+            this.set_tooltip_text(this._params.tooltip_text);
         }
     }
 });
