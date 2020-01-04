@@ -69,6 +69,11 @@
       <summary>Enable Category Sub Menus</summary>
       <description>Enable Category Sub Menus.</description>
     </key>
+    <key type="b" name="krunner-show-details">
+     <default>false</default>
+      <summary>KRunner layout show larger icon and app details</summary>
+      <description>KRunner layout show larger icon and app details.</description>
+    </key>
     <key type="b" name="activate-on-hover">
      <default>false</default>
       <summary>Activate Categories on Hover</summary>

@@ -152,7 +152,24 @@ var TweaksDialog = GObject.registerClass(
             runnerPositionRow.add(runnerPositionLabel);
             runnerPositionRow.add(runnerPositionCombo);
             kRunnerMenuTweaksFrame.add(runnerPositionRow);
+            
+            let showMoreDetailsRow = new PW.FrameBoxRow();
+            let showMoreDetailsLabel = new Gtk.Label({
+                label: _("Show Extra Large Icons with App Descriptions"),
+                use_markup: true,
+                xalign: 0,
+                hexpand: true
+            });
 
+            let showMoreDetailsSwitch = new Gtk.Switch({ halign: Gtk.Align.END });
+            showMoreDetailsSwitch.set_active(this._settings.get_boolean('krunner-show-details'));
+            showMoreDetailsSwitch.connect('notify::active', (widget) => {
+                this._settings.set_boolean('krunner-show-details', widget.get_active());
+            });
+
+            showMoreDetailsRow.add(showMoreDetailsLabel);
+            showMoreDetailsRow.add(showMoreDetailsSwitch);
+            kRunnerMenuTweaksFrame.add(showMoreDetailsRow);
             vbox.add(kRunnerMenuTweaksFrame);
         }
         _loadMintMenuTweaks(vbox){

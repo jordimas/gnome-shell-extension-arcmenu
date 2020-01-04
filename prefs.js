@@ -63,7 +63,8 @@ var PinnedAppsPage = GObject.registerClass(
             });
             let addPinnedAppsButton = new PW.IconButton({
                 circular: false,
-                icon_name: 'list-add-symbolic'
+                icon_name: 'list-add-symbolic',
+                tooltip_text: _("Browse a list of all applications to add to your Pinned Apps list.")
             });
             addPinnedAppsButton.connect('clicked', ()=> {
                 let dialog = new AddAppsToPinnedListWindow(this._settings, this);
@@ -102,8 +103,9 @@ var PinnedAppsPage = GObject.registerClass(
                 hexpand: true
             });
             let addCustomAppButton = new PW.IconButton({
-                 circular: false,
-                 icon_name: 'list-add-symbolic'
+                circular: false,
+                icon_name: 'list-add-symbolic',
+                tooltip_text: _("Create a custom shortcut to add to your Pinned Apps list.")
             });
             addCustomAppButton.connect('clicked', ()=> {
                 let dialog = new AddCustomLinkDialogWindow(this._settings, this);
@@ -185,19 +187,23 @@ var PinnedAppsPage = GObject.registerClass(
                 //and delete pinned apps
                 let editButton = new PW.IconButton({
                     circular: false,
-                    icon_name: 'emblem-system-symbolic'
+                    icon_name: 'emblem-system-symbolic',
+                    tooltip_text: _('Modify')
                 });
                 let upButton = new PW.IconButton({
                     circular: false,
-                    icon_name: 'go-up-symbolic'
+                    icon_name: 'go-up-symbolic',
+                    tooltip_text: _('Move Up')
                 });
                 let downButton = new PW.IconButton({
                     circular: false,
-                    icon_name: 'go-down-symbolic'
+                    icon_name: 'go-down-symbolic',
+                    tooltip_text: _('Move Down')
                 });
                 let deleteButton = new PW.IconButton({
                     circular: false,
-                    icon_name: 'edit-delete-symbolic'
+                    icon_name: 'edit-delete-symbolic',
+                    tooltip_text: _('Delete')
                 });
                 editButton.connect('clicked', ()=> {
                     let appArray = [frameRow._name,frameRow._icon,frameRow._cmd];

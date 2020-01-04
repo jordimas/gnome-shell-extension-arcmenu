@@ -264,6 +264,10 @@ var ApplicationsButton =   Utils.defineClass({
             this.rightClickMenu.actor.style_class = addStyle ? 'arc-menu-boxpointer': 'popup-menu-boxpointer';
             this.rightClickMenu.actor.add_style_class_name(addStyle ? 'arc-menu' : 'popup-menu');
         },
+        updateSearch(){
+            if(this.MenuLayout)
+                this.MenuLayout.updateSearch();
+        },
         setSensitive(sensitive) {
             this.reactive = sensitive;
             this.can_focus = sensitive;

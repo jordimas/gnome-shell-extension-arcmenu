@@ -86,6 +86,7 @@ var MenuSettingsController = class {
             this._settings.connect('changed::button-icon-padding', this._setButtonIconPadding.bind(this)),
             this._settings.connect('changed::enable-menu-button-arrow', this._setMenuButtonArrow.bind(this)),
             this._settings.connect('changed::enable-custom-arc-menu', this._enableCustomArcMenu.bind(this)),
+            this._settings.connect('changed::krunner-show-details', this._updateKRunnerSearchLayout.bind(this)),
             this._settings.connect('changed::show-home-shortcut', this._redisplayRightSide.bind(this)),
             this._settings.connect('changed::show-documents-shortcut', this._redisplayRightSide.bind(this)),
             this._settings.connect('changed::show-downloads-shortcut', this._redisplayRightSide.bind(this)),
@@ -172,6 +173,10 @@ var MenuSettingsController = class {
     }
     _enableCustomArcMenu() {
         this._menuButton.updateStyle();
+    }
+    _updateKRunnerSearchLayout(){
+        if(this._settings.get_enum('menu-layout') == Constants.MENU_LAYOUT.Runner)
+            this._menuButton.updateSearch();
     }
     _updateMenuHeight(){
         this._menuButton.updateHeight();
