@@ -949,8 +949,18 @@ var ShortcutMenuItem = Utils.createClass({
         this.callParent('_init');
         this._button = button;
         this._command = command;
+        //Check for default commands--------
+        if(this._command == "ArcMenu_Software"){
+            if(GLib.find_program_in_path('gnome-software'))
+                this._command='org.gnome.Software';
+            else if(GLib.find_program_in_path('pamac-manager'))
+                this._command='pamac-manager';
+        }
+        this._app = Shell.AppSystem.get_default().lookup_app(this._command);
+        //---------
         this._icon = new St.Icon({
             icon_name: icon,
+            gicon: Gio.icon_new_for_string(icon),
             style_class: 'popup-menu-icon',
             icon_size: SMALL_ICON_SIZE
         });
@@ -963,7 +973,12 @@ var ShortcutMenuItem = Utils.createClass({
     },
     // Activate the menu item (Launch the shortcut)
     activate(event) {
-        Util.spawnCommandLine(this._command);
+        if(this._command =="ArcMenu_ActivitiesOverview")
+            Main.overview.show();
+        else if(this._app)
+            this._app.open_new_window(-1);
+        else
+            Util.spawnCommandLine(this._command);
         this._button.leftClickMenu.toggle();
         this.callParent('activate',event);
     },

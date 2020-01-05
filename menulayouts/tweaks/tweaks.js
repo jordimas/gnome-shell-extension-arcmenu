@@ -277,8 +277,7 @@ var TweaksDialog = GObject.registerClass(
                     icon_name: 'list-add-symbolic'
                 });
                 addPinnedAppsButton.connect('clicked', ()=> {
-                    let isMintLayout = true;
-                    let dialog = new Prefs.AddAppsToPinnedListWindow(this._settings, this, isMintLayout);
+                    let dialog = new Prefs.AddAppsToPinnedListWindow(this._settings, this, Constants.SHOW_ALL_APPS_TYPE.Mint_Pinned_Apps);
                     dialog.show_all();
                     dialog.connect('response', ()=> { 
                         if(dialog.get_response()) {

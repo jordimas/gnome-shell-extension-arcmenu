@@ -371,6 +371,19 @@
       <summary>List of Apps Pinned to Menu</summary>
       <description>List of Apps Pinned to Menu</description>
     </key>
+    <key name="directory-shortcuts-list" type="aas">
+      <default>[["Home","ArcMenu_Home", "ArcMenu_Home"], ["Documents","ArcMenu_Documents", "ArcMenu_Documents"],["Downloads","ArcMenu_Downloads", "ArcMenu_Downloads"],
+          ["Music","ArcMenu_Music", "ArcMenu_Music"],["Pictures","ArcMenu_Pictures", "ArcMenu_Pictures"],["Videos","ArcMenu_Videos", "ArcMenu_Videos"]]</default>
+      <summary>List of default directory paths used for links on the right side of Arc Menu</summary>
+      <description>List of default directory paths used for links on the right side of Arc Menu.</description>
+    </key>
+    <key name="application-shortcuts-list" type="aas">
+      <default>[["Software","org.gnome.Software-symbolic", "ArcMenu_Software"], ["Settings","preferences-system-symbolic", "gnome-control-center"],
+          ["Tweaks","org.gnome.tweaks-symbolic", "gnome-tweaks"],["Terminal","utilities-terminal-symbolic", "gnome-terminal"],
+          ["Activities Overview", "view-fullscreen-symbolic", "ArcMenu_ActivitiesOverview"]]</default>
+      <summary>List of default directory paths used for links on the right side of Arc Menu</summary>
+      <description>List of default directory paths used for links on the right side of Arc Menu.</description>
+    </key>
     <key name="mint-pinned-app-list" type="as">
       <default>[]</default>
       <summary>List of Mint Layout Pinned Apps</summary>
