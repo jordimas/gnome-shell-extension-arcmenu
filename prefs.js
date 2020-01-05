@@ -2863,19 +2863,39 @@ var OverrideArcMenuThemeWindow = GObject.registerClass(
             this.separatorColor != "rgb(63,62,64)") ? true : false
         }
 });
+var ConfigureShortcuts = GObject.registerClass(
+    class ArcMenu_ConfigureShortcutsDialog extends PW.DialogWindow {
+        _init(settings, parent) {
+            this._settings = settings;
+            this.addResponse = false;
+            super._init(_("Configure Shortcuts"), parent);
+            this.resize(550,250);
+        }
+        _createLayout(vbox) {    
+            let notebook = new PW.Notebook();
 
-var ShortcutsPage = GObject.registerClass(
-    class ArcMenu_ShortcutsPage extends PW.NotebookPage {
+            let defautlDirectoriesPage = new DefaultDirectoriesPage(this._settings);
+            notebook.append_page(defautlDirectoriesPage);
+    
+            let applicationShortcutsPage = new ApplicationShortcutsPage(this._settings);
+            notebook.append_page(applicationShortcutsPage);
+    
+            let sessionButtonsPage = new SessionButtonsPage(this._settings);
+            notebook.append_page(sessionButtonsPage);
+    
+            vbox.add(notebook);
+        }
+});
+var DefaultDirectoriesPage = GObject.registerClass(
+    class ArcMenu_DefaultDirectoriesPage extends PW.NotebookPage {
     _init(settings) {
-        super._init(_('Shortcuts'));
+        super._init(_('Directories'));
         this._settings = settings;
-           
-        //WHICH SHORTCUTS ON RIGHT SIDE
         let shortcutsFrame = new PW.FrameBox();
         let shortcutsScrollWindow = new Gtk.ScrolledWindow();
         shortcutsScrollWindow.set_policy(Gtk.PolicyType.AUTOMATIC, Gtk.PolicyType.AUTOMATIC);
-        shortcutsScrollWindow.set_max_content_height(115);
-        shortcutsScrollWindow.set_min_content_height(115);
+        shortcutsScrollWindow.set_max_content_height(300);
+        shortcutsScrollWindow.set_min_content_height(300);
         shortcutsScrollWindow.add(shortcutsFrame);
         var SHORTCUT_TRANSLATIONS = [_("Home"), _("Documents"),_("Downloads"), _("Music"),_("Pictures"),_("Videos"),_("Computer"), _("Network")];                        
         for(let i = 0;i<8;i++){
@@ -2910,58 +2930,18 @@ var ShortcutsPage = GObject.registerClass(
 
         };
         this.add(shortcutsScrollWindow);
-        //---------------------------------------------------------------------------------------
-        
-        //EXTERNAL DEVICES/BOOKMARKS--------------------------------------------------------------
-        let placesFrame = new PW.FrameBox();
-        let externalDeviceRow = new PW.FrameBoxRow();
-        let externalDeviceLabel = new Gtk.Label({
-            label: _("External Devices"),
-            use_markup: true,
-            xalign: 0,
-            hexpand: true
-        });
-        
-        let externalDeviceButton = new Gtk.Switch();
-        if(this._settings.get_boolean('show-external-devices'))
-            externalDeviceButton.set_active(true);
-        externalDeviceButton.connect('notify::active', (widget) => {
-            this._settings.set_boolean('show-external-devices', widget.get_active());
-        });   
-        externalDeviceRow.add(externalDeviceLabel);
-        externalDeviceRow.add(externalDeviceButton);
-
-        //ADD TO FRAME
-        placesFrame.add(externalDeviceRow);
-        this.add(placesFrame);
-        
-        //BOOKMARKS LIST       
-        let bookmarksRow = new PW.FrameBoxRow();
-        let bookmarksLabel = new Gtk.Label({
-            label: _("Bookmarks"),
-            use_markup: true,
-            xalign: 0,
-            hexpand: true
-        });
-        
-        let bookmarksButton = new Gtk.Switch();
-        if(this._settings.get_boolean('show-bookmarks'))
-            bookmarksButton.set_active(true);
-        bookmarksButton.connect('notify::active', (widget) => {
-            this._settings.set_boolean('show-bookmarks', widget.get_active());
-        });   
-        bookmarksRow.add(bookmarksLabel);
-        bookmarksRow.add(bookmarksButton);
-
-        //ADD TO FRAME
-        placesFrame.add(bookmarksRow);
-        
-        //Software Shortcuts------------------------------------------------------------------------
+    }
+});
+var ApplicationShortcutsPage = GObject.registerClass(
+    class ArcMenu_ApplicationShortcutsPage extends PW.NotebookPage {
+    _init(settings) {
+        super._init(_('Applications'));
+        this._settings = settings;
         let softwareShortcutsFrame = new PW.FrameBox();
         let softwareShortcutsScrollWindow = new Gtk.ScrolledWindow();
         softwareShortcutsScrollWindow.set_policy(Gtk.PolicyType.AUTOMATIC, Gtk.PolicyType.AUTOMATIC);
-        softwareShortcutsScrollWindow.set_max_content_height(115);
-        softwareShortcutsScrollWindow.set_min_content_height(115);
+        softwareShortcutsScrollWindow.set_max_content_height(300);
+        softwareShortcutsScrollWindow.set_min_content_height(300);
         softwareShortcutsScrollWindow.add(softwareShortcutsFrame);
         let SOFTWARE_TRANSLATIONS = [_("Software"), _("Settings"), _("Tweaks"), _("Terminal"), _("Activities Overview")];
         for(let i = 0; i<Constants.SOFTWARE_SHORTCUTS.length;i++){
@@ -2989,14 +2969,19 @@ var ShortcutsPage = GObject.registerClass(
             softwareShortcutsFrame.add(softwareShortcutsRow);
         }
         this.add(softwareShortcutsScrollWindow);
-        
-        //Session Buttons Enable/Disable----------------------------------------------------          
+    }
+});
+var SessionButtonsPage = GObject.registerClass(
+    class ArcMenu_SessionButtonsPage extends PW.NotebookPage {
+    _init(settings) {
+        super._init(_('Session Buttons'));
+        this._settings = settings;
         //SUSPEND BUTTON
         let sessionButtonsFrame = new PW.FrameBox();
         let sessionButtonsScrollWindow = new Gtk.ScrolledWindow();
         sessionButtonsScrollWindow.set_policy(Gtk.PolicyType.AUTOMATIC, Gtk.PolicyType.AUTOMATIC);
-        sessionButtonsScrollWindow.set_max_content_height(115);
-        sessionButtonsScrollWindow.set_min_content_height(115);
+        sessionButtonsScrollWindow.set_max_content_height(300);
+        sessionButtonsScrollWindow.set_min_content_height(300);
         sessionButtonsScrollWindow.add(sessionButtonsFrame);
         let suspendRow = new PW.FrameBoxRow();
         let suspendLabel = new Gtk.Label({
@@ -3070,7 +3055,92 @@ var ShortcutsPage = GObject.registerClass(
         sessionButtonsFrame.add(logOffRow);
         sessionButtonsFrame.add(lockRow);
         sessionButtonsFrame.add(powerRow);
-        this.add(sessionButtonsScrollWindow);    
+        this.add(sessionButtonsScrollWindow);
+    }
+});
+var ShortcutsPage = GObject.registerClass(
+    class ArcMenu_ShortcutsPage extends PW.NotebookPage {
+    _init(settings) {
+        super._init(_('Shortcuts'));
+        this._settings = settings;
+        let configureShortcutsFrame = new PW.FrameBox();
+        let configureShortcutsRow = new PW.FrameBoxRow();
+        let configureShortcutsLabel = new Gtk.Label({
+            label: _("Configure Shortcuts"),
+            use_markup: true,
+            xalign: 0,
+            hexpand: true
+        });
+        let configureShortcutsSwitch = new Gtk.Switch({tooltip_text:_("Add, Remove, or Modify Arc Menu shortcuts")});
+        configureShortcutsSwitch.connect('notify::active', (widget) => {
+            
+        });
+        let configureShortcutsButton = new PW.IconButton({
+            circular: true,
+            icon_name: 'emblem-system-symbolic',
+            tooltip_text:_("Add, Remove, or Modify Arc Menu shortcuts")
+        });
+        configureShortcutsButton.connect('clicked', () => {
+            let dialog = new ConfigureShortcuts(this._settings, this);
+            dialog.show_all();
+            dialog.connect('response', (response) => { 
+                if(dialog.get_response()) {
+               
+                }
+                else
+                    dialog.destroy();
+            }); 
+        });
+        configureShortcutsRow.add(configureShortcutsLabel);
+        configureShortcutsRow.add(configureShortcutsButton);
+        configureShortcutsRow.add(configureShortcutsSwitch);
+        configureShortcutsFrame.add(configureShortcutsRow);
+
+        this.add(configureShortcutsFrame);
+        
+        //EXTERNAL DEVICES/BOOKMARKS--------------------------------------------------------------
+        let placesFrame = new PW.FrameBox();
+        let externalDeviceRow = new PW.FrameBoxRow();
+        let externalDeviceLabel = new Gtk.Label({
+            label: _("External Devices"),
+            use_markup: true,
+            xalign: 0,
+            hexpand: true
+        });
+        
+        let externalDeviceButton = new Gtk.Switch({tooltip_text:_("Show all connected external devices in Arc Menu")});
+        if(this._settings.get_boolean('show-external-devices'))
+            externalDeviceButton.set_active(true);
+        externalDeviceButton.connect('notify::active', (widget) => {
+            this._settings.set_boolean('show-external-devices', widget.get_active());
+        });   
+        externalDeviceRow.add(externalDeviceLabel);
+        externalDeviceRow.add(externalDeviceButton);
+
+        //ADD TO FRAME
+        placesFrame.add(externalDeviceRow);
+        this.add(placesFrame);
+        
+        //BOOKMARKS LIST       
+        let bookmarksRow = new PW.FrameBoxRow();
+        let bookmarksLabel = new Gtk.Label({
+            label: _("Bookmarks"),
+            use_markup: true,
+            xalign: 0,
+            hexpand: true
+        });
+        
+        let bookmarksButton = new Gtk.Switch({tooltip_text:_("Show all Nautilus bookmarks in Arc Menu")});
+        if(this._settings.get_boolean('show-bookmarks'))
+            bookmarksButton.set_active(true);
+        bookmarksButton.connect('notify::active', (widget) => {
+            this._settings.set_boolean('show-bookmarks', widget.get_active());
+        });   
+        bookmarksRow.add(bookmarksLabel);
+        bookmarksRow.add(bookmarksButton);
+
+        //ADD TO FRAME
+        placesFrame.add(bookmarksRow);    
     }
 });
 
