@@ -306,6 +306,11 @@
       <summary>List of Apps Pinned to Menu</summary>
       <description>List of Apps Pinned to Menu</description>
     </key>
+    <key type="b" name="enable-custom-shortcuts">
+      <default>false</default>
+      <summary>Toggle for enabling custom shortcuts.</summary>
+      <description>Toggle for enabling custom shortcuts.</description>
+    </key>
     <key name="directory-shortcuts-list" type="aas">
       <default>[["Home","ArcMenu_Home", "ArcMenu_Home"], ["Documents","ArcMenu_Documents", "ArcMenu_Documents"],["Downloads","ArcMenu_Downloads", "ArcMenu_Downloads"],
           ["Music","ArcMenu_Music", "ArcMenu_Music"],["Pictures","ArcMenu_Pictures", "ArcMenu_Pictures"],["Videos","ArcMenu_Videos", "ArcMenu_Videos"]]</default>

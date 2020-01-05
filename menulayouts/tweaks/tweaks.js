@@ -277,7 +277,7 @@ var TweaksDialog = GObject.registerClass(
                     icon_name: 'list-add-symbolic'
                 });
                 addPinnedAppsButton.connect('clicked', ()=> {
-                    let dialog = new Prefs.AddAppsToPinnedListWindow(this._settings, this, Constants.SHOW_ALL_APPS_TYPE.Mint_Pinned_Apps);
+                    let dialog = new Prefs.AddAppsToPinnedListWindow(this._settings, this, Constants.DIALOG_TYPE.Mint_Pinned_Apps);
                     dialog.show_all();
                     dialog.connect('response', ()=> { 
                         if(dialog.get_response()) {
@@ -311,7 +311,7 @@ var TweaksDialog = GObject.registerClass(
                 });
                 editButton.connect('clicked', ()=> {
                     let appArray = [frameRow._name,frameRow._icon,frameRow._cmd];
-                    let dialog = new Prefs.AddCustomLinkDialogWindow(this._settings, this, true, appArray);
+                    let dialog = new Prefs.AddCustomLinkDialogWindow(this._settings, this, Constants.DIALOG_TYPE.Mint_Pinned_Apps, true, appArray);
                     dialog.show_all();
                     dialog.connect('response', ()=> { 
                         if(dialog.get_response()) {

@@ -67,7 +67,7 @@ var PinnedAppsPage = GObject.registerClass(
                 tooltip_text: _("Browse a list of all applications to add to your Pinned Apps list.")
             });
             addPinnedAppsButton.connect('clicked', ()=> {
-                let dialog = new AddAppsToPinnedListWindow(this._settings, this, Constants.SHOW_ALL_APPS_TYPE.Default);
+                let dialog = new AddAppsToPinnedListWindow(this._settings, this, Constants.DIALOG_TYPE.Default);
                 dialog.show_all();
                 dialog.connect('response', ()=> { 
                     if(dialog.get_response()) {
@@ -108,7 +108,7 @@ var PinnedAppsPage = GObject.registerClass(
                 tooltip_text: _("Create a custom shortcut to add to your Pinned Apps list.")
             });
             addCustomAppButton.connect('clicked', ()=> {
-                let dialog = new AddCustomLinkDialogWindow(this._settings, this);
+                let dialog = new AddCustomLinkDialogWindow(this._settings, this, Constants.DIALOG_TYPE.Default);
                 dialog.show_all();
                 dialog.connect('response', ()=> { 
                     if(dialog.get_response()) {
@@ -207,7 +207,7 @@ var PinnedAppsPage = GObject.registerClass(
                 });
                 editButton.connect('clicked', ()=> {
                     let appArray = [frameRow._name,frameRow._icon,frameRow._cmd];
-                    let dialog = new AddCustomLinkDialogWindow(this._settings, this, true, appArray);
+                    let dialog = new AddCustomLinkDialogWindow(this._settings, this, Constants.DIALOG_TYPE.Default, true, appArray);
                     dialog.show_all();
                     dialog.connect('response', ()=> { 
                         if(dialog.get_response()) {
@@ -268,16 +268,16 @@ var PinnedAppsPage = GObject.registerClass(
 //Dialog Window for Adding Apps to Pinned Apps List   
 var AddAppsToPinnedListWindow = GObject.registerClass(
     class ArcMenu_AddAppsToPinnedListWindow extends PW.DialogWindow {
-        _init(settings, parent, type) {
+        _init(settings, parent, dialogType) {
             this._settings = settings;
-            this._type = type;
-            if(this._type == Constants.SHOW_ALL_APPS_TYPE.Default)  
+            this._dialogType = dialogType;
+            if(this._dialogType == Constants.DIALOG_TYPE.Default)  
                 super._init(_('Select Apps to add to Pinned Apps List'), parent);     
-            else if(this._type == Constants.SHOW_ALL_APPS_TYPE.Mint_Pinned_Apps)
+            else if(this._dialogType == Constants.DIALOG_TYPE.Mint_Pinned_Apps)
                 super._init(_('Change Selected Pinned App'), parent);
-            else if(this._type == Constants.SHOW_ALL_APPS_TYPE.Application_Shortcuts)
+            else if(this._dialogType == Constants.DIALOG_TYPE.Application_Shortcuts)
                 super._init(_('Select Apps to add to your Application Shortcuts'), parent);
-            else if(this._type == Constants.SHOW_ALL_APPS_TYPE.Directories_Shortcuts)
+            else if(this._dialogType == Constants.DIALOG_TYPE.Directories_Shortcuts)
                 super._init(_('Select default User Directories to add your Directories Shortcuts'), parent);
             this.newPinnedAppsArray=[];
             this.addResponse = false;
@@ -293,8 +293,8 @@ var AddAppsToPinnedListWindow = GObject.registerClass(
             pinnedAppsScrollWindow.set_min_content_width(500);
             this.appsFrame = new PW.FrameBox();
             let addAppsButton;
-            if(this._type == Constants.SHOW_ALL_APPS_TYPE.Default || this._type == Constants.SHOW_ALL_APPS_TYPE.Application_Shortcuts
-                || this._type == Constants.SHOW_ALL_APPS_TYPE.Directories_Shortcuts){
+            if(this._dialogType == Constants.DIALOG_TYPE.Default || this._dialogType == Constants.DIALOG_TYPE.Application_Shortcuts
+                || this._dialogType == Constants.DIALOG_TYPE.Directories_Shortcuts){
                 //Label and button to add apps to list
                 addAppsButton = new Gtk.Button({
                     label: _("Add"),
@@ -313,11 +313,11 @@ var AddAppsToPinnedListWindow = GObject.registerClass(
             
             pinnedAppsScrollWindow.add_with_viewport(this.appsFrame);
             vbox.add(pinnedAppsScrollWindow);
-            if(this._type == Constants.SHOW_ALL_APPS_TYPE.Default){
+            if(this._dialogType == Constants.DIALOG_TYPE.Default){
                 this._loadCategories();
                 vbox.add(addAppsButton);
             }
-            else if(this._type == Constants.SHOW_ALL_APPS_TYPE.Directories_Shortcuts){
+            else if(this._dialogType == Constants.DIALOG_TYPE.Directories_Shortcuts){
                 let defaultApplicationShortcuts = this._settings.get_default_value('directory-shortcuts-list').deep_unpack();
                 defaultApplicationShortcuts.push(["Computer", "ArcMenu_Computer", "ArcMenu_Computer"]);
                 defaultApplicationShortcuts.push(["Network", "ArcMenu_Network", "ArcMenu_Network"]);
@@ -399,7 +399,7 @@ var AddAppsToPinnedListWindow = GObject.registerClass(
                 }
                 vbox.add(addAppsButton);
             }
-            else if(this._type == Constants.SHOW_ALL_APPS_TYPE.Application_Shortcuts){
+            else if(this._dialogType == Constants.DIALOG_TYPE.Application_Shortcuts){
                 this._loadCategories();
                 let defaultApplicationShortcutsFrame = new PW.FrameBox();
                 let defaultApplicationShortcuts = this._settings.get_default_value('application-shortcuts-list').deep_unpack();
@@ -560,8 +560,8 @@ var AddAppsToPinnedListWindow = GObject.registerClass(
                     });
                     frameLabel.label = frameRow._name;
                     frameRow.add(frameLabel);
-                    if(this._type == Constants.SHOW_ALL_APPS_TYPE.Default || this._type == Constants.SHOW_ALL_APPS_TYPE.Application_Shortcuts||
-                        this._type == Constants.SHOW_ALL_APPS_TYPE.Directories_Shortcuts){
+                    if(this._dialogType == Constants.DIALOG_TYPE.Default || this._dialogType == Constants.DIALOG_TYPE.Application_Shortcuts||
+                        this._dialogType == Constants.DIALOG_TYPE.Directories_Shortcuts){
                         let checkButton = new Gtk.CheckButton({
                             margin_right: 20
                         });
@@ -601,13 +601,21 @@ var AddAppsToPinnedListWindow = GObject.registerClass(
 //Dialog Window for Adding Custom Links to Pinned Apps List    
 var AddCustomLinkDialogWindow = GObject.registerClass(
     class ArcMenu_AddCustomLinkDialogWindow extends PW.DialogWindow {
-        _init(settings, parent, isAppEdit=false, appArray=null) {
+        _init(settings, parent, dialogType, isAppEdit=false, appArray=null) {
             this._settings = settings;
             this.newPinnedAppsArray=[];
             this.addResponse = false;
             this.isAppEdit = isAppEdit;
+            this._dialogType = dialogType;
             this.appArray = appArray;
-            super._init(isAppEdit?_('Edit Pinned App'):_('Add a Custom Shortcut'), parent);
+            if(this._dialogType == Constants.DIALOG_TYPE.Default)  
+                super._init(isAppEdit?_('Edit Pinned App'):_('Add a Custom Shortcut'), parent);    
+            else if(this._dialogType == Constants.DIALOG_TYPE.Mint_Pinned_Apps)
+                super._init(isAppEdit?_('Edit Pinned App'):_('Add a Custom Shortcut'), parent);
+            else if(this._dialogType == Constants.DIALOG_TYPE.Application_Shortcuts)
+                super._init(isAppEdit?_('Edit Shortcut'):_('Add a Custom Shortcut'), parent);
+            else if(this._dialogType == Constants.DIALOG_TYPE.Directories_Shortcuts)
+                super._init(isAppEdit?_('Edit Custom Shortcut'):_('Add a Custom Shortcut'), parent);
         }
 
         _createLayout(vbox) {
@@ -656,7 +664,8 @@ var AddCustomLinkDialogWindow = GObject.registerClass(
             iconFrameRow.add(iconFrameLabel);
             iconFrameRow.add(fileChooserButton);
             iconFrameRow.add(iconEntry);
-            mainFrame.add(iconFrameRow);
+            if(this._dialogType !== Constants.DIALOG_TYPE.Directories_Shortcuts)
+                mainFrame.add(iconFrameRow);
 
             //third row  - Command of Custom link
             let cmdFrameRow = new PW.FrameBoxRow();
@@ -667,6 +676,8 @@ var AddCustomLinkDialogWindow = GObject.registerClass(
                 hexpand: true,
                 selectable: false
             });
+            if(this._dialogType == Constants.DIALOG_TYPE.Directories_Shortcuts)
+                cmdFrameLabel.label =  _("Shortcut Path:");
             let cmdEntry = new Gtk.Entry();
             cmdEntry.set_width_chars(35);
             cmdFrameRow.add(cmdFrameLabel);
@@ -688,11 +699,14 @@ var AddCustomLinkDialogWindow = GObject.registerClass(
                 }
             }
             addButton.connect('clicked', ()=> {
-               this.newPinnedAppsArray.push(nameEntry.get_text());
-               this.newPinnedAppsArray.push(iconEntry.get_text());
-               this.newPinnedAppsArray.push(cmdEntry.get_text());
-               this.addResponse = true;
-               this.response(-10);
+                this.newPinnedAppsArray.push(nameEntry.get_text());
+                if(this._dialogType !== Constants.DIALOG_TYPE.Directories_Shortcuts)
+                    this.newPinnedAppsArray.push(iconEntry.get_text());
+                else
+                    this.newPinnedAppsArray.push(this.appArray[1]);
+                this.newPinnedAppsArray.push(cmdEntry.get_text());
+                this.addResponse = true;
+                this.response(-10);
             });
             addButton.set_halign(Gtk.Align.END);
 
@@ -3063,7 +3077,7 @@ var DefaultDirectoriesPage = GObject.registerClass(
                 tooltip_text: _("Browse a list of all default User Directories to add to your Directories Shortcuts")
             });
             addPinnedAppsButton.connect('clicked', ()=> {
-                let dialog = new AddAppsToPinnedListWindow(this._settings, this, Constants.SHOW_ALL_APPS_TYPE.Directories_Shortcuts);
+                let dialog = new AddAppsToPinnedListWindow(this._settings, this, Constants.DIALOG_TYPE.Directories_Shortcuts);
                 dialog.show_all();
                 dialog.connect('response', ()=> { 
                     if(dialog.get_response()) {
@@ -3102,7 +3116,7 @@ var DefaultDirectoriesPage = GObject.registerClass(
                 tooltip_text: _("Create a custom shortcut to add to your Directories Shortcuts")
             });
             addCustomAppButton.connect('clicked', ()=> {
-                let dialog = new AddCustomLinkDialogWindow(this._settings, this);
+                let dialog = new AddCustomLinkDialogWindow(this._settings, this, Constants.DIALOG_TYPE.Directories_Shortcuts);
                 dialog.show_all();
                 dialog.connect('response', ()=> { 
                     if(dialog.get_response()) {
@@ -3149,11 +3163,15 @@ var DefaultDirectoriesPage = GObject.registerClass(
         for(let i = 0; i < applicationShortcuts.length; i++){
             let applicationName = applicationShortcuts[i][0];
             let path, icon;
-  
-            if(applicationShortcuts[i][2]=="ArcMenu_Home")
+            let editable = true;
+            if(applicationShortcuts[i][2]=="ArcMenu_Home"){
                 path = GLib.get_home_dir();
-            else if(applicationShortcuts[i][2].startsWith("ArcMenu_"))
+                editable = false;
+            }
+            else if(applicationShortcuts[i][2].startsWith("ArcMenu_")){
                 path = GLib.get_home_dir()+"/"+applicationName;
+                editable = false;
+            }
             else
                 path = applicationShortcuts[i][2];
 
@@ -3195,7 +3213,7 @@ var DefaultDirectoriesPage = GObject.registerClass(
             frameRow.add(applicationImageBox);
 
             let softwareShortcutsLabel = new Gtk.Label({
-                label: applicationName,
+                label: _(applicationName),
                 use_markup: true,
                 xalign: 0,
                 hexpand: true
@@ -3211,11 +3229,15 @@ var DefaultDirectoriesPage = GObject.registerClass(
 
             //create the buttons to handle the ordering of pinned apps
             //and delete pinned apps
-            let editButton = new PW.IconButton({
-                circular: false,
-                icon_name: 'emblem-system-symbolic',
-                tooltip_text: _('Modify')
-            });
+            let editButton;
+            if(editable){
+                editButton = new PW.IconButton({
+                    circular: false,
+                    icon_name: 'emblem-system-symbolic',
+                    tooltip_text: _('Modify')
+                });
+            }
+
             let upButton = new PW.IconButton({
                 circular: false,
                 icon_name: 'go-up-symbolic',
@@ -3231,26 +3253,29 @@ var DefaultDirectoriesPage = GObject.registerClass(
                 icon_name: 'edit-delete-symbolic',
                 tooltip_text: _('Delete')
             });
-            editButton.connect('clicked', ()=> {
-                let appArray = [frameRow._name,frameRow._icon,frameRow._cmd];
-                let dialog = new AddCustomLinkDialogWindow(this._settings, this, true, appArray);
-                dialog.show_all();
-                dialog.connect('response', ()=> { 
-                    if(dialog.get_response()) {
-                        let newApplicationShortcut = dialog.get_newPinnedAppsArray();
-                        frameRow._name = newApplicationShortcut[0];
-                        frameRow._icon = newApplicationShortcut[1];
-                        frameRow._cmd = newApplicationShortcut[2];
-                        softwareShortcutsLabel.label = _(frameRow._name);
-                        applicationIcon.gicon = Gio.icon_new_for_string(frameRow._icon);
-                        dialog.destroy();
-                        softwareShortcutsFrame.show();
-                        this.savePinnedAppsButton.set_sensitive(true);
-                    }
-                    else
-                        dialog.destroy();
-                });  
-            });
+            if(editable){
+                editButton.connect('clicked', ()=> {
+                    let appArray = [frameRow._name,frameRow._icon,frameRow._cmd];
+                    let dialog = new AddCustomLinkDialogWindow(this._settings, this, Constants.DIALOG_TYPE.Directories_Shortcuts, true, appArray);
+                    dialog.show_all();
+                    dialog.connect('response', ()=> { 
+                        if(dialog.get_response()) {
+                            let newApplicationShortcut = dialog.get_newPinnedAppsArray();
+                            frameRow._name = newApplicationShortcut[0];
+                            frameRow._icon = newApplicationShortcut[1];
+                            frameRow._cmd = newApplicationShortcut[2];
+                            softwareShortcutsLabel.label = _(frameRow._name);
+                            applicationIcon.gicon = Gio.icon_new_for_string(frameRow._icon);
+                            dialog.destroy();
+                            softwareShortcutsFrame.show();
+                            this.savePinnedAppsButton.set_sensitive(true);
+                        }
+                        else
+                            dialog.destroy();
+                    });  
+                });
+            }
+            
             upButton.connect('clicked', ()=> {
                 //find index of frameRow in frame
                 //remove and reinsert at new position
@@ -3282,7 +3307,8 @@ var DefaultDirectoriesPage = GObject.registerClass(
                 this.savePinnedAppsButton.set_sensitive(true);
             });
             //add everything to frame
-            buttonBox.add(editButton);
+            if(editable)
+                buttonBox.add(editButton);
             buttonBox.add(upButton);
             buttonBox.add(downButton);
             buttonBox.add(deleteButton);
@@ -3327,7 +3353,7 @@ var ApplicationShortcutsPage = GObject.registerClass(
                 tooltip_text: _("Browse a list of all applications to add to your Application Shortcuts")
             });
             addPinnedAppsButton.connect('clicked', ()=> {
-                let dialog = new AddAppsToPinnedListWindow(this._settings, this, Constants.SHOW_ALL_APPS_TYPE.Application_Shortcuts);
+                let dialog = new AddAppsToPinnedListWindow(this._settings, this, Constants.DIALOG_TYPE.Application_Shortcuts);
                 dialog.show_all();
                 dialog.connect('response', ()=> { 
                     if(dialog.get_response()) {
@@ -3366,7 +3392,7 @@ var ApplicationShortcutsPage = GObject.registerClass(
                 tooltip_text: _("Create a custom shortcut to add to your Application Shortcuts")
             });
             addCustomAppButton.connect('clicked', ()=> {
-                let dialog = new AddCustomLinkDialogWindow(this._settings, this);
+                let dialog = new AddCustomLinkDialogWindow(this._settings, this, Constants.DIALOG_TYPE.Application_Shortcuts);
                 dialog.show_all();
                 dialog.connect('response', ()=> { 
                     if(dialog.get_response()) {
@@ -3412,15 +3438,9 @@ var ApplicationShortcutsPage = GObject.registerClass(
     _loadPinnedApps(applicationShortcuts,softwareShortcutsFrame){
         for(let i = 0; i < applicationShortcuts.length; i++){
             let applicationName = applicationShortcuts[i][0];
-            let SOFTWARE_TRANSLATIONS = [_("Software"), _("Settings"), _("Tweaks"), _("Terminal"), _("Activities Overview")];
-            //Try to match the 'application-shortcuts-list' name to our constants for translating the default settings
-            for(let j = 0; j < Constants.SOFTWARE_SHORTCUTS.length; j++){
-                if(applicationName == Constants.SOFTWARE_SHORTCUTS[j])
-                    applicationName = SOFTWARE_TRANSLATIONS[j];
-            }
 
             let frameRow = new PW.FrameBoxRow();
-            frameRow._name = applicationName;
+            frameRow._name = applicationShortcuts[i][0];
             frameRow._icon = applicationShortcuts[i][1];
             frameRow._cmd = applicationShortcuts[i][2];
             let applicationIcon = new Gtk.Image( {
@@ -3435,7 +3455,7 @@ var ApplicationShortcutsPage = GObject.registerClass(
             frameRow.add(applicationImageBox);
 
             let softwareShortcutsLabel = new Gtk.Label({
-                label: applicationName,
+                label: _(applicationName),
                 use_markup: true,
                 xalign: 0,
                 hexpand: true
@@ -3473,7 +3493,7 @@ var ApplicationShortcutsPage = GObject.registerClass(
             });
             editButton.connect('clicked', ()=> {
                 let appArray = [frameRow._name,frameRow._icon,frameRow._cmd];
-                let dialog = new AddCustomLinkDialogWindow(this._settings, this, true, appArray);
+                let dialog = new AddCustomLinkDialogWindow(this._settings, this, Constants.DIALOG_TYPE.Application_Shortcuts, true, appArray);
                 dialog.show_all();
                 dialog.connect('response', ()=> { 
                     if(dialog.get_response()) {
@@ -3634,14 +3654,18 @@ var ShortcutsPage = GObject.registerClass(
             hexpand: true
         });
         let configureShortcutsSwitch = new Gtk.Switch({tooltip_text:_("Add, Remove, or Modify Arc Menu shortcuts")});
-        configureShortcutsSwitch.connect('notify::active', (widget) => {
-            
-        });
+        
         let configureShortcutsButton = new PW.IconButton({
             circular: true,
             icon_name: 'emblem-system-symbolic',
             tooltip_text:_("Add, Remove, or Modify Arc Menu shortcuts")
         });
+        configureShortcutsSwitch.connect('notify::active', (widget) => {
+            configureShortcutsButton.set_sensitive(widget.get_active());
+            this._settings.set_boolean('enable-custom-shortcuts',widget.get_active());
+        });
+        configureShortcutsSwitch.set_active(this._settings.get_boolean('enable-custom-shortcuts'));
+        configureShortcutsButton.set_sensitive(configureShortcutsSwitch.get_active());
         configureShortcutsButton.connect('clicked', () => {
             let dialog = new ConfigureShortcuts(this._settings, this);
             dialog.show_all();
