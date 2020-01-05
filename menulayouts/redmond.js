@@ -185,32 +185,13 @@ var createMenu = class {
         this.rightBox.add(this.placesScrollBox);
         // Add place shortcuts to menu (Home,Documents,Downloads,Music,Pictures,Videos)
         this._displayPlaces();
-        // add Home and Network shortcuts           
-        if(this._settings.get_boolean('show-computer-shortcut')){
-            this.placesShortcuts=true;  
-            this.computer = new PlaceDisplay.RootInfo();
-            this.computerMenuItem = new PlaceDisplay.PlaceMenuItem(this.computer,this);
-            this.placesBox.add_actor(this.computerMenuItem.actor);
-        }
-        if(this._settings.get_boolean('show-network-shortcut')){
-            this.placesShortcuts=true;
-            this.network = new PlaceDisplay.PlaceInfo('network',Gio.File.new_for_uri('network:///'), _('Network'),'network-workgroup-symbolic');
-            this.networkMenuItem = new PlaceDisplay.PlaceMenuItem(this.network,this);
-            this.placesBox.add_actor(this.networkMenuItem.actor);
-        }
-        //draw bottom right horizontal separator + logic to determine if should show
+        
         let shouldDraw = false;
-        for(let i=0;i<6;i++){
-            if(this.getShouldShowShortcut(Constants.RIGHT_SIDE_SHORTCUTS[i])){
+        if(this._settings.get_value('directory-shortcuts-list').deep_unpack().length>0){
             this.placesShortcuts=true;
-            break;
-            }
         }
-        for(let i =6;i<11;i++){
-            if(this.getShouldShowShortcut(Constants.RIGHT_SIDE_SHORTCUTS[i])){
+        if(this._settings.get_value('application-shortcuts-list').deep_unpack().length>0){
             this.softwareShortcuts = true;
-            break;
-            }
         }
         //check to see if should draw separator
         if(this.placesShortcuts && (this._settings.get_boolean('show-external-devices') || this.softwareShortcuts || this._settings.get_boolean('show-bookmarks'))  )
@@ -440,25 +421,37 @@ var createMenu = class {
     }
     // Load menu place shortcuts
     _displayPlaces() {
-        let homePath = GLib.get_home_dir();
-        let placeInfo = new MW.PlaceInfo(Gio.File.new_for_path(homePath), _("Home"));
-        let addToMenu = this._settings.get_boolean('show-home-shortcut');
-        if(addToMenu){
-            let placeMenuItem = new MW.PlaceMenuItem(this, placeInfo);
-            this.placesBox.add_actor(placeMenuItem.actor);
-        }    
-        let dirs = Constants.DEFAULT_DIRECTORIES.slice();
-        var SHORTCUT_TRANSLATIONS = [_("Documents"),_("Downloads"), _("Music"),_("Pictures"),_("Videos")];
-        for (let i = 0; i < dirs.length; i++) {
-            let path = GLib.get_user_special_dir(dirs[i]);
-            if (path == null || path == homePath)
-                continue;
-            let placeInfo = new MW.PlaceInfo(Gio.File.new_for_path(path), _(SHORTCUT_TRANSLATIONS[i]));
-            addToMenu = this.getShouldShowShortcut(Constants.RIGHT_SIDE_SHORTCUTS[i+1]);
-            if(addToMenu){
-                let placeMenuItem = new MW.PlaceMenuItem(this, placeInfo);
-                this.placesBox.add_actor(placeMenuItem.actor);
+        var SHORTCUT_TRANSLATIONS = [_("Home"), _("Documents"), _("Downloads"), _("Music"), _("Pictures"), _("Videos"), _("Computer"), _("Network")];
+        let directoryShortcuts = this._settings.get_value('directory-shortcuts-list').deep_unpack();
+        for (let i = 0; i < directoryShortcuts.length; i++) {
+            let directory = directoryShortcuts[i];
+            let placeInfo, placeMenuItem;
+            if(directory[2]=="ArcMenu_Home"){
+                let homePath = GLib.get_home_dir();
+                placeInfo = new MW.PlaceInfo(Gio.File.new_for_path(homePath), _("Home"));
+                placeMenuItem = new MW.PlaceMenuItem(this, placeInfo);
             }
+            else if(directory[2]=="ArcMenu_Computer"){
+                placeInfo = new PlaceDisplay.RootInfo();
+                placeMenuItem = new PlaceDisplay.PlaceMenuItem(placeInfo,this);
+            }
+            else if(directory[2]=="ArcMenu_Network"){
+                placeInfo = new PlaceDisplay.PlaceInfo('network',Gio.File.new_for_uri('network:///'), _('Network'),'network-workgroup-symbolic');
+                placeMenuItem = new PlaceDisplay.PlaceMenuItem(placeInfo,this);    
+            }
+            else if(directory[2].startsWith("ArcMenu_")){
+                let path = directory[2].replace("ArcMenu_",'');
+                path = GLib.get_home_dir()+"/"+path;
+                placeInfo = new MW.PlaceInfo(Gio.File.new_for_path(path),  _(directory[0]));
+                placeMenuItem = new MW.PlaceMenuItem(this, placeInfo);
+            }
+            else{
+                let path = directory[2];
+                placeInfo = new MW.PlaceInfo(Gio.File.new_for_path(path), directory[0]);
+                placeMenuItem = new MW.PlaceMenuItem(this, placeInfo);
+            }
+            
+            this.placesBox.add_actor(placeMenuItem.actor);
         }
     }
     _loadFavorites() {
