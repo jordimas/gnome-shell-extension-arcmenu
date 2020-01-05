@@ -703,7 +703,7 @@ var AddCustomLinkDialogWindow = GObject.registerClass(
                 if(this._dialogType !== Constants.DIALOG_TYPE.Directories_Shortcuts)
                     this.newPinnedAppsArray.push(iconEntry.get_text());
                 else
-                    this.newPinnedAppsArray.push(this.appArray[1]);
+                    this.newPinnedAppsArray.push("");
                 this.newPinnedAppsArray.push(cmdEntry.get_text());
                 this.addResponse = true;
                 this.response(-10);
