@@ -230,33 +230,21 @@ var createMenu = class {
         }
 
         //Add Software Shortcuts to menu (Software, Settings, Tweaks, Terminal)
-        var SHORTCUT_TRANSLATIONS = [_("Software"),_("Software"), _("Settings"),_("Tweaks"), _("Terminal")];
-        let i = 0;
-        Constants.SHORTCUTS.forEach(function (shortcut) {
-            if (GLib.find_program_in_path(shortcut.command)) {
-                let addToMenu = this.getShouldShowShortcut(shortcut.label);
-                if(addToMenu)
-                {
-                    let shortcutMenuItem = new MW.ShortcutMenuItem(this, SHORTCUT_TRANSLATIONS[i], shortcut.symbolic, shortcut.command);
-                    this.placesBox.add(shortcutMenuItem.actor, {
-                        expand: false,
-                        x_fill: true,
-                        y_fill: false,
-                        y_align: St.Align.START,
-                    });
-                }
+        let SOFTWARE_TRANSLATIONS = [_("Software"), _("Settings"), _("Tweaks"), _("Terminal"), _("Activities Overview")];
+        let applicationShortcuts = this._settings.get_value('application-shortcuts-list').deep_unpack();
+        for(let i = 0; i < applicationShortcuts.length; i++){
+            let applicationName = applicationShortcuts[i][0];
+            //Try to match the 'application-shortcuts-list' name to our constants for translating the default settings
+            for(let j = 0; j < Constants.SOFTWARE_SHORTCUTS.length; j++){
+                if(applicationName == Constants.SOFTWARE_SHORTCUTS[j])
+                    applicationName = SOFTWARE_TRANSLATIONS[j];
             }
-            i++;
-        }.bind(this));
-        
-        //Add Activities Overview to menu
-        if(this._settings.get_boolean('show-activities-overview-shortcut')){
-            let activities = new MW.ActivitiesMenuItem(this);
-            this.placesBox.add(activities.actor, {
+            let shortcutMenuItem = new MW.ShortcutMenuItem(this, applicationName, applicationShortcuts[i][1], applicationShortcuts[i][2]);
+            this.placesBox.add(shortcutMenuItem.actor, {
                 expand: false,
                 x_fill: true,
                 y_fill: false,
-                y_align: St.Align.START
+                y_align: St.Align.START,
             });
         }
     
@@ -629,18 +617,6 @@ var createMenu = class {
         
         return applist;
     }
-    getShouldShowShortcut(shortcutName){
-        let setting = 'show-'+shortcutName+'-shortcut';
-        let settingName = GLib.utf8_strdown(setting,setting.length);
-        let addToMenu =false;
-        try{
-            addToMenu = this._settings.get_boolean(settingName);
-        }
-        catch (err) {
-            
-        }
-        return addToMenu;
-    }
         
     _onSearchBoxKeyPress(searchBox, event) {
         let symbol = event.get_key_symbol();
@@ -657,7 +633,7 @@ var createMenu = class {
     _onSearchBoxKeyFocusIn(searchBox) {
         if (!searchBox.isEmpty()) {
             this.newSearch.highlightDefault(true);
-    }
+        }
     }
 
     _onSearchBoxChanged(searchBox, searchString) {        
