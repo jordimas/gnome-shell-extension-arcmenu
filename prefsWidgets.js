@@ -150,6 +150,15 @@ var FrameBox = GObject.registerClass(
             this._listBox.remove(boxRow);
             this.count = this.count -1;
         }
+        remove_all_children() {
+            let children = this._listBox.get_children();
+            for(let i = 0; i < children.length; i++){
+                let child = children[i];
+                this._listBox.remove(child);
+            }
+            this.count = 0;
+            this._listBox.show_all();
+        }
         get_index(index){
             return this._listBox.get_row_at_index(index);
         }

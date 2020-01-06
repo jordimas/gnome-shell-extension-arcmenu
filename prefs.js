@@ -3062,87 +3062,96 @@ var DefaultDirectoriesPage = GObject.registerClass(
         this._loadPinnedApps(applicationShortcuts,softwareShortcutsFrame);
         this.add(softwareShortcutsScrollWindow);
 
-            //third row - add more apps to pinned apps list
-            let addPinnedAppsFrame = new PW.FrameBox();
-            let addPinnedAppsFrameRow = new PW.FrameBoxRow();
-            let addPinnedAppsFrameLabel = new Gtk.Label({
-                label: _("Add Default User Directories"),
-                use_markup: true,
-                xalign: 0,
-                hexpand: true
-            });
-            let addPinnedAppsButton = new PW.IconButton({
-                circular: false,
-                icon_name: 'list-add-symbolic',
-                tooltip_text: _("Browse a list of all default User Directories to add to your Directories Shortcuts")
-            });
-            addPinnedAppsButton.connect('clicked', ()=> {
-                let dialog = new AddAppsToPinnedListWindow(this._settings, this, Constants.DIALOG_TYPE.Directories_Shortcuts);
-                dialog.show_all();
-                dialog.connect('response', ()=> { 
-                    if(dialog.get_response()) {
-                        //checked apps to add to pinned apps list - from dialog 'Add" button click event
-                        let newPinnedApps = dialog.get_newPinnedAppsArray();
-                        let array=[]; 
-                        for(let i = 0;i<newPinnedApps.length;i++){
-                            array.push([newPinnedApps[i]._name,newPinnedApps[i]._icon,newPinnedApps[i]._cmd]);
-                        }
-                        this._loadPinnedApps(array,softwareShortcutsFrame);
-                        dialog.destroy();
-                        softwareShortcutsFrame.show();
-                        this.savePinnedAppsButton.set_sensitive(true);
+        //third row - add more apps to pinned apps list
+        let addPinnedAppsFrame = new PW.FrameBox();
+        let addPinnedAppsFrameRow = new PW.FrameBoxRow();
+        let addPinnedAppsFrameLabel = new Gtk.Label({
+            label: _("Add Default User Directories"),
+            use_markup: true,
+            xalign: 0,
+            hexpand: true
+        });
+        let addPinnedAppsButton = new PW.IconButton({
+            circular: false,
+            icon_name: 'list-add-symbolic',
+            tooltip_text: _("Browse a list of all default User Directories to add to your Directories Shortcuts")
+        });
+        addPinnedAppsButton.connect('clicked', ()=> {
+            let dialog = new AddAppsToPinnedListWindow(this._settings, this, Constants.DIALOG_TYPE.Directories_Shortcuts);
+            dialog.show_all();
+            dialog.connect('response', ()=> { 
+                if(dialog.get_response()) {
+                    //checked apps to add to pinned apps list - from dialog 'Add" button click event
+                    let newPinnedApps = dialog.get_newPinnedAppsArray();
+                    let array=[]; 
+                    for(let i = 0;i<newPinnedApps.length;i++){
+                        array.push([newPinnedApps[i]._name,newPinnedApps[i]._icon,newPinnedApps[i]._cmd]);
                     }
-                    else
-                        dialog.destroy();
-                }); 
-            });
-            addPinnedAppsFrameRow.add(addPinnedAppsFrameLabel);
-            addPinnedAppsFrameRow.add(addPinnedAppsButton);
-            addPinnedAppsFrame.add(addPinnedAppsFrameRow);
-            this.add(addPinnedAppsFrame);
-            
-            //fourth row - add custom app to pinned list
-            let addCustomAppFrame = new PW.FrameBox();
-            let addCustomAppFrameRow = new PW.FrameBoxRow();
-            let addCustomAppFrameLabel = new Gtk.Label({
-                label: _("Add Custom Shortcut"),
-                use_markup: true,
-                xalign: 0,
-                hexpand: true
-            });
-            let addCustomAppButton = new PW.IconButton({
-                circular: false,
-                icon_name: 'list-add-symbolic',
-                tooltip_text: _("Create a custom shortcut to add to your Directories Shortcuts")
-            });
-            addCustomAppButton.connect('clicked', ()=> {
-                let dialog = new AddCustomLinkDialogWindow(this._settings, this, Constants.DIALOG_TYPE.Directories_Shortcuts);
-                dialog.show_all();
-                dialog.connect('response', ()=> { 
-                    if(dialog.get_response()) {
-                        let newPinnedApps = dialog.get_newPinnedAppsArray();
-                        this._loadPinnedApps([newPinnedApps],softwareShortcutsFrame);
-                        dialog.destroy();
-                        softwareShortcutsFrame.show();
-                        this.savePinnedAppsButton.set_sensitive(true);
-                    }
-                    else
-                        dialog.destroy();
-                }); 
-            });
-            addCustomAppFrameRow.add(addCustomAppFrameLabel);
-            addCustomAppFrameRow.add(addCustomAppButton);
-            addCustomAppFrame.add(addCustomAppFrameRow);
-            this.add(addCustomAppFrame);
+                    this._loadPinnedApps(array,softwareShortcutsFrame);
+                    dialog.destroy();
+                    softwareShortcutsFrame.show();
+                    this.savePinnedAppsButton.set_sensitive(true);
+                }
+                else
+                    dialog.destroy();
+            }); 
+        });
+        addPinnedAppsFrameRow.add(addPinnedAppsFrameLabel);
+        addPinnedAppsFrameRow.add(addPinnedAppsButton);
+        addPinnedAppsFrame.add(addPinnedAppsFrameRow);
+        this.add(addPinnedAppsFrame);
+        
+        //fourth row - add custom app to pinned list
+        let addCustomAppFrame = new PW.FrameBox();
+        let addCustomAppFrameRow = new PW.FrameBoxRow();
+        let addCustomAppFrameLabel = new Gtk.Label({
+            label: _("Add Custom Shortcut"),
+            use_markup: true,
+            xalign: 0,
+            hexpand: true
+        });
+        let addCustomAppButton = new PW.IconButton({
+            circular: false,
+            icon_name: 'list-add-symbolic',
+            tooltip_text: _("Create a custom shortcut to add to your Directories Shortcuts")
+        });
+        addCustomAppButton.connect('clicked', ()=> {
+            let dialog = new AddCustomLinkDialogWindow(this._settings, this, Constants.DIALOG_TYPE.Directories_Shortcuts);
+            dialog.show_all();
+            dialog.connect('response', ()=> { 
+                if(dialog.get_response()) {
+                    let newPinnedApps = dialog.get_newPinnedAppsArray();
+                    this._loadPinnedApps([newPinnedApps],softwareShortcutsFrame);
+                    dialog.destroy();
+                    softwareShortcutsFrame.show();
+                    this.savePinnedAppsButton.set_sensitive(true);
+                }
+                else
+                    dialog.destroy();
+            }); 
+        });
+        addCustomAppFrameRow.add(addCustomAppFrameLabel);
+        addCustomAppFrameRow.add(addCustomAppButton);
+        addCustomAppFrame.add(addCustomAppFrameRow);
+        this.add(addCustomAppFrame);
 
 
-
-
-
+        let buttonRow = new PW.FrameBoxRow();
+        let resetButton = new Gtk.Button({
+            label: _("Restore Defaults")
+        });   
+        resetButton.set_sensitive(true);
+        resetButton.connect('clicked', ()=> {
+            this.savePinnedAppsButton.set_sensitive(true);
+            softwareShortcutsFrame.remove_all_children();
+            this._loadPinnedApps(this._settings.get_default_value('directory-shortcuts-list').deep_unpack(), softwareShortcutsFrame);
+            softwareShortcutsFrame.show();
+        });
 
         //last row - save settings
         this.savePinnedAppsButton = new Gtk.Button({
             label: _("Save"),
+            hexpand: true
         });
         this.savePinnedAppsButton.connect('clicked', ()=> {
             //iterate through each frame row (containing apps to pin) to create an array to save in settings
@@ -3156,7 +3165,9 @@ var DefaultDirectoriesPage = GObject.registerClass(
         }); 
         this.savePinnedAppsButton.set_halign(Gtk.Align.END);
         this.savePinnedAppsButton.set_sensitive(false);
-        this.add(this.savePinnedAppsButton);
+        buttonRow.add(resetButton);
+        buttonRow.add(this.savePinnedAppsButton);
+        this.add(buttonRow);
     }
 
     _loadPinnedApps(applicationShortcuts,softwareShortcutsFrame){
@@ -3338,87 +3349,95 @@ var ApplicationShortcutsPage = GObject.registerClass(
         this._loadPinnedApps(applicationShortcuts,softwareShortcutsFrame);
         this.add(softwareShortcutsScrollWindow);
 
-            //third row - add more apps to pinned apps list
-            let addPinnedAppsFrame = new PW.FrameBox();
-            let addPinnedAppsFrameRow = new PW.FrameBoxRow();
-            let addPinnedAppsFrameLabel = new Gtk.Label({
-                label: _("Add More Apps"),
-                use_markup: true,
-                xalign: 0,
-                hexpand: true
-            });
-            let addPinnedAppsButton = new PW.IconButton({
-                circular: false,
-                icon_name: 'list-add-symbolic',
-                tooltip_text: _("Browse a list of all applications to add to your Application Shortcuts")
-            });
-            addPinnedAppsButton.connect('clicked', ()=> {
-                let dialog = new AddAppsToPinnedListWindow(this._settings, this, Constants.DIALOG_TYPE.Application_Shortcuts);
-                dialog.show_all();
-                dialog.connect('response', ()=> { 
-                    if(dialog.get_response()) {
-                        //checked apps to add to pinned apps list - from dialog 'Add" button click event
-                        let newPinnedApps = dialog.get_newPinnedAppsArray();
-                        let array=[]; 
-                        for(let i = 0;i<newPinnedApps.length;i++){
-                            array.push([newPinnedApps[i]._name,newPinnedApps[i]._icon,newPinnedApps[i]._cmd]);
-                        }
-                        this._loadPinnedApps(array,softwareShortcutsFrame);
-                        dialog.destroy();
-                        softwareShortcutsFrame.show();
-                        this.savePinnedAppsButton.set_sensitive(true);
+        //third row - add more apps to pinned apps list
+        let addPinnedAppsFrame = new PW.FrameBox();
+        let addPinnedAppsFrameRow = new PW.FrameBoxRow();
+        let addPinnedAppsFrameLabel = new Gtk.Label({
+            label: _("Add More Apps"),
+            use_markup: true,
+            xalign: 0,
+            hexpand: true
+        });
+        let addPinnedAppsButton = new PW.IconButton({
+            circular: false,
+            icon_name: 'list-add-symbolic',
+            tooltip_text: _("Browse a list of all applications to add to your Application Shortcuts")
+        });
+        addPinnedAppsButton.connect('clicked', ()=> {
+            let dialog = new AddAppsToPinnedListWindow(this._settings, this, Constants.DIALOG_TYPE.Application_Shortcuts);
+            dialog.show_all();
+            dialog.connect('response', ()=> { 
+                if(dialog.get_response()) {
+                    //checked apps to add to pinned apps list - from dialog 'Add" button click event
+                    let newPinnedApps = dialog.get_newPinnedAppsArray();
+                    let array=[]; 
+                    for(let i = 0;i<newPinnedApps.length;i++){
+                        array.push([newPinnedApps[i]._name,newPinnedApps[i]._icon,newPinnedApps[i]._cmd]);
                     }
-                    else
-                        dialog.destroy();
-                }); 
-            });
-            addPinnedAppsFrameRow.add(addPinnedAppsFrameLabel);
-            addPinnedAppsFrameRow.add(addPinnedAppsButton);
-            addPinnedAppsFrame.add(addPinnedAppsFrameRow);
-            this.add(addPinnedAppsFrame);
-            
-            //fourth row - add custom app to pinned list
-            let addCustomAppFrame = new PW.FrameBox();
-            let addCustomAppFrameRow = new PW.FrameBoxRow();
-            let addCustomAppFrameLabel = new Gtk.Label({
-                label: _("Add Custom Shortcut"),
-                use_markup: true,
-                xalign: 0,
-                hexpand: true
-            });
-            let addCustomAppButton = new PW.IconButton({
-                circular: false,
-                icon_name: 'list-add-symbolic',
-                tooltip_text: _("Create a custom shortcut to add to your Application Shortcuts")
-            });
-            addCustomAppButton.connect('clicked', ()=> {
-                let dialog = new AddCustomLinkDialogWindow(this._settings, this, Constants.DIALOG_TYPE.Application_Shortcuts);
-                dialog.show_all();
-                dialog.connect('response', ()=> { 
-                    if(dialog.get_response()) {
-                        let newPinnedApps = dialog.get_newPinnedAppsArray();
-                        this._loadPinnedApps([newPinnedApps],softwareShortcutsFrame);
-                        dialog.destroy();
-                        softwareShortcutsFrame.show();
-                        this.savePinnedAppsButton.set_sensitive(true);
-                    }
-                    else
-                        dialog.destroy();
-                }); 
-            });
-            addCustomAppFrameRow.add(addCustomAppFrameLabel);
-            addCustomAppFrameRow.add(addCustomAppButton);
-            addCustomAppFrame.add(addCustomAppFrameRow);
-            this.add(addCustomAppFrame);
+                    this._loadPinnedApps(array,softwareShortcutsFrame);
+                    dialog.destroy();
+                    softwareShortcutsFrame.show();
+                    this.savePinnedAppsButton.set_sensitive(true);
+                }
+                else
+                    dialog.destroy();
+            }); 
+        });
+        addPinnedAppsFrameRow.add(addPinnedAppsFrameLabel);
+        addPinnedAppsFrameRow.add(addPinnedAppsButton);
+        addPinnedAppsFrame.add(addPinnedAppsFrameRow);
+        this.add(addPinnedAppsFrame);
+        
+        //fourth row - add custom app to pinned list
+        let addCustomAppFrame = new PW.FrameBox();
+        let addCustomAppFrameRow = new PW.FrameBoxRow();
+        let addCustomAppFrameLabel = new Gtk.Label({
+            label: _("Add Custom Shortcut"),
+            use_markup: true,
+            xalign: 0,
+            hexpand: true
+        });
+        let addCustomAppButton = new PW.IconButton({
+            circular: false,
+            icon_name: 'list-add-symbolic',
+            tooltip_text: _("Create a custom shortcut to add to your Application Shortcuts")
+        });
+        addCustomAppButton.connect('clicked', ()=> {
+            let dialog = new AddCustomLinkDialogWindow(this._settings, this, Constants.DIALOG_TYPE.Application_Shortcuts);
+            dialog.show_all();
+            dialog.connect('response', ()=> { 
+                if(dialog.get_response()) {
+                    let newPinnedApps = dialog.get_newPinnedAppsArray();
+                    this._loadPinnedApps([newPinnedApps],softwareShortcutsFrame);
+                    dialog.destroy();
+                    softwareShortcutsFrame.show();
+                    this.savePinnedAppsButton.set_sensitive(true);
+                }
+                else
+                    dialog.destroy();
+            }); 
+        });
+        addCustomAppFrameRow.add(addCustomAppFrameLabel);
+        addCustomAppFrameRow.add(addCustomAppButton);
+        addCustomAppFrame.add(addCustomAppFrameRow);
+        this.add(addCustomAppFrame);
 
-
-
-
-
+        let buttonRow = new PW.FrameBoxRow();
+        let resetButton = new Gtk.Button({
+            label: _("Restore Defaults")
+        });   
+        resetButton.set_sensitive(true);
+        resetButton.connect('clicked', ()=> {
+            this.savePinnedAppsButton.set_sensitive(true);
+            softwareShortcutsFrame.remove_all_children();
+            this._loadPinnedApps(this._settings.get_default_value('application-shortcuts-list').deep_unpack(), softwareShortcutsFrame);
+            softwareShortcutsFrame.show();
+        });
 
         //last row - save settings
         this.savePinnedAppsButton = new Gtk.Button({
             label: _("Save"),
+            hexpand: true
         });
         this.savePinnedAppsButton.connect('clicked', ()=> {
             //iterate through each frame row (containing apps to pin) to create an array to save in settings
@@ -3432,7 +3451,9 @@ var ApplicationShortcutsPage = GObject.registerClass(
         }); 
         this.savePinnedAppsButton.set_halign(Gtk.Align.END);
         this.savePinnedAppsButton.set_sensitive(false);
-        this.add(this.savePinnedAppsButton);
+        buttonRow.add(resetButton);
+        buttonRow.add(this.savePinnedAppsButton);
+        this.add(buttonRow);
     }
 
     _loadPinnedApps(applicationShortcuts,softwareShortcutsFrame){
