@@ -1556,7 +1556,8 @@ var AppearancePage = GObject.registerClass(
             });
             let menuButtonAppearanceSettingsButton = new PW.IconButton({
                 circular: true,
-                icon_name: 'emblem-system-symbolic'
+                icon_name: 'emblem-system-symbolic',
+                tooltip_text: _("Customize Arc Menu's Button in Main Panel")
             });
 
             // Extra settings for the appearance of the menu button
@@ -1583,7 +1584,8 @@ var AppearancePage = GObject.registerClass(
             });
             let customizeArcMenuButton = new PW.IconButton({
                 circular: true,
-                icon_name: 'emblem-system-symbolic'
+                icon_name: 'emblem-system-symbolic',
+                tooltip_text: _("Customize various elements of Arc Menu")
             });
             customizeArcMenuButton.connect('clicked', () => {
                 let dialog = new ArcMenuCustomizationWindow(this._settings, this);
@@ -1632,7 +1634,8 @@ var AppearancePage = GObject.registerClass(
             });
             let overrideArcMenuButton = new PW.IconButton({
                 circular: true,
-                icon_name: 'emblem-system-symbolic'
+                icon_name: 'emblem-system-symbolic',
+                tooltip_text: _("Create and manage your own custom themes for Arc Menu")
             });
             overrideArcMenuButton.set_sensitive(this._settings.get_boolean('enable-custom-arc-menu'));
             overrideArcMenuButton.connect('clicked', () => {
@@ -1667,7 +1670,10 @@ var AppearancePage = GObject.registerClass(
                     }   
                 }); 
             });
-            let overrideArcMenuSwitch = new Gtk.Switch({ halign: Gtk.Align.END});
+            let overrideArcMenuSwitch = new Gtk.Switch({ 
+                halign: Gtk.Align.END,
+                tooltip_text: _("Override the shell theme for Arc Menu only")
+            });
             overrideArcMenuSwitch.set_active(this._settings.get_boolean('enable-custom-arc-menu'));
             overrideArcMenuSwitch.connect('notify::active', (widget) => {
                 this._settings.set_boolean('enable-custom-arc-menu',widget.get_active());
@@ -1716,7 +1722,8 @@ var AppearancePage = GObject.registerClass(
             });
             let layoutButton = new PW.IconButton({
                 circular: true,
-                icon_name: 'emblem-system-symbolic'
+                icon_name: 'emblem-system-symbolic',
+                tooltip_text: _("Choose from a variety of menu layouts")
             });
             layoutButton.connect('clicked', () => {
                 let dialog = new ArcMenuLayoutWindow(this._settings, this);
@@ -1733,7 +1740,10 @@ var AppearancePage = GObject.registerClass(
                 }); 
             });
             layoutButton.set_sensitive(this._settings.get_boolean('enable-custom-arc-menu-layout'));
-            let layoutSwitch = new Gtk.Switch({ halign: Gtk.Align.END});
+            let layoutSwitch = new Gtk.Switch({ 
+                halign: Gtk.Align.END,
+                tooltip_text: _("Enable the selection of different menu layouts")
+            });
             layoutSwitch.set_active(this._settings.get_boolean('enable-custom-arc-menu-layout'));
             layoutSwitch.connect('notify::active', (widget) => { 
                 this._settings.set_boolean('enable-custom-arc-menu-layout',widget.get_active());
@@ -1796,7 +1806,8 @@ var AppearancePage = GObject.registerClass(
 
             let menuTweaksButton = new PW.IconButton({
                 circular: true,
-                icon_name: 'emblem-system-symbolic'
+                icon_name: 'emblem-system-symbolic',
+                tooltip_text: _("Tweaks for the current menu layout")
             });
             menuTweaksButton.connect('clicked', () => {
                 let dialog = new LayoutTweaks.tweaks.TweaksDialog(this._settings, this, currentStyleLabel.label +" " + _("Tweaks"));
@@ -3138,7 +3149,8 @@ var DefaultDirectoriesPage = GObject.registerClass(
 
         let buttonRow = new PW.FrameBoxRow();
         let resetButton = new Gtk.Button({
-            label: _("Restore Defaults")
+            label: _("Restore Defaults"),
+            tooltip_text: _("Restore the default Directory Shortcuts")
         });   
         resetButton.set_sensitive(true);
         resetButton.connect('clicked', ()=> {
@@ -3424,7 +3436,8 @@ var ApplicationShortcutsPage = GObject.registerClass(
 
         let buttonRow = new PW.FrameBoxRow();
         let resetButton = new Gtk.Button({
-            label: _("Restore Defaults")
+            label: _("Restore Defaults"),
+            tooltip_text: _("Restore the default Application Shortcuts")
         });   
         resetButton.set_sensitive(true);
         resetButton.connect('clicked', ()=> {
