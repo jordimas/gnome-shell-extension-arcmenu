@@ -69,6 +69,11 @@
       <summary>Enable Category Sub Menus</summary>
       <description>Enable Category Sub Menus.</description>
     </key>
+    <key type="b" name="krunner-show-details">
+     <default>false</default>
+      <summary>KRunner layout show larger icon and app details</summary>
+      <description>KRunner layout show larger icon and app details.</description>
+    </key>
     <key type="b" name="activate-on-hover">
      <default>false</default>
       <summary>Activate Categories on Hover</summary>
@@ -168,71 +173,6 @@
      <default>false</default>
       <summary>Enable Custom Arc Menu Layout</summary>
       <description>Enable Custom Arc Menu Layout.</description>
-    </key>
-	<key type="b" name="show-computer-shortcut">
-     <default>false</default>
-      <summary>Show Computer Shortcut</summary>
-      <description>Show ComputerShortcut.</description>
-    </key>
-      <key type="b" name="show-network-shortcut">
-     <default>false</default>
-      <summary>Show Network Shortcut</summary>
-      <description>Show Network Shortcut.</description>
-    </key>
-    <key type="b" name="show-home-shortcut">
-     <default>true</default>
-      <summary>Show Home Shortcut</summary>
-      <description>Show Home Shortcut.</description>
-    </key>
-    <key type="b" name="show-documents-shortcut">
-     <default>true</default>
-      <summary>Show Documents Shortcut</summary>
-      <description>Show Documents Shortcut.</description>
-    </key>
-    <key type="b" name="show-downloads-shortcut">
-     <default>true</default>
-      <summary>Show Downloads Shortcut</summary>
-      <description>Show Downloads Shortcut.</description>
-    </key>
-    <key type="b" name="show-music-shortcut">
-     <default>true</default>
-      <summary>Show music Shortcut</summary>
-      <description>Show music Shortcut.</description>
-    </key>
-    <key type="b" name="show-pictures-shortcut">
-     <default>true</default>
-      <summary>Show pictures- Shortcut</summary>
-      <description>Show pictures- Shortcut.</description>
-    </key>
-    <key type="b" name="show-videos-shortcut">
-     <default>true</default>
-      <summary>Show videos Shortcut</summary>
-      <description>Show videos Shortcut.</description>
-    </key>
-    <key type="b" name="show-software-shortcut">
-     <default>true</default>
-      <summary>Show software Shortcut</summary>
-      <description>Show software Shortcut.</description>
-    </key>
-    <key type="b" name="show-settings-shortcut">
-     <default>true</default>
-      <summary>Show settings Shortcut</summary>
-      <description>Show settings Shortcut.</description>
-    </key>
-    <key type="b" name="show-tweaks-shortcut">
-     <default>true</default>
-      <summary>Show tweaks Shortcut</summary>
-      <description>Show tweaks Shortcut.</description>
-    </key>
-    <key type="b" name="show-terminal-shortcut">
-     <default>true</default>
-      <summary>Show terminal Shortcut</summary>
-      <description>Show terminal Shortcut.</description>
-    </key>
-    <key type="b" name="show-activities-overview-shortcut">
-     <default>true</default>
-      <summary>Show activities-overview Shortcut</summary>
-      <description>Show activities-overview Shortcut.</description>
     </key>
       <key type="b" name="show-external-devices">
      <default>false</default>
@@ -365,6 +305,24 @@
                 "Arc Menu Settings", "emblem-system-symbolic", "gnome-shell-extension-prefs arc-menu@linxgem33.com"]</default>
       <summary>List of Apps Pinned to Menu</summary>
       <description>List of Apps Pinned to Menu</description>
+    </key>
+    <key type="b" name="enable-custom-shortcuts">
+      <default>false</default>
+      <summary>Toggle for enabling custom shortcuts.</summary>
+      <description>Toggle for enabling custom shortcuts.</description>
+    </key>
+    <key name="directory-shortcuts-list" type="aas">
+      <default>[["Home","ArcMenu_Home", "ArcMenu_Home"], ["Documents","ArcMenu_Documents", "ArcMenu_Documents"],["Downloads","ArcMenu_Downloads", "ArcMenu_Downloads"],
+          ["Music","ArcMenu_Music", "ArcMenu_Music"],["Pictures","ArcMenu_Pictures", "ArcMenu_Pictures"],["Videos","ArcMenu_Videos", "ArcMenu_Videos"]]</default>
+      <summary>List of default directory paths used for links on the right side of Arc Menu</summary>
+      <description>List of default directory paths used for links on the right side of Arc Menu.</description>
+    </key>
+    <key name="application-shortcuts-list" type="aas">
+      <default>[["Software","org.gnome.Software-symbolic", "ArcMenu_Software"], ["Settings","preferences-system-symbolic", "gnome-control-center"],
+          ["Tweaks","org.gnome.tweaks-symbolic", "gnome-tweaks"],["Terminal","utilities-terminal-symbolic", "gnome-terminal"],
+          ["Activities Overview", "view-fullscreen-symbolic", "ArcMenu_ActivitiesOverview"]]</default>
+      <summary>List of default directory paths used for links on the right side of Arc Menu</summary>
+      <description>List of default directory paths used for links on the right side of Arc Menu.</description>
     </key>
     <key name="mint-pinned-app-list" type="as">
       <default>[]</default>
