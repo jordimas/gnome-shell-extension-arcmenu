@@ -229,17 +229,12 @@ var createMenu = class {
             this.externalDevicesBox.add(this._sections[id].actor);
         }
 
-        //Add Software Shortcuts to menu (Software, Settings, Tweaks, Terminal)
-        let SOFTWARE_TRANSLATIONS = [_("Software"), _("Settings"), _("Tweaks"), _("Terminal"), _("Activities Overview")];
+        //Add Application Shortcuts to menu (Software, Settings, Tweaks, Terminal)
+        let SOFTWARE_TRANSLATIONS = [_("Software"), _("Settings"), _("Tweaks"), _("Terminal"), _("Activities Overview"), _("Arc Menu Settings")];
         let applicationShortcuts = this._settings.get_value('application-shortcuts-list').deep_unpack();
         for(let i = 0; i < applicationShortcuts.length; i++){
             let applicationName = applicationShortcuts[i][0];
-            //Try to match the 'application-shortcuts-list' name to our constants for translating the default settings
-            for(let j = 0; j < Constants.SOFTWARE_SHORTCUTS.length; j++){
-                if(applicationName == Constants.SOFTWARE_SHORTCUTS[j])
-                    applicationName = SOFTWARE_TRANSLATIONS[j];
-            }
-            let shortcutMenuItem = new MW.ShortcutMenuItem(this, applicationName, applicationShortcuts[i][1], applicationShortcuts[i][2]);
+            let shortcutMenuItem = new MW.ShortcutMenuItem(this, _(applicationName), applicationShortcuts[i][1], applicationShortcuts[i][2]);
             this.placesBox.add(shortcutMenuItem.actor, {
                 expand: false,
                 x_fill: true,
@@ -430,12 +425,12 @@ var createMenu = class {
             else if(directory[2].startsWith("ArcMenu_")){
                 let path = directory[2].replace("ArcMenu_",'');
                 path = GLib.get_home_dir()+"/"+path;
-                placeInfo = new MW.PlaceInfo(Gio.File.new_for_path(path),  _(directory[0]));
+                placeInfo = new MW.PlaceInfo(Gio.File.new_for_path(path), _(directory[0]));
                 placeMenuItem = new MW.PlaceMenuItem(this, placeInfo);
             }
             else{
                 let path = directory[2];
-                placeInfo = new MW.PlaceInfo(Gio.File.new_for_path(path), directory[0]);
+                placeInfo = new MW.PlaceInfo(Gio.File.new_for_path(path), _(directory[0]));
                 placeMenuItem = new MW.PlaceMenuItem(this, placeInfo);
             }
             
