@@ -71,6 +71,7 @@ var createMenu = class {
         this.leftClickMenu.sourceActor = this.dummyCursor;
         this.leftClickMenu.focusActor = this.dummyCursor;
         this.leftClickMenu._boxPointer.setPosition(this.dummyCursor, 0.5);
+        this.leftClickMenu.close();
         this.leftClickMenu._boxPointer.hide();
 
         this.mainBox.vertical = true;
@@ -345,6 +346,7 @@ var createMenu = class {
         this.leftClickMenu.sourceActor = this.oldSourceActor;
         this.leftClickMenu.focusActor = this.oldFocusActor;
         this.leftClickMenu._boxPointer.setPosition(this.oldSourceActor, this.oldArrowAlignment);
+        this.leftClickMenu.close();
         this.leftClickMenu._boxPointer.hide();
         if(this.searchBox!=null){
             if (this._searchBoxChangedId > 0) {
@@ -367,6 +369,8 @@ var createMenu = class {
         if(this.newSearch){
             this.newSearch.destroy();
         }
+        Main.uiGroup.remove_actor(this.dummyCursor);
+        this.dummyCursor.destroy();
         this.isRunning=false;
     }
     //Create a horizontal separator
