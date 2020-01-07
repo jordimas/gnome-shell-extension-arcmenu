@@ -742,15 +742,18 @@ var GeneralPage = GObject.registerClass(
             });
 
             let menuPositionLeftButton = new Gtk.RadioButton({
-                label: _('Left')
+                label: _('Left'),
+                tooltip_text: _("Position Arc Menu on the Left side of the main panel")
             });
             let menuPositionCenterButton = new Gtk.RadioButton({
                 label: _('Center'),
-                group: menuPositionLeftButton
+                group: menuPositionLeftButton,
+                tooltip_text: _("Position Arc Menu in the Center of the main panel")
             });
             let menuPositionRightButton = new Gtk.RadioButton({
                 label: _('Right'),
-                group: menuPositionLeftButton
+                group: menuPositionLeftButton,
+                tooltip_text: _("Position Arc Menu on the Right side of the main panel")
             });
             // callback handlers for the radio buttons
             menuPositionLeftButton.connect('clicked', () => {
@@ -802,7 +805,8 @@ var GeneralPage = GObject.registerClass(
                     lower: 0,upper: 100, step_increment: 1, page_increment: 1, page_size: 0
                 }),
                 digits: 0,round_digits: 0,hexpand: true,
-                value_pos: Gtk.PositionType.RIGHT
+                value_pos: Gtk.PositionType.RIGHT,
+                tooltip_text: _("Adjust Arc Menu's menu alignment relative to Arc Menu's button")
             });
            // alignmentScale.connect('format-value', (scale, value) => { return value.toString() + 'px'; });
             alignmentScale.set_value(this._settings.get_int('menu-position-alignment'));
@@ -824,7 +828,10 @@ var GeneralPage = GObject.registerClass(
                 hexpand: true
             });
 
-            let multiMonitorSwitch = new Gtk.Switch({ halign: Gtk.Align.END });
+            let multiMonitorSwitch = new Gtk.Switch({ 
+                halign: Gtk.Align.END,
+                tooltip_text: _("Display Arc Menu on all monitors when using Dash to Panel") 
+            });
             multiMonitorSwitch.set_active(this._settings.get_boolean('multi-monitor'));
             multiMonitorSwitch.connect('notify::active', (widget) => {
                 this._settings.set_boolean('multi-monitor', widget.get_active());
@@ -844,7 +851,10 @@ var GeneralPage = GObject.registerClass(
                 hexpand: true
             });
 
-            let tooltipSwitch = new Gtk.Switch({ halign: Gtk.Align.END });
+            let tooltipSwitch = new Gtk.Switch({ 
+                halign: Gtk.Align.END,
+                tooltip_text: _("Disable all tooltips in Arc Menu") 
+            });
             tooltipSwitch.set_active(this._settings.get_boolean('disable-tooltips'));
             tooltipSwitch.connect('notify::active', (widget) => {
                 this._settings.set_boolean('disable-tooltips', widget.get_active());
@@ -863,7 +873,10 @@ var GeneralPage = GObject.registerClass(
                 xalign: 0,
                 hexpand: true
             });
-            let disableHotCornerSwitch = new Gtk.Switch({ halign: Gtk.Align.END });
+            let disableHotCornerSwitch = new Gtk.Switch({ 
+                halign: Gtk.Align.END,
+                tooltip_text: _("Disable the activites hot corner when moving your mouse") 
+            });
             disableHotCornerSwitch.set_active(this._settings.get_boolean('disable-activities-hotcorner'));
             disableHotCornerSwitch.connect('notify::active', (widget) => {
                 this._settings.set_boolean('disable-activities-hotcorner', widget.get_active());
@@ -881,7 +894,10 @@ var GeneralPage = GObject.registerClass(
                 xalign: 0,
                 hexpand: true
             });
-            let defaultLeftBoxCombo = new Gtk.ComboBoxText({ halign: Gtk.Align.END });
+            let defaultLeftBoxCombo = new Gtk.ComboBoxText({ 
+                halign: Gtk.Align.END,
+                tooltip_text: _("Choose the default menu view") 
+            });
             defaultLeftBoxCombo.append_text(_("Pinned Apps"));
             defaultLeftBoxCombo.append_text(_("Categories List"));
             if(this._settings.get_boolean('enable-pinned-apps'))
@@ -907,7 +923,10 @@ var GeneralPage = GObject.registerClass(
                 xalign: 0,
                 hexpand: true
             });
-            let keyReleaseCombo = new Gtk.ComboBoxText({ halign: Gtk.Align.END });
+            let keyReleaseCombo = new Gtk.ComboBoxText({ 
+                halign: Gtk.Align.END,
+                tooltip_text: _("Choose a method for the hotkey activation")  
+            });
             keyReleaseCombo.append_text(_("Key Release"));
             keyReleaseCombo.append_text(_("Key Press"));
             if(this._settings.get_boolean('disable-hotkey-onkeyrelease'))
@@ -940,28 +959,32 @@ var GeneralPage = GObject.registerClass(
                 label: _("Left Super Key"),
                 halign: Gtk.Align.CENTER,
                 hexpand: true,
-                draw_indicator: false
+                draw_indicator: false,
+                tooltip_text: _("Set Arc Menu hotkey to Left Super Key")  
             });   
             let rightButton = new Gtk.RadioButton({
                 label: _("Right Super Key"),
                 group: leftButton,
                 halign: Gtk.Align.CENTER,
                 hexpand: true,
-                draw_indicator: false
+                draw_indicator: false,
+                tooltip_text: _("Set Arc Menu hotkey to Right Super Key")  
             });   
             let customButton = new Gtk.RadioButton({
                 label: _("Custom Hotkey"),
                 group: leftButton,
                 halign: Gtk.Align.CENTER,
                 hexpand: true,
-                draw_indicator: false
+                draw_indicator: false,
+                tooltip_text: _("Set a custom hotkey for Arc Menu")  
             });   
             this.undefinedButton = new Gtk.RadioButton({
                 label: _("None"),
                 group: leftButton,
                 halign: Gtk.Align.CENTER,
                 hexpand: true,
-                draw_indicator: false
+                draw_indicator: false,
+                tooltip_text: _("Clear Arc Menu hotkey, use GNOME default")  
             });  
             switch (this._settings.get_enum('menu-hotkey')) {
                 case 0:
@@ -1031,14 +1054,16 @@ var GeneralPage = GObject.registerClass(
 
             let shortcutCell = new Gtk.ShortcutsShortcut({
                 halign: Gtk.Align.CENTER,
-                hexpand: true
+                hexpand: true,
+                tooltip_text: _("Current custom hotkey")  
             });
             shortcutCell.accelerator = this._settings.get_string('menu-keybinding-text');
             
             let modifyHotkeyButton = new Gtk.Button({
                 label: _("Modify Hotkey"),
                 halign: Gtk.Align.END,
-                hexpand: false
+                hexpand: false,
+                tooltip_text: _("Create your own hotkey combination for Arc Menu")  
             });   
             menuKeybindingRow.add(currentHotkeyLabel);
             menuKeybindingRow.add(shortcutCell);
@@ -3793,7 +3818,8 @@ var MiscPage = GObject.registerClass(
             let importButton = new Gtk.Button({
                 label: _("Import from File"),
                 xalign:.5,
-                expand:true
+                expand:true,
+                tooltip_text: _("Import Arc Menu settings from a file")  
             });
             importButton.connect('clicked', ()=> {
                 this._showFileChooser(
@@ -3828,7 +3854,8 @@ var MiscPage = GObject.registerClass(
             let exportButton = new Gtk.Button({
                 label: _("Export to File"),
                 xalign:.5,
-                expand:true
+                expand:true,
+                tooltip_text: _("Export and save all your Arc Menu settings to a file")  
             });
             exportButton.connect('clicked', ()=> {
                 
@@ -3897,7 +3924,8 @@ var MiscPage = GObject.registerClass(
             let importColorPresetButton = new Gtk.Button({
                 label: _("Import Theme Preset"),
                 xalign:.5,
-                expand:true
+                expand:true,
+                tooltip_text: _("Import Arc Menu Theme Presets from a file")  
             });
             importColorPresetButton.connect('clicked', ()=> {
                 this._showFileChooser(
@@ -3940,7 +3968,8 @@ var MiscPage = GObject.registerClass(
             let exportColorPresetButton = new Gtk.Button({
                 label: _("Export Theme Preset"),
                 xalign:.5,
-                expand:true
+                expand:true,
+                tooltip_text: _("Export and save your Arc Menu Theme Presets to a file")  
             });
             exportColorPresetButton.connect('clicked', ()=> {
                 let dialog = new ExportColorThemeDialogWindow(this._settings, this);
@@ -4109,7 +4138,7 @@ class ArcMenu_ArcMenuPreferencesWidget extends Gtk.Box{
             border_width: 5
         });
         this._settings = Convenience.getSettings(Me.metadata['settings-schema']);
-
+        
         let notebook = new PW.Notebook();
         notebook.connect('switch-page', (notebook, tab, index)=>{
             if(index==3){
