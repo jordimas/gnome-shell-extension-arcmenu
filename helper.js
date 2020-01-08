@@ -45,6 +45,8 @@ var MenuHotKeybinder = class {
         this.defaultOverlayKeyID = 0;
         this._mutterSettings = new Gio.Settings({ 'schema': MUTTER_SCHEMA });
         this._wmKeybindings = new Gio.Settings({ 'schema': WM_KEYBINDINGS_SCHEMA });
+        this._oldPanelMainMenuKey = this._wmKeybindings.get_value('panel-main-menu');
+        this._oldOverlayKey = this._mutterSettings.get_value('overlay-key');
         this._hotkeyMenuToggleId = Main.layoutManager.connect('startup-complete', ()=>{
             this._updateHotkeyMenuToggle();
         });
@@ -67,7 +69,7 @@ var MenuHotKeybinder = class {
 
     // Set Main.overview.toggle to default function and default hotkey
     disableHotKey() {
-        this._mutterSettings.set_value('overlay-key', this._getDefaultOverlayKey());
+        this._mutterSettings.set_value('overlay-key', this._oldOverlayKey);
         if(this.overlayKeyID > 0){
             global.display.disconnect(this.overlayKeyID);
             this.overlayKeyID = null;
@@ -80,9 +82,7 @@ var MenuHotKeybinder = class {
             Shell.ActionMode.OVERVIEW);
         this.hotKeyEnabled = false;
     
-
-        let defaultPanelMainMenu = this._wmKeybindings.get_default_value('panel-main-menu');
-        this._wmKeybindings.set_value('panel-main-menu', defaultPanelMainMenu);    
+        this._wmKeybindings.set_value('panel-main-menu', this._oldPanelMainMenuKey);    
     }
 
     // Update hotkey menu toggle function
@@ -108,9 +108,6 @@ var MenuHotKeybinder = class {
         Main.wm.setCustomKeybindingHandler('panel-main-menu',
             Shell.ActionMode.NORMAL | Shell.ActionMode.OVERVIEW | Shell.ActionMode.POPUP,
             this._menuToggler.bind(this));
-    }
-    _getDefaultOverlayKey() {
-        return this._mutterSettings.get_default_value('overlay-key');
     }
     // Destroy this object
     destroy() {
