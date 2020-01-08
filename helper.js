@@ -43,10 +43,19 @@ var MenuHotKeybinder = class {
         this.hotKeyEnabled = false;
         this.overlayKeyID = 0;
         this.defaultOverlayKeyID = 0;
+        this.arcMenuCalling = false;
         this._mutterSettings = new Gio.Settings({ 'schema': MUTTER_SCHEMA });
         this._wmKeybindings = new Gio.Settings({ 'schema': WM_KEYBINDINGS_SCHEMA });
         this._oldPanelMainMenuKey = this._wmKeybindings.get_value('panel-main-menu');
         this._oldOverlayKey = this._mutterSettings.get_value('overlay-key');
+        this.overlayKeyConnectID = this._mutterSettings.connect('changed::overlay-key', () => {
+            if(!this.arcMenuCalling)
+                this._oldOverlayKey = this._mutterSettings.get_value('overlay-key');
+        });
+        this.panelMainMenuKeyConnectID = this._wmKeybindings.connect('changed::panel-main-menu', () => {
+            if(!this.arcMenuCalling)
+                this._oldPanelMainMenuKey = this._wmKeybindings.get_value('panel-main-menu');
+        });
         this._hotkeyMenuToggleId = Main.layoutManager.connect('startup-complete', ()=>{
             this._updateHotkeyMenuToggle();
         });
@@ -54,6 +63,7 @@ var MenuHotKeybinder = class {
 
     // Set Main.overview.toggle to toggle Arc Menu instead
     enableHotKey(hotkey) {
+        this.arcMenuCalling = true;
         if (hotkey == Constants.SUPER_L) {
             this._mutterSettings.set_string('overlay-key', hotkey);
             Main.wm.allowKeybinding('overlay-key', Shell.ActionMode.NORMAL |
@@ -65,10 +75,12 @@ var MenuHotKeybinder = class {
         else{
             this._wmKeybindings.set_strv('panel-main-menu', [hotkey]);
         }
+        this.arcMenuCalling = false;
     }
 
     // Set Main.overview.toggle to default function and default hotkey
     disableHotKey() {
+        this.arcMenuCalling = true;
         this._mutterSettings.set_value('overlay-key', this._oldOverlayKey);
         if(this.overlayKeyID > 0){
             global.display.disconnect(this.overlayKeyID);
@@ -83,6 +95,8 @@ var MenuHotKeybinder = class {
         this.hotKeyEnabled = false;
     
         this._wmKeybindings.set_value('panel-main-menu', this._oldPanelMainMenuKey);    
+        this.arcMenuCalling = false;
+        
     }
 
     // Update hotkey menu toggle function
@@ -112,6 +126,14 @@ var MenuHotKeybinder = class {
     // Destroy this object
     destroy() {
         // Clean up and restore the default behaviour
+        if(this.overlayKeyConnectID){
+            this._mutterSettings.disconnect(this.overlayKeyConnectID);
+            this.overlayKeyConnectID = null;
+        }
+        if(this.panelMainMenuKeyConnectID){
+            this._wmKeybindings.disconnect(this.panelMainMenuKeyConnectID);
+            this.panelMainMenuKeyConnectID = null;
+        }
         this.disableHotKey();
         if (this._hotkeyMenuToggleId) {
             // Disconnect the keybinding handler
