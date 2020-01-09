@@ -4267,7 +4267,7 @@ function saveCSS(settings){
         +".arc-menu-icon{\ncolor: "+menuButtonColor+";\n}\n"
         +"\n.arc-menu-icon:hover,\n.arc-menu-icon:active{\ncolor: "+menuButtonActiveColor+";\n}\n"
 
-        +".arc-menu-action{\ncolor:"+  menuForegroundColor+";\n}\n"
+        +".arc-menu-action{background-color:"+  menuColor+";\ncolor:"+  menuForegroundColor+";\n}\n"
         +".arc-menu-action:hover, .arc-menu-action:focus {\ncolor:"+ lighten_rgb( menuForegroundColor,0.15)+";\n background-color:"+  highlightColor+";\n}\n"
 
         +tooltipStyle

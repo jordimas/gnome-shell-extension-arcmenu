@@ -55,7 +55,7 @@ const SMALL_ICON_SIZE = 16;
 const USER_AVATAR_SIZE = 28;
 const TOOLTIP_LABEL_SHOW_TIME = 0.15;
 const TOOLTIP_LABEL_HIDE_TIME = 0.1;
-
+const gnome36 = imports.misc.config.PACKAGE_VERSION >= '3.35.0';
 function setIconAsync(icon, gioFile, fallback_icon_name) {
     gioFile.load_contents_async(null, function (source, result) {
         try {
@@ -428,6 +428,10 @@ var ActivitiesMenuItem =  Utils.createClass({
             y_align: Clutter.ActorAlign.CENTER
         });
         this.actor.add_child(label);
+        if(gnome36){
+            this.connect('button-press-event', this._onButtonPressEvent.bind(this));
+            this.connect('button-release-event', this._onButtonReleaseEvent.bind(this));
+        }
     },
 
     // Activate the menu item (Open activities overview)
@@ -437,7 +441,6 @@ var ActivitiesMenuItem =  Utils.createClass({
         this.callParent('activate',event);
     },
     _onButtonPressEvent(actor, event) {
-		
         return Clutter.EVENT_PROPAGATE;
     },
     _onButtonReleaseEvent(actor, event) {
@@ -569,8 +572,11 @@ var SessionButton = class ArcMenu_SessionButton{
             can_focus: true,
             track_hover: true,
             accessible_name: accessible_name ? accessible_name : "",
-            style_class: 'system-menu-action'
+            style_class: gnome36 ? "button" :'system-menu-action'
         });
+        if(gnome36){
+            this.actor.style = "padding: 13px; min-height: 0px;";
+        }
 
         this.tooltip = new Tooltip(this._button, this.actor, accessible_name, false, this._button._settings);
         this.tooltip.hide();
@@ -851,6 +857,10 @@ var BackMenuItem = Utils.createClass({
             y_align: Clutter.ActorAlign.CENTER
         });
         this.actor.add_child(backLabel);
+        if(gnome36){
+            this.connect('button-press-event', this._onButtonPressEvent.bind(this));
+            this.connect('button-release-event', this._onButtonReleaseEvent.bind(this));
+        }
     },
     // Activate the button (go back to category view)
     activate(event) {
@@ -915,6 +925,10 @@ var ViewAllPrograms =Utils.createClass({
             y_align: Clutter.ActorAlign.CENTER
         });
         this.actor.add_child(backLabel);
+        if(gnome36){
+            this.connect('button-press-event', this._onButtonPressEvent.bind(this));
+            this.connect('button-release-event', this._onButtonReleaseEvent.bind(this));
+        }
     },
     // Activate the button (go back to category view)
     activate(event) {
@@ -970,6 +984,10 @@ var ShortcutMenuItem = Utils.createClass({
             y_align: Clutter.ActorAlign.CENTER
         });
         this.actor.add_child(label);
+        if(gnome36){
+            this.connect('button-press-event', this._onButtonPressEvent.bind(this));
+            this.connect('button-release-event', this._onButtonReleaseEvent.bind(this));
+        }
     },
     // Activate the menu item (Launch the shortcut)
     activate(event) {
@@ -1021,6 +1039,10 @@ var UserMenuItem =Utils.createClass({
         this._userChangedId = this._user.connect('changed', this._onUserChanged.bind(this));
         this.actor.connect('destroy', this._onDestroy.bind(this));
         this._onUserChanged();
+        if(gnome36){
+            this.connect('button-press-event', this._onButtonPressEvent.bind(this));
+            this.connect('button-release-event', this._onButtonReleaseEvent.bind(this));
+        }
     },
     // Activate the menu item (Open user account settings)
     activate(event) {
@@ -1155,7 +1177,10 @@ var FavoritesMenuItem = Utils.createClass({
         this._draggable.connect('drag-end', this._onDragEnd.bind(this));
       
         this.actor.connect('notify::hover',this._onHover.bind(this));
-        
+        if(gnome36){
+            this.connect('button-press-event', this._onButtonPressEvent.bind(this));
+            this.connect('button-release-event', this._onButtonReleaseEvent.bind(this));
+        }
     },
     _onHover() {
         let lbl = this.label.clutter_text;
@@ -1387,7 +1412,10 @@ var ApplicationMenuIcon = Utils.createClass({
             this._button.activeMenuItem = this;
         });
 
-
+        if(gnome36){
+            this.connect('button-press-event', this._onButtonPressEvent.bind(this));
+            this.connect('button-release-event', this._onButtonReleaseEvent.bind(this));
+        }
     },
     //g-s 3.28 support
     setActive(active){
@@ -1514,6 +1542,10 @@ var ApplicationMenuItem =Utils.createClass({
         this.actor.connect('notify::active',()=>{
             this._button.activeMenuItem = this;
         });
+        if(gnome36){
+            this.connect('button-press-event', this._onButtonPressEvent.bind(this));
+            this.connect('button-release-event', this._onButtonReleaseEvent.bind(this));
+        }
     },
     _onButtonPressEvent(actor, event) {	
         return Clutter.EVENT_PROPAGATE;
@@ -1605,6 +1637,10 @@ var SearchResultItem = Utils.createClass({
         this.actor.connect('notify::active',()=>{
             this._button.activeMenuItem = this;
         });
+        if(gnome36){
+            this.connect('button-press-event', this._onButtonPressEvent.bind(this));
+            this.connect('button-release-event', this._onButtonReleaseEvent.bind(this));
+        }
     },
     //g-s 3.28 support
     setActive(active){
@@ -1717,6 +1753,10 @@ var CategoryMenuItem =  Utils.createClass({
         this.actor.connect('notify::active',()=>{
             this._button.activeMenuItem = this;
         });
+        if(gnome36){
+            this.connect('button-press-event', this._onButtonPressEvent.bind(this));
+            this.connect('button-release-event', this._onButtonReleaseEvent.bind(this));
+        }
 
     },
     //g-s 3.28 support
@@ -2176,8 +2216,12 @@ var PlaceMenuItem = Utils.createClass({
             y_align: Clutter.ActorAlign.CENTER
         });
         this.actor.add_child(this._label);
-        this._changedId = this._info.connect('changed',
-            this._propertiesChanged.bind(this));
+        this._changedId = this._info.connect('changed', this._propertiesChanged.bind(this));
+        if(gnome36){
+            this.connect('button-press-event', this._onButtonPressEvent.bind(this));
+            this.connect('button-release-event', this._onButtonReleaseEvent.bind(this));
+        }
+
     },
 
     // Destroy menu item

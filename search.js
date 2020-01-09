@@ -43,7 +43,7 @@ var MAX_APPS_SEARCH_RESULTS_ROWS = 6;
 var LARGE_ICON_SIZE = 36;
 var MEDIUM_ICON_SIZE = 25;
 var SMALL_ICON_SIZE = 16;
-
+const gnome36 = imports.misc.config.PACKAGE_VERSION >= '3.35.0';
 var ArcSearchMaxWidthBin = GObject.registerClass(
 class ArcMenu_SearchMaxWidthBin extends St.Bin {
     vfunc_allocate(box, flags) {
@@ -782,6 +782,10 @@ var ArcSearchProviderInfo =Utils.createClass({
         if(provider.appInfo.get_description()!=null){
             this.tooltip = new MW.Tooltip(this._button, this.actor, provider.appInfo.get_description(),isMenuItem,this._button._settings);
             this.tooltip.hide();            
+        }
+        if(gnome36){
+            this.connect('button-press-event', this._onButtonPressEvent.bind(this));
+            this.connect('button-release-event', this._onButtonReleaseEvent.bind(this));
         }
     },
     _onHover() {
