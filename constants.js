@@ -68,6 +68,12 @@ var HOT_KEY = { // See: org.gnome.shell.extensions.arc-menu.menu-hotkey
     2: SUPER_R
 };
 
+var HOT_CORNERS_ACTION = {
+    Default: 0,
+    Disabled: 1,
+    ToggleArcMenu: 2,
+    Custom: 3
+}
 
 var SHORTCUTS= [{  label: ("Software"),
                     symbolic: "org.gnome.Software-symbolic",

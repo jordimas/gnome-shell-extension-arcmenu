@@ -868,22 +868,81 @@ var GeneralPage = GObject.registerClass(
             let disableHotCornerFrame = new PW.FrameBox();
             let disableHotCornerRow = new PW.FrameBoxRow();
             let disableHotCornerLabel = new Gtk.Label({
-                label: _("Disable activities hot corner"),
+                label: _("Activities Hot Corner Action"),
                 use_markup: true,
                 xalign: 0,
                 hexpand: true
             });
-            let disableHotCornerSwitch = new Gtk.Switch({ 
+            let hotCornerActionCombo = new Gtk.ComboBoxText({ 
                 halign: Gtk.Align.END,
-                tooltip_text: _("Disable the activites hot corner when moving your mouse") 
+                tooltip_text: _("Choose the action of the Activities Hot Corner") 
             });
-            disableHotCornerSwitch.set_active(this._settings.get_boolean('disable-activities-hotcorner'));
-            disableHotCornerSwitch.connect('notify::active', (widget) => {
-                this._settings.set_boolean('disable-activities-hotcorner', widget.get_active());
+            hotCornerActionCombo.append_text(_("Default"));
+            hotCornerActionCombo.append_text(_("Disabled"));
+            hotCornerActionCombo.append_text(_("Toggle Arc Menu"));
+            hotCornerActionCombo.append_text(_("Custom"));
+
+            let customHotCornerRow = new PW.FrameBoxRow();
+            let customHotCornerLabel = new Gtk.Label({
+                label: _("Terminal Command:"),
+                use_markup: true,
+                xalign: 0,
+                hexpand: true
             });
+            let customHotCornerEntry = new Gtk.Entry({
+                tooltip_text: _("Set a custom terminal command to launch on active hot corner")
+            });
+            customHotCornerEntry.connect('changed', (widget) => {
+                applyButton.set_sensitive(true); 
+            });
+            customHotCornerEntry.set_width_chars(40);
+            customHotCornerEntry.set_text(this._settings.get_string('custom-hot-corner-cmd'));
+            customHotCornerRow.add(customHotCornerLabel);
+            customHotCornerRow.add(customHotCornerEntry);
+
+            //Apply Button
+            let customHotCornerApplyRow = new PW.FrameBoxRow();
+            let applyButton = new Gtk.Button({
+                label: _("Apply"),
+                hexpand: true,
+                tooltip_text: _("Apply and set new custom hot corner command")
+            });
+            applyButton.connect('clicked', () => {
+                this._settings.set_string('custom-hot-corner-cmd',customHotCornerEntry.get_text());
+                this._settings.set_enum('hot-corners',hotCornerActionCombo.get_active());
+                applyButton.set_sensitive(false);
+            });
+            applyButton.set_halign(Gtk.Align.END);
+            applyButton.set_sensitive(false);
+            customHotCornerApplyRow.add(applyButton);
+
+            let hotCornerAction = this._settings.get_enum('hot-corners');
+            hotCornerActionCombo.set_active(hotCornerAction);
+            hotCornerActionCombo.connect('changed', (widget) => {
+                this._settings.set_enum('hot-corners',widget.get_active());
+                if(widget.get_active()==Constants.HOT_CORNERS_ACTION.Custom){
+                    if(disableHotCornerFrame.count == 1){
+                        disableHotCornerFrame.add(customHotCornerRow);
+                        disableHotCornerFrame.add(customHotCornerApplyRow);
+                        disableHotCornerFrame.show();
+                    }
+                }
+                else{
+                    if(disableHotCornerFrame.count > 2){
+                        disableHotCornerFrame.remove(customHotCornerRow);
+                        disableHotCornerFrame.remove(customHotCornerApplyRow);
+                        disableHotCornerFrame.show();
+                    }
+                }
+            });
+
             disableHotCornerRow.add(disableHotCornerLabel);
-            disableHotCornerRow.add(disableHotCornerSwitch);
+            disableHotCornerRow.add(hotCornerActionCombo);
             disableHotCornerFrame.add(disableHotCornerRow);
+            if(hotCornerActionCombo.get_active() == Constants.HOT_CORNERS_ACTION.Custom){
+                disableHotCornerFrame.add(customHotCornerRow);
+                disableHotCornerFrame.add(customHotCornerApplyRow);
+            }
            
             //Pinned Apps / Categories Default View Toggle 
             let defaultLeftBoxFrame = new PW.FrameBox();

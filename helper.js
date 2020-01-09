@@ -26,6 +26,7 @@ const Me = imports.misc.extensionUtils.getCurrentExtension();
 const {Gio, GObject, Gtk, Meta, Shell} = imports.gi;
 const Constants = Me.imports.constants;
 const Main = imports.ui.main;
+const Util = imports.misc.util;
 
 
 // Local constants
@@ -211,14 +212,22 @@ var KeybindingManager = class {
  * the gnome-shell hot corners.
  */
 var HotCornerManager = class {
-    constructor(settings) {
+    constructor(settings, menuToggler) {
         this._settings = settings;
+        this._menuToggler = menuToggler;
         this._hotCornersChangedId = Main.layoutManager.connect('hot-corners-changed', this._redisableHotCorners.bind(this));
     }
 
     _redisableHotCorners() {
-        if (this._settings.get_boolean('disable-activities-hotcorner')) {
+        let hotCornerAction = this._settings.get_enum('hot-corners');
+        if(hotCornerAction == Constants.HOT_CORNERS_ACTION.Disabled) {
             this.disableHotCorners();
+        }
+        else if(hotCornerAction == Constants.HOT_CORNERS_ACTION.ToggleArcMenu) {
+            this.modifyHotCorners(Constants.HOT_CORNERS_ACTION.ToggleArcMenu);
+        }
+        else if(hotCornerAction == Constants.HOT_CORNERS_ACTION.Custom) {
+            this.modifyHotCorners(Constants.HOT_CORNERS_ACTION.Custom);
         }
     }
 
@@ -237,10 +246,33 @@ var HotCornerManager = class {
     disableHotCorners() {
         let hotCorners = this._getHotCorners();
         // Monkey patch each hot corner
-        hotCorners.forEach(function (corner) {
+        hotCorners.forEach((corner) => {
             if (corner) {
                 corner._toggleOverview = () => { };
                 corner._pressureBarrier._trigger = () => { };
+            }
+        });
+    }
+
+    // Change hotcorners to toggle Arc Menu
+    modifyHotCorners(hotCornerType) {
+        let hotCorners = this._getHotCorners();
+        // Monkey patch each hot corner
+        hotCorners.forEach((corner) => {
+            if (corner) {
+                corner._toggleOverview = () => { };
+                corner._pressureBarrier._trigger = () => { 
+                    corner._pressureBarrier._isTriggered = true;
+                
+                    corner._ripples.playAnimation(corner._x, corner._y);
+                    if(hotCornerType == Constants.HOT_CORNERS_ACTION.ToggleArcMenu)
+                        this._menuToggler(); 
+                    else if(Constants.HOT_CORNERS_ACTION.Custom){
+                        Util.spawnCommandLine(this._settings.get_string('custom-hot-corner-cmd'));
+                    }
+                    
+                    corner._pressureBarrier._reset();
+                };
             }
         });
     }
