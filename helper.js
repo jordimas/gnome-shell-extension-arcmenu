@@ -224,10 +224,10 @@ var HotCornerManager = class {
             this.disableHotCorners();
         }
         else if(hotCornerAction == Constants.HOT_CORNERS_ACTION.ToggleArcMenu) {
-            this.modifyHotCorners(Constants.HOT_CORNERS_ACTION.ToggleArcMenu);
+            this.modifyHotCorners();
         }
         else if(hotCornerAction == Constants.HOT_CORNERS_ACTION.Custom) {
-            this.modifyHotCorners(Constants.HOT_CORNERS_ACTION.Custom);
+            this.modifyHotCorners();
         }
     }
 
@@ -255,8 +255,9 @@ var HotCornerManager = class {
     }
 
     // Change hotcorners to toggle Arc Menu
-    modifyHotCorners(hotCornerType) {
+    modifyHotCorners() {
         let hotCorners = this._getHotCorners();
+        let hotCornerAction = this._settings.get_enum('hot-corners');
         // Monkey patch each hot corner
         hotCorners.forEach((corner) => {
             if (corner) {
@@ -265,9 +266,9 @@ var HotCornerManager = class {
                     corner._pressureBarrier._isTriggered = true;
                 
                     corner._ripples.playAnimation(corner._x, corner._y);
-                    if(hotCornerType == Constants.HOT_CORNERS_ACTION.ToggleArcMenu)
+                    if(hotCornerAction == Constants.HOT_CORNERS_ACTION.ToggleArcMenu)
                         this._menuToggler(); 
-                    else if(Constants.HOT_CORNERS_ACTION.Custom){
+                    else if(hotCornerAction == Constants.HOT_CORNERS_ACTION.Custom){
                         Util.spawnCommandLine(this._settings.get_string('custom-hot-corner-cmd'));
                     }
                     
