@@ -264,8 +264,10 @@ var HotCornerManager = class {
                 corner._toggleOverview = () => { };
                 corner._pressureBarrier._trigger = () => { 
                     corner._pressureBarrier._isTriggered = true;
-                
-                    corner._ripples.playAnimation(corner._x, corner._y);
+                    if(corner._ripples)
+                        corner._ripples.playAnimation(corner._x, corner._y);
+                    else
+                        corner._rippleAnimation();
                     if(hotCornerAction == Constants.HOT_CORNERS_ACTION.ToggleArcMenu)
                         this._menuToggler(); 
                     else if(hotCornerAction == Constants.HOT_CORNERS_ACTION.Custom){
