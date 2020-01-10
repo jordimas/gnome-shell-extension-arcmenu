@@ -883,11 +883,7 @@ var GeneralPage = GObject.registerClass(
                 let dialog = new ModifyHotCornerDialogWindow(this._settings, this);
                 dialog.show_all();
                 dialog.connect('response', ()=> { 
-                    if(dialog.get_response()) {
-                        dialog.destroy();
-                    }
-                    else
-                        dialog.destroy();
+                    dialog.destroy();
                 }); 
             });
             let modifyHotCornerSwitch = new Gtk.Switch({ 
@@ -899,6 +895,9 @@ var GeneralPage = GObject.registerClass(
             modifyHotCornerSwitch.connect('notify::active', (widget) => {
                 this._settings.set_boolean('override-hot-corners',widget.get_active());
                 modifyHotCornerButton.set_sensitive(widget.get_active());
+                if(!widget.get_active()){
+                    this._settings.set_enum('hot-corners',Constants.HOT_CORNERS_ACTION.Default);
+                }
             });
             modifyHotCornerRow.add(modifyHotCornerLabel);
             modifyHotCornerRow.add(modifyHotCornerButton);
@@ -1230,6 +1229,8 @@ var ModifyHotCornerDialogWindow = GObject.registerClass(
                 this._settings.set_string('custom-hot-corner-cmd',customHotCornerEntry.get_text());
                 this._settings.set_enum('hot-corners',hotCornerActionCombo.get_active());
                 applyButton.set_sensitive(false);
+                this.addResponse = true;
+                this.response(-10);
             });
             applyButton.set_halign(Gtk.Align.END);
             applyButton.set_sensitive(false);
