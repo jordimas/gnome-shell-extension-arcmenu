@@ -40,7 +40,7 @@ const Hostname1Iface = '<node> \
 </interface> \
 </node>';
 const Hostname1 = Gio.DBusProxy.makeProxyWrapper(Hostname1Iface);
-
+const gnome36 = imports.misc.config.PACKAGE_VERSION >= '3.35.0';
 
 var PlaceMenuItem = Utils.createClass({
     Name: 'ArcMenu_PlaceMenuItem2',
@@ -77,6 +77,10 @@ var PlaceMenuItem = Utils.createClass({
                 this._changedId = 0;
             }
         });
+        if(gnome36){
+            this.connect('button-press-event', this._onButtonPressEvent.bind(this));
+            this.connect('button-release-event', this._onButtonReleaseEvent.bind(this));
+        }
     },
     _onKeyPressEvent(actor, event) {
         let symbol = event.get_key_symbol();
@@ -87,6 +91,7 @@ var PlaceMenuItem = Utils.createClass({
         }
         return Clutter.EVENT_PROPAGATE;
     },
+
     _onButtonPressEvent(actor, event) {
 		
         return Clutter.EVENT_PROPAGATE;

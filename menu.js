@@ -41,6 +41,8 @@ const Utils =  Me.imports.utils;
 const _ = Gettext.gettext;
 
 var modernGnome = imports.misc.config.PACKAGE_VERSION >= '3.31.9';
+const gnome36 = imports.misc.config.PACKAGE_VERSION >= '3.35.0';
+
 var DASH_TO_PANEL_UUID = 'dash-to-panel@jderose9.github.com';
 // Application Menu Button class (most of the menu logic is here)
 var ApplicationsButton =   Utils.defineClass({
@@ -133,7 +135,11 @@ var ApplicationsButton =   Utils.defineClass({
             this._setMenuPositionAlignment();
             //Add Menu Button Widget to Button
             sourceActor.add_actor(this._menuButtonWidget.actor);
+            if(gnome36){
+                this.connect('event', this._onEvent.bind(this));
+                this.connect('notify::visible', this._onVisibilityChanged.bind(this));
 
+            }
             //Create Basic Layout ------------------------------------------------
             this.createLayoutID = GLib.timeout_add(0, 100, () => {
                 this.createMenuLayout();
@@ -283,7 +289,6 @@ var ApplicationsButton =   Utils.defineClass({
             }     
         },
         _onEvent(actor, event) {
-    
              if (event.type() == Clutter.EventType.BUTTON_PRESS){   
                 if(event.get_button()==1){    
                     let layout = this._settings.get_enum('menu-layout');

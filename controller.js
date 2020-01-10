@@ -52,7 +52,7 @@ var MenuSettingsController = class {
 
          // Create the button, a Hot Corner Manager, a Menu Keybinder as well as a Keybinding Manager
         this._menuButton = new Menu.ApplicationsButton(settings, panel);
-        this._hotCornerManager = new Helper.HotCornerManager(this._settings);
+        this._hotCornerManager = new Helper.HotCornerManager(this._settings,() => this.toggleMenus());
         if(this.isMainPanel){
             this._menuHotKeybinder = new Helper.MenuHotKeybinder(() => this._onHotkey());
             this._keybindingManager = new Helper.KeybindingManager(this._settings); 
@@ -74,7 +74,7 @@ var MenuSettingsController = class {
     // Bind the callbacks for handling the settings changes to the event signals
     bindSettingsChanges() {
         this.settingsChangeIds = [
-            this._settings.connect('changed::disable-activities-hotcorner', this._updateHotCornerManager.bind(this)),
+            this._settings.connect('changed::hot-corners', this._updateHotCornerManager.bind(this)),
             this._settings.connect('changed::menu-hotkey', this._updateHotKeyBinder.bind(this)),
             this._settings.connect('changed::position-in-panel', this._setButtonPosition.bind(this)),
             this._settings.connect('changed::menu-position-alignment', this._setMenuPositionAlignment.bind(this)),
@@ -194,10 +194,18 @@ var MenuSettingsController = class {
         this._menuButton._redisplayRightSide();
     }
     _updateHotCornerManager() {
-        if (this._settings.get_boolean('disable-activities-hotcorner')) {
-            this._hotCornerManager.disableHotCorners();
-        } else {
+        let hotCornerAction = this._settings.get_enum('hot-corners');
+        if (hotCornerAction == Constants.HOT_CORNERS_ACTION.Default) {
             this._hotCornerManager.enableHotCorners();
+        } 
+        else if(hotCornerAction == Constants.HOT_CORNERS_ACTION.Disabled) {
+            this._hotCornerManager.disableHotCorners();
+        }
+        else if(hotCornerAction == Constants.HOT_CORNERS_ACTION.ToggleArcMenu) {
+            this._hotCornerManager.modifyHotCorners();
+        }
+        else if(hotCornerAction == Constants.HOT_CORNERS_ACTION.Custom) {
+            this._hotCornerManager.modifyHotCorners();
         }
     }
 
