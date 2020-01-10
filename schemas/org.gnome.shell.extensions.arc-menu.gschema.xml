@@ -219,6 +219,11 @@
       <summary>Activities hotcorner action</summary>
       <description>Activities hotcorner action.</description>
     </key>
+    <key type="b" name="override-hot-corners">
+     <default>false</default>
+      <summary>Override action of activities hot corner</summary>
+      <description>Override action of activities hot corner.</description>
+    </key>
     <key type="s" name="custom-hot-corner-cmd">
      <default>"sh -c 'notify-send \"$(date)\"'"</default>
       <summary>Custom hot corner terminal command</summary>

@@ -865,84 +865,46 @@ var GeneralPage = GObject.registerClass(
             tooltipFrame.add(tooltipRow);
 
             // Hot Corner Box   
-            let disableHotCornerFrame = new PW.FrameBox();
-            let disableHotCornerRow = new PW.FrameBoxRow();
-            let disableHotCornerLabel = new Gtk.Label({
-                label: _("Activities Hot Corner Action"),
+            let modifyHotCornerFrame = new PW.FrameBox();
+            let modifyHotCornerRow = new PW.FrameBoxRow();
+            let modifyHotCornerLabel = new Gtk.Label({
+                label: _("Modify Activities Hot Corner"),
                 use_markup: true,
                 xalign: 0,
                 hexpand: true
             });
-            let hotCornerActionCombo = new Gtk.ComboBoxText({ 
+            
+            let modifyHotCornerButton = new PW.IconButton({
+                circular: true,
+                icon_name: 'emblem-system-symbolic',
+                tooltip_text: _("Modify the action of the Activities Hot Corner")
+            });
+            modifyHotCornerButton.connect('clicked', ()=> {
+                let dialog = new ModifyHotCornerDialogWindow(this._settings, this);
+                dialog.show_all();
+                dialog.connect('response', ()=> { 
+                    if(dialog.get_response()) {
+                        dialog.destroy();
+                    }
+                    else
+                        dialog.destroy();
+                }); 
+            });
+            let modifyHotCornerSwitch = new Gtk.Switch({ 
                 halign: Gtk.Align.END,
-                tooltip_text: _("Choose the action of the Activities Hot Corner") 
+                tooltip_text: _("Override the default behavoir of the Activities Hot Corner")
             });
-            hotCornerActionCombo.append_text(_("Default"));
-            hotCornerActionCombo.append_text(_("Disabled"));
-            hotCornerActionCombo.append_text(_("Toggle Arc Menu"));
-            hotCornerActionCombo.append_text(_("Custom"));
+            modifyHotCornerSwitch.set_active(this._settings.get_boolean('override-hot-corners'));
+            modifyHotCornerButton.set_sensitive(this._settings.get_boolean('override-hot-corners'));
+            modifyHotCornerSwitch.connect('notify::active', (widget) => {
+                this._settings.set_boolean('override-hot-corners',widget.get_active());
+                modifyHotCornerButton.set_sensitive(widget.get_active());
+            });
+            modifyHotCornerRow.add(modifyHotCornerLabel);
+            modifyHotCornerRow.add(modifyHotCornerButton);
+            modifyHotCornerRow.add(modifyHotCornerSwitch);
+            modifyHotCornerFrame.add(modifyHotCornerRow);
 
-            let customHotCornerRow = new PW.FrameBoxRow();
-            let customHotCornerLabel = new Gtk.Label({
-                label: _("Terminal Command:"),
-                use_markup: true,
-                xalign: 0,
-                hexpand: true
-            });
-            let customHotCornerEntry = new Gtk.Entry({
-                tooltip_text: _("Set a custom terminal command to launch on active hot corner")
-            });
-            customHotCornerEntry.connect('changed', (widget) => {
-                applyButton.set_sensitive(true); 
-            });
-            customHotCornerEntry.set_width_chars(40);
-            customHotCornerEntry.set_text(this._settings.get_string('custom-hot-corner-cmd'));
-            customHotCornerRow.add(customHotCornerLabel);
-            customHotCornerRow.add(customHotCornerEntry);
-
-            //Apply Button
-            let customHotCornerApplyRow = new PW.FrameBoxRow();
-            let applyButton = new Gtk.Button({
-                label: _("Apply"),
-                hexpand: true,
-                tooltip_text: _("Apply and set new custom hot corner command")
-            });
-            applyButton.connect('clicked', () => {
-                this._settings.set_string('custom-hot-corner-cmd',customHotCornerEntry.get_text());
-                this._settings.set_enum('hot-corners',hotCornerActionCombo.get_active());
-                applyButton.set_sensitive(false);
-            });
-            applyButton.set_halign(Gtk.Align.END);
-            applyButton.set_sensitive(false);
-            customHotCornerApplyRow.add(applyButton);
-
-            let hotCornerAction = this._settings.get_enum('hot-corners');
-            hotCornerActionCombo.set_active(hotCornerAction);
-            hotCornerActionCombo.connect('changed', (widget) => {
-                this._settings.set_enum('hot-corners',widget.get_active());
-                if(widget.get_active()==Constants.HOT_CORNERS_ACTION.Custom){
-                    if(disableHotCornerFrame.count == 1){
-                        disableHotCornerFrame.add(customHotCornerRow);
-                        disableHotCornerFrame.add(customHotCornerApplyRow);
-                        disableHotCornerFrame.show();
-                    }
-                }
-                else{
-                    if(disableHotCornerFrame.count > 2){
-                        disableHotCornerFrame.remove(customHotCornerRow);
-                        disableHotCornerFrame.remove(customHotCornerApplyRow);
-                        disableHotCornerFrame.show();
-                    }
-                }
-            });
-
-            disableHotCornerRow.add(disableHotCornerLabel);
-            disableHotCornerRow.add(hotCornerActionCombo);
-            disableHotCornerFrame.add(disableHotCornerRow);
-            if(hotCornerActionCombo.get_active() == Constants.HOT_CORNERS_ACTION.Custom){
-                disableHotCornerFrame.add(customHotCornerRow);
-                disableHotCornerFrame.add(customHotCornerApplyRow);
-            }
            
             //Pinned Apps / Categories Default View Toggle 
             let defaultLeftBoxFrame = new PW.FrameBox();
@@ -1157,12 +1119,146 @@ var GeneralPage = GObject.registerClass(
             this.add(menuPositionFrame);
             this.add(multiMonitorFrame);
             this.add(tooltipFrame);
-            this.add(disableHotCornerFrame);
+            this.add(modifyHotCornerFrame);
             this.add(this.menuKeybindingFrame);
             //-----------------------------------------------------------------
         }
 });
+//Dialog Window for Custom Activities Hot Corner
+var ModifyHotCornerDialogWindow = GObject.registerClass(
+    class ArcMenu_ModifyHotCornerDialogWindow extends PW.DialogWindow {
+        _init(settings, parent) {
+            this._settings = settings;
+            this.addResponse = false;
+            super._init(_('Modify Activities Hot Corner'), parent);
+            this.resize(600,250);
+        }
 
+        _createLayout(vbox) { 
+            // Hot Corner Box   
+            let modifyHotCornerFrame = new PW.FrameBox();
+            let modifyHotCornerRow = new PW.FrameBoxRow();
+            let modifyHotCornerLabel = new Gtk.Label({
+                label: _("Activities Hot Corner Action"),
+                use_markup: true,
+                xalign: 0,
+                hexpand: true
+            });
+            let hotCornerActionCombo = new Gtk.ComboBoxText({ 
+                halign: Gtk.Align.END,
+                tooltip_text: _("Choose the action of the Activities Hot Corner") 
+            });
+            hotCornerActionCombo.append_text(_("GNOME Default"));
+            hotCornerActionCombo.append_text(_("Disabled"));
+            hotCornerActionCombo.append_text(_("Toggle Arc Menu"));
+            hotCornerActionCombo.append_text(_("Custom"));
+            
+            let customHotCornerFrame = new PW.FrameBox();
+            let customHeaderHotCornerRow = new PW.FrameBoxRow();
+            //+ "</b>\n" + _("Choose from a list of preset commands or use your own terminal command"),
+            let customHeaderHotCornerLabel = new Gtk.Label({
+                label: "<b>"+_("Custom Activies Hot Corner Action") + "</b>\n" + _("Activate a custom terminal command on hot corner action"),
+                use_markup: true,
+                xalign: 0,
+                hexpand: true
+            });
+            customHeaderHotCornerLabel.set_sensitive(false);
+            customHeaderHotCornerRow.add(customHeaderHotCornerLabel);
+            /*
+            let presetCustomHotCornerRow = new PW.FrameBoxRow();
+            let presetCustomHotCornerLabel = new Gtk.Label({
+                label: _("Preset commands"),
+                use_markup: true,
+                xalign: 0,
+                hexpand: true
+            });
+            let hotCornerPresetsCombo = new Gtk.ComboBoxText({ 
+                tooltip_text: _("Choose from a list of preset Activities Hot Corner commands"),
+                hexpand: true
+            });
+
+            hotCornerPresetsCombo.append_text(_("Placeholder")); // 0
+            hotCornerPresetsCombo.append_text(_("Placeholder")); // 1
+            hotCornerPresetsCombo.append_text(_("Placeholder")); // 2
+            hotCornerPresetsCombo.append_text(_("Placeholder")); // 3
+            hotCornerPresetsCombo.connect('changed', (widget) => {
+                if(widget.get_active()==0){
+                    customHotCornerEntry.set_text("Placeholder");
+                }
+                else if(widget.get_active()==1){
+                    customHotCornerEntry.set_text("Placeholder 1");
+                }
+                else if(widget.get_active()==2){
+                    customHotCornerEntry.set_text("Placeholder 2");
+                }
+                else if(widget.get_active()==3){
+                    customHotCornerEntry.set_text("Placeholder 3");
+                }
+            });
+            presetCustomHotCornerRow.add(presetCustomHotCornerLabel);
+            presetCustomHotCornerRow.add(hotCornerPresetsCombo);
+            */
+            let customHotCornerRow = new PW.FrameBoxRow();
+            let customHotCornerLabel = new Gtk.Label({
+                label: _("Terminal Command"),
+                use_markup: true,
+                xalign: 0,
+                hexpand: true
+            });
+            let customHotCornerEntry = new Gtk.Entry({
+                tooltip_text: _("Set a custom terminal command to launch on active hot corner")
+            });
+            customHotCornerEntry.connect('changed', (widget) => {
+                applyButton.set_sensitive(true); 
+            });
+            customHotCornerEntry.set_width_chars(40);
+            customHotCornerEntry.set_text(this._settings.get_string('custom-hot-corner-cmd'));
+            customHotCornerRow.add(customHotCornerLabel);
+            customHotCornerRow.add(customHotCornerEntry);
+
+            customHotCornerFrame.add(customHeaderHotCornerRow);
+            //customHotCornerFrame.add(presetCustomHotCornerRow);
+            customHotCornerFrame.add(customHotCornerRow);
+            
+            //Apply Button
+            let applyButton = new Gtk.Button({
+                label: _("Apply"),
+                hexpand: true,
+                tooltip_text: _("Apply changes and set new hot corner action")
+            });
+            applyButton.connect('clicked', () => {
+                this._settings.set_string('custom-hot-corner-cmd',customHotCornerEntry.get_text());
+                this._settings.set_enum('hot-corners',hotCornerActionCombo.get_active());
+                applyButton.set_sensitive(false);
+            });
+            applyButton.set_halign(Gtk.Align.END);
+            applyButton.set_sensitive(false);
+           
+
+            let hotCornerAction = this._settings.get_enum('hot-corners');
+            hotCornerActionCombo.set_active(hotCornerAction);
+            hotCornerActionCombo.connect('changed', (widget) => {
+                applyButton.set_sensitive(true);
+                if(widget.get_active()==Constants.HOT_CORNERS_ACTION.Custom){
+                    customHotCornerFrame.set_sensitive(true);
+                }
+                else{
+                    customHotCornerFrame.set_sensitive(false);
+                }
+            });
+
+            modifyHotCornerRow.add(modifyHotCornerLabel);
+            modifyHotCornerRow.add(hotCornerActionCombo);
+            modifyHotCornerFrame.add(modifyHotCornerRow);
+            if(hotCornerActionCombo.get_active() == Constants.HOT_CORNERS_ACTION.Custom)
+                customHotCornerFrame.set_sensitive(true);
+            else
+                customHotCornerFrame.set_sensitive(false);
+            vbox.add(modifyHotCornerFrame);
+            vbox.add(customHotCornerFrame);
+            vbox.add(applyButton);
+        }
+});
 //Dialog Window for Custom Hotkey
 var CustomHotkeyDialogWindow = GObject.registerClass(
     class ArcMenu_CustomHotkeyDialogWindow extends PW.DialogWindow {
