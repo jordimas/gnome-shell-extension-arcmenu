@@ -991,13 +991,15 @@ var ShortcutMenuItem = Utils.createClass({
     },
     // Activate the menu item (Launch the shortcut)
     activate(event) {
+        this._button.leftClickMenu.toggle();
         if(this._command =="ArcMenu_ActivitiesOverview")
             Main.overview.show();
+        else if(this._command == "ArcMenu_RunCommand")
+            Main.openRunDialog();
         else if(this._app)
             this._app.open_new_window(-1);
         else
             Util.spawnCommandLine(this._command);
-        this._button.leftClickMenu.toggle();
         this.callParent('activate',event);
     },
     setIconSizeLarge(){
