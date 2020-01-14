@@ -966,9 +966,9 @@ var ShortcutMenuItem = Utils.createClass({
         //Check for default commands--------
         if(this._command == "ArcMenu_Software"){
             if(GLib.find_program_in_path('gnome-software'))
-                this._command='org.gnome.Software';
+                this._command='org.gnome.Software.desktop';
             else if(GLib.find_program_in_path('pamac-manager'))
-                this._command='pamac-manager';
+                this._command='pamac-manager.desktop';
         }
         this._app = Shell.AppSystem.get_default().lookup_app(this._command);
         //---------
