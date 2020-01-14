@@ -272,13 +272,13 @@ var AddAppsToPinnedListWindow = GObject.registerClass(
             this._settings = settings;
             this._dialogType = dialogType;
             if(this._dialogType == Constants.DIALOG_TYPE.Default)  
-                super._init(_('Select Apps to add to Pinned Apps List'), parent);     
+                super._init(_('Add to your Pinned Apps'), parent);     
             else if(this._dialogType == Constants.DIALOG_TYPE.Mint_Pinned_Apps)
                 super._init(_('Change Selected Pinned App'), parent);
             else if(this._dialogType == Constants.DIALOG_TYPE.Application_Shortcuts)
-                super._init(_('Select Apps to add to your Application Shortcuts'), parent);
+                super._init(_('Select Application Shortcuts'), parent);
             else if(this._dialogType == Constants.DIALOG_TYPE.Directories_Shortcuts)
-                super._init(_('Select default User Directories to add your Directories Shortcuts'), parent);
+                super._init(_('Select Directory Shortcuts'), parent);
             this.newPinnedAppsArray=[];
             this.addResponse = false;
         }
@@ -450,7 +450,17 @@ var AddAppsToPinnedListWindow = GObject.registerClass(
                     defaultApplicationShortcutsFrame.add(frameRow);
                     
                 }
-                vbox.add(defaultApplicationShortcutsFrame);
+                let notebook = new PW.Notebook();
+
+                let defaultAppsPage = new PW.NotebookPage(_("Default Apps"));
+                notebook.append_page(defaultAppsPage);
+                defaultAppsPage.add(defaultApplicationShortcutsFrame);
+                vbox.remove(pinnedAppsScrollWindow);
+                let systemAppsPage = new PW.NotebookPage(_("System Apps"));
+                notebook.append_page(systemAppsPage);
+                systemAppsPage.add(pinnedAppsScrollWindow);
+
+                vbox.add(notebook);
                 vbox.add(addAppsButton);
             }
             else{
@@ -1199,7 +1209,7 @@ var ModifyHotCornerDialogWindow = GObject.registerClass(
                     customHotCornerEntry.set_text("gnome-calculator");
                 }
                 else if(widget.get_active()==4){
-                    customHotCornerEntry.set_text("gnome-gedit");
+                    customHotCornerEntry.set_text("gedit");
                 }
                 else if(widget.get_active()==5){
                     customHotCornerEntry.set_text("gnome-screenshot");
