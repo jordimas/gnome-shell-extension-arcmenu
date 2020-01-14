@@ -403,7 +403,8 @@ var AddAppsToPinnedListWindow = GObject.registerClass(
                 this._loadCategories();
                 let defaultApplicationShortcutsFrame = new PW.FrameBox();
                 let defaultApplicationShortcuts = this._settings.get_default_value('application-shortcuts-list').deep_unpack();
-                defaultApplicationShortcuts.push([_("Arc Menu Settings"),"emblem-system-symbolic", "gnome-shell-extension-prefs arc-menu@linxgem33.com"]);
+                defaultApplicationShortcuts.push([_("Arc Menu Settings"), "emblem-system-symbolic", "gnome-shell-extension-prefs arc-menu@linxgem33.com"]);
+                defaultApplicationShortcuts.push([_("Run Command..."), "system-run-symbolic", "ArcMenu_RunCommand"]);
                 for(let i = 0;i < defaultApplicationShortcuts.length; i++) {
                     let frameRow = new PW.FrameBoxRow();
                     frameRow._name = defaultApplicationShortcuts[i][0];
@@ -1154,16 +1155,16 @@ var ModifyHotCornerDialogWindow = GObject.registerClass(
             
             let customHotCornerFrame = new PW.FrameBox();
             let customHeaderHotCornerRow = new PW.FrameBoxRow();
-            //+ "</b>\n" + _("Choose from a list of preset commands or use your own terminal command"),
+            
             let customHeaderHotCornerLabel = new Gtk.Label({
-                label: "<b>"+_("Custom Activies Hot Corner Action") + "</b>\n" + _("Activate a custom terminal command on hot corner action"),
+                label: "<b>"+_("Custom Activies Hot Corner Action") + "</b>\n" + _("Choose from a list of preset commands or use your own terminal command"),
                 use_markup: true,
                 xalign: 0,
                 hexpand: true
             });
             customHeaderHotCornerLabel.set_sensitive(false);
             customHeaderHotCornerRow.add(customHeaderHotCornerLabel);
-            /*
+            
             let presetCustomHotCornerRow = new PW.FrameBoxRow();
             let presetCustomHotCornerLabel = new Gtk.Label({
                 label: _("Preset commands"),
@@ -1176,27 +1177,43 @@ var ModifyHotCornerDialogWindow = GObject.registerClass(
                 hexpand: true
             });
 
-            hotCornerPresetsCombo.append_text(_("Placeholder")); // 0
-            hotCornerPresetsCombo.append_text(_("Placeholder")); // 1
-            hotCornerPresetsCombo.append_text(_("Placeholder")); // 2
-            hotCornerPresetsCombo.append_text(_("Placeholder")); // 3
+            hotCornerPresetsCombo.append_text(_("Show all Applications")); // 0
+            hotCornerPresetsCombo.append_text(_("GNOME Terminal")); // 1
+            hotCornerPresetsCombo.append_text(_("GNOME System Monitor")); // 2
+            hotCornerPresetsCombo.append_text(_("GNOME Calculator"));
+            hotCornerPresetsCombo.append_text(_("GNOME gedit"));
+            hotCornerPresetsCombo.append_text(_("GNOME Screenshot"));
+            hotCornerPresetsCombo.append_text(_("GNOME Weather"));
+            hotCornerPresetsCombo.append_text(_("Run Command..."));
             hotCornerPresetsCombo.connect('changed', (widget) => {
                 if(widget.get_active()==0){
-                    customHotCornerEntry.set_text("Placeholder");
+                    customHotCornerEntry.set_text("ArcMenu_ShowAllApplications");
                 }
                 else if(widget.get_active()==1){
-                    customHotCornerEntry.set_text("Placeholder 1");
+                    customHotCornerEntry.set_text("gnome-terminal");
                 }
                 else if(widget.get_active()==2){
-                    customHotCornerEntry.set_text("Placeholder 2");
+                    customHotCornerEntry.set_text("gnome-system-monitor");
                 }
                 else if(widget.get_active()==3){
-                    customHotCornerEntry.set_text("Placeholder 3");
+                    customHotCornerEntry.set_text("gnome-calculator");
+                }
+                else if(widget.get_active()==4){
+                    customHotCornerEntry.set_text("gnome-gedit");
+                }
+                else if(widget.get_active()==5){
+                    customHotCornerEntry.set_text("gnome-screenshot");
+                }
+                else if(widget.get_active()==6){
+                    customHotCornerEntry.set_text("gnome-weather");
+                }
+                else if(widget.get_active()==7){
+                    customHotCornerEntry.set_text("ArcMenu_RunCommand");
                 }
             });
             presetCustomHotCornerRow.add(presetCustomHotCornerLabel);
             presetCustomHotCornerRow.add(hotCornerPresetsCombo);
-            */
+            
             let customHotCornerRow = new PW.FrameBoxRow();
             let customHotCornerLabel = new Gtk.Label({
                 label: _("Terminal Command"),
@@ -1209,14 +1226,18 @@ var ModifyHotCornerDialogWindow = GObject.registerClass(
             });
             customHotCornerEntry.connect('changed', (widget) => {
                 applyButton.set_sensitive(true); 
+                let index = this.checkIfMatch(customHotCornerEntry.get_text());
+                hotCornerPresetsCombo.set_active(index)
             });
             customHotCornerEntry.set_width_chars(40);
             customHotCornerEntry.set_text(this._settings.get_string('custom-hot-corner-cmd'));
+            let index = this.checkIfMatch(customHotCornerEntry.get_text());
+            hotCornerPresetsCombo.set_active(index)
             customHotCornerRow.add(customHotCornerLabel);
             customHotCornerRow.add(customHotCornerEntry);
 
             customHotCornerFrame.add(customHeaderHotCornerRow);
-            //customHotCornerFrame.add(presetCustomHotCornerRow);
+            customHotCornerFrame.add(presetCustomHotCornerRow);
             customHotCornerFrame.add(customHotCornerRow);
             
             //Apply Button
@@ -1258,6 +1279,26 @@ var ModifyHotCornerDialogWindow = GObject.registerClass(
             vbox.add(modifyHotCornerFrame);
             vbox.add(customHotCornerFrame);
             vbox.add(applyButton);
+        }
+        checkIfMatch(text){
+            if(text === "ArcMenu_ShowAllApplications")
+                return 0;
+            else if(text === "gnome-terminal")
+                return 1;
+            else if(text === "gnome-system-monitor")
+                return 2;
+            else if(text === "gnome-calculator")
+                return 3;
+            else if(text === "gnome-gedit")
+                return 4;
+            else if(text === "gnome-screenshot")
+                return 5;
+            else if(text === "gnome-weather")
+                return 6;
+            else if(text === "ArcMenu_RunCommand")
+                return 7;
+            else
+                return -1;
         }
 });
 //Dialog Window for Custom Hotkey

@@ -271,7 +271,16 @@ var HotCornerManager = class {
                     if(hotCornerAction == Constants.HOT_CORNERS_ACTION.ToggleArcMenu)
                         this._menuToggler(); 
                     else if(hotCornerAction == Constants.HOT_CORNERS_ACTION.Custom){
-                        Util.spawnCommandLine(this._settings.get_string('custom-hot-corner-cmd'));
+                        let cmd = this._settings.get_string('custom-hot-corner-cmd');
+                        if(cmd == "ArcMenu_ShowAllApplications"){
+                            Main.overview.viewSelector._toggleAppsPage();
+                        }
+                        else if(cmd == "ArcMenu_RunCommand"){
+                            Main.openRunDialog();
+                        }
+                        else{
+                            Util.spawnCommandLine(this._settings.get_string('custom-hot-corner-cmd'));
+                        }
                     }
                     
                     corner._pressureBarrier._reset();
