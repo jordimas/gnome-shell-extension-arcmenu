@@ -1299,7 +1299,7 @@ var ModifyHotCornerDialogWindow = GObject.registerClass(
                 return 2;
             else if(text === "gnome-calculator")
                 return 3;
-            else if(text === "gnome-gedit")
+            else if(text === "gedit")
                 return 4;
             else if(text === "gnome-screenshot")
                 return 5;
