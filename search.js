@@ -747,7 +747,7 @@ var SearchResults = class ArcMenu_SearchResults {
     }
     
     _setSelected(result, selected) {
-        if (!result)
+        if (!result || result == undefined)
             return;
         if (selected) {
             result.actor.add_style_class_name('selected');
