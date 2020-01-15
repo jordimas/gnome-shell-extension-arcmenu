@@ -53,28 +53,18 @@ const LARGE_ICON_SIZE = 34;
 const MEDIUM_ICON_SIZE = 25;
 const SMALL_ICON_SIZE = 16;
 const USER_AVATAR_SIZE = 28;
+
 const TOOLTIP_LABEL_SHOW_TIME = 0.15;
 const TOOLTIP_LABEL_HIDE_TIME = 0.1;
 const gnome36 = imports.misc.config.PACKAGE_VERSION >= '3.35.0';
-function setIconAsync(icon, gioFile, fallback_icon_name) {
-    gioFile.load_contents_async(null, function (source, result) {
-        try {
-            let bytes = source.load_contents_finish(result)[1];
-            icon.gicon = Gio.BytesIcon.new(bytes);
-        } catch (err) {
-            icon.icon_name = fallback_icon_name;
-        }
-    });
-}
+
 var AppRightClickMenu = class ArcMenu_AppRightClickMenu extends PopupMenu.PopupMenu {
-    constructor(actor,app,button, isPinnedApp,path){
+    constructor(actor, app, button){
         super(actor,0.0,St.Side.TOP);
         this._boxPointer.setSourceAlignment(.20);
         this._button = button;
         this._settings = this._button._settings;
         this._app = app;
-        this.isPinnedApp = isPinnedApp;
-        this._path = path;
         this.layout =  this._settings.get_enum('menu-layout');
         this.discreteGpuAvailable = false;
         Gio.DBus.system.watch_name(SWITCHEROO_BUS_NAME,
@@ -85,6 +75,14 @@ var AppRightClickMenu = class ArcMenu_AppRightClickMenu extends PopupMenu.PopupM
                 this._updateDiscreteGpuAvailable();
             });
         this.redisplay();
+    }
+
+    set isPinnedApp(isPinnedApp){
+        this._isPinnedApp = isPinnedApp;
+    }
+
+    set path(path){
+        this._path = path;
     }
     
     _updateDiscreteGpuAvailable() {
@@ -215,7 +213,7 @@ var AppRightClickMenu = class ArcMenu_AppRightClickMenu extends PopupMenu.PopupM
                     //global.log(this._app.get_id());
                     let layout = this._button._settings.get_enum('menu-layout');
                     if(layout == Constants.MENU_LAYOUT.Default || layout == Constants.MENU_LAYOUT.Windows){
-                        if(this.isPinnedApp || match){ //if app is pinned add Unpin
+                        if(this._isPinnedApp || match){ //if app is pinned add Unpin
                             let item = new PopupMenu.PopupMenuItem(_("Unpin from Arc Menu"));  
                             item.connect('activate', ()=>{
                                 for(let i = 0;i<pinnedApps.length;i+=3){
@@ -267,7 +265,7 @@ var AppRightClickMenu = class ArcMenu_AppRightClickMenu extends PopupMenu.PopupM
         else{  //if pinned custom shortcut add unpin option to menu    
         let layout = this._button._settings.get_enum('menu-layout');
             if(layout == Constants.MENU_LAYOUT.Default || layout == Constants.MENU_LAYOUT.Windows){
-                if(this.isPinnedApp){
+                if(this._isPinnedApp){
                     this._appendSeparator()  ;
                     let item = new PopupMenu.PopupMenuItem(_("Unpin from Arc Menu"));   
                     item.connect('activate', ()=>{
@@ -455,11 +453,10 @@ var ActivitiesMenuItem =  Utils.createClass({
  * A class representing a Tooltip.
  */
 var Tooltip = class ArcMenu_Tooltip{
-    constructor(menu, sourceActor, text, isMenuItem=false, settings) {
+    constructor(menu, sourceActor, text) {
         this._button = menu._button;
         this.sourceActor = sourceActor;
-        this.isMenuItem = isMenuItem;
-        this._settings = settings;
+        this._settings = this._button._settings;
         this.flipY = false;
         this.actor = new St.Label({
             style_class: 'dash-label',
@@ -474,9 +471,15 @@ var Tooltip = class ArcMenu_Tooltip{
         this._useTooltips = ! this._settings.get_boolean('disable-tooltips');
         this.toggleID = this._settings.connect('changed::disable-tooltips', this.disableTooltips.bind(this));
     }
+
+    set isButton(isButton){
+        this._isButton = isButton;
+    }
+
     disableTooltips() {
         this._useTooltips = ! this._settings.get_boolean('disable-tooltips');
     }
+
     _onHover() {
         if (this.sourceActor.hover) {
             if(this._button.tooltipShowing){
@@ -514,9 +517,9 @@ var Tooltip = class ArcMenu_Tooltip{
             let [stageX, stageY] = this.sourceActor.get_transformed_position();
             let [width, height] = this.sourceActor.get_transformed_size();
             let [menuX, menuY] = this._button.leftClickMenu.actor.get_transformed_position();
-
-            let x = this.isMenuItem ? stageX: stageX - Math.round((this.actor.get_width() - width) / 2);
-            let y = this.isMenuItem ? stageY + height: stageY - this.actor.get_height() - 5;
+            
+            let x = this._isButton ? stageX - Math.round((this.actor.get_width() - width) / 2) : stageX;
+            let y = this._isButton ? stageY - this.actor.get_height() - 5 : stageY + height;
             if(this.flipY) 
                 y = stageY + height + 5;
             if((x <= 0) || (x - menuX) < 10)
@@ -578,7 +581,8 @@ var SessionButton = class ArcMenu_SessionButton{
             this.actor.style = "padding: 13px; min-height: 0px;";
         }
 
-        this.tooltip = new Tooltip(this._button, this.actor, accessible_name, false, this._button._settings);
+        this.tooltip = new Tooltip(this._button, this.actor, accessible_name);
+        this.tooltip.isButton = true;
         this.tooltip.hide();
         let layout = this._button._settings.get_enum('menu-layout');
         let iconSize;
@@ -641,7 +645,7 @@ var MintButton = class ArcMenu_MintButton extends SessionButton {
     _onButtonReleaseEvent(actor, event) {
   	    if(event.get_button()==3){
             if(this.rightClickMenu == undefined){
-                this.rightClickMenu = new AppRightClickMenu(this.actor,this._app ,this._button, false);
+                this.rightClickMenu = new AppRightClickMenu(this.actor, this._app, this._button);
 
                 this._button.appMenuManager.addMenu(this.rightClickMenu);
                 this.rightClickMenu.actor.hide();
@@ -1189,7 +1193,7 @@ var FavoritesMenuItem = Utils.createClass({
         lbl.get_allocation_box();
         if(lbl.get_layout().is_ellipsized()){
             if(this.tooltip==undefined && this.actor.hover){
-                this.tooltip = new Tooltip(this._button, this.actor, this._name , true ,this._button._settings);
+                this.tooltip = new Tooltip(this._button, this.actor, this._name);
                 this.tooltip._onHover();
             }
         }
@@ -1210,7 +1214,9 @@ var FavoritesMenuItem = Utils.createClass({
         }
   	    if(event.get_button()==3){
             if(this.rightClickMenu == undefined){
-                this.rightClickMenu = new AppRightClickMenu(this.actor,this._app ? this._app : this._command ,this._button,true);
+                let app = this._app ? this._app : this._command;
+                this.rightClickMenu = new AppRightClickMenu(this.actor, app, this._button);
+                this.rightClickMenu.isPinnedApp = true;
 
                 this._button.appMenuManager.addMenu(this.rightClickMenu);
                 this.rightClickMenu.actor.hide();
@@ -1439,7 +1445,7 @@ var ApplicationMenuIcon = Utils.createClass({
         }
         if(event.get_button()==3){
             if(this.rightClickMenu == undefined){
-                this.rightClickMenu = new AppRightClickMenu(this.actor,this._app,this._button);
+                this.rightClickMenu = new AppRightClickMenu(this.actor, this._app, this._button);
 
                 this._button.appMenuManager.addMenu(this.rightClickMenu);
                 this.rightClickMenu.actor.hide();
@@ -1457,11 +1463,11 @@ var ApplicationMenuIcon = Utils.createClass({
         return Clutter.EVENT_STOP;
     },
     _onHover() {
-        if(this._button.newSearch._highlightDefault)
+        if(this.actor.hover && this._button.newSearch._highlightDefault)
             this._button.newSearch.highlightDefault(false);
         if(this.tooltip==undefined && this.actor.hover){
             if(this._app.get_description()){
-                this.tooltip = new Tooltip(this._button, this.actor, this._app.get_description(),true,this._button._settings);
+                this.tooltip = new Tooltip(this._button, this.actor, this._app.get_description());
                 this.tooltip._onHover();
             }
         }
@@ -1555,7 +1561,7 @@ var ApplicationMenuItem =Utils.createClass({
     _onHover() {
         if(this.tooltip==undefined && this.actor.hover){
             if(this._app.get_description()){
-                this.tooltip = new Tooltip(this._button, this.actor, this._app.get_description(),true,this._button._settings);
+                this.tooltip = new Tooltip(this._button, this.actor, this._app.get_description());
                 this.tooltip._onHover();
             }
         }
@@ -1573,7 +1579,7 @@ var ApplicationMenuItem =Utils.createClass({
         }
         if(event.get_button()==3){ 
             if(this.rightClickMenu == undefined){
-                this.rightClickMenu = new AppRightClickMenu(this.actor,this._app,this._button);
+                this.rightClickMenu = new AppRightClickMenu(this.actor, this._app, this._button);
 
                 this._button.appMenuManager.addMenu(this.rightClickMenu);
                 this.rightClickMenu.actor.hide();
@@ -1652,7 +1658,7 @@ var SearchResultItem = Utils.createClass({
         this.callParent('setActive',active);   
     },
     _onHover(){
-        if(this._button.newSearch._highlightDefault)
+        if(this.actor.hover && this._button.newSearch._highlightDefault)
             this._button.newSearch.highlightDefault(false);
     },
     _createIcon(iconSize) {
@@ -1668,8 +1674,9 @@ var SearchResultItem = Utils.createClass({
         }           
         if(event.get_button()==3 && this.rightClickMenu == undefined){
             if(this._app){
-                this.rightClickMenu = new AppRightClickMenu(this.actor,this._app,this._button,false, this._path ? this._path: null);
-
+                this.rightClickMenu = new AppRightClickMenu(this.actor, this._app, this._button);
+                if(this._path) 
+                    this.rightClickMenu.path = this._path;
                 this._button.appMenuManager.addMenu(this.rightClickMenu);
                 this.rightClickMenu.actor.hide();
                 Main.uiGroup.add_actor(this.rightClickMenu.actor);
@@ -1819,7 +1826,7 @@ var CategoryMenuItem =  Utils.createClass({
             lbl.get_allocation_box();
             if(lbl.get_layout().is_ellipsized()){
                 if(this.tooltip==undefined){
-                    this.tooltip = new Tooltip(this._button, this.actor, this.name , true ,this._button._settings);
+                    this.tooltip = new Tooltip(this._button, this.actor, this.name);
                     this.tooltip._onHover();
                 }
             }
