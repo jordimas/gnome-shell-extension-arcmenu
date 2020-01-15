@@ -720,7 +720,7 @@ var SearchResults = class ArcMenu_SearchResultsGrid {
     }
     
     _setSelected(result, selected) {
-        if (!result || result == undefined)
+        if (!result || result === undefined || result === null)
             return;
         if (selected) {
             result.actor.add_style_class_name('selected');
