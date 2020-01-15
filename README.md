@@ -70,6 +70,13 @@ Bugs should be reported [here](https://gitlab.com/LinxGem33/Arc-Menu/issues) on 
 
 -----
 
+Please refer to the Wiki section for a guide on: [Reporting Bugs](https://gitlab.com/LinxGem33/Arc-Menu/wikis/Bug-Reporting)
+
+Please note that without any information about your system, the Arc Menu Team can only speculate what the problem is.
+So, please provide us information about your GNU/Linux distribution and the GNOME Shell version. Otherwise, we are not able to try and solve your problem.
+
+-----
+
 ### Conduct
 
 There are basic rules of conduct that should be followed at all times by everyone participating in the discussions.  While this is generally a relaxed environment, please remember the following:
@@ -80,13 +87,6 @@ There are basic rules of conduct that should be followed at all times by everyon
 - Do not repeatedly update an open issue remarking that the issue persists.
 
 **Remember**: Just because the issue you reported was reported here does not mean that it is an issue with Arc menu. As well, should your issue not be resolved immediately, it does not mean that a resolution is not being researched or tested. Patience is always appreciated.
-
------
-
-Please refer to the Wiki section for a guide on: [Reporting Bugs](https://gitlab.com/LinxGem33/Arc-Menu/wikis/Bug-Reporting)
-
-Please note that without any information about your system, the Arc Menu Team can only speculate what the problem is.
-So, please provide us information about your GNU/Linux distribution and the GNOME Shell version. Otherwise, we are not able to try and solve your problem.
 
 -----
 
