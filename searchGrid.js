@@ -793,7 +793,7 @@ var ArcSearchProviderInfo =Utils.createClass({
         }
     },
     _onHover() {
-        if(this._button.newSearch._highlightDefault)
+        if(this.hover && this._button.newSearch._highlightDefault)
             this._button.newSearch.highlightDefault(false);
     },
     animateLaunch() {

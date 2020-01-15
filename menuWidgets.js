@@ -1463,7 +1463,7 @@ var ApplicationMenuIcon = Utils.createClass({
         return Clutter.EVENT_STOP;
     },
     _onHover() {
-        if(this._button.newSearch._highlightDefault)
+        if(this.hover && this._button.newSearch._highlightDefault)
             this._button.newSearch.highlightDefault(false);
         if(this.tooltip==undefined && this.actor.hover){
             if(this._app.get_description()){
@@ -1658,7 +1658,7 @@ var SearchResultItem = Utils.createClass({
         this.callParent('setActive',active);   
     },
     _onHover(){
-        if(this._button.newSearch._highlightDefault)
+        if(this.hover && this._button.newSearch._highlightDefault)
             this._button.newSearch.highlightDefault(false);
     },
     _createIcon(iconSize) {
