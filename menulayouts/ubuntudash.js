@@ -141,11 +141,9 @@ var createMenu = class{
         });
         let homePath = GLib.get_home_dir();
         let placeInfo = new MW.PlaceInfo(Gio.File.new_for_path(homePath), _("Home"));
-        let addToMenu = this._settings.get_boolean('show-home-shortcut');
-        if(addToMenu){
-            let placeMenuItem = new MW.PlaceButtonItem(this, placeInfo);
-            this.placesBox.add_actor(placeMenuItem.actor);
-        }    
+        let placeMenuItem = new MW.PlaceButtonItem(this, placeInfo);
+        this.placesBox.add_actor(placeMenuItem.actor);
+
         let dirs = Constants.DEFAULT_DIRECTORIES.slice();
         var SHORTCUT_TRANSLATIONS = [_("Documents"),_("Downloads"), _("Music"),_("Pictures"),_("Videos")];
         for (let i = 0; i < dirs.length; i++) {
@@ -153,10 +151,8 @@ var createMenu = class{
             if (path == null || path == homePath)
                 continue;
             let placeInfo = new MW.PlaceInfo(Gio.File.new_for_path(path), _(SHORTCUT_TRANSLATIONS[i]));
-        
-                let placeMenuItem = new MW.PlaceButtonItem(this, placeInfo);
-                this.placesBox.add_actor(placeMenuItem.actor);
-            
+            let placeMenuItem = new MW.PlaceButtonItem(this, placeInfo);
+            this.placesBox.add_actor(placeMenuItem.actor); 
         }
         let settingsButton= new MW.SettingsButton( this);
         this.placesBox.add(settingsButton.actor, {
