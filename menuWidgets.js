@@ -2500,3 +2500,114 @@ var MenuButtonWidget = class ArcMenu_MenuButtonWidget{
         }
     }
 };
+
+var DashMenuButtonWidget = class ArcMenu_DashMenuButtonWidget{
+    constructor(settings) {
+        this._settings = settings;
+        this.actor = new St.Button({
+            style_class: 'show-apps',
+            track_hover: true,
+            can_focus: true,
+            toggle_mode: false
+        });
+        this.actor._delegate = this;
+        this._arrowIcon = PopupMenu.arrowIcon(St.Side.BOTTOM);
+        this.icon = new imports.ui.iconGrid.BaseIcon(_("Show Applications"),
+                                            { setSizeManually: true,
+                                            showLabel: false,
+                                            createIcon: this._createIcon.bind(this) });
+        this._icon = new St.Icon({
+            icon_name: 'start-here-symbolic',
+            style_class: 'show-apps-icon',
+            track_hover:true,
+            icon_size: 15
+        });
+        this._label = new St.Label({
+            text: _("Applications"),
+            y_expand: true,
+            y_align: Clutter.ActorAlign.CENTER,
+        });
+
+        this.actor.add_actor(this.icon);
+        //this.actor.add_child(this._label);
+        //this.actor.add_child(this._arrowIcon);
+        this.child = this.actor;
+    }
+    _createIcon(size) {
+        this._icon = new St.Icon({  
+            icon_name: 'start-here-symbolic',
+            style_class: 'show-apps-icon',
+            track_hover:true,
+            icon_size: size,
+            reactive: true
+        });
+        switch (this._settings.get_enum('menu-button-icon')) {
+            case Constants.MENU_BUTTON_ICON.Custom:
+                if (GLib.file_test(iconFilepath, GLib.FileTest.EXISTS)) {
+                    this._icon.set_gicon(Gio.icon_new_for_string(iconFilepath));
+                    break;
+                }
+            case Constants.MENU_BUTTON_ICON.Arc_Menu:
+                let arcMenuIconPath = Me.path + Constants.ARC_MENU_SYMBOLIC.Path;
+                if (GLib.file_test(arcMenuIconPath, GLib.FileTest.EXISTS)) {
+                    this._icon.set_gicon(Gio.icon_new_for_string(arcMenuIconPath));
+                    break;
+                } 
+            case Constants.MENU_BUTTON_ICON.Arc_Menu_Alt:
+                let arcMenuAltIconPath = Me.path + Constants.ARC_MENU_ALT_SYMBOLIC.Path;
+                if (GLib.file_test(arcMenuAltIconPath, GLib.FileTest.EXISTS)) {
+                    this._icon.set_gicon(Gio.icon_new_for_string(arcMenuAltIconPath));
+                    break;
+                } 
+            case Constants.MENU_BUTTON_ICON.System: 
+            default:
+                this._icon.set_icon_name('start-here-symbolic');
+        }
+        return this._icon;
+    }
+    getPanelLabel() {
+        return this._label;
+    }
+
+    getPanelIcon() {
+        return this._icon;
+    }
+    showArrowIcon() {
+        if (!this.actor.contains(this._arrowIcon)) {
+            this.actor.add_child(this._arrowIcon);
+        }
+    }
+
+    hideArrowIcon() {
+        if (this.actor.contains(this._arrowIcon)) {
+            this.actor.remove_child(this._arrowIcon);
+        }
+    }
+
+    showPanelIcon() {
+        if (!this.actor.contains(this._icon)) {
+            this.actor.add_child(this._icon);
+        }
+    }
+
+    hidePanelIcon() {
+        if (this.actor.contains(this._icon)) {
+            this.actor.remove_child(this._icon);
+        }
+    }
+
+    showPanelText() {
+        if (!this.actor.contains(this._label)) {
+            this.actor.add_child(this._label);
+        }
+    }
+
+    hidePanelText() {
+        if (this.actor.contains(this._label)) {
+            this.actor.remove_child(this._label);
+        }
+    }
+};
+
+
+

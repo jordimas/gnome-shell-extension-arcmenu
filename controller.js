@@ -24,8 +24,9 @@
 // Import Libraries
 const Me = imports.misc.extensionUtils.getCurrentExtension();
 
-const {Gdk, Gio, GLib, Gtk} = imports.gi;
+const {Gdk, Gio, GLib, Gtk, St} = imports.gi;
 const Constants = Me.imports.constants;
+const DashMenu = Me.imports.dashMenuButton;
 const Gettext = imports.gettext.domain(Me.metadata['gettext-domain']);
 const Helper = Me.imports.helper;
 const Main = imports.ui.main;
@@ -47,11 +48,19 @@ var MenuSettingsController = class {
         });
         this.currentMonitorIndex = 0;
         this.isMainPanel = isMainPanel;
-        this._activitiesButton = this.panel.statusArea.activities;
+        let arcMenuPosition = settings.get_enum('arc-menu-placement');
+        if(arcMenuPosition == Constants.ARC_MENU_PLACEMENT.PANEL){
+            this._menuButton = new Menu.ApplicationsButton(settings, panel);
+            this._activitiesButton = this.panel.statusArea.activities;
+        }
+        else{
+            this._menuButton = new DashMenu.ApplicationsButton(settings, panel);
+        }
+            
         this._settingsControllers = settingsControllers
 
          // Create the button, a Hot Corner Manager, a Menu Keybinder as well as a Keybinding Manager
-        this._menuButton = new Menu.ApplicationsButton(settings, panel);
+
         this._hotCornerManager = new Helper.HotCornerManager(this._settings,() => this.toggleMenus());
         if(this.isMainPanel){
             this._menuHotKeybinder = new Helper.MenuHotKeybinder(() => this._onHotkey());
@@ -438,6 +447,39 @@ var MenuSettingsController = class {
         this._removeActivitiesButtonFromMainPanel(); // disable the activities button
         this._addMenuButtonToMainPanel();
     }
+    reEstablishDash(){
+        let parent = this._menuButton.get_parent();
+        if(parent)
+            parent.remove_actor(this._menuButton);
+        let container = this.panel._allDocks[0].dash._container;
+        this.oldShowAppsIcon = this.panel._allDocks[0].dash._showAppsIcon;
+        container.remove_actor(this.panel._allDocks[0].dash._showAppsIcon);
+
+        this._setButtonIcon();
+        let iconSize = this.panel._allDocks[0].dash.iconSize;
+        this._menuButton._menuButtonWidget.icon.setIconSize(iconSize);
+
+        container.add_actor(this._menuButton);
+        this._menuButton.set_parent(container);
+        this.panel._allDocks[0].dash._showAppsIcon = this._menuButton;
+        this.panel._allDocks[0].dash._queueRedisplay();
+        this.panel._allDocks[0].dash.connect("destroy",()=>{
+            if(this._menuButton){
+                let parent = this._menuButton.get_parent();
+                if(parent)
+                    parent.remove_actor(this._menuButton);
+                this._setButtonIcon();
+            }
+        });
+    }
+    // Enable the menu button
+    enableButtonInDash() {
+        this.reEstablishDash();
+        this.panel.connect("toggled",()=>{
+            this.reEstablishDash();
+        });
+
+    }
 
     // Disable the menu button
     _disableButton() {
@@ -458,10 +500,22 @@ var MenuSettingsController = class {
         }
         this.settingsChangeIds.forEach(id => this._settings.disconnect(id));
         this._hotCornerManager.destroy();
-
-
-        // Clean up and restore the default behaviour
-        if(this.panel == undefined)
+        
+        if(!this.panel.statusArea){
+            if(this._menuButton){
+                let parent = this._menuButton.get_parent();
+                if(parent)
+                    parent.remove_actor(this._menuButton);
+                if(this.panel._allDocks.length){
+                    let container = this.panel._allDocks[0].dash._container;
+                    this.panel._allDocks[0].dash._showAppsIcon = this.oldShowAppsIcon;
+                    container.add_actor(this.panel._allDocks[0].dash._showAppsIcon);
+                    this.panel._allDocks[0].dash._queueRedisplay();
+                }
+                this._menuButton.destroy();
+            }    
+        }
+        else if(this.panel == undefined)
             this._menuButton.destroy();
         else if (this._isButtonEnabled()) {
             this._disableButton();

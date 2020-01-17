@@ -31,6 +31,11 @@ var CURRENT_MENU = {
     SEARCH_RESULTS: 3
 };
 
+var ARC_MENU_PLACEMENT = {
+    PANEL: 0,
+    DASH: 1
+};
+
 var DEFAULT_DIRECTORIES = [
     imports.gi.GLib.UserDirectory.DIRECTORY_DOCUMENTS,
     imports.gi.GLib.UserDirectory.DIRECTORY_DOWNLOAD,

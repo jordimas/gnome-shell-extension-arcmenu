@@ -37,6 +37,10 @@
     <value value="0" nick="Circular"/>
     <value value="1" nick="Square"/>
   </enum>
+  <enum id='org.gnome.shell.extensions.arc-menu.arc-menu-placement'>
+    <value value="0" nick="Panel"/>
+    <value value="1" nick="Dash"/>
+  </enum>
   <enum id='org.gnome.shell.extensions.arc-menu.menu-button-icon'>
     <value value="0" nick="Arc_Menu_Icon"/>
     <value value="1" nick="Arc_Menu_Alt_Icon"/>
@@ -68,6 +72,11 @@
      <default>false</default>
       <summary>disable hotkey on key release</summary>
       <description>disable hotkey on key release.</description>
+    </key>
+    <key enum="org.gnome.shell.extensions.arc-menu.arc-menu-placement" name="arc-menu-placement">
+     <default>"Panel"</default>
+      <summary>Embed Arc Menu button into Dash instead of panel</summary>
+      <description>Embed Arc Menu button into Dash instead of panel</description>
     </key>
     <key type="b" name="enable-sub-menus">
      <default>false</default>
