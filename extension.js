@@ -57,6 +57,7 @@ function enable() {
         if (extension.uuid === 'dash-to-panel@jderose9.github.com' && extension.state === 1) {
             let arcMenuPosition = settings.get_enum('arc-menu-placement');
             if(arcMenuPosition == Constants.ARC_MENU_PLACEMENT.PANEL){
+                settingsControllers.forEach(sc => _disableButton(sc, 1));
                 _connectDtpSignals();
                 _enableButtons();
             }
@@ -67,6 +68,7 @@ function enable() {
         if (extension.uuid === "dash-to-dock@micxgx.gmail.com" && extension.state === 1) {
             let arcMenuPosition = settings.get_enum('arc-menu-placement');
             if(arcMenuPosition == Constants.ARC_MENU_PLACEMENT.DASH){
+                settingsControllers.forEach(sc => _disableButton(sc, 1));
                 _enableButtons();
             }
 
