@@ -103,6 +103,10 @@ var ApplicationsButton =   Utils.defineClass({
             if(this.dtp){
                 this.rightClickMenu.addDTPSettings();  
             }  
+            this.dtpPostionChangedID = this._panel._settings.connect('changed::dock-position', ()=> {
+                let side = this._panel._settings.get_enum('dock-position');
+                this.updateArrowSide(side);
+            });
             //----------------------------------------------------------------------------------
 
             //Update Categories on 'installed-changed' event-------------------------------------
@@ -196,11 +200,12 @@ var ApplicationsButton =   Utils.defineClass({
                     this.leftClickMenu._boxPointer.setSourceAlignment(.5);
                 }
                 else{
-                    this.updateArrowSide('TOP', false);
+                    let side = this._panel._settings.get_enum('dock-position');
+                    this.updateArrowSide(side, false);
                 }
             }
             else{
-                this.updateArrowSide('TOP', false);
+                this.updateArrowSide(St.Side.TOP, false);
                 if(this._settings.get_enum('position-in-panel') == Constants.MENU_POSITION.Center){
                     this.rightClickMenu._arrowAlignment = arrowAlignment
                     this.rightClickMenu._boxPointer.setSourceAlignment(.5);
@@ -210,13 +215,13 @@ var ApplicationsButton =   Utils.defineClass({
         },
         updateArrowSide(side, setAlignment = true){
             let arrowAlignment = 0.5;
-            if (side == 'TOP') 
+            if (side == St.Side.TOP) 
                 side =  St.Side.TOP;
-            else if (side == 'RIGHT') {
+            else if (side == St.Side.RIGHT) {
                 arrowAlignment = 0.5;
                 side =  St.Side.RIGHT;
             }
-            else if (side == 'BOTTOM')
+            else if (side == St.Side.BOTTOM)
                 side =  St.Side.BOTTOM;
             else {
                 arrowAlignment = 0.5;
@@ -381,6 +386,10 @@ var ApplicationsButton =   Utils.defineClass({
             if ( this.extensionChangedId) {
                 (Main.extensionManager || ExtensionSystem).disconnect(this.extensionChangedId);
                 this.extensionChangedId = null;
+            }
+            if(this.dtpPostionChangedID>0 && this._panel){
+                this._panel._settings.disconnect(this.dtpPostionChangedID);
+                this.dtpPostionChangedID = 0;
             }
             if (this._installedChangedId > 0) {
                 appSys.disconnect(this._installedChangedId);
