@@ -38,9 +38,10 @@ const _ = Gettext.gettext;
  * the settings changes of the Arc Menu.
  */
 var MenuSettingsController = class {
-    constructor(settings, settingsControllers, panel, isMainPanel) {
+    constructor(settings, settingsControllers, panel, isMainPanel, dashOrPanel) {
         this._settings = settings;
         this.panel = panel;
+        this.dashOrPanel = dashOrPanel;
         this.updateThemeID = GLib.timeout_add(0, 100, () => {
             Me.imports.prefs.saveCSS(this._settings);
             Main.loadTheme();
@@ -48,8 +49,8 @@ var MenuSettingsController = class {
         });
         this.currentMonitorIndex = 0;
         this.isMainPanel = isMainPanel;
-        let arcMenuPosition = settings.get_enum('arc-menu-placement');
-        if(arcMenuPosition == Constants.ARC_MENU_PLACEMENT.PANEL){
+    
+        if(this.dashOrPanel == Constants.ARC_MENU_PLACEMENT.PANEL){
             this._menuButton = new Menu.ApplicationsButton(settings, panel);
             this._activitiesButton = this.panel.statusArea.activities;
         }
@@ -475,7 +476,7 @@ var MenuSettingsController = class {
     // Enable the menu button
     enableButtonInDash() {
         this.reEstablishDash();
-        this.panel.connect("toggled",()=>{
+        this.panelConnectID = this.panel.connect("toggled",()=>{
             this.reEstablishDash();
         });
 
@@ -501,19 +502,21 @@ var MenuSettingsController = class {
         this.settingsChangeIds.forEach(id => this._settings.disconnect(id));
         this._hotCornerManager.destroy();
         
-        if(!this.panel.statusArea){
-            if(this._menuButton){
-                let parent = this._menuButton.get_parent();
-                if(parent)
-                    parent.remove_actor(this._menuButton);
-                if(this.panel._allDocks.length){
-                    let container = this.panel._allDocks[0].dash._container;
-                    this.panel._allDocks[0].dash._showAppsIcon = this.oldShowAppsIcon;
-                    container.add_actor(this.panel._allDocks[0].dash._showAppsIcon);
-                    this.panel._allDocks[0].dash._queueRedisplay();
-                }
-                this._menuButton.destroy();
-            }    
+        if(this.dashOrPanel == Constants.ARC_MENU_PLACEMENT.DASH){
+            if(this.panelConnectID && this.panel){
+                this.panel.disconnect(this.panelConnectID);
+                this.panelConnectID = null;
+            } 
+            let parent = this._menuButton.get_parent();
+            if(parent)
+                parent.remove_actor(this._menuButton);
+            if(this.panel._allDocks.length){
+                let container = this.panel._allDocks[0].dash._container;
+                this.panel._allDocks[0].dash._showAppsIcon = this.oldShowAppsIcon;
+                container.add_actor(this.panel._allDocks[0].dash._showAppsIcon);
+                this.panel._allDocks[0].dash._queueRedisplay();
+            }
+            this._menuButton.destroy();
         }
         else if(this.panel == undefined)
             this._menuButton.destroy();
