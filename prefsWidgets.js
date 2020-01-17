@@ -79,7 +79,8 @@ var IconButton = GObject.registerClass(
         super._init();
         this._params = Params.parse(params, {
             circular: true,
-            icon_name: ''
+            icon_name: '',
+            tooltip_text: ''
         });
         if (this._params.circular) {
             let context = this.get_style_context();
@@ -91,6 +92,9 @@ var IconButton = GObject.registerClass(
                 xalign: 0.5
             });
             this.add(image);
+        }
+        if (this._params.tooltip_text){
+            this.set_tooltip_text(this._params.tooltip_text);
         }
     }
 });
@@ -145,6 +149,15 @@ var FrameBox = GObject.registerClass(
         remove(boxRow) {
             this._listBox.remove(boxRow);
             this.count = this.count -1;
+        }
+        remove_all_children() {
+            let children = this._listBox.get_children();
+            for(let i = 0; i < children.length; i++){
+                let child = children[i];
+                this._listBox.remove(child);
+            }
+            this.count = 0;
+            this._listBox.show_all();
         }
         get_index(index){
             return this._listBox.get_row_at_index(index);

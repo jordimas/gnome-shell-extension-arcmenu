@@ -197,33 +197,16 @@ var createMenu = class {
         this.rightBox.add(this.shortcutsScrollBox);
         // Add place shortcuts to menu (Home,Documents,Downloads,Music,Pictures,Videos)
         this._displayPlaces();
-        // add Home and Network shortcuts           
-        if(this._settings.get_boolean('show-computer-shortcut')){
-            this.placesShortcuts=true;  
-            this.computer = new PlaceDisplay.RootInfo();
-            this.computerMenuItem = new PlaceDisplay.PlaceMenuItem(this.computer,this);
-            this.shorcutsBox.add_actor(this.computerMenuItem.actor);
-        }
-        if(this._settings.get_boolean('show-network-shortcut')){
-            this.placesShortcuts=true;
-            this.network = new PlaceDisplay.PlaceInfo('network',Gio.File.new_for_uri('network:///'), _('Network'),'network-workgroup-symbolic');
-            this.networkMenuItem = new PlaceDisplay.PlaceMenuItem(this.network,this);
-            this.shorcutsBox.add_actor(this.networkMenuItem.actor);
-        }
+
         //draw bottom right horizontal separator + logic to determine if should show
         let shouldDraw = false;
-        for(let i=0;i<6;i++){
-            if(this.getShouldShowShortcut(Constants.RIGHT_SIDE_SHORTCUTS[i])){
-                this.placesShortcuts=true;
-                break;
-            }
+        if(this._settings.get_value('directory-shortcuts-list').deep_unpack().length>0){
+            this.placesShortcuts=true;
         }
-        for(let i =6;i<11;i++){
-            if(this.getShouldShowShortcut(Constants.RIGHT_SIDE_SHORTCUTS[i])){
+        if(this._settings.get_value('application-shortcuts-list').deep_unpack().length>0){
             this.softwareShortcuts = true;
-                break;
-            }
         }
+        
         //check to see if should draw separator
         if(this.placesShortcuts && (this._settings.get_boolean('show-external-devices') || this.softwareShortcuts || this._settings.get_boolean('show-bookmarks'))  )
             shouldDraw=true;  
@@ -260,37 +243,20 @@ var createMenu = class {
             this.externalDevicesBox.add(this._sections[id].actor);
         }
 
-        //Add Software Shortcuts to menu (Software, Settings, Tweaks, Terminal)
-        var SHORTCUT_TRANSLATIONS = [_("Software"),_("Software"), _("Settings"),_("Tweaks"), _("Terminal")];
-        let i = 0;
-        Constants.SHORTCUTS.forEach(function (shortcut) {
-            if (GLib.find_program_in_path(shortcut.command)) {
-                let addToMenu = this.getShouldShowShortcut(shortcut.label);
-                if(addToMenu)
-                {
-                    let shortcutMenuItem = new MW.ShortcutMenuItem(this, SHORTCUT_TRANSLATIONS[i], shortcut.symbolic, shortcut.command);
-                    this.shorcutsBox.add(shortcutMenuItem.actor, {
-                        expand: false,
-                        x_fill: true,
-                        y_fill: false,
-                        y_align: St.Align.START,
-                    });
-                }
-            }
-            i++;
-        }.bind(this));
-            
-        //Add Activities Overview to menu
-        if(this._settings.get_boolean('show-activities-overview-shortcut')){
-            let activities = new MW.ActivitiesMenuItem(this);
-            this.shorcutsBox.add(activities.actor, {
+        //Add Application Shortcuts to menu (Software, Settings, Tweaks, Terminal)
+        let SOFTWARE_TRANSLATIONS = [_("Software"), _("Settings"), _("Tweaks"), _("Terminal"), _("Activities Overview"), _("Arc Menu Settings")];
+        let applicationShortcuts = this._settings.get_value('application-shortcuts-list').deep_unpack();
+        for(let i = 0; i < applicationShortcuts.length; i++){
+            let applicationName = applicationShortcuts[i][0];
+            let shortcutMenuItem = new MW.ShortcutMenuItem(this, _(applicationName), applicationShortcuts[i][1], applicationShortcuts[i][2]);
+            this.shorcutsBox.add(shortcutMenuItem.actor, {
                 expand: false,
                 x_fill: true,
                 y_fill: false,
-                y_align: St.Align.START
+                y_align: St.Align.START,
             });
         }
-            
+        
         //create new section for Power, Lock, Logout, Suspend Buttons
         this.actionsBox = new PopupMenu.PopupBaseMenuItem({
             reactive: false,
@@ -391,6 +357,10 @@ var createMenu = class {
         for (let i = 0; i < this.favoritesArray.length; i++) {
             this.favoritesArray[i].destroy();
         }
+        this._applicationsButtons.forEach((value,key,map) => {
+            this._applicationsButtons.delete(key);
+            value.destroy(); 
+        });
         this.applicationsBox.destroy_all_children();
         this._loadCategories();
         this._loadFavorites();
@@ -458,7 +428,7 @@ var createMenu = class {
             }
         }
     }
-    _loadCategory(categoryId, dir) {
+    _loadCategory(categoryId, dir, submenuItem) {
         let iter = dir.iter();
         let nextType;
         while ((nextType = iter.next()) != GMenu.TreeItemType.INVALID) {
@@ -474,17 +444,37 @@ var createMenu = class {
                 if (!app)
                     app = new Shell.App({ app_info: entry.get_app_info() });
                 if (app.get_app_info().should_show()){
-                    this.applicationsByCategory[categoryId].push(app);
                     let item = this._applicationsButtons.get(app);
                     if (!item) {
                         item = new MW.ApplicationMenuItem(this, app);
+                    }
+                    if(!submenuItem){
+                        this.applicationsByCategory[categoryId].push(app);
                         this._applicationsButtons.set(app, item);
+                    }
+                    else{
+                        submenuItem._applicationsButtons.set(app, item);
                     }
                 }             
             } else if (nextType == GMenu.TreeItemType.DIRECTORY) {
                 let subdir = iter.get_directory();
-                if (!subdir.get_is_nodisplay())
-                    this._loadCategory(categoryId, subdir);
+                if (!subdir.get_is_nodisplay()){
+                    if(this._settings.get_boolean('enable-sub-menus')){
+                        this.applicationsByCategory[categoryId].push(subdir);
+                        let submenuItem = this._applicationsButtons.get(subdir);
+                        if (!submenuItem) {
+                            submenuItem = new MW.CategorySubMenuItem(this, subdir);
+                            submenuItem._setParent(this.leftClickMenu);
+                            this._applicationsButtons.set(subdir, submenuItem);
+                        }
+                        this._loadCategory(categoryId, subdir, submenuItem);
+                    }
+                    else{
+                        this._loadCategory(categoryId, subdir);
+                    }
+
+                }
+                    
             }
         }
     }
@@ -508,25 +498,37 @@ var createMenu = class {
     }
     // Load menu place shortcuts
     _displayPlaces() {
-        let homePath = GLib.get_home_dir();
-        let placeInfo = new MW.PlaceInfo(Gio.File.new_for_path(homePath), _("Home"));
-        let addToMenu = this._settings.get_boolean('show-home-shortcut');
-        if(addToMenu){
-            let placeMenuItem = new MW.PlaceMenuItem(this, placeInfo);
-            this.shorcutsBox.add_actor(placeMenuItem.actor);
-        }    
-        let dirs = Constants.DEFAULT_DIRECTORIES.slice();
-        var SHORTCUT_TRANSLATIONS = [_("Documents"),_("Downloads"), _("Music"),_("Pictures"),_("Videos")];
-        for (let i = 0; i < dirs.length; i++) {
-            let path = GLib.get_user_special_dir(dirs[i]);
-            if (path == null || path == homePath)
-                continue;
-            let placeInfo = new MW.PlaceInfo(Gio.File.new_for_path(path), _(SHORTCUT_TRANSLATIONS[i]));
-            addToMenu = this.getShouldShowShortcut(Constants.RIGHT_SIDE_SHORTCUTS[i+1]);
-            if(addToMenu){
-                let placeMenuItem = new MW.PlaceMenuItem(this, placeInfo);
-                this.shorcutsBox.add_actor(placeMenuItem.actor);
+        var SHORTCUT_TRANSLATIONS = [_("Home"), _("Documents"), _("Downloads"), _("Music"), _("Pictures"), _("Videos"), _("Computer"), _("Network")];
+        let directoryShortcuts = this._settings.get_value('directory-shortcuts-list').deep_unpack();
+        for (let i = 0; i < directoryShortcuts.length; i++) {
+            let directory = directoryShortcuts[i];
+            let placeInfo, placeMenuItem;
+            if(directory[2]=="ArcMenu_Home"){
+                let homePath = GLib.get_home_dir();
+                placeInfo = new MW.PlaceInfo(Gio.File.new_for_path(homePath), _("Home"));
+                placeMenuItem = new MW.PlaceMenuItem(this, placeInfo);
             }
+            else if(directory[2]=="ArcMenu_Computer"){
+                placeInfo = new PlaceDisplay.RootInfo();
+                placeMenuItem = new PlaceDisplay.PlaceMenuItem(placeInfo,this);
+            }
+            else if(directory[2]=="ArcMenu_Network"){
+                placeInfo = new PlaceDisplay.PlaceInfo('network',Gio.File.new_for_uri('network:///'), _('Network'),'network-workgroup-symbolic');
+                placeMenuItem = new PlaceDisplay.PlaceMenuItem(placeInfo,this);    
+            }
+            else if(directory[2].startsWith("ArcMenu_")){
+                let path = directory[2].replace("ArcMenu_",'');
+                path = GLib.get_home_dir()+"/"+path;
+                placeInfo = new MW.PlaceInfo(Gio.File.new_for_path(path), _(directory[0]));
+                placeMenuItem = new MW.PlaceMenuItem(this, placeInfo);
+            }
+            else{
+                let path = directory[2];
+                placeInfo = new MW.PlaceInfo(Gio.File.new_for_path(path), _(directory[0]));
+                placeMenuItem = new MW.PlaceMenuItem(this, placeInfo);
+            }
+            
+            this.shorcutsBox.add_actor(placeMenuItem.actor);
         }
     }
     _loadFavorites() {
@@ -580,7 +582,6 @@ var createMenu = class {
         }
     }
     _displayFavorites() {
-        //global.log('display favs');
         this._clearApplicationsBox();
         this.viewProgramsButton.actor.show();
         this.backButton.actor.hide();
@@ -663,6 +664,8 @@ var createMenu = class {
         let actors = this.applicationsBox.get_children();
         for (let i = 0; i < actors.length; i++) {
             let actor = actors[i];
+            if(actor._delegate instanceof MW.CategorySubMenuItem)
+                actor._delegate.menu.close();
             this.applicationsBox.remove_actor(actor);
         }
     }
@@ -698,8 +701,15 @@ var createMenu = class {
                 item = new MW.ApplicationMenuItem(this, app);
                 this._applicationsButtons.set(app, item);
             }
+            if(item.actor.get_parent()){
+                item.actor.get_parent().remove_actor(item.actor);
+            }
             if (!item.actor.get_parent()) 
                 this.applicationsBox.add_actor(item.actor);
+            if(item instanceof MW.CategorySubMenuItem){
+                this.applicationsBox.add_actor(item.menu.actor);
+                item._updateIcons();
+            }
             if(i==0){
                 item.setFakeActive(true);
                 item.actor.grab_key_focus();
@@ -743,20 +753,7 @@ var createMenu = class {
             });
         }
         return applist;
-    }
-    //used to check if a shortcut should be displayed
-    getShouldShowShortcut(shortcutName){
-        let setting = 'show-'+shortcutName+'-shortcut';
-        let settingName = GLib.utf8_strdown(setting,setting.length);
-        let addToMenu =false;
-        try{
-            addToMenu = this._settings.get_boolean(settingName);
-        }
-        catch (err) {
-            
-        }
-        return addToMenu;
-    }     
+    }  
     _onSearchBoxKeyPress(searchBox, event) {
         let symbol = event.get_key_symbol();
         if (!searchBox.isEmpty() && searchBox.hasKeyFocus()) {

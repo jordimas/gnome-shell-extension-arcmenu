@@ -68,6 +68,12 @@ var HOT_KEY = { // See: org.gnome.shell.extensions.arc-menu.menu-hotkey
     2: SUPER_R
 };
 
+var HOT_CORNERS_ACTION = {
+    Default: 0,
+    Disabled: 1,
+    ToggleArcMenu: 2,
+    Custom: 3
+}
 
 var SHORTCUTS= [{  label: ("Software"),
                     symbolic: "org.gnome.Software-symbolic",
@@ -109,7 +115,12 @@ var MENU_POSITION = { // See: org.gnome.shell.extensions.arc-menu.menu-position
     Center: 1,
     Right: 2
 };
-
+var DIALOG_TYPE = {
+    Default: 0,
+    Mint_Pinned_Apps: 1,
+    Application_Shortcuts: 2,
+    Directories_Shortcuts: 3
+};
 var MENU_LAYOUT = { // See: org.gnome.shell.extensions.arc-menu.menu-position
     Default: 0,
     Brisk: 1,

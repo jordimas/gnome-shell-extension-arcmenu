@@ -26,6 +26,7 @@ const Me = imports.misc.extensionUtils.getCurrentExtension();
 const {Gio, GObject, Gtk, Meta, Shell} = imports.gi;
 const Constants = Me.imports.constants;
 const Main = imports.ui.main;
+const Util = imports.misc.util;
 
 
 // Local constants
@@ -43,8 +44,19 @@ var MenuHotKeybinder = class {
         this.hotKeyEnabled = false;
         this.overlayKeyID = 0;
         this.defaultOverlayKeyID = 0;
+        this.arcMenuCalling = false;
         this._mutterSettings = new Gio.Settings({ 'schema': MUTTER_SCHEMA });
         this._wmKeybindings = new Gio.Settings({ 'schema': WM_KEYBINDINGS_SCHEMA });
+        this._oldPanelMainMenuKey = this._wmKeybindings.get_value('panel-main-menu');
+        this._oldOverlayKey = this._mutterSettings.get_value('overlay-key');
+        this.overlayKeyConnectID = this._mutterSettings.connect('changed::overlay-key', () => {
+            if(!this.arcMenuCalling)
+                this._oldOverlayKey = this._mutterSettings.get_value('overlay-key');
+        });
+        this.panelMainMenuKeyConnectID = this._wmKeybindings.connect('changed::panel-main-menu', () => {
+            if(!this.arcMenuCalling)
+                this._oldPanelMainMenuKey = this._wmKeybindings.get_value('panel-main-menu');
+        });
         this._hotkeyMenuToggleId = Main.layoutManager.connect('startup-complete', ()=>{
             this._updateHotkeyMenuToggle();
         });
@@ -52,6 +64,7 @@ var MenuHotKeybinder = class {
 
     // Set Main.overview.toggle to toggle Arc Menu instead
     enableHotKey(hotkey) {
+        this.arcMenuCalling = true;
         if (hotkey == Constants.SUPER_L) {
             this._mutterSettings.set_string('overlay-key', hotkey);
             Main.wm.allowKeybinding('overlay-key', Shell.ActionMode.NORMAL |
@@ -63,11 +76,13 @@ var MenuHotKeybinder = class {
         else{
             this._wmKeybindings.set_strv('panel-main-menu', [hotkey]);
         }
+        this.arcMenuCalling = false;
     }
 
     // Set Main.overview.toggle to default function and default hotkey
     disableHotKey() {
-        this._mutterSettings.set_value('overlay-key', this._getDefaultOverlayKey());
+        this.arcMenuCalling = true;
+        this._mutterSettings.set_value('overlay-key', this._oldOverlayKey);
         if(this.overlayKeyID > 0){
             global.display.disconnect(this.overlayKeyID);
             this.overlayKeyID = null;
@@ -80,9 +95,9 @@ var MenuHotKeybinder = class {
             Shell.ActionMode.OVERVIEW);
         this.hotKeyEnabled = false;
     
-
-        let defaultPanelMainMenu = this._wmKeybindings.get_default_value('panel-main-menu');
-        this._wmKeybindings.set_value('panel-main-menu', defaultPanelMainMenu);    
+        this._wmKeybindings.set_value('panel-main-menu', this._oldPanelMainMenuKey);    
+        this.arcMenuCalling = false;
+        
     }
 
     // Update hotkey menu toggle function
@@ -109,12 +124,17 @@ var MenuHotKeybinder = class {
             Shell.ActionMode.NORMAL | Shell.ActionMode.OVERVIEW | Shell.ActionMode.POPUP,
             this._menuToggler.bind(this));
     }
-    _getDefaultOverlayKey() {
-        return this._mutterSettings.get_default_value('overlay-key');
-    }
     // Destroy this object
     destroy() {
         // Clean up and restore the default behaviour
+        if(this.overlayKeyConnectID){
+            this._mutterSettings.disconnect(this.overlayKeyConnectID);
+            this.overlayKeyConnectID = null;
+        }
+        if(this.panelMainMenuKeyConnectID){
+            this._wmKeybindings.disconnect(this.panelMainMenuKeyConnectID);
+            this.panelMainMenuKeyConnectID = null;
+        }
         this.disableHotKey();
         if (this._hotkeyMenuToggleId) {
             // Disconnect the keybinding handler
@@ -192,14 +212,22 @@ var KeybindingManager = class {
  * the gnome-shell hot corners.
  */
 var HotCornerManager = class {
-    constructor(settings) {
+    constructor(settings, menuToggler) {
         this._settings = settings;
+        this._menuToggler = menuToggler;
         this._hotCornersChangedId = Main.layoutManager.connect('hot-corners-changed', this._redisableHotCorners.bind(this));
     }
 
     _redisableHotCorners() {
-        if (this._settings.get_boolean('disable-activities-hotcorner')) {
+        let hotCornerAction = this._settings.get_enum('hot-corners');
+        if(hotCornerAction == Constants.HOT_CORNERS_ACTION.Disabled) {
             this.disableHotCorners();
+        }
+        else if(hotCornerAction == Constants.HOT_CORNERS_ACTION.ToggleArcMenu) {
+            this.modifyHotCorners();
+        }
+        else if(hotCornerAction == Constants.HOT_CORNERS_ACTION.Custom) {
+            this.modifyHotCorners();
         }
     }
 
@@ -218,10 +246,45 @@ var HotCornerManager = class {
     disableHotCorners() {
         let hotCorners = this._getHotCorners();
         // Monkey patch each hot corner
-        hotCorners.forEach(function (corner) {
+        hotCorners.forEach((corner) => {
             if (corner) {
                 corner._toggleOverview = () => { };
                 corner._pressureBarrier._trigger = () => { };
+            }
+        });
+    }
+
+    // Change hotcorners to toggle Arc Menu
+    modifyHotCorners() {
+        let hotCorners = this._getHotCorners();
+        let hotCornerAction = this._settings.get_enum('hot-corners');
+        // Monkey patch each hot corner
+        hotCorners.forEach((corner) => {
+            if (corner) {
+                corner._toggleOverview = () => { };
+                corner._pressureBarrier._trigger = () => { 
+                    corner._pressureBarrier._isTriggered = true;
+                    if(corner._ripples)
+                        corner._ripples.playAnimation(corner._x, corner._y);
+                    else
+                        corner._rippleAnimation();
+                    if(hotCornerAction == Constants.HOT_CORNERS_ACTION.ToggleArcMenu)
+                        this._menuToggler(); 
+                    else if(hotCornerAction == Constants.HOT_CORNERS_ACTION.Custom){
+                        let cmd = this._settings.get_string('custom-hot-corner-cmd');
+                        if(cmd == "ArcMenu_ShowAllApplications"){
+                            Main.overview.viewSelector._toggleAppsPage();
+                        }
+                        else if(cmd == "ArcMenu_RunCommand"){
+                            Main.openRunDialog();
+                        }
+                        else{
+                            Util.spawnCommandLine(this._settings.get_string('custom-hot-corner-cmd'));
+                        }
+                    }
+                    
+                    corner._pressureBarrier._reset();
+                };
             }
         });
     }

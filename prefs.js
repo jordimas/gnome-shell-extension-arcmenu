@@ -63,10 +63,11 @@ var PinnedAppsPage = GObject.registerClass(
             });
             let addPinnedAppsButton = new PW.IconButton({
                 circular: false,
-                icon_name: 'list-add-symbolic'
+                icon_name: 'list-add-symbolic',
+                tooltip_text: _("Browse a list of all applications to add to your Pinned Apps list.")
             });
             addPinnedAppsButton.connect('clicked', ()=> {
-                let dialog = new AddAppsToPinnedListWindow(this._settings, this);
+                let dialog = new AddAppsToPinnedListWindow(this._settings, this, Constants.DIALOG_TYPE.Default);
                 dialog.show_all();
                 dialog.connect('response', ()=> { 
                     if(dialog.get_response()) {
@@ -102,11 +103,12 @@ var PinnedAppsPage = GObject.registerClass(
                 hexpand: true
             });
             let addCustomAppButton = new PW.IconButton({
-                 circular: false,
-                 icon_name: 'list-add-symbolic'
+                circular: false,
+                icon_name: 'list-add-symbolic',
+                tooltip_text: _("Create a custom shortcut to add to your Pinned Apps list.")
             });
             addCustomAppButton.connect('clicked', ()=> {
-                let dialog = new AddCustomLinkDialogWindow(this._settings, this);
+                let dialog = new AddCustomLinkDialogWindow(this._settings, this, Constants.DIALOG_TYPE.Default);
                 dialog.show_all();
                 dialog.connect('response', ()=> { 
                     if(dialog.get_response()) {
@@ -185,23 +187,27 @@ var PinnedAppsPage = GObject.registerClass(
                 //and delete pinned apps
                 let editButton = new PW.IconButton({
                     circular: false,
-                    icon_name: 'emblem-system-symbolic'
+                    icon_name: 'emblem-system-symbolic',
+                    tooltip_text: _('Modify')
                 });
                 let upButton = new PW.IconButton({
                     circular: false,
-                    icon_name: 'go-up-symbolic'
+                    icon_name: 'go-up-symbolic',
+                    tooltip_text: _('Move Up')
                 });
                 let downButton = new PW.IconButton({
                     circular: false,
-                    icon_name: 'go-down-symbolic'
+                    icon_name: 'go-down-symbolic',
+                    tooltip_text: _('Move Down')
                 });
                 let deleteButton = new PW.IconButton({
                     circular: false,
-                    icon_name: 'edit-delete-symbolic'
+                    icon_name: 'edit-delete-symbolic',
+                    tooltip_text: _('Delete')
                 });
                 editButton.connect('clicked', ()=> {
                     let appArray = [frameRow._name,frameRow._icon,frameRow._cmd];
-                    let dialog = new AddCustomLinkDialogWindow(this._settings, this, true, appArray);
+                    let dialog = new AddCustomLinkDialogWindow(this._settings, this, Constants.DIALOG_TYPE.Default, true, appArray);
                     dialog.show_all();
                     dialog.connect('response', ()=> { 
                         if(dialog.get_response()) {
@@ -262,13 +268,17 @@ var PinnedAppsPage = GObject.registerClass(
 //Dialog Window for Adding Apps to Pinned Apps List   
 var AddAppsToPinnedListWindow = GObject.registerClass(
     class ArcMenu_AddAppsToPinnedListWindow extends PW.DialogWindow {
-        _init(settings, parent, isMintLayout = false) {
+        _init(settings, parent, dialogType) {
             this._settings = settings;
-            this.isMintLayout = isMintLayout;
-            if(isMintLayout)    
+            this._dialogType = dialogType;
+            if(this._dialogType == Constants.DIALOG_TYPE.Default)  
+                super._init(_('Add to your Pinned Apps'), parent);     
+            else if(this._dialogType == Constants.DIALOG_TYPE.Mint_Pinned_Apps)
                 super._init(_('Change Selected Pinned App'), parent);
-            else
-                super._init(_('Select Apps to add to Pinned Apps List'), parent);
+            else if(this._dialogType == Constants.DIALOG_TYPE.Application_Shortcuts)
+                super._init(_('Select Application Shortcuts'), parent);
+            else if(this._dialogType == Constants.DIALOG_TYPE.Directories_Shortcuts)
+                super._init(_('Select Directory Shortcuts'), parent);
             this.newPinnedAppsArray=[];
             this.addResponse = false;
         }
@@ -283,7 +293,8 @@ var AddAppsToPinnedListWindow = GObject.registerClass(
             pinnedAppsScrollWindow.set_min_content_width(500);
             this.appsFrame = new PW.FrameBox();
             let addAppsButton;
-            if(!this.isMintLayout){
+            if(this._dialogType == Constants.DIALOG_TYPE.Default || this._dialogType == Constants.DIALOG_TYPE.Application_Shortcuts
+                || this._dialogType == Constants.DIALOG_TYPE.Directories_Shortcuts){
                 //Label and button to add apps to list
                 addAppsButton = new Gtk.Button({
                     label: _("Add"),
@@ -299,12 +310,161 @@ var AddAppsToPinnedListWindow = GObject.registerClass(
             
 
             // add the frames to the vbox
-            this._loadCategories();
+            
             pinnedAppsScrollWindow.add_with_viewport(this.appsFrame);
             vbox.add(pinnedAppsScrollWindow);
-            if(!this.isMintLayout)
+            if(this._dialogType == Constants.DIALOG_TYPE.Default){
+                this._loadCategories();
                 vbox.add(addAppsButton);
+            }
+            else if(this._dialogType == Constants.DIALOG_TYPE.Directories_Shortcuts){
+                let defaultApplicationShortcuts = this._settings.get_default_value('directory-shortcuts-list').deep_unpack();
+                defaultApplicationShortcuts.push(["Computer", "ArcMenu_Computer", "ArcMenu_Computer"]);
+                defaultApplicationShortcuts.push(["Network", "ArcMenu_Network", "ArcMenu_Network"]);
+                for(let i = 0;i < defaultApplicationShortcuts.length; i++) {
+                    let frameRow = new PW.FrameBoxRow();
+                    let path, icon;
+        
+                    if(defaultApplicationShortcuts[i][2]=="ArcMenu_Home")
+                        path = GLib.get_home_dir();
+                    else if(defaultApplicationShortcuts[i][2].startsWith("ArcMenu_"))
+                        path = GLib.get_home_dir()+"/"+defaultApplicationShortcuts[i][0];
+                    else
+                        path = defaultApplicationShortcuts[i][2];
+
+                    if(path){
+                        let file = Gio.File.new_for_path(path);
+                        
+                        try {
+                            let info = file.query_info('standard::symbolic-icon', 0, null);
+                            icon = info.get_symbolic_icon();
+                        } catch (e) {
+                            if (e instanceof Gio.IOErrorEnum) {
+                                if (!file.is_native()) {
+                                    icon = new Gio.ThemedIcon({ name: 'folder-remote-symbolic' });
+                                } else {
+                                    icon = new Gio.ThemedIcon({ name: 'folder-symbolic' });
+                                }
+                            }
+                        }
+                    }
+                    frameRow._name = defaultApplicationShortcuts[i][0];
+                    if(defaultApplicationShortcuts[i][2]=="ArcMenu_Network")
+                        frameRow._icon = 'network-workgroup-symbolic';
+                    else if(defaultApplicationShortcuts[i][2]=="ArcMenu_Computer")
+                        frameRow._icon = 'drive-harddisk-symbolic';
+                    else
+                        frameRow._icon = icon.to_string();
+           
+                    frameRow._cmd = defaultApplicationShortcuts[i][2];
+                    let iconImage = new Gtk.Image( {
+                        gicon: Gio.icon_new_for_string(frameRow._icon),
+                        pixel_size: 22
+                    });
+
+                    let iconImageBox = new Gtk.VBox( {
+                        margin_left: 5,
+                        expand: false
+                    });
+                    iconImageBox.add(iconImage);
+                    frameRow.add(iconImageBox);
+
+                    let frameLabel = new Gtk.Label( {
+                        use_markup: false,
+                        xalign: 0,
+                        hexpand: true
+                    });
+                    frameLabel.label = frameRow._name;
+                    frameRow.add(frameLabel);
+                    
+                    let checkButton = new Gtk.CheckButton({
+                        margin_right: 20
+                    });
+                    checkButton.connect('toggled', ()=> {
+                        //if checkbox is checked add the framerow to newPinnedAppsArray
+                        //else if unchecked remove it from the array
+                        if(checkButton.get_active()) {
+                            this.newPinnedAppsArray.push(frameRow);
+                        }
+                        else {
+                            let index= this.newPinnedAppsArray.indexOf(frameRow);
+                            this.newPinnedAppsArray.splice(index,1);
+                        }
+                    });
+                    frameRow.add(checkButton);
+                    
+                    
+                    this.appsFrame.add(frameRow);
+                    
+                }
+                vbox.add(addAppsButton);
+            }
+            else if(this._dialogType == Constants.DIALOG_TYPE.Application_Shortcuts){
+                this._loadCategories();
+                let defaultApplicationShortcutsFrame = new PW.FrameBox();
+                let defaultApplicationShortcuts = this._settings.get_default_value('application-shortcuts-list').deep_unpack();
+                defaultApplicationShortcuts.push([_("Arc Menu Settings"), "emblem-system-symbolic", "gnome-shell-extension-prefs arc-menu@linxgem33.com"]);
+                defaultApplicationShortcuts.push([_("Run Command..."), "system-run-symbolic", "ArcMenu_RunCommand"]);
+                for(let i = 0;i < defaultApplicationShortcuts.length; i++) {
+                    let frameRow = new PW.FrameBoxRow();
+                    frameRow._name = defaultApplicationShortcuts[i][0];
+                    frameRow._icon = defaultApplicationShortcuts[i][1];
+                    frameRow._cmd = defaultApplicationShortcuts[i][2];
+                    let iconImage = new Gtk.Image( {
+                        gicon: Gio.icon_new_for_string(frameRow._icon),
+                        pixel_size: 22
+                    });
+
+                    let iconImageBox = new Gtk.VBox( {
+                        margin_left: 5,
+                        expand: false
+                    });
+                    iconImageBox.add(iconImage);
+                    frameRow.add(iconImageBox);
+
+                    let frameLabel = new Gtk.Label( {
+                        use_markup: false,
+                        xalign: 0,
+                        hexpand: true
+                    });
+                    frameLabel.label = frameRow._name;
+                    frameRow.add(frameLabel);
+                    
+                    let checkButton = new Gtk.CheckButton({
+                        margin_right: 20
+                    });
+                    checkButton.connect('toggled', ()=> {
+                        //if checkbox is checked add the framerow to newPinnedAppsArray
+                        //else if unchecked remove it from the array
+                        if(checkButton.get_active()) {
+                            this.newPinnedAppsArray.push(frameRow);
+                        }
+                        else {
+                            let index= this.newPinnedAppsArray.indexOf(frameRow);
+                            this.newPinnedAppsArray.splice(index,1);
+                        }
+                    });
+                    frameRow.add(checkButton);
+                    
+
+                    defaultApplicationShortcutsFrame.add(frameRow);
+                    
+                }
+                let notebook = new PW.Notebook();
+
+                let defaultAppsPage = new PW.NotebookPage(_("Default Apps"));
+                notebook.append_page(defaultAppsPage);
+                defaultAppsPage.add(defaultApplicationShortcutsFrame);
+                vbox.remove(pinnedAppsScrollWindow);
+                let systemAppsPage = new PW.NotebookPage(_("System Apps"));
+                notebook.append_page(systemAppsPage);
+                systemAppsPage.add(pinnedAppsScrollWindow);
+
+                vbox.add(notebook);
+                vbox.add(addAppsButton);
+            }
             else{
+                this._loadCategories();
                 let sessionOptionsFrame = new PW.FrameBox();
                 for(let i = 0; i < 4; i++){
                     let frameRow = new PW.FrameBoxRow();
@@ -381,9 +541,8 @@ var AddAppsToPinnedListWindow = GObject.registerClass(
               let _b = x.get_display_name();
               return GLib.strcmp0(_a, _b);
             });
-
             //iterate through allApps and create the frameboxrows, labels, and checkbuttons
-            for(let i = 0;i<allApps.length;i++) {
+            for(let i = 0;i < allApps.length; i++) {
                 if(allApps[i].should_show()) {
                     let frameRow = new PW.FrameBoxRow();
                     frameRow._name = allApps[i].get_display_name();
@@ -392,7 +551,7 @@ var AddAppsToPinnedListWindow = GObject.registerClass(
                     else 
                         frameRow._icon= "dialog-information";
                         
-                    frameRow._cmd =  allApps[i].get_id(); //string for command line to launch .desktop files
+                    frameRow._cmd = allApps[i].get_id(); //string for command line to launch .desktop files
                     let iconImage = new Gtk.Image( {
                         gicon: Gio.icon_new_for_string(frameRow._icon),
                         pixel_size: 22
@@ -412,20 +571,8 @@ var AddAppsToPinnedListWindow = GObject.registerClass(
                     });
                     frameLabel.label = frameRow._name;
                     frameRow.add(frameLabel);
-                    if(this.isMintLayout){
-                        let checkButton = new PW.IconButton({
-                            circular: false,
-                            icon_name: 'list-add-symbolic'
-                        });
-                        checkButton.margin_right = 20;
-                        checkButton.connect('clicked', ()=> {
-                            this.newPinnedAppsArray.push(frameRow._name, frameRow._icon, frameRow._cmd);
-                            this.addResponse = true;
-                            this.response(-10);
-                        });
-                        frameRow.add(checkButton);
-                    }
-                    else{
+                    if(this._dialogType == Constants.DIALOG_TYPE.Default || this._dialogType == Constants.DIALOG_TYPE.Application_Shortcuts||
+                        this._dialogType == Constants.DIALOG_TYPE.Directories_Shortcuts){
                         let checkButton = new Gtk.CheckButton({
                             margin_right: 20
                         });
@@ -442,6 +589,19 @@ var AddAppsToPinnedListWindow = GObject.registerClass(
                         });
                         frameRow.add(checkButton);
                     }
+                    else{
+                        let checkButton = new PW.IconButton({
+                            circular: false,
+                            icon_name: 'list-add-symbolic'
+                        });
+                        checkButton.margin_right = 20;
+                        checkButton.connect('clicked', ()=> {
+                            this.newPinnedAppsArray.push(frameRow._name, frameRow._icon, frameRow._cmd);
+                            this.addResponse = true;
+                            this.response(-10);
+                        });
+                        frameRow.add(checkButton);
+                    }
 
                     this.appsFrame.add(frameRow);
                 }
@@ -452,13 +612,21 @@ var AddAppsToPinnedListWindow = GObject.registerClass(
 //Dialog Window for Adding Custom Links to Pinned Apps List    
 var AddCustomLinkDialogWindow = GObject.registerClass(
     class ArcMenu_AddCustomLinkDialogWindow extends PW.DialogWindow {
-        _init(settings, parent, isAppEdit=false, appArray=null) {
+        _init(settings, parent, dialogType, isAppEdit=false, appArray=null) {
             this._settings = settings;
             this.newPinnedAppsArray=[];
             this.addResponse = false;
             this.isAppEdit = isAppEdit;
+            this._dialogType = dialogType;
             this.appArray = appArray;
-            super._init(isAppEdit?_('Edit Pinned App'):_('Add a Custom Shortcut'), parent);
+            if(this._dialogType == Constants.DIALOG_TYPE.Default)  
+                super._init(isAppEdit?_('Edit Pinned App'):_('Add a Custom Shortcut'), parent);    
+            else if(this._dialogType == Constants.DIALOG_TYPE.Mint_Pinned_Apps)
+                super._init(isAppEdit?_('Edit Pinned App'):_('Add a Custom Shortcut'), parent);
+            else if(this._dialogType == Constants.DIALOG_TYPE.Application_Shortcuts)
+                super._init(isAppEdit?_('Edit Shortcut'):_('Add a Custom Shortcut'), parent);
+            else if(this._dialogType == Constants.DIALOG_TYPE.Directories_Shortcuts)
+                super._init(isAppEdit?_('Edit Custom Shortcut'):_('Add a Custom Shortcut'), parent);
         }
 
         _createLayout(vbox) {
@@ -507,7 +675,8 @@ var AddCustomLinkDialogWindow = GObject.registerClass(
             iconFrameRow.add(iconFrameLabel);
             iconFrameRow.add(fileChooserButton);
             iconFrameRow.add(iconEntry);
-            mainFrame.add(iconFrameRow);
+            if(this._dialogType !== Constants.DIALOG_TYPE.Directories_Shortcuts)
+                mainFrame.add(iconFrameRow);
 
             //third row  - Command of Custom link
             let cmdFrameRow = new PW.FrameBoxRow();
@@ -518,6 +687,8 @@ var AddCustomLinkDialogWindow = GObject.registerClass(
                 hexpand: true,
                 selectable: false
             });
+            if(this._dialogType == Constants.DIALOG_TYPE.Directories_Shortcuts)
+                cmdFrameLabel.label =  _("Shortcut Path:");
             let cmdEntry = new Gtk.Entry();
             cmdEntry.set_width_chars(35);
             cmdFrameRow.add(cmdFrameLabel);
@@ -539,11 +710,14 @@ var AddCustomLinkDialogWindow = GObject.registerClass(
                 }
             }
             addButton.connect('clicked', ()=> {
-               this.newPinnedAppsArray.push(nameEntry.get_text());
-               this.newPinnedAppsArray.push(iconEntry.get_text());
-               this.newPinnedAppsArray.push(cmdEntry.get_text());
-               this.addResponse = true;
-               this.response(-10);
+                this.newPinnedAppsArray.push(nameEntry.get_text());
+                if(this._dialogType !== Constants.DIALOG_TYPE.Directories_Shortcuts)
+                    this.newPinnedAppsArray.push(iconEntry.get_text());
+                else
+                    this.newPinnedAppsArray.push("");
+                this.newPinnedAppsArray.push(cmdEntry.get_text());
+                this.addResponse = true;
+                this.response(-10);
             });
             addButton.set_halign(Gtk.Align.END);
 
@@ -579,15 +753,18 @@ var GeneralPage = GObject.registerClass(
             });
 
             let menuPositionLeftButton = new Gtk.RadioButton({
-                label: _('Left')
+                label: _('Left'),
+                tooltip_text: _("Position Arc Menu on the Left side of the main panel")
             });
             let menuPositionCenterButton = new Gtk.RadioButton({
                 label: _('Center'),
-                group: menuPositionLeftButton
+                group: menuPositionLeftButton,
+                tooltip_text: _("Position Arc Menu in the Center of the main panel")
             });
             let menuPositionRightButton = new Gtk.RadioButton({
                 label: _('Right'),
-                group: menuPositionLeftButton
+                group: menuPositionLeftButton,
+                tooltip_text: _("Position Arc Menu on the Right side of the main panel")
             });
             // callback handlers for the radio buttons
             menuPositionLeftButton.connect('clicked', () => {
@@ -639,7 +816,8 @@ var GeneralPage = GObject.registerClass(
                     lower: 0,upper: 100, step_increment: 1, page_increment: 1, page_size: 0
                 }),
                 digits: 0,round_digits: 0,hexpand: true,
-                value_pos: Gtk.PositionType.RIGHT
+                value_pos: Gtk.PositionType.RIGHT,
+                tooltip_text: _("Adjust Arc Menu's menu alignment relative to Arc Menu's button")
             });
            // alignmentScale.connect('format-value', (scale, value) => { return value.toString() + 'px'; });
             alignmentScale.set_value(this._settings.get_int('menu-position-alignment'));
@@ -661,7 +839,10 @@ var GeneralPage = GObject.registerClass(
                 hexpand: true
             });
 
-            let multiMonitorSwitch = new Gtk.Switch({ halign: Gtk.Align.END });
+            let multiMonitorSwitch = new Gtk.Switch({ 
+                halign: Gtk.Align.END,
+                tooltip_text: _("Display Arc Menu on all monitors when using Dash to Panel") 
+            });
             multiMonitorSwitch.set_active(this._settings.get_boolean('multi-monitor'));
             multiMonitorSwitch.connect('notify::active', (widget) => {
                 this._settings.set_boolean('multi-monitor', widget.get_active());
@@ -681,7 +862,10 @@ var GeneralPage = GObject.registerClass(
                 hexpand: true
             });
 
-            let tooltipSwitch = new Gtk.Switch({ halign: Gtk.Align.END });
+            let tooltipSwitch = new Gtk.Switch({ 
+                halign: Gtk.Align.END,
+                tooltip_text: _("Disable all tooltips in Arc Menu") 
+            });
             tooltipSwitch.set_active(this._settings.get_boolean('disable-tooltips'));
             tooltipSwitch.connect('notify::active', (widget) => {
                 this._settings.set_boolean('disable-tooltips', widget.get_active());
@@ -692,22 +876,45 @@ var GeneralPage = GObject.registerClass(
             tooltipFrame.add(tooltipRow);
 
             // Hot Corner Box   
-            let disableHotCornerFrame = new PW.FrameBox();
-            let disableHotCornerRow = new PW.FrameBoxRow();
-            let disableHotCornerLabel = new Gtk.Label({
-                label: _("Disable activities hot corner"),
+            let modifyHotCornerFrame = new PW.FrameBox();
+            let modifyHotCornerRow = new PW.FrameBoxRow();
+            let modifyHotCornerLabel = new Gtk.Label({
+                label: _("Modify Activities Hot Corner"),
                 use_markup: true,
                 xalign: 0,
                 hexpand: true
             });
-            let disableHotCornerSwitch = new Gtk.Switch({ halign: Gtk.Align.END });
-            disableHotCornerSwitch.set_active(this._settings.get_boolean('disable-activities-hotcorner'));
-            disableHotCornerSwitch.connect('notify::active', (widget) => {
-                this._settings.set_boolean('disable-activities-hotcorner', widget.get_active());
+            
+            let modifyHotCornerButton = new PW.IconButton({
+                circular: true,
+                icon_name: 'emblem-system-symbolic',
+                tooltip_text: _("Modify the action of the Activities Hot Corner")
             });
-            disableHotCornerRow.add(disableHotCornerLabel);
-            disableHotCornerRow.add(disableHotCornerSwitch);
-            disableHotCornerFrame.add(disableHotCornerRow);
+            modifyHotCornerButton.connect('clicked', ()=> {
+                let dialog = new ModifyHotCornerDialogWindow(this._settings, this);
+                dialog.show_all();
+                dialog.connect('response', ()=> { 
+                    dialog.destroy();
+                }); 
+            });
+            let modifyHotCornerSwitch = new Gtk.Switch({ 
+                halign: Gtk.Align.END,
+                tooltip_text: _("Override the default behavoir of the Activities Hot Corner")
+            });
+            modifyHotCornerSwitch.set_active(this._settings.get_boolean('override-hot-corners'));
+            modifyHotCornerButton.set_sensitive(this._settings.get_boolean('override-hot-corners'));
+            modifyHotCornerSwitch.connect('notify::active', (widget) => {
+                this._settings.set_boolean('override-hot-corners',widget.get_active());
+                modifyHotCornerButton.set_sensitive(widget.get_active());
+                if(!widget.get_active()){
+                    this._settings.set_enum('hot-corners',Constants.HOT_CORNERS_ACTION.Default);
+                }
+            });
+            modifyHotCornerRow.add(modifyHotCornerLabel);
+            modifyHotCornerRow.add(modifyHotCornerButton);
+            modifyHotCornerRow.add(modifyHotCornerSwitch);
+            modifyHotCornerFrame.add(modifyHotCornerRow);
+
            
             //Pinned Apps / Categories Default View Toggle 
             let defaultLeftBoxFrame = new PW.FrameBox();
@@ -718,7 +925,10 @@ var GeneralPage = GObject.registerClass(
                 xalign: 0,
                 hexpand: true
             });
-            let defaultLeftBoxCombo = new Gtk.ComboBoxText({ halign: Gtk.Align.END });
+            let defaultLeftBoxCombo = new Gtk.ComboBoxText({ 
+                halign: Gtk.Align.END,
+                tooltip_text: _("Choose the default menu view") 
+            });
             defaultLeftBoxCombo.append_text(_("Pinned Apps"));
             defaultLeftBoxCombo.append_text(_("Categories List"));
             if(this._settings.get_boolean('enable-pinned-apps'))
@@ -744,7 +954,10 @@ var GeneralPage = GObject.registerClass(
                 xalign: 0,
                 hexpand: true
             });
-            let keyReleaseCombo = new Gtk.ComboBoxText({ halign: Gtk.Align.END });
+            let keyReleaseCombo = new Gtk.ComboBoxText({ 
+                halign: Gtk.Align.END,
+                tooltip_text: _("Choose a method for the hotkey activation")  
+            });
             keyReleaseCombo.append_text(_("Key Release"));
             keyReleaseCombo.append_text(_("Key Press"));
             if(this._settings.get_boolean('disable-hotkey-onkeyrelease'))
@@ -777,28 +990,32 @@ var GeneralPage = GObject.registerClass(
                 label: _("Left Super Key"),
                 halign: Gtk.Align.CENTER,
                 hexpand: true,
-                draw_indicator: false
+                draw_indicator: false,
+                tooltip_text: _("Set Arc Menu hotkey to Left Super Key")  
             });   
             let rightButton = new Gtk.RadioButton({
                 label: _("Right Super Key"),
                 group: leftButton,
                 halign: Gtk.Align.CENTER,
                 hexpand: true,
-                draw_indicator: false
+                draw_indicator: false,
+                tooltip_text: _("Set Arc Menu hotkey to Right Super Key")  
             });   
             let customButton = new Gtk.RadioButton({
                 label: _("Custom Hotkey"),
                 group: leftButton,
                 halign: Gtk.Align.CENTER,
                 hexpand: true,
-                draw_indicator: false
+                draw_indicator: false,
+                tooltip_text: _("Set a custom hotkey for Arc Menu")  
             });   
             this.undefinedButton = new Gtk.RadioButton({
                 label: _("None"),
                 group: leftButton,
                 halign: Gtk.Align.CENTER,
                 hexpand: true,
-                draw_indicator: false
+                draw_indicator: false,
+                tooltip_text: _("Clear Arc Menu hotkey, use GNOME default")  
             });  
             switch (this._settings.get_enum('menu-hotkey')) {
                 case 0:
@@ -868,14 +1085,16 @@ var GeneralPage = GObject.registerClass(
 
             let shortcutCell = new Gtk.ShortcutsShortcut({
                 halign: Gtk.Align.CENTER,
-                hexpand: true
+                hexpand: true,
+                tooltip_text: _("Current custom hotkey")  
             });
             shortcutCell.accelerator = this._settings.get_string('menu-keybinding-text');
             
             let modifyHotkeyButton = new Gtk.Button({
                 label: _("Modify Hotkey"),
                 halign: Gtk.Align.END,
-                hexpand: false
+                hexpand: false,
+                tooltip_text: _("Create your own hotkey combination for Arc Menu")  
             });   
             menuKeybindingRow.add(currentHotkeyLabel);
             menuKeybindingRow.add(shortcutCell);
@@ -910,12 +1129,188 @@ var GeneralPage = GObject.registerClass(
             this.add(menuPositionFrame);
             this.add(multiMonitorFrame);
             this.add(tooltipFrame);
-            this.add(disableHotCornerFrame);
+            this.add(modifyHotCornerFrame);
             this.add(this.menuKeybindingFrame);
             //-----------------------------------------------------------------
         }
 });
+//Dialog Window for Custom Activities Hot Corner
+var ModifyHotCornerDialogWindow = GObject.registerClass(
+    class ArcMenu_ModifyHotCornerDialogWindow extends PW.DialogWindow {
+        _init(settings, parent) {
+            this._settings = settings;
+            this.addResponse = false;
+            super._init(_('Modify Activities Hot Corner'), parent);
+            this.resize(600,250);
+        }
 
+        _createLayout(vbox) { 
+            // Hot Corner Box   
+            let modifyHotCornerFrame = new PW.FrameBox();
+            let modifyHotCornerRow = new PW.FrameBoxRow();
+            let modifyHotCornerLabel = new Gtk.Label({
+                label: _("Activities Hot Corner Action"),
+                use_markup: true,
+                xalign: 0,
+                hexpand: true
+            });
+            let hotCornerActionCombo = new Gtk.ComboBoxText({ 
+                halign: Gtk.Align.END,
+                tooltip_text: _("Choose the action of the Activities Hot Corner") 
+            });
+            hotCornerActionCombo.append_text(_("GNOME Default"));
+            hotCornerActionCombo.append_text(_("Disabled"));
+            hotCornerActionCombo.append_text(_("Toggle Arc Menu"));
+            hotCornerActionCombo.append_text(_("Custom"));
+            
+            let customHotCornerFrame = new PW.FrameBox();
+            let customHeaderHotCornerRow = new PW.FrameBoxRow();
+            
+            let customHeaderHotCornerLabel = new Gtk.Label({
+                label: "<b>"+_("Custom Activies Hot Corner Action") + "</b>\n" + _("Choose from a list of preset commands or use your own terminal command"),
+                use_markup: true,
+                xalign: 0,
+                hexpand: true
+            });
+            customHeaderHotCornerLabel.set_sensitive(false);
+            customHeaderHotCornerRow.add(customHeaderHotCornerLabel);
+            
+            let presetCustomHotCornerRow = new PW.FrameBoxRow();
+            let presetCustomHotCornerLabel = new Gtk.Label({
+                label: _("Preset commands"),
+                use_markup: true,
+                xalign: 0,
+                hexpand: true
+            });
+            let hotCornerPresetsCombo = new Gtk.ComboBoxText({ 
+                tooltip_text: _("Choose from a list of preset Activities Hot Corner commands"),
+                hexpand: true
+            });
+
+            hotCornerPresetsCombo.append_text(_("Show all Applications")); // 0
+            hotCornerPresetsCombo.append_text(_("GNOME Terminal")); // 1
+            hotCornerPresetsCombo.append_text(_("GNOME System Monitor")); // 2
+            hotCornerPresetsCombo.append_text(_("GNOME Calculator"));
+            hotCornerPresetsCombo.append_text(_("GNOME gedit"));
+            hotCornerPresetsCombo.append_text(_("GNOME Screenshot"));
+            hotCornerPresetsCombo.append_text(_("GNOME Weather"));
+            hotCornerPresetsCombo.append_text(_("Run Command..."));
+            hotCornerPresetsCombo.connect('changed', (widget) => {
+                if(widget.get_active()==0){
+                    customHotCornerEntry.set_text("ArcMenu_ShowAllApplications");
+                }
+                else if(widget.get_active()==1){
+                    customHotCornerEntry.set_text("gnome-terminal");
+                }
+                else if(widget.get_active()==2){
+                    customHotCornerEntry.set_text("gnome-system-monitor");
+                }
+                else if(widget.get_active()==3){
+                    customHotCornerEntry.set_text("gnome-calculator");
+                }
+                else if(widget.get_active()==4){
+                    customHotCornerEntry.set_text("gedit");
+                }
+                else if(widget.get_active()==5){
+                    customHotCornerEntry.set_text("gnome-screenshot");
+                }
+                else if(widget.get_active()==6){
+                    customHotCornerEntry.set_text("gnome-weather");
+                }
+                else if(widget.get_active()==7){
+                    customHotCornerEntry.set_text("ArcMenu_RunCommand");
+                }
+            });
+            presetCustomHotCornerRow.add(presetCustomHotCornerLabel);
+            presetCustomHotCornerRow.add(hotCornerPresetsCombo);
+            
+            let customHotCornerRow = new PW.FrameBoxRow();
+            let customHotCornerLabel = new Gtk.Label({
+                label: _("Terminal Command"),
+                use_markup: true,
+                xalign: 0,
+                hexpand: true
+            });
+            let customHotCornerEntry = new Gtk.Entry({
+                tooltip_text: _("Set a custom terminal command to launch on active hot corner")
+            });
+            customHotCornerEntry.connect('changed', (widget) => {
+                applyButton.set_sensitive(true); 
+                let index = this.checkIfMatch(customHotCornerEntry.get_text());
+                hotCornerPresetsCombo.set_active(index)
+            });
+            customHotCornerEntry.set_width_chars(40);
+            customHotCornerEntry.set_text(this._settings.get_string('custom-hot-corner-cmd'));
+            let index = this.checkIfMatch(customHotCornerEntry.get_text());
+            hotCornerPresetsCombo.set_active(index)
+            customHotCornerRow.add(customHotCornerLabel);
+            customHotCornerRow.add(customHotCornerEntry);
+
+            customHotCornerFrame.add(customHeaderHotCornerRow);
+            customHotCornerFrame.add(presetCustomHotCornerRow);
+            customHotCornerFrame.add(customHotCornerRow);
+            
+            //Apply Button
+            let applyButton = new Gtk.Button({
+                label: _("Apply"),
+                hexpand: true,
+                tooltip_text: _("Apply changes and set new hot corner action")
+            });
+            applyButton.connect('clicked', () => {
+                this._settings.set_string('custom-hot-corner-cmd',customHotCornerEntry.get_text());
+                this._settings.set_enum('hot-corners',hotCornerActionCombo.get_active());
+                applyButton.set_sensitive(false);
+                this.addResponse = true;
+                this.response(-10);
+            });
+            applyButton.set_halign(Gtk.Align.END);
+            applyButton.set_sensitive(false);
+           
+
+            let hotCornerAction = this._settings.get_enum('hot-corners');
+            hotCornerActionCombo.set_active(hotCornerAction);
+            hotCornerActionCombo.connect('changed', (widget) => {
+                applyButton.set_sensitive(true);
+                if(widget.get_active()==Constants.HOT_CORNERS_ACTION.Custom){
+                    customHotCornerFrame.set_sensitive(true);
+                }
+                else{
+                    customHotCornerFrame.set_sensitive(false);
+                }
+            });
+
+            modifyHotCornerRow.add(modifyHotCornerLabel);
+            modifyHotCornerRow.add(hotCornerActionCombo);
+            modifyHotCornerFrame.add(modifyHotCornerRow);
+            if(hotCornerActionCombo.get_active() == Constants.HOT_CORNERS_ACTION.Custom)
+                customHotCornerFrame.set_sensitive(true);
+            else
+                customHotCornerFrame.set_sensitive(false);
+            vbox.add(modifyHotCornerFrame);
+            vbox.add(customHotCornerFrame);
+            vbox.add(applyButton);
+        }
+        checkIfMatch(text){
+            if(text === "ArcMenu_ShowAllApplications")
+                return 0;
+            else if(text === "gnome-terminal")
+                return 1;
+            else if(text === "gnome-system-monitor")
+                return 2;
+            else if(text === "gnome-calculator")
+                return 3;
+            else if(text === "gedit")
+                return 4;
+            else if(text === "gnome-screenshot")
+                return 5;
+            else if(text === "gnome-weather")
+                return 6;
+            else if(text === "ArcMenu_RunCommand")
+                return 7;
+            else
+                return -1;
+        }
+});
 //Dialog Window for Custom Hotkey
 var CustomHotkeyDialogWindow = GObject.registerClass(
     class ArcMenu_CustomHotkeyDialogWindow extends PW.DialogWindow {
@@ -1393,7 +1788,8 @@ var AppearancePage = GObject.registerClass(
             });
             let menuButtonAppearanceSettingsButton = new PW.IconButton({
                 circular: true,
-                icon_name: 'emblem-system-symbolic'
+                icon_name: 'emblem-system-symbolic',
+                tooltip_text: _("Customize Arc Menu's Button in Main Panel")
             });
 
             // Extra settings for the appearance of the menu button
@@ -1420,7 +1816,8 @@ var AppearancePage = GObject.registerClass(
             });
             let customizeArcMenuButton = new PW.IconButton({
                 circular: true,
-                icon_name: 'emblem-system-symbolic'
+                icon_name: 'emblem-system-symbolic',
+                tooltip_text: _("Customize various elements of Arc Menu")
             });
             customizeArcMenuButton.connect('clicked', () => {
                 let dialog = new ArcMenuCustomizationWindow(this._settings, this);
@@ -1443,6 +1840,7 @@ var AppearancePage = GObject.registerClass(
                         this._settings.set_int('menu-width', dialog.menuWidth);
                         this._settings.set_boolean('enable-large-icons',dialog.largeIcons);
                         this._settings.set_int('gap-adjustment',dialog.gapAdjustment);
+                        this._settings.set_boolean('enable-sub-menus', dialog.subMenus);
                         saveCSS(this._settings);
                         this._settings.set_boolean('reload-theme',true);
                         dialog.destroy();
@@ -1468,7 +1866,8 @@ var AppearancePage = GObject.registerClass(
             });
             let overrideArcMenuButton = new PW.IconButton({
                 circular: true,
-                icon_name: 'emblem-system-symbolic'
+                icon_name: 'emblem-system-symbolic',
+                tooltip_text: _("Create and manage your own custom themes for Arc Menu")
             });
             overrideArcMenuButton.set_sensitive(this._settings.get_boolean('enable-custom-arc-menu'));
             overrideArcMenuButton.connect('clicked', () => {
@@ -1503,7 +1902,10 @@ var AppearancePage = GObject.registerClass(
                     }   
                 }); 
             });
-            let overrideArcMenuSwitch = new Gtk.Switch({ halign: Gtk.Align.END});
+            let overrideArcMenuSwitch = new Gtk.Switch({ 
+                halign: Gtk.Align.END,
+                tooltip_text: _("Override the shell theme for Arc Menu only")
+            });
             overrideArcMenuSwitch.set_active(this._settings.get_boolean('enable-custom-arc-menu'));
             overrideArcMenuSwitch.connect('notify::active', (widget) => {
                 this._settings.set_boolean('enable-custom-arc-menu',widget.get_active());
@@ -1552,7 +1954,8 @@ var AppearancePage = GObject.registerClass(
             });
             let layoutButton = new PW.IconButton({
                 circular: true,
-                icon_name: 'emblem-system-symbolic'
+                icon_name: 'emblem-system-symbolic',
+                tooltip_text: _("Choose from a variety of menu layouts")
             });
             layoutButton.connect('clicked', () => {
                 let dialog = new ArcMenuLayoutWindow(this._settings, this);
@@ -1569,7 +1972,10 @@ var AppearancePage = GObject.registerClass(
                 }); 
             });
             layoutButton.set_sensitive(this._settings.get_boolean('enable-custom-arc-menu-layout'));
-            let layoutSwitch = new Gtk.Switch({ halign: Gtk.Align.END});
+            let layoutSwitch = new Gtk.Switch({ 
+                halign: Gtk.Align.END,
+                tooltip_text: _("Enable the selection of different menu layouts")
+            });
             layoutSwitch.set_active(this._settings.get_boolean('enable-custom-arc-menu-layout'));
             layoutSwitch.connect('notify::active', (widget) => { 
                 this._settings.set_boolean('enable-custom-arc-menu-layout',widget.get_active());
@@ -1632,7 +2038,8 @@ var AppearancePage = GObject.registerClass(
 
             let menuTweaksButton = new PW.IconButton({
                 circular: true,
-                icon_name: 'emblem-system-symbolic'
+                icon_name: 'emblem-system-symbolic',
+                tooltip_text: _("Tweaks for the current menu layout")
             });
             menuTweaksButton.connect('clicked', () => {
                 let dialog = new LayoutTweaks.tweaks.TweaksDialog(this._settings, this, currentStyleLabel.label +" " + _("Tweaks"));
@@ -1788,6 +2195,7 @@ var ArcMenuCustomizationWindow = GObject.registerClass(
             this.menuArrowSize = this._settings.get_int('menu-arrow-size');
             this.largeIcons = this._settings.get_boolean('enable-large-icons');
             this.gapAdjustment = this._settings.get_int('gap-adjustment');
+            this.subMenus = this._settings.get_boolean('enable-sub-menus');
             super._init(_('Customize Arc Menu Appearance'), parent);
 	        this.resize(450,250);
         }
@@ -1875,6 +2283,25 @@ var ArcMenuCustomizationWindow = GObject.registerClass(
             largeIconsRow.add(largeIconsSwitch);             
             mainFrame.add(largeIconsRow);
 
+            let subMenusRow = new PW.FrameBoxRow();
+            let subMenusLabel = new Gtk.Label({
+                label: _('Category Sub Menus'),
+                use_markup: true,
+                xalign: 0,
+                hexpand: true,
+                selectable: false
+             });   
+            let subMenusSwitch = new Gtk.Switch({ halign: Gtk.Align.END});
+            subMenusSwitch.set_active(this.subMenus);
+            subMenusSwitch.connect('notify::active', (widget) => {
+                 this.subMenus = widget.get_active();
+                 applyButton.set_sensitive(true);
+                 resetButton.set_sensitive(true);
+            });
+            subMenusRow.add(subMenusLabel);            
+            subMenusRow.add(subMenusSwitch);             
+            mainFrame.add(subMenusRow);
+
             let vertSeparatorRow = new PW.FrameBoxRow();
             let vertSeparatorLabel = new Gtk.Label({
                 label: _('Enable Vertical Separator'),
@@ -1961,9 +2388,11 @@ var ArcMenuCustomizationWindow = GObject.registerClass(
                     this.separatorColor = "rgb(63,62,64)";
                     this.verticalSeparator = false;
                     this.largeIcons = false;
+                    this.subMenus = false;
                     hscale.set_value(this.heightValue);
                     menuWidthScale.set_value(this.menuWidth);
                     gapAdjustmentScale.set_value(0);
+                    subMenusSwitch.set_active(this.subMenus);
                     vertSeparatorSwitch.set_active(this.verticalSeparator);
                     largeIconsSwitch.set_active(this.largeIcons);
                     color.parse(this.separatorColor);
@@ -1997,6 +2426,7 @@ var ArcMenuCustomizationWindow = GObject.registerClass(
                 this.menuWidth != 290 ||
                 this.separatorColor != "rgb(63,62,64)"||
                 this.verticalSeparator != false||
+                this.subMenus != false ||
                 this.largeIcons != false||
                 this.gapAdjustment != 0) ? true : false
             
@@ -2833,140 +3263,573 @@ var OverrideArcMenuThemeWindow = GObject.registerClass(
             this.separatorColor != "rgb(63,62,64)") ? true : false
         }
 });
+var ConfigureShortcuts = GObject.registerClass(
+    class ArcMenu_ConfigureShortcutsDialog extends PW.DialogWindow {
+        _init(settings, parent) {
+            this._settings = settings;
+            this.addResponse = false;
+            super._init(_("Configure Shortcuts"), parent);
+            this.resize(550,250);
+        }
+        _createLayout(vbox) {    
+            let notebook = new PW.Notebook();
 
-var ShortcutsPage = GObject.registerClass(
-    class ArcMenu_ShortcutsPage extends PW.NotebookPage {
+            let defautlDirectoriesPage = new DefaultDirectoriesPage(this._settings);
+            notebook.append_page(defautlDirectoriesPage);
+    
+            let applicationShortcutsPage = new ApplicationShortcutsPage(this._settings);
+            notebook.append_page(applicationShortcutsPage);
+    
+            let sessionButtonsPage = new SessionButtonsPage(this._settings);
+            notebook.append_page(sessionButtonsPage);
+    
+            vbox.add(notebook);
+        }
+});
+var DefaultDirectoriesPage = GObject.registerClass(
+    class ArcMenu_DefaultDirectoriesPage extends PW.NotebookPage {
     _init(settings) {
-        super._init(_('Shortcuts'));
+        super._init(_('Directories'));
         this._settings = settings;
-           
-        //WHICH SHORTCUTS ON RIGHT SIDE
-        let shortcutsFrame = new PW.FrameBox();
-        let shortcutsScrollWindow = new Gtk.ScrolledWindow();
-        shortcutsScrollWindow.set_policy(Gtk.PolicyType.AUTOMATIC, Gtk.PolicyType.AUTOMATIC);
-        shortcutsScrollWindow.set_max_content_height(115);
-        shortcutsScrollWindow.set_min_content_height(115);
-        shortcutsScrollWindow.add(shortcutsFrame);
-        var SHORTCUT_TRANSLATIONS = [_("Home"), _("Documents"),_("Downloads"), _("Music"),_("Pictures"),_("Videos"),_("Computer"), _("Network")];                        
-        for(let i = 0;i<8;i++){
-            let shortcut; 
-            if(i<6)
-                shortcut = Constants.RIGHT_SIDE_SHORTCUTS[i]; 
-            else if(i==6)  
-                shortcut = 'Computer';  
-            else if(i==7)  
-                shortcut = 'Network';            
-            let shortcutsRow = new PW.FrameBoxRow();
-            let shortcutsLabel = new Gtk.Label({
-                label: SHORTCUT_TRANSLATIONS[i],
-                use_markup: true,
-                xalign: 0,
-                hexpand: true
-            });
-            
-            let checkButton = new Gtk.Switch();
-            let setting = 'show-'+shortcut+'-shortcut';
-            let settingName = GLib.utf8_strdown(setting,setting.length);
-            if(this._settings.get_boolean(settingName))
-                checkButton.set_active(true);
-            else
-                checkButton.set_active(false);
-            checkButton.connect('notify::active', (widget) => {
-                this._settings.set_boolean(settingName, widget.get_active());
-            });
-            shortcutsRow.add(shortcutsLabel);
-            shortcutsRow.add(checkButton);
-            shortcutsFrame.add(shortcutsRow);
-
-        };
-        this.add(shortcutsScrollWindow);
-        //---------------------------------------------------------------------------------------
-        
-        //EXTERNAL DEVICES/BOOKMARKS--------------------------------------------------------------
-        let placesFrame = new PW.FrameBox();
-        let externalDeviceRow = new PW.FrameBoxRow();
-        let externalDeviceLabel = new Gtk.Label({
-            label: _("External Devices"),
-            use_markup: true,
-            xalign: 0,
-            hexpand: true
-        });
-        
-        let externalDeviceButton = new Gtk.Switch();
-        if(this._settings.get_boolean('show-external-devices'))
-            externalDeviceButton.set_active(true);
-        externalDeviceButton.connect('notify::active', (widget) => {
-            this._settings.set_boolean('show-external-devices', widget.get_active());
-        });   
-        externalDeviceRow.add(externalDeviceLabel);
-        externalDeviceRow.add(externalDeviceButton);
-
-        //ADD TO FRAME
-        placesFrame.add(externalDeviceRow);
-        this.add(placesFrame);
-        
-        //BOOKMARKS LIST       
-        let bookmarksRow = new PW.FrameBoxRow();
-        let bookmarksLabel = new Gtk.Label({
-            label: _("Bookmarks"),
-            use_markup: true,
-            xalign: 0,
-            hexpand: true
-        });
-        
-        let bookmarksButton = new Gtk.Switch();
-        if(this._settings.get_boolean('show-bookmarks'))
-            bookmarksButton.set_active(true);
-        bookmarksButton.connect('notify::active', (widget) => {
-            this._settings.set_boolean('show-bookmarks', widget.get_active());
-        });   
-        bookmarksRow.add(bookmarksLabel);
-        bookmarksRow.add(bookmarksButton);
-
-        //ADD TO FRAME
-        placesFrame.add(bookmarksRow);
-        
-        //Software Shortcuts------------------------------------------------------------------------
         let softwareShortcutsFrame = new PW.FrameBox();
         let softwareShortcutsScrollWindow = new Gtk.ScrolledWindow();
         softwareShortcutsScrollWindow.set_policy(Gtk.PolicyType.AUTOMATIC, Gtk.PolicyType.AUTOMATIC);
-        softwareShortcutsScrollWindow.set_max_content_height(115);
-        softwareShortcutsScrollWindow.set_min_content_height(115);
+        softwareShortcutsScrollWindow.set_max_content_height(300);
+        softwareShortcutsScrollWindow.set_min_content_height(300);
         softwareShortcutsScrollWindow.add(softwareShortcutsFrame);
-        let SOFTWARE_TRANSLATIONS = [_("Software"), _("Settings"), _("Tweaks"), _("Terminal"), _("Activities Overview")];
-        for(let i = 0; i<Constants.SOFTWARE_SHORTCUTS.length;i++){
-            let shortcut = Constants.SOFTWARE_SHORTCUTS[i];
-            let softwareShortcutsRow = new PW.FrameBoxRow();
+        /*let all_color_themes = this._settings.get_value('color-themes').deep_unpack();
+        this._settings.set_value('color-themes',new GLib.Variant('aas',this.color_themes));*/
+
+        let applicationShortcuts = this._settings.get_value('directory-shortcuts-list').deep_unpack();
+
+        this._loadPinnedApps(applicationShortcuts,softwareShortcutsFrame);
+        this.add(softwareShortcutsScrollWindow);
+
+        //third row - add more apps to pinned apps list
+        let addPinnedAppsFrame = new PW.FrameBox();
+        let addPinnedAppsFrameRow = new PW.FrameBoxRow();
+        let addPinnedAppsFrameLabel = new Gtk.Label({
+            label: _("Add Default User Directories"),
+            use_markup: true,
+            xalign: 0,
+            hexpand: true
+        });
+        let addPinnedAppsButton = new PW.IconButton({
+            circular: false,
+            icon_name: 'list-add-symbolic',
+            tooltip_text: _("Browse a list of all default User Directories to add to your Directories Shortcuts")
+        });
+        addPinnedAppsButton.connect('clicked', ()=> {
+            let dialog = new AddAppsToPinnedListWindow(this._settings, this, Constants.DIALOG_TYPE.Directories_Shortcuts);
+            dialog.show_all();
+            dialog.connect('response', ()=> { 
+                if(dialog.get_response()) {
+                    //checked apps to add to pinned apps list - from dialog 'Add" button click event
+                    let newPinnedApps = dialog.get_newPinnedAppsArray();
+                    let array=[]; 
+                    for(let i = 0;i<newPinnedApps.length;i++){
+                        array.push([newPinnedApps[i]._name,newPinnedApps[i]._icon,newPinnedApps[i]._cmd]);
+                    }
+                    this._loadPinnedApps(array,softwareShortcutsFrame);
+                    dialog.destroy();
+                    softwareShortcutsFrame.show();
+                    this.savePinnedAppsButton.set_sensitive(true);
+                }
+                else
+                    dialog.destroy();
+            }); 
+        });
+        addPinnedAppsFrameRow.add(addPinnedAppsFrameLabel);
+        addPinnedAppsFrameRow.add(addPinnedAppsButton);
+        addPinnedAppsFrame.add(addPinnedAppsFrameRow);
+        this.add(addPinnedAppsFrame);
+        
+        //fourth row - add custom app to pinned list
+        let addCustomAppFrame = new PW.FrameBox();
+        let addCustomAppFrameRow = new PW.FrameBoxRow();
+        let addCustomAppFrameLabel = new Gtk.Label({
+            label: _("Add Custom Shortcut"),
+            use_markup: true,
+            xalign: 0,
+            hexpand: true
+        });
+        let addCustomAppButton = new PW.IconButton({
+            circular: false,
+            icon_name: 'list-add-symbolic',
+            tooltip_text: _("Create a custom shortcut to add to your Directories Shortcuts")
+        });
+        addCustomAppButton.connect('clicked', ()=> {
+            let dialog = new AddCustomLinkDialogWindow(this._settings, this, Constants.DIALOG_TYPE.Directories_Shortcuts);
+            dialog.show_all();
+            dialog.connect('response', ()=> { 
+                if(dialog.get_response()) {
+                    let newPinnedApps = dialog.get_newPinnedAppsArray();
+                    this._loadPinnedApps([newPinnedApps],softwareShortcutsFrame);
+                    dialog.destroy();
+                    softwareShortcutsFrame.show();
+                    this.savePinnedAppsButton.set_sensitive(true);
+                }
+                else
+                    dialog.destroy();
+            }); 
+        });
+        addCustomAppFrameRow.add(addCustomAppFrameLabel);
+        addCustomAppFrameRow.add(addCustomAppButton);
+        addCustomAppFrame.add(addCustomAppFrameRow);
+        this.add(addCustomAppFrame);
+
+
+        let buttonRow = new PW.FrameBoxRow();
+        let resetButton = new Gtk.Button({
+            label: _("Restore Defaults"),
+            tooltip_text: _("Restore the default Directory Shortcuts")
+        });   
+        resetButton.set_sensitive(true);
+        resetButton.connect('clicked', ()=> {
+            this.savePinnedAppsButton.set_sensitive(true);
+            softwareShortcutsFrame.remove_all_children();
+            this._loadPinnedApps(this._settings.get_default_value('directory-shortcuts-list').deep_unpack(), softwareShortcutsFrame);
+            softwareShortcutsFrame.show();
+        });
+
+        //last row - save settings
+        this.savePinnedAppsButton = new Gtk.Button({
+            label: _("Save"),
+            hexpand: true
+        });
+        this.savePinnedAppsButton.connect('clicked', ()=> {
+            //iterate through each frame row (containing apps to pin) to create an array to save in settings
+            let array = [];
+            for(let i = 0; i < softwareShortcutsFrame.count; i++) {
+                let frame = softwareShortcutsFrame.get_index(i);
+                array.push([frame._name,frame._icon, frame._cmd]);
+            }
+            this._settings.set_value('directory-shortcuts-list', new GLib.Variant('aas', array));
+            this.savePinnedAppsButton.set_sensitive(false);
+        }); 
+        this.savePinnedAppsButton.set_halign(Gtk.Align.END);
+        this.savePinnedAppsButton.set_sensitive(false);
+        buttonRow.add(resetButton);
+        buttonRow.add(this.savePinnedAppsButton);
+        this.add(buttonRow);
+    }
+
+    _loadPinnedApps(applicationShortcuts,softwareShortcutsFrame){
+        for(let i = 0; i < applicationShortcuts.length; i++){
+            let applicationName = applicationShortcuts[i][0];
+            let path, icon;
+            let editable = true;
+            if(applicationShortcuts[i][2]=="ArcMenu_Home"){
+                path = GLib.get_home_dir();
+                editable = false;
+            }
+            else if(applicationShortcuts[i][2].startsWith("ArcMenu_")){
+                path = GLib.get_home_dir()+"/"+applicationName;
+                editable = false;
+            }
+            else
+                path = applicationShortcuts[i][2];
+
+            if(path){
+                let file = Gio.File.new_for_path(path);
+                
+                try {
+                    let info = file.query_info('standard::symbolic-icon', 0, null);
+                    icon = info.get_symbolic_icon();
+                } catch (e) {
+                    if (e instanceof Gio.IOErrorEnum) {
+                        if (!file.is_native()) {
+                            icon = new Gio.ThemedIcon({ name: 'folder-remote-symbolic' });
+                        } else {
+                            icon = new Gio.ThemedIcon({ name: 'folder-symbolic' });
+                        }
+                    }
+                }
+            }
+            let frameRow = new PW.FrameBoxRow();
+            frameRow._name = applicationName;
+            if(applicationShortcuts[i][2]=="ArcMenu_Network")
+                frameRow._icon = 'network-workgroup-symbolic';
+            else if(applicationShortcuts[i][2]=="ArcMenu_Computer")
+                frameRow._icon = 'drive-harddisk-symbolic';
+            else
+                frameRow._icon = icon.to_string();
+       
+            frameRow._cmd = applicationShortcuts[i][2];
+            let applicationIcon = new Gtk.Image( {
+                gicon: Gio.icon_new_for_string(frameRow._icon),
+                pixel_size: 22
+            });
+            let applicationImageBox = new Gtk.VBox({
+                margin_left:5,
+                expand: false
+            });
+            applicationImageBox.add(applicationIcon);
+            frameRow.add(applicationImageBox);
+
             let softwareShortcutsLabel = new Gtk.Label({
-                label: SOFTWARE_TRANSLATIONS[i],
+                label: _(applicationName),
                 use_markup: true,
                 xalign: 0,
                 hexpand: true
             });
-            
-            let softwareCheckButton = new Gtk.Switch();
-            let softwareSetting = 'show-'+shortcut+'-shortcut';
-            let softwareSettingName = GLib.utf8_strdown(softwareSetting,softwareSetting.length);
-            if(this._settings.get_boolean(softwareSettingName))
-                softwareCheckButton.set_active(true);
-            else
-                softwareCheckButton.set_active(false);
-            softwareCheckButton.connect('notify::active', (widget) => {
-                this._settings.set_boolean(softwareSettingName, widget.get_active());
+            let buttonBox = new Gtk.Grid({
+                margin_top:0,
+                margin_bottom: 0,
+                vexpand: false,
+                hexpand: false,
+                margin_right: 15,
+                column_spacing: 2
             });
-            softwareShortcutsRow.add(softwareShortcutsLabel);
-            softwareShortcutsRow.add(softwareCheckButton);
-            softwareShortcutsFrame.add(softwareShortcutsRow);
+
+            //create the buttons to handle the ordering of pinned apps
+            //and delete pinned apps
+            let editButton;
+            if(editable){
+                editButton = new PW.IconButton({
+                    circular: false,
+                    icon_name: 'emblem-system-symbolic',
+                    tooltip_text: _('Modify')
+                });
+            }
+
+            let upButton = new PW.IconButton({
+                circular: false,
+                icon_name: 'go-up-symbolic',
+                tooltip_text: _('Move Up')
+            });
+            let downButton = new PW.IconButton({
+                circular: false,
+                icon_name: 'go-down-symbolic',
+                tooltip_text: _('Move Down')
+            });
+            let deleteButton = new PW.IconButton({
+                circular: false,
+                icon_name: 'edit-delete-symbolic',
+                tooltip_text: _('Delete')
+            });
+            if(editable){
+                editButton.connect('clicked', ()=> {
+                    let appArray = [frameRow._name,frameRow._icon,frameRow._cmd];
+                    let dialog = new AddCustomLinkDialogWindow(this._settings, this, Constants.DIALOG_TYPE.Directories_Shortcuts, true, appArray);
+                    dialog.show_all();
+                    dialog.connect('response', ()=> { 
+                        if(dialog.get_response()) {
+                            let newApplicationShortcut = dialog.get_newPinnedAppsArray();
+                            frameRow._name = newApplicationShortcut[0];
+                            frameRow._icon = newApplicationShortcut[1];
+                            frameRow._cmd = newApplicationShortcut[2];
+                            softwareShortcutsLabel.label = _(frameRow._name);
+                            applicationIcon.gicon = Gio.icon_new_for_string(frameRow._icon);
+                            dialog.destroy();
+                            softwareShortcutsFrame.show();
+                            this.savePinnedAppsButton.set_sensitive(true);
+                        }
+                        else
+                            dialog.destroy();
+                    });  
+                });
+            }
+            
+            upButton.connect('clicked', ()=> {
+                //find index of frameRow in frame
+                //remove and reinsert at new position
+                let index = frameRow.get_index();
+                if(index!=0) {
+                    softwareShortcutsFrame.remove(frameRow);
+                    softwareShortcutsFrame.insert(frameRow,index-1);
+                }
+                softwareShortcutsFrame.show();
+                this.savePinnedAppsButton.set_sensitive(true);
+            });
+
+            downButton.connect('clicked', ()=> {
+                //find index of frameRow in frame
+                //remove and reinsert at new position
+                let index = frameRow.get_index();
+                if(index+1 < softwareShortcutsFrame.count) {
+                    softwareShortcutsFrame.remove(frameRow);
+                    softwareShortcutsFrame.insert(frameRow,index+1);
+                }
+                softwareShortcutsFrame.show();
+                this.savePinnedAppsButton.set_sensitive(true);
+            });
+
+            deleteButton.connect('clicked', ()=> {
+                //remove frameRow
+                softwareShortcutsFrame.remove(frameRow);
+                softwareShortcutsFrame.show();
+                this.savePinnedAppsButton.set_sensitive(true);
+            });
+            //add everything to frame
+            if(editable)
+                buttonBox.add(editButton);
+            buttonBox.add(upButton);
+            buttonBox.add(downButton);
+            buttonBox.add(deleteButton);
+            
+            frameRow.add(softwareShortcutsLabel);
+            frameRow.add(buttonBox);
+            softwareShortcutsFrame.add(frameRow);
         }
+    }
+});
+var ApplicationShortcutsPage = GObject.registerClass(
+    class ArcMenu_ApplicationShortcutsPage extends PW.NotebookPage {
+    _init(settings) {
+        super._init(_('Applications'));
+        this._settings = settings;
+        let softwareShortcutsFrame = new PW.FrameBox();
+        let softwareShortcutsScrollWindow = new Gtk.ScrolledWindow();
+        softwareShortcutsScrollWindow.set_policy(Gtk.PolicyType.AUTOMATIC, Gtk.PolicyType.AUTOMATIC);
+        softwareShortcutsScrollWindow.set_max_content_height(300);
+        softwareShortcutsScrollWindow.set_min_content_height(300);
+        softwareShortcutsScrollWindow.add(softwareShortcutsFrame);
+        /*let all_color_themes = this._settings.get_value('color-themes').deep_unpack();
+        this._settings.set_value('color-themes',new GLib.Variant('aas',this.color_themes));*/
+
+        let applicationShortcuts = this._settings.get_value('application-shortcuts-list').deep_unpack();
+
+        this._loadPinnedApps(applicationShortcuts,softwareShortcutsFrame);
         this.add(softwareShortcutsScrollWindow);
+
+        //third row - add more apps to pinned apps list
+        let addPinnedAppsFrame = new PW.FrameBox();
+        let addPinnedAppsFrameRow = new PW.FrameBoxRow();
+        let addPinnedAppsFrameLabel = new Gtk.Label({
+            label: _("Add More Apps"),
+            use_markup: true,
+            xalign: 0,
+            hexpand: true
+        });
+        let addPinnedAppsButton = new PW.IconButton({
+            circular: false,
+            icon_name: 'list-add-symbolic',
+            tooltip_text: _("Browse a list of all applications to add to your Application Shortcuts")
+        });
+        addPinnedAppsButton.connect('clicked', ()=> {
+            let dialog = new AddAppsToPinnedListWindow(this._settings, this, Constants.DIALOG_TYPE.Application_Shortcuts);
+            dialog.show_all();
+            dialog.connect('response', ()=> { 
+                if(dialog.get_response()) {
+                    //checked apps to add to pinned apps list - from dialog 'Add" button click event
+                    let newPinnedApps = dialog.get_newPinnedAppsArray();
+                    let array=[]; 
+                    for(let i = 0;i<newPinnedApps.length;i++){
+                        array.push([newPinnedApps[i]._name,newPinnedApps[i]._icon,newPinnedApps[i]._cmd]);
+                    }
+                    this._loadPinnedApps(array,softwareShortcutsFrame);
+                    dialog.destroy();
+                    softwareShortcutsFrame.show();
+                    this.savePinnedAppsButton.set_sensitive(true);
+                }
+                else
+                    dialog.destroy();
+            }); 
+        });
+        addPinnedAppsFrameRow.add(addPinnedAppsFrameLabel);
+        addPinnedAppsFrameRow.add(addPinnedAppsButton);
+        addPinnedAppsFrame.add(addPinnedAppsFrameRow);
+        this.add(addPinnedAppsFrame);
         
-        //Session Buttons Enable/Disable----------------------------------------------------          
+        //fourth row - add custom app to pinned list
+        let addCustomAppFrame = new PW.FrameBox();
+        let addCustomAppFrameRow = new PW.FrameBoxRow();
+        let addCustomAppFrameLabel = new Gtk.Label({
+            label: _("Add Custom Shortcut"),
+            use_markup: true,
+            xalign: 0,
+            hexpand: true
+        });
+        let addCustomAppButton = new PW.IconButton({
+            circular: false,
+            icon_name: 'list-add-symbolic',
+            tooltip_text: _("Create a custom shortcut to add to your Application Shortcuts")
+        });
+        addCustomAppButton.connect('clicked', ()=> {
+            let dialog = new AddCustomLinkDialogWindow(this._settings, this, Constants.DIALOG_TYPE.Application_Shortcuts);
+            dialog.show_all();
+            dialog.connect('response', ()=> { 
+                if(dialog.get_response()) {
+                    let newPinnedApps = dialog.get_newPinnedAppsArray();
+                    this._loadPinnedApps([newPinnedApps],softwareShortcutsFrame);
+                    dialog.destroy();
+                    softwareShortcutsFrame.show();
+                    this.savePinnedAppsButton.set_sensitive(true);
+                }
+                else
+                    dialog.destroy();
+            }); 
+        });
+        addCustomAppFrameRow.add(addCustomAppFrameLabel);
+        addCustomAppFrameRow.add(addCustomAppButton);
+        addCustomAppFrame.add(addCustomAppFrameRow);
+        this.add(addCustomAppFrame);
+
+        let buttonRow = new PW.FrameBoxRow();
+        let resetButton = new Gtk.Button({
+            label: _("Restore Defaults"),
+            tooltip_text: _("Restore the default Application Shortcuts")
+        });   
+        resetButton.set_sensitive(true);
+        resetButton.connect('clicked', ()=> {
+            this.savePinnedAppsButton.set_sensitive(true);
+            softwareShortcutsFrame.remove_all_children();
+            this._loadPinnedApps(this._settings.get_default_value('application-shortcuts-list').deep_unpack(), softwareShortcutsFrame);
+            softwareShortcutsFrame.show();
+        });
+
+        //last row - save settings
+        this.savePinnedAppsButton = new Gtk.Button({
+            label: _("Save"),
+            hexpand: true
+        });
+        this.savePinnedAppsButton.connect('clicked', ()=> {
+            //iterate through each frame row (containing apps to pin) to create an array to save in settings
+            let array = [];
+            for(let i = 0; i < softwareShortcutsFrame.count; i++) {
+                let frame = softwareShortcutsFrame.get_index(i);
+                array.push([frame._name,frame._icon, frame._cmd]);
+            }
+            this._settings.set_value('application-shortcuts-list', new GLib.Variant('aas', array));
+            this.savePinnedAppsButton.set_sensitive(false);
+        }); 
+        this.savePinnedAppsButton.set_halign(Gtk.Align.END);
+        this.savePinnedAppsButton.set_sensitive(false);
+        buttonRow.add(resetButton);
+        buttonRow.add(this.savePinnedAppsButton);
+        this.add(buttonRow);
+    }
+
+    _loadPinnedApps(applicationShortcuts,softwareShortcutsFrame){
+        for(let i = 0; i < applicationShortcuts.length; i++){
+            let applicationName = applicationShortcuts[i][0];
+
+            let frameRow = new PW.FrameBoxRow();
+            frameRow._name = applicationShortcuts[i][0];
+            frameRow._icon = applicationShortcuts[i][1];
+            frameRow._cmd = applicationShortcuts[i][2];
+            let applicationIcon = new Gtk.Image( {
+                gicon: Gio.icon_new_for_string(frameRow._icon),
+                pixel_size: 22
+            });
+            let applicationImageBox = new Gtk.VBox({
+                margin_left:5,
+                expand: false
+            });
+            applicationImageBox.add(applicationIcon);
+            frameRow.add(applicationImageBox);
+
+            let softwareShortcutsLabel = new Gtk.Label({
+                label: _(applicationName),
+                use_markup: true,
+                xalign: 0,
+                hexpand: true
+            });
+            let buttonBox = new Gtk.Grid({
+                margin_top:0,
+                margin_bottom: 0,
+                vexpand: false,
+                hexpand: false,
+                margin_right: 15,
+                column_spacing: 2
+            });
+
+            //create the buttons to handle the ordering of pinned apps
+            //and delete pinned apps
+            let editButton = new PW.IconButton({
+                circular: false,
+                icon_name: 'emblem-system-symbolic',
+                tooltip_text: _('Modify')
+            });
+            let upButton = new PW.IconButton({
+                circular: false,
+                icon_name: 'go-up-symbolic',
+                tooltip_text: _('Move Up')
+            });
+            let downButton = new PW.IconButton({
+                circular: false,
+                icon_name: 'go-down-symbolic',
+                tooltip_text: _('Move Down')
+            });
+            let deleteButton = new PW.IconButton({
+                circular: false,
+                icon_name: 'edit-delete-symbolic',
+                tooltip_text: _('Delete')
+            });
+            editButton.connect('clicked', ()=> {
+                let appArray = [frameRow._name,frameRow._icon,frameRow._cmd];
+                let dialog = new AddCustomLinkDialogWindow(this._settings, this, Constants.DIALOG_TYPE.Application_Shortcuts, true, appArray);
+                dialog.show_all();
+                dialog.connect('response', ()=> { 
+                    if(dialog.get_response()) {
+                        let newApplicationShortcut = dialog.get_newPinnedAppsArray();
+                        frameRow._name = newApplicationShortcut[0];
+                        frameRow._icon = newApplicationShortcut[1];
+                        frameRow._cmd = newApplicationShortcut[2];
+                        softwareShortcutsLabel.label = _(frameRow._name);
+                        applicationIcon.gicon = Gio.icon_new_for_string(frameRow._icon);
+                        dialog.destroy();
+                        softwareShortcutsFrame.show();
+                        this.savePinnedAppsButton.set_sensitive(true);
+                    }
+                    else
+                        dialog.destroy();
+                });  
+            });
+            upButton.connect('clicked', ()=> {
+                //find index of frameRow in frame
+                //remove and reinsert at new position
+                let index = frameRow.get_index();
+                if(index!=0) {
+                    softwareShortcutsFrame.remove(frameRow);
+                    softwareShortcutsFrame.insert(frameRow,index-1);
+                }
+                softwareShortcutsFrame.show();
+                this.savePinnedAppsButton.set_sensitive(true);
+            });
+
+            downButton.connect('clicked', ()=> {
+                //find index of frameRow in frame
+                //remove and reinsert at new position
+                let index = frameRow.get_index();
+                if(index+1 < softwareShortcutsFrame.count) {
+                    softwareShortcutsFrame.remove(frameRow);
+                    softwareShortcutsFrame.insert(frameRow,index+1);
+                }
+                softwareShortcutsFrame.show();
+                this.savePinnedAppsButton.set_sensitive(true);
+            });
+
+            deleteButton.connect('clicked', ()=> {
+                //remove frameRow
+                softwareShortcutsFrame.remove(frameRow);
+                softwareShortcutsFrame.show();
+                this.savePinnedAppsButton.set_sensitive(true);
+            });
+            //add everything to frame
+            buttonBox.add(editButton);
+            buttonBox.add(upButton);
+            buttonBox.add(downButton);
+            buttonBox.add(deleteButton);
+            
+            frameRow.add(softwareShortcutsLabel);
+            frameRow.add(buttonBox);
+            softwareShortcutsFrame.add(frameRow);
+        }
+    }
+});
+var SessionButtonsPage = GObject.registerClass(
+    class ArcMenu_SessionButtonsPage extends PW.NotebookPage {
+    _init(settings) {
+        super._init(_('Session Buttons'));
+        this._settings = settings;
         //SUSPEND BUTTON
         let sessionButtonsFrame = new PW.FrameBox();
         let sessionButtonsScrollWindow = new Gtk.ScrolledWindow();
         sessionButtonsScrollWindow.set_policy(Gtk.PolicyType.AUTOMATIC, Gtk.PolicyType.AUTOMATIC);
-        sessionButtonsScrollWindow.set_max_content_height(115);
-        sessionButtonsScrollWindow.set_min_content_height(115);
+        sessionButtonsScrollWindow.set_max_content_height(300);
+        sessionButtonsScrollWindow.set_min_content_height(300);
         sessionButtonsScrollWindow.add(sessionButtonsFrame);
         let suspendRow = new PW.FrameBoxRow();
         let suspendLabel = new Gtk.Label({
@@ -3040,7 +3903,96 @@ var ShortcutsPage = GObject.registerClass(
         sessionButtonsFrame.add(logOffRow);
         sessionButtonsFrame.add(lockRow);
         sessionButtonsFrame.add(powerRow);
-        this.add(sessionButtonsScrollWindow);    
+        this.add(sessionButtonsScrollWindow);
+    }
+});
+var ShortcutsPage = GObject.registerClass(
+    class ArcMenu_ShortcutsPage extends PW.NotebookPage {
+    _init(settings) {
+        super._init(_('Shortcuts'));
+        this._settings = settings;
+        let configureShortcutsFrame = new PW.FrameBox();
+        let configureShortcutsRow = new PW.FrameBoxRow();
+        let configureShortcutsLabel = new Gtk.Label({
+            label: _("Configure Shortcuts"),
+            use_markup: true,
+            xalign: 0,
+            hexpand: true
+        });
+        let configureShortcutsSwitch = new Gtk.Switch({tooltip_text:_("Add, Remove, or Modify Arc Menu shortcuts")});
+        
+        let configureShortcutsButton = new PW.IconButton({
+            circular: true,
+            icon_name: 'emblem-system-symbolic',
+            tooltip_text:_("Add, Remove, or Modify Arc Menu shortcuts")
+        });
+        configureShortcutsSwitch.connect('notify::active', (widget) => {
+            configureShortcutsButton.set_sensitive(widget.get_active());
+            this._settings.set_boolean('enable-custom-shortcuts',widget.get_active());
+        });
+        configureShortcutsSwitch.set_active(this._settings.get_boolean('enable-custom-shortcuts'));
+        configureShortcutsButton.set_sensitive(configureShortcutsSwitch.get_active());
+        configureShortcutsButton.connect('clicked', () => {
+            let dialog = new ConfigureShortcuts(this._settings, this);
+            dialog.show_all();
+            dialog.connect('response', (response) => { 
+                if(dialog.get_response()) {
+               
+                }
+                else
+                    dialog.destroy();
+            }); 
+        });
+        configureShortcutsRow.add(configureShortcutsLabel);
+        configureShortcutsRow.add(configureShortcutsButton);
+        configureShortcutsRow.add(configureShortcutsSwitch);
+        configureShortcutsFrame.add(configureShortcutsRow);
+
+        this.add(configureShortcutsFrame);
+        
+        //EXTERNAL DEVICES/BOOKMARKS--------------------------------------------------------------
+        let placesFrame = new PW.FrameBox();
+        let externalDeviceRow = new PW.FrameBoxRow();
+        let externalDeviceLabel = new Gtk.Label({
+            label: _("External Devices"),
+            use_markup: true,
+            xalign: 0,
+            hexpand: true
+        });
+        
+        let externalDeviceButton = new Gtk.Switch({tooltip_text:_("Show all connected external devices in Arc Menu")});
+        if(this._settings.get_boolean('show-external-devices'))
+            externalDeviceButton.set_active(true);
+        externalDeviceButton.connect('notify::active', (widget) => {
+            this._settings.set_boolean('show-external-devices', widget.get_active());
+        });   
+        externalDeviceRow.add(externalDeviceLabel);
+        externalDeviceRow.add(externalDeviceButton);
+
+        //ADD TO FRAME
+        placesFrame.add(externalDeviceRow);
+        this.add(placesFrame);
+        
+        //BOOKMARKS LIST       
+        let bookmarksRow = new PW.FrameBoxRow();
+        let bookmarksLabel = new Gtk.Label({
+            label: _("Bookmarks"),
+            use_markup: true,
+            xalign: 0,
+            hexpand: true
+        });
+        
+        let bookmarksButton = new Gtk.Switch({tooltip_text:_("Show all Nautilus bookmarks in Arc Menu")});
+        if(this._settings.get_boolean('show-bookmarks'))
+            bookmarksButton.set_active(true);
+        bookmarksButton.connect('notify::active', (widget) => {
+            this._settings.set_boolean('show-bookmarks', widget.get_active());
+        });   
+        bookmarksRow.add(bookmarksLabel);
+        bookmarksRow.add(bookmarksButton);
+
+        //ADD TO FRAME
+        placesFrame.add(bookmarksRow);    
     }
 });
 
@@ -3073,7 +4025,8 @@ var MiscPage = GObject.registerClass(
             let importButton = new Gtk.Button({
                 label: _("Import from File"),
                 xalign:.5,
-                expand:true
+                expand:true,
+                tooltip_text: _("Import Arc Menu settings from a file")  
             });
             importButton.connect('clicked', ()=> {
                 this._showFileChooser(
@@ -3108,7 +4061,8 @@ var MiscPage = GObject.registerClass(
             let exportButton = new Gtk.Button({
                 label: _("Export to File"),
                 xalign:.5,
-                expand:true
+                expand:true,
+                tooltip_text: _("Export and save all your Arc Menu settings to a file")  
             });
             exportButton.connect('clicked', ()=> {
                 
@@ -3177,7 +4131,8 @@ var MiscPage = GObject.registerClass(
             let importColorPresetButton = new Gtk.Button({
                 label: _("Import Theme Preset"),
                 xalign:.5,
-                expand:true
+                expand:true,
+                tooltip_text: _("Import Arc Menu Theme Presets from a file")  
             });
             importColorPresetButton.connect('clicked', ()=> {
                 this._showFileChooser(
@@ -3220,7 +4175,8 @@ var MiscPage = GObject.registerClass(
             let exportColorPresetButton = new Gtk.Button({
                 label: _("Export Theme Preset"),
                 xalign:.5,
-                expand:true
+                expand:true,
+                tooltip_text: _("Export and save your Arc Menu Theme Presets to a file")  
             });
             exportColorPresetButton.connect('clicked', ()=> {
                 let dialog = new ExportColorThemeDialogWindow(this._settings, this);
@@ -3389,7 +4345,7 @@ class ArcMenu_ArcMenuPreferencesWidget extends Gtk.Box{
             border_width: 5
         });
         this._settings = Convenience.getSettings(Me.metadata['settings-schema']);
-
+        
         let notebook = new PW.Notebook();
         notebook.connect('switch-page', (notebook, tab, index)=>{
             if(index==3){
@@ -3518,16 +4474,16 @@ function saveCSS(settings){
         +".arc-menu-icon{\ncolor: "+menuButtonColor+";\n}\n"
         +"\n.arc-menu-icon:hover,\n.arc-menu-icon:active{\ncolor: "+menuButtonActiveColor+";\n}\n"
 
-        +".arc-menu-action{\ncolor:"+  menuForegroundColor+";\n}\n"
+        +".arc-menu-action{background-color:transparent;\ncolor:"+  menuForegroundColor+";\n}\n"
         +".arc-menu-action:hover, .arc-menu-action:focus {\ncolor:"+ lighten_rgb( menuForegroundColor,0.15)+";\n background-color:"+  highlightColor+";\n}\n"
 
         +tooltipStyle
 
         +".arc-menu{\n-boxpointer-gap: "+gapAdjustment+"px;\nmin-width: 15em;\ncolor: #D3DAE3;\nborder-image: none;\nbox-shadow: none;\nfont-size:" + fontSize+"pt;\n}\n"
-        +".arc-menu .popup-sub-menu {\npadding-bottom: 1px;\nbackground-color: "+lighten_rgb( menuColor,0.05)+";\nborder-color: "+lighten_rgb( menuColor,0.10)+";\n border-width:1px;\n}\n"
+        +".arc-menu .popup-sub-menu {\npadding-bottom: 1px;\nbackground-color: "+lighten_rgb( menuColor,0.04)+";\n}\n"
         +".arc-menu .popup-menu-content {padding: 1em 0em;}\n .arc-menu .popup-menu-item {\nspacing: 12px; \nborder: 0;\ncolor:"+  menuForegroundColor+";\n }\n" 
         +".arc-menu .popup-menu-item:ltr {padding: .4em 1.75em .4em 0em; }\n.arc-menu .popup-menu-item:rtl {padding: .4em 0em .4em 1.75em;}\n"
-        +".arc-menu .popup-menu-item:checked {\nbackground-color:"+menuColor+";\n box-shadow: 0;\nfont-weight: bold;\n }\n"
+        +".arc-menu .popup-menu-item:checked {\nbackground-color:"+lighten_rgb( menuColor,0.04)+";\n box-shadow: 0;\nfont-weight: bold;\n border-color: "+lighten_rgb( menuColor,0.15)+";\n border-top-width:1px;\n}\n"
         +".arc-menu .popup-menu-item.selected, .arc-menu .popup-menu-item:active{\nbackground-color:"+  highlightColor+"; \ncolor: "+ lighten_rgb( menuForegroundColor,0.15)+";\n }\n" 
         +".arc-menu .popup-menu-item:disabled {color: rgba(238, 238, 236, 0.5); }\n"
         +".arc-menu-boxpointer{ \n-arrow-border-radius:"+  cornerRadius+"px;\n"

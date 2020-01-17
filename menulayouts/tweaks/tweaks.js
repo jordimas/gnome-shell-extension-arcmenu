@@ -36,7 +36,7 @@ const SCHEMA_PATH = '/org/gnome/shell/extensions/arc-menu/';
 const GSET = 'gnome-shell-extension-tool';
 
 var TweaksDialog = GObject.registerClass(
-    class ArcMenu_BriskTweaksDialog extends PW.DialogWindow {
+    class ArcMenu_TweaksDialog extends PW.DialogWindow {
 
         _init(settings, parent, label) {
             this._settings = settings;
@@ -152,7 +152,24 @@ var TweaksDialog = GObject.registerClass(
             runnerPositionRow.add(runnerPositionLabel);
             runnerPositionRow.add(runnerPositionCombo);
             kRunnerMenuTweaksFrame.add(runnerPositionRow);
+            
+            let showMoreDetailsRow = new PW.FrameBoxRow();
+            let showMoreDetailsLabel = new Gtk.Label({
+                label: _("Show Extra Large Icons with App Descriptions"),
+                use_markup: true,
+                xalign: 0,
+                hexpand: true
+            });
 
+            let showMoreDetailsSwitch = new Gtk.Switch({ halign: Gtk.Align.END });
+            showMoreDetailsSwitch.set_active(this._settings.get_boolean('krunner-show-details'));
+            showMoreDetailsSwitch.connect('notify::active', (widget) => {
+                this._settings.set_boolean('krunner-show-details', widget.get_active());
+            });
+
+            showMoreDetailsRow.add(showMoreDetailsLabel);
+            showMoreDetailsRow.add(showMoreDetailsSwitch);
+            kRunnerMenuTweaksFrame.add(showMoreDetailsRow);
             vbox.add(kRunnerMenuTweaksFrame);
         }
         _loadMintMenuTweaks(vbox){
@@ -260,8 +277,7 @@ var TweaksDialog = GObject.registerClass(
                     icon_name: 'list-add-symbolic'
                 });
                 addPinnedAppsButton.connect('clicked', ()=> {
-                    let isMintLayout = true;
-                    let dialog = new Prefs.AddAppsToPinnedListWindow(this._settings, this, isMintLayout);
+                    let dialog = new Prefs.AddAppsToPinnedListWindow(this._settings, this, Constants.DIALOG_TYPE.Mint_Pinned_Apps);
                     dialog.show_all();
                     dialog.connect('response', ()=> { 
                         if(dialog.get_response()) {
@@ -295,7 +311,7 @@ var TweaksDialog = GObject.registerClass(
                 });
                 editButton.connect('clicked', ()=> {
                     let appArray = [frameRow._name,frameRow._icon,frameRow._cmd];
-                    let dialog = new Prefs.AddCustomLinkDialogWindow(this._settings, this, true, appArray);
+                    let dialog = new Prefs.AddCustomLinkDialogWindow(this._settings, this, Constants.DIALOG_TYPE.Mint_Pinned_Apps, true, appArray);
                     dialog.show_all();
                     dialog.connect('response', ()=> { 
                         if(dialog.get_response()) {

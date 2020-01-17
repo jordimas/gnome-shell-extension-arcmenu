@@ -71,14 +71,15 @@ var createMenu = class {
         this.leftClickMenu.sourceActor = this.dummyCursor;
         this.leftClickMenu.focusActor = this.dummyCursor;
         this.leftClickMenu._boxPointer.setPosition(this.dummyCursor, 0.5);
+        this.leftClickMenu.close();
         this.leftClickMenu._boxPointer.hide();
 
-        this.mainBox.vertical = false;
+        this.mainBox.vertical = true;
         //Menus Left Box container
-        this.leftBox = new St.BoxLayout({
-            vertical: true
+        this.topBox = new St.BoxLayout({
+            vertical: false
         });
-        this.leftBox.style = "width: " + RUNNER_WIDTH + "px";
+        this.topBox.style = "width: " + RUNNER_WIDTH + "px";
         // Create search box
         this.searchBox = new MW.SearchBox(this);
         this.searchBox.actor.style = "padding-top: 0.5em; padding-bottom: 0.5em;padding-left: 1em;padding-right: .5em;";
@@ -89,21 +90,38 @@ var createMenu = class {
         this._searchBoxKeyPressId = this.searchBox.connect('key-press-event', this._onSearchBoxKeyPress.bind(this));
         this._searchBoxKeyFocusInId = this.searchBox.connect('key-focus-in', this._onSearchBoxKeyFocusIn.bind(this));
         //Add search box to menu
-        this.leftBox.add(this.searchBox.actor, {
-            expand: false,
+        this.topBox.add(this.searchBox.actor, {
+            expand: true,
             x_fill: true,
             y_fill: false,
             y_align: St.Align.START
         });
-        //Applications Box - Contains Favorites, Categories or programs
-        this.applicationsScrollBox = new St.ScrollView({
+        //Add LeftBox to MainBox
+        this.mainBox.add(this.topBox, {
+            expand: true,
             x_fill: true,
+            y_fill: true
+        });
+        this.arcMenuSettingsButton = new MW.ArcMenuSettingsButton( this);
+        this.topBox.add(this.arcMenuSettingsButton.actor, {
+            expand: false,
+            x_fill: false,
             y_fill: false,
             y_align: St.Align.START,
-            style_class: 'apps-menu vfade',
+            x_align: St.Align.CENTER
+        });
+        this.arcMenuSettingsButton.actor.style = "margin-right: .5em;";
+        //Applications Box - Contains Favorites, Categories or programs
+        this.applicationsScrollBox = new St.ScrollView({
+            x_fill:true,
+            y_fill: false,
+            y_align: St.Align.START,
+            x_align: St.Align.START,
             overlay_scrollbars: true,
+            style_class: 'apps-menu vfade',
             reactive:true
         });      
+        this.applicationsScrollBox.style = "width: " + RUNNER_WIDTH + "px";
         this.applicationsScrollBox.connect('key-press-event',(actor,event)=>{
             let key = event.get_key_symbol();
             if(key == Clutter.Up || key == Clutter.KP_Up)
@@ -112,30 +130,17 @@ var createMenu = class {
                 this.scrollToItem(this.activeMenuItem,Constants.DIRECTION.DOWN);
         }) ;         
         this.applicationsScrollBox.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC);
-        this.leftBox.add(this.applicationsScrollBox, {
+        this.mainBox.add(this.applicationsScrollBox, {
             expand: true,
-            x_fill: true, y_fill: true,
+            x_fill: true,
+            y_fill: true,
             y_align: St.Align.START
         });
         this.applicationsBox = new St.BoxLayout({ vertical: true });
         this.applicationsScrollBox.add_actor(this.applicationsBox);
         this.applicationsScrollBox.clip_to_allocation = true;
 
-        //Add LeftBox to MainBox
-        this.mainBox.add(this.leftBox, {
-            expand: true,
-            x_fill: true,
-            y_fill: true
-        });
-        this.arcMenuSettingsButton = new MW.ArcMenuSettingsButton( this);
-        this.mainBox.add(this.arcMenuSettingsButton.actor, {
-            expand: false,
-            x_fill: false,
-            y_fill: false,
-            y_align: St.Align.START,
-            x_align: St.Align.CENTER
-        });
-        this.arcMenuSettingsButton.actor.style = "margin-right: .5em;";
+
         this._display(); 
     }
     updateRunnerLocation(){
@@ -193,12 +198,15 @@ var createMenu = class {
         }
         addStyle ? this.arcMenuSettingsButton.actor.add_style_class_name('arc-menu-action') : this.arcMenuSettingsButton.actor.remove_style_class_name('arc-menu-action');
         this.leftClickMenu.actor.style = "-arrow-base:0px;-arrow-rise:0px;";
+      
+    }
+    updateSearch(){
+        this.newSearch._reloadRemoteProviders();
     }
     _loadCategories(){
     }
     _loadCategory(categoryId, dir) {
     }
-        
     _displayCategories(){
     }
     _displayGnomeFavorites(){
@@ -226,20 +234,14 @@ var createMenu = class {
             this.applicationsBox.remove_actor(actor);
         }
     }
-    // Select a category or show category overview if no category specified
     selectCategory(dir) {
     }
-
-    // Display application menu items
     _displayButtons(apps) {               
     }
-
     _displayAllApps(){        
     }
-    // Get a list of applications for the specified category or search query
     _listApplications(category_menu_id) {
     }
-    //used to check if a shortcut should be displayed
     getShouldShowShortcut(shortcutName){
     }     
     _onSearchBoxKeyPress(searchBox, event) {
@@ -267,7 +269,13 @@ var createMenu = class {
         }            
         else{         
             this._clearApplicationsBox(); 
-            this.applicationsBox.add(this.newSearch.actor); 
+            this.applicationsBox.add(this.newSearch.actor,{
+                expand: true,
+                x_fill: true,
+                y_fill: true,
+                x_align: St.Align.MIDDLE,
+                y_align: St.Align.MIDDLE
+            }); 
             this.newSearch.highlightDefault(true);
             this.newSearch.actor.show();         
             this.newSearch.setTerms([searchString]);           	    
@@ -338,6 +346,7 @@ var createMenu = class {
         this.leftClickMenu.sourceActor = this.oldSourceActor;
         this.leftClickMenu.focusActor = this.oldFocusActor;
         this.leftClickMenu._boxPointer.setPosition(this.oldSourceActor, this.oldArrowAlignment);
+        this.leftClickMenu.close();
         this.leftClickMenu._boxPointer.hide();
         if(this.searchBox!=null){
             if (this._searchBoxChangedId > 0) {
@@ -360,6 +369,8 @@ var createMenu = class {
         if(this.newSearch){
             this.newSearch.destroy();
         }
+        Main.uiGroup.remove_actor(this.dummyCursor);
+        this.dummyCursor.destroy();
         this.isRunning=false;
     }
     //Create a horizontal separator

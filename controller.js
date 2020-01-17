@@ -40,7 +40,7 @@ var MenuSettingsController = class {
     constructor(settings, settingsControllers, panel, isMainPanel) {
         this._settings = settings;
         this.panel = panel;
-        GLib.timeout_add(0, 100, () => {
+        this.updateThemeID = GLib.timeout_add(0, 100, () => {
             Me.imports.prefs.saveCSS(this._settings);
             Main.loadTheme();
             return GLib.SOURCE_REMOVE;
@@ -52,7 +52,7 @@ var MenuSettingsController = class {
 
          // Create the button, a Hot Corner Manager, a Menu Keybinder as well as a Keybinding Manager
         this._menuButton = new Menu.ApplicationsButton(settings, panel);
-        this._hotCornerManager = new Helper.HotCornerManager(this._settings);
+        this._hotCornerManager = new Helper.HotCornerManager(this._settings,() => this.toggleMenus());
         if(this.isMainPanel){
             this._menuHotKeybinder = new Helper.MenuHotKeybinder(() => this._onHotkey());
             this._keybindingManager = new Helper.KeybindingManager(this._settings); 
@@ -74,7 +74,7 @@ var MenuSettingsController = class {
     // Bind the callbacks for handling the settings changes to the event signals
     bindSettingsChanges() {
         this.settingsChangeIds = [
-            this._settings.connect('changed::disable-activities-hotcorner', this._updateHotCornerManager.bind(this)),
+            this._settings.connect('changed::hot-corners', this._updateHotCornerManager.bind(this)),
             this._settings.connect('changed::menu-hotkey', this._updateHotKeyBinder.bind(this)),
             this._settings.connect('changed::position-in-panel', this._setButtonPosition.bind(this)),
             this._settings.connect('changed::menu-position-alignment', this._setMenuPositionAlignment.bind(this)),
@@ -86,19 +86,9 @@ var MenuSettingsController = class {
             this._settings.connect('changed::button-icon-padding', this._setButtonIconPadding.bind(this)),
             this._settings.connect('changed::enable-menu-button-arrow', this._setMenuButtonArrow.bind(this)),
             this._settings.connect('changed::enable-custom-arc-menu', this._enableCustomArcMenu.bind(this)),
-            this._settings.connect('changed::show-home-shortcut', this._redisplayRightSide.bind(this)),
-            this._settings.connect('changed::show-documents-shortcut', this._redisplayRightSide.bind(this)),
-            this._settings.connect('changed::show-downloads-shortcut', this._redisplayRightSide.bind(this)),
-            this._settings.connect('changed::show-music-shortcut', this._redisplayRightSide.bind(this)),
-            this._settings.connect('changed::show-pictures-shortcut', this._redisplayRightSide.bind(this)),
-            this._settings.connect('changed::show-videos-shortcut', this._redisplayRightSide.bind(this)),
-            this._settings.connect('changed::show-computer-shortcut', this._redisplayRightSide.bind(this)),
-            this._settings.connect('changed::show-network-shortcut', this._redisplayRightSide.bind(this)),
-            this._settings.connect('changed::show-software-shortcut', this._redisplayRightSide.bind(this)),
-            this._settings.connect('changed::show-tweaks-shortcut', this._redisplayRightSide.bind(this)),
-            this._settings.connect('changed::show-terminal-shortcut', this._redisplayRightSide.bind(this)),
-            this._settings.connect('changed::show-settings-shortcut', this._redisplayRightSide.bind(this)),
-            this._settings.connect('changed::show-activities-overview-shortcut', this._redisplayRightSide.bind(this)),
+            this._settings.connect('changed::krunner-show-details', this._updateKRunnerSearchLayout.bind(this)),
+            this._settings.connect('changed::directory-shortcuts-list', this._redisplayRightSide.bind(this)),
+            this._settings.connect('changed::application-shortcuts-list', this._redisplayRightSide.bind(this)),
             this._settings.connect('changed::show-power-button', this._redisplayRightSide.bind(this)),
             this._settings.connect('changed::show-logout-button', this._redisplayRightSide.bind(this)),
             this._settings.connect('changed::show-lock-button', this._redisplayRightSide.bind(this)),
@@ -114,8 +104,13 @@ var MenuSettingsController = class {
             this._settings.connect('changed::menu-layout', this._updateMenuLayout.bind(this)),
             this._settings.connect('changed::enable-large-icons', this.updateIcons.bind(this)),
             this._settings.connect('changed::runner-position', this.updateRunnerLocation.bind(this)),
+            this._settings.connect('changed::enable-sub-menus', this._reload.bind(this)),    
         ];
     }
+    _reload(){
+        this._menuButton._reload();
+    }
+
     updateRunnerLocation(){
         this._menuButton.updateRunnerLocation();
     }
@@ -168,6 +163,10 @@ var MenuSettingsController = class {
     _enableCustomArcMenu() {
         this._menuButton.updateStyle();
     }
+    _updateKRunnerSearchLayout(){
+        if(this._settings.get_enum('menu-layout') == Constants.MENU_LAYOUT.Runner)
+            this._menuButton.updateSearch();
+    }
     _updateMenuHeight(){
         this._menuButton.updateHeight();
     }
@@ -195,10 +194,18 @@ var MenuSettingsController = class {
         this._menuButton._redisplayRightSide();
     }
     _updateHotCornerManager() {
-        if (this._settings.get_boolean('disable-activities-hotcorner')) {
-            this._hotCornerManager.disableHotCorners();
-        } else {
+        let hotCornerAction = this._settings.get_enum('hot-corners');
+        if (hotCornerAction == Constants.HOT_CORNERS_ACTION.Default) {
             this._hotCornerManager.enableHotCorners();
+        } 
+        else if(hotCornerAction == Constants.HOT_CORNERS_ACTION.Disabled) {
+            this._hotCornerManager.disableHotCorners();
+        }
+        else if(hotCornerAction == Constants.HOT_CORNERS_ACTION.ToggleArcMenu) {
+            this._hotCornerManager.modifyHotCorners();
+        }
+        else if(hotCornerAction == Constants.HOT_CORNERS_ACTION.Custom) {
+            this._hotCornerManager.modifyHotCorners();
         }
     }
 
@@ -445,6 +452,10 @@ var MenuSettingsController = class {
 
     // Destroy this object
     destroy() {
+        if (this.updateThemeID > 0) {
+            GLib.source_remove(this.updateThemeID);
+            this.updateThemeID = 0;
+        }
         this.settingsChangeIds.forEach(id => this._settings.disconnect(id));
         this._hotCornerManager.destroy();
 
