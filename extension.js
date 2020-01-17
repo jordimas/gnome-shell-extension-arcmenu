@@ -138,7 +138,7 @@ function _enableButtons() {
                         Main.extensionManager.lookup("dash-to-dock@micxgx.gmail.com") : //gnome-shell >= 3.33.4
                         ExtensionUtils.extensions["dash-to-dock@micxgx.gmail.com"];
     let arcMenuPosition = settings.get_enum('arc-menu-placement');
-    if(arcMenuPosition == Constants.ARC_MENU_PLACEMENT.DASH && dashToDock){
+    if(arcMenuPosition == Constants.ARC_MENU_PLACEMENT.DASH && dashToDock && dashToDock.stateObj && dashToDock.stateObj.dockManager){
         let panel = dashToDock.stateObj.dockManager; 
         if(panel){ 
             if(panel._allDocks.length){                
@@ -150,7 +150,7 @@ function _enableButtons() {
             }
         }
     }
-    else if(arcMenuPosition == Constants.ARC_MENU_PLACEMENT.PANEL){
+    else{
         let panelArray = (settings.get_boolean('multi-monitor') && global.dashToPanel) ? 
         global.dashToPanel.panels.map(pw => pw.panel || pw) : [Main.panel];
         for(var i = 0; i<panelArray.length;i++){
