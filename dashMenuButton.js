@@ -43,7 +43,7 @@ const _ = Gettext.gettext;
 var modernGnome = imports.misc.config.PACKAGE_VERSION >= '3.31.9';
 const gnome36 = imports.misc.config.PACKAGE_VERSION >= '3.35.0';
 
-var DASH_TO_PANEL_UUID = 'dash-to-dock@micxgx.gmail.com';
+var DASH_TO_DOCK_UUID = 'dash-to-dock@micxgx.gmail.com';
 // Application Menu Button class (most of the menu logic is here)
 var ApplicationsButton =   Utils.defineClass({
     Name: 'ArcMenu_DashApplicationsButton',
@@ -89,21 +89,21 @@ var ApplicationsButton =   Utils.defineClass({
             //-------------------------------------------------------------------------
 
             //Dash to Panel Integration----------------------------------------------------------------------
-            this.dtp = Main.extensionManager ?
-                        Main.extensionManager.lookup(DASH_TO_PANEL_UUID) : 
-                        ExtensionUtils.extensions[DASH_TO_PANEL_UUID];
+            this.dtd = Main.extensionManager ?
+                        Main.extensionManager.lookup(DASH_TO_DOCK_UUID) : 
+                        ExtensionUtils.extensions[DASH_TO_DOCK_UUID];
             this.extensionChangedId = (Main.extensionManager || ExtensionSystem).connect('extension-state-changed', (data, extension) => {
-                if (extension.uuid === DASH_TO_PANEL_UUID && extension.state === 1) {
-                    this.rightClickMenu.addDTPSettings();   
+                if (extension.uuid === DASH_TO_DOCK_UUID && extension.state === 1) {
+                    this.rightClickMenu.addDTDSettings();   
                 }
-                if (extension.uuid === DASH_TO_PANEL_UUID && extension.state === 2) {
-                    this.rightClickMenu.removeDTPSettings();
+                if (extension.uuid === DASH_TO_DOCK_UUID && extension.state === 2) {
+                    this.rightClickMenu.removeDTDSettings();
                 }  
             });
-            if(this.dtp){
-                this.rightClickMenu.addDTPSettings();  
+            if(this.dtd){
+                this.rightClickMenu.addDTDSettings();  
             }  
-            this.dtpPostionChangedID = this._panel._settings.connect('changed::dock-position', ()=> {
+            this.dtdPostionChangedID = this._panel._settings.connect('changed::dock-position', ()=> {
                 let side = this._panel._settings.get_enum('dock-position');
                 this.updateArrowSide(side);
             });
@@ -387,9 +387,9 @@ var ApplicationsButton =   Utils.defineClass({
                 (Main.extensionManager || ExtensionSystem).disconnect(this.extensionChangedId);
                 this.extensionChangedId = null;
             }
-            if(this.dtpPostionChangedID>0 && this._panel){
-                this._panel._settings.disconnect(this.dtpPostionChangedID);
-                this.dtpPostionChangedID = 0;
+            if(this.dtdPostionChangedID>0 && this._panel._settings){
+                this._panel._settings.disconnect(this.dtdPostionChangedID);
+                this.dtdPostionChangedID = 0;
             }
             if (this._installedChangedId > 0) {
                 appSys.disconnect(this._installedChangedId);
@@ -571,7 +571,7 @@ var RightClickMenu = class ArcMenu_RightClickMenu extends PopupMenu.PopupMenu {
         super(sourceActor, arrowAlignment, arrowSide);
         this._settings = settings;
         this._button = button;  
-        this.DTPSettings=false;
+        this.DTDSettings=false;
 
         this.actor.add_style_class_name('panel-menu');
         Main.uiGroup.add_actor(this.actor);
@@ -596,21 +596,21 @@ var RightClickMenu = class ArcMenu_RightClickMenu extends PopupMenu.PopupMenu {
         });      
         this.addMenuItem(item);
     }
-    addDTPSettings(){
-        if(this.DTPSettings==false){
+    addDTDSettings(){
+        if(this.DTDSettings==false){
             let item = new PopupMenu.PopupMenuItem(_("Dash to Dock Settings"));
             item.connect('activate', ()=>{
-                Util.spawnCommandLine('gnome-shell-extension-prefs ' + DASH_TO_PANEL_UUID);
+                Util.spawnCommandLine('gnome-shell-extension-prefs ' + DASH_TO_DOCK_UUID);
             });
             this.addMenuItem(item,1);   
-            this.DTPSettings=true;
+            this.DTDSettings=true;
         }
     }
-    removeDTPSettings(){
+    removeDTDSettings(){
         let children = this._getMenuItems();
         if(children[1] instanceof PopupMenu.PopupMenuItem)
             children[1].destroy();
-        this.DTPSettings=false;
+        this.DTDSettings=false;
     }
     // Return that the menu is not empty (used by parent class)
     // Handle opening the menu

@@ -55,8 +55,11 @@ function enable() {
     // dash to panel might get enabled after Arc-Menu
     extensionChangedId = (Main.extensionManager || ExtensionSystem).connect('extension-state-changed', (data, extension) => {
         if (extension.uuid === 'dash-to-panel@jderose9.github.com' && extension.state === 1) {
-            _connectDtpSignals();
-            _enableButtons();
+            let arcMenuPosition = settings.get_enum('arc-menu-placement');
+            if(arcMenuPosition == Constants.ARC_MENU_PLACEMENT.PANEL){
+                _connectDtpSignals();
+                _enableButtons();
+            }
         }
     });
         
@@ -106,6 +109,13 @@ function _disconnectDtpSignals() {
 }
 
 function _onArcMenuPlacementChange() {
+    let arcMenuPosition = settings.get_enum('arc-menu-placement');
+    if(arcMenuPosition == Constants.ARC_MENU_PLACEMENT.PANEL){
+        _connectDtpSignals();
+    }
+    else{
+        _disconnectDtpSignals();
+    }
     settingsControllers.forEach(sc => _disableButton(sc, 1));
     _enableButtons();
 }
@@ -167,9 +177,9 @@ function _enableButtons() {
                     settingsController.bindSettingsChanges();
                     settingsControllers.push(settingsController);
                 }
-            } 
-        }  
-    }  
+            }   
+        }
+    } 
 }
 
 function _disableButton(controller, remove) {
