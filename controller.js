@@ -329,12 +329,14 @@ var MenuSettingsController = class {
 
     }
     _setMenuButtonArrow() {
-        let menuButtonWidget = this._menuButton.getWidget();
-        if (this._settings.get_boolean('enable-menu-button-arrow')) {
-            menuButtonWidget.hideArrowIcon();
-            menuButtonWidget.showArrowIcon();
-        } else {
-            menuButtonWidget.hideArrowIcon();
+        if(this.dashOrPanel == Constants.ARC_MENU_PLACEMENT.PANEL){
+            let menuButtonWidget = this._menuButton.getWidget();
+            if (this._settings.get_boolean('enable-menu-button-arrow')) {
+                menuButtonWidget.hideArrowIcon();
+                menuButtonWidget.showArrowIcon();
+            } else {
+                menuButtonWidget.hideArrowIcon();
+            }
         }
     }
 
@@ -380,17 +382,21 @@ var MenuSettingsController = class {
 
     // Update the icon of the menu button as specified in the settings
     _setButtonIconSize() {
-        let menuButtonWidget = this._menuButton.getWidget();
-        let stIcon = menuButtonWidget.getPanelIcon();
-        let iconSize = this._settings.get_double('custom-menu-button-icon-size');
-        let size = iconSize;
-        stIcon.icon_size = size;
+        if(this.dashOrPanel == Constants.ARC_MENU_PLACEMENT.PANEL){
+            let menuButtonWidget = this._menuButton.getWidget();
+            let stIcon = menuButtonWidget.getPanelIcon();
+            let iconSize = this._settings.get_double('custom-menu-button-icon-size');
+            let size = iconSize;
+            stIcon.icon_size = size;
+        }
     }
     _setButtonIconPadding() {
-        let menuButtonWidget = this._menuButton.getWidget();
-        let stIcon = menuButtonWidget.getPanelIcon();
-        let iconPadding = this._settings.get_int('button-icon-padding');
-        stIcon.style = "padding: 0 "+iconPadding+"px;";
+        if(this.dashOrPanel == Constants.ARC_MENU_PLACEMENT.PANEL){
+            let menuButtonWidget = this._menuButton.getWidget();
+            let stIcon = menuButtonWidget.getPanelIcon();
+            let iconPadding = this._settings.get_int('button-icon-padding');
+            stIcon.style = "padding: 0 "+iconPadding+"px;";
+        }
     }
 
     // Get the current position of the menu button and its associated position order

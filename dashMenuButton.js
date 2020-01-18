@@ -55,6 +55,7 @@ var ApplicationsButton =   Utils.defineClass({
             this._panel = panel;
             this._menuButtonWidget = new MW.DashMenuButtonWidget(this._settings);
             this.child = this._menuButtonWidget.actor;
+            this.toggleButton = this._menuButtonWidget.actor;
             this.style_class = 'dash-item-container';
             //Tooltip showing/hiding
             this.tooltipShowing = false;
