@@ -478,9 +478,6 @@ var MenuSettingsController = class {
     }
     // Enable the menu button
     enableButtonInDash() {
-        let parent = this.menuButtonAdjustedActor.get_parent();
-        if(parent)
-            parent.remove_actor(this.menuButtonAdjustedActor);
         this.reEstablishDash();
         this.panelConnectID = this.panel.connect("toggled",()=>{
             this.reEstablishDash();

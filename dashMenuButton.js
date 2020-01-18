@@ -509,14 +509,12 @@ var ApplicationsButton =   Utils.defineClass({
             if (open){
                 if(this.menuManager.activeMenu) 
                     this.menuManager.activeMenu.close(1 << 1);
-                
-                this.getWidget().actor.add_style_pseudo_class('active');
-                //modernGnome ?  this.add_style_pseudo_class('active') : this.actor.add_style_pseudo_class('active');
+                this.getWidget().actor.add_style_pseudo_class('selected');
+                this.getWidget()._icon.add_style_pseudo_class('active');
             }      
             else{ 
-                
-                this.getWidget().actor.remove_style_pseudo_class('active');
-                //modernGnome ? this.remove_style_pseudo_class('active'): this.actor.remove_style_pseudo_class('active');
+                this.getWidget().actor.remove_style_pseudo_class('selected');
+                this.getWidget()._icon.remove_style_pseudo_class('active');
             }
             if (menu == this.leftClickMenu) {
                 if(open){

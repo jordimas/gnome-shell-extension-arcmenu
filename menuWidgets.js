@@ -2518,9 +2518,10 @@ var DashMenuButtonWidget = class ArcMenu_DashMenuButtonWidget{
                                             createIcon: this._createIcon.bind(this) });
         this._icon = new St.Icon({
             icon_name: 'start-here-symbolic',
-            style_class: 'show-apps-icon',
+            style_class: 'arc-menu-icon',
             track_hover:true,
-            icon_size: 15
+            icon_size: 15,
+            reactive: true
         });
         this._label = new St.Label({
             text: _("Applications"),
@@ -2537,7 +2538,7 @@ var DashMenuButtonWidget = class ArcMenu_DashMenuButtonWidget{
     _createIcon(size) {
         this._icon = new St.Icon({  
             icon_name: 'start-here-symbolic',
-            style_class: 'show-apps-icon',
+            style_class: 'arc-menu-icon',
             track_hover:true,
             icon_size: size,
             reactive: true
