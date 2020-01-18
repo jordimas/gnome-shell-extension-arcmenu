@@ -745,7 +745,7 @@ var GeneralPage = GObject.registerClass(
             let menuPlacementFrame = new PW.FrameBox();
             let menuPlacementRow = new PW.FrameBoxRow();
             let menuPlacementLabel = new Gtk.Label({
-                label: _("Arc Menu Placement"),
+                label: _("Display Arc Menu On"),
                 use_markup: true,
                 xalign: 0,
                 hexpand: true

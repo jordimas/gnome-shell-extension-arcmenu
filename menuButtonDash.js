@@ -53,10 +53,12 @@ var ApplicationsButton =   Utils.defineClass({
             this._settings = settings;
             this._panel = panel;
             this._menuButtonWidget = new MW.DashMenuButtonWidget(this._settings);
+
             this.child = this._menuButtonWidget.icon;
             this.icon = this._menuButtonWidget.icon;
             this.toggleButton = this._menuButtonWidget.actor;
             this.container.toggleButton = this._menuButtonWidget.actor;
+            this.container.setDragApp = () => {};
             
             //Tooltip showing/hiding
             this.tooltipShowing = false;
@@ -89,21 +91,9 @@ var ApplicationsButton =   Utils.defineClass({
             this.appMenuManager._changeMenu = (menu) => {};
             //-------------------------------------------------------------------------
 
-            //Dash to Panel Integration----------------------------------------------------------------------
-            this.dtd = Main.extensionManager ?
-                        Main.extensionManager.lookup(DASH_TO_DOCK_UUID) : 
-                        ExtensionUtils.extensions[DASH_TO_DOCK_UUID];
-            this.extensionChangedId = (Main.extensionManager || ExtensionSystem).connect('extension-state-changed', (data, extension) => {
-                if (extension.uuid === DASH_TO_DOCK_UUID && extension.state === 1) {
-                    this.rightClickMenu.addDTDSettings();   
-                }
-                if (extension.uuid === DASH_TO_DOCK_UUID && extension.state === 2) {
-                    this.rightClickMenu.removeDTDSettings();
-                }  
-            });
-            if(this.dtd){
-                this.rightClickMenu.addDTDSettings();  
-            }  
+            //Dash to Dock Integration----------------------------------------------------------------------
+            this.rightClickMenu.addDTDSettings();  
+          
             this.dtdPostionChangedID = this._panel._settings.connect('changed::dock-position', ()=> {
                 let side = this._panel._settings.get_enum('dock-position');
                 this.updateArrowSide(side);
@@ -122,7 +112,6 @@ var ApplicationsButton =   Utils.defineClass({
             if(gnome36){
                 this.connect('event', this._onEvent.bind(this));
                 this.connect('notify::visible', this._onVisibilityChanged.bind(this));
-
             }
             //Create Basic Layout ------------------------------------------------
             this.createLayoutID = GLib.timeout_add(0, 100, () => {
@@ -130,7 +119,6 @@ var ApplicationsButton =   Utils.defineClass({
                 return GLib.SOURCE_REMOVE;
             });
             //--------------------------------------------------------------------
-            this.container.setDragApp = this.setDragApp;
         },
         setDragApp(){
 
@@ -195,61 +183,34 @@ var ApplicationsButton =   Utils.defineClass({
         },
         _setMenuPositionAlignment(){
             let layout = this._settings.get_enum('menu-layout');
-            let arrowAlignment = (this._settings.get_int('menu-position-alignment') / 100);
             if(layout != Constants.MENU_LAYOUT.Runner){
-                if(this._settings.get_enum('position-in-panel') == Constants.MENU_POSITION.Center){
-                    this.rightClickMenu._arrowAlignment = arrowAlignment
-                    this.leftClickMenu._arrowAlignment = arrowAlignment
-                    this.rightClickMenu._boxPointer.setSourceAlignment(.5);
-                    this.leftClickMenu._boxPointer.setSourceAlignment(.5);
-                }
-                else{
-                    let side = this._panel._settings.get_enum('dock-position');
-                    this.updateArrowSide(side, false);
-                }
+                let side = this._panel._settings.get_enum('dock-position');
+                this.updateArrowSide(side, false);
             }
             else{
                 this.updateArrowSide(St.Side.TOP, false);
-                if(this._settings.get_enum('position-in-panel') == Constants.MENU_POSITION.Center){
-                    this.rightClickMenu._arrowAlignment = arrowAlignment
-                    this.rightClickMenu._boxPointer.setSourceAlignment(.5);
-                }
             }
 
         },
         updateArrowSide(side, setAlignment = true){
             let arrowAlignment = 0.5;
-            if (side == St.Side.TOP) 
-                side =  St.Side.TOP;
-            else if (side == St.Side.RIGHT) {
-                arrowAlignment = 0.5;
-                side =  St.Side.RIGHT;
-            }
-            else if (side == St.Side.BOTTOM)
-                side =  St.Side.BOTTOM;
-            else {
-                arrowAlignment = 0.5;
-                side =  St.Side.LEFT;
-            }
-               
+
             this.rightClickMenu._arrowSide = side;
             this.rightClickMenu._boxPointer._arrowSide = side;
             this.rightClickMenu._boxPointer._userArrowSide = side;
-            this.rightClickMenu._boxPointer.setSourceAlignment(0.5);
+            this.rightClickMenu._boxPointer.setSourceAlignment(arrowAlignment);
             this.rightClickMenu._arrowAlignment = arrowAlignment
             this.rightClickMenu._boxPointer._border.queue_repaint();
 
             this.leftClickMenu._arrowSide = side;
             this.leftClickMenu._boxPointer._arrowSide = side;
             this.leftClickMenu._boxPointer._userArrowSide = side;
-            this.leftClickMenu._boxPointer.setSourceAlignment(0.5);
+            this.leftClickMenu._boxPointer.setSourceAlignment(arrowAlignment);
             this.leftClickMenu._arrowAlignment = arrowAlignment
             this.leftClickMenu._boxPointer._border.queue_repaint();
             
             if(setAlignment)
-                this._setMenuPositionAlignment();
-            
-               
+                this._setMenuPositionAlignment();  
         },
         updateStyle(){
             if(this.MenuLayout)

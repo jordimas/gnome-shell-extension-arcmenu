@@ -114,7 +114,7 @@ var ApplicationsButton =   Utils.defineClass({
                     }
                 }  
             });
-            if(this.dtp){
+            if(this.dtp && this.dtp.stateObj){
                 this.rightClickMenu.addDTPSettings();  
                 this.dtpSettings = Convenience.getDTPSettings('org.gnome.shell.extensions.dash-to-panel',this.dtp);
                 let side = this.dtpSettings.get_string('panel-position');
@@ -207,7 +207,7 @@ var ApplicationsButton =   Utils.defineClass({
                     this.rightClickMenu._boxPointer.setSourceAlignment(.5);
                     this.leftClickMenu._boxPointer.setSourceAlignment(.5);
                 }
-                else if(this.dtp){
+                else if(this.dtp && this.dtp.stateObj){
                     let side = this.dtpSettings.get_string('panel-position');
                     this.updateArrowSide(side ? side : 'TOP', false);
                 }  
