@@ -2527,8 +2527,9 @@ var DashMenuButtonWidget = class ArcMenu_DashMenuButtonWidget{
             y_expand: true,
             y_align: Clutter.ActorAlign.CENTER,
         });
-
-        this.actor.add_actor(this.icon);
+        let modernGnome = imports.misc.config.PACKAGE_VERSION >= '3.31.9';
+        modernGnome ? this.actor.add_actor(this.icon) : this.actor.add_actor(this.icon.actor);
+        
         //this.actor.add_child(this._label);
         //this.actor.add_child(this._arrowIcon);
         this.child = this.actor;

@@ -148,7 +148,7 @@ function _enableButtons() {
                 settingsController.enableButtonInDash();
 
                 settingsController.bindSettingsChanges();
-                settingsControllers.push(settingsController);
+                settingsControllers.push(settingsController); 
             }
         }
     }

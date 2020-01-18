@@ -54,17 +54,17 @@ var ApplicationsButton =   Utils.defineClass({
             this._settings = settings;
             this._panel = panel;
             this._menuButtonWidget = new MW.DashMenuButtonWidget(this._settings);
-            this.child = this._menuButtonWidget.actor;
+            this.child = this._menuButtonWidget.icon;
+            this.icon = this._menuButtonWidget.icon;
             this.toggleButton = this._menuButtonWidget.actor;
-            this.style_class = 'dash-item-container';
+            
             //Tooltip showing/hiding
             this.tooltipShowing = false;
             this.tooltipHidingID = 0;
             this.tooltipShowingID = 0;
-
             //Create Main Button Left and Right Click Menus---------------------------------------------------
             let sourceActor =  modernGnome ?  this : this.actor;
- 
+            sourceActor.style_class = 'dash-item-container';
             this.rightClickMenu = new RightClickMenu(sourceActor,0.5,St.Side.TOP);	
             this.rightClickMenu.connect('open-state-changed', this._onOpenStateChanged.bind(this));
            
@@ -130,8 +130,11 @@ var ApplicationsButton =   Utils.defineClass({
                 return GLib.SOURCE_REMOVE;
             });
             //--------------------------------------------------------------------
+            this.container.setDragApp = this.setDragApp;
         },
+        setDragApp(){
 
+        },
         handleDragOver(source, _actor, _x, _y, _time) {
             return imports.ui.dnd.DragMotionResult.NO_DROP;
         },

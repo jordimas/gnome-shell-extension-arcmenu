@@ -33,6 +33,7 @@ const Main = imports.ui.main;
 const Menu = Me.imports.menu;
 const _ = Gettext.gettext;
 
+var modernGnome = imports.misc.config.PACKAGE_VERSION >= '3.31.9';
 /**
  * The Menu Settings Controller class is responsible for changing and handling
  * the settings changes of the Arc Menu.
@@ -42,6 +43,7 @@ var MenuSettingsController = class {
         this._settings = settings;
         this.panel = panel;
         this.dashOrPanel = dashOrPanel;
+
         this.updateThemeID = GLib.timeout_add(0, 100, () => {
             Me.imports.prefs.saveCSS(this._settings);
             Main.loadTheme();
@@ -56,6 +58,7 @@ var MenuSettingsController = class {
         }
         else{
             this._menuButton = new DashMenu.ApplicationsButton(settings, panel);
+            this.menuButtonAdjustedActor = this._menuButton.container;
         }
             
         this._settingsControllers = settingsControllers
@@ -136,7 +139,6 @@ var MenuSettingsController = class {
         else{
             if(this._settings.get_boolean('multi-monitor') && global.dashToPanel){
                 let screen = Gdk.Screen.get_default();
-                //global.log( global.get_pointer());
                 let pointer = global.get_pointer();
                 let currentMonitor = screen.get_monitor_at_point(pointer[0],pointer[1]);
                 for(let i = 0;i<screen.get_n_monitors();i++){
@@ -159,7 +161,6 @@ var MenuSettingsController = class {
                 }   
             }
             else {
-                //global.log("no dash to panel")
                 this._menuButton.toggleMenu();
             }
         }
@@ -454,36 +455,37 @@ var MenuSettingsController = class {
         this._removeActivitiesButtonFromMainPanel(); // disable the activities button
         this._addMenuButtonToMainPanel();
     }
-    reEstablishDash(){
-        let parent = this._menuButton.get_parent();
-        if(parent)
-            parent.remove_actor(this._menuButton);
+    reEstablishDash(){  
         let container = this.panel._allDocks[0].dash._container;
+        
         this.oldShowAppsIcon = this.panel._allDocks[0].dash._showAppsIcon;
-        container.remove_actor(this.panel._allDocks[0].dash._showAppsIcon);
+        container.remove_actor(this.oldShowAppsIcon);
 
         this._setButtonIcon();
         let iconSize = this.panel._allDocks[0].dash.iconSize;
         this._menuButton._menuButtonWidget.icon.setIconSize(iconSize);
 
-        container.add_actor(this._menuButton);
-        this._menuButton.set_parent(container);
-        this.panel._allDocks[0].dash._showAppsIcon = this._menuButton;
+        container.add_actor(this.menuButtonAdjustedActor);
+        this.panel._allDocks[0].dash._showAppsIcon = this.menuButtonAdjustedActor;
         this.panel._allDocks[0].dash._queueRedisplay();
-        this.panel._allDocks[0].dash.connect("destroy",()=>{
-            if(this._menuButton){
-                let parent = this._menuButton.get_parent();
-                if(parent)
-                    parent.remove_actor(this._menuButton);
-                this._setButtonIcon();
-            }
-        });
+        this.panel._allDocks[0].dash.destroy = ()=> {
+        
+            let container = this.panel._allDocks[0].dash._container;
+            container.remove_actor(this.menuButtonAdjustedActor);
+            
+            this.panel._allDocks[0].dash._signalsHandler.destroy();
+        };
     }
     // Enable the menu button
     enableButtonInDash() {
+        let parent = this.menuButtonAdjustedActor.get_parent();
+        if(parent)
+            parent.remove_actor(this.menuButtonAdjustedActor);
         this.reEstablishDash();
         this.panelConnectID = this.panel.connect("toggled",()=>{
             this.reEstablishDash();
+            this._menuButton.leftClickMenu.toggle();
+            this._menuButton.leftClickMenu.toggle();
         });
 
     }
@@ -513,9 +515,9 @@ var MenuSettingsController = class {
                 this.panel.disconnect(this.panelConnectID);
                 this.panelConnectID = null;
             } 
-            let parent = this._menuButton.get_parent();
+            let parent = this.menuButtonAdjustedActor.get_parent();
             if(parent)
-                parent.remove_actor(this._menuButton);
+                parent.remove_actor(this.menuButtonAdjustedActor);
             if(this.panel._allDocks.length){
                 let container = this.panel._allDocks[0].dash._container;
                 this.panel._allDocks[0].dash._showAppsIcon = this.oldShowAppsIcon;
