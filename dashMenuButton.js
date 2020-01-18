@@ -57,6 +57,7 @@ var ApplicationsButton =   Utils.defineClass({
             this.child = this._menuButtonWidget.icon;
             this.icon = this._menuButtonWidget.icon;
             this.toggleButton = this._menuButtonWidget.actor;
+            this.container.toggleButton = this._menuButtonWidget.actor;
             
             //Tooltip showing/hiding
             this.tooltipShowing = false;
