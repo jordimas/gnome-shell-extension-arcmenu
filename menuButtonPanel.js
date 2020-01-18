@@ -44,11 +44,10 @@ var modernGnome = imports.misc.config.PACKAGE_VERSION >= '3.31.9';
 const gnome36 = imports.misc.config.PACKAGE_VERSION >= '3.35.0';
 
 var DASH_TO_PANEL_UUID = 'dash-to-panel@jderose9.github.com';
-// Application Menu Button class (most of the menu logic is here)
+
 var ApplicationsButton =   Utils.defineClass({
     Name: 'ArcMenu_ApplicationsButton',
     Extends: PanelMenu.Button,
-    // Initialize the menu
         _init(settings, panel) {
             this.callParent('_init');
             this._settings = settings;
@@ -115,7 +114,7 @@ var ApplicationsButton =   Utils.defineClass({
                     }
                 }  
             });
-            if(this.dtp){
+            if(this.dtp && this.dtp.stateObj){
                 this.rightClickMenu.addDTPSettings();  
                 this.dtpSettings = Convenience.getDTPSettings('org.gnome.shell.extensions.dash-to-panel',this.dtp);
                 let side = this.dtpSettings.get_string('panel-position');
@@ -208,7 +207,7 @@ var ApplicationsButton =   Utils.defineClass({
                     this.rightClickMenu._boxPointer.setSourceAlignment(.5);
                     this.leftClickMenu._boxPointer.setSourceAlignment(.5);
                 }
-                else if(this.dtp){
+                else if(this.dtp && this.dtp.stateObj){
                     let side = this.dtpSettings.get_string('panel-position');
                     this.updateArrowSide(side ? side : 'TOP', false);
                 }  
