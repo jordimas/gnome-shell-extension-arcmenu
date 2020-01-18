@@ -43,33 +43,29 @@ const _ = Gettext.gettext;
 var modernGnome = imports.misc.config.PACKAGE_VERSION >= '3.31.9';
 const gnome36 = imports.misc.config.PACKAGE_VERSION >= '3.35.0';
 
-var DASH_TO_DOCK_UUID = 'dash-to-dock@micxgx.gmail.com';
-// Application Menu Button class (most of the menu logic is here)
+var DASH_TO_PANEL_UUID = 'dash-to-panel@jderose9.github.com';
+
 var ApplicationsButton =   Utils.defineClass({
-    Name: 'ArcMenu_DashApplicationsButton',
+    Name: 'ArcMenu_ApplicationsButton',
     Extends: PanelMenu.Button,
-    // Initialize the menu
         _init(settings, panel) {
             this.callParent('_init');
             this._settings = settings;
             this._panel = panel;
-            this._menuButtonWidget = new MW.DashMenuButtonWidget(this._settings);
-            this.child = this._menuButtonWidget.icon;
-            this.icon = this._menuButtonWidget.icon;
-            this.toggleButton = this._menuButtonWidget.actor;
-            this.container.toggleButton = this._menuButtonWidget.actor;
+            this._menuButtonWidget = new MW.MenuButtonWidget();
             
             //Tooltip showing/hiding
             this.tooltipShowing = false;
             this.tooltipHidingID = 0;
             this.tooltipShowingID = 0;
+
             //Create Main Button Left and Right Click Menus---------------------------------------------------
             let sourceActor =  modernGnome ?  this : this.actor;
-            sourceActor.style_class = 'dash-item-container';
-            this.rightClickMenu = new RightClickMenu(sourceActor,0.5,St.Side.TOP);	
+ 
+            this.rightClickMenu = new RightClickMenu(sourceActor,1.0,St.Side.TOP);	
             this.rightClickMenu.connect('open-state-changed', this._onOpenStateChanged.bind(this));
            
-            this.leftClickMenu = new ApplicationsMenu(sourceActor, 0.5, St.Side.TOP, this, this._settings);
+            this.leftClickMenu = new ApplicationsMenu(sourceActor, 1.0, St.Side.TOP, this, this._settings);
             this.leftClickMenu.connect('open-state-changed', this._onOpenStateChanged.bind(this));
             //------------------------------------------------------------------------------------------------
 
@@ -91,24 +87,43 @@ var ApplicationsButton =   Utils.defineClass({
             //-------------------------------------------------------------------------
 
             //Dash to Panel Integration----------------------------------------------------------------------
-            this.dtd = Main.extensionManager ?
-                        Main.extensionManager.lookup(DASH_TO_DOCK_UUID) : 
-                        ExtensionUtils.extensions[DASH_TO_DOCK_UUID];
+            this.dtp = Main.extensionManager ?
+                        Main.extensionManager.lookup(DASH_TO_PANEL_UUID) : 
+                        ExtensionUtils.extensions[DASH_TO_PANEL_UUID];
             this.extensionChangedId = (Main.extensionManager || ExtensionSystem).connect('extension-state-changed', (data, extension) => {
-                if (extension.uuid === DASH_TO_DOCK_UUID && extension.state === 1) {
-                    this.rightClickMenu.addDTDSettings();   
+                if (extension.uuid === DASH_TO_PANEL_UUID && extension.state === 1) {
+                    this.dtp = Main.extensionManager ?
+                                Main.extensionManager.lookup(DASH_TO_PANEL_UUID) : 
+                                ExtensionUtils.extensions[DASH_TO_PANEL_UUID];
+                    this.rightClickMenu.addDTPSettings();   
+                    this.dtpSettings = Convenience.getDTPSettings('org.gnome.shell.extensions.dash-to-panel',extension);
+                    let side = this.dtpSettings.get_string('panel-position');
+                    this.updateArrowSide(side ? side : 'TOP');
+                    this.dtpPostionChangedID = this.dtpSettings.connect('changed::panel-position', ()=> {
+                        let side = this.dtpSettings.get_string('panel-position');
+                        this.updateArrowSide(side ? side : 'TOP');
+                    });
                 }
-                if (extension.uuid === DASH_TO_DOCK_UUID && extension.state === 2) {
-                    this.rightClickMenu.removeDTDSettings();
+                if (extension.uuid === DASH_TO_PANEL_UUID && extension.state === 2) {
+                    this.dtp = null;
+                    this.rightClickMenu.removeDTPSettings();
+                    this.updateArrowSide('TOP');
+                    if(this.dtpPostionChangedID>0 && this.dtpSettings){
+                        this.dtpSettings.disconnect(this.dtpPostionChangedID);
+                        this.dtpPostionChangedID = 0;
+                    }
                 }  
             });
-            if(this.dtd){
-                this.rightClickMenu.addDTDSettings();  
+            if(this.dtp){
+                this.rightClickMenu.addDTPSettings();  
+                this.dtpSettings = Convenience.getDTPSettings('org.gnome.shell.extensions.dash-to-panel',this.dtp);
+                let side = this.dtpSettings.get_string('panel-position');
+                this.updateArrowSide(side ? side : 'TOP');
+                this.dtpPostionChangedID = this.dtpSettings.connect('changed::panel-position', ()=> {
+                    let side = this.dtpSettings.get_string('panel-position');
+                    this.updateArrowSide(side ? side : 'TOP');
+                });
             }  
-            this.dtdPostionChangedID = this._panel._settings.connect('changed::dock-position', ()=> {
-                let side = this._panel._settings.get_enum('dock-position');
-                this.updateArrowSide(side);
-            });
             //----------------------------------------------------------------------------------
 
             //Update Categories on 'installed-changed' event-------------------------------------
@@ -119,7 +134,6 @@ var ApplicationsButton =   Utils.defineClass({
             this._setMenuPositionAlignment();
             //Add Menu Button Widget to Button
             sourceActor.add_actor(this._menuButtonWidget.actor);
-            this._menuButtonWidget.actor.connect("event",this._onEvent.bind(this));
             if(gnome36){
                 this.connect('event', this._onEvent.bind(this));
                 this.connect('notify::visible', this._onVisibilityChanged.bind(this));
@@ -131,17 +145,6 @@ var ApplicationsButton =   Utils.defineClass({
                 return GLib.SOURCE_REMOVE;
             });
             //--------------------------------------------------------------------
-            this.container.setDragApp = this.setDragApp;
-        },
-        setDragApp(){
-
-        },
-        handleDragOver(source, _actor, _x, _y, _time) {
-            return imports.ui.dnd.DragMotionResult.NO_DROP;
-        },
-    
-        acceptDrop(source, _actor, _x, _y, _time) {
-            return false;
         },
         createMenuLayout(){
             this.section = new PopupMenu.PopupMenuSection();
@@ -204,13 +207,16 @@ var ApplicationsButton =   Utils.defineClass({
                     this.rightClickMenu._boxPointer.setSourceAlignment(.5);
                     this.leftClickMenu._boxPointer.setSourceAlignment(.5);
                 }
+                else if(this.dtp){
+                    let side = this.dtpSettings.get_string('panel-position');
+                    this.updateArrowSide(side ? side : 'TOP', false);
+                }  
                 else{
-                    let side = this._panel._settings.get_enum('dock-position');
-                    this.updateArrowSide(side, false);
+                    this.updateArrowSide('TOP', false);
                 }
             }
             else{
-                this.updateArrowSide(St.Side.TOP, false);
+                this.updateArrowSide('TOP', false);
                 if(this._settings.get_enum('position-in-panel') == Constants.MENU_POSITION.Center){
                     this.rightClickMenu._arrowAlignment = arrowAlignment
                     this.rightClickMenu._boxPointer.setSourceAlignment(.5);
@@ -219,31 +225,31 @@ var ApplicationsButton =   Utils.defineClass({
 
         },
         updateArrowSide(side, setAlignment = true){
-            let arrowAlignment = 0.5;
-            if (side == St.Side.TOP) 
+            let arrowAlignment = 0;
+            if (side == 'TOP') 
                 side =  St.Side.TOP;
-            else if (side == St.Side.RIGHT) {
-                arrowAlignment = 0.5;
+            else if (side == 'RIGHT') {
+                arrowAlignment = 1;
                 side =  St.Side.RIGHT;
             }
-            else if (side == St.Side.BOTTOM)
+            else if (side == 'BOTTOM')
                 side =  St.Side.BOTTOM;
             else {
-                arrowAlignment = 0.5;
+                arrowAlignment = 1;
                 side =  St.Side.LEFT;
             }
                
             this.rightClickMenu._arrowSide = side;
             this.rightClickMenu._boxPointer._arrowSide = side;
             this.rightClickMenu._boxPointer._userArrowSide = side;
-            this.rightClickMenu._boxPointer.setSourceAlignment(0.5);
+            this.rightClickMenu._boxPointer.setSourceAlignment(arrowAlignment);
             this.rightClickMenu._arrowAlignment = arrowAlignment
             this.rightClickMenu._boxPointer._border.queue_repaint();
 
             this.leftClickMenu._arrowSide = side;
             this.leftClickMenu._boxPointer._arrowSide = side;
             this.leftClickMenu._boxPointer._userArrowSide = side;
-            this.leftClickMenu._boxPointer.setSourceAlignment(0.5);
+            this.leftClickMenu._boxPointer.setSourceAlignment(arrowAlignment);
             this.leftClickMenu._arrowAlignment = arrowAlignment
             this.leftClickMenu._boxPointer._border.queue_repaint();
             
@@ -283,8 +289,7 @@ var ApplicationsButton =   Utils.defineClass({
         },
         _onEvent(actor, event) {
              if (event.type() == Clutter.EventType.BUTTON_PRESS){   
-                 
-                if(event.get_button()==1 && actor instanceof St.Button ){    
+                if(event.get_button()==1){    
                     let layout = this._settings.get_enum('menu-layout');
                     if(layout == Constants.MENU_LAYOUT.GnomeDash)
                         Main.overview.toggle();
@@ -299,10 +304,9 @@ var ApplicationsButton =   Utils.defineClass({
                            
                     }                
                 }    
-                else if(event.get_button()==3 && actor instanceof St.Button){                      
+                else if(event.get_button()==3){                      
                     this.rightClickMenu.toggle();	                	
-                }   
-                return Clutter.EVENT_STOP; 
+                }    
             }
             else if(event.type() == Clutter.EventType.TOUCH_BEGIN){         
                 let layout = this._settings.get_enum('menu-layout');
@@ -377,24 +381,24 @@ var ApplicationsButton =   Utils.defineClass({
         },
         // Destroy the menu button
         destroy() {  
-            if (this.reloadID) {
+            if (this.reloadID > 0) {
                 GLib.source_remove(this.reloadID);
-                this.reloadID = null;
+                this.reloadID = 0;
             }
-            if (this.createLayoutID) {
+            if (this.createLayoutID > 0) {
                 GLib.source_remove(this.createLayoutID);
-                this.createLayoutID = null;
+                this.createLayoutID = 0;
             }
             if(this.MenuLayout)
                 this.MenuLayout.destroy();
 
-            if ( this.extensionChangedId) {
+            if ( this.extensionChangedId > 0) {
                 (Main.extensionManager || ExtensionSystem).disconnect(this.extensionChangedId);
-                this.extensionChangedId = null;
+                this.extensionChangedId = 0;
             }
-            if(this.dtdPostionChangedID>0 && this._panel._settings){
-                this._panel._settings.disconnect(this.dtdPostionChangedID);
-                this.dtdPostionChangedID = 0;
+            if(this.dtpPostionChangedID>0 && this.dtpSettings){
+                this.dtpSettings.disconnect(this.dtpPostionChangedID);
+                this.dtpPostionChangedID = 0;
             }
             if (this._installedChangedId > 0) {
                 appSys.disconnect(this._installedChangedId);
@@ -406,11 +410,8 @@ var ApplicationsButton =   Utils.defineClass({
             if (this.rightClickMenu) {
                 this.rightClickMenu.destroy();
             }
-            
             this.container.child = null;
             this.container.destroy();
-            
-
         },
         _updateMenuLayout(){
             this.MenuLayout.destroy();
@@ -509,12 +510,12 @@ var ApplicationsButton =   Utils.defineClass({
             if (open){
                 if(this.menuManager.activeMenu) 
                     this.menuManager.activeMenu.close(1 << 1);
-                this.getWidget().actor.add_style_pseudo_class('selected');
-                this.getWidget()._icon.add_style_pseudo_class('active');
+                this.getWidget().getPanelIcon().add_style_pseudo_class('active');
+                modernGnome ?  this.add_style_pseudo_class('active') : this.actor.add_style_pseudo_class('active');
             }      
             else{ 
-                this.getWidget().actor.remove_style_pseudo_class('selected');
-                this.getWidget()._icon.remove_style_pseudo_class('active');
+                this.getWidget().getPanelIcon().remove_style_pseudo_class('active');
+                modernGnome ? this.remove_style_pseudo_class('active'): this.actor.remove_style_pseudo_class('active');
             }
             if (menu == this.leftClickMenu) {
                 if(open){
@@ -535,12 +536,6 @@ var ApplicationsMenu = class ArcMenu_ApplicationsMenu extends PopupMenu.PopupMen
         this.actor.add_style_class_name('panel-menu');
         Main.uiGroup.add_actor(this.actor);
         this.actor.hide();
-        this.connect("destroy", ()=>{
-            if (this.menuClosingID) {
-                GLib.source_remove(this.menuClosingID);
-                this.menuClosingID = null;
-            }
-        })
     }
     // Return that the menu is not empty (used by parent class)
     isEmpty() {
@@ -560,7 +555,7 @@ var ApplicationsMenu = class ArcMenu_ApplicationsMenu extends PopupMenu.PopupMen
         super.close(animate);   
 
         if(this._button.MenuLayout && this._button.MenuLayout.isRunning){
-            this.menuClosingID = GLib.timeout_add(0, 100, () => {
+            GLib.timeout_add(0, 100, () => {
                 this._button.setDefaultMenuView();  
                 return GLib.SOURCE_REMOVE;
             });
@@ -574,7 +569,7 @@ var RightClickMenu = class ArcMenu_RightClickMenu extends PopupMenu.PopupMenu {
         super(sourceActor, arrowAlignment, arrowSide);
         this._settings = settings;
         this._button = button;  
-        this.DTDSettings=false;
+        this.DTPSettings=false;
 
         this.actor.add_style_class_name('panel-menu');
         Main.uiGroup.add_actor(this.actor);
@@ -599,21 +594,21 @@ var RightClickMenu = class ArcMenu_RightClickMenu extends PopupMenu.PopupMenu {
         });      
         this.addMenuItem(item);
     }
-    addDTDSettings(){
-        if(this.DTDSettings==false){
-            let item = new PopupMenu.PopupMenuItem(_("Dash to Dock Settings"));
+    addDTPSettings(){
+        if(this.DTPSettings==false){
+            let item = new PopupMenu.PopupMenuItem(_("Dash to Panel Settings"));
             item.connect('activate', ()=>{
-                Util.spawnCommandLine('gnome-shell-extension-prefs ' + DASH_TO_DOCK_UUID);
+                Util.spawnCommandLine('gnome-shell-extension-prefs ' + DASH_TO_PANEL_UUID);
             });
             this.addMenuItem(item,1);   
-            this.DTDSettings=true;
+            this.DTPSettings=true;
         }
     }
-    removeDTDSettings(){
+    removeDTPSettings(){
         let children = this._getMenuItems();
         if(children[1] instanceof PopupMenu.PopupMenuItem)
             children[1].destroy();
-        this.DTDSettings=false;
+        this.DTPSettings=false;
     }
     // Return that the menu is not empty (used by parent class)
     // Handle opening the menu

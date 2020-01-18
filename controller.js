@@ -26,11 +26,11 @@ const Me = imports.misc.extensionUtils.getCurrentExtension();
 
 const {Gdk, Gio, GLib, Gtk, St} = imports.gi;
 const Constants = Me.imports.constants;
-const DashMenu = Me.imports.dashMenuButton;
+const DashMenu = Me.imports.menuButtonDash;
 const Gettext = imports.gettext.domain(Me.metadata['gettext-domain']);
 const Helper = Me.imports.helper;
 const Main = imports.ui.main;
-const Menu = Me.imports.menu;
+const PanelMenu = Me.imports.menuButtonPanel;
 const _ = Gettext.gettext;
 
 var modernGnome = imports.misc.config.PACKAGE_VERSION >= '3.31.9';
@@ -53,7 +53,7 @@ var MenuSettingsController = class {
         this.isMainPanel = isMainPanel;
     
         if(this.dashOrPanel == Constants.ARC_MENU_PLACEMENT.PANEL){
-            this._menuButton = new Menu.ApplicationsButton(settings, panel);
+            this._menuButton = new PanelMenu.ApplicationsButton(settings, panel);
             this._activitiesButton = this.panel.statusArea.activities;
         }
         else{
