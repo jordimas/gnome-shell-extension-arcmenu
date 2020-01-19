@@ -424,7 +424,21 @@ var createMenu = class {
             }
             else if(directory[2].startsWith("ArcMenu_")){
                 let path = directory[2].replace("ArcMenu_",'');
-                path = GLib.get_home_dir()+"/"+path;
+
+                if(path === "Documents")
+                    path = imports.gi.GLib.UserDirectory.DIRECTORY_DOCUMENTS;
+                else if(path === "Downloads")
+                    path = imports.gi.GLib.UserDirectory.DIRECTORY_DOWNLOAD;
+                else if(path === "Music")
+                    path = imports.gi.GLib.UserDirectory.DIRECTORY_MUSIC;
+                else if(path === "Pictures")
+                    path = imports.gi.GLib.UserDirectory.DIRECTORY_PICTURES;
+                else if(path === "Videos")
+                    path = imports.gi.GLib.UserDirectory.DIRECTORY_VIDEOS;
+
+                path = GLib.get_user_special_dir(path);
+                if (path == null)
+                    continue;
                 placeInfo = new MW.PlaceInfo(Gio.File.new_for_path(path), _(directory[0]));
                 placeMenuItem = new MW.PlaceMenuItem(this, placeInfo);
             }
