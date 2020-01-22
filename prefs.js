@@ -1204,7 +1204,7 @@ var ModifyHotCornerDialogWindow = GObject.registerClass(
             let customHeaderHotCornerRow = new PW.FrameBoxRow();
             
             let customHeaderHotCornerLabel = new Gtk.Label({
-                label: "<b>"+_("Custom Activies Hot Corner Action") + "</b>\n" + _("Choose from a list of preset commands or use your own terminal command"),
+                label: "<b>"+_("Custom Activities Hot Corner Action") + "</b>\n" + _("Choose from a list of preset commands or use your own terminal command"),
                 use_markup: true,
                 xalign: 0,
                 hexpand: true
