@@ -169,7 +169,7 @@ This extension also leverages some code from the gnome-shell adapted to be used 
 
 -----
 
- **- @[AlexHi](https://gitlab.com/AlexHi) - Russian** | **- @[gkkulik](https://gitlab.com/gkkulik) - Silesian** | **- @[vikaig](https://gitlab.com/vikaig) - Ukrainian** | **- @[jordim](https://gitlab.com/jordim) - Catalan** | **- @[libreajans](https://gitlab.com/libreajans) - Turkish** | **- @[Vombato](https://gitlab.com/Vombato) - Italian** |
+ **- @[AlexWayfer](https://gitlab.com/AlexWayfer) - Russian** | **- @[gkkulik](https://gitlab.com/gkkulik) - Silesian** | **- @[vikaig](https://gitlab.com/vikaig) - Ukrainian** | **- @[jordim](https://gitlab.com/jordim) - Catalan** | **- @[libreajans](https://gitlab.com/libreajans) - Turkish** | **- @[Vombato](https://gitlab.com/Vombato) - Italian** |
  
 -----
 
