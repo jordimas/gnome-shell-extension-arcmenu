@@ -808,6 +808,7 @@ var ArcSearchProviderInfo = Utils.createClass({
         }
         
         this.hoverID = this.actor.connect('notify::hover', this._onHover.bind(this));
+        this.actor.connect('notify::active',()=> this.setActive(this.actor.active, false));
 
         if(provider.appInfo.get_description() != null){
             this.tooltip = new MW.Tooltip(this._button, this.actor, provider.appInfo.get_description());
@@ -839,5 +840,23 @@ var ArcSearchProviderInfo = Utils.createClass({
         }
         return Clutter.EVENT_STOP;
     },
+    setActive(active, callParent = true){
+        if(active){
+            if(this._button.activeMenuItem && this._button.activeMenuItem != this)
+                this._button.activeMenuItem.setFakeActive(false);
+            this._button.activeMenuItem = this;
+        }            
+        else if(this._button.leftClickMenu.isOpen)
+            this._button.activeMenuItem = null;
+        if(callParent)
+            this.callParent('setActive',active);
+    },
+    setFakeActive(active) {
+        if (active) {
+            this.actor.add_style_class_name('selected');
+        } else {
+            this.actor.remove_style_class_name('selected');
+        }
+    }
 });
 

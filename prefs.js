@@ -323,40 +323,10 @@ var AddAppsToPinnedListWindow = GObject.registerClass(
                 defaultApplicationShortcuts.push(["Network", "ArcMenu_Network", "ArcMenu_Network"]);
                 for(let i = 0;i < defaultApplicationShortcuts.length; i++) {
                     let frameRow = new PW.FrameBoxRow();
-                    let path, icon;
-        
-                    if(defaultApplicationShortcuts[i][2]=="ArcMenu_Home")
-                        path = GLib.get_home_dir();
-                    else if(defaultApplicationShortcuts[i][2].startsWith("ArcMenu_"))
-                        path = GLib.get_home_dir()+"/"+defaultApplicationShortcuts[i][0];
-                    else
-                        path = defaultApplicationShortcuts[i][2];
-
-                    if(path){
-                        let file = Gio.File.new_for_path(path);
-                        
-                        try {
-                            let info = file.query_info('standard::symbolic-icon', 0, null);
-                            icon = info.get_symbolic_icon();
-                        } catch (e) {
-                            if (e instanceof Gio.IOErrorEnum) {
-                                if (!file.is_native()) {
-                                    icon = new Gio.ThemedIcon({ name: 'folder-remote-symbolic' });
-                                } else {
-                                    icon = new Gio.ThemedIcon({ name: 'folder-symbolic' });
-                                }
-                            }
-                        }
-                    }
+                    frameRow._icon = getIconPath(defaultApplicationShortcuts[i]);
                     frameRow._name = defaultApplicationShortcuts[i][0];
-                    if(defaultApplicationShortcuts[i][2]=="ArcMenu_Network")
-                        frameRow._icon = 'network-workgroup-symbolic';
-                    else if(defaultApplicationShortcuts[i][2]=="ArcMenu_Computer")
-                        frameRow._icon = 'drive-harddisk-symbolic';
-                    else
-                        frameRow._icon = icon.to_string();
-           
                     frameRow._cmd = defaultApplicationShortcuts[i][2];
+
                     let iconImage = new Gtk.Image( {
                         gicon: Gio.icon_new_for_string(frameRow._icon),
                         pixel_size: 22
@@ -465,40 +435,42 @@ var AddAppsToPinnedListWindow = GObject.registerClass(
             }
             else{
                 this._loadCategories();
-                let sessionOptionsFrame = new PW.FrameBox();
-                for(let i = 0; i < 4; i++){
+                let defaultAppsWindow = new Gtk.ScrolledWindow();
+                defaultAppsWindow.set_policy(Gtk.PolicyType.AUTOMATIC, Gtk.PolicyType.AUTOMATIC);
+                defaultAppsWindow.set_max_content_height(300);
+                defaultAppsWindow.set_min_content_height(300);
+                defaultAppsWindow.set_min_content_width(500);
+                defaultAppsWindow.set_min_content_width(500);
+            
+                let defaultApplicationShortcutsFrame = new PW.FrameBox();
+                defaultAppsWindow.add_with_viewport(defaultApplicationShortcutsFrame);
+                let defaultApplicationShortcuts = this._settings.get_default_value('directory-shortcuts-list').deep_unpack();
+                defaultApplicationShortcuts.push(["Computer", "ArcMenu_Computer", "ArcMenu_Computer"]);
+                defaultApplicationShortcuts.push(["Network", "ArcMenu_Network", "ArcMenu_Network"]);
+
+                defaultApplicationShortcuts.push(["Lock", "changes-prevent-symbolic", "ArcMenu_Lock"]);
+                defaultApplicationShortcuts.push(["Log Out", "application-exit-symbolic", "ArcMenu_LogOut"]);
+                defaultApplicationShortcuts.push(["Power Off", "system-shutdown-symbolic", "ArcMenu_PowerOff"]);
+                defaultApplicationShortcuts.push(["Suspend", "media-playback-pause-symbolic", "ArcMenu_Suspend"]);
+                for(let i = 0;i < defaultApplicationShortcuts.length; i++) {
                     let frameRow = new PW.FrameBoxRow();
-                    if(i==0){
-                        frameRow._name = "Lock";
-                        frameRow._icon = "changes-prevent-symbolic";
-                        frameRow._cmd =  "ArcMenu_Lock";
-                    }
-                    else if(i==1){
-                        frameRow._name = "Log Out";
-                        frameRow._icon = "application-exit-symbolic";
-                        frameRow._cmd =  "ArcMenu_LogOut";
-                    }
-                    else if(i==2){
-                        frameRow._name = "Power Off";
-                        frameRow._icon = "system-shutdown-symbolic";
-                        frameRow._cmd =  "ArcMenu_PowerOff";
-                    }
-                    else if(i==3){
-                        frameRow._name = "Suspend";
-                        frameRow._icon = "media-playback-pause-symbolic";
-                        frameRow._cmd =  "ArcMenu_Suspend";
-                    }
-                   
+
+                    frameRow._icon = getIconPath(defaultApplicationShortcuts[i]);                        
+                    frameRow._name = defaultApplicationShortcuts[i][0];
+                    frameRow._cmd = defaultApplicationShortcuts[i][2];
+
                     let iconImage = new Gtk.Image( {
                         gicon: Gio.icon_new_for_string(frameRow._icon),
                         pixel_size: 22
                     });
+
                     let iconImageBox = new Gtk.VBox( {
                         margin_left: 5,
                         expand: false
                     });
                     iconImageBox.add(iconImage);
                     frameRow.add(iconImageBox);
+
                     let frameLabel = new Gtk.Label( {
                         use_markup: false,
                         xalign: 0,
@@ -506,6 +478,8 @@ var AddAppsToPinnedListWindow = GObject.registerClass(
                     });
                     frameLabel.label = frameRow._name;
                     frameRow.add(frameLabel);
+                    
+                    
                     let checkButton = new PW.IconButton({
                         circular: false,
                         icon_name: 'list-add-symbolic'
@@ -517,10 +491,21 @@ var AddAppsToPinnedListWindow = GObject.registerClass(
                         this.response(-10);
                     });
                     frameRow.add(checkButton);
-                    sessionOptionsFrame.add(frameRow);
+
+                    defaultApplicationShortcutsFrame.add(frameRow);
+                    
                 }
-                
-                vbox.add(sessionOptionsFrame);
+                let notebook = new PW.Notebook();
+
+                let defaultAppsPage = new PW.NotebookPage(_("Presets"));
+                notebook.append_page(defaultAppsPage);
+                defaultAppsPage.add(defaultAppsWindow);
+                vbox.remove(pinnedAppsScrollWindow);
+                let systemAppsPage = new PW.NotebookPage(_("System Apps"));
+                notebook.append_page(systemAppsPage);
+                systemAppsPage.add(pinnedAppsScrollWindow);
+
+                vbox.add(notebook);
             }
         }
 
@@ -1500,6 +1485,13 @@ var CustomHotkeyDialogWindow = GObject.registerClass(
             vbox.add(applyButton);    
         }
 });
+function getIconPixbuf(filePath){
+    if (GLib.file_test(filePath, GLib.FileTest.EXISTS)) 
+        return GdkPixbuf.Pixbuf.new_from_file_at_size(filePath, 20, 20);
+    else
+        return null;
+}
+
 //DialogWindow for Menu Button Customization
 var MenuButtonCustomizationWindow = GObject.registerClass(
     class ArcMenu_MenuButtonCustomizationWindow extends PW.DialogWindow {
@@ -1593,11 +1585,22 @@ var MenuButtonCustomizationWindow = GObject.registerClass(
                 filter: fileFilter
             });
 
-            let menuButtonIconCombo = new Gtk.ComboBoxText({ halign: Gtk.Align.END });
-            menuButtonIconCombo.append_text(_("Arc Menu Icon"));
-            menuButtonIconCombo.append_text(_("Arc Menu Alt Icon"));
-            menuButtonIconCombo.append_text(_("System Icon"));
-            menuButtonIconCombo.append_text(_("Custom Icon"));
+            let store = new Gtk.ListStore();
+            store.set_column_types([GdkPixbuf.Pixbuf, GObject.TYPE_STRING]);
+            let menuButtonIconCombo = new Gtk.ComboBox({model:store });
+            
+            this.createIconList(store);
+
+            
+            let renderer = new Gtk.CellRendererPixbuf();
+            menuButtonIconCombo.pack_start(renderer, true);
+            menuButtonIconCombo.add_attribute(renderer, "pixbuf", 0);
+            renderer = new Gtk.CellRendererText();
+            menuButtonIconCombo.pack_start(renderer, true);
+            menuButtonIconCombo.add_attribute(renderer, "text", 1);
+
+           
+
             menuButtonIconCombo.set_active(this._settings.get_enum('menu-button-icon'));
             menuButtonIconCombo.connect('changed', (widget) => {
                 resetButton.set_sensitive(true); 
@@ -1617,6 +1620,11 @@ var MenuButtonCustomizationWindow = GObject.registerClass(
                 resetButton.set_sensitive(true); 
                 let iconFilepath = widget.get_filename();
                 this._settings.set_string('custom-menu-button-icon', iconFilepath);
+            
+                store.clear();
+                this.createIconList(store);
+                menuButtonIconCombo.model = store;
+                menuButtonIconCombo.show();
                 menuButtonIconCombo.set_active(Constants.MENU_BUTTON_ICON.Custom);
             });
             fileChooserButton.set_current_folder(GLib.get_user_special_dir(GLib.UserDirectory.DIRECTORY_PICTURES));
@@ -1791,6 +1799,26 @@ var MenuButtonCustomizationWindow = GObject.registerClass(
                     return true;
             else
                 return false;
+        }
+        createIconList(store){
+            let pixbuf = getIconPixbuf(Me.path + Constants.ARC_MENU_SYMBOLIC.Path);
+            store.set(store.append(),[0,1], [pixbuf, _("Arc Menu Icon")]);
+
+            pixbuf = getIconPixbuf(Me.path + Constants.ARC_MENU_2_SYMBOLIC.Path);
+            store.set(store.append(),[0,1], [pixbuf, _("Arc Menu Icon 2")]);
+
+            pixbuf = getIconPixbuf(Me.path + Constants.ARC_MENU_ALT_SYMBOLIC.Path);
+            store.set(store.append(),[0,1], [pixbuf, _("Arc Menu Alt Icon")]);
+            
+            var info = Gtk.IconTheme.get_default().lookup_icon ("start-here-symbolic", 20, 0);
+            if(info)
+                pixbuf = info.load_icon();
+            else
+                pixbuf = null;
+            store.set(store.append(),[0,1], [pixbuf, _("System Icon")]);
+
+            pixbuf = getIconPixbuf(this._settings.get_string('custom-menu-button-icon'));
+            store.set(store.append(),[0,1], [pixbuf, _("Custom Icon")]);
         }
 });
 //Appearance Page
@@ -3454,43 +3482,14 @@ var DefaultDirectoriesPage = GObject.registerClass(
     _loadPinnedApps(applicationShortcuts,softwareShortcutsFrame){
         for(let i = 0; i < applicationShortcuts.length; i++){
             let applicationName = applicationShortcuts[i][0];
-            let path, icon;
             let editable = true;
-            if(applicationShortcuts[i][2]=="ArcMenu_Home"){
-                path = GLib.get_home_dir();
+            if(applicationShortcuts[i][2].startsWith("ArcMenu_")){
                 editable = false;
             }
-            else if(applicationShortcuts[i][2].startsWith("ArcMenu_")){
-                path = GLib.get_home_dir()+"/"+applicationName;
-                editable = false;
-            }
-            else
-                path = applicationShortcuts[i][2];
 
-            if(path){
-                let file = Gio.File.new_for_path(path);
-                
-                try {
-                    let info = file.query_info('standard::symbolic-icon', 0, null);
-                    icon = info.get_symbolic_icon();
-                } catch (e) {
-                    if (e instanceof Gio.IOErrorEnum) {
-                        if (!file.is_native()) {
-                            icon = new Gio.ThemedIcon({ name: 'folder-remote-symbolic' });
-                        } else {
-                            icon = new Gio.ThemedIcon({ name: 'folder-symbolic' });
-                        }
-                    }
-                }
-            }
             let frameRow = new PW.FrameBoxRow();
             frameRow._name = applicationName;
-            if(applicationShortcuts[i][2]=="ArcMenu_Network")
-                frameRow._icon = 'network-workgroup-symbolic';
-            else if(applicationShortcuts[i][2]=="ArcMenu_Computer")
-                frameRow._icon = 'drive-harddisk-symbolic';
-            else
-                frameRow._icon = icon.to_string();
+            frameRow._icon = getIconPath(applicationShortcuts[i]);   
        
             frameRow._cmd = applicationShortcuts[i][2];
             let applicationIcon = new Gtk.Image( {
@@ -4423,6 +4422,58 @@ function buildPrefsWidget() {
     widget.show_all();
     return widget;
 }
+function getIconPath(listing){
+    let path, icon;
+        
+    if(listing[2]=="ArcMenu_Home")
+        path = GLib.get_home_dir();
+    else if(listing[2].startsWith("ArcMenu_")){
+        let string = listing[2];
+        path = string.replace("ArcMenu_",'');
+        if(path === "Documents")
+            path = GLib.get_user_special_dir(GLib.UserDirectory.DIRECTORY_DOCUMENTS);
+        else if(path === "Downloads")
+            path = GLib.get_user_special_dir(GLib.UserDirectory.DIRECTORY_DOWNLOAD);
+        else if(path === "Music")
+            path = GLib.get_user_special_dir(GLib.UserDirectory.DIRECTORY_MUSIC);
+        else if(path === "Pictures")
+            path = GLib.get_user_special_dir(GLib.UserDirectory.DIRECTORY_PICTURES);
+        else if(path === "Videos")
+            path = GLib.get_user_special_dir(GLib.UserDirectory.DIRECTORY_VIDEOS);
+        else
+            path = null;
+    }
+    else if(listing[1] == listing[2])
+        path = listing[2];
+    else
+        path = null;
+
+    if(path){
+        let file = Gio.File.new_for_path(path);
+        try {
+            let info = file.query_info('standard::symbolic-icon', 0, null);
+            icon = info.get_symbolic_icon();
+        } catch (e) {
+            if (e instanceof Gio.IOErrorEnum) {
+                if (!file.is_native()) {
+                    icon = new Gio.ThemedIcon({ name: 'folder-remote-symbolic' });
+                } else {
+                    icon = new Gio.ThemedIcon({ name: 'folder-symbolic' });
+                }
+            }
+        }                            
+        return icon.to_string();
+    }
+    else{
+        if(listing[2]=="ArcMenu_Network")
+            return  'network-workgroup-symbolic';
+        else if(listing[2]=="ArcMenu_Computer")
+            return  'drive-harddisk-symbolic';
+        else
+            return listing[1];
+    }
+}
+
 function lighten_rgb(colorString, percent, modifyAlpha){ // implemented from https://stackoverflow.com/a/141943
 	//creates a nice effect when items are selected
 	if(colorString.includes('rgba'))
@@ -4430,7 +4481,6 @@ function lighten_rgb(colorString, percent, modifyAlpha){ // implemented from htt
 	if(colorString.includes('rgb'))
 		colorString = colorString.replace('rgb(','');
 	colorString = colorString.replace(')','');
-	//global.log(colorString);
     let rgbaColor = colorString.split(",");
 
     let r = parseFloat(rgbaColor[0]) + 255 * percent;

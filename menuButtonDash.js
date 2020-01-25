@@ -52,10 +52,13 @@ var ApplicationsButton =   Utils.defineClass({
             this.callParent('_init');
             this._settings = settings;
             this._panel = panel;
-            this._menuButtonWidget = new MW.DashMenuButtonWidget(this._settings);
+            this._menuButtonWidget = new MW.DashMenuButtonWidget(this, this._settings);
 
             this.child = this._menuButtonWidget.icon;
             this.icon = this._menuButtonWidget.icon;
+            this.label = this._menuButtonWidget.label;
+            this.container.showLabel = () => this._menuButtonWidget.showLabel();
+            this.container.hideLabel = () => this._menuButtonWidget.hideLabel();
             this.toggleButton = this._menuButtonWidget.actor;
             this.container.toggleButton = this._menuButtonWidget.actor;
             this.container.setDragApp = () => {};
@@ -253,8 +256,7 @@ var ApplicationsButton =   Utils.defineClass({
                             this.MenuLayout.updateRunnerLocation();
                         this.leftClickMenu.toggle();
                         if(this.leftClickMenu.isOpen){
-                            if(!(layout == Constants.MENU_LAYOUT.Simple || layout == Constants.MENU_LAYOUT.Simple2))
-                                this.mainBox.grab_key_focus();	
+                            this.mainBox.grab_key_focus();	
                         }
                            
                     }                
@@ -273,8 +275,7 @@ var ApplicationsButton =   Utils.defineClass({
                             this.MenuLayout.updateRunnerLocation();
                         this.leftClickMenu.toggle();	
                         if(this.leftClickMenu.isOpen){
-                            if(!(layout == Constants.MENU_LAYOUT.Simple || layout == Constants.MENU_LAYOUT.Simple2))
-                                this.mainBox.grab_key_focus();	
+                            this.mainBox.grab_key_focus();	
                         }	
                     }         
             }
@@ -297,8 +298,7 @@ var ApplicationsButton =   Utils.defineClass({
                     this.MenuLayout.updateRunnerLocation();
                 this.leftClickMenu.toggle();
                 if(this.leftClickMenu.isOpen){
-                    if(!(layout == Constants.MENU_LAYOUT.Simple || layout == Constants.MENU_LAYOUT.Simple2))
-                        this.mainBox.grab_key_focus();	
+                    this.mainBox.grab_key_focus();	
                 }
             }	  
 
@@ -380,6 +380,9 @@ var ApplicationsButton =   Utils.defineClass({
                 this.createMenuLayout();
                 return GLib.SOURCE_REMOVE;
             });  
+        },
+        _loadPinnedShortcuts(){
+            this.MenuLayout._loadPinnedShortcuts();
         },
         updateRunnerLocation(){
             this.MenuLayout.updateRunnerLocation();
@@ -478,9 +481,7 @@ var ApplicationsButton =   Utils.defineClass({
             }
             if (menu == this.leftClickMenu) {
                 if(open){
-                    let layout = this._settings.get_enum('menu-layout');
-                    if(!(layout == Constants.MENU_LAYOUT.Simple || layout == Constants.MENU_LAYOUT.Simple2))
-                        this.mainBox.show();  
+                    this.mainBox.show();  
                 }
             }
         }
