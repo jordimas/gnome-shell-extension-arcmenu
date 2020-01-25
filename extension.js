@@ -35,7 +35,6 @@ const Main = imports.ui.main;
 let settings;
 let settingsControllers;
 let extensionChangedId;
-let extensionChangedHandler;
 let dashToDockPanelToggleID;
 
 // Initialize menu language translations
@@ -62,18 +61,15 @@ function enable() {
                 _enableButtons();
             }
         }
-    });
-        
-    extensionChangedHandler = (Main.extensionManager || ExtensionSystem).connect('extension-state-changed', (data, extension) => {
-        if (extension.uuid === "dash-to-dock@micxgx.gmail.com" && extension.state === 1) {
+        if (extension.uuid === "dash-to-dock@micxgx.gmail.com" && (extension.state === 1 || extension.state === 2)) {
             let arcMenuPosition = settings.get_enum('arc-menu-placement');
             if(arcMenuPosition == Constants.ARC_MENU_PLACEMENT.DASH){
                 settingsControllers.forEach(sc => _disableButton(sc, 1));
                 _enableButtons();
             }
-
         }
-    });       
+    });
+
     // listen to dash to panel if it is compatible and already enabled
     _connectDtpSignals();
 }
@@ -87,8 +83,7 @@ function disable() {
 
 
     _disconnectDtpSignals();
-    if(extensionChangedHandler)
-        (Main.extensionManager || ExtensionSystem).disconnect(extensionChangedHandler);
+
     settingsControllers.forEach(sc => _disableButton(sc));
     settingsControllers = null;
 

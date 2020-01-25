@@ -43,9 +43,10 @@
   </enum>
   <enum id='org.gnome.shell.extensions.arc-menu.menu-button-icon'>
     <value value="0" nick="Arc_Menu_Icon"/>
-    <value value="1" nick="Arc_Menu_Alt_Icon"/>
-    <value value="2" nick="System_Icon"/>
-    <value value="3" nick="Custom_Icon"/>
+     <value value="1" nick="Arc_Menu_2_Icon"/>
+    <value value="2" nick="Arc_Menu_Alt_Icon"/>
+    <value value="3" nick="System_Icon"/>
+    <value value="4" nick="Custom_Icon"/>
   </enum>
   <enum id='org.gnome.shell.extensions.arc-menu.runner-position'>
     <value value="0" nick="Top"/>
@@ -102,6 +103,16 @@
      <default>true</default>
       <summary>Enable Pinned Apps</summary>
       <description>Enable Pinned Apps.</description>
+    </key>
+    <key type="b" name="enable-ubuntu-homescreen">
+     <default>true</default>
+      <summary>Set Ubuntu Dash layout to display "Home Screen" as default</summary>
+      <description>Set Ubuntu Dash layout to display "Home Screen" as default. False = Show all Apps</description>
+    </key>
+    <key type="b" name="enable-ubuntu-style">
+     <default>false</default>
+      <summary>Set Ubuntu Dash layout to a custom style</summary>
+      <description>Set Ubuntu Dash layout to a custom style</description>
     </key>
     <key type="b" name="reload-theme">
      <default>false</default>
@@ -347,6 +358,16 @@
           ["Activities Overview", "view-fullscreen-symbolic", "ArcMenu_ActivitiesOverview"]]</default>
       <summary>List of default directory paths used for links on the right side of Arc Menu</summary>
       <description>List of default directory paths used for links on the right side of Arc Menu.</description>
+    </key>
+    <key name="ubuntu-dash-pinned-app-list" type="as">
+      <default>[]</default>
+      <summary>List of Ubuntu-Dash Layout Pinned Apps</summary>
+      <description>List of Ubuntu-Dash Layout Pinned Apps</description>
+    </key>
+    <key name="ubuntu-dash-separator-index" type="i">
+      <default>5</default>
+      <summary>Index of Ubuntu-Dash Layout Pinned App Separator</summary>
+      <description>Index of Ubuntu-Dash Layout Pinned App Separator, 0 = none</description>
     </key>
     <key name="mint-pinned-app-list" type="as">
       <default>[]</default>

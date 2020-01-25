@@ -298,8 +298,7 @@ var ApplicationsButton =   Utils.defineClass({
                             this.MenuLayout.updateRunnerLocation();
                         this.leftClickMenu.toggle();
                         if(this.leftClickMenu.isOpen){
-                            if(!(layout == Constants.MENU_LAYOUT.Simple || layout == Constants.MENU_LAYOUT.Simple2))
-                                this.mainBox.grab_key_focus();	
+                            this.mainBox.grab_key_focus();	
                         }
                            
                     }                
@@ -317,8 +316,7 @@ var ApplicationsButton =   Utils.defineClass({
                             this.MenuLayout.updateRunnerLocation();
                         this.leftClickMenu.toggle();	
                         if(this.leftClickMenu.isOpen){
-                            if(!(layout == Constants.MENU_LAYOUT.Simple || layout == Constants.MENU_LAYOUT.Simple2))
-                                this.mainBox.grab_key_focus();	
+                            this.mainBox.grab_key_focus();	
                         }	
                     }         
             }
@@ -341,8 +339,7 @@ var ApplicationsButton =   Utils.defineClass({
                     this.MenuLayout.updateRunnerLocation();
                 this.leftClickMenu.toggle();
                 if(this.leftClickMenu.isOpen){
-                    if(!(layout == Constants.MENU_LAYOUT.Simple || layout == Constants.MENU_LAYOUT.Simple2))
-                        this.mainBox.grab_key_focus();	
+                    this.mainBox.grab_key_focus();	
                 }
             }	  
 
@@ -421,6 +418,9 @@ var ApplicationsButton =   Utils.defineClass({
                 this.createMenuLayout();
                 return GLib.SOURCE_REMOVE;
             });  
+        },        
+        _loadPinnedShortcuts(){
+            this.MenuLayout._loadPinnedShortcuts();
         },
         updateRunnerLocation(){
             this.MenuLayout.updateRunnerLocation();
@@ -519,9 +519,7 @@ var ApplicationsButton =   Utils.defineClass({
             }
             if (menu == this.leftClickMenu) {
                 if(open){
-                    let layout = this._settings.get_enum('menu-layout');
-                    if(!(layout == Constants.MENU_LAYOUT.Simple || layout == Constants.MENU_LAYOUT.Simple2))
-                        this.mainBox.show();  
+                    this.mainBox.show();  
                 }
             }
         }

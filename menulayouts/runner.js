@@ -283,12 +283,28 @@ var createMenu = class {
     }
     // Scroll to a specific button (menu item) in the applications scroll view
     scrollToItem(button, direction) {
-        let appsScrollBoxAdj = this.applicationsScrollBox.get_vscroll_bar().get_adjustment();
-        let currentScrollValue = appsScrollBoxAdj.get_value();
-        let box = button.actor.get_allocation_box();
-        let buttonHeight = box.y1 - box.y2;
-        direction == Constants.DIRECTION.UP ? buttonHeight = buttonHeight : buttonHeight = -buttonHeight;
-        appsScrollBoxAdj.set_value(currentScrollValue + buttonHeight );
+        if(button!=null){
+            let appsScrollBoxAdj = this.applicationsScrollBox.get_vscroll_bar().get_adjustment();
+            let catsScrollBoxAlloc = this.applicationsScrollBox.get_allocation_box();
+            let boxHeight = catsScrollBoxAlloc.y2 - catsScrollBoxAlloc.y1;
+            let[v, l, upper] = appsScrollBoxAdj.get_values();
+            let currentScrollValue = appsScrollBoxAdj.get_value();
+            let box = button.actor.get_allocation_box();
+            let buttonHeight = box.y1 - box.y2;
+    
+            if(direction == Constants.DIRECTION.DOWN && currentScrollValue == 0){
+                currentScrollValue=.01;
+                appsScrollBoxAdj.set_value(currentScrollValue);
+            }
+            else if(direction == Constants.DIRECTION.UP && (currentScrollValue + boxHeight) == upper){
+                currentScrollValue-=0.01;
+                appsScrollBoxAdj.set_value(currentScrollValue);
+            }
+            else{
+                direction == Constants.DIRECTION.UP ? buttonHeight = buttonHeight : buttonHeight = - buttonHeight;
+                appsScrollBoxAdj.set_value(currentScrollValue + buttonHeight);
+            }
+        }
     }
     setCurrentMenu(menu){
         this.currentMenu = menu;

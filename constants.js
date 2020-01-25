@@ -152,9 +152,10 @@ var MENU_APPEARANCE = { // See: org.gnome.shell.extensions.arc-menu.menu-button-
 
 var MENU_BUTTON_ICON = { // See: org.gnome.shell.extensions.arc-menu.menu-button-icon
     Arc_Menu: 0,
-    Arc_Menu_Alt: 1,
-    System: 2,
-    Custom: 3
+    Arc_Menu_2: 1,
+    Arc_Menu_Alt: 2,
+    System: 3,
+    Custom: 4
 };
 
 //Used in prefs.js to display all menu layouts
@@ -221,6 +222,9 @@ var COLOR_PRESET = {
 
 var ARC_MENU_SYMBOLIC = {
     Path: '/media/arc-menu-symbolic.svg'
+};
+var ARC_MENU_2_SYMBOLIC = {
+    Path: '/media/arc-menu-2-symbolic.svg'
 };
 var ARC_MENU_ALT_SYMBOLIC = {
     Path: '/media/arc-menu-alt-symbolic.svg'
