@@ -2334,7 +2334,7 @@ var ArcMenuCustomizationWindow = GObject.registerClass(
                     page_increment: 10,
                     page_size: 0
                 }),
-                tooltip_text: _("Adjust the menu height\nCertain menu layouts only"),
+                tooltip_text: _("Adjust the menu height") + "\n" +_("Certain menu layouts only"),
                 digits: 0,
                 round_digits: 0,
                 hexpand: true,
@@ -2362,7 +2362,7 @@ var ArcMenuCustomizationWindow = GObject.registerClass(
                 adjustment: new Gtk.Adjustment({
                     lower: 200,upper: 500, step_increment: 1, page_increment: 1, page_size: 0,
                 }),
-                tooltip_text: _("Adjust the left-panel width\nCertain menu layouts only"),
+                tooltip_text: _("Adjust the left-panel width") + "\n" +_("Certain menu layouts only"),
                 digits: 0,round_digits: 0,hexpand: true,
                 value_pos: Gtk.PositionType.RIGHT
             });
@@ -2421,7 +2421,7 @@ var ArcMenuCustomizationWindow = GObject.registerClass(
              });   
             let largeIconsSwitch = new Gtk.Switch({ 
                 halign: Gtk.Align.END,
-                tooltip_text: _("Enable large application icons\nCertain menu layouts only")
+                tooltip_text: _("Enable large application icons") + "\n" +_("Certain menu layouts only"),
             });
             largeIconsSwitch.set_active( this.largeIcons);
             largeIconsSwitch.connect('notify::active', (widget) => {
@@ -2443,7 +2443,7 @@ var ArcMenuCustomizationWindow = GObject.registerClass(
              });   
             let subMenusSwitch = new Gtk.Switch({ 
                 halign: Gtk.Align.END,
-                tooltip_text: _("Show nested menus in categories\nCertain menu layouts only")
+                tooltip_text: _("Show nested menus in categories") + "\n" +_("Certain menu layouts only"),
             });
             subMenusSwitch.set_active(this.subMenus);
             subMenusSwitch.connect('notify::active', (widget) => {
@@ -2476,7 +2476,7 @@ var ArcMenuCustomizationWindow = GObject.registerClass(
              });   
             let vertSeparatorSwitch = new Gtk.Switch({ 
                 halign: Gtk.Align.END,
-                tooltip_text: _("Enable a Vertical Separator\nCertain menu layouts only")
+                tooltip_text: _("Enable a Vertical Separator") + "\n" +_("Certain menu layouts only"),
             });
             vertSeparatorSwitch.set_active(this.verticalSeparator);
             vertSeparatorSwitch.connect('notify::active', (widget) => { 
