@@ -136,9 +136,9 @@ var createMenu = class{
         });   
         this.shortcutsScrollBox.connect('key-press-event',(actor,event)=>{
             let key = event.get_key_symbol();
-            if(key == Clutter.Up || key == Clutter.KP_Up)
+            if(key == Clutter.KEY_Up)
                 this.scrollToItem(this.activeMenuItem, Constants.DIRECTION.UP);
-            else if(key == Clutter.Down || key == Clutter.KP_Down)
+            else if(key == Clutter.KEY_Down)
                 this.scrollToItem(this.activeMenuItem,Constants.DIRECTION.DOWN);
         }) ;
         this.shortcutsScrollBox.style = "width:750px;";    
@@ -428,11 +428,6 @@ var createMenu = class{
                 }
             }.bind(this));
         }
-        let ubuntuStyle = this._settings.get_boolean('enable-ubuntu-style');    
-        if(ubuntuStyle)
-            this.leftClickMenu.actor.style = "-arrow-base:0px;-arrow-rise:0px; -boxpointer-gap: 0px;";
-        else
-            this.leftClickMenu.actor.style = null;
     }
     // Load data for all menu categories
     _loadCategories() {
@@ -764,7 +759,7 @@ var createMenu = class{
             this.shorcutsBox.add(this.newSearch.actor, {
                 x_expand: false,
                 y_expand:false,
-                x_fill: false,
+                x_fill: true,
                 y_fill: false,
                 x_align: St.Align.MIDDLE
             });    
@@ -830,14 +825,10 @@ var createMenu = class{
             case Clutter.KEY_Tab:
             case Clutter.KEY_KP_Tab:
                 return Clutter.EVENT_PROPAGATE;
-            case Clutter.Up:
-            case Clutter.KP_Up:
-            case Clutter.Down:
-            case Clutter.KP_Down:
-            case Clutter.Left:
-            case Clutter.KP_Left:
-            case Clutter.Right:
-            case Clutter.KP_Right:          
+            case Clutter.KEY_Up:
+            case Clutter.KEY_Down:
+            case Clutter.KEY_Left:
+            case Clutter.KEY_Right:            
                 if(this.searchBox.hasKeyFocus() && this.newSearch._defaultResult){
                     if(this.newSearch.actor.get_parent()){
                         this.newSearch._defaultResult.actor.grab_key_focus();
@@ -861,7 +852,6 @@ var createMenu = class{
                     return Clutter.EVENT_PROPAGATE;
                 }
             case Clutter.KEY_KP_Enter:
-            case Clutter.KP_Enter:
             case Clutter.KEY_Return:
                 return Clutter.EVENT_PROPAGATE;
             default:

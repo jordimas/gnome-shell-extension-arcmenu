@@ -79,9 +79,9 @@ var createMenu = class {
         });      
         this.applicationsScrollBox.connect('key-press-event',(actor,event)=>{
             let key = event.get_key_symbol();
-            if(key == Clutter.Up || key == Clutter.KP_Up)
+            if(key == Clutter.KEY_Up)
                 this.scrollToItem(this.activeMenuItem,Constants.DIRECTION.UP);
-            else if(key == Clutter.Down || key == Clutter.KP_Down)
+            else if(key == Clutter.KEY_Down)
                 this.scrollToItem(this.activeMenuItem,Constants.DIRECTION.DOWN);
         }) ;         
         this.applicationsScrollBox.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC);
@@ -870,14 +870,10 @@ var createMenu = class {
             case Clutter.KEY_Tab:
             case Clutter.KEY_KP_Tab:
                 return Clutter.EVENT_PROPAGATE;
-            case Clutter.Up:
-            case Clutter.KP_Up:
-            case Clutter.Down:
-            case Clutter.KP_Down:
-            case Clutter.Left:
-            case Clutter.KP_Left:
-            case Clutter.Right:
-            case Clutter.KP_Right:          
+            case Clutter.KEY_Up:
+            case Clutter.KEY_Down:
+            case Clutter.KEY_Left:
+            case Clutter.KEY_Right:       
                 if(this.searchBox.hasKeyFocus() && this.newSearch._defaultResult){
                     if(this.newSearch.actor.get_parent()){
                         this.newSearch._defaultResult.actor.grab_key_focus();
@@ -901,7 +897,6 @@ var createMenu = class {
                     return Clutter.EVENT_PROPAGATE;
                 }
             case Clutter.KEY_KP_Enter:
-            case Clutter.KP_Enter:
             case Clutter.KEY_Return:
                 return Clutter.EVENT_PROPAGATE;
             default:

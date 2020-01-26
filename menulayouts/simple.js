@@ -350,14 +350,10 @@ var createMenu = class{
             case Clutter.KEY_Tab:
             case Clutter.KEY_KP_Tab:
                 return Clutter.EVENT_PROPAGATE;
-            case Clutter.Up:
-            case Clutter.KP_Up:
-            case Clutter.Down:
-            case Clutter.KP_Down:
-            case Clutter.Left:
-            case Clutter.KP_Left:
-            case Clutter.Right:
-            case Clutter.KP_Right:
+            case Clutter.KEY_Up:
+            case Clutter.KEY_Down:
+            case Clutter.KEY_Left:
+            case Clutter.KEY_Right:  
                 if(this.activeMenuItem!=null && !this.activeMenuItem.actor.has_key_focus()){
                     this.activeMenuItem.actor.grab_key_focus();
                     return Clutter.EVENT_STOP;
@@ -370,7 +366,6 @@ var createMenu = class{
                     return Clutter.EVENT_PROPAGATE;
                 }
             case Clutter.KEY_KP_Enter:
-            case Clutter.KP_Enter:
             case Clutter.KEY_Return:
                 return Clutter.EVENT_PROPAGATE;
             default:
