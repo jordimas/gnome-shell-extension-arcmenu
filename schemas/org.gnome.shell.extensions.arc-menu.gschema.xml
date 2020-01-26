@@ -43,10 +43,19 @@
   </enum>
   <enum id='org.gnome.shell.extensions.arc-menu.menu-button-icon'>
     <value value="0" nick="Arc_Menu_Icon"/>
-     <value value="1" nick="Arc_Menu_2_Icon"/>
-    <value value="2" nick="Arc_Menu_Alt_Icon"/>
-    <value value="3" nick="System_Icon"/>
-    <value value="4" nick="Custom_Icon"/>
+    <value value="1" nick="System_Icon"/>
+    <value value="2" nick="Custom_Icon"/>
+    <value value="3" nick="Arc_Menu_Alt"/>
+    <value value="4" nick="Arc_Menu_Alt_2"/>
+    <value value="5" nick="Arc_Menu_Original"/>
+    <value value="6" nick="Start_Box"/>
+    <value value="7" nick="Focus"/>
+    <value value="8" nick="Triple_Dash"/>
+    <value value="9" nick="Whirl"/>
+    <value value="10" nick="Whirl_Circle"/>
+    <value value="11" nick="Sums"/>
+    <value value="12" nick="Arrow"/>
+    <value value="13" nick="Lins"/>
   </enum>
   <enum id='org.gnome.shell.extensions.arc-menu.runner-position'>
     <value value="0" nick="Top"/>
@@ -109,10 +118,10 @@
       <summary>Set Ubuntu Dash layout to display "Home Screen" as default</summary>
       <description>Set Ubuntu Dash layout to display "Home Screen" as default. False = Show all Apps</description>
     </key>
-    <key type="b" name="enable-ubuntu-style">
+    <key type="b" name="remove-menu-arrow">
      <default>false</default>
-      <summary>Set Ubuntu Dash layout to a custom style</summary>
-      <description>Set Ubuntu Dash layout to a custom style</description>
+      <summary>Remove the themes menu arrow and displacement</summary>
+      <description>Remove the themes menu arrow and displacement</description>
     </key>
     <key type="b" name="reload-theme">
      <default>false</default>
@@ -315,7 +324,7 @@
       <description>File path of the custom icon for the menu button.</description>
     </key>
     <key type="d" name="custom-menu-button-icon-size">
-      <default>22</default>
+      <default>20</default>
       <summary>Size of the icon in percentage.</summary>
       <description>Size of the icon in percentage.</description>
     </key>

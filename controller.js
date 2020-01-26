@@ -99,7 +99,7 @@ var MenuSettingsController = class {
             this._settings.connect('changed::button-icon-padding', this._setButtonIconPadding.bind(this)),
             this._settings.connect('changed::enable-menu-button-arrow', this._setMenuButtonArrow.bind(this)),
             this._settings.connect('changed::enable-custom-arc-menu', this._enableCustomArcMenu.bind(this)),
-            this._settings.connect('changed::enable-ubuntu-style', this._enableCustomArcMenu.bind(this)),
+            this._settings.connect('changed::remove-menu-arrow', this._enableCustomArcMenu.bind(this)),
             this._settings.connect('changed::krunner-show-details', this._updateKRunnerSearchLayout.bind(this)),
             this._settings.connect('changed::directory-shortcuts-list', this._redisplayRightSide.bind(this)),
             this._settings.connect('changed::application-shortcuts-list', this._redisplayRightSide.bind(this)),
@@ -382,37 +382,29 @@ var MenuSettingsController = class {
 
     // Update the icon of the menu button as specified in the settings
     _setButtonIcon() {
-        let iconFilepath = this._settings.get_string('custom-menu-button-icon');
+        let path = this._settings.get_string('custom-menu-button-icon');
         let menuButtonWidget = this._menuButton.getWidget();
         let stIcon = menuButtonWidget.getPanelIcon();
-
-        switch (this._settings.get_enum('menu-button-icon')) {
-            case Constants.MENU_BUTTON_ICON.Custom:
-                if (GLib.file_test(iconFilepath, GLib.FileTest.EXISTS)) {
-                    stIcon.set_gicon(Gio.icon_new_for_string(iconFilepath));
-                    break;
-                }
-            case Constants.MENU_BUTTON_ICON.Arc_Menu:
-                let arcMenuIconPath = Me.path + Constants.ARC_MENU_SYMBOLIC.Path;
-                if (GLib.file_test(arcMenuIconPath, GLib.FileTest.EXISTS)) {
-                    stIcon.set_gicon(Gio.icon_new_for_string(arcMenuIconPath));
-                    break;
-                } 
-            case Constants.MENU_BUTTON_ICON.Arc_Menu_2:
-                let arcMenuIcon2Path = Me.path + Constants.ARC_MENU_2_SYMBOLIC.Path;
-                if (GLib.file_test(arcMenuIcon2Path, GLib.FileTest.EXISTS)) {
-                    stIcon.set_gicon(Gio.icon_new_for_string(arcMenuIcon2Path));
-                    break;
-                } 
-            case Constants.MENU_BUTTON_ICON.Arc_Menu_Alt:
-                let arcMenuAltIconPath = Me.path + Constants.ARC_MENU_ALT_SYMBOLIC.Path;
-                if (GLib.file_test(arcMenuAltIconPath, GLib.FileTest.EXISTS)) {
-                    stIcon.set_gicon(Gio.icon_new_for_string(arcMenuAltIconPath));
-                    break;
-                } 
-            case Constants.MENU_BUTTON_ICON.System: 
-            default:
-                stIcon.set_icon_name('start-here-symbolic');
+        let iconEnum = this._settings.get_enum('menu-button-icon');
+        if(iconEnum == Constants.MENU_BUTTON_ICON.Custom){
+            if (GLib.file_test(path, GLib.FileTest.EXISTS)) {
+                stIcon.set_gicon(Gio.icon_new_for_string(path));
+            }
+        }
+        else if(iconEnum == Constants.MENU_BUTTON_ICON.System){
+            stIcon.set_icon_name('start-here-symbolic');
+        }
+        else if(iconEnum == Constants.MENU_BUTTON_ICON.Arc_Menu){
+            path = Me.path + Constants.ARC_MENU_ICON.path;
+            if (GLib.file_test(path, GLib.FileTest.EXISTS)) {
+                stIcon.set_gicon(Gio.icon_new_for_string(path));
+            } 
+        }
+        else{
+            path = Me.path + Constants.MENU_ICONS[iconEnum - 3].path;
+            if (GLib.file_test(path, GLib.FileTest.EXISTS)) {
+                stIcon.set_gicon(Gio.icon_new_for_string(path));
+            } 
         }
     }
 

@@ -21,7 +21,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-// Common constants that are used in this extension
+const Me = imports.misc.extensionUtils.getCurrentExtension();
+const Gettext = imports.gettext.domain(Me.metadata['gettext-domain']);
+const _ = Gettext.gettext;
 
 
 var CURRENT_MENU = {
@@ -80,52 +82,25 @@ var HOT_CORNERS_ACTION = {
     Custom: 3
 }
 
-var SHORTCUTS= [{  label: ("Software"),
-                    symbolic: "org.gnome.Software-symbolic",
-                    command: "gnome-software"
-                    },
-                {   label: ("Software"),
-                    symbolic: "org.gnome.Software-symbolic",
-                    command: "pamac-manager"
-                    },
-                {   label: ("Settings"),
-                    symbolic: "preferences-system-symbolic",
-                    command: "gnome-control-center"
-                    },
-                {   label: ("Tweaks"),
-                    symbolic: "org.gnome.tweaks-symbolic",
-                    command: "gnome-tweaks"
-                    },
-                {   label: ("Terminal"),
-                    symbolic: "utilities-terminal-symbolic",
-                    command: "gnome-terminal"
-                    }
-            ];
-
-var RIGHT_SIDE_SHORTCUTS = ["Home", "Documents","Downloads", "Music","Pictures","Videos","Software", 
-                            "Settings","Tweaks", "Terminal", "Activities-Overview"];
-
-var SOFTWARE_SHORTCUTS = ["Software", "Settings","Tweaks", "Terminal", "Activities-Overview"];
-
 var SECTIONS = [
     'devices',
     'network',
     'bookmarks',
 ];
 
-
-
 var MENU_POSITION = { // See: org.gnome.shell.extensions.arc-menu.menu-position
     Left: 0,
     Center: 1,
     Right: 2
 };
+
 var DIALOG_TYPE = {
     Default: 0,
     Mint_Pinned_Apps: 1,
     Application_Shortcuts: 2,
     Directories_Shortcuts: 3
 };
+
 var MENU_LAYOUT = { // See: org.gnome.shell.extensions.arc-menu.menu-position
     Default: 0,
     Brisk: 1,
@@ -143,22 +118,48 @@ var MENU_LAYOUT = { // See: org.gnome.shell.extensions.arc-menu.menu-position
     Runner: 13
 };
 
-var MENU_APPEARANCE = { // See: org.gnome.shell.extensions.arc-menu.menu-button-icon
+var MENU_APPEARANCE = {
     Icon: 0,
     Text: 1,
     Icon_Text: 2,
     Text_Icon: 3
 };
 
-var MENU_BUTTON_ICON = { // See: org.gnome.shell.extensions.arc-menu.menu-button-icon
+var MENU_BUTTON_ICON = { 
     Arc_Menu: 0,
-    Arc_Menu_2: 1,
-    Arc_Menu_Alt: 2,
-    System: 3,
-    Custom: 4
+    System: 1,
+    Custom: 2,
+    Arc_Menu_Alt: 3,
+    Arc_Menu_Alt: 4,
+    Arc_Menu_Original: 5,
+    Start_Box: 6,
+    Focus: 7,
+    Triple_Dash:8,
+    Whirl: 9,
+    Whirl_Circle: 10,
+    Sums: 11,
+    Arrow: 12,
+    Lins: 13
+};
+var ARC_MENU_ICON = { 
+    name: _("Arc Menu"), 
+    path: '/media/icons/arc-menu-symbolic.svg'
 };
 
-//Used in prefs.js to display all menu layouts
+var MENU_ICONS = [
+    { name: _("Arc Menu Alt"), path: '/media/icons/arc-menu-alt-symbolic.svg'},
+    { name: _("Arc Menu Alt 2"), path: '/media/icons/arc-menu-alt-2-symbolic.svg'},
+    { name: _("Arc Menu Original"), path: '/media/icons/arc-menu-old-symbolic.svg'},
+    { name: _("Start Box"), path: '/media/icons/start-box-symbolic.svg'},
+    { name: _("Focus"), path: '/media/icons/focus-symbolic.svg'},
+    { name: _("Triple Dash"), path: '/media/icons/triple-dash-symbolic.svg'},
+    { name: _("Whirl"), path: '/media/icons/whirl-symbolic.svg'},
+    { name: _("Whirl Circle"), path: '/media/icons/whirl-circle-symbolic.svg'},
+    { name: _("Sums"), path: '/media/icons/sums-symbolic.svg'},
+    { name: _("Arrow"), path: '/media/icons/arrow-symbolic.svg'},
+    { name: _("Lins"), path: '/media/icons/lins-symbolic.svg'}
+]
+
 var MENU_STYLE_CHOOSER = {
     ThumbnailHeight: 200,
     ThumbnailWidth: 200,
@@ -220,18 +221,10 @@ var COLOR_PRESET = {
     Size: [200, 35] // width, height
 };
 
-var ARC_MENU_SYMBOLIC = {
-    Path: '/media/arc-menu-symbolic.svg'
-};
-var ARC_MENU_2_SYMBOLIC = {
-    Path: '/media/arc-menu-2-symbolic.svg'
-};
-var ARC_MENU_ALT_SYMBOLIC = {
-    Path: '/media/arc-menu-alt-symbolic.svg'
-};
 var HAMBURGER = {
     Path: '/media/hamburger-symbolic.svg'
 };
+
 var KEYBOARD_LOGO = {
     Path: '/media/keyboard.svg',
     Size: [256, 72] 

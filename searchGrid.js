@@ -72,11 +72,9 @@ var ListSearchResult = class ArcMenu_ListSearchResultGrid {
         let ICON_SIZE = 32;
         if(this.layout == Constants.MENU_LAYOUT.Elementary || this.layout == Constants.MENU_LAYOUT.UbuntuDash){
             ICON_SIZE = 32;
-            this.menuItem.actor.style = "width:275px;";
         }
         else {
             ICON_SIZE = 24;
-            this.menuItem.actor.style = "width:180px;";
         } 
         
         // An icon for, or thumbnail of, content
@@ -84,7 +82,7 @@ var ListSearchResult = class ArcMenu_ListSearchResultGrid {
         if (icon) 
              this.menuItem.actor.add_child(icon);
         else
-            this.menuItem.actor.style = (ICON_SIZE==32) ?  "padding: 12px 0px;width:310px;":  "padding: 9px 0px;width:215px;";
+            this.menuItem.actor.style = (ICON_SIZE==32) ?  "padding: 12px 0px;":  "padding: 9px 0px;";
 
         let title = new St.Label({ 
             text: this.metaInfo['name'],
@@ -133,7 +131,7 @@ var AppSearchResult = class  ArcMenu_AppSearchResultGrid {
             } 
             this._iconBin = new St.Bin({
                 y_align: St.Align.END,
-                x_align: St.Align.MIDDLE
+                x_align: gnome36 ? Clutter.ActorAlign.CENTER : St.Align.MIDDLE
             });
 
             this.icon = this.metaInfo['createIcon'](ICON_SIZE);
@@ -336,21 +334,25 @@ var ListSearchResults = class ArcMenu_ListSearchResultsGrid extends SearchResult
             provider.launchSearch(this._terms);
             this._button.leftClickMenu.toggle();
         });
-
         this._container.add(this.providerInfo.actor, { 
-            x_fill: false,
+            x_fill: true,
             y_fill: false,
             x_align: St.Align.START,
-            y_align: St.Align.START
+            y_align: St.Align.START,
+            x_expand:true 
         });
 
         this._content = new St.BoxLayout({
             vertical: true 
         });
 
-        this._container.add(this._content);
+        this._container.add(this._content, { 
+            expand: true
+        });
         this._container.style = "padding: 10px;";
         this._resultDisplayBin.set_child(this._container);
+        this._resultDisplayBin.x_expand = true;
+        this._resultDisplayBin.x_fill = true;
     }
 
     _setMoreCount(count) {
@@ -386,8 +388,9 @@ var AppSearchResults = class ArcMenu_AppSearchResultsGrid extends SearchResultsB
         super(provider, resultsView);
         this._parentContainer = resultsView.actor;
         this._grid = new St.BoxLayout({vertical: false});
-        this._grid.style = "padding: 10px;";        
+        this._grid.style = "padding: 10px; spacing:10px;";        
         this._resultDisplayBin.set_child(this._grid);
+        this._resultDisplayBin.x_align =  gnome36 ? Clutter.ActorAlign.CENTER : St.Align.MIDDLE
     }
 
     _getMaxDisplayedResults() {
@@ -438,8 +441,8 @@ var SearchResults = class ArcMenu_SearchResultsGrid {
         this._statusText = new St.Label();
 
         this._statusBin = new St.Bin({ 
-            x_align: St.Align.MIDDLE,
-            y_align: St.Align.MIDDLE 
+            x_align: gnome36 ? Clutter.ActorAlign.CENTER : St.Align.MIDDLE,
+            y_align: gnome36 ? Clutter.ActorAlign.CENTER : St.Align.MIDDLE
         });
 
         if(button._settings.get_boolean('enable-custom-arc-menu'))

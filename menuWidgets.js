@@ -1596,7 +1596,7 @@ var ApplicationMenuIcon = Utils.createClass({
  
         this._iconBin = new St.Bin({
             y_align: St.Align.END,
-            x_align: St.Align.MIDDLE
+            x_align: gnome36 ? Clutter.ActorAlign.CENTER : St.Align.MIDDLE
         });
         this.actor.add_child(this._iconBin);
 
@@ -2140,9 +2140,9 @@ var SimpleMenuItem = Utils.createClass({
         });                
         this.applicationsScrollBox.connect('key-press-event',(actor,event)=>{
             let key = event.get_key_symbol();
-            if(key == Clutter.Up || key == Clutter.KP_Up)
+            if(key == Clutter.KEY_Up)
                 this.scrollToItem(this._button.activeMenuItem, this.applicationsScrollBox, Constants.DIRECTION.UP);
-            else if(key == Clutter.Down || key == Clutter.KP_Down)
+            else if(key == Clutter.KEY_Down)
                 this.scrollToItem(this._button.activeMenuItem, this.applicationsScrollBox, Constants.DIRECTION.DOWN);
         }) ;   
         this.applicationsScrollBox.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC);
@@ -2309,9 +2309,9 @@ var CategorySubMenuItem = Utils.createClass({
         }
         this.menu.actor.connect('key-press-event',(actor,event)=>{
             let key = event.get_key_symbol();
-            if(key == Clutter.Up || key == Clutter.KP_Up)
+            if(key == Clutter.KEY_Up)
                 this.scrollToItem(this._button.activeMenuItem, this.menu.actor, Constants.DIRECTION.UP);
-            else if(key == Clutter.Down || key == Clutter.KP_Down)
+            else if(key == Clutter.KEY_Down)
                 this.scrollToItem(this._button.activeMenuItem, this.menu.actor, Constants.DIRECTION.DOWN);
         }) ; 
         this._updateIcons();
@@ -2801,8 +2801,8 @@ var DashMenuButtonWidget = class ArcMenu_DashMenuButtonWidget{
         this._icon = new St.Icon({
             icon_name: 'start-here-symbolic',
             style_class: 'arc-menu-icon',
-            track_hover:true,
             icon_size: 15,
+            track_hover:true,
             reactive: true
         });
         this._labelText = _("Arc Menu");
@@ -2918,34 +2918,28 @@ var DashMenuButtonWidget = class ArcMenu_DashMenuButtonWidget{
             icon_size: size,
             reactive: true
         });
-        switch (this._settings.get_enum('menu-button-icon')) {
-            case Constants.MENU_BUTTON_ICON.Custom:
-                let iconFilepath = this._settings.get_string('custom-menu-button-icon');
-                if (GLib.file_test(iconFilepath, GLib.FileTest.EXISTS)) {
-                    this._icon.set_gicon(Gio.icon_new_for_string(iconFilepath));
-                    break;
-                }
-            case Constants.MENU_BUTTON_ICON.Arc_Menu:
-                let arcMenuIconPath = Me.path + Constants.ARC_MENU_SYMBOLIC.Path;
-                if (GLib.file_test(arcMenuIconPath, GLib.FileTest.EXISTS)) {
-                    this._icon.set_gicon(Gio.icon_new_for_string(arcMenuIconPath));
-                    break;
-                } 
-            case Constants.MENU_BUTTON_ICON.Arc_Menu_2:
-                let arcMenuIcon2Path = Me.path + Constants.ARC_MENU_2_SYMBOLIC.Path;
-                if (GLib.file_test(arcMenuIcon2Path, GLib.FileTest.EXISTS)) {
-                    this._icon.set_gicon(Gio.icon_new_for_string(arcMenuIcon2Path));
-                    break;
-                } 
-            case Constants.MENU_BUTTON_ICON.Arc_Menu_Alt:
-                let arcMenuAltIconPath = Me.path + Constants.ARC_MENU_ALT_SYMBOLIC.Path;
-                if (GLib.file_test(arcMenuAltIconPath, GLib.FileTest.EXISTS)) {
-                    this._icon.set_gicon(Gio.icon_new_for_string(arcMenuAltIconPath));
-                    break;
-                } 
-            case Constants.MENU_BUTTON_ICON.System: 
-            default:
-                this._icon.set_icon_name('start-here-symbolic');
+        let path = this._settings.get_string('custom-menu-button-icon');
+        let iconEnum = this._settings.get_enum('menu-button-icon');
+
+        if(iconEnum == Constants.MENU_BUTTON_ICON.Custom){
+            if (GLib.file_test(path, GLib.FileTest.EXISTS)) {
+                this._icon.set_gicon(Gio.icon_new_for_string(path));
+            }
+        }
+        else if(iconEnum == Constants.MENU_BUTTON_ICON.System){
+            this._icon.set_icon_name('start-here-symbolic');
+        }
+        else if(iconEnum == Constants.MENU_BUTTON_ICON.Arc_Menu){
+            path = Me.path + Constants.ARC_MENU_ICON.path;
+            if (GLib.file_test(path, GLib.FileTest.EXISTS)) {
+                this._icon.set_gicon(Gio.icon_new_for_string(path));
+            } 
+        }
+        else{
+            path = Me.path + Constants.MENU_ICONS[iconEnum - 3].path;
+            if (GLib.file_test(path, GLib.FileTest.EXISTS)) {
+                this._icon.set_gicon(Gio.icon_new_for_string(path));
+            } 
         }
         return this._icon;
     }

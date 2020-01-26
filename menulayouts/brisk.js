@@ -110,9 +110,9 @@ var createMenu = class{
         });   
         this.shortcutsScrollBox.connect('key-press-event',(actor,event)=>{
             let key = event.get_key_symbol();
-            if(key == Clutter.Up || key == Clutter.KP_Up)
+            if(key == Clutter.KEY_Up)
                 this.scrollToItem(this.activeMenuItem, this.shortcutsScrollBox, Constants.DIRECTION.UP);
-            else if(key == Clutter.Down || key == Clutter.KP_Down)
+            else if(key == Clutter.KEY_Down)
                 this.scrollToItem(this.activeMenuItem, this.shortcutsScrollBox, Constants.DIRECTION.DOWN);
         }) ;  
         this.shortcutsScrollBox.style = "width:275px;";
@@ -166,9 +166,9 @@ var createMenu = class{
         });
         this.applicationsScrollBox.connect('key-press-event',(actor,event)=>{
             let key = event.get_key_symbol();
-            if(key == Clutter.Up || key == Clutter.KP_Up)
+            if(key == Clutter.KEY_Up)
                 this.scrollToItem(this.activeMenuItem, this.applicationsScrollBox, Constants.DIRECTION.UP);
-            else if(key == Clutter.Down || key == Clutter.KP_Down)
+            else if(key == Clutter.KEY_Down)
                 this.scrollToItem(this.activeMenuItem, this.applicationsScrollBox, Constants.DIRECTION.DOWN);
         }) ;       
         this.applicationsBox = new St.BoxLayout({ vertical: true });
@@ -190,19 +190,23 @@ var createMenu = class{
         });
         this.shortcutsBox.style = "padding: 5px 0px 0px 0px;"
 
-        var SHORTCUT_TRANSLATIONS = [_("Software"),_("Software"), _("Settings")];
-        for(let i = 0; i < 3; i++) {
-            if (GLib.find_program_in_path(Constants.SHORTCUTS[i].command)) {
-                let shortcutMenuItem = new MW.ShortcutMenuItem(this, SHORTCUT_TRANSLATIONS[i], Constants.SHORTCUTS[i].symbolic, Constants.SHORTCUTS[i].command);
-                shortcutMenuItem.setIconSizeLarge();
-                this.shortcutsBox.add(shortcutMenuItem.actor, {
-                    expand: false,
-                    x_fill: true,
-                    y_fill: false,
-                    y_align: St.Align.START,
-                });
-            }
-        };
+        let shortcutMenuItem = new MW.ShortcutMenuItem(this, _("Software"), 'org.gnome.Software-symbolic', 'ArcMenu_Software');
+        shortcutMenuItem.setIconSizeLarge();
+        this.shortcutsBox.add(shortcutMenuItem.actor, {
+            expand: false,
+            x_fill: true,
+            y_fill: false,
+            y_align: St.Align.START,
+        });
+        shortcutMenuItem = new MW.ShortcutMenuItem(this, _("Settings"), 'preferences-system-symbolic', 'gnome-control-center');
+        shortcutMenuItem.setIconSizeLarge();
+        this.shortcutsBox.add(shortcutMenuItem.actor, {
+            expand: false,
+            x_fill: true,
+            y_fill: false,
+            y_align: St.Align.START,
+        });
+
         //Add Horizontal Separator
         this.shortcutsBox.add( this._createHorizontalSeparator(Constants.SEPARATOR_STYLE.LONG), {
             x_expand: true,
@@ -628,14 +632,10 @@ var createMenu = class{
             case Clutter.KEY_Tab:
             case Clutter.KEY_KP_Tab:
                 return Clutter.EVENT_PROPAGATE;
-            case Clutter.Up:
-            case Clutter.KP_Up:
-            case Clutter.Down:
-            case Clutter.KP_Down:
-            case Clutter.Left:
-            case Clutter.KP_Left:
-            case Clutter.Right:
-            case Clutter.KP_Right:          
+            case Clutter.KEY_Up:
+            case Clutter.KEY_Down:
+            case Clutter.KEY_Left:
+            case Clutter.KEY_Right:         
                 if(this.searchBox.hasKeyFocus() && this.newSearch._defaultResult){
                     if(this.newSearch.actor.get_parent()){
                         this.newSearch._defaultResult.actor.grab_key_focus();
@@ -659,7 +659,6 @@ var createMenu = class{
                     return Clutter.EVENT_PROPAGATE;
                 }
             case Clutter.KEY_KP_Enter:
-            case Clutter.KP_Enter:
             case Clutter.KEY_Return:
                 return Clutter.EVENT_PROPAGATE;
             default:

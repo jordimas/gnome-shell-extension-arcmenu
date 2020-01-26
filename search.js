@@ -375,7 +375,7 @@ var ListSearchResults = class ArcMenu_ListSearchResults extends SearchResultsBas
             y_fill: false,
             x_align: St.Align.START,
             y_align: St.Align.START,
-            xexpand:true 
+            x_expand:true 
         });
 
         this._content = new St.BoxLayout({ 
@@ -463,8 +463,8 @@ var SearchResults = class ArcMenu_SearchResults {
        
         this._statusText = new St.Label();
         this._statusBin = new St.Bin({ 
-            x_align: St.Align.MIDDLE,
-            y_align: St.Align.MIDDLE 
+            x_align: gnome36 ? Clutter.ActorAlign.CENTER : St.Align.MIDDLE,
+            y_align: gnome36 ? Clutter.ActorAlign.CENTER : St.Align.MIDDLE
         });
 
         if(button._settings.get_boolean('enable-custom-arc-menu'))
