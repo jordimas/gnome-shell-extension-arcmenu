@@ -46,8 +46,8 @@
     <value value="1" nick="System_Icon"/>
     <value value="2" nick="Custom_Icon"/>
     <value value="3" nick="Arc_Menu_Alt"/>
-    <value value="4" nick="Arc_Menu_Alt_2"/>
-    <value value="5" nick="Arc_Menu_Original"/>
+    <value value="4" nick="Arc_Menu_Original"/>
+    <value value="5" nick="Curved_A"/>
     <value value="6" nick="Start_Box"/>
     <value value="7" nick="Focus"/>
     <value value="8" nick="Triple_Dash"/>
@@ -56,6 +56,9 @@
     <value value="11" nick="Sums"/>
     <value value="12" nick="Arrow"/>
     <value value="13" nick="Lins"/>
+    <value value="14" nick="Diamond_Square"/>
+    <value value="15" nick="Octo_Maze"/>
+    <value value="16" nick="Search"/>
   </enum>
   <enum id='org.gnome.shell.extensions.arc-menu.runner-position'>
     <value value="0" nick="Top"/>

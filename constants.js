@@ -130,8 +130,8 @@ var MENU_BUTTON_ICON = {
     System: 1,
     Custom: 2,
     Arc_Menu_Alt: 3,
-    Arc_Menu_Alt: 4,
-    Arc_Menu_Original: 5,
+    Arc_Menu_Original: 4,
+    Curved_A: 5,
     Start_Box: 6,
     Focus: 7,
     Triple_Dash:8,
@@ -139,7 +139,10 @@ var MENU_BUTTON_ICON = {
     Whirl_Circle: 10,
     Sums: 11,
     Arrow: 12,
-    Lins: 13
+    Lins: 13,    
+    Diamond_Square: 14,
+    Octo_Maze: 15,
+    Search: 16
 };
 var ARC_MENU_ICON = { 
     name: _("Arc Menu"), 
@@ -148,8 +151,8 @@ var ARC_MENU_ICON = {
 
 var MENU_ICONS = [
     { name: _("Arc Menu Alt"), path: '/media/icons/arc-menu-alt-symbolic.svg'},
-    { name: _("Arc Menu Alt 2"), path: '/media/icons/arc-menu-alt-2-symbolic.svg'},
     { name: _("Arc Menu Original"), path: '/media/icons/arc-menu-old-symbolic.svg'},
+    { name: _("Curved A"), path: '/media/icons/curved-a-symbolic.svg'},
     { name: _("Start Box"), path: '/media/icons/start-box-symbolic.svg'},
     { name: _("Focus"), path: '/media/icons/focus-symbolic.svg'},
     { name: _("Triple Dash"), path: '/media/icons/triple-dash-symbolic.svg'},
@@ -157,7 +160,10 @@ var MENU_ICONS = [
     { name: _("Whirl Circle"), path: '/media/icons/whirl-circle-symbolic.svg'},
     { name: _("Sums"), path: '/media/icons/sums-symbolic.svg'},
     { name: _("Arrow"), path: '/media/icons/arrow-symbolic.svg'},
-    { name: _("Lins"), path: '/media/icons/lins-symbolic.svg'}
+    { name: _("Lins"), path: '/media/icons/lins-symbolic.svg'},
+    { name: _("Diamond Square"), path: '/media/icons/diamond-square-symbolic.svg'},
+    { name: _("Octo Maze"), path: '/media/icons/octo-maze-symbolic.svg'},
+    { name: _("Search"), path: '/media/icons/search-symbolic.svg'}
 ]
 
 var MENU_STYLE_CHOOSER = {
