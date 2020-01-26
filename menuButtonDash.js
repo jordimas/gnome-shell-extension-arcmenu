@@ -482,7 +482,8 @@ var ApplicationsButton =   Utils.defineClass({
             }      
             else{ 
                 this.getWidget().actor.remove_style_pseudo_class('selected');
-                this.getWidget()._icon.remove_style_pseudo_class('active');
+                if(!this.getWidget().actor.hover)
+                    this.getWidget()._icon.remove_style_pseudo_class('active');
             }
             if (menu == this.leftClickMenu) {
                 if(open){
