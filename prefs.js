@@ -746,6 +746,7 @@ var GeneralPage = GObject.registerClass(
             menuPlacementCombo.connect('changed', (widget) => {
                 this._settings.set_enum('arc-menu-placement',widget.get_active());
                 if(widget.get_active() == Constants.ARC_MENU_PLACEMENT.PANEL){
+                    menuPlacementFrame.remove(disableActivitiesRow);
                     menuPlacementFrame.add(menuPositionRow);
                     if(this._settings.get_enum('position-in-panel') == Constants.MENU_POSITION.Center)
                         menuPlacementFrame.add(menuPositionAdjustmentRow);
@@ -757,12 +758,33 @@ var GeneralPage = GObject.registerClass(
                     if(this._settings.get_enum('position-in-panel') == Constants.MENU_POSITION.Center)
                         menuPlacementFrame.remove(menuPositionAdjustmentRow);
                     menuPlacementFrame.remove(multiMonitorRow);
+                    menuPlacementFrame.add(disableActivitiesRow);
                 }
             });
 
             menuPlacementRow.add(menuPlacementLabel);
             menuPlacementRow.add(menuPlacementCombo);
             menuPlacementFrame.add(menuPlacementRow);
+
+            let disableActivitiesRow = new PW.FrameBoxRow();
+            let disableActivitiesLabel = new Gtk.Label({
+                label: _("Disable Activities Button"),
+                use_markup: true,
+                xalign: 0,
+                hexpand: true
+            });
+
+            let disableActivitiesSwitch = new Gtk.Switch({ 
+                halign: Gtk.Align.END,
+                tooltip_text: _("Disable Activities Button in panel") 
+            });
+            disableActivitiesSwitch.set_active(this._settings.get_boolean('disable-activities-button'));
+            disableActivitiesSwitch.connect('notify::active', (widget) => {
+                this._settings.set_boolean('disable-activities-button', widget.get_active());
+            });
+
+            disableActivitiesRow.add(disableActivitiesLabel);
+            disableActivitiesRow.add(disableActivitiesSwitch);
 
             //Menu Position Box
             let menuPositionRow = new PW.FrameBoxRow();
@@ -872,6 +894,9 @@ var GeneralPage = GObject.registerClass(
                 if(this._settings.get_enum('position-in-panel') == Constants.MENU_POSITION.Center)
                     menuPlacementFrame.add(menuPositionAdjustmentRow);
                 menuPlacementFrame.add(multiMonitorRow);
+            }
+            else{
+                menuPlacementFrame.add(disableActivitiesRow);
             }
             
             
