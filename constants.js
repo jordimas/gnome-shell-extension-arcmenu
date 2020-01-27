@@ -115,7 +115,8 @@ var MENU_LAYOUT = { // See: org.gnome.shell.extensions.arc-menu.menu-position
     UbuntuDash: 10,
     Budgie: 11,
     Windows: 12,
-    Runner: 13
+    Runner: 13,
+    Chromebook: 14
 };
 
 var MENU_APPEARANCE = {
@@ -212,6 +213,9 @@ var MENU_STYLE_CHOOSER = {
         },
         {   thumbnail: '/media/layouts/krunner-menu.svg',
             name: 'KRunner Style'
+        },
+        {   thumbnail: '/media/layouts/chromebook-menu.svg',
+            name: 'Chromebook Style'
         }
     ]
 };
