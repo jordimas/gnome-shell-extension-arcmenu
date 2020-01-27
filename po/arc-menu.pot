@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-01-26 16:54-0500\n"
+"POT-Creation-Date: 2020-01-27 09:07-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -194,7 +194,7 @@ msgstr ""
 
 #: menulayouts/arcmenu.js:247 menulayouts/redmond.js:233
 #: menulayouts/ubuntudash.js:304 menuWidgets.js:727 menuWidgets.js:1266
-#: menuWidgets.js:1473 menuButtonPanel.js:580 menuButtonDash.js:548
+#: menuWidgets.js:1473 menuButtonPanel.js:582 menuButtonDash.js:551
 #: prefs.js:376
 msgid "Arc Menu Settings"
 msgstr ""
@@ -306,79 +306,79 @@ msgstr ""
 msgid "Show Applications"
 msgstr ""
 
-#: menuWidgets.js:2808 constants.js:148
+#: menuWidgets.js:2814 constants.js:149
 msgid "Arc Menu"
 msgstr ""
 
-#: constants.js:153
+#: constants.js:154
 msgid "Arc Menu Alt"
 msgstr ""
 
-#: constants.js:154
+#: constants.js:155
 msgid "Arc Menu Original"
 msgstr ""
 
-#: constants.js:155
+#: constants.js:156
 msgid "Curved A"
 msgstr ""
 
-#: constants.js:156
+#: constants.js:157
 msgid "Start Box"
 msgstr ""
 
-#: constants.js:157
+#: constants.js:158
 msgid "Focus"
 msgstr ""
 
-#: constants.js:158
+#: constants.js:159
 msgid "Triple Dash"
 msgstr ""
 
-#: constants.js:159
+#: constants.js:160
 msgid "Whirl"
 msgstr ""
 
-#: constants.js:160
+#: constants.js:161
 msgid "Whirl Circle"
 msgstr ""
 
-#: constants.js:161
+#: constants.js:162
 msgid "Sums"
 msgstr ""
 
-#: constants.js:162
+#: constants.js:163
 msgid "Arrow"
 msgstr ""
 
-#: constants.js:163
+#: constants.js:164
 msgid "Lins"
 msgstr ""
 
-#: constants.js:164
+#: constants.js:165
 msgid "Diamond Square"
 msgstr ""
 
-#: constants.js:165
+#: constants.js:166
 msgid "Octo Maze"
 msgstr ""
 
-#: constants.js:166
+#: constants.js:167
 msgid "Search"
 msgstr ""
 
-#: menuButtonPanel.js:589 menuButtonDash.js:557
+#: menuButtonPanel.js:591 menuButtonDash.js:560
 msgid "Arc Menu on GitLab"
 msgstr ""
 
-#: menuButtonPanel.js:594 menuButtonDash.js:562
+#: menuButtonPanel.js:596 menuButtonDash.js:565
 msgid "About Arc Menu"
 msgstr ""
 
-#: menuButtonPanel.js:602
+#: menuButtonPanel.js:604
 msgid "Dash to Panel Settings"
 msgstr ""
 
-#: menuButtonDash.js:570
+#: menuButtonDash.js:573
 msgid "Dash to Dock Settings"
 msgstr ""
 
