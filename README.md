@@ -1,4 +1,4 @@
-![](https://gitlab.com/LinxGem33/Neon/raw/master/new-arc-wide-banner.png)
+![](https://gitlab.com/LinxGem33/Neon/raw/master/new-arcmenu-wide-banner.png)
 
 -----
 
