@@ -22,7 +22,7 @@
  */
 
 const Me = imports.misc.extensionUtils.getCurrentExtension();
-
+const GLib = imports.gi.GLib;
 const Constants = Me.imports.constants;
 const Controller = Me.imports.controller;
 const Convenience = Me.imports.convenience;
@@ -49,19 +49,28 @@ function enable() {
     settings.connect('changed::arc-menu-placement', () => _onArcMenuPlacementChange());
     settingsControllers = [];
 
+    let boolArray = settings.get_default_value('dtp-dtd-state').deep_unpack();
+    settings.set_value('dtp-dtd-state', new GLib.Variant('ab', boolArray));
+
     _enableButtons();
     
     // dash to panel might get enabled after Arc-Menu
     extensionChangedId = (Main.extensionManager || ExtensionSystem).connect('extension-state-changed', (data, extension) => {
-        if (extension.uuid === 'dash-to-panel@jderose9.github.com' && extension.state === 1) {
-            let arcMenuPosition = settings.get_enum('arc-menu-placement');
-            if(arcMenuPosition == Constants.ARC_MENU_PLACEMENT.PANEL){
-                settingsControllers.forEach(sc => _disableButton(sc, 1));
-                _connectDtpSignals();
-                _enableButtons();
+        if (extension.uuid === 'dash-to-panel@jderose9.github.com') {
+            if(extension.state === 1){
+                this.set_DtD_DtP_State(Constants.EXTENSION.DTP, true);
+                let arcMenuPosition = settings.get_enum('arc-menu-placement');
+                if(arcMenuPosition == Constants.ARC_MENU_PLACEMENT.PANEL){
+                    settingsControllers.forEach(sc => _disableButton(sc, 1));
+                    _connectDtpSignals();
+                    _enableButtons();
+                }
             }
+            else if(extension.state === 2) this.set_DtD_DtP_State(Constants.EXTENSION.DTP, false);
         }
         if (extension.uuid === "dash-to-dock@micxgx.gmail.com" && (extension.state === 1 || extension.state === 2)) {
+            let state = extension.state === 1 ? true : false;
+            this.set_DtD_DtP_State(Constants.EXTENSION.DTD, state);
             let arcMenuPosition = settings.get_enum('arc-menu-placement');
             if(arcMenuPosition == Constants.ARC_MENU_PLACEMENT.DASH){
                 settingsControllers.forEach(sc => _disableButton(sc, 1));
@@ -73,7 +82,11 @@ function enable() {
     // listen to dash to panel if it is compatible and already enabled
     _connectDtpSignals();
 }
-
+function set_DtD_DtP_State(extension, state){
+    let boolArray = settings.get_value('dtp-dtd-state').deep_unpack();
+    boolArray[extension] = state;
+    settings.set_value('dtp-dtd-state', new GLib.Variant('ab', boolArray));
+}
 // Disable the extension
 function disable() {
     if ( extensionChangedId > 0){
@@ -136,6 +149,7 @@ function _enableButtons() {
                         ExtensionUtils.extensions["dash-to-dock@micxgx.gmail.com"];
     let arcMenuPosition = settings.get_enum('arc-menu-placement');
     if(arcMenuPosition == Constants.ARC_MENU_PLACEMENT.DASH && dashToDock && dashToDock.stateObj && dashToDock.stateObj.dockManager){
+        this.set_DtD_DtP_State(Constants.EXTENSION.DTD, true);
         let panel = dashToDock.stateObj.dockManager; 
         if(panel){ 
             if(panel._allDocks.length){                
@@ -152,6 +166,9 @@ function _enableButtons() {
         global.dashToPanel.panels.map(pw => pw.panel || pw) : [Main.panel];
         for(var i = 0; i<panelArray.length;i++){
             let panel = panelArray[i];
+
+            if(global.dashToPanel) this.set_DtD_DtP_State(Constants.EXTENSION.DTP, true);
+
             let isMainPanel = ('isSecondary' in panel && !panel.isSecondary) || panel == Main.panel;
     
             if (panel.statusArea['arc-menu'])

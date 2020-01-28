@@ -87,6 +87,11 @@
       <summary>disable hotkey on key release</summary>
       <description>disable hotkey on key release.</description>
     </key>
+    <key type="ab" name="dtp-dtd-state">
+     <default>[false, false]</default>
+      <summary>Keeps track of Dash to Panel and Dash to Dock extension states</summary>
+      <description>false = off, true = on</description>
+    </key>
     <key enum="org.gnome.shell.extensions.arc-menu.arc-menu-placement" name="arc-menu-placement">
      <default>"Panel"</default>
       <summary>Embed Arc Menu button into Dash instead of panel</summary>
