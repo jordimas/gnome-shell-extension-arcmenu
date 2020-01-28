@@ -737,7 +737,7 @@ var GeneralPage = GObject.registerClass(
             });
             let menuPlacementCombo = new Gtk.ComboBoxText({ 
                 halign: Gtk.Align.END,
-                tooltip_text: _("Choose where to place the Arc Menu button") 
+                tooltip_text: _("Choose where to place Arc Menu") 
             });
             menuPlacementCombo.append_text(_("Panel/Dash to Panel"));
             menuPlacementCombo.append_text(_("Dash to Dock"));
@@ -746,6 +746,7 @@ var GeneralPage = GObject.registerClass(
             menuPlacementCombo.connect('changed', (widget) => {
                 this._settings.set_enum('arc-menu-placement',widget.get_active());
                 if(widget.get_active() == Constants.ARC_MENU_PLACEMENT.PANEL){
+                    menuPlacementFrame.remove(disableActivitiesRow);
                     menuPlacementFrame.add(menuPositionRow);
                     if(this._settings.get_enum('position-in-panel') == Constants.MENU_POSITION.Center)
                         menuPlacementFrame.add(menuPositionAdjustmentRow);
@@ -757,12 +758,33 @@ var GeneralPage = GObject.registerClass(
                     if(this._settings.get_enum('position-in-panel') == Constants.MENU_POSITION.Center)
                         menuPlacementFrame.remove(menuPositionAdjustmentRow);
                     menuPlacementFrame.remove(multiMonitorRow);
+                    menuPlacementFrame.add(disableActivitiesRow);
                 }
             });
 
             menuPlacementRow.add(menuPlacementLabel);
             menuPlacementRow.add(menuPlacementCombo);
             menuPlacementFrame.add(menuPlacementRow);
+
+            let disableActivitiesRow = new PW.FrameBoxRow();
+            let disableActivitiesLabel = new Gtk.Label({
+                label: _("Disable Activities Button"),
+                use_markup: true,
+                xalign: 0,
+                hexpand: true
+            });
+
+            let disableActivitiesSwitch = new Gtk.Switch({ 
+                halign: Gtk.Align.END,
+                tooltip_text: _("Disable Activities Button in panel") 
+            });
+            disableActivitiesSwitch.set_active(this._settings.get_boolean('disable-activities-button'));
+            disableActivitiesSwitch.connect('notify::active', (widget) => {
+                this._settings.set_boolean('disable-activities-button', widget.get_active());
+            });
+
+            disableActivitiesRow.add(disableActivitiesLabel);
+            disableActivitiesRow.add(disableActivitiesSwitch);
 
             //Menu Position Box
             let menuPositionRow = new PW.FrameBoxRow();
@@ -837,7 +859,7 @@ var GeneralPage = GObject.registerClass(
                 }),
                 digits: 0,round_digits: 0,hexpand: true,
                 value_pos: Gtk.PositionType.RIGHT,
-                tooltip_text: _("Adjust Arc Menu's menu alignment relative to Arc Menu's button")
+                tooltip_text: _("Adjust Arc Menu's menu alignment relative to Arc Menu's icon")
             });
            // alignmentScale.connect('format-value', (scale, value) => { return value.toString() + 'px'; });
             alignmentScale.set_value(this._settings.get_int('menu-position-alignment'));
@@ -872,6 +894,9 @@ var GeneralPage = GObject.registerClass(
                 if(this._settings.get_enum('position-in-panel') == Constants.MENU_POSITION.Center)
                     menuPlacementFrame.add(menuPositionAdjustmentRow);
                 menuPlacementFrame.add(multiMonitorRow);
+            }
+            else{
+                menuPlacementFrame.add(disableActivitiesRow);
             }
             
             
@@ -950,7 +975,7 @@ var GeneralPage = GObject.registerClass(
             });
             let defaultLeftBoxCombo = new Gtk.ComboBoxText({ 
                 halign: Gtk.Align.END,
-                tooltip_text: _("Choose the default menu view") 
+                tooltip_text: _("Choose the default menu view for Arc Menu") 
             });
             defaultLeftBoxCombo.append_text(_("Pinned Apps"));
             defaultLeftBoxCombo.append_text(_("Categories List"));
@@ -1492,7 +1517,7 @@ function getIconPixbuf(filePath){
         return null;
 }
 
-//DialogWindow for Menu Button Customization
+//DialogWindow for Menu Icon Customization
 var MenuButtonCustomizationWindow = GObject.registerClass(
     class ArcMenu_MenuButtonCustomizationWindow extends PW.DialogWindow {
 
@@ -1500,7 +1525,7 @@ var MenuButtonCustomizationWindow = GObject.registerClass(
             this._settings = settings;
             this.menuButtonColor = this._settings.get_string('menu-button-color');
             this.menuButtonActiveColor = this._settings.get_string('menu-button-active-color');
-            super._init(_('Menu Button Appearance'), parent);
+            super._init(_('Arc Menu Icon Settings'), parent);
         }
 
         _createLayout(vbox) {
@@ -1508,7 +1533,7 @@ var MenuButtonCustomizationWindow = GObject.registerClass(
             //first row
             let menuButtonAppearanceRow = new PW.FrameBoxRow();
             let menuButtonAppearanceLabel = new Gtk.Label({
-                label: _('Menu Button Appearance'),
+                label: _('Arc Menu Icon Appearance'),
                 use_markup: true,
                 xalign: 0,
                 hexpand: true
@@ -1538,7 +1563,7 @@ var MenuButtonCustomizationWindow = GObject.registerClass(
             // second row
             let menuButtonCustomTextBoxRow = new PW.FrameBoxRow();
             let menuButtonCustomTextLabel = new Gtk.Label({
-                label: _('Menu Button Text'),
+                label: _('Arc Menu Icon Text'),
                 use_markup: true,
                 xalign: 0,
                 hexpand: true
@@ -1562,7 +1587,7 @@ var MenuButtonCustomizationWindow = GObject.registerClass(
             let menuButtonArrowIconFrame = new PW.FrameBox();
             let menuButtonArrowIconBoxRow = new PW.FrameBoxRow();
             let menuButtonArrowIconLabel = new Gtk.Label({
-                label: _('Arrow beside Menu Button'),
+                label: _('Arrow beside Arc Menu Icon'),
                 use_markup: true,
                 xalign: 0,
                 hexpand: true
@@ -1582,7 +1607,7 @@ var MenuButtonCustomizationWindow = GObject.registerClass(
             let menuButtonIconFrame = new PW.FrameBox();
             let menuButtonIconRow = new PW.FrameBoxRow();
             let menuButtonIconLabel = new Gtk.Label({
-                label: _('Menu Button Icon'),
+                label: _('Arc Menu Icon'),
                 use_markup: true,
                 xalign: 0,
                 hexpand: true
@@ -1877,11 +1902,11 @@ var AppearancePage = GObject.registerClass(
             this.menuArrowSize = this._settings.get_int('menu-arrow-size');
             this.checkIfPresetMatch();
 
-            //Menu Button Appearance Frame Box
+            //Menu Icon Appearance Frame Box
             let menuButtonAppearanceFrame = new PW.FrameBox();
             let menuButtonAppearanceRow = new PW.FrameBoxRow();
             let menuButtonAppearanceLabel = new Gtk.Label({
-                label: _("Menu Button Appearance"),
+                label: _("Arc Menu Icon Settings"),
                 use_markup: true,
                 xalign: 0,
                 hexpand: true
@@ -1889,10 +1914,10 @@ var AppearancePage = GObject.registerClass(
             let menuButtonAppearanceSettingsButton = new PW.IconButton({
                 circular: true,
                 icon_name: 'emblem-system-symbolic',
-                tooltip_text: _("Customize Arc Menu's Button in Main Panel")
+                tooltip_text: _("Customize Arc Menu's Icon")
             });
 
-            // Extra settings for the appearance of the menu button
+            // Extra settings for the appearance of the menu icon
             menuButtonAppearanceSettingsButton.connect('clicked', () => {
                 let dialog = new MenuButtonCustomizationWindow(this._settings, this);
                 dialog.show_all();
@@ -2303,7 +2328,16 @@ var ArcMenuCustomizationWindow = GObject.registerClass(
         }
 
         _createLayout(vbox) {
-            let mainFrame = new PW.FrameBox();
+            let generalSettingsFrame = new PW.FrameBox();
+            let generalRow = new PW.FrameBoxRow();
+            let generalLabel = new Gtk.Label({
+                label: _('General Settings'),
+                xalign:0,
+                hexpand: false,
+            });   
+            generalLabel.set_sensitive(false);
+            generalRow.add(generalLabel);
+            generalSettingsFrame.add(generalRow);
             let screen = Gdk.Screen.get_default();
             let rect = screen.get_monitor_geometry(0);
             let scaleFactor = screen.get_monitor_scale_factor(0);
@@ -2325,6 +2359,7 @@ var ArcMenuCustomizationWindow = GObject.registerClass(
                     page_increment: 10,
                     page_size: 0
                 }),
+                tooltip_text: _("Adjust the menu height") + "\n" +_("Certain menu layouts only"),
                 digits: 0,
                 round_digits: 0,
                 hexpand: true,
@@ -2339,7 +2374,8 @@ var ArcMenuCustomizationWindow = GObject.registerClass(
             });
             heightRow.add(heightLabel);
             heightRow.add(hscale);
-            mainFrame.add(heightRow);
+            generalSettingsFrame.add(heightRow);
+
             //ROW 3 - MENU WIDTH--------------------------------------------------   
             let menuWidthRow = new PW.FrameBoxRow();
             let menuWidthLabel = new Gtk.Label({
@@ -2349,8 +2385,9 @@ var ArcMenuCustomizationWindow = GObject.registerClass(
              });   
             let menuWidthScale = new Gtk.HScale({
                 adjustment: new Gtk.Adjustment({
-                    lower: 200,upper: 500, step_increment: 1, page_increment: 1, page_size: 0
+                    lower: 200,upper: 500, step_increment: 1, page_increment: 1, page_size: 0,
                 }),
+                tooltip_text: _("Adjust the left-panel width") + "\n" +_("Certain menu layouts only"),
                 digits: 0,round_digits: 0,hexpand: true,
                 value_pos: Gtk.PositionType.RIGHT
             });
@@ -2363,87 +2400,7 @@ var ArcMenuCustomizationWindow = GObject.registerClass(
             });
             menuWidthRow.add(menuWidthLabel);
             menuWidthRow.add(menuWidthScale);
-            mainFrame.add(menuWidthRow);
-            
-
-            let largeIconsRow = new PW.FrameBoxRow();
-            let largeIconsLabel = new Gtk.Label({
-                label: _('Large Application Icons'),
-                use_markup: true,
-                xalign: 0,
-                hexpand: true,
-                selectable: false
-             });   
-            let largeIconsSwitch = new Gtk.Switch({ halign: Gtk.Align.END});
-            largeIconsSwitch.set_active( this.largeIcons);
-            largeIconsSwitch.connect('notify::active', (widget) => {
-                 this.largeIcons = widget.get_active();
-                 applyButton.set_sensitive(true);
-                 resetButton.set_sensitive(true);
-            });
-            largeIconsRow.add(largeIconsLabel);            
-            largeIconsRow.add(largeIconsSwitch);             
-            mainFrame.add(largeIconsRow);
-
-            let subMenusRow = new PW.FrameBoxRow();
-            let subMenusLabel = new Gtk.Label({
-                label: _('Category Sub Menus'),
-                use_markup: true,
-                xalign: 0,
-                hexpand: true,
-                selectable: false
-             });   
-            let subMenusSwitch = new Gtk.Switch({ halign: Gtk.Align.END});
-            subMenusSwitch.set_active(this.subMenus);
-            subMenusSwitch.connect('notify::active', (widget) => {
-                 this.subMenus = widget.get_active();
-                 applyButton.set_sensitive(true);
-                 resetButton.set_sensitive(true);
-            });
-            subMenusRow.add(subMenusLabel);            
-            subMenusRow.add(subMenusSwitch);             
-            mainFrame.add(subMenusRow);
-
-            let vertSeparatorRow = new PW.FrameBoxRow();
-            let vertSeparatorLabel = new Gtk.Label({
-                label: _('Enable Vertical Separator'),
-                use_markup: true,
-                xalign: 0,
-                hexpand: true,
-                selectable: false
-             });   
-            let vertSeparatorSwitch = new Gtk.Switch({ halign: Gtk.Align.END});
-            vertSeparatorSwitch.set_active(this.verticalSeparator);
-            vertSeparatorSwitch.connect('notify::active', (widget) => { 
-                 this.verticalSeparator = widget.get_active();
-                 applyButton.set_sensitive(true);
-                 resetButton.set_sensitive(true);
-            });
-            vertSeparatorRow.add(vertSeparatorLabel);            
-            vertSeparatorRow.add(vertSeparatorSwitch);             
-            mainFrame.add(vertSeparatorRow);
-            
-            let separatorColorRow = new PW.FrameBoxRow();
-            let separatorColorLabel = new Gtk.Label({
-                label: _('Separator Color'),
-                use_markup: true,
-                xalign: 0,
-                hexpand: true,
-                selectable: false
-            });
-            let colorChooser = new Gtk.ColorButton({use_alpha:true});     
-            let color = new Gdk.RGBA();
-            color.parse(this.separatorColor);
-            colorChooser.set_rgba(color);    
-            colorChooser.connect('color-set', ()=>{
-                this.separatorColor = colorChooser.get_rgba().to_string();
-                applyButton.set_sensitive(true);
-                resetButton.set_sensitive(true);
-            });
-            separatorColorRow.add(separatorColorLabel);            
-            separatorColorRow.add(colorChooser);             
-            mainFrame.add(separatorColorRow);
-
+            generalSettingsFrame.add(menuWidthRow);
             let tweakStyleRow = new PW.FrameBoxRow();
             let tweakStyleLabel = new Gtk.Label({
                 label: _("Disable Menu Arrow"),
@@ -2454,7 +2411,7 @@ var ArcMenuCustomizationWindow = GObject.registerClass(
 
             let tweakStyleSwitch = new Gtk.Switch({ 
                 halign: Gtk.Align.END,
-                tooltip_text: _("Disable the menu arrow pointer")
+                tooltip_text: _("Disable current theme menu arrow pointer")
             });
             tweakStyleSwitch.set_active(this._settings.get_boolean('remove-menu-arrow'));
             tweakStyleSwitch.connect('notify::active', (widget) => {
@@ -2465,7 +2422,124 @@ var ArcMenuCustomizationWindow = GObject.registerClass(
 
             tweakStyleRow.add(tweakStyleLabel);
             tweakStyleRow.add(tweakStyleSwitch);
-            mainFrame.add(tweakStyleRow);
+            generalSettingsFrame.add(tweakStyleRow);
+            vbox.add(generalSettingsFrame);
+
+            let miscFrame = new PW.FrameBox();
+            let miscLabelRow = new PW.FrameBoxRow();
+            let miscLabel = new Gtk.Label({
+                label: _('Miscellaneous'),
+                xalign:0,
+                hexpand: false,
+            });   
+            miscLabel.set_sensitive(false);
+            miscLabelRow.add(miscLabel);
+            miscFrame.add(miscLabelRow);
+
+            let largeIconsRow = new PW.FrameBoxRow();
+            let largeIconsLabel = new Gtk.Label({
+                label: _('Large Application Icons'),
+                use_markup: true,
+                xalign: 0,
+                hexpand: true,
+                selectable: false
+             });   
+            let largeIconsSwitch = new Gtk.Switch({ 
+                halign: Gtk.Align.END,
+                tooltip_text: _("Enable large application icons") + "\n" +_("Certain menu layouts only"),
+            });
+            largeIconsSwitch.set_active( this.largeIcons);
+            largeIconsSwitch.connect('notify::active', (widget) => {
+                 this.largeIcons = widget.get_active();
+                 applyButton.set_sensitive(true);
+                 resetButton.set_sensitive(true);
+            });
+            largeIconsRow.add(largeIconsLabel);            
+            largeIconsRow.add(largeIconsSwitch);             
+            miscFrame.add(largeIconsRow);
+
+            let subMenusRow = new PW.FrameBoxRow();
+            let subMenusLabel = new Gtk.Label({
+                label: _('Category Sub Menus'),
+                use_markup: true,
+                xalign: 0,
+                hexpand: true,
+                selectable: false
+             });   
+            let subMenusSwitch = new Gtk.Switch({ 
+                halign: Gtk.Align.END,
+                tooltip_text: _("Show nested menus in categories") + "\n" +_("Certain menu layouts only"),
+            });
+            subMenusSwitch.set_active(this.subMenus);
+            subMenusSwitch.connect('notify::active', (widget) => {
+                 this.subMenus = widget.get_active();
+                 applyButton.set_sensitive(true);
+                 resetButton.set_sensitive(true);
+            });
+            subMenusRow.add(subMenusLabel);            
+            subMenusRow.add(subMenusSwitch);  
+            miscFrame.add(subMenusRow);           
+            
+
+            let separatorFrame = new PW.FrameBox();
+            let separatorLabelRow = new PW.FrameBoxRow();
+            let separatorLabel = new Gtk.Label({
+                label: _('Separator Settings'),
+                xalign:0,
+                hexpand: false,
+            });   
+            separatorLabel.set_sensitive(false);
+            separatorLabelRow.add(separatorLabel);
+            separatorFrame.add(separatorLabelRow);
+            let vertSeparatorRow = new PW.FrameBoxRow();
+            let vertSeparatorLabel = new Gtk.Label({
+                label: _('Enable Vertical Separator'),
+                use_markup: true,
+                xalign: 0,
+                hexpand: true,
+                selectable: false
+             });   
+            let vertSeparatorSwitch = new Gtk.Switch({ 
+                halign: Gtk.Align.END,
+                tooltip_text: _("Enable a Vertical Separator") + "\n" +_("Certain menu layouts only"),
+            });
+            vertSeparatorSwitch.set_active(this.verticalSeparator);
+            vertSeparatorSwitch.connect('notify::active', (widget) => { 
+                 this.verticalSeparator = widget.get_active();
+                 applyButton.set_sensitive(true);
+                 resetButton.set_sensitive(true);
+            });
+            vertSeparatorRow.add(vertSeparatorLabel);            
+            vertSeparatorRow.add(vertSeparatorSwitch);             
+            separatorFrame.add(vertSeparatorRow);
+            
+            
+            let separatorColorRow = new PW.FrameBoxRow();
+            let separatorColorLabel = new Gtk.Label({
+                label: _('Separator Color'),
+                use_markup: true,
+                xalign: 0,
+                hexpand: true,
+                selectable: false
+            });
+            let colorChooser = new Gtk.ColorButton({
+                use_alpha:true,
+                tooltip_text: _("Change the color of all separators")
+            });     
+            let color = new Gdk.RGBA();
+            color.parse(this.separatorColor);
+            colorChooser.set_rgba(color);    
+            colorChooser.connect('color-set', ()=>{
+                this.separatorColor = colorChooser.get_rgba().to_string();
+                applyButton.set_sensitive(true);
+                resetButton.set_sensitive(true);
+            });
+            separatorColorRow.add(separatorColorLabel);            
+            separatorColorRow.add(colorChooser);             
+            separatorFrame.add(separatorColorRow);
+            vbox.add(separatorFrame);
+            vbox.add(miscFrame);
+
             //GAP ADJUSTMENT--------------------------------------------------   
             let fineTuneFrame = new PW.FrameBox();
             let fineTuneLabelRow = new PW.FrameBoxRow();
@@ -2487,7 +2561,8 @@ var ArcMenuCustomizationWindow = GObject.registerClass(
                     lower: -1,upper: 1, step_increment: 1, page_increment: 1, page_size: 0
                 }),
                 digits: 0,round_digits: 0,hexpand: true,
-                value_pos: Gtk.PositionType.RIGHT
+                value_pos: Gtk.PositionType.RIGHT,
+                tooltip_text: _("Offset menu placement by 1px\nUseful if a gap or overlap is visible")
             });
             gapAdjustmentScale.connect('format-value', (scale, value) => { return value.toString() + 'px'; });
             gapAdjustmentScale.set_value(this.gapAdjustment);
@@ -2541,7 +2616,6 @@ var ArcMenuCustomizationWindow = GObject.registerClass(
             buttonRow.add(resetButton);
             buttonRow.add(applyButton);
 
-            vbox.add(mainFrame);
             vbox.add(fineTuneFrame);
             vbox.add(buttonRow);
         }
@@ -4353,13 +4427,18 @@ var AboutPage = GObject.registerClass(
             this._settings = settings;
 
             // Use meta information from metadata.json
-            let releaseVersion = Me.metadata.version || 'unknown';
+            let releaseVersion;
+            if(Me.metadata.version){
+                releaseVersion = Me.metadata.version == "-1" ? Constants.VERSION + "-" + _("Development") : Me.metadata.version;
+            }
+            else
+                releaseVersion = 'unknown';
             let projectUrl = Me.metadata.url;
 
             // Create GUI elements
             // Create the image box
-            let logoPath = Me.path + Constants.ARC_MENU_LOGO.Path;
-            let [imageWidth, imageHeight] = Constants.ARC_MENU_LOGO.Size;
+            let logoPath = Me.path + Constants.ARC_MENU_LOGO.path;
+            let [imageWidth, imageHeight] = Constants.ARC_MENU_LOGO.size;
             let pixbuf = GdkPixbuf.Pixbuf.new_from_file_at_size(logoPath, imageWidth, imageHeight);
             let arcMenuImage = new Gtk.Image({ pixbuf: pixbuf });
             let arcMenuImageBox = new Gtk.VBox({
@@ -4376,16 +4455,16 @@ var AboutPage = GObject.registerClass(
                 expand: false
             });
             let arcMenuLabel = new Gtk.Label({
-                label: '<b>' + _('Arc-Menu') + '</b>',
+                label: '<b>' + _('Arc Menu') + '</b>',
                 use_markup: true,
                 expand: false
             });
             let versionLabel = new Gtk.Label({
-                label: _('version: ') + releaseVersion,
+                label: _('Version: ') + releaseVersion,
                 expand: false
             });
             let projectDescriptionLabel = new Gtk.Label({
-                label: _('A traditional application menu for GNOME'),
+                label: _('A Traditional Application Menu for GNOME'),
                 expand: false
             });
             let projectLinkButton = new Gtk.LinkButton({

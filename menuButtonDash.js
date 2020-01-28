@@ -174,6 +174,8 @@ var ApplicationsButton =   Utils.defineClass({
                 this.MenuLayout = new MenuLayouts.windows.createMenu(this);
             else if (layout == Constants.MENU_LAYOUT.Runner)
                 this.MenuLayout = new MenuLayouts.runner.createMenu(this);
+            else if (layout == Constants.MENU_LAYOUT.Chromebook)
+                this.MenuLayout = new MenuLayouts.chromebook.createMenu(this);
             ///--------------------------------------------------------------------
             this._setMenuPositionAlignment();
             this.tooltipShowing = false;
@@ -482,7 +484,8 @@ var ApplicationsButton =   Utils.defineClass({
             }      
             else{ 
                 this.getWidget().actor.remove_style_pseudo_class('selected');
-                this.getWidget()._icon.remove_style_pseudo_class('active');
+                if(!this.getWidget().actor.hover)
+                    this.getWidget()._icon.remove_style_pseudo_class('active');
             }
             if (menu == this.leftClickMenu) {
                 if(open){

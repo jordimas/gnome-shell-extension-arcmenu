@@ -223,7 +223,7 @@ var TweaksDialog = GObject.registerClass(
 
             let tweakStyleSwitch = new Gtk.Switch({ 
                 halign: Gtk.Align.END,
-                tooltip_text: _("Disable the menu arrow pointer")
+                tooltip_text: _("Disable current theme menu arrow pointer")
             });
             tweakStyleSwitch.set_active(this._settings.get_boolean('remove-menu-arrow'));
             tweakStyleSwitch.connect('notify::active', (widget) => {

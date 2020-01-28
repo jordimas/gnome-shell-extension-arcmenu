@@ -25,6 +25,7 @@ const Me = imports.misc.extensionUtils.getCurrentExtension();
 const Gettext = imports.gettext.domain(Me.metadata['gettext-domain']);
 const _ = Gettext.gettext;
 
+var VERSION = "40";
 
 var CURRENT_MENU = {
     FAVORITES: 0,
@@ -115,7 +116,8 @@ var MENU_LAYOUT = { // See: org.gnome.shell.extensions.arc-menu.menu-position
     UbuntuDash: 10,
     Budgie: 11,
     Windows: 12,
-    Runner: 13
+    Runner: 13,
+    Chromebook: 14
 };
 
 var MENU_APPEARANCE = {
@@ -130,8 +132,8 @@ var MENU_BUTTON_ICON = {
     System: 1,
     Custom: 2,
     Arc_Menu_Alt: 3,
-    Arc_Menu_Alt: 4,
-    Arc_Menu_Original: 5,
+    Arc_Menu_Original: 4,
+    Curved_A: 5,
     Start_Box: 6,
     Focus: 7,
     Triple_Dash:8,
@@ -139,7 +141,10 @@ var MENU_BUTTON_ICON = {
     Whirl_Circle: 10,
     Sums: 11,
     Arrow: 12,
-    Lins: 13
+    Lins: 13,    
+    Diamond_Square: 14,
+    Octo_Maze: 15,
+    Search: 16
 };
 var ARC_MENU_ICON = { 
     name: _("Arc Menu"), 
@@ -148,8 +153,8 @@ var ARC_MENU_ICON = {
 
 var MENU_ICONS = [
     { name: _("Arc Menu Alt"), path: '/media/icons/arc-menu-alt-symbolic.svg'},
-    { name: _("Arc Menu Alt 2"), path: '/media/icons/arc-menu-alt-2-symbolic.svg'},
     { name: _("Arc Menu Original"), path: '/media/icons/arc-menu-old-symbolic.svg'},
+    { name: _("Curved A"), path: '/media/icons/curved-a-symbolic.svg'},
     { name: _("Start Box"), path: '/media/icons/start-box-symbolic.svg'},
     { name: _("Focus"), path: '/media/icons/focus-symbolic.svg'},
     { name: _("Triple Dash"), path: '/media/icons/triple-dash-symbolic.svg'},
@@ -157,7 +162,10 @@ var MENU_ICONS = [
     { name: _("Whirl Circle"), path: '/media/icons/whirl-circle-symbolic.svg'},
     { name: _("Sums"), path: '/media/icons/sums-symbolic.svg'},
     { name: _("Arrow"), path: '/media/icons/arrow-symbolic.svg'},
-    { name: _("Lins"), path: '/media/icons/lins-symbolic.svg'}
+    { name: _("Lins"), path: '/media/icons/lins-symbolic.svg'},
+    { name: _("Diamond Square"), path: '/media/icons/diamond-square-symbolic.svg'},
+    { name: _("Octo Maze"), path: '/media/icons/octo-maze-symbolic.svg'},
+    { name: _("Search"), path: '/media/icons/search-symbolic.svg'}
 ]
 
 var MENU_STYLE_CHOOSER = {
@@ -206,27 +214,30 @@ var MENU_STYLE_CHOOSER = {
         },
         {   thumbnail: '/media/layouts/krunner-menu.svg',
             name: 'KRunner Style'
+        },
+        {   thumbnail: '/media/layouts/chromebook-menu.svg',
+            name: 'Chromebook Style'
         }
     ]
 };
 
 //Path to some files
 var ARC_MENU_LOGO = {
-    Path: '/media/ArcMenu-logo.svg',
-    Size: [175, 175] // width, height
+    path: '/media/icons/arc-menu-logo.svg',
+    size: [210, 210]
 };
 
 var COLOR_PRESET = {
-    Path: '/media/color-preset.svg',
-    Size: [200, 35] // width, height
+    Path: '/media/misc/color-preset.svg',
+    Size: [200, 35]
 };
 
 var HAMBURGER = {
-    Path: '/media/hamburger-symbolic.svg'
+    Path: '/media/misc/hamburger-symbolic.svg'
 };
 
 var KEYBOARD_LOGO = {
-    Path: '/media/keyboard.svg',
+    Path: '/media/misc/keyboard.svg',
     Size: [256, 72] 
 };
 

@@ -2805,6 +2805,12 @@ var DashMenuButtonWidget = class ArcMenu_DashMenuButtonWidget{
             track_hover:true,
             reactive: true
         });
+        this.actor.connect("notify::hover", () => {
+            if(this.actor.hover)
+                this._icon.add_style_pseudo_class('active');
+            else if(!this._button.menuManager.activeMenu)
+                this._icon.remove_style_pseudo_class('active');
+        })
         this._labelText = _("Arc Menu");
         this.label = new St.Label({ style_class: 'dash-label' });
         this.label.hide();
