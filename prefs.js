@@ -1032,7 +1032,7 @@ var GeneralPage = GObject.registerClass(
             if(extensionStates[Constants.EXTENSION.DTP])
                 menuPlacementCombo.append_text(_("Dash to Panel"));
             else
-                menuPlacementCombo.append_text(_("Panel"));
+                menuPlacementCombo.append_text(_("Main Panel"));
             menuPlacementCombo.append_text(_("Dash to Dock"));
 
             menuPlacementCombo.set_active(this._settings.get_enum('arc-menu-placement'));
