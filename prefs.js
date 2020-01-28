@@ -4427,13 +4427,18 @@ var AboutPage = GObject.registerClass(
             this._settings = settings;
 
             // Use meta information from metadata.json
-            let releaseVersion = Me.metadata.version || 'unknown';
+            let releaseVersion;
+            if(Me.metadata.version){
+                releaseVersion = Me.metadata.version == "-1" ? Constants.VERSION + "-" + _("Development") : Me.metadata.version;
+            }
+            else
+                releaseVersion = 'unknown';
             let projectUrl = Me.metadata.url;
 
             // Create GUI elements
             // Create the image box
-            let logoPath = Me.path + Constants.ARC_MENU_LOGO.Path;
-            let [imageWidth, imageHeight] = Constants.ARC_MENU_LOGO.Size;
+            let logoPath = Me.path + Constants.ARC_MENU_LOGO.path;
+            let [imageWidth, imageHeight] = Constants.ARC_MENU_LOGO.size;
             let pixbuf = GdkPixbuf.Pixbuf.new_from_file_at_size(logoPath, imageWidth, imageHeight);
             let arcMenuImage = new Gtk.Image({ pixbuf: pixbuf });
             let arcMenuImageBox = new Gtk.VBox({
@@ -4450,16 +4455,16 @@ var AboutPage = GObject.registerClass(
                 expand: false
             });
             let arcMenuLabel = new Gtk.Label({
-                label: '<b>' + _('Arc-Menu') + '</b>',
+                label: '<b>' + _('Arc Menu') + '</b>',
                 use_markup: true,
                 expand: false
             });
             let versionLabel = new Gtk.Label({
-                label: _('version: ') + releaseVersion,
+                label: _('Version: ') + releaseVersion,
                 expand: false
             });
             let projectDescriptionLabel = new Gtk.Label({
-                label: _('A traditional application menu for GNOME'),
+                label: _('A Traditional Application Menu for GNOME'),
                 expand: false
             });
             let projectLinkButton = new Gtk.LinkButton({

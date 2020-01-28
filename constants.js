@@ -25,6 +25,7 @@ const Me = imports.misc.extensionUtils.getCurrentExtension();
 const Gettext = imports.gettext.domain(Me.metadata['gettext-domain']);
 const _ = Gettext.gettext;
 
+var VERSION = "40";
 
 var CURRENT_MENU = {
     FAVORITES: 0,
@@ -222,21 +223,21 @@ var MENU_STYLE_CHOOSER = {
 
 //Path to some files
 var ARC_MENU_LOGO = {
-    Path: '/media/ArcMenu-logo.svg',
-    Size: [175, 175] // width, height
+    path: '/media/icons/arc-menu-logo.svg',
+    size: [210, 210]
 };
 
 var COLOR_PRESET = {
-    Path: '/media/color-preset.svg',
-    Size: [200, 35] // width, height
+    Path: '/media/misc/color-preset.svg',
+    Size: [200, 35]
 };
 
 var HAMBURGER = {
-    Path: '/media/hamburger-symbolic.svg'
+    Path: '/media/misc/hamburger-symbolic.svg'
 };
 
 var KEYBOARD_LOGO = {
-    Path: '/media/keyboard.svg',
+    Path: '/media/misc/keyboard.svg',
     Size: [256, 72] 
 };
 
