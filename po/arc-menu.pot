@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-01-27 11:15-0500\n"
+"POT-Creation-Date: 2020-01-27 21:12-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -306,63 +306,63 @@ msgstr ""
 msgid "Show Applications"
 msgstr ""
 
-#: menuWidgets.js:2814 constants.js:149
+#: menuWidgets.js:2814 constants.js:150 prefs.js:4458
 msgid "Arc Menu"
 msgstr ""
 
-#: constants.js:154
+#: constants.js:155
 msgid "Arc Menu Alt"
 msgstr ""
 
-#: constants.js:155
+#: constants.js:156
 msgid "Arc Menu Original"
 msgstr ""
 
-#: constants.js:156
+#: constants.js:157
 msgid "Curved A"
 msgstr ""
 
-#: constants.js:157
+#: constants.js:158
 msgid "Start Box"
 msgstr ""
 
-#: constants.js:158
+#: constants.js:159
 msgid "Focus"
 msgstr ""
 
-#: constants.js:159
+#: constants.js:160
 msgid "Triple Dash"
 msgstr ""
 
-#: constants.js:160
+#: constants.js:161
 msgid "Whirl"
 msgstr ""
 
-#: constants.js:161
+#: constants.js:162
 msgid "Whirl Circle"
 msgstr ""
 
-#: constants.js:162
+#: constants.js:163
 msgid "Sums"
 msgstr ""
 
-#: constants.js:163
+#: constants.js:164
 msgid "Arrow"
 msgstr ""
 
-#: constants.js:164
+#: constants.js:165
 msgid "Lins"
 msgstr ""
 
-#: constants.js:165
+#: constants.js:166
 msgid "Diamond Square"
 msgstr ""
 
-#: constants.js:166
+#: constants.js:167
 msgid "Octo Maze"
 msgstr ""
 
-#: constants.js:167
+#: constants.js:168
 msgid "Search"
 msgstr ""
 
@@ -1207,18 +1207,18 @@ msgstr ""
 msgid "About"
 msgstr ""
 
-#: prefs.js:4453
-msgid "Arc-Menu"
+#: prefs.js:4432
+msgid "Development"
 msgstr ""
 
-#: prefs.js:4458
-msgid "version: "
+#: prefs.js:4463
+msgid "Version: "
 msgstr ""
 
-#: prefs.js:4462
-msgid "A traditional application menu for GNOME"
+#: prefs.js:4467
+msgid "A Traditional Application Menu for GNOME"
 msgstr ""
 
-#: prefs.js:4466
+#: prefs.js:4471
 msgid "GitLab Page"
 msgstr ""
