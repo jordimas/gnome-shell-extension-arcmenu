@@ -47,6 +47,7 @@ var MenuSettingsController = class {
         this.updateThemeID = GLib.timeout_add(0, 100, () => {
             Me.imports.prefs.saveCSS(this._settings);
             Main.loadTheme();
+            this.updateThemeID = null;
             return GLib.SOURCE_REMOVE;
         });
         this.currentMonitorIndex = 0;
@@ -566,9 +567,9 @@ var MenuSettingsController = class {
 
     // Destroy this object
     destroy() {
-        if (this.updateThemeID > 0) {
+        if (this.updateThemeID) {
             GLib.source_remove(this.updateThemeID);
-            this.updateThemeID = 0;
+            this.updateThemeID = null;
         }
         this.settingsChangeIds.forEach(id => this._settings.disconnect(id));
         this._hotCornerManager.destroy();
