@@ -228,13 +228,18 @@ var MENU_STYLE_CHOOSER = {
 
 //Path to some files
 var ARC_MENU_LOGO = {
-    path: '/media/icons/arc-menu-logo.svg',
-    size: [210, 210]
+    Path: '/media/icons/arc-menu-logo.svg',
+    Size: [210, 210]
 };
 
 var COLOR_PRESET = {
     Path: '/media/misc/color-preset.svg',
     Size: [200, 35]
+};
+
+var WARNING_ICON = {
+    Path: '/media/misc/warning.svg',
+    Size: [30, 30] 
 };
 
 var HAMBURGER = {

@@ -1065,7 +1065,7 @@ var GeneralPage = GObject.registerClass(
             let disableActivitiesRow = new PW.FrameBoxRow();
             let disableActivitiesLabel = new Gtk.Label({
                 label: extensionStates[Constants.EXTENSION.DTD] ? _("Disable Activities Button") :
-                                         _("Dash to Dock extension not running!\nEnabled Dash to Dock for this feature to work."),
+                                         _("Dash to Dock extension not running!") + "\n" + _("Enable Dash to Dock for this feature to work."),
                 use_markup: true,
                 xalign: 0,
                 hexpand: true
@@ -1079,8 +1079,22 @@ var GeneralPage = GObject.registerClass(
             disableActivitiesSwitch.connect('notify::active', (widget) => {
                 this._settings.set_boolean('disable-activities-button', widget.get_active());
             });
-
+            if(!extensionStates[Constants.EXTENSION.DTD]){
+                let warningPath = Me.path + Constants.WARNING_ICON.Path;
+                let [width, height] = Constants.WARNING_ICON.Size;
+                let pixbuf = GdkPixbuf.Pixbuf.new_from_file_at_size(warningPath, width, height);
+                let warningImage = new Gtk.Image({ pixbuf: pixbuf });
+                let warningImageBox = new Gtk.VBox({
+                    margin_top: 0,
+                    margin_bottom: 0,
+                    margin_left: 10,
+                    expand: false
+                });
+                warningImageBox.add(warningImage);
+                disableActivitiesRow.add(warningImageBox);
+            }
             disableActivitiesRow.add(disableActivitiesLabel);
+
             if(extensionStates[Constants.EXTENSION.DTD])
                 disableActivitiesRow.add(disableActivitiesSwitch);
 
@@ -1110,19 +1124,19 @@ var GeneralPage = GObject.registerClass(
             // callback handlers for the radio buttons
             menuPositionLeftButton.connect('clicked', () => {
                 this._settings.set_enum('position-in-panel', Constants.MENU_POSITION.Left);
-                if(menuPlacementFrame.count == 4)
+                if(menuPlacementFrame.get_index(2) === menuPositionAdjustmentRow)
                     menuPlacementFrame.remove(menuPositionAdjustmentRow);
             });
             menuPositionCenterButton.connect('clicked', () => {
                 this._settings.set_enum('position-in-panel', Constants.MENU_POSITION.Center);
-                if(menuPlacementFrame.count == 3){
+                if(menuPlacementFrame.get_index(2) != menuPositionAdjustmentRow){
                     menuPlacementFrame.insert(menuPositionAdjustmentRow,2);
                     menuPlacementFrame.show();
                 }
             });
             menuPositionRightButton.connect('clicked', () => {
                 this._settings.set_enum('position-in-panel', Constants.MENU_POSITION.Right);
-                if(menuPlacementFrame.count == 4)
+                if(menuPlacementFrame.get_index(2) === menuPositionAdjustmentRow)
                     menuPlacementFrame.remove(menuPositionAdjustmentRow);
             });
 
@@ -2582,7 +2596,7 @@ var ArcMenuCustomizationWindow = GObject.registerClass(
                 }),
                 digits: 0,round_digits: 0,hexpand: true,
                 value_pos: Gtk.PositionType.RIGHT,
-                tooltip_text: _("Offset menu placement by 1px\nUseful if a gap or overlap is visible")
+                tooltip_text: _("Offset menu placement by 1px") + "\n" +("Useful if a gap or overlap is visible")
             });
             gapAdjustmentScale.connect('format-value', (scale, value) => { return value.toString() + 'px'; });
             gapAdjustmentScale.set_value(this.gapAdjustment);
@@ -4457,8 +4471,8 @@ var AboutPage = GObject.registerClass(
 
             // Create GUI elements
             // Create the image box
-            let logoPath = Me.path + Constants.ARC_MENU_LOGO.path;
-            let [imageWidth, imageHeight] = Constants.ARC_MENU_LOGO.size;
+            let logoPath = Me.path + Constants.ARC_MENU_LOGO.Path;
+            let [imageWidth, imageHeight] = Constants.ARC_MENU_LOGO.Size;
             let pixbuf = GdkPixbuf.Pixbuf.new_from_file_at_size(logoPath, imageWidth, imageHeight);
             let arcMenuImage = new Gtk.Image({ pixbuf: pixbuf });
             let arcMenuImageBox = new Gtk.VBox({
