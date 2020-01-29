@@ -344,33 +344,33 @@ var ApplicationsButton =   Utils.defineClass({
         },
         // Destroy the menu button
         destroy() {  
-            if (this.reloadID) {
+            if(this.reloadID){
                 GLib.source_remove(this.reloadID);
                 this.reloadID = null;
             }
-            if (this.createLayoutID) {
+            if(this.createLayoutID){
                 GLib.source_remove(this.createLayoutID);
                 this.createLayoutID = null;
             }
             if(this.MenuLayout)
                 this.MenuLayout.destroy();
 
-            if ( this.extensionChangedId) {
+            if(this.extensionChangedId){
                 (Main.extensionManager || ExtensionSystem).disconnect(this.extensionChangedId);
                 this.extensionChangedId = null;
             }
-            if(this.dtdPostionChangedID>0 && this._panel._settings){
+            if(this.dtdPostionChangedID && this._panel._settings){
                 this._panel._settings.disconnect(this.dtdPostionChangedID);
-                this.dtdPostionChangedID = 0;
+                this.dtdPostionChangedID = null;
             }
-            if (this._installedChangedId > 0) {
+            if(this._installedChangedId){
                 appSys.disconnect(this._installedChangedId);
-                this._installedChangedId  = 0;
+                this._installedChangedId = null;
             }
-            if (this.leftClickMenu) {
+            if(this.leftClickMenu){
                 this.leftClickMenu.destroy();
             }
-            if (this.rightClickMenu) {
+            if(this.rightClickMenu){
                 this.rightClickMenu.destroy();
             }
             
