@@ -665,6 +665,7 @@ var MintButton = class ArcMenu_MintButton extends SessionButton {
         if(this._app){
             this.actor.connect("button-release-event", this._onButtonReleaseEvent.bind(this));
         }
+        this.disableMenuToggle();
     }
     _onButtonReleaseEvent(actor, event) {
   	    if(event.get_button()==3){
@@ -689,13 +690,22 @@ var MintButton = class ArcMenu_MintButton extends SessionButton {
     activate() {
         if(this._app)
             this._app.open_new_window(-1);
-        else if(this._command == "ArcMenu_LogOut")
+        else if(this._command === "ArcMenu_LogOut"){
+            this._button.isRunning = false;
+            this._button.leftClickMenu.toggle();
             this._button._session.LogoutRemote(0);
-        else if(this._command == "ArcMenu_Lock")
+        }
+        else if(this._command === "ArcMenu_Lock"){
+            this._button.isRunning = false;
+            this._button.leftClickMenu.toggle();
             Main.screenShield.lock(true);
-        else if(this._command == "ArcMenu_PowerOff")
+        }
+        else if(this._command === "ArcMenu_PowerOff"){
+            this._button.leftClickMenu.toggle();
             this._button._session.ShutdownRemote(0);
-        else if(this._command == "ArcMenu_Suspend"){
+        }
+        else if(this._command === "ArcMenu_Suspend"){
+            this._button.leftClickMenu.toggle();
             let loginManager = LoginManager.getLoginManager();
             loginManager.canSuspend(function (result) {
                 if (result) {
@@ -703,8 +713,11 @@ var MintButton = class ArcMenu_MintButton extends SessionButton {
                 }
             }.bind(this));
         }
-        else
+        else{
+            this._button.leftClickMenu.toggle();
             Util.spawnCommandLine(this._command);
+        }
+            
     }
 };
 // Settings Button
@@ -845,9 +858,12 @@ var LogoutButton = class ArcMenu_LogoutButton extends SessionButton {
     // Initialize the button
     constructor(button) {
         super(button, _("Log Out"), 'application-exit-symbolic');
+        this.disableMenuToggle();
     }
     // Activate the button (Logout)
     activate() {
+        this._button.isRunning = false;
+        this._button.leftClickMenu.toggle();
         this._button._session.LogoutRemote(0);
     }
 };
@@ -874,9 +890,12 @@ var LockButton = class ArcMenu_LockButton extends SessionButton {
     // Initialize the button
     constructor(button) {
         super(button, _("Lock"), 'changes-prevent-symbolic');
+        this.disableMenuToggle();
     }
     // Activate the button (Lock the screen)
     activate() {
+        this._button.isRunning = false;
+        this._button.leftClickMenu.toggle();
         Main.screenShield.lock(true);
     }
 };

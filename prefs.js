@@ -728,177 +728,12 @@ var GeneralPage = GObject.registerClass(
             this._settings = settings;
           
             let menuPlacementFrame = new PW.FrameBox();
-            let menuPlacementRow = new PW.FrameBoxRow();
-            let menuPlacementLabel = new Gtk.Label({
-                label: _("Display Arc Menu On"),
-                use_markup: true,
-                xalign: 0,
-                hexpand: true
-            });
-            let menuPlacementCombo = new Gtk.ComboBoxText({ 
-                halign: Gtk.Align.END,
-                tooltip_text: _("Choose where to place Arc Menu") 
-            });
-            menuPlacementCombo.append_text(_("Panel/Dash to Panel"));
-            menuPlacementCombo.append_text(_("Dash to Dock"));
-      
-            menuPlacementCombo.set_active(this._settings.get_enum('arc-menu-placement'));
-            menuPlacementCombo.connect('changed', (widget) => {
-                this._settings.set_enum('arc-menu-placement',widget.get_active());
-                if(widget.get_active() == Constants.ARC_MENU_PLACEMENT.PANEL){
-                    menuPlacementFrame.remove(disableActivitiesRow);
-                    menuPlacementFrame.add(menuPositionRow);
-                    if(this._settings.get_enum('position-in-panel') == Constants.MENU_POSITION.Center)
-                        menuPlacementFrame.add(menuPositionAdjustmentRow);
-                    menuPlacementFrame.add(multiMonitorRow);
-                    menuPlacementFrame.show();
-                }
-                else{
-                    menuPlacementFrame.remove(menuPositionRow);
-                    if(this._settings.get_enum('position-in-panel') == Constants.MENU_POSITION.Center)
-                        menuPlacementFrame.remove(menuPositionAdjustmentRow);
-                    menuPlacementFrame.remove(multiMonitorRow);
-                    menuPlacementFrame.add(disableActivitiesRow);
-                }
-            });
-
-            menuPlacementRow.add(menuPlacementLabel);
-            menuPlacementRow.add(menuPlacementCombo);
-            menuPlacementFrame.add(menuPlacementRow);
-
-            let disableActivitiesRow = new PW.FrameBoxRow();
-            let disableActivitiesLabel = new Gtk.Label({
-                label: _("Disable Activities Button"),
-                use_markup: true,
-                xalign: 0,
-                hexpand: true
-            });
-
-            let disableActivitiesSwitch = new Gtk.Switch({ 
-                halign: Gtk.Align.END,
-                tooltip_text: _("Disable Activities Button in panel") 
-            });
-            disableActivitiesSwitch.set_active(this._settings.get_boolean('disable-activities-button'));
-            disableActivitiesSwitch.connect('notify::active', (widget) => {
-                this._settings.set_boolean('disable-activities-button', widget.get_active());
-            });
-
-            disableActivitiesRow.add(disableActivitiesLabel);
-            disableActivitiesRow.add(disableActivitiesSwitch);
-
-            //Menu Position Box
-            let menuPositionRow = new PW.FrameBoxRow();
-            let menuPositionBoxLabel = new Gtk.Label({
-                label: _("Arc Menu Position in Panel"),
-                use_markup: true,
-                xalign: 0,
-                hexpand: true
-            });
-
-            let menuPositionLeftButton = new Gtk.RadioButton({
-                label: _('Left'),
-                tooltip_text: _("Position Arc Menu on the Left side of the main panel")
-            });
-            let menuPositionCenterButton = new Gtk.RadioButton({
-                label: _('Center'),
-                group: menuPositionLeftButton,
-                tooltip_text: _("Position Arc Menu in the Center of the main panel")
-            });
-            let menuPositionRightButton = new Gtk.RadioButton({
-                label: _('Right'),
-                group: menuPositionLeftButton,
-                tooltip_text: _("Position Arc Menu on the Right side of the main panel")
-            });
-            // callback handlers for the radio buttons
-            menuPositionLeftButton.connect('clicked', () => {
-                this._settings.set_enum('position-in-panel', Constants.MENU_POSITION.Left);
-                if(menuPlacementFrame.count == 4)
-                    menuPlacementFrame.remove(menuPositionAdjustmentRow);
-            });
-            menuPositionCenterButton.connect('clicked', () => {
-                this._settings.set_enum('position-in-panel', Constants.MENU_POSITION.Center);
-                if(menuPlacementFrame.count == 3){
-                    menuPlacementFrame.insert(menuPositionAdjustmentRow,2);
-                    menuPlacementFrame.show();
-                }
-            });
-            menuPositionRightButton.connect('clicked', () => {
-                this._settings.set_enum('position-in-panel', Constants.MENU_POSITION.Right);
-                if(menuPlacementFrame.count == 4)
-                    menuPlacementFrame.remove(menuPositionAdjustmentRow);
-            });
-
-            switch (this._settings.get_enum('position-in-panel')) {
-                case Constants.MENU_POSITION.Left:
-                    menuPositionLeftButton.set_active(true);
-                    break;
-                case Constants.MENU_POSITION.Center:
-                    menuPositionCenterButton.set_active(true);
-                    break;
-                case Constants.MENU_POSITION.Right:
-                    menuPositionRightButton.set_active(true);
-                    break;
-            }
-
-            menuPositionRow.add(menuPositionBoxLabel);
-            menuPositionRow.add(menuPositionLeftButton);
-            menuPositionRow.add(menuPositionCenterButton);
-            menuPositionRow.add(menuPositionRightButton);
-            
-            //Menu Alignment
-            let menuPositionAdjustmentRow = new PW.FrameBoxRow();
-            let menuPositionAdjustmentLabel = new Gtk.Label({
-                label: _("Menu Alignment to Button"),
-                use_markup: true,
-                xalign: 0,
-                hexpand: true
-            });
-            let alignmentScale = new Gtk.HScale({
-                adjustment: new Gtk.Adjustment({
-                    lower: 0,upper: 100, step_increment: 1, page_increment: 1, page_size: 0
-                }),
-                digits: 0,round_digits: 0,hexpand: true,
-                value_pos: Gtk.PositionType.RIGHT,
-                tooltip_text: _("Adjust Arc Menu's menu alignment relative to Arc Menu's icon")
-            });
-           // alignmentScale.connect('format-value', (scale, value) => { return value.toString() + 'px'; });
-            alignmentScale.set_value(this._settings.get_int('menu-position-alignment'));
-            alignmentScale.connect('value-changed', (widget) => {
-                this._settings.set_int('menu-position-alignment', widget.get_value());
-            }); 
-            menuPositionAdjustmentRow.add(menuPositionAdjustmentLabel);
-            menuPositionAdjustmentRow.add(alignmentScale);
-
-            //Multi-monitor
-            let multiMonitorRow = new PW.FrameBoxRow();
-            let multiMonitorLabel = new Gtk.Label({
-                label: _("Display on all monitors when using Dash to Panel"),
-                use_markup: true,
-                xalign: 0,
-                hexpand: true
-            });
-
-            let multiMonitorSwitch = new Gtk.Switch({ 
-                halign: Gtk.Align.END,
-                tooltip_text: _("Display Arc Menu on all monitors when using Dash to Panel") 
-            });
-            multiMonitorSwitch.set_active(this._settings.get_boolean('multi-monitor'));
-            multiMonitorSwitch.connect('notify::active', (widget) => {
-                this._settings.set_boolean('multi-monitor', widget.get_active());
-            });
-
-            multiMonitorRow.add(multiMonitorLabel);
-            multiMonitorRow.add(multiMonitorSwitch);
-            if(menuPlacementCombo.get_active() == Constants.ARC_MENU_PLACEMENT.PANEL){
-                menuPlacementFrame.add(menuPositionRow);
-                if(this._settings.get_enum('position-in-panel') == Constants.MENU_POSITION.Center)
-                    menuPlacementFrame.add(menuPositionAdjustmentRow);
-                menuPlacementFrame.add(multiMonitorRow);
-            }
-            else{
-                menuPlacementFrame.add(disableActivitiesRow);
-            }
-            
+            this._createDisplayOnFrame(menuPlacementFrame);      
+            this._settings.connect('changed::dtp-dtd-state', ()=>{
+                menuPlacementFrame.remove_all_children();
+                this._createDisplayOnFrame(menuPlacementFrame);   
+                menuPlacementFrame.show();
+            }) 
             
             //Tool-tips
             let tooltipFrame = new PW.FrameBox();
@@ -1179,6 +1014,262 @@ var GeneralPage = GObject.registerClass(
             this.add(modifyHotCornerFrame);
             this.add(this.menuKeybindingFrame);
             //-----------------------------------------------------------------
+        }
+        _createDisplayOnFrame(menuPlacementFrame){
+            let menuPlacementRow = new PW.FrameBoxRow();
+            let menuPlacementLabel = new Gtk.Label({
+                label: _("Display Arc Menu On"),
+                use_markup: true,
+                xalign: 0,
+                hexpand: true
+            });
+            let menuPlacementCombo = new Gtk.ComboBoxText({ 
+                halign: Gtk.Align.END,
+                tooltip_text: _("Choose where to place Arc Menu") 
+            });
+
+            let extensionStates = this._settings.get_value('dtp-dtd-state').deep_unpack();
+            
+            menuPlacementCombo.append_text(_("Main Panel"));
+            menuPlacementCombo.append_text(_("Dash to Panel"));
+            menuPlacementCombo.append_text(_("Dash to Dock"));
+
+            let placement =  this._settings.get_enum('arc-menu-placement');
+            if(placement == Constants.ARC_MENU_PLACEMENT.PANEL && extensionStates[Constants.EXTENSION.DTP])
+                menuPlacementCombo.set_active(Constants.ARC_MENU_PLACEMENT.DTP);
+            else if(placement == Constants.ARC_MENU_PLACEMENT.DTP && !extensionStates[Constants.EXTENSION.DTP])
+                menuPlacementCombo.set_active(Constants.ARC_MENU_PLACEMENT.PANEL);  
+            else{
+                menuPlacementCombo.set_active(placement);
+            }
+             
+            menuPlacementCombo.connect('changed', (widget) => {
+                let placement = widget.get_active();
+                this._settings.set_enum('arc-menu-placement', placement);
+                menuPlacementFrame.remove_all_children();
+                menuPlacementFrame.add(menuPlacementRow);
+                if(menuPlacementCombo.get_active() == Constants.ARC_MENU_PLACEMENT.PANEL){
+                    if(extensionStates[Constants.EXTENSION.DTP]){
+                        menuPlacementFrame.add(panelWarningRow);
+                    }
+                    else{
+                        menuPlacementFrame.add(menuPositionRow);
+                        if(this._settings.get_enum('position-in-panel') == Constants.MENU_POSITION.Center)
+                            menuPlacementFrame.add(menuPositionAdjustmentRow);
+                    }
+                    menuPlacementFrame.show();
+                }
+                else if(menuPlacementCombo.get_active() == Constants.ARC_MENU_PLACEMENT.DTP){
+                    if(extensionStates[Constants.EXTENSION.DTP]){
+                        menuPlacementFrame.add(menuPositionRow);
+                        if(this._settings.get_enum('position-in-panel') == Constants.MENU_POSITION.Center)
+                            menuPlacementFrame.add(menuPositionAdjustmentRow);
+                        menuPlacementFrame.add(multiMonitorRow);
+                    }
+                    else{
+                        menuPlacementFrame.add(panelWarningRow);
+                    }
+                    menuPlacementFrame.show();
+                }
+                else{
+                    menuPlacementFrame.add(dtdExtraRow);
+                    menuPlacementFrame.show();
+                }
+            });
+
+            menuPlacementRow.add(menuPlacementLabel);
+            menuPlacementRow.add(menuPlacementCombo);
+            menuPlacementFrame.add(menuPlacementRow);
+
+            let dtdExtraRow = new PW.FrameBoxRow();
+            let dtdExtraRowLabel = new Gtk.Label({
+                label: extensionStates[Constants.EXTENSION.DTD] ? _("Disable Activities Button") :
+                                         _("Dash to Dock extension not running!") + "\n" + _("Enable Dash to Dock for this feature to work."),
+                use_markup: true,
+                xalign: 0,
+                hexpand: true
+            });
+
+            let disableActivitiesSwitch = new Gtk.Switch({ 
+                halign: Gtk.Align.END,
+                tooltip_text: _("Disable Activities Button in panel") 
+            });
+            disableActivitiesSwitch.set_active(this._settings.get_boolean('disable-activities-button'));
+            disableActivitiesSwitch.connect('notify::active', (widget) => {
+                this._settings.set_boolean('disable-activities-button', widget.get_active());
+            });
+
+            let warningPath = Me.path + Constants.WARNING_ICON.Path;
+            let [width, height] = Constants.WARNING_ICON.Size;
+            let pixbuf = GdkPixbuf.Pixbuf.new_from_file_at_size(warningPath, width, height);
+            let warningImage = new Gtk.Image({ pixbuf: pixbuf });
+            let warningImageBox = new Gtk.VBox({
+                margin_top: 0,
+                margin_bottom: 0,
+                margin_left: 10,
+                expand: false
+            });
+            warningImageBox.add(warningImage);
+
+            if(!extensionStates[Constants.EXTENSION.DTD]){
+                dtdExtraRow.add(warningImageBox);
+            }
+            dtdExtraRow.add(dtdExtraRowLabel);
+
+            if(extensionStates[Constants.EXTENSION.DTD])
+                dtdExtraRow.add(disableActivitiesSwitch);
+
+
+            let panelWarningRow = new PW.FrameBoxRow();
+            let panelWarningLabel = new Gtk.Label({
+                label: extensionStates[Constants.EXTENSION.DTP] ? _("Dash to Panel currently enabled!") + "\n" + _("Disable Dash to Panel for this feature to work."):
+                                            _("Dash to Panel extension not running!") + "\n" + _("Enable Dash to Panel for this feature to work."),
+                use_markup: true,
+                xalign: 0,
+                hexpand: true
+            });    
+            let panelWarningImage = new Gtk.Image({ pixbuf: pixbuf });
+            let panelWarningImageBox = new Gtk.VBox({
+                margin_top: 0,
+                margin_bottom: 0,
+                margin_left: 10,
+                expand: false
+            });
+            panelWarningImageBox.add(panelWarningImage);
+            panelWarningRow.add(panelWarningImageBox);
+            panelWarningRow.add(panelWarningLabel);
+
+            //Menu Position Box
+            let menuPositionRow = new PW.FrameBoxRow();
+            let menuPositionBoxLabel = new Gtk.Label({
+                label: extensionStates[Constants.EXTENSION.DTP] ?  _("Position in Dash to Panel") : _("Position in Main Panel"),
+                use_markup: true,
+                xalign: 0,
+                hexpand: true
+            });
+
+            let menuPositionLeftButton = new Gtk.RadioButton({
+                label: _('Left'),
+                tooltip_text: _("Position Arc Menu on the Left side of ") + (extensionStates[Constants.EXTENSION.DTP] ? _("Dash to Panel") : _("the Main Panel"))
+            });
+            let menuPositionCenterButton = new Gtk.RadioButton({
+                label: _('Center'),
+                group: menuPositionLeftButton,
+                tooltip_text: _("Position Arc Menu in the Center of ") + (extensionStates[Constants.EXTENSION.DTP] ? _("Dash to Panel") : _("the Main Panel"))
+            });
+            let menuPositionRightButton = new Gtk.RadioButton({
+                label: _('Right'),
+                group: menuPositionLeftButton,
+                tooltip_text: _("Position Arc Menu on the Right side of ") + (extensionStates[Constants.EXTENSION.DTP] ? _("Dash to Panel") : _("the Main Panel"))
+            });
+            // callback handlers for the radio buttons
+            menuPositionLeftButton.connect('clicked', () => {
+                this._settings.set_enum('position-in-panel', Constants.MENU_POSITION.Left);
+                if(menuPlacementFrame.get_index(2) === menuPositionAdjustmentRow)
+                    menuPlacementFrame.remove(menuPositionAdjustmentRow);
+            });
+            menuPositionCenterButton.connect('clicked', () => {
+                this._settings.set_enum('position-in-panel', Constants.MENU_POSITION.Center);
+                if(menuPlacementFrame.get_index(2) != menuPositionAdjustmentRow){
+                    menuPlacementFrame.insert(menuPositionAdjustmentRow,2);
+                    menuPlacementFrame.show();
+                }
+            });
+            menuPositionRightButton.connect('clicked', () => {
+                this._settings.set_enum('position-in-panel', Constants.MENU_POSITION.Right);
+                if(menuPlacementFrame.get_index(2) === menuPositionAdjustmentRow)
+                    menuPlacementFrame.remove(menuPositionAdjustmentRow);
+            });
+
+            switch (this._settings.get_enum('position-in-panel')) {
+                case Constants.MENU_POSITION.Left:
+                    menuPositionLeftButton.set_active(true);
+                    break;
+                case Constants.MENU_POSITION.Center:
+                    menuPositionCenterButton.set_active(true);
+                    break;
+                case Constants.MENU_POSITION.Right:
+                    menuPositionRightButton.set_active(true);
+                    break;
+            }
+
+            menuPositionRow.add(menuPositionBoxLabel);
+            menuPositionRow.add(menuPositionLeftButton);
+            menuPositionRow.add(menuPositionCenterButton);
+            menuPositionRow.add(menuPositionRightButton);
+            
+            //Menu Alignment
+            let menuPositionAdjustmentRow = new PW.FrameBoxRow();
+            let menuPositionAdjustmentLabel = new Gtk.Label({
+                label: _("Menu Alignment to Button"),
+                use_markup: true,
+                xalign: 0,
+                hexpand: true
+            });
+            let alignmentScale = new Gtk.HScale({
+                adjustment: new Gtk.Adjustment({
+                    lower: 0,upper: 100, step_increment: 1, page_increment: 1, page_size: 0
+                }),
+                digits: 0,round_digits: 0,hexpand: true,
+                value_pos: Gtk.PositionType.RIGHT,
+                tooltip_text: _("Adjust Arc Menu's menu alignment relative to Arc Menu's icon")
+            });
+           // alignmentScale.connect('format-value', (scale, value) => { return value.toString() + 'px'; });
+            alignmentScale.set_value(this._settings.get_int('menu-position-alignment'));
+            alignmentScale.connect('value-changed', (widget) => {
+                this._settings.set_int('menu-position-alignment', widget.get_value());
+            }); 
+            menuPositionAdjustmentRow.add(menuPositionAdjustmentLabel);
+            menuPositionAdjustmentRow.add(alignmentScale);
+
+            //Multi-monitor
+            let multiMonitorRow = new PW.FrameBoxRow();
+            let multiMonitorLabel = new Gtk.Label({
+                label: _("Display on all monitors when using Dash to Panel"),
+                use_markup: true,
+                xalign: 0,
+                hexpand: true
+            });
+
+            let multiMonitorSwitch = new Gtk.Switch({ 
+                halign: Gtk.Align.END,
+                tooltip_text: _("Display Arc Menu on all monitors when using Dash to Panel") 
+            });
+            multiMonitorSwitch.set_active(this._settings.get_boolean('multi-monitor'));
+            multiMonitorSwitch.connect('notify::active', (widget) => {
+                this._settings.set_boolean('multi-monitor', widget.get_active());
+            });
+
+            multiMonitorRow.add(multiMonitorLabel);
+            multiMonitorRow.add(multiMonitorSwitch);
+            if(menuPlacementCombo.get_active() == Constants.ARC_MENU_PLACEMENT.PANEL){
+                if(extensionStates[Constants.EXTENSION.DTP]){
+                    menuPlacementFrame.add(panelWarningRow);
+                }
+                else{
+                    menuPlacementFrame.add(menuPositionRow);
+                    if(this._settings.get_enum('position-in-panel') == Constants.MENU_POSITION.Center)
+                        menuPlacementFrame.add(menuPositionAdjustmentRow);
+                }
+                menuPlacementFrame.show();
+            }
+            else if(menuPlacementCombo.get_active() == Constants.ARC_MENU_PLACEMENT.DTP){
+                if(extensionStates[Constants.EXTENSION.DTP]){
+                    menuPlacementFrame.add(menuPositionRow);
+                    if(this._settings.get_enum('position-in-panel') == Constants.MENU_POSITION.Center)
+                        menuPlacementFrame.add(menuPositionAdjustmentRow);
+                    if(extensionStates[Constants.EXTENSION.DTP])
+                        menuPlacementFrame.add(multiMonitorRow);
+                }
+                else{
+                    menuPlacementFrame.add(panelWarningRow);
+                }
+                menuPlacementFrame.show();
+            }
+            else{
+                menuPlacementFrame.add(dtdExtraRow);
+                menuPlacementFrame.show();
+            }
         }
 });
 //Dialog Window for Custom Activities Hot Corner
@@ -2562,7 +2653,7 @@ var ArcMenuCustomizationWindow = GObject.registerClass(
                 }),
                 digits: 0,round_digits: 0,hexpand: true,
                 value_pos: Gtk.PositionType.RIGHT,
-                tooltip_text: _("Offset menu placement by 1px\nUseful if a gap or overlap is visible")
+                tooltip_text: _("Offset menu placement by 1px") + "\n" +("Useful if a gap or overlap is visible")
             });
             gapAdjustmentScale.connect('format-value', (scale, value) => { return value.toString() + 'px'; });
             gapAdjustmentScale.set_value(this.gapAdjustment);
@@ -4437,8 +4528,8 @@ var AboutPage = GObject.registerClass(
 
             // Create GUI elements
             // Create the image box
-            let logoPath = Me.path + Constants.ARC_MENU_LOGO.path;
-            let [imageWidth, imageHeight] = Constants.ARC_MENU_LOGO.size;
+            let logoPath = Me.path + Constants.ARC_MENU_LOGO.Path;
+            let [imageWidth, imageHeight] = Constants.ARC_MENU_LOGO.Size;
             let pixbuf = GdkPixbuf.Pixbuf.new_from_file_at_size(logoPath, imageWidth, imageHeight);
             let arcMenuImage = new Gtk.Image({ pixbuf: pixbuf });
             let arcMenuImageBox = new Gtk.VBox({
