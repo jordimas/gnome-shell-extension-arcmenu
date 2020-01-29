@@ -60,7 +60,7 @@ function enable() {
             if(extension.state === 1){
                 this.set_DtD_DtP_State(Constants.EXTENSION.DTP, true);
                 let arcMenuPosition = settings.get_enum('arc-menu-placement');
-                if(arcMenuPosition == Constants.ARC_MENU_PLACEMENT.PANEL){
+                if(arcMenuPosition == Constants.ARC_MENU_PLACEMENT.PANEL || arcMenuPosition == Constants.ARC_MENU_PLACEMENT.DTP){
                     settingsControllers.forEach(sc => _disableButton(sc, 1));
                     _connectDtpSignals();
                     _enableButtons();
@@ -72,7 +72,7 @@ function enable() {
             let state = extension.state === 1 ? true : false;
             this.set_DtD_DtP_State(Constants.EXTENSION.DTD, state);
             let arcMenuPosition = settings.get_enum('arc-menu-placement');
-            if(arcMenuPosition == Constants.ARC_MENU_PLACEMENT.DASH){
+            if(arcMenuPosition == Constants.ARC_MENU_PLACEMENT.DTD){
                 settingsControllers.forEach(sc => _disableButton(sc, 1));
                 _enableButtons();
             }
@@ -84,8 +84,11 @@ function enable() {
 }
 function set_DtD_DtP_State(extension, state){
     let boolArray = settings.get_value('dtp-dtd-state').deep_unpack();
-    boolArray[extension] = state;
-    settings.set_value('dtp-dtd-state', new GLib.Variant('ab', boolArray));
+    if(boolArray[extension] !== state){
+        boolArray[extension] = state;
+        settings.set_value('dtp-dtd-state', new GLib.Variant('ab', boolArray));
+    }
+
 }
 // Disable the extension
 function disable() {
@@ -120,7 +123,7 @@ function _disconnectDtpSignals() {
 
 function _onArcMenuPlacementChange() {
     let arcMenuPosition = settings.get_enum('arc-menu-placement');
-    if(arcMenuPosition == Constants.ARC_MENU_PLACEMENT.PANEL){
+    if(arcMenuPosition == Constants.ARC_MENU_PLACEMENT.PANEL || arcMenuPosition == Constants.ARC_MENU_PLACEMENT.DTP){
         _connectDtpSignals();
     }
     else{
@@ -148,12 +151,12 @@ function _enableButtons() {
                         Main.extensionManager.lookup("dash-to-dock@micxgx.gmail.com") : //gnome-shell >= 3.33.4
                         ExtensionUtils.extensions["dash-to-dock@micxgx.gmail.com"];
     let arcMenuPosition = settings.get_enum('arc-menu-placement');
-    if(arcMenuPosition == Constants.ARC_MENU_PLACEMENT.DASH && dashToDock && dashToDock.stateObj && dashToDock.stateObj.dockManager){
+    if(arcMenuPosition == Constants.ARC_MENU_PLACEMENT.DTD && dashToDock && dashToDock.stateObj && dashToDock.stateObj.dockManager){
         this.set_DtD_DtP_State(Constants.EXTENSION.DTD, true);
         let panel = dashToDock.stateObj.dockManager; 
         if(panel){ 
             if(panel._allDocks.length){                
-                let settingsController = new Controller.MenuSettingsController(settings, settingsControllers, panel, true, Constants.ARC_MENU_PLACEMENT.DASH);
+                let settingsController = new Controller.MenuSettingsController(settings, settingsControllers, panel, true, Constants.ARC_MENU_PLACEMENT.DTD);
                 settingsController.enableButtonInDash();
 
                 settingsController.bindSettingsChanges();

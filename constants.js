@@ -36,7 +36,8 @@ var CURRENT_MENU = {
 
 var ARC_MENU_PLACEMENT = {
     PANEL: 0,
-    DASH: 1
+    DTP: 1,
+    DTD: 2
 };
 
 var EXTENSION = {

@@ -40,7 +40,8 @@
   </enum>
   <enum id='org.gnome.shell.extensions.arc-menu.arc-menu-placement'>
     <value value="0" nick="Panel"/>
-    <value value="1" nick="Dash"/>
+    <value value="1" nick="DTP"/>
+    <value value="2" nick="DTD"/>
   </enum>
   <enum id='org.gnome.shell.extensions.arc-menu.menu-button-icon'>
     <value value="0" nick="Arc_Menu_Icon"/>

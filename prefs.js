@@ -1029,31 +1029,50 @@ var GeneralPage = GObject.registerClass(
             });
 
             let extensionStates = this._settings.get_value('dtp-dtd-state').deep_unpack();
-            if(extensionStates[Constants.EXTENSION.DTP])
-                menuPlacementCombo.append_text(_("Dash to Panel"));
-            else
-                menuPlacementCombo.append_text(_("Main Panel"));
+            
+            menuPlacementCombo.append_text(_("Main Panel"));
+            menuPlacementCombo.append_text(_("Dash to Panel"));
             menuPlacementCombo.append_text(_("Dash to Dock"));
 
-            menuPlacementCombo.set_active(this._settings.get_enum('arc-menu-placement'));
+            let placement =  this._settings.get_enum('arc-menu-placement');
+            if(placement == Constants.ARC_MENU_PLACEMENT.PANEL && extensionStates[Constants.EXTENSION.DTP])
+                menuPlacementCombo.set_active(Constants.ARC_MENU_PLACEMENT.DTP);
+            else if(placement == Constants.ARC_MENU_PLACEMENT.DTP && !extensionStates[Constants.EXTENSION.DTP])
+                menuPlacementCombo.set_active(Constants.ARC_MENU_PLACEMENT.PANEL);  
+            else{
+                menuPlacementCombo.set_active(placement);
+            }
+             
             menuPlacementCombo.connect('changed', (widget) => {
-                this._settings.set_enum('arc-menu-placement',widget.get_active());
-                if(widget.get_active() == Constants.ARC_MENU_PLACEMENT.PANEL){
-                    menuPlacementFrame.remove(disableActivitiesRow);
-                    menuPlacementFrame.add(menuPositionRow);
-                    if(this._settings.get_enum('position-in-panel') == Constants.MENU_POSITION.Center)
-                        menuPlacementFrame.add(menuPositionAdjustmentRow);
-                    if(extensionStates[Constants.EXTENSION.DTP])
+                let placement = widget.get_active();
+                this._settings.set_enum('arc-menu-placement', placement);
+                menuPlacementFrame.remove_all_children();
+                menuPlacementFrame.add(menuPlacementRow);
+                if(menuPlacementCombo.get_active() == Constants.ARC_MENU_PLACEMENT.PANEL){
+                    if(extensionStates[Constants.EXTENSION.DTP]){
+                        menuPlacementFrame.add(panelWarningRow);
+                    }
+                    else{
+                        menuPlacementFrame.add(menuPositionRow);
+                        if(this._settings.get_enum('position-in-panel') == Constants.MENU_POSITION.Center)
+                            menuPlacementFrame.add(menuPositionAdjustmentRow);
+                    }
+                    menuPlacementFrame.show();
+                }
+                else if(menuPlacementCombo.get_active() == Constants.ARC_MENU_PLACEMENT.DTP){
+                    if(extensionStates[Constants.EXTENSION.DTP]){
+                        menuPlacementFrame.add(menuPositionRow);
+                        if(this._settings.get_enum('position-in-panel') == Constants.MENU_POSITION.Center)
+                            menuPlacementFrame.add(menuPositionAdjustmentRow);
                         menuPlacementFrame.add(multiMonitorRow);
+                    }
+                    else{
+                        menuPlacementFrame.add(panelWarningRow);
+                    }
                     menuPlacementFrame.show();
                 }
                 else{
-                    menuPlacementFrame.remove(menuPositionRow);
-                    if(this._settings.get_enum('position-in-panel') == Constants.MENU_POSITION.Center)
-                        menuPlacementFrame.remove(menuPositionAdjustmentRow);
-                    if(extensionStates[Constants.EXTENSION.DTP])
-                        menuPlacementFrame.remove(multiMonitorRow);
-                    menuPlacementFrame.add(disableActivitiesRow);
+                    menuPlacementFrame.add(dtdExtraRow);
                     menuPlacementFrame.show();
                 }
             });
@@ -1062,8 +1081,8 @@ var GeneralPage = GObject.registerClass(
             menuPlacementRow.add(menuPlacementCombo);
             menuPlacementFrame.add(menuPlacementRow);
 
-            let disableActivitiesRow = new PW.FrameBoxRow();
-            let disableActivitiesLabel = new Gtk.Label({
+            let dtdExtraRow = new PW.FrameBoxRow();
+            let dtdExtraRowLabel = new Gtk.Label({
                 label: extensionStates[Constants.EXTENSION.DTD] ? _("Disable Activities Button") :
                                          _("Dash to Dock extension not running!") + "\n" + _("Enable Dash to Dock for this feature to work."),
                 use_markup: true,
@@ -1079,24 +1098,46 @@ var GeneralPage = GObject.registerClass(
             disableActivitiesSwitch.connect('notify::active', (widget) => {
                 this._settings.set_boolean('disable-activities-button', widget.get_active());
             });
+
+            let warningPath = Me.path + Constants.WARNING_ICON.Path;
+            let [width, height] = Constants.WARNING_ICON.Size;
+            let pixbuf = GdkPixbuf.Pixbuf.new_from_file_at_size(warningPath, width, height);
+            let warningImage = new Gtk.Image({ pixbuf: pixbuf });
+            let warningImageBox = new Gtk.VBox({
+                margin_top: 0,
+                margin_bottom: 0,
+                margin_left: 10,
+                expand: false
+            });
+            warningImageBox.add(warningImage);
+
             if(!extensionStates[Constants.EXTENSION.DTD]){
-                let warningPath = Me.path + Constants.WARNING_ICON.Path;
-                let [width, height] = Constants.WARNING_ICON.Size;
-                let pixbuf = GdkPixbuf.Pixbuf.new_from_file_at_size(warningPath, width, height);
-                let warningImage = new Gtk.Image({ pixbuf: pixbuf });
-                let warningImageBox = new Gtk.VBox({
-                    margin_top: 0,
-                    margin_bottom: 0,
-                    margin_left: 10,
-                    expand: false
-                });
-                warningImageBox.add(warningImage);
-                disableActivitiesRow.add(warningImageBox);
+                dtdExtraRow.add(warningImageBox);
             }
-            disableActivitiesRow.add(disableActivitiesLabel);
+            dtdExtraRow.add(dtdExtraRowLabel);
 
             if(extensionStates[Constants.EXTENSION.DTD])
-                disableActivitiesRow.add(disableActivitiesSwitch);
+                dtdExtraRow.add(disableActivitiesSwitch);
+
+
+            let panelWarningRow = new PW.FrameBoxRow();
+            let panelWarningLabel = new Gtk.Label({
+                label: extensionStates[Constants.EXTENSION.DTP] ? _("Dash to Panel currently enabled!") + "\n" + _("Disable Dash to Panel for this feature to work."):
+                                            _("Dash to Panel extension not running!") + "\n" + _("Enable Dash to Panel for this feature to work."),
+                use_markup: true,
+                xalign: 0,
+                hexpand: true
+            });    
+            let panelWarningImage = new Gtk.Image({ pixbuf: pixbuf });
+            let panelWarningImageBox = new Gtk.VBox({
+                margin_top: 0,
+                margin_bottom: 0,
+                margin_left: 10,
+                expand: false
+            });
+            panelWarningImageBox.add(panelWarningImage);
+            panelWarningRow.add(panelWarningImageBox);
+            panelWarningRow.add(panelWarningLabel);
 
             //Menu Position Box
             let menuPositionRow = new PW.FrameBoxRow();
@@ -1202,15 +1243,31 @@ var GeneralPage = GObject.registerClass(
             multiMonitorRow.add(multiMonitorLabel);
             multiMonitorRow.add(multiMonitorSwitch);
             if(menuPlacementCombo.get_active() == Constants.ARC_MENU_PLACEMENT.PANEL){
-                menuPlacementFrame.add(menuPositionRow);
-                if(this._settings.get_enum('position-in-panel') == Constants.MENU_POSITION.Center)
-                    menuPlacementFrame.add(menuPositionAdjustmentRow);
-                if(extensionStates[Constants.EXTENSION.DTP])
-                    menuPlacementFrame.add(multiMonitorRow);
+                if(extensionStates[Constants.EXTENSION.DTP]){
+                    menuPlacementFrame.add(panelWarningRow);
+                }
+                else{
+                    menuPlacementFrame.add(menuPositionRow);
+                    if(this._settings.get_enum('position-in-panel') == Constants.MENU_POSITION.Center)
+                        menuPlacementFrame.add(menuPositionAdjustmentRow);
+                }
+                menuPlacementFrame.show();
+            }
+            else if(menuPlacementCombo.get_active() == Constants.ARC_MENU_PLACEMENT.DTP){
+                if(extensionStates[Constants.EXTENSION.DTP]){
+                    menuPlacementFrame.add(menuPositionRow);
+                    if(this._settings.get_enum('position-in-panel') == Constants.MENU_POSITION.Center)
+                        menuPlacementFrame.add(menuPositionAdjustmentRow);
+                    if(extensionStates[Constants.EXTENSION.DTP])
+                        menuPlacementFrame.add(multiMonitorRow);
+                }
+                else{
+                    menuPlacementFrame.add(panelWarningRow);
+                }
                 menuPlacementFrame.show();
             }
             else{
-                menuPlacementFrame.add(disableActivitiesRow);
+                menuPlacementFrame.add(dtdExtraRow);
                 menuPlacementFrame.show();
             }
         }

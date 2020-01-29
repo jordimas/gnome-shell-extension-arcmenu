@@ -442,7 +442,7 @@ var MenuSettingsController = class {
         }
     }
     _configureActivitiesButton(restore = false){
-        if(this.dashOrPanel == Constants.ARC_MENU_PLACEMENT.DASH){
+        if(this.dashOrPanel == Constants.ARC_MENU_PLACEMENT.DTD){
             let isActivitiesButtonPresent = Main.panel.statusArea.activities && Main.panel.statusArea.activities.container &&
                                             Main.panel._leftBox.contains(Main.panel.statusArea.activities.container);
             let disable = this._settings.get_boolean('disable-activities-button');  
@@ -573,7 +573,7 @@ var MenuSettingsController = class {
         this.settingsChangeIds.forEach(id => this._settings.disconnect(id));
         this._hotCornerManager.destroy();
         
-        if(this.dashOrPanel == Constants.ARC_MENU_PLACEMENT.DASH){
+        if(this.dashOrPanel == Constants.ARC_MENU_PLACEMENT.DTD){
             if(this.panelConnectID && this.panel){
                 this.panel.disconnect(this.panelConnectID);
                 this.panelConnectID = null;
