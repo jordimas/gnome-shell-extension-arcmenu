@@ -320,6 +320,7 @@ var createMenu = class{
         this.leftPanelPopup = new St.BoxLayout({
             vertical: true
         });   
+        this.leftPanelPopup._delegate = this.leftPanelPopup;
         this.applicationsScrollBox = new St.ScrollView({
             x_fill: true,
             y_fill: false,

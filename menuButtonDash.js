@@ -65,8 +65,8 @@ var ApplicationsButton =   Utils.defineClass({
             
             //Tooltip showing/hiding
             this.tooltipShowing = false;
-            this.tooltipHidingID = 0;
-            this.tooltipShowingID = 0;
+            this.tooltipHidingID = null;
+            this.tooltipShowingID = null;
             //Create Main Button Left and Right Click Menus---------------------------------------------------
             let sourceActor =  modernGnome ?  this : this.actor;
             sourceActor.style_class = 'dash-item-container';
@@ -135,6 +135,15 @@ var ApplicationsButton =   Utils.defineClass({
             return false;
         },
         createMenuLayout(){
+            this.tooltipShowing = false;
+            if (this.tooltipShowingID) {
+                GLib.source_remove(this.tooltipShowingID);
+                this.tooltipShowingID = null;
+            }     
+            if (this.tooltipHidingID) {
+                GLib.source_remove(this.tooltipHidingID);
+                this.tooltipHidingID = null;
+            }    
             this.section = new PopupMenu.PopupMenuSection();
             this.leftClickMenu.addMenuItem(this.section);            
             this.mainBox = new St.BoxLayout({
@@ -180,9 +189,6 @@ var ApplicationsButton =   Utils.defineClass({
                 this.MenuLayout = new MenuLayouts.chromebook.createMenu(this);
             ///--------------------------------------------------------------------
             this._setMenuPositionAlignment();
-            this.tooltipShowing = false;
-            this.tooltipHidingID = 0;
-            this.tooltipShowingID = 0;
             this.updateStyle();
         },
         getMenu(){
@@ -358,6 +364,14 @@ var ApplicationsButton =   Utils.defineClass({
                 GLib.source_remove(this.updateMenuLayoutID);
                 this.updateMenuLayoutID = null;
             }
+            if (this.tooltipShowingID) {
+                GLib.source_remove(this.tooltipShowingID);
+                this.tooltipShowingID = null;
+            }     
+            if (this.tooltipHidingID) {
+                GLib.source_remove(this.tooltipHidingID);
+                this.tooltipHidingID = null;
+            }    
             if(this.MenuLayout)
                 this.MenuLayout.destroy();
 

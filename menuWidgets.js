@@ -512,24 +512,24 @@ var Tooltip = class ArcMenu_Tooltip{
                 this._button.tooltipShowingID = GLib.timeout_add(0, 750, () => {
                     this.show();
                     this._button.tooltipShowing = true;
-                    this._button.tooltipShowingID = 0;
+                    this._button.tooltipShowingID = null;
                     return GLib.SOURCE_REMOVE;
                 });
             }
-            if (this._button.tooltipHidingID > 0) {
+            if (this._button.tooltipHidingID) {
                 GLib.source_remove(this._button.tooltipHidingID);
-                this._button.tooltipHidingID = 0;
+                this._button.tooltipHidingID = null;
             }
         } 
         else {
             this.hide();
-            if (this._button.tooltipShowingID > 0) {
+            if (this._button.tooltipShowingID) {
                 GLib.source_remove(this._button.tooltipShowingID);
-                this._button.tooltipShowingID = 0;
+                this._button.tooltipShowingID = null;
             }
             this._button.tooltipHidingID = GLib.timeout_add(0, 750, () => {
                 this._button.tooltipShowing = false;
-                this._button.tooltipHidingID = 0;
+                this._button.tooltipHidingID = null;
                 return GLib.SOURCE_REMOVE;
             });          
         }
@@ -2148,6 +2148,7 @@ var SimpleMenuItem = Utils.createClass({
         this.mainBox = new St.BoxLayout({
             vertical: false
         });    
+        this.mainBox._delegate = this.mainBox;
         this.mainBox.style = 'max-height: 25em;';
         this.section.actor.add_actor(this.mainBox);   
         this.applicationsScrollBox = new St.ScrollView({
@@ -2540,7 +2541,6 @@ var PlaceMenuItem = Utils.createClass({
             this._info.disconnect(this._changedId);
             this._changedId = 0;
         }
-        this.callParent('destroy');
     },
 
     // Activate (launch) the shortcut

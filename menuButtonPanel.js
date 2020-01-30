@@ -56,8 +56,8 @@ var ApplicationsButton =   Utils.defineClass({
             
             //Tooltip showing/hiding
             this.tooltipShowing = false;
-            this.tooltipHidingID = 0;
-            this.tooltipShowingID = 0;
+            this.tooltipHidingID = null;
+            this.tooltipShowingID = null;
 
             //Create Main Button Left and Right Click Menus---------------------------------------------------
             let sourceActor =  modernGnome ?  this : this.actor;
@@ -148,6 +148,15 @@ var ApplicationsButton =   Utils.defineClass({
             //--------------------------------------------------------------------
         },
         createMenuLayout(){
+            this.tooltipShowing = false;
+            if (this.tooltipShowingID) {
+                GLib.source_remove(this.tooltipShowingID);
+                this.tooltipShowingID = null;
+            }     
+            if (this.tooltipHidingID) {
+                GLib.source_remove(this.tooltipHidingID);
+                this.tooltipHidingID = null;
+            }    
             this.section = new PopupMenu.PopupMenuSection();
             this.leftClickMenu.addMenuItem(this.section);            
             this.mainBox = new St.BoxLayout({
@@ -158,7 +167,7 @@ var ApplicationsButton =   Utils.defineClass({
             let scaleFactor = themeContext.scale_factor;
             let height =  Math.round(this._settings.get_int('menu-height') / scaleFactor);
             this.mainBox.style = `height: ${height}px`;        
-            this.section.actor.add_actor(this.mainBox);          
+            this.section.actor.add_actor(this.mainBox);      
             //Create Menu Layout--------------------------------------------------
             let layout = this._settings.get_enum('menu-layout');
             if(layout == Constants.MENU_LAYOUT.Default)
@@ -193,9 +202,6 @@ var ApplicationsButton =   Utils.defineClass({
                 this.MenuLayout = new MenuLayouts.chromebook.createMenu(this);
             ///--------------------------------------------------------------------
             this._setMenuPositionAlignment();
-            this.tooltipShowing = false;
-            this.tooltipHidingID = 0;
-            this.tooltipShowingID = 0;
             this.updateStyle();
         },
         getMenu(){
@@ -399,6 +405,14 @@ var ApplicationsButton =   Utils.defineClass({
                 GLib.source_remove(this.updateMenuLayoutID);
                 this.updateMenuLayoutID = null;
             }
+            if (this.tooltipShowingID) {
+                GLib.source_remove(this.tooltipShowingID);
+                this.tooltipShowingID = null;
+            }     
+            if (this.tooltipHidingID) {
+                GLib.source_remove(this.tooltipHidingID);
+                this.tooltipHidingID = null;
+            }   
             if(this.MenuLayout)
                 this.MenuLayout.destroy();
 
