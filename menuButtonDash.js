@@ -135,15 +135,6 @@ var ApplicationsButton =   Utils.defineClass({
             return false;
         },
         createMenuLayout(){
-            this.tooltipShowing = false;
-            if (this.tooltipShowingID) {
-                GLib.source_remove(this.tooltipShowingID);
-                this.tooltipShowingID = null;
-            }     
-            if (this.tooltipHidingID) {
-                GLib.source_remove(this.tooltipHidingID);
-                this.tooltipHidingID = null;
-            }    
             this.section = new PopupMenu.PopupMenuSection();
             this.leftClickMenu.addMenuItem(this.section);            
             this.mainBox = new St.BoxLayout({
@@ -400,6 +391,15 @@ var ApplicationsButton =   Utils.defineClass({
 
         },
         _updateMenuLayout(){
+            this.tooltipShowing = false;
+            if (this.tooltipShowingID) {
+                GLib.source_remove(this.tooltipShowingID);
+                this.tooltipShowingID = null;
+            }     
+            if (this.tooltipHidingID) {
+                GLib.source_remove(this.tooltipHidingID);
+                this.tooltipHidingID = null;
+            }
             this.MenuLayout.destroy();
             this.MenuLayout = null;
             this.leftClickMenu.removeAll();
