@@ -118,10 +118,12 @@ var createMenu = class{
 
         let categoryMenuItem = new MW.CategorySubMenuItem(this, "","Favorites");
         categoryMenuItem._setParent(this.leftClickMenu);
+        this.leftClickMenu._connectItemSignals(categoryMenuItem);
         categoryMenuItem.isSimpleMenuItem = true;
         this.categoryDirectories.push(categoryMenuItem);  
         categoryMenuItem = new MW.CategorySubMenuItem(this, "","All Programs");
         categoryMenuItem._setParent(this.leftClickMenu);
+        this.leftClickMenu._connectItemSignals(categoryMenuItem);
         categoryMenuItem.isSimpleMenuItem = true;
         this.categoryDirectories.push(categoryMenuItem);
         this._tree.load_sync();
@@ -137,6 +139,7 @@ var createMenu = class{
                     this._loadCategory(categoryId, dir);
                     categoryMenuItem = new MW.CategorySubMenuItem(this, dir);
                     categoryMenuItem._setParent(this.leftClickMenu);
+                    this.leftClickMenu._connectItemSignals(categoryMenuItem);
                     categoryMenuItem.isSimpleMenuItem = true;
                     this.categoryDirectories.push(categoryMenuItem);
                 }

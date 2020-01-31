@@ -219,6 +219,7 @@ var createMenu = class{
         this.leftPanelPopup = new St.BoxLayout({
             vertical: true
         });   
+        this.leftPanelPopup._delegate = this.leftPanelPopup;
         let headerBox = new St.BoxLayout({
             vertical: true
         });    

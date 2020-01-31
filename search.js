@@ -456,6 +456,7 @@ Signals.addSignalMethods(AppSearchResults.prototype);
 var SearchResults = class ArcMenu_SearchResults {
     constructor(button) {
         this.actor = new St.BoxLayout({ vertical: true });
+        this.actor._delegate = this.actor;
         this._button = button;
         this._content = new St.BoxLayout({vertical: true });
  

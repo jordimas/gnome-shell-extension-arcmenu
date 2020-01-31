@@ -56,8 +56,8 @@ var ApplicationsButton =   Utils.defineClass({
             
             //Tooltip showing/hiding
             this.tooltipShowing = false;
-            this.tooltipHidingID = 0;
-            this.tooltipShowingID = 0;
+            this.tooltipHidingID = null;
+            this.tooltipShowingID = null;
 
             //Create Main Button Left and Right Click Menus---------------------------------------------------
             let sourceActor =  modernGnome ?  this : this.actor;
@@ -142,6 +142,7 @@ var ApplicationsButton =   Utils.defineClass({
             //Create Basic Layout ------------------------------------------------
             this.createLayoutID = GLib.timeout_add(0, 100, () => {
                 this.createMenuLayout();
+                this.createLayoutID = null;
                 return GLib.SOURCE_REMOVE;
             });
             //--------------------------------------------------------------------
@@ -152,11 +153,12 @@ var ApplicationsButton =   Utils.defineClass({
             this.mainBox = new St.BoxLayout({
                 vertical: false
             });        
+            this.mainBox._delegate = this.mainBox;
             let themeContext = St.ThemeContext.get_for_stage(global.stage);
             let scaleFactor = themeContext.scale_factor;
             let height =  Math.round(this._settings.get_int('menu-height') / scaleFactor);
             this.mainBox.style = `height: ${height}px`;        
-            this.section.actor.add_actor(this.mainBox);          
+            this.section.actor.add_actor(this.mainBox);      
             //Create Menu Layout--------------------------------------------------
             let layout = this._settings.get_enum('menu-layout');
             if(layout == Constants.MENU_LAYOUT.Default)
@@ -191,9 +193,6 @@ var ApplicationsButton =   Utils.defineClass({
                 this.MenuLayout = new MenuLayouts.chromebook.createMenu(this);
             ///--------------------------------------------------------------------
             this._setMenuPositionAlignment();
-            this.tooltipShowing = false;
-            this.tooltipHidingID = 0;
-            this.tooltipShowingID = 0;
             this.updateStyle();
         },
         getMenu(){
@@ -393,6 +392,18 @@ var ApplicationsButton =   Utils.defineClass({
                 GLib.source_remove(this.createLayoutID);
                 this.createLayoutID = null;
             }
+            if(this.updateMenuLayoutID){
+                GLib.source_remove(this.updateMenuLayoutID);
+                this.updateMenuLayoutID = null;
+            }
+            if (this.tooltipShowingID) {
+                GLib.source_remove(this.tooltipShowingID);
+                this.tooltipShowingID = null;
+            }     
+            if (this.tooltipHidingID) {
+                GLib.source_remove(this.tooltipHidingID);
+                this.tooltipHidingID = null;
+            }   
             if(this.MenuLayout)
                 this.MenuLayout.destroy();
 
@@ -418,11 +429,21 @@ var ApplicationsButton =   Utils.defineClass({
             this.container.destroy();
         },
         _updateMenuLayout(){
+            this.tooltipShowing = false;
+            if (this.tooltipShowingID) {
+                GLib.source_remove(this.tooltipShowingID);
+                this.tooltipShowingID = null;
+            }     
+            if (this.tooltipHidingID) {
+                GLib.source_remove(this.tooltipHidingID);
+                this.tooltipHidingID = null;
+            }    
             this.MenuLayout.destroy();
             this.MenuLayout = null;
             this.leftClickMenu.removeAll();
-            GLib.timeout_add(0, 100, () => {
+            this.updateMenuLayoutID = GLib.timeout_add(0, 100, () => {
                 this.createMenuLayout();
+                this.updateMenuLayoutID = null;
                 return GLib.SOURCE_REMOVE;
             });  
         },        
@@ -488,6 +509,7 @@ var ApplicationsButton =   Utils.defineClass({
             if(this.MenuLayout){
                 this.reloadID = GLib.timeout_add(0, 100, () => {
                     this.MenuLayout._reload();
+                    this.reloadID = null;
                     return GLib.SOURCE_REMOVE;
                 });
             }
@@ -541,6 +563,12 @@ var ApplicationsMenu = class ArcMenu_ApplicationsMenu extends PopupMenu.PopupMen
         this.actor.add_style_class_name('panel-menu');
         Main.uiGroup.add_actor(this.actor);
         this.actor.hide();
+        this.connect("destroy", ()=>{
+            if (this.menuClosingID) {
+                GLib.source_remove(this.menuClosingID);
+                this.menuClosingID = null;
+            }
+        });
     }
     // Return that the menu is not empty (used by parent class)
     isEmpty() {
@@ -560,8 +588,9 @@ var ApplicationsMenu = class ArcMenu_ApplicationsMenu extends PopupMenu.PopupMen
         super.close(animate);   
 
         if(this._button.MenuLayout && this._button.MenuLayout.isRunning){
-            GLib.timeout_add(0, 100, () => {
-                this._button.setDefaultMenuView();  
+            this.menuClosingID = GLib.timeout_add(0, 100, () => {
+                this._button.setDefaultMenuView(); 
+                this.menuClosingID = null; 
                 return GLib.SOURCE_REMOVE;
             });
         }
@@ -575,7 +604,7 @@ var RightClickMenu = class ArcMenu_RightClickMenu extends PopupMenu.PopupMenu {
         this._settings = settings;
         this._button = button;  
         this.DTPSettings=false;
-
+        
         this.actor.add_style_class_name('panel-menu');
         Main.uiGroup.add_actor(this.actor);
         this.actor.hide();

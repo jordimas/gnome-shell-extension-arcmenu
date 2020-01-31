@@ -426,7 +426,7 @@ var SearchResults = class ArcMenu_SearchResultsGrid {
         this.actor = new St.BoxLayout({
             vertical: true 
         });
-
+        this.actor._delegate = this.actor;
         this._content = new St.BoxLayout({
             vertical: true 
         });
