@@ -1065,8 +1065,10 @@ var ShortcutMenuItem = Utils.createClass({
                 this._command='org.gnome.Software.desktop';
             else if(GLib.find_program_in_path('pamac-manager'))
                 this._command='pamac-manager.desktop';
-            else if(GLib.find_program_in_path('pop-shop'))
-                this._command='pop-shop.desktop';
+            else if(GLib.find_program_in_path('io.elementary.appcenter')){
+                this._command='io.elementary.appcenter.desktop';
+                icon = 'pop-shop';
+            }  
         }
         this._app = Shell.AppSystem.get_default().lookup_app(this._command);
         //---------

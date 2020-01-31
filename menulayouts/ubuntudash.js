@@ -273,13 +273,20 @@ var createMenu = class{
         pinnedApps.push(_("Documents"), "ArcMenu_Documents", "ArcMenu_Documents");
         pinnedApps.push(_("Downloads"), "ArcMenu_Downloads", "ArcMenu_Downloads");
         let software = '';
-        if(GLib.find_program_in_path('gnome-software'))
-            software='org.gnome.Software';
-        else if(GLib.find_program_in_path('pamac-manager'))
-            software='pamac-manager';
-        else if(GLib.find_program_in_path('pop-shop'))
-            this._command='pop-shop';
-        pinnedApps.push(_("Software"), "org.gnome.Software", software+".desktop");
+        let icon = '';
+        if(GLib.find_program_in_path('gnome-software')){
+            software = 'org.gnome.Software';
+            icon = 'org.gnome.Software';
+        }
+        else if(GLib.find_program_in_path('pamac-manager')){
+            software = 'pamac-manager';
+            icon = 'org.gnome.Software';
+        }
+        else if(GLib.find_program_in_path('io.elementary.appcenter')){
+            software = 'io.elementary.appcenter';
+            icon = 'pop-shop';
+        }
+        pinnedApps.push(_("Software"), icon, software+".desktop");
         pinnedApps.push(_("Files"), "system-file-manager", "org.gnome.Nautilus.desktop");
         pinnedApps.push(_("Log Out"), "application-exit-symbolic", "ArcMenu_LogOut");
         pinnedApps.push(_("Lock"), "changes-prevent-symbolic", "ArcMenu_Lock");
