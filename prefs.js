@@ -324,7 +324,7 @@ var AddAppsToPinnedListWindow = GObject.registerClass(
                 for(let i = 0;i < defaultApplicationShortcuts.length; i++) {
                     let frameRow = new PW.FrameBoxRow();
                     frameRow._icon = getIconPath(defaultApplicationShortcuts[i]);
-                    frameRow._name = defaultApplicationShortcuts[i][0];
+                    frameRow._name = _(defaultApplicationShortcuts[i][0]);
                     frameRow._cmd = defaultApplicationShortcuts[i][2];
 
                     let iconImage = new Gtk.Image( {
@@ -377,7 +377,7 @@ var AddAppsToPinnedListWindow = GObject.registerClass(
                 defaultApplicationShortcuts.push([_("Run Command..."), "system-run-symbolic", "ArcMenu_RunCommand"]);
                 for(let i = 0;i < defaultApplicationShortcuts.length; i++) {
                     let frameRow = new PW.FrameBoxRow();
-                    frameRow._name = defaultApplicationShortcuts[i][0];
+                    frameRow._name = _(defaultApplicationShortcuts[i][0]);
                     frameRow._icon = defaultApplicationShortcuts[i][1];
                     frameRow._cmd = defaultApplicationShortcuts[i][2];
                     let iconImage = new Gtk.Image( {
@@ -456,7 +456,7 @@ var AddAppsToPinnedListWindow = GObject.registerClass(
                     let frameRow = new PW.FrameBoxRow();
 
                     frameRow._icon = getIconPath(defaultApplicationShortcuts[i]);                        
-                    frameRow._name = defaultApplicationShortcuts[i][0];
+                    frameRow._name = _(defaultApplicationShortcuts[i][0]);
                     frameRow._cmd = defaultApplicationShortcuts[i][2];
 
                     let iconImage = new Gtk.Image( {
@@ -1968,7 +1968,7 @@ var MenuButtonCustomizationWindow = GObject.registerClass(
 
             Constants.MENU_ICONS.forEach((icon)=>{
                 pixbuf = getIconPixbuf(Me.path + icon.path);
-                store.set(store.append(),[0,1], [pixbuf, icon.name]);
+                store.set(store.append(),[0,1], [pixbuf, _(icon.name)]);
             });
         }
 });
@@ -3770,7 +3770,7 @@ var DefaultDirectoriesPage = GObject.registerClass(
 
     _loadPinnedApps(applicationShortcuts,softwareShortcutsFrame){
         for(let i = 0; i < applicationShortcuts.length; i++){
-            let applicationName = applicationShortcuts[i][0];
+            let applicationName = _(applicationShortcuts[i][0]);
             let editable = true;
             if(applicationShortcuts[i][2].startsWith("ArcMenu_")){
                 editable = false;

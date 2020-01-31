@@ -218,9 +218,7 @@ var AppRightClickMenu = class ArcMenu_AppRightClickMenu extends PopupMenu.PopupM
                                 this.close();
                             });
                         }
-
                     }
-
 
                     let canFavorite = global.settings.is_writable('favorite-apps');
                     if (canFavorite) {
@@ -1067,6 +1065,8 @@ var ShortcutMenuItem = Utils.createClass({
                 this._command='org.gnome.Software.desktop';
             else if(GLib.find_program_in_path('pamac-manager'))
                 this._command='pamac-manager.desktop';
+            else if(GLib.find_program_in_path('pop-shop'))
+                this._command='pop-shop.desktop';
         }
         this._app = Shell.AppSystem.get_default().lookup_app(this._command);
         //---------

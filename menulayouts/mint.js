@@ -490,6 +490,8 @@ var createMenu =class{
             software='org.gnome.Software';
         else if(GLib.find_program_in_path('pamac-manager'))
             software='pamac-manager';
+        else if(GLib.find_program_in_path('pop-shop'))
+            this._command='pop-shop';
         pinnedApps.push(_("Software"), "org.gnome.Software", software+".desktop");
         pinnedApps.push(_("Files"), "system-file-manager", "org.gnome.Nautilus.desktop");
         pinnedApps.push(_("Log Out"), "application-exit-symbolic", "ArcMenu_LogOut");
