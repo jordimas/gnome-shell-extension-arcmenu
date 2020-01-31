@@ -134,6 +134,9 @@ var createMenu =class{
             vertical: true,
             style_class: 'right-box'
         });
+        let rightPanelWidth = this._settings.get_int('right-panel-width');
+        rightPanelWidth += 45;
+        this.rightBox.style = "width: " + rightPanelWidth + "px;";
         this.shorcutsBox = new St.BoxLayout({
             vertical: true
         });
@@ -151,7 +154,6 @@ var createMenu =class{
             else if(key == Clutter.KEY_Down)
                 this.scrollToItem(this.activeMenuItem, this.shortcutsScrollBox, Constants.DIRECTION.DOWN);
         }) ;  
-        this.shortcutsScrollBox.style = "width:250px;";
         this.shortcutsScrollBox.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC);
 
         this.shortcutsScrollBox.add_actor( this.shorcutsBox);
@@ -246,6 +248,9 @@ var createMenu =class{
         appsScrollBoxAdj.set_value(0);
     }
     _redisplayRightSide(){
+        let rightPanelWidth = this._settings.get_int('right-panel-width');
+        rightPanelWidth += 45;
+        this.rightBox.style = "width: " + rightPanelWidth + "px;";
     }
     // Redisplay the menu
     _redisplay() {

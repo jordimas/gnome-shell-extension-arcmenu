@@ -151,6 +151,8 @@ var createMenu = class {
             vertical: true,
             style_class: 'right-box'
         });
+        let rightPanelWidth = this._settings.get_int('right-panel-width');
+        this.rightBox.style = "width: " + rightPanelWidth + "px;";
         this._loadCategories();
         this._createRightBox();
         this.mainBox.add(this.rightBox);  
@@ -172,7 +174,6 @@ var createMenu = class {
             y_fill: false,
             y_align: St.Align.START
         });
-    
         //draw top right horizontal separator under User Name
         this.rightBox.add(this._createHorizontalSeparator(Constants.SEPARATOR_STYLE.SHORT), {
             x_expand: true,
@@ -340,6 +341,8 @@ var createMenu = class {
         appsScrollBoxAdj.set_value(0);
     }
     _redisplayRightSide(){
+        let rightPanelWidth = this._settings.get_int('right-panel-width');
+        this.rightBox.style = "width: " + rightPanelWidth + "px;";
         this.rightBox.destroy_all_children();
         this._createRightBox();
         this.updateStyle();
