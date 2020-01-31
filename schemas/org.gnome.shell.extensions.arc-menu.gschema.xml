@@ -103,6 +103,11 @@
       <summary>Enable Category Sub Menus</summary>
       <description>Enable Category Sub Menus.</description>
     </key>
+    <key type="b" name="disable-category-arrows">
+     <default>false</default>
+      <summary>disable the arrows on category menu items</summary>
+      <description>disable the arrows on category menu items</description>
+    </key>
     <key type="b" name="krunner-show-details">
      <default>false</default>
       <summary>KRunner layout show larger icon and app details</summary>

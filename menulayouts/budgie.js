@@ -262,7 +262,8 @@ var createMenu = class {
         categoryMenuItem.actor.style = "padding: 10px 10px 10px 0; margin: 0; spacing: 0;";
         // Remove icons.
         categoryMenuItem.actor.remove_actor(categoryMenuItem._icon);
-        categoryMenuItem.actor.remove_actor(categoryMenuItem._arrowIcon);
+        if(categoryMenuItem._arrowIcon)
+            categoryMenuItem.actor.remove_actor(categoryMenuItem._arrowIcon);
         this.categoryDirectories.push(categoryMenuItem);
 
         this._tree.load_sync();
@@ -281,7 +282,8 @@ var createMenu = class {
                     categoryMenuItem.actor.style = "padding: 10px 10px 10px 0; margin: 0; spacing: 0;";
                     // Remove icons.
                     categoryMenuItem.actor.remove_actor(categoryMenuItem._icon);
-                    categoryMenuItem.actor.remove_actor(categoryMenuItem._arrowIcon);
+                    if(categoryMenuItem._arrowIcon)
+                        categoryMenuItem.actor.remove_actor(categoryMenuItem._arrowIcon);
                     this.categoryDirectories.push(categoryMenuItem); 
                 }
             }

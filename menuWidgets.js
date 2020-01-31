@@ -1988,13 +1988,16 @@ var CategoryMenuItem =  Utils.createClass({
             y_align: Clutter.ActorAlign.CENTER
         });
         this.actor.add_child(this.label);
-        this._arrowIcon = new St.Icon({
-            icon_name: 'go-next-symbolic',
-            style_class: 'popup-menu-icon',
-            x_align: St.Align.END,
-            icon_size: 12,
-        });
-        this.actor.add_child(this._arrowIcon);
+        if(!this._button._settings.get_boolean("disable-category-arrows")){
+            this._arrowIcon = new St.Icon({
+                icon_name: 'go-next-symbolic',
+                style_class: 'popup-menu-icon',
+                x_align: St.Align.END,
+                icon_size: 12,
+            });
+            this.actor.add_child(this._arrowIcon);
+        }
+
         this.actor.label_actor = this.label;
         this.actor.connect('notify::hover', this._onHover.bind(this));
         this.actor.connect('notify::active',()=> this.setActive(this.actor.active, false));
@@ -2126,13 +2129,15 @@ var SimpleMenuItem = Utils.createClass({
             y_align: Clutter.ActorAlign.CENTER
         });
         this.actor.add_child(categoryLabel);
-        this._arrowIcon = new St.Icon({
-            icon_name: 'go-next-symbolic',
-            style_class: 'popup-menu-icon',
-            x_align: St.Align.END,
-            icon_size: 12,
-        });
-        this.actor.add_child(this._arrowIcon);
+        if(!this._button._settings.get_boolean("disable-category-arrows")){
+            this._arrowIcon = new St.Icon({
+                icon_name: 'go-next-symbolic',
+                style_class: 'popup-menu-icon',
+                x_align: St.Align.END,
+                icon_size: 12,
+            });
+            this.actor.add_child(this._arrowIcon);
+        }
         this.actor.label_actor = categoryLabel;
         this.actor.connect('notify::hover', this._onHover.bind(this));
         

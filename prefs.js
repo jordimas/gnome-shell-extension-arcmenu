@@ -2057,6 +2057,7 @@ var AppearancePage = GObject.registerClass(
                         this._settings.set_boolean('enable-large-icons',dialog.largeIcons);
                         this._settings.set_int('gap-adjustment',dialog.gapAdjustment);
                         this._settings.set_boolean('enable-sub-menus', dialog.subMenus);
+                        this._settings.set_boolean('disable-category-arrows', dialog.disableCategoryArrow);
                         this._settings.set_boolean('remove-menu-arrow', dialog.removeMenuArrow);
                         saveCSS(this._settings);
                         this._settings.set_boolean('reload-theme',true);
@@ -2413,6 +2414,7 @@ var ArcMenuCustomizationWindow = GObject.registerClass(
             this.largeIcons = this._settings.get_boolean('enable-large-icons');
             this.gapAdjustment = this._settings.get_int('gap-adjustment');
             this.subMenus = this._settings.get_boolean('enable-sub-menus');
+            this.disableCategoryArrow = this._settings.get_boolean('disable-category-arrows');
             this.removeMenuArrow = this._settings.get_boolean('remove-menu-arrow');
             super._init(_('Customize Arc Menu Appearance'), parent);
 	        this.resize(450,250);
@@ -2569,7 +2571,29 @@ var ArcMenuCustomizationWindow = GObject.registerClass(
             });
             subMenusRow.add(subMenusLabel);            
             subMenusRow.add(subMenusSwitch);  
-            miscFrame.add(subMenusRow);           
+            miscFrame.add(subMenusRow);  
+            
+            let disableCategoryArrowRow = new PW.FrameBoxRow();
+            let disableCategoryArrowLabel = new Gtk.Label({
+                label: _('Disable Category Arrows'),
+                use_markup: true,
+                xalign: 0,
+                hexpand: true,
+                selectable: false
+             });   
+            let disableCategoryArrowSwitch = new Gtk.Switch({ 
+                halign: Gtk.Align.END,
+                tooltip_text: _("Disable the arrow on category menu items") + "\n" +_("Certain menu layouts only"),
+            });
+            disableCategoryArrowSwitch.set_active(this.disableCategoryArrow);
+            disableCategoryArrowSwitch.connect('notify::active', (widget) => {
+                 this.disableCategoryArrow = widget.get_active();
+                 applyButton.set_sensitive(true);
+                 resetButton.set_sensitive(true);
+            });
+            disableCategoryArrowRow.add(disableCategoryArrowLabel);            
+            disableCategoryArrowRow.add(disableCategoryArrowSwitch);  
+            miscFrame.add(disableCategoryArrowRow);          
             
 
             let separatorFrame = new PW.FrameBox();
@@ -2681,10 +2705,12 @@ var ArcMenuCustomizationWindow = GObject.registerClass(
                     this.largeIcons = false;
                     this.subMenus = false;
                     this.removeMenuArrow = false;
+                    this.disableCategoryArrow = false;
                     hscale.set_value(this.heightValue);
                     menuWidthScale.set_value(this.menuWidth);
                     gapAdjustmentScale.set_value(0);
                     subMenusSwitch.set_active(this.subMenus);
+                    disableCategoryArrowSwitch.set_active(this.disableCategoryArrow);
                     vertSeparatorSwitch.set_active(this.verticalSeparator);
                     largeIconsSwitch.set_active(this.largeIcons);
                     tweakStyleSwitch.set_active(this.removeMenuArrow);
@@ -2719,6 +2745,7 @@ var ArcMenuCustomizationWindow = GObject.registerClass(
                 this.separatorColor != "rgb(63,62,64)"||
                 this.verticalSeparator != false||
                 this.subMenus != false ||
+                this.disableCategoryArrow != false ||
                 this.largeIcons != false||
                 this.gapAdjustment != 0 ||
                 this.removeMenuArrow != false) ? true : false
