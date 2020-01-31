@@ -208,11 +208,6 @@
       <summary>Menu width</summary>
       <description>Menu width.</description>
     </key>
-    <key type="i" name="right-panel-width">
-     <default>205</default>
-      <summary>Right Panel width</summary>
-      <description>Right Panel width.</description>
-    </key>
       <key type="i" name="gap-adjustment">
      <default>0</default>
       <summary>Gap Adjustment</summary>

@@ -2041,7 +2041,6 @@ var AppearancePage = GObject.registerClass(
                 dialog.connect('response', ()=> { 
                     if(dialog.get_response()) {
                         this._settings.set_int('menu-height', dialog.heightValue);
-                        this._settings.set_int('right-panel-width', dialog.rightPanelWidth);
                         this._settings.set_string('separator-color',dialog.separatorColor);
                         this._settings.set_boolean('vert-separator',dialog.verticalSeparator);
                         this._settings.set_boolean('enable-custom-arc-menu', dialog.customArcMenu); 
@@ -2095,7 +2094,6 @@ var AppearancePage = GObject.registerClass(
                 dialog.connect('response', (response) => {
                     if(dialog.get_response()) {
                         this._settings.set_int('menu-height', dialog.heightValue);
-                        this._settings.set_int('right-panel-width', dialog.rightPanelWidth);
                         this._settings.set_string('separator-color',dialog.separatorColor);
                         this._settings.set_boolean('vert-separator',dialog.verticalSeparator);
                         this._settings.set_boolean('enable-custom-arc-menu', dialog.customArcMenu); 
@@ -2400,7 +2398,6 @@ var ArcMenuCustomizationWindow = GObject.registerClass(
             this._settings = settings;
             this.addResponse = false;
             this.heightValue = this._settings.get_int('menu-height');
-            this.rightPanelWidth = this._settings.get_int('right-panel-width');
             this.menuWidth = this._settings.get_int('menu-width');
             this.separatorColor = this._settings.get_string('separator-color');
             this.verticalSeparator = this._settings.get_boolean('vert-separator');
@@ -2497,33 +2494,6 @@ var ArcMenuCustomizationWindow = GObject.registerClass(
             menuWidthRow.add(menuWidthLabel);
             menuWidthRow.add(menuWidthScale);
             generalSettingsFrame.add(menuWidthRow);
-
-            //ROW 3 - RightMENU WIDTH--------------------------------------------------   
-            let rightPanelWidthRow = new PW.FrameBoxRow();
-            let rightPanelWidthLabel = new Gtk.Label({
-                label: _('Right-Panel Width'),
-                xalign:0,
-                hexpand: false,
-             });   
-            let rightPanelWidthScale = new Gtk.HScale({
-                adjustment: new Gtk.Adjustment({
-                    lower: 200,upper: 300, step_increment: 1, page_increment: 1, page_size: 0,
-                }),
-                tooltip_text: _("Adjust the right-panel width") + "\n" +_("Certain menu layouts only"),
-                digits: 0,round_digits: 0,hexpand: true,
-                value_pos: Gtk.PositionType.RIGHT
-            });
-            rightPanelWidthScale.connect('format-value', (scale, value) => { return value.toString() + 'px'; });
-            rightPanelWidthScale.set_value(this.rightPanelWidth);
-            rightPanelWidthScale.connect('value-changed', () => {
-                this.rightPanelWidth = rightPanelWidthScale.get_value();
-                applyButton.set_sensitive(true);
-                resetButton.set_sensitive(true);
-            });
-            rightPanelWidthRow.add(rightPanelWidthLabel);
-            rightPanelWidthRow.add(rightPanelWidthScale);
-            generalSettingsFrame.add(rightPanelWidthRow);
-
             let tweakStyleRow = new PW.FrameBoxRow();
             let tweakStyleLabel = new Gtk.Label({
                 label: _("Disable Menu Arrow"),
@@ -2730,7 +2700,6 @@ var ArcMenuCustomizationWindow = GObject.registerClass(
                     this.gapAdjustment = 0;
                     this.heightValue = 550;
                     this.menuWidth = 290;
-                    this.rightPanelWidth = 205;
                     this.separatorColor = "rgb(63,62,64)";
                     this.verticalSeparator = false;
                     this.largeIcons = false;
@@ -2739,7 +2708,6 @@ var ArcMenuCustomizationWindow = GObject.registerClass(
                     this.disableCategoryArrow = false;
                     hscale.set_value(this.heightValue);
                     menuWidthScale.set_value(this.menuWidth);
-                    rightPanelWidthScale.set_value(this.rightPanelWidth);
                     gapAdjustmentScale.set_value(0);
                     subMenusSwitch.set_active(this.subMenus);
                     disableCategoryArrowSwitch.set_active(this.disableCategoryArrow);
@@ -2774,7 +2742,6 @@ var ArcMenuCustomizationWindow = GObject.registerClass(
         checkIfResetButtonSensitive(){
             return (this.heightValue != 550 ||
                 this.menuWidth != 290 ||
-                this.rightPanelWidth != 205 ||
                 this.separatorColor != "rgb(63,62,64)"||
                 this.verticalSeparator != false||
                 this.subMenus != false ||
@@ -3102,7 +3069,6 @@ var OverrideArcMenuThemeWindow = GObject.registerClass(
             this._settings = settings;
             this.addResponse = false;
             this.heightValue = this._settings.get_int('menu-height');
-            this.rightPanelWidth = this._settings.get_int('right-panel-width');
             this.separatorColor = this._settings.get_string('separator-color');
             this.verticalSeparator = this._settings.get_boolean('vert-separator');
             this.customArcMenu = this._settings.get_boolean('enable-custom-arc-menu');
@@ -4844,7 +4810,7 @@ function saveCSS(settings){
     let file = Gio.File.new_for_path(Me.path+"/stylesheet.css");
     let css ="#arc-search{width: "+  menuWidth+"px;} \n.arc-menu-status-text{\ncolor:"+  menuForegroundColor+";\nfont-size:" + fontSize+"pt;\n}\n "+                                                      
         ".search-statustext {font-size:11pt;}\n "+    
-        ".left-scroll-area{ \nwidth:"+  menuWidth+"px;\n}\n"   
+    	".left-scroll-area{ \nwidth:"+  menuWidth+"px;\n}\n"   
     	+".arc-empty-dash-drop-target{\nwidth: "+  menuWidth+"px; \nheight: 2px; \nbackground-color:"+  separatorColor+"; \npadding: 0 0; \nmargin:0;\n}\n"     
         +".left-box{\nwidth:"+  menuWidth+"px;\n}" + "\n.vert-sep{\nwidth:11px;\n}\n"
         +"#search-entry{\nmax-width: 17.667em;\n}\n#search-entry:focus { \nborder-color:"+  separatorColor+";\n}\n"
