@@ -198,15 +198,27 @@ var AppRightClickMenu = class ArcMenu_AppRightClickMenu extends PopupMenu.PopupM
                             ExtensionUtils.extensions["ding@rastersoft.com"];        
                     if((desktopIcons && desktopIcons.stateObj) || (desktopIconsNG && desktopIconsNG.stateObj) ){
                         this._appendSeparator();
+                        let fileSource = this.appInfo.get_filename();
+                        let fileDestination = GLib.get_user_special_dir(imports.gi.GLib.UserDirectory.DIRECTORY_DESKTOP);
+                        let file = Gio.File.new_for_path(fileDestination + "/" + this._app.get_id());
+                        let exists = file.query_exists(null);
+                        if(exists){
+                            let item = this._appendMenuItem(_("Delete Desktop Shortcut"));
+                            item.connect('activate', () => {
+                                if(fileSource && fileDestination)
+                                    Util.spawnCommandLine("rm " + fileDestination + "/" + this._app.get_id());
+                                this.close();
+                            });
+                        }
+                        else{
+                            let item = this._appendMenuItem(_("Create Desktop Shortcut"));
+                            item.connect('activate', () => {
+                                if(fileSource && fileDestination)
+                                    Util.spawnCommandLine("cp " + fileSource + " " + fileDestination);
+                                this.close();
+                            });
+                        }
 
-                        let item = this._appendMenuItem(_("Create Desktop Shortcut"));
-                        item.connect('activate', () => {
-                            let fileSource = this.appInfo.get_filename();
-                            let fileDestination = GLib.get_user_special_dir(imports.gi.GLib.UserDirectory.DIRECTORY_DESKTOP);
-                            if(fileSource && fileDestination)
-                                Util.spawnCommandLine("cp " + fileSource + " " + fileDestination);
-                            this.close();
-                        });
                     }
 
 
