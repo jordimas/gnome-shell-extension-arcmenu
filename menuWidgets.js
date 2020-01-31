@@ -688,8 +688,10 @@ var MintButton = class ArcMenu_MintButton extends SessionButton {
     }
     // Activate the button (Shutdown)
     activate() {
-        if(this._app)
+        if(this._app){
+            this._button.leftClickMenu.toggle();
             this._app.open_new_window(-1);
+        }
         else if(this._command === "ArcMenu_LogOut"){
             this._button.isRunning = false;
             this._button.leftClickMenu.toggle();
