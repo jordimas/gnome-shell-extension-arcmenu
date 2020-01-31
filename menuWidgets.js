@@ -29,6 +29,7 @@ const AppFavorites = imports.ui.appFavorites;
 const Constants = Me.imports.constants;
 const Dash = imports.ui.dash;
 const DND = imports.ui.dnd;
+const ExtensionUtils = imports.misc.extensionUtils;
 const Gettext = imports.gettext.domain(Me.metadata['gettext-domain']);
 const LoginManager = imports.misc.loginManager;
 const Main = imports.ui.main;
@@ -188,7 +189,27 @@ var AppRightClickMenu = class ArcMenu_AppRightClickMenu extends PopupMenu.PopupM
                             this.closeMenus();
                         });
                     }
-    
+
+                    let desktopIcons = Main.extensionManager ?
+                            Main.extensionManager.lookup("desktop-icons@csoriano") : //gnome-shell >= 3.33.4
+                            ExtensionUtils.extensions["desktop-icons@csoriano"];
+                    let desktopIconsNG = Main.extensionManager ?
+                            Main.extensionManager.lookup("ding@rastersoft.com") : //gnome-shell >= 3.33.4
+                            ExtensionUtils.extensions["ding@rastersoft.com"];        
+                    if((desktopIcons && desktopIcons.stateObj) || (desktopIconsNG && desktopIconsNG.stateObj) ){
+                        this._appendSeparator();
+
+                        let item = this._appendMenuItem(_("Create Desktop Shortcut"));
+                        item.connect('activate', () => {
+                            let fileSource = this.appInfo.get_filename();
+                            let fileDestination = GLib.get_user_special_dir(imports.gi.GLib.UserDirectory.DIRECTORY_DESKTOP);
+                            if(fileSource && fileDestination)
+                                Util.spawnCommandLine("cp " + fileSource + " " + fileDestination);
+                            this.close();
+                        });
+                    }
+
+
                     let canFavorite = global.settings.is_writable('favorite-apps');
                     if (canFavorite) {
                         this._appendSeparator();
