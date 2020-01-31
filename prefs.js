@@ -380,6 +380,9 @@ var AddAppsToPinnedListWindow = GObject.registerClass(
                     frameRow._name = _(defaultApplicationShortcuts[i][0]);
                     frameRow._icon = defaultApplicationShortcuts[i][1];
                     frameRow._cmd = defaultApplicationShortcuts[i][2];
+                    if(frameRow._cmd == "ArcMenu_Software" && GLib.find_program_in_path('io.elementary.appcenter')){
+                        frameRow._icon = 'pop-shop';
+                    }
                     let iconImage = new Gtk.Image( {
                         gicon: Gio.icon_new_for_string(frameRow._icon),
                         pixel_size: 22
@@ -4034,6 +4037,9 @@ var ApplicationShortcutsPage = GObject.registerClass(
             frameRow._name = applicationShortcuts[i][0];
             frameRow._icon = applicationShortcuts[i][1];
             frameRow._cmd = applicationShortcuts[i][2];
+            if(frameRow._cmd == "ArcMenu_Software" && GLib.find_program_in_path('io.elementary.appcenter')){
+                frameRow._icon = 'pop-shop';
+            }
             let applicationIcon = new Gtk.Image( {
                 gicon: Gio.icon_new_for_string(frameRow._icon),
                 pixel_size: 22
