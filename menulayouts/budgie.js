@@ -111,6 +111,9 @@ var createMenu = class {
             vertical: true,
             style_class: 'right-box'
         });
+        let rightPanelWidth = this._settings.get_int('right-panel-width');
+        rightPanelWidth += 70;
+        this.rightBox.style = "min-width: " + rightPanelWidth + "px;";
         this.shorcutsBox = new St.BoxLayout({
             vertical: true
         });
@@ -128,7 +131,7 @@ var createMenu = class {
             else if(key == Clutter.KEY_Down)
                 this.scrollToItem(this.activeMenuItem, this.shortcutsScrollBox, Constants.DIRECTION.DOWN);
         }) ;  
-        this.shortcutsScrollBox.style = "padding-top:6px; width:275px;";
+        this.shortcutsScrollBox.style = "padding-top:6px;";
         // Disable horizontal scrolling, hide vertical scrollbar, but allow vertical scrolling.
         this.shortcutsScrollBox.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.EXTERNAL);
         
@@ -214,6 +217,9 @@ var createMenu = class {
         appsScrollBoxAdj.set_value(0);
     }
     _redisplayRightSide(){
+        let rightPanelWidth = this._settings.get_int('right-panel-width');
+        rightPanelWidth += 70;
+        this.rightBox.style = "min-width: " + rightPanelWidth + "px;";
     }
     // Redisplay the menu
     _redisplay() {

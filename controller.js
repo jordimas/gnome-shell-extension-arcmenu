@@ -112,6 +112,7 @@ var MenuSettingsController = class {
             this._settings.connect('changed::show-bookmarks', this._redisplayRightSide.bind(this)),
             this._settings.connect('changed::show-suspend-button', this._redisplayRightSide.bind(this)),
             this._settings.connect('changed::menu-height', this._updateMenuHeight.bind(this)),
+            this._settings.connect('changed::right-panel-width', this._updateMenuHeight.bind(this)),
             this._settings.connect('changed::reload-theme',this._reloadExtension.bind(this)),
             this._settings.connect('changed::pinned-app-list',this._updateFavorites.bind(this)),
             this._settings.connect('changed::mint-pinned-app-list',this._updateButtonFavorites.bind(this)),
