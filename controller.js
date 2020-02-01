@@ -112,6 +112,7 @@ var MenuSettingsController = class {
             this._settings.connect('changed::show-bookmarks', this._redisplayRightSide.bind(this)),
             this._settings.connect('changed::show-suspend-button', this._redisplayRightSide.bind(this)),
             this._settings.connect('changed::menu-height', this._updateMenuHeight.bind(this)),
+            this._settings.connect('changed::right-panel-width', this._updateMenuHeight.bind(this)),
             this._settings.connect('changed::reload-theme',this._reloadExtension.bind(this)),
             this._settings.connect('changed::pinned-app-list',this._updateFavorites.bind(this)),
             this._settings.connect('changed::mint-pinned-app-list',this._updateButtonFavorites.bind(this)),
@@ -123,7 +124,8 @@ var MenuSettingsController = class {
             this._settings.connect('changed::menu-layout', this._updateMenuLayout.bind(this)),
             this._settings.connect('changed::enable-large-icons', this.updateIcons.bind(this)),
             this._settings.connect('changed::runner-position', this.updateRunnerLocation.bind(this)),
-            this._settings.connect('changed::enable-sub-menus', this._reload.bind(this)),   
+            this._settings.connect('changed::enable-sub-menus', this._reload.bind(this)), 
+            this._settings.connect('changed::disable-category-arrows', this._reload.bind(this)),
             this._settings.connect('changed::disable-activities-button', this._configureActivitiesButton.bind(this)),
         ];
     }

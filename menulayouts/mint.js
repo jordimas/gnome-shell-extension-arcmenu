@@ -134,6 +134,9 @@ var createMenu =class{
             vertical: true,
             style_class: 'right-box'
         });
+        let rightPanelWidth = this._settings.get_int('right-panel-width');
+        rightPanelWidth += 45;
+        this.rightBox.style = "min-width: " + rightPanelWidth + "px;";
         this.shorcutsBox = new St.BoxLayout({
             vertical: true
         });
@@ -151,7 +154,6 @@ var createMenu =class{
             else if(key == Clutter.KEY_Down)
                 this.scrollToItem(this.activeMenuItem, this.shortcutsScrollBox, Constants.DIRECTION.DOWN);
         }) ;  
-        this.shortcutsScrollBox.style = "width:250px;";
         this.shortcutsScrollBox.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC);
 
         this.shortcutsScrollBox.add_actor( this.shorcutsBox);
@@ -246,6 +248,9 @@ var createMenu =class{
         appsScrollBoxAdj.set_value(0);
     }
     _redisplayRightSide(){
+        let rightPanelWidth = this._settings.get_int('right-panel-width');
+        rightPanelWidth += 45;
+        this.rightBox.style = "min-width: " + rightPanelWidth + "px;";
     }
     // Redisplay the menu
     _redisplay() {
@@ -481,11 +486,20 @@ var createMenu =class{
         pinnedApps.push(_("Terminal"), "utilities-terminal", "org.gnome.Terminal.desktop");
         pinnedApps.push(_("Settings"), "emblem-system-symbolic", "gnome-control-center.desktop");
         let software = '';
-        if(GLib.find_program_in_path('gnome-software'))
-            software='org.gnome.Software';
-        else if(GLib.find_program_in_path('pamac-manager'))
-            software='pamac-manager';
-        pinnedApps.push(_("Software"), "org.gnome.Software", software+".desktop");
+        let icon = '';
+        if(GLib.find_program_in_path('gnome-software')){
+            software = 'org.gnome.Software';
+            icon = 'org.gnome.Software';
+        }
+        else if(GLib.find_program_in_path('pamac-manager')){
+            software = 'pamac-manager';
+            icon = 'org.gnome.Software';
+        }
+        else if(GLib.find_program_in_path('io.elementary.appcenter')){
+            software = 'io.elementary.appcenter';
+            icon = 'pop-shop';
+        }
+        pinnedApps.push(_("Software"), icon, software+".desktop");
         pinnedApps.push(_("Files"), "system-file-manager", "org.gnome.Nautilus.desktop");
         pinnedApps.push(_("Log Out"), "application-exit-symbolic", "ArcMenu_LogOut");
         pinnedApps.push(_("Lock"), "changes-prevent-symbolic", "ArcMenu_Lock");

@@ -324,7 +324,7 @@ var AddAppsToPinnedListWindow = GObject.registerClass(
                 for(let i = 0;i < defaultApplicationShortcuts.length; i++) {
                     let frameRow = new PW.FrameBoxRow();
                     frameRow._icon = getIconPath(defaultApplicationShortcuts[i]);
-                    frameRow._name = defaultApplicationShortcuts[i][0];
+                    frameRow._name = _(defaultApplicationShortcuts[i][0]);
                     frameRow._cmd = defaultApplicationShortcuts[i][2];
 
                     let iconImage = new Gtk.Image( {
@@ -377,9 +377,12 @@ var AddAppsToPinnedListWindow = GObject.registerClass(
                 defaultApplicationShortcuts.push([_("Run Command..."), "system-run-symbolic", "ArcMenu_RunCommand"]);
                 for(let i = 0;i < defaultApplicationShortcuts.length; i++) {
                     let frameRow = new PW.FrameBoxRow();
-                    frameRow._name = defaultApplicationShortcuts[i][0];
+                    frameRow._name = _(defaultApplicationShortcuts[i][0]);
                     frameRow._icon = defaultApplicationShortcuts[i][1];
                     frameRow._cmd = defaultApplicationShortcuts[i][2];
+                    if(frameRow._cmd == "ArcMenu_Software" && GLib.find_program_in_path('io.elementary.appcenter')){
+                        frameRow._icon = 'pop-shop';
+                    }
                     let iconImage = new Gtk.Image( {
                         gicon: Gio.icon_new_for_string(frameRow._icon),
                         pixel_size: 22
@@ -456,7 +459,7 @@ var AddAppsToPinnedListWindow = GObject.registerClass(
                     let frameRow = new PW.FrameBoxRow();
 
                     frameRow._icon = getIconPath(defaultApplicationShortcuts[i]);                        
-                    frameRow._name = defaultApplicationShortcuts[i][0];
+                    frameRow._name = _(defaultApplicationShortcuts[i][0]);
                     frameRow._cmd = defaultApplicationShortcuts[i][2];
 
                     let iconImage = new Gtk.Image( {
@@ -1968,7 +1971,7 @@ var MenuButtonCustomizationWindow = GObject.registerClass(
 
             Constants.MENU_ICONS.forEach((icon)=>{
                 pixbuf = getIconPixbuf(Me.path + icon.path);
-                store.set(store.append(),[0,1], [pixbuf, icon.name]);
+                store.set(store.append(),[0,1], [pixbuf, _(icon.name)]);
             });
         }
 });
@@ -2041,6 +2044,7 @@ var AppearancePage = GObject.registerClass(
                 dialog.connect('response', ()=> { 
                     if(dialog.get_response()) {
                         this._settings.set_int('menu-height', dialog.heightValue);
+                        this._settings.set_int('right-panel-width', dialog.rightPanelWidth);
                         this._settings.set_string('separator-color',dialog.separatorColor);
                         this._settings.set_boolean('vert-separator',dialog.verticalSeparator);
                         this._settings.set_boolean('enable-custom-arc-menu', dialog.customArcMenu); 
@@ -2057,6 +2061,7 @@ var AppearancePage = GObject.registerClass(
                         this._settings.set_boolean('enable-large-icons',dialog.largeIcons);
                         this._settings.set_int('gap-adjustment',dialog.gapAdjustment);
                         this._settings.set_boolean('enable-sub-menus', dialog.subMenus);
+                        this._settings.set_boolean('disable-category-arrows', dialog.disableCategoryArrow);
                         this._settings.set_boolean('remove-menu-arrow', dialog.removeMenuArrow);
                         saveCSS(this._settings);
                         this._settings.set_boolean('reload-theme',true);
@@ -2093,6 +2098,7 @@ var AppearancePage = GObject.registerClass(
                 dialog.connect('response', (response) => {
                     if(dialog.get_response()) {
                         this._settings.set_int('menu-height', dialog.heightValue);
+                        this._settings.set_int('right-panel-width', dialog.rightPanelWidth);
                         this._settings.set_string('separator-color',dialog.separatorColor);
                         this._settings.set_boolean('vert-separator',dialog.verticalSeparator);
                         this._settings.set_boolean('enable-custom-arc-menu', dialog.customArcMenu); 
@@ -2397,6 +2403,7 @@ var ArcMenuCustomizationWindow = GObject.registerClass(
             this._settings = settings;
             this.addResponse = false;
             this.heightValue = this._settings.get_int('menu-height');
+            this.rightPanelWidth = this._settings.get_int('right-panel-width');
             this.menuWidth = this._settings.get_int('menu-width');
             this.separatorColor = this._settings.get_string('separator-color');
             this.verticalSeparator = this._settings.get_boolean('vert-separator');
@@ -2413,6 +2420,7 @@ var ArcMenuCustomizationWindow = GObject.registerClass(
             this.largeIcons = this._settings.get_boolean('enable-large-icons');
             this.gapAdjustment = this._settings.get_int('gap-adjustment');
             this.subMenus = this._settings.get_boolean('enable-sub-menus');
+            this.disableCategoryArrow = this._settings.get_boolean('disable-category-arrows');
             this.removeMenuArrow = this._settings.get_boolean('remove-menu-arrow');
             super._init(_('Customize Arc Menu Appearance'), parent);
 	        this.resize(450,250);
@@ -2492,6 +2500,33 @@ var ArcMenuCustomizationWindow = GObject.registerClass(
             menuWidthRow.add(menuWidthLabel);
             menuWidthRow.add(menuWidthScale);
             generalSettingsFrame.add(menuWidthRow);
+
+            //ROW 3 - RightMENU WIDTH--------------------------------------------------   
+            let rightPanelWidthRow = new PW.FrameBoxRow();
+            let rightPanelWidthLabel = new Gtk.Label({
+                label: _('Right-Panel Width'),
+                xalign:0,
+                hexpand: false,
+             });   
+            let rightPanelWidthScale = new Gtk.HScale({
+                adjustment: new Gtk.Adjustment({
+                    lower: 200,upper: 500, step_increment: 1, page_increment: 1, page_size: 0,
+                }),
+                tooltip_text: _("Adjust the right-panel width") + "\n" +_("Certain menu layouts only"),
+                digits: 0,round_digits: 0,hexpand: true,
+                value_pos: Gtk.PositionType.RIGHT
+            });
+            rightPanelWidthScale.connect('format-value', (scale, value) => { return value.toString() + 'px'; });
+            rightPanelWidthScale.set_value(this.rightPanelWidth);
+            rightPanelWidthScale.connect('value-changed', () => {
+                this.rightPanelWidth = rightPanelWidthScale.get_value();
+                applyButton.set_sensitive(true);
+                resetButton.set_sensitive(true);
+            });
+            rightPanelWidthRow.add(rightPanelWidthLabel);
+            rightPanelWidthRow.add(rightPanelWidthScale);
+            generalSettingsFrame.add(rightPanelWidthRow);
+
             let tweakStyleRow = new PW.FrameBoxRow();
             let tweakStyleLabel = new Gtk.Label({
                 label: _("Disable Menu Arrow"),
@@ -2569,7 +2604,29 @@ var ArcMenuCustomizationWindow = GObject.registerClass(
             });
             subMenusRow.add(subMenusLabel);            
             subMenusRow.add(subMenusSwitch);  
-            miscFrame.add(subMenusRow);           
+            miscFrame.add(subMenusRow);  
+            
+            let disableCategoryArrowRow = new PW.FrameBoxRow();
+            let disableCategoryArrowLabel = new Gtk.Label({
+                label: _('Disable Category Arrows'),
+                use_markup: true,
+                xalign: 0,
+                hexpand: true,
+                selectable: false
+             });   
+            let disableCategoryArrowSwitch = new Gtk.Switch({ 
+                halign: Gtk.Align.END,
+                tooltip_text: _("Disable the arrow on category menu items") + "\n" +_("Certain menu layouts only"),
+            });
+            disableCategoryArrowSwitch.set_active(this.disableCategoryArrow);
+            disableCategoryArrowSwitch.connect('notify::active', (widget) => {
+                 this.disableCategoryArrow = widget.get_active();
+                 applyButton.set_sensitive(true);
+                 resetButton.set_sensitive(true);
+            });
+            disableCategoryArrowRow.add(disableCategoryArrowLabel);            
+            disableCategoryArrowRow.add(disableCategoryArrowSwitch);  
+            miscFrame.add(disableCategoryArrowRow);          
             
 
             let separatorFrame = new PW.FrameBox();
@@ -2676,15 +2733,19 @@ var ArcMenuCustomizationWindow = GObject.registerClass(
                     this.gapAdjustment = 0;
                     this.heightValue = 550;
                     this.menuWidth = 290;
+                    this.rightPanelWidth = 205;
                     this.separatorColor = "rgb(63,62,64)";
                     this.verticalSeparator = false;
                     this.largeIcons = false;
                     this.subMenus = false;
                     this.removeMenuArrow = false;
+                    this.disableCategoryArrow = false;
                     hscale.set_value(this.heightValue);
                     menuWidthScale.set_value(this.menuWidth);
+                    rightPanelWidthScale.set_value(this.rightPanelWidth);
                     gapAdjustmentScale.set_value(0);
                     subMenusSwitch.set_active(this.subMenus);
+                    disableCategoryArrowSwitch.set_active(this.disableCategoryArrow);
                     vertSeparatorSwitch.set_active(this.verticalSeparator);
                     largeIconsSwitch.set_active(this.largeIcons);
                     tweakStyleSwitch.set_active(this.removeMenuArrow);
@@ -2716,9 +2777,11 @@ var ArcMenuCustomizationWindow = GObject.registerClass(
         checkIfResetButtonSensitive(){
             return (this.heightValue != 550 ||
                 this.menuWidth != 290 ||
+                this.rightPanelWidth != 205 ||
                 this.separatorColor != "rgb(63,62,64)"||
                 this.verticalSeparator != false||
                 this.subMenus != false ||
+                this.disableCategoryArrow != false ||
                 this.largeIcons != false||
                 this.gapAdjustment != 0 ||
                 this.removeMenuArrow != false) ? true : false
@@ -3042,6 +3105,7 @@ var OverrideArcMenuThemeWindow = GObject.registerClass(
             this._settings = settings;
             this.addResponse = false;
             this.heightValue = this._settings.get_int('menu-height');
+            this.rightPanelWidth = this._settings.get_int('right-panel-width');
             this.separatorColor = this._settings.get_string('separator-color');
             this.verticalSeparator = this._settings.get_boolean('vert-separator');
             this.customArcMenu = this._settings.get_boolean('enable-custom-arc-menu');
@@ -3709,7 +3773,7 @@ var DefaultDirectoriesPage = GObject.registerClass(
 
     _loadPinnedApps(applicationShortcuts,softwareShortcutsFrame){
         for(let i = 0; i < applicationShortcuts.length; i++){
-            let applicationName = applicationShortcuts[i][0];
+            let applicationName = _(applicationShortcuts[i][0]);
             let editable = true;
             if(applicationShortcuts[i][2].startsWith("ArcMenu_")){
                 editable = false;
@@ -3973,6 +4037,9 @@ var ApplicationShortcutsPage = GObject.registerClass(
             frameRow._name = applicationShortcuts[i][0];
             frameRow._icon = applicationShortcuts[i][1];
             frameRow._cmd = applicationShortcuts[i][2];
+            if(frameRow._cmd == "ArcMenu_Software" && GLib.find_program_in_path('io.elementary.appcenter')){
+                frameRow._icon = 'pop-shop';
+            }
             let applicationIcon = new Gtk.Image( {
                 gicon: Gio.icon_new_for_string(frameRow._icon),
                 pixel_size: 22
@@ -4783,7 +4850,7 @@ function saveCSS(settings){
     let file = Gio.File.new_for_path(Me.path+"/stylesheet.css");
     let css ="#arc-search{width: "+  menuWidth+"px;} \n.arc-menu-status-text{\ncolor:"+  menuForegroundColor+";\nfont-size:" + fontSize+"pt;\n}\n "+                                                      
         ".search-statustext {font-size:11pt;}\n "+    
-    	".left-scroll-area{ \nwidth:"+  menuWidth+"px;\n}\n"   
+        ".left-scroll-area{ \nwidth:"+  menuWidth+"px;\n}\n"   
     	+".arc-empty-dash-drop-target{\nwidth: "+  menuWidth+"px; \nheight: 2px; \nbackground-color:"+  separatorColor+"; \npadding: 0 0; \nmargin:0;\n}\n"     
         +".left-box{\nwidth:"+  menuWidth+"px;\n}" + "\n.vert-sep{\nwidth:11px;\n}\n"
         +"#search-entry{\nmax-width: 17.667em;\n}\n#search-entry:focus { \nborder-color:"+  separatorColor+";\n}\n"

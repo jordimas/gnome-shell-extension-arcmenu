@@ -29,6 +29,7 @@ const AppFavorites = imports.ui.appFavorites;
 const Constants = Me.imports.constants;
 const Dash = imports.ui.dash;
 const DND = imports.ui.dnd;
+const ExtensionUtils = imports.misc.extensionUtils;
 const Gettext = imports.gettext.domain(Me.metadata['gettext-domain']);
 const LoginManager = imports.misc.loginManager;
 const Main = imports.ui.main;
@@ -188,7 +189,37 @@ var AppRightClickMenu = class ArcMenu_AppRightClickMenu extends PopupMenu.PopupM
                             this.closeMenus();
                         });
                     }
-    
+
+                    let desktopIcons = Main.extensionManager ?
+                            Main.extensionManager.lookup("desktop-icons@csoriano") : //gnome-shell >= 3.33.4
+                            ExtensionUtils.extensions["desktop-icons@csoriano"];
+                    let desktopIconsNG = Main.extensionManager ?
+                            Main.extensionManager.lookup("ding@rastersoft.com") : //gnome-shell >= 3.33.4
+                            ExtensionUtils.extensions["ding@rastersoft.com"];        
+                    if((desktopIcons && desktopIcons.stateObj) || (desktopIconsNG && desktopIconsNG.stateObj) ){
+                        this._appendSeparator();
+                        let fileSource = this.appInfo.get_filename();
+                        let fileDestination = GLib.get_user_special_dir(imports.gi.GLib.UserDirectory.DIRECTORY_DESKTOP);
+                        let file = Gio.File.new_for_path(fileDestination + "/" + this._app.get_id());
+                        let exists = file.query_exists(null);
+                        if(exists){
+                            let item = this._appendMenuItem(_("Delete Desktop Shortcut"));
+                            item.connect('activate', () => {
+                                if(fileSource && fileDestination)
+                                    Util.spawnCommandLine("rm " + fileDestination + "/" + this._app.get_id());
+                                this.close();
+                            });
+                        }
+                        else{
+                            let item = this._appendMenuItem(_("Create Desktop Shortcut"));
+                            item.connect('activate', () => {
+                                if(fileSource && fileDestination)
+                                    Util.spawnCommandLine("cp " + fileSource + " " + fileDestination);
+                                this.close();
+                            });
+                        }
+                    }
+
                     let canFavorite = global.settings.is_writable('favorite-apps');
                     if (canFavorite) {
                         this._appendSeparator();
@@ -688,8 +719,10 @@ var MintButton = class ArcMenu_MintButton extends SessionButton {
     }
     // Activate the button (Shutdown)
     activate() {
-        if(this._app)
+        if(this._app){
+            this._button.leftClickMenu.toggle();
             this._app.open_new_window(-1);
+        }
         else if(this._command === "ArcMenu_LogOut"){
             this._button.isRunning = false;
             this._button.leftClickMenu.toggle();
@@ -1032,6 +1065,10 @@ var ShortcutMenuItem = Utils.createClass({
                 this._command='org.gnome.Software.desktop';
             else if(GLib.find_program_in_path('pamac-manager'))
                 this._command='pamac-manager.desktop';
+            else if(GLib.find_program_in_path('io.elementary.appcenter')){
+                this._command='io.elementary.appcenter.desktop';
+                icon = 'pop-shop';
+            }  
         }
         this._app = Shell.AppSystem.get_default().lookup_app(this._command);
         //---------
@@ -1986,13 +2023,16 @@ var CategoryMenuItem =  Utils.createClass({
             y_align: Clutter.ActorAlign.CENTER
         });
         this.actor.add_child(this.label);
-        this._arrowIcon = new St.Icon({
-            icon_name: 'go-next-symbolic',
-            style_class: 'popup-menu-icon',
-            x_align: St.Align.END,
-            icon_size: 12,
-        });
-        this.actor.add_child(this._arrowIcon);
+        if(!this._button._settings.get_boolean("disable-category-arrows")){
+            this._arrowIcon = new St.Icon({
+                icon_name: 'go-next-symbolic',
+                style_class: 'popup-menu-icon',
+                x_align: St.Align.END,
+                icon_size: 12,
+            });
+            this.actor.add_child(this._arrowIcon);
+        }
+
         this.actor.label_actor = this.label;
         this.actor.connect('notify::hover', this._onHover.bind(this));
         this.actor.connect('notify::active',()=> this.setActive(this.actor.active, false));
@@ -2124,13 +2164,15 @@ var SimpleMenuItem = Utils.createClass({
             y_align: Clutter.ActorAlign.CENTER
         });
         this.actor.add_child(categoryLabel);
-        this._arrowIcon = new St.Icon({
-            icon_name: 'go-next-symbolic',
-            style_class: 'popup-menu-icon',
-            x_align: St.Align.END,
-            icon_size: 12,
-        });
-        this.actor.add_child(this._arrowIcon);
+        if(!this._button._settings.get_boolean("disable-category-arrows")){
+            this._arrowIcon = new St.Icon({
+                icon_name: 'go-next-symbolic',
+                style_class: 'popup-menu-icon',
+                x_align: St.Align.END,
+                icon_size: 12,
+            });
+            this.actor.add_child(this._arrowIcon);
+        }
         this.actor.label_actor = categoryLabel;
         this.actor.connect('notify::hover', this._onHover.bind(this));
         

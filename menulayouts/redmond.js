@@ -129,6 +129,8 @@ var createMenu = class {
             vertical: true,
             style_class: 'right-box'
         });
+        let rightPanelWidth = this._settings.get_int('right-panel-width');
+        this.rightBox.style = "min-width: " + rightPanelWidth + "px;";
         this._createRightBox();
         //Add Vert Separator to Main Box
         this.mainBox.add(this._createVertSeparator(), {
@@ -310,6 +312,8 @@ var createMenu = class {
         appsScrollBoxAdj.set_value(0);
     }
     _redisplayRightSide(){
+        let rightPanelWidth = this._settings.get_int('right-panel-width');
+        this.rightBox.style = "min-width: " + rightPanelWidth + "px;";
         this.rightBox.destroy_all_children();
         this._createRightBox();
    
