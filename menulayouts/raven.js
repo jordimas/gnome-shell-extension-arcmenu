@@ -90,6 +90,7 @@ var createMenu = class{
             x_align: St.Align.START,
             y_align: St.Align.MIDDLE
         });
+        this.placesBottomBox.style = "spacing: 5px;";
         this.placesBox.style = "margin: 0px 0px 0px 0px; spacing: 10px;background-color:rgba(186, 196,201, 0.1) ; padding: 5px 5px;"+
                                 "border-color:rgba(186, 196,201, 0.2) ; border-right-width: 1px;";
         this.mainBox.add( this.placesBox, {
