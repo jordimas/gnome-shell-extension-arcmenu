@@ -447,12 +447,14 @@ var createMenu = class{
         this.categoryDirectories=[];
         
         let categoryMenuItem = new MW.CategoryMenuItem(this, "", "Home Screen");
-        categoryMenuItem.actor.remove_actor(categoryMenuItem._arrowIcon);
+        if(categoryMenuItem._arrowIcon)
+            categoryMenuItem.actor.remove_actor(categoryMenuItem._arrowIcon);
         categoryMenuItem._icon.icon_size = 18;
         this.categoryDirectories.push(categoryMenuItem);
 
         categoryMenuItem = new MW.CategoryMenuItem(this, "", "All Programs");
-        categoryMenuItem.actor.remove_actor(categoryMenuItem._arrowIcon);
+        if(categoryMenuItem._arrowIcon)
+            categoryMenuItem.actor.remove_actor(categoryMenuItem._arrowIcon);
         categoryMenuItem._icon.icon_size = 18;
         this.categoryDirectories.push(categoryMenuItem);
       
@@ -469,7 +471,8 @@ var createMenu = class{
                     this.applicationsByCategory[categoryId] = [];
                     this._loadCategory(categoryId, dir);
                     let categoryMenuItem = new MW.CategoryMenuItem(this, dir);
-                    categoryMenuItem.actor.remove_actor(categoryMenuItem._arrowIcon);
+                    if(categoryMenuItem._arrowIcon)
+                        categoryMenuItem.actor.remove_actor(categoryMenuItem._arrowIcon);
                     categoryMenuItem._icon.icon_size = 18;
                     this.categoryDirectories.push(categoryMenuItem);
                 }
