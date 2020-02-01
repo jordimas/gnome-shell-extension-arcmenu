@@ -702,7 +702,7 @@ var AddCustomLinkDialogWindow = GObject.registerClass(
                 if(this._dialogType !== Constants.DIALOG_TYPE.Directories_Shortcuts)
                     this.newPinnedAppsArray.push(iconEntry.get_text());
                 else
-                    this.newPinnedAppsArray.push("");
+                    this.newPinnedAppsArray.push("ArcMenu_Folder");
                 this.newPinnedAppsArray.push(cmdEntry.get_text());
                 this.addResponse = true;
                 this.response(-10);
@@ -4745,6 +4745,9 @@ function getIconPath(listing){
     }
     else if(listing[1] == listing[2])
         path = listing[2];
+    else if(listing[1] == "ArcMenu_Folder"){
+        path = listing[2];
+    }
     else
         path = null;
 
