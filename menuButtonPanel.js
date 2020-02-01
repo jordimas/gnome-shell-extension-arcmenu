@@ -191,6 +191,8 @@ var ApplicationsButton =   Utils.defineClass({
                 this.MenuLayout = new MenuLayouts.runner.createMenu(this);
             else if (layout == Constants.MENU_LAYOUT.Chromebook)
                 this.MenuLayout = new MenuLayouts.chromebook.createMenu(this);
+            else if (layout == Constants.MENU_LAYOUT.Raven)
+                this.MenuLayout = new MenuLayouts.raven.createMenu(this);
             ///--------------------------------------------------------------------
             this._setMenuPositionAlignment();
             this.updateStyle();

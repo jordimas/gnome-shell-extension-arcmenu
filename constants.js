@@ -123,7 +123,8 @@ var MENU_LAYOUT = { // See: org.gnome.shell.extensions.arc-menu.menu-position
     Budgie: 11,
     Windows: 12,
     Runner: 13,
-    Chromebook: 14
+    Chromebook: 14,
+    Raven: 15
 };
 
 var MENU_APPEARANCE = {
@@ -223,6 +224,9 @@ var MENU_STYLE_CHOOSER = {
         },
         {   thumbnail: '/media/layouts/chromebook-menu.svg',
             name: 'Chromebook Style'
+        },
+        {   thumbnail: '/media/layouts/chromebook-menu.svg',
+            name: 'Raven Menu Style'
         }
     ]
 };

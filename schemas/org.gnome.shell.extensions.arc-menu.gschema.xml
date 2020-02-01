@@ -16,6 +16,7 @@
     <value value='12' nick='Windows'/>
     <value value='13' nick='Runner'/>
     <value value='14' nick='Chromebook'/>
+    <value value='15' nick='Raven'/>
   </enum>
   <enum id='org.gnome.shell.extensions.arc-menu.menu-hotkey'>
     <value value='0' nick='Undefined'/>

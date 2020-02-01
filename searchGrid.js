@@ -435,6 +435,8 @@ var SearchResults = class ArcMenu_SearchResultsGrid {
 
         if(this.layout == Constants.MENU_LAYOUT.Elementary || this.layout == Constants.MENU_LAYOUT.UbuntuDash)
             MAX_APPS_SEARCH_RESULTS_ROWS = 6;
+        else if(this.layout == Constants.MENU_LAYOUT.Raven)
+            MAX_APPS_SEARCH_RESULTS_ROWS = 3;
         else 
             MAX_APPS_SEARCH_RESULTS_ROWS = 4; 
 
