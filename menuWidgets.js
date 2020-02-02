@@ -1138,12 +1138,12 @@ var ShortcutMenuItem = Utils.createClass({
         let layout = this._button._settings.get_enum('menu-layout');        
         if(layout == Constants.MENU_LAYOUT.Elementary || layout == Constants.MENU_LAYOUT.UbuntuDash){
             this._iconSize = 52;
-            this.actor.style ='padding: 5px; spacing: 0px; width:95px; height:95px;';
+            this.actor.style ='border-radius:4px; padding: 5px; spacing: 0px; width:95px; height:95px;';
         }
             
         else{
             this._iconSize = 36;  
-            this.actor.style ='padding: 5px; spacing: 0px; width:80px;height:80px;';
+            this.actor.style ='border-radius:4px; padding: 5px; spacing: 0px; width:80px;height:80px;';
         }
         this._icon.icon_size = this._iconSize;
         this.label.y_expand = true;
@@ -1561,9 +1561,9 @@ var FavoritesMenuIcon = Utils.createClass({
 
         let layout = this._button._settings.get_enum('menu-layout');
         if(layout == Constants.MENU_LAYOUT.Elementary || layout == Constants.MENU_LAYOUT.UbuntuDash)
-            this.actor.style ='padding: 5px; spacing: 0px; width:95px; height:95px;';
+            this.actor.style ='border-radius:4px; padding: 5px; spacing: 0px; width:95px; height:95px;';
         else
-            this.actor.style ='padding: 5px; spacing: 0px; width:80px;height:80px;';
+            this.actor.style ='border-radius:4px; padding: 5px; spacing: 0px; width:80px;height:80px;';
         
         //Modifiy the Default Pinned Apps---------------------
         if(this._name == "Arc Menu Settings"){
@@ -1687,9 +1687,9 @@ var ApplicationMenuIcon = Utils.createClass({
 
         let layout = this._button._settings.get_enum('menu-layout');
         if(layout == Constants.MENU_LAYOUT.Elementary || layout == Constants.MENU_LAYOUT.UbuntuDash)
-            this.actor.style ='padding: 5px; spacing: 0px; width:95px; height:95px;';
+            this.actor.style ='border-radius:4px; padding: 5px; spacing: 0px; width:95px; height:95px;';
         else
-            this.actor.style ='padding: 5px; spacing: 0px; width:80px;height:80px;';
+            this.actor.style ='border-radius:4px; padding: 5px; spacing: 0px; width:80px;height:80px;';
  
         this._iconBin = new St.Bin({
             y_align: St.Align.END,
@@ -2681,6 +2681,7 @@ var SearchBox = class ArcMenu_SearchBox{
             track_hover: true,
             can_focus: true
         });
+        this._stEntry.style = "border-radius:4px; padding: 7px 9px;";
         this._findIcon = new St.Icon({
             style_class: 'search-entry-icon',
             icon_name: 'edit-find-symbolic',

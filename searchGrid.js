@@ -67,7 +67,7 @@ var ListSearchResult = class ArcMenu_ListSearchResultGrid {
             });  
         }
         this._termsChangedId = 0;
-        
+        this.menuItem.actor.style =  "border-radius:4px;";
         this.layout = this._settings.get_enum('menu-layout');
         let ICON_SIZE = 32;
         if(this.layout == Constants.MENU_LAYOUT.Elementary || this.layout == Constants.MENU_LAYOUT.UbuntuDash){
@@ -82,7 +82,7 @@ var ListSearchResult = class ArcMenu_ListSearchResultGrid {
         if(icon) 
             this.menuItem.actor.add_child(icon);
         else
-            this.menuItem.actor.style = (ICON_SIZE==32) ?  "padding: 12px 0px;":  "padding: 9px 0px;";
+            this.menuItem.actor.style = (ICON_SIZE==32) ?  "border-radius:4px; padding: 12px 0px;":  "padding: 9px 0px;";
 
         let title = new St.Label({ 
             text: this.metaInfo['name'],
@@ -113,6 +113,10 @@ var ListSearchResult = class ArcMenu_ListSearchResultGrid {
             descriptionBox.add(descriptionLabel);
 
             this.menuItem.actor.add_child(descriptionBox);
+        }
+        else if(this.layout == Constants.MENU_LAYOUT.Raven){
+            this.menuItem.actor.style = null;
+            this.menuItem.actor.add_child(title);
         }
         else{
             this.menuItem.actor.add_child(title);
@@ -150,11 +154,11 @@ var AppSearchResult = class  ArcMenu_AppSearchResultGrid {
             this.menuItem = new MW.SearchResultItem(this._button); 
             this.menuItem.actor.vertical = true;
             if(this.layout == Constants.MENU_LAYOUT.Elementary || this.layout == Constants.MENU_LAYOUT.UbuntuDash){
-                this.menuItem.actor.style ='padding: 5px; spacing: 0px; width:95px; height:95px;';
+                this.menuItem.actor.style ='border-radius:4px; padding: 5px; spacing: 0px; width:95px; height:95px;';
                 ICON_SIZE = 52;
             }
             else {
-                this.menuItem.actor.style ='padding: 5px; spacing: 0px; width:80px;height:80px;';
+                this.menuItem.actor.style ='border-radius:4px; padding: 5px; spacing: 0px; width:80px;height:80px;';
                 ICON_SIZE = 36;
             } 
             this._iconBin = new St.Bin({
@@ -170,10 +174,10 @@ var AppSearchResult = class  ArcMenu_AppSearchResultGrid {
             } 
             else{
                 if(this.layout == Constants.MENU_LAYOUT.Elementary || this.layout == Constants.MENU_LAYOUT.UbuntuDash){
-                    this.menuItem.actor.style = "padding: 25px 0px;";
+                    this.menuItem.actor.style = "border-radius:4px; padding: 25px 0px;";
                 }
                 else {
-                    this.menuItem.actor.style = "padding: 20px 0px;";
+                    this.menuItem.actor.style = "border-radius:4px; padding: 20px 0px;";
                 }
             } 
             
@@ -806,7 +810,7 @@ var ArcSearchProviderInfo =Utils.createClass({
         this._content.add_actor(icon);
 
         if(this.layout == Constants.MENU_LAYOUT.Elementary || this.layout == Constants.MENU_LAYOUT.UbuntuDash){
-            this.actor.style = "spacing: 0px; width: 190px;";
+            this.actor.style = "border-radius:4px; spacing: 0px; width: 190px;";
             icon.icon_size = 32;
         }
         if(this.layout == Constants.MENU_LAYOUT.Raven){
@@ -814,7 +818,7 @@ var ArcSearchProviderInfo =Utils.createClass({
             this._content.style = "spacing: 12px;";
         }
         else{
-            this.actor.style = "spacing: 0px; width: 150px;";
+            this.actor.style = "border-radius:4px; spacing: 0px; width: 150px;";
             icon.icon_size = 24;
         } 
         this.nameLabel = new St.Label({ 
