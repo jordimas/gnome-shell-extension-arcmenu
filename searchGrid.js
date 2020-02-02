@@ -89,6 +89,7 @@ var ListSearchResult = class ArcMenu_ListSearchResultGrid {
             y_align: Clutter.ActorAlign.CENTER 
         });
         if(this._settings.get_boolean('krunner-show-details') && this.layout == Constants.MENU_LAYOUT.Raven){
+            this.menuItem.actor.style = "height:40px";
             title.style = "font-weight: bold;";
 
             let descriptionBox = new St.BoxLayout({
@@ -100,11 +101,12 @@ var ListSearchResult = class ArcMenu_ListSearchResultGrid {
             let text = this.metaInfo['description'] ? this.metaInfo['description'] : '';
             if(text == '')
                 text = app.get_description() ? app.get_description() : '';
-            
+            title.y_expand = true;
             let descriptionLabel = new St.Label({ 
                 text: text,
                 x_align: Clutter.ActorAlign.START,
-                x_expand: true
+                x_expand: true,
+                y_align: Clutter.ActorAlign.CENTER 
             });
 
             descriptionBox.add(title);                           
@@ -821,6 +823,7 @@ var ArcSearchProviderInfo =Utils.createClass({
             y_align: Clutter.ActorAlign.CENTER
         });
         if(this._settings.get_boolean('krunner-show-details') && this.layout == Constants.MENU_LAYOUT.Raven){
+            this.actor.style = "height:40px";
             this.nameLabel.style = 'font-weight: bold;';
             let box = new St.BoxLayout({vertical:true});
             icon.icon_size = 32;
@@ -832,10 +835,16 @@ var ArcSearchProviderInfo =Utils.createClass({
                 y_align: Clutter.ActorAlign.CENTER,
                 x_expand: true
             });
-
+            this.nameLabel.y_expand = true;
             box.add(this.nameLabel);
             box.add(descriptionLabel);
             this._content.add_actor(box);
+            this._content.remove_actor(icon);
+        }
+        else if(this.layout == Constants.MENU_LAYOUT.Raven){
+            this.actor.style = "height:25px";
+            this._content.remove_actor(icon);
+            this._content.add_actor(this.nameLabel);
         }
         else{
             this._content.add_actor(this.nameLabel);
