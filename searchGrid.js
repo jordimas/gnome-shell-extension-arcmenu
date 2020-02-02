@@ -79,7 +79,7 @@ var ListSearchResult = class ArcMenu_ListSearchResultGrid {
         
         // An icon for, or thumbnail of, content
         let icon = this.metaInfo['createIcon'](ICON_SIZE);
-        if (icon) 
+        if(icon) 
             this.menuItem.actor.add_child(icon);
         else
             this.menuItem.actor.style = (ICON_SIZE==32) ?  "padding: 12px 0px;":  "padding: 9px 0px;";
@@ -95,8 +95,8 @@ var ListSearchResult = class ArcMenu_ListSearchResultGrid {
             let descriptionBox = new St.BoxLayout({
                 vertical:true
             });
-
-            icon.icon_size = 32;
+            if(icon) 
+                icon.icon_size = 32;
             
             let text = this.metaInfo['description'] ? this.metaInfo['description'] : '';
             if(text == '')
