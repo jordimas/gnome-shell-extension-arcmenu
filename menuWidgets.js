@@ -2046,7 +2046,7 @@ var CategoryMenuItem =  Utils.createClass({
                 icon_size: MEDIUM_ICON_SIZE
             });
             if(title!=null){
-                this._icon.icon_name = title == "All Programs" ?'emblem-system-symbolic': 'emblem-favorite-symbolic';
+                this._icon.icon_name = title == "All Programs" ? 'view-grid-symbolic': 'emblem-favorite-symbolic';
             }
             else if(!this._category){
                 this._icon.icon_name= 'emblem-favorite-symbolic';
@@ -2192,7 +2192,7 @@ var SimpleMenuItem = Utils.createClass({
             icon_size: MEDIUM_ICON_SIZE
         });
         if(title!=null){
-            this._icon.icon_name = title == "All Programs" ?'emblem-system-symbolic': 'emblem-favorite-symbolic';
+            this._icon.icon_name = title == "All Programs" ? 'view-grid-symbolic': 'emblem-favorite-symbolic';
         }
         else if(!this._category){
             this._icon.icon_name= 'emblem-favorite-symbolic';
@@ -2405,7 +2405,7 @@ var CategorySubMenuItem = Utils.createClass({
         this.icon.icon_size = MEDIUM_ICON_SIZE;
 
         if(title!=null){
-            this.icon.icon_name = title == "All Programs" ?'emblem-system-symbolic': 'emblem-favorite-symbolic';
+            this.icon.icon_name = title == "All Programs" ? 'view-grid-symbolic': 'emblem-favorite-symbolic';
         }
         else if(!this._category){
             this.icon.icon_name= 'emblem-favorite-symbolic';
