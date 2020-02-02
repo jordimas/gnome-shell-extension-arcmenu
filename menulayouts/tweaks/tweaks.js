@@ -69,6 +69,8 @@ var TweaksDialog = GObject.registerClass(
                 this._loadRedmondMenuTweaks(vbox)
             else if(menuLayout == Constants.MENU_LAYOUT.UbuntuDash)
                 this._loadUbuntuDashTweaks(vbox);
+            else if(menuLayout == Constants.MENU_LAYOUT.Raven)
+                this._loadRavenTweaks(vbox);
             else if(menuLayout == Constants.MENU_LAYOUT.Budgie)
                 this._loadBudgieMenuTweaks(vbox);
             else if(menuLayout == Constants.MENU_LAYOUT.Windows)
@@ -290,6 +292,85 @@ var TweaksDialog = GObject.registerClass(
             buttonsPage.add(pinnedAppsSeparatorFrame);
             
             
+        }
+        _loadRavenTweaks(vbox){
+            let notebook = new PW.Notebook();
+
+            let generalPage = new PW.NotebookPage(_("General"));
+            notebook.append_page(generalPage);
+
+            let pinnedAppsPage = new Prefs.PinnedAppsPage(this._settings);
+            notebook.append_page(pinnedAppsPage);
+
+            let applicationShortcutsPage = new Prefs.ApplicationShortcutsPage(this._settings);
+            applicationShortcutsPage._title.label = "<b>" + _("Shortcuts") + "</b>";
+            notebook.append_page(applicationShortcutsPage);
+   
+            vbox.add(notebook);
+
+            let generalTweaksFrame = new PW.FrameBox();
+            let homeScreenRow = new PW.FrameBoxRow();
+            let homeScreenLabel = new Gtk.Label({
+                label: _('Default Screen'),
+                xalign:0,
+                hexpand: true,
+            });   
+            let homeScreenCombo = new Gtk.ComboBoxText({ halign: Gtk.Align.END });
+            homeScreenCombo.append_text(_("Home Screen"));
+            homeScreenCombo.append_text(_("All Applications"));
+            let homeScreen = this._settings.get_boolean('enable-ubuntu-homescreen');
+            homeScreenCombo.set_active(homeScreen ? 0 : 1);
+            homeScreenCombo.connect('changed', (widget) => {
+                let enable =  widget.get_active() ==0 ? true : false;
+                this._settings.set_boolean('enable-ubuntu-homescreen', enable);
+            });
+            homeScreenRow.add(homeScreenLabel);
+            homeScreenRow.add(homeScreenCombo);
+            generalTweaksFrame.add(homeScreenRow);
+            generalPage.add(generalTweaksFrame);
+
+            let showMoreDetailsFrame = new PW.FrameBox();
+            let showMoreDetailsRow = new PW.FrameBoxRow();
+            let showMoreDetailsLabel = new Gtk.Label({
+                label: _("Show Extra Large Icons with App Descriptions"),
+                use_markup: true,
+                xalign: 0,
+                hexpand: true
+            });
+
+            let showMoreDetailsSwitch = new Gtk.Switch({ halign: Gtk.Align.END });
+            showMoreDetailsSwitch.set_active(this._settings.get_boolean('krunner-show-details'));
+            showMoreDetailsSwitch.connect('notify::active', (widget) => {
+                this._settings.set_boolean('krunner-show-details', widget.get_active());
+            });
+
+            showMoreDetailsRow.add(showMoreDetailsLabel);
+            showMoreDetailsRow.add(showMoreDetailsSwitch);
+            showMoreDetailsFrame.add(showMoreDetailsRow);
+            generalPage.add(showMoreDetailsFrame);
+      
+            let tweakStyleFrame = new PW.FrameBox();
+            let tweakStyleRow = new PW.FrameBoxRow();
+            let tweakStyleLabel = new Gtk.Label({
+                label: _("Disable Menu Arrow"),
+                use_markup: true,
+                xalign: 0,
+                hexpand: true
+            });
+
+            let tweakStyleSwitch = new Gtk.Switch({ 
+                halign: Gtk.Align.END,
+                tooltip_text: _("Disable current theme menu arrow pointer")
+            });
+            tweakStyleSwitch.set_active(this._settings.get_boolean('remove-menu-arrow'));
+            tweakStyleSwitch.connect('notify::active', (widget) => {
+                this._settings.set_boolean('remove-menu-arrow', widget.get_active());
+            });
+
+            tweakStyleRow.add(tweakStyleLabel);
+            tweakStyleRow.add(tweakStyleSwitch);
+            tweakStyleFrame.add(tweakStyleRow);
+            generalPage.add(tweakStyleFrame);
         }
         _loadMintMenuTweaks(vbox){
             let mintMenuTweaksFrame = new PW.FrameBox();

@@ -187,7 +187,7 @@ var MenuSettingsController = class {
         this._menuButton.updateStyle();
     }
     _updateKRunnerSearchLayout(){
-        if(this._settings.get_enum('menu-layout') == Constants.MENU_LAYOUT.Runner)
+        if(this._settings.get_enum('menu-layout') == Constants.MENU_LAYOUT.Runner || this._settings.get_enum('menu-layout') == Constants.MENU_LAYOUT.Raven)
             this._menuButton.updateSearch();
     }
     _updateMenuHeight(){
@@ -195,8 +195,8 @@ var MenuSettingsController = class {
     }
     _updateFavorites(){
         let layout = this._settings.get_enum('menu-layout');
-        if(layout == Constants.MENU_LAYOUT.Default || 
-            layout == Constants.MENU_LAYOUT.Windows || layout == Constants.MENU_LAYOUT.UbuntuDash){
+        if(layout == Constants.MENU_LAYOUT.Default || layout == Constants.MENU_LAYOUT.UbuntuDash ||
+            layout == Constants.MENU_LAYOUT.Windows || layout == Constants.MENU_LAYOUT.Raven){
             if(this._menuButton.getShouldLoadFavorites())
                 this._menuButton._loadFavorites();
             if(this._menuButton.getCurrentMenu() == Constants.CURRENT_MENU.FAVORITES)

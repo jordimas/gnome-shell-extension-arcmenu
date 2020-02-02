@@ -500,7 +500,7 @@ var Tooltip = class ArcMenu_Tooltip{
         this.flipY = false;
         this.actor = new St.Label({
             style_class: 'dash-label',
-            text: text ? text : "",
+            text: text ? _(text) : "",
             opacity: 0,
             y_align: .5
         });
@@ -683,6 +683,50 @@ var PlaceButtonItem = class ArcMenu_PlaceButtonItem extends SessionButton {
         this._info.launch();
     }
 
+};
+// Menu Category item class
+var CategoryMenuButton = class ArcMenu_CategoryMenuButton extends SessionButton {
+    // Initialize menu item
+    constructor(button, category, title=null) {
+        let name;
+        let icon;
+        if(category){
+            name = category.get_name();
+            icon = category.get_icon().to_string();
+        }
+        else if(title=="Home Screen"){
+            name = _("Home Screen");
+            icon = 'emblem-favorite-symbolic';
+        }   
+        else if(title!=null){
+            name = title == "All Programs" ? _("All Programs") : _("Favorites");
+            icon = title == "All Programs" ? 'view-grid-symbolic': 'emblem-favorite-symbolic';
+        }   
+        else {
+            name = _("Frequent Apps");
+            icon = 'emblem-favorite-symbolic';
+        }
+        super(button, _(name), icon);
+        this.actor.style = "padding: 10px; min-height: 0px; border-width: 0px;";
+        this._button = button;
+        this._category = category;
+        this.title = title;
+        this.disableMenuToggle();
+
+    }
+    // Activate menu item (Display applications in category)
+    activate(event) {
+        if (this._category)
+            this._button.selectCategory(this._category);
+        else if(this.title =="All Programs")
+            this._button._displayAllApps(this.actor);
+        else if(this.title =="Home Screen")
+            this._button._displayFavorites();
+        else if(this.title == "Favorites")
+            this._button._displayGnomeFavorites();
+        else
+            this._button.selectCategory("Frequent Apps");   
+    }
 };
 // Settings Button
 var MintButton = class ArcMenu_MintButton extends SessionButton {
@@ -1080,7 +1124,7 @@ var ShortcutMenuItem = Utils.createClass({
         });
         this.actor.add_child(this._icon);
         this.label = new St.Label({
-            text: name, y_expand: true,
+            text: _(name), y_expand: true,
             y_align: Clutter.ActorAlign.CENTER
         });
         this.actor.connect('notify::hover',this._onHover.bind(this));
@@ -2017,7 +2061,7 @@ var CategoryMenuItem =  Utils.createClass({
             this.actor.style = "padding: 10px;"
         }
         this.label = new St.Label({
-            text: this.name,
+            text: _(this.name),
             y_expand: true,
             x_expand:true,
             y_align: Clutter.ActorAlign.CENTER
@@ -2158,7 +2202,7 @@ var SimpleMenuItem = Utils.createClass({
         }
         this.actor.add_child(this._icon);
         let categoryLabel = new St.Label({
-            text: this.name,
+            text: _(this.name),
             y_expand: true,
             x_expand:true,
             y_align: Clutter.ActorAlign.CENTER
