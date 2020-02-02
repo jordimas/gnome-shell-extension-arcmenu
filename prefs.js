@@ -4865,7 +4865,7 @@ function saveCSS(settings){
         +"\n.arc-menu-icon:hover,\n.arc-menu-icon:active{\ncolor: "+menuButtonActiveColor+";\n}\n"
         
         +".arc-menu-button{ -st-icon-style: symbolic;  border-radius: 32px; border: 0; padding: 13px;\n background-color:transparent;}"
-        +".arc-menu-button:hover, arc-menu-button:focus{ background-color: rgba(156, 166, 171, 0.3);}"
+        +".arc-menu-button:hover, arc-menu-button:focus{ background-color: rgba(146, 146, 146, 0.25);}"
 
         +".arc-menu-action{background-color:transparent;\ncolor:"+  menuForegroundColor+";\n}\n"
         +".arc-menu-action:hover, .arc-menu-action:focus {\ncolor:"+ lighten_rgb( menuForegroundColor,0.15)+";\n background-color:"+  highlightColor+";\n}\n"
