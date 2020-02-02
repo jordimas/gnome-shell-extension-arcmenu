@@ -629,11 +629,8 @@ var SessionButton = class ArcMenu_SessionButton{
             can_focus: true,
             track_hover: true,
             accessible_name: accessible_name ? accessible_name : "",
-            style_class: gnome36 ? "button" :'system-menu-action'
+            style_class: "arc-menu-button"
         });
-        if(gnome36){
-            this.actor.style = "padding: 13px; min-height: 0px;";
-        }
 
         this.tooltip = new Tooltip(this._button, this.actor, accessible_name);
         this.tooltip.isButton = true;
