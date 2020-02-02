@@ -256,11 +256,11 @@ var createMenu = class{
             addStyle ? this.searchBox._stEntry.set_name('arc-search-entry') : this.searchBox._stEntry.set_name('search-entry');
         }
         if(this.placesBottomBox){
-            this.placesBottomBox.get_children().forEach(function (actor) {
+            this.placesBottomBox.get_children().forEach((actor) => {
                 if(actor instanceof St.Button){
                     addStyle ? actor.add_style_class_name('arc-menu-action') : actor.remove_style_class_name('arc-menu-action');
                 }
-            }.bind(this));
+            });
         } 
         let themeContext = St.ThemeContext.get_for_stage(global.stage);
         let scaleFactor = themeContext.scale_factor;
@@ -345,7 +345,7 @@ var createMenu = class{
     _displayGnomeFavorites(){
         let appList = AppFavorites.getAppFavorites().getFavorites();
 
-        appList.sort(function (a, b) {
+        appList.sort((a, b) => {
             return a.get_name().toLowerCase() > b.get_name().toLowerCase();
         });
 
@@ -539,7 +539,7 @@ var createMenu = class{
         this._applicationsButtons.forEach((value,key,map) => {
             appList.push(key);
         });
-        appList.sort(function (a, b) {
+        appList.sort((a, b) => {
             return a.get_name().toLowerCase() > b.get_name().toLowerCase();
         });
         this._displayButtons(appList, _("All Programs"));
@@ -559,7 +559,7 @@ var createMenu = class{
                 applist = applist.concat(this.applicationsByCategory[directory]);
         }
         if(category_menu_id != "Frequent Apps"){
-            applist.sort(function (a, b) {
+            applist.sort((a, b) => {
                 return a.get_name().toLowerCase() > b.get_name().toLowerCase();
             });
         }

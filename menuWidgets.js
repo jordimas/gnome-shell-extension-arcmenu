@@ -629,11 +629,8 @@ var SessionButton = class ArcMenu_SessionButton{
             can_focus: true,
             track_hover: true,
             accessible_name: accessible_name ? accessible_name : "",
-            style_class: gnome36 ? "button" :'system-menu-action'
+            style_class: "arc-menu-button"
         });
-        if(gnome36){
-            this.actor.style = "padding: 13px; min-height: 0px;";
-        }
 
         this.tooltip = new Tooltip(this._button, this.actor, accessible_name);
         this.tooltip.isButton = true;
@@ -784,11 +781,11 @@ var MintButton = class ArcMenu_MintButton extends SessionButton {
         else if(this._command === "ArcMenu_Suspend"){
             this._button.leftClickMenu.toggle();
             let loginManager = LoginManager.getLoginManager();
-            loginManager.canSuspend(function (result) {
+            loginManager.canSuspend((result) => {
                 if (result) {
                     loginManager.suspend();
                 }
-            }.bind(this));
+            });
         }
         else{
             this._button.leftClickMenu.toggle();
@@ -954,11 +951,11 @@ var SuspendButton = class ArcMenu_SuspendButton extends SessionButton {
     // Activate the button (Suspend the system)
     activate() {
         let loginManager = LoginManager.getLoginManager();
-        loginManager.canSuspend(function (result) {
+        loginManager.canSuspend((result) => {
             if (result) {
                 loginManager.suspend();
             }
-        }.bind(this));
+        });
     }
 };
 
@@ -2049,7 +2046,7 @@ var CategoryMenuItem =  Utils.createClass({
                 icon_size: MEDIUM_ICON_SIZE
             });
             if(title!=null){
-                this._icon.icon_name = title == "All Programs" ?'emblem-system-symbolic': 'emblem-favorite-symbolic';
+                this._icon.icon_name = title == "All Programs" ? 'view-grid-symbolic': 'emblem-favorite-symbolic';
             }
             else if(!this._category){
                 this._icon.icon_name= 'emblem-favorite-symbolic';
@@ -2195,7 +2192,7 @@ var SimpleMenuItem = Utils.createClass({
             icon_size: MEDIUM_ICON_SIZE
         });
         if(title!=null){
-            this._icon.icon_name = title == "All Programs" ?'emblem-system-symbolic': 'emblem-favorite-symbolic';
+            this._icon.icon_name = title == "All Programs" ? 'view-grid-symbolic': 'emblem-favorite-symbolic';
         }
         else if(!this._category){
             this._icon.icon_name= 'emblem-favorite-symbolic';
@@ -2408,7 +2405,7 @@ var CategorySubMenuItem = Utils.createClass({
         this.icon.icon_size = MEDIUM_ICON_SIZE;
 
         if(title!=null){
-            this.icon.icon_name = title == "All Programs" ?'emblem-system-symbolic': 'emblem-favorite-symbolic';
+            this.icon.icon_name = title == "All Programs" ? 'view-grid-symbolic': 'emblem-favorite-symbolic';
         }
         else if(!this._category){
             this.icon.icon_name= 'emblem-favorite-symbolic';
@@ -2484,7 +2481,7 @@ var CategorySubMenuItem = Utils.createClass({
         this._applicationsButtons.forEach((value,key,map) => {
             appList.push(key);
         });
-        appList.sort(function (a, b) {
+        appList.sort((a, b) => {
             return a.get_name().toLowerCase() > b.get_name().toLowerCase();
         }); 
         for (let i = 0; i < appList.length; i++) {
@@ -2612,6 +2609,7 @@ var PlaceMenuItem = Utils.createClass({
             y_expand: true,
             y_align: Clutter.ActorAlign.CENTER
         });
+        this.actor.connect('notify::hover', this._onHover.bind(this));
         this.actor.add_child(this._label);
         this._changedId = this._info.connect('changed', this._propertiesChanged.bind(this));
         if(gnome36){
@@ -2620,7 +2618,22 @@ var PlaceMenuItem = Utils.createClass({
         }
 
     },
-
+    _onHover() {
+        let lbl = this._label.clutter_text;
+        lbl.get_allocation_box();
+        if(lbl.get_layout().is_ellipsized()){
+            if(this.tooltip==undefined && this.actor.hover){
+                this.tooltip = new Tooltip(this._button, this.actor, this._label.text);
+                this.tooltip._onHover();
+            }
+        }
+        else{
+            if(this.tooltip){
+                this.tooltip.destroy();
+                this.tooltip = null;
+            }
+        }
+    },
     // Destroy menu item
     destroy() {
         if (this._changedId) {

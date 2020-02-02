@@ -166,9 +166,6 @@ var createMenu = class {
             vertical: true,
             style_class: 'right-box'
         });
-        let rightPanelWidth = this._settings.get_int('right-panel-width');
-        rightPanelWidth += 45;
-        this.rightBox.style = "min-width: " + rightPanelWidth + "px;";
         this.shorcutsBox = new St.BoxLayout({
             vertical: true
         });
@@ -178,7 +175,11 @@ var createMenu = class {
             y_align: St.Align.START,
             overlay_scrollbars: true,
             style_class: 'vfade'
-        });   
+        }); 
+        let rightPanelWidth = this._settings.get_int('right-panel-width');
+        rightPanelWidth += 45;
+        this.rightBox.style = "width: " + rightPanelWidth + "px;";
+        this.shortcutsScrollBox.style = "width: " + rightPanelWidth + "px;";  
         this.shortcutsScrollBox.connect('key-press-event',(actor,event)=>{
             let key = event.get_key_symbol();
             if(key == Clutter.KEY_Up)
@@ -271,7 +272,8 @@ var createMenu = class {
     _redisplayRightSide(){
         let rightPanelWidth = this._settings.get_int('right-panel-width');
         rightPanelWidth += 45;
-        this.rightBox.style = "min-width: " + rightPanelWidth + "px;";
+        this.rightBox.style = "width: " + rightPanelWidth + "px;";
+        this.shortcutsScrollBox.style = "width: " + rightPanelWidth + "px;";
     }
     // Redisplay the menu
     _redisplay() {
@@ -306,11 +308,11 @@ var createMenu = class {
             addStyle ? this.searchBox._stEntry.set_name('arc-search-entry') : this.searchBox._stEntry.set_name('search-entry');
         }
         if(this.actionsBox){
-            this.actionsBox.get_children().forEach(function (actor) {
+            this.actionsBox.get_children().forEach((actor) => {
                 if(actor instanceof St.Button){
                     addStyle ? actor.add_style_class_name('arc-menu-action') : actor.remove_style_class_name('arc-menu-action');
                 }
-            }.bind(this));
+            });
         }
     }
     // Load data for all menu categories
@@ -408,7 +410,7 @@ var createMenu = class {
     _displayGnomeFavorites(){
         let appList = AppFavorites.getAppFavorites().getFavorites();
 
-        appList.sort(function (a, b) {
+        appList.sort((a, b) => {
             return a.get_name().toLowerCase() > b.get_name().toLowerCase();
         });
 
@@ -500,7 +502,7 @@ var createMenu = class {
         this._applicationsButtons.forEach((value,key,map) => {
             appList.push(key);
         });
-        appList.sort(function (a, b) {
+        appList.sort((a, b) => {
             return a.get_name().toLowerCase() > b.get_name().toLowerCase();
         });
         this._displayButtons(appList);
@@ -520,7 +522,7 @@ var createMenu = class {
                 applist = applist.concat(this.applicationsByCategory[directory]);
         }
         if(category_menu_id != "Frequent Apps"){
-            applist.sort(function (a, b) {
+            applist.sort((a, b) => {
                 return a.get_name().toLowerCase() > b.get_name().toLowerCase();
             });
         }

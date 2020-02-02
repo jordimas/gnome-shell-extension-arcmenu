@@ -98,9 +98,7 @@ var createMenu = class{
             vertical: true,
             style_class: 'right-box'
         });
-        let rightPanelWidth = this._settings.get_int('right-panel-width');
-        rightPanelWidth += 70;
-        this.rightBox.style = "min-width: " + rightPanelWidth + "px;";
+
         this.shorcutsBox = new St.BoxLayout({
             vertical: true
         });
@@ -111,6 +109,10 @@ var createMenu = class{
             overlay_scrollbars: true,
             style_class: 'vfade'
         });   
+        let rightPanelWidth = this._settings.get_int('right-panel-width');
+        rightPanelWidth += 70;
+        this.rightBox.style = "width: " + rightPanelWidth + "px;";
+        this.shortcutsScrollBox.style = "width: " + rightPanelWidth + "px;";
         this.shortcutsScrollBox.connect('key-press-event',(actor,event)=>{
             let key = event.get_key_symbol();
             if(key == Clutter.KEY_Up)
@@ -218,55 +220,54 @@ var createMenu = class{
         });    
         
         //create new section for Power, Lock, Logout, Suspend Buttons
-        this.actionsBox = new PopupMenu.PopupBaseMenuItem({
-            reactive: false,
-            can_focus: false
-        });
-        //check if custom arc menu is enabled
-        if( this._settings.get_boolean('enable-custom-arc-menu'))
-            this.actionsBox.actor.add_style_class_name('arc-menu');
+        this.actionsBox = new St.BoxLayout({
+            vertical: false
+        });	
+        this.actionsBox.style = "spacing: 16px;";
+
         //Logout Button
-        if( this._settings.get_boolean('show-logout-button')){
+        if(this._settings.get_boolean('show-logout-button')){
             let logout = new MW.LogoutButton( this);
-            this.actionsBox.actor.add(logout.actor, {
+            this.actionsBox.add(logout.actor, {
                 expand: true,
                 x_fill: false,
                 y_align: St.Align.START
             });
         }  
         //LockButton
-        if( this._settings.get_boolean('show-lock-button')){
+        if(this._settings.get_boolean('show-lock-button')){
             let lock = new MW.LockButton( this);
-            this.actionsBox.actor.add(lock.actor, {
+            this.actionsBox.add(lock.actor, {
                 expand: true,
                 x_fill: false,
                 y_align: St.Align.START
             });
         }
         //Suspend Button
-        if( this._settings.get_boolean('show-suspend-button')){
+        if(this._settings.get_boolean('show-suspend-button')){
             let suspend = new MW.SuspendButton( this);
-            this.actionsBox.actor.add(suspend.actor, {
+            this.actionsBox.add(suspend.actor, {
                 expand: true,
                 x_fill: false,
                 y_align: St.Align.START
             });
         }
         //Power Button
-        if( this._settings.get_boolean('show-power-button')){
+        if(this._settings.get_boolean('show-power-button')){
             let power = new MW.PowerButton( this);
-            this.actionsBox.actor.add(power.actor, {
+            this.actionsBox.add(power.actor, {
                 expand: true,
                 x_fill: false,
                 y_align: St.Align.START
             });
         }
         //add actionsbox to leftbox             
-        this.leftBox.add( this.actionsBox.actor, {
-            expand: false,
-            x_fill: true,
+        this.leftBox.add(this.actionsBox, {
+            expand: true,
+            x_fill: false,
             y_fill: false,
-            y_align: St.Align.End
+            y_align: St.Align.END,
+            x_align: St.Align.MIDDLE
         });
     }
     updateIcons(){
@@ -292,7 +293,8 @@ var createMenu = class{
     _redisplayRightSide(){
         let rightPanelWidth = this._settings.get_int('right-panel-width');
         rightPanelWidth += 70;
-        this.rightBox.style = "min-width: " + rightPanelWidth + "px;";
+        this.rightBox.style = "width: " + rightPanelWidth + "px;";
+        this.shortcutsScrollBox.style = "width: " + rightPanelWidth + "px;";
     }
     // Redisplay the menu
     _redisplay() {
@@ -328,11 +330,11 @@ var createMenu = class{
             addStyle ? this.searchBox._stEntry.set_name('arc-search-entry') : this.searchBox._stEntry.set_name('search-entry');
         }
         if(this.actionsBox){
-            this.actionsBox.actor.get_children().forEach(function (actor) {
+            this.actionsBox.get_children().forEach((actor) => {
                 if(actor instanceof St.Button){
                     addStyle ? actor.add_style_class_name('arc-menu-action') : actor.remove_style_class_name('arc-menu-action');
                 }
-            }.bind(this));
+            });
         }
     }
     _loadCategories(){
@@ -426,7 +428,7 @@ var createMenu = class{
     _displayGnomeFavorites(){
         let appList = AppFavorites.getAppFavorites().getFavorites();
 
-        appList.sort(function (a, b) {
+        appList.sort((a, b) => {
             return a.get_name().toLowerCase() > b.get_name().toLowerCase();
         });
 
@@ -515,7 +517,7 @@ var createMenu = class{
         this._applicationsButtons.forEach((value,key,map) => {
             appList.push(key);
         });
-        appList.sort(function (a, b) {
+        appList.sort((a, b) => {
             return a.get_name().toLowerCase() > b.get_name().toLowerCase();
         });
         this._displayButtons(appList);
@@ -534,7 +536,7 @@ var createMenu = class{
                 applist = applist.concat(this.applicationsByCategory[directory]);
         }
         if(category_menu_id != "Frequent Apps"){
-            applist.sort(function (a, b) {
+            applist.sort((a, b) => {
                 return a.get_name().toLowerCase() > b.get_name().toLowerCase();
             });
         }

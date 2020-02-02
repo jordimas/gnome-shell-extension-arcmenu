@@ -394,18 +394,18 @@ var createMenu = class{
             addStyle ? this.searchBox._stEntry.set_name('arc-search-entry') : this.searchBox._stEntry.set_name('search-entry');
         }
         if(this.placesTopBox){
-            this.placesTopBox.get_children().forEach(function (actor) {
+            this.placesTopBox.get_children().forEach((actor) => {
                 if(actor instanceof St.Button){
                     addStyle ? actor.add_style_class_name('arc-menu-action') : actor.remove_style_class_name('arc-menu-action');
                 }
-            }.bind(this));
+            });
         }
         if(this.placesBottomBox){
-            this.placesBottomBox.get_children().forEach(function (actor) {
+            this.placesBottomBox.get_children().forEach((actor) => {
                 if(actor instanceof St.Button){
                     addStyle ? actor.add_style_class_name('arc-menu-action') : actor.remove_style_class_name('arc-menu-action');
                 }
-            }.bind(this));
+            });
         }
         
     }
@@ -617,7 +617,7 @@ var createMenu = class{
         this._applicationsButtons.forEach((value,key,map) => {
             appList.push(key);
         });
-        appList.sort(function (a, b) {
+        appList.sort((a, b) => {
             return a.get_name().toLowerCase() > b.get_name().toLowerCase();
         });
         this._displayButtons(appList);
