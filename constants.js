@@ -225,7 +225,7 @@ var MENU_STYLE_CHOOSER = {
         {   thumbnail: '/media/layouts/chromebook-menu.svg',
             name: 'Chromebook Style'
         },
-        {   thumbnail: '/media/layouts/chromebook-menu.svg',
+        {   thumbnail: '/media/layouts/raven-menu.svg',
             name: 'Raven Menu Style'
         }
     ]

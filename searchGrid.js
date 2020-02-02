@@ -321,12 +321,17 @@ var SearchResultsBase = class ArcMenu_SearchResultsBaseGrid{
 var ListSearchResults = class ArcMenu_ListSearchResultsGrid extends SearchResultsBase {
     constructor(provider, resultsView) {
         super(provider, resultsView);
-        this._button= resultsView._button;
+        this._button = resultsView._button;
+        this._settings = this._button._settings;
+        this.layout = this._settings.get_enum('menu-layout');
         this._container = new St.BoxLayout({
             vertical: false,
             x_align: St.Align.START 
         });
 
+        if(this.layout == Constants.MENU_LAYOUT.Raven){
+            this._container.vertical = true;
+        }
         this.providerInfo = new ArcSearchProviderInfo(provider,this._button);
         this.providerInfo.connect('key-focus-in', this._keyFocusIn.bind(this));
         this.providerInfo.connect('activate', () => {
@@ -769,6 +774,9 @@ var ArcSearchProviderInfo =Utils.createClass({
         if(this.layout == Constants.MENU_LAYOUT.Elementary || this.layout == Constants.MENU_LAYOUT.UbuntuDash){
             this.actor.style = "spacing: 0px; width: 190px;";
             icon.icon_size = 32;
+        }
+        if(this.layout == Constants.MENU_LAYOUT.Raven){
+            icon.icon_size = 24;
         }
         else{
             this.actor.style = "spacing: 0px; width: 150px;";

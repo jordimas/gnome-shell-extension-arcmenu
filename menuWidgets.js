@@ -500,7 +500,7 @@ var Tooltip = class ArcMenu_Tooltip{
         this.flipY = false;
         this.actor = new St.Label({
             style_class: 'dash-label',
-            text: text ? text : "",
+            text: text ? _(text) : "",
             opacity: 0,
             y_align: .5
         });
@@ -706,7 +706,8 @@ var CategoryMenuButton = class ArcMenu_CategoryMenuButton extends SessionButton 
             name = _("Frequent Apps");
             icon = 'emblem-favorite-symbolic';
         }
-        super(button, name, icon);
+        super(button, _(name), icon);
+        this.actor.style = "padding: 10px; min-height: 0px; border-width: 0px;";
         this._button = button;
         this._category = category;
         this.title = title;
@@ -1123,7 +1124,7 @@ var ShortcutMenuItem = Utils.createClass({
         });
         this.actor.add_child(this._icon);
         this.label = new St.Label({
-            text: name, y_expand: true,
+            text: _(name), y_expand: true,
             y_align: Clutter.ActorAlign.CENTER
         });
         this.actor.connect('notify::hover',this._onHover.bind(this));
@@ -2060,7 +2061,7 @@ var CategoryMenuItem =  Utils.createClass({
             this.actor.style = "padding: 10px;"
         }
         this.label = new St.Label({
-            text: this.name,
+            text: _(this.name),
             y_expand: true,
             x_expand:true,
             y_align: Clutter.ActorAlign.CENTER
@@ -2201,7 +2202,7 @@ var SimpleMenuItem = Utils.createClass({
         }
         this.actor.add_child(this._icon);
         let categoryLabel = new St.Label({
-            text: this.name,
+            text: _(this.name),
             y_expand: true,
             x_expand:true,
             y_align: Clutter.ActorAlign.CENTER
