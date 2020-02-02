@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-01-31 19:13-0500\n"
+"POT-Creation-Date: 2020-02-01 22:00-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,20 +18,77 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 
-#: search.js:723 searchGrid.js:698
+#: search.js:723 searchGrid.js:738
 msgid "Searching..."
 msgstr ""
 
-#: search.js:725 searchGrid.js:700
+#: search.js:725 searchGrid.js:740
 msgid "No results."
 msgstr ""
 
-#: search.js:831 searchGrid.js:808
+#: search.js:831 searchGrid.js:881
 #, javascript-format
 msgid "%d more"
 msgid_plural "%d more"
 msgstr[0] ""
 msgstr[1] ""
+
+#: menulayouts/raven.js:196 menulayouts/mint.js:502 menulayouts/brisk.js:195
+#: menulayouts/arcmenu.js:248 menulayouts/redmond.js:235
+#: menulayouts/ubuntudash.js:289 menulayouts/ubuntudash.js:313
+msgid "Software"
+msgstr ""
+
+#: menulayouts/raven.js:196 menulayouts/mint.js:487 menulayouts/brisk.js:203
+#: menulayouts/arcmenu.js:248 menulayouts/redmond.js:235
+#: menulayouts/windows.js:286 menulayouts/ubuntudash.js:313 menuWidgets.js:804
+msgid "Settings"
+msgstr ""
+
+#: menulayouts/raven.js:196 menulayouts/arcmenu.js:248
+#: menulayouts/redmond.js:235 menulayouts/ubuntudash.js:313 prefs.js:2190
+#: prefs.js:2219 prefs.js:2224 prefs.js:2256 prefs.js:2268
+msgid "Tweaks"
+msgstr ""
+
+#: menulayouts/raven.js:196 menulayouts/mint.js:486 menulayouts/arcmenu.js:248
+#: menulayouts/redmond.js:235 menulayouts/ubuntudash.js:313 menuWidgets.js:1369
+#: menuWidgets.js:1576
+msgid "Terminal"
+msgstr ""
+
+#: menulayouts/raven.js:196 menulayouts/arcmenu.js:248
+#: menulayouts/redmond.js:235 menulayouts/ubuntudash.js:313 menuWidgets.js:464
+msgid "Activities Overview"
+msgstr ""
+
+#: menulayouts/raven.js:196 menulayouts/arcmenu.js:248
+#: menulayouts/redmond.js:235 menulayouts/ubuntudash.js:313 menuWidgets.js:817
+#: menuWidgets.js:1366 menuWidgets.js:1573 menuButtonPanel.js:613
+#: menuButtonDash.js:576 prefs.js:376
+msgid "Arc Menu Settings"
+msgstr ""
+
+#: menulayouts/raven.js:204 menulayouts/tweaks/tweaks.js:188
+#: menulayouts/tweaks/tweaks.js:306 menulayouts/ubuntudash.js:321 prefs.js:4243
+msgid "Shortcuts"
+msgstr ""
+
+#: menulayouts/raven.js:401 menulayouts/tweaks/tweaks.js:621
+#: menulayouts/ubuntudash.js:573 prefs.js:41 prefs.js:818
+msgid "Pinned Apps"
+msgstr ""
+
+#: menulayouts/raven.js:438 menulayouts/ubuntudash.js:610 menuWidgets.js:706
+#: menuWidgets.js:2043 menuWidgets.js:2189 menuWidgets.js:2401
+msgid "Frequent Apps"
+msgstr ""
+
+#: menulayouts/raven.js:545 menulayouts/ubuntudash.js:718 menuWidgets.js:702
+#: menuWidgets.js:1063 menuWidgets.js:2040 menuWidgets.js:2186
+#: menuWidgets.js:2398
+msgid "All Programs"
+msgstr ""
 
 #: menulayouts/mint.js:418 menulayouts/arcmenu.js:508
 #: menulayouts/arcmenu.js:515 menulayouts/redmond.js:411
@@ -46,157 +103,116 @@ msgstr ""
 msgid "Network"
 msgstr ""
 
-#: menulayouts/mint.js:486 menulayouts/arcmenu.js:248
-#: menulayouts/redmond.js:235 menulayouts/ubuntudash.js:313 menuWidgets.js:1325
-#: menuWidgets.js:1532
-msgid "Terminal"
-msgstr ""
-
-#: menulayouts/mint.js:487 menulayouts/brisk.js:203 menulayouts/arcmenu.js:248
-#: menulayouts/redmond.js:235 menulayouts/windows.js:286
-#: menulayouts/ubuntudash.js:313 menuWidgets.js:760
-msgid "Settings"
-msgstr ""
-
-#: menulayouts/mint.js:502 menulayouts/brisk.js:195 menulayouts/arcmenu.js:248
-#: menulayouts/redmond.js:235 menulayouts/ubuntudash.js:289
-#: menulayouts/ubuntudash.js:313
-msgid "Software"
-msgstr ""
-
 #: menulayouts/mint.js:503 menulayouts/ubuntudash.js:290
 msgid "Files"
 msgstr ""
 
-#: menulayouts/mint.js:504 menulayouts/ubuntudash.js:291 menuWidgets.js:893
+#: menulayouts/mint.js:504 menulayouts/ubuntudash.js:291 menuWidgets.js:937
 #: prefs.js:4201
 msgid "Log Out"
 msgstr ""
 
-#: menulayouts/mint.js:505 menulayouts/ubuntudash.js:292 menuWidgets.js:925
+#: menulayouts/mint.js:505 menulayouts/ubuntudash.js:292 menuWidgets.js:969
 #: prefs.js:4184
 msgid "Lock"
 msgstr ""
 
-#: menulayouts/mint.js:506 menulayouts/ubuntudash.js:293 menuWidgets.js:881
+#: menulayouts/mint.js:506 menulayouts/ubuntudash.js:293 menuWidgets.js:925
 #: prefs.js:4218
 msgid "Power Off"
 msgstr ""
 
-#: menulayouts/tweaks/tweaks.js:84
+#: menulayouts/tweaks/tweaks.js:86
 msgid "Category Activation"
 msgstr ""
 
-#: menulayouts/tweaks/tweaks.js:90
+#: menulayouts/tweaks/tweaks.js:92
 msgid "Mouse Click"
 msgstr ""
 
-#: menulayouts/tweaks/tweaks.js:91
+#: menulayouts/tweaks/tweaks.js:93
 msgid "Mouse Hover"
 msgstr ""
 
-#: menulayouts/tweaks/tweaks.js:110
+#: menulayouts/tweaks/tweaks.js:112
 msgid "Avatar Icon Shape"
 msgstr ""
 
-#: menulayouts/tweaks/tweaks.js:115
+#: menulayouts/tweaks/tweaks.js:117
 msgid "Circular"
 msgstr ""
 
-#: menulayouts/tweaks/tweaks.js:116
+#: menulayouts/tweaks/tweaks.js:118
 msgid "Square"
 msgstr ""
 
-#: menulayouts/tweaks/tweaks.js:141
+#: menulayouts/tweaks/tweaks.js:143
 msgid "KRunner Position"
 msgstr ""
 
-#: menulayouts/tweaks/tweaks.js:146
+#: menulayouts/tweaks/tweaks.js:148
 msgid "Top"
 msgstr ""
 
-#: menulayouts/tweaks/tweaks.js:147
+#: menulayouts/tweaks/tweaks.js:149
 msgid "Centered"
 msgstr ""
 
-#: menulayouts/tweaks/tweaks.js:158
+#: menulayouts/tweaks/tweaks.js:160 menulayouts/tweaks/tweaks.js:335
 msgid "Show Extra Large Icons with App Descriptions"
 msgstr ""
 
-#: menulayouts/tweaks/tweaks.js:179 prefs.js:730
+#: menulayouts/tweaks/tweaks.js:181 menulayouts/tweaks/tweaks.js:299
+#: prefs.js:730
 msgid "General"
 msgstr ""
 
-#: menulayouts/tweaks/tweaks.js:186 menulayouts/ubuntudash.js:321 prefs.js:4243
-msgid "Shortcuts"
-msgstr ""
-
-#: menulayouts/tweaks/tweaks.js:189
+#: menulayouts/tweaks/tweaks.js:191
 msgid "Buttons"
 msgstr ""
 
-#: menulayouts/tweaks/tweaks.js:197
+#: menulayouts/tweaks/tweaks.js:199 menulayouts/tweaks/tweaks.js:314
 msgid "Default Screen"
 msgstr ""
 
-#: menulayouts/tweaks/tweaks.js:202 menuWidgets.js:1993
+#: menulayouts/tweaks/tweaks.js:204 menulayouts/tweaks/tweaks.js:319
+#: menuWidgets.js:698 menuWidgets.js:2037
 msgid "Home Screen"
 msgstr ""
 
-#: menulayouts/tweaks/tweaks.js:203
+#: menulayouts/tweaks/tweaks.js:205 menulayouts/tweaks/tweaks.js:320
 msgid "All Applications"
 msgstr ""
 
-#: menulayouts/tweaks/tweaks.js:218 prefs.js:2532
+#: menulayouts/tweaks/tweaks.js:220 menulayouts/tweaks/tweaks.js:355
+#: prefs.js:2532
 msgid "Disable Menu Arrow"
 msgstr ""
 
-#: menulayouts/tweaks/tweaks.js:226 prefs.js:2540
+#: menulayouts/tweaks/tweaks.js:228 menulayouts/tweaks/tweaks.js:363
+#: prefs.js:2540
 msgid "Disable current theme menu arrow pointer"
 msgstr ""
 
-#: menulayouts/tweaks/tweaks.js:245 menulayouts/tweaks/tweaks.js:307
+#: menulayouts/tweaks/tweaks.js:247 menulayouts/tweaks/tweaks.js:388
 #: prefs.js:132 prefs.js:688 prefs.js:3754 prefs.js:4012
 msgid "Save"
 msgstr ""
 
-#: menulayouts/tweaks/tweaks.js:271 menulayouts/tweaks/tweaks.js:333
+#: menulayouts/tweaks/tweaks.js:273 menulayouts/tweaks/tweaks.js:414
 msgid "Separator Position Index"
 msgstr ""
 
-#: menulayouts/tweaks/tweaks.js:520
+#: menulayouts/tweaks/tweaks.js:601
 msgid "Nothing Yet!"
 msgstr ""
 
-#: menulayouts/tweaks/tweaks.js:534 prefs.js:809
+#: menulayouts/tweaks/tweaks.js:615 prefs.js:809
 msgid "Arc Menu Default View"
 msgstr ""
 
-#: menulayouts/tweaks/tweaks.js:540 menulayouts/ubuntudash.js:570 prefs.js:41
-#: prefs.js:818
-msgid "Pinned Apps"
-msgstr ""
-
-#: menulayouts/tweaks/tweaks.js:541 prefs.js:819
+#: menulayouts/tweaks/tweaks.js:622 prefs.js:819
 msgid "Categories List"
-msgstr ""
-
-#: menulayouts/arcmenu.js:248 menulayouts/redmond.js:235
-#: menulayouts/ubuntudash.js:313 prefs.js:2190 prefs.js:2219 prefs.js:2224
-#: prefs.js:2256 prefs.js:2268
-msgid "Tweaks"
-msgstr ""
-
-#: menulayouts/arcmenu.js:248 menulayouts/redmond.js:235
-#: menulayouts/ubuntudash.js:313 menuWidgets.js:464
-msgid "Activities Overview"
-msgstr ""
-
-#: menulayouts/arcmenu.js:248 menulayouts/redmond.js:235
-#: menulayouts/ubuntudash.js:313 menuWidgets.js:773 menuWidgets.js:1322
-#: menuWidgets.js:1529 menuButtonPanel.js:611 menuButtonDash.js:574
-#: prefs.js:376
-msgid "Arc Menu Settings"
 msgstr ""
 
 #: menulayouts/arcmenu.js:508 menulayouts/redmond.js:411
@@ -225,16 +241,6 @@ msgstr ""
 #: menulayouts/arcmenu.js:508 menulayouts/redmond.js:411 placeDisplay.js:244
 #: placeDisplay.js:268
 msgid "Computer"
-msgstr ""
-
-#: menulayouts/ubuntudash.js:607 menuWidgets.js:1999 menuWidgets.js:2145
-#: menuWidgets.js:2357
-msgid "Frequent Apps"
-msgstr ""
-
-#: menulayouts/ubuntudash.js:715 menuWidgets.js:1019 menuWidgets.js:1996
-#: menuWidgets.js:2142 menuWidgets.js:2354
-msgid "All Programs"
 msgstr ""
 
 #: menuWidgets.js:130
@@ -281,112 +287,112 @@ msgstr ""
 msgid "Show Details"
 msgstr ""
 
-#: menuWidgets.js:786 menuWidgets.js:1996 menuWidgets.js:2142
-#: menuWidgets.js:2354
+#: menuWidgets.js:702 menuWidgets.js:830 menuWidgets.js:2040
+#: menuWidgets.js:2186 menuWidgets.js:2398
 msgid "Favorites"
 msgstr ""
 
-#: menuWidgets.js:801
+#: menuWidgets.js:845
 msgid "Categories"
 msgstr ""
 
-#: menuWidgets.js:816
+#: menuWidgets.js:860
 msgid "Users"
 msgstr ""
 
-#: menuWidgets.js:908 prefs.js:4167
+#: menuWidgets.js:952 prefs.js:4167
 msgid "Suspend"
 msgstr ""
 
-#: menuWidgets.js:951
+#: menuWidgets.js:995
 msgid "Back"
 msgstr ""
 
-#: menuWidgets.js:2623
+#: menuWidgets.js:2667
 msgid "Type to search…"
 msgstr ""
 
-#: menuWidgets.js:2792 prefs.js:3908
+#: menuWidgets.js:2836 prefs.js:3908
 msgid "Applications"
 msgstr ""
 
-#: menuWidgets.js:2858
+#: menuWidgets.js:2902
 msgid "Show Applications"
 msgstr ""
 
-#: menuWidgets.js:2875 constants.js:156 prefs.js:4616
+#: menuWidgets.js:2919 constants.js:157 prefs.js:4616
 msgid "Arc Menu"
 msgstr ""
 
-#: constants.js:161
+#: constants.js:162
 msgid "Arc Menu Alt"
 msgstr ""
 
-#: constants.js:162
+#: constants.js:163
 msgid "Arc Menu Original"
 msgstr ""
 
-#: constants.js:163
+#: constants.js:164
 msgid "Curved A"
 msgstr ""
 
-#: constants.js:164
+#: constants.js:165
 msgid "Start Box"
 msgstr ""
 
-#: constants.js:165
+#: constants.js:166
 msgid "Focus"
 msgstr ""
 
-#: constants.js:166
+#: constants.js:167
 msgid "Triple Dash"
 msgstr ""
 
-#: constants.js:167
+#: constants.js:168
 msgid "Whirl"
 msgstr ""
 
-#: constants.js:168
+#: constants.js:169
 msgid "Whirl Circle"
 msgstr ""
 
-#: constants.js:169
+#: constants.js:170
 msgid "Sums"
 msgstr ""
 
-#: constants.js:170
+#: constants.js:171
 msgid "Arrow"
 msgstr ""
 
-#: constants.js:171
+#: constants.js:172
 msgid "Lins"
 msgstr ""
 
-#: constants.js:172
+#: constants.js:173
 msgid "Diamond Square"
 msgstr ""
 
-#: constants.js:173
+#: constants.js:174
 msgid "Octo Maze"
 msgstr ""
 
-#: constants.js:174
+#: constants.js:175
 msgid "Search"
 msgstr ""
 
-#: menuButtonPanel.js:620 menuButtonDash.js:583
+#: menuButtonPanel.js:622 menuButtonDash.js:585
 msgid "Arc Menu on GitLab"
 msgstr ""
 
-#: menuButtonPanel.js:625 menuButtonDash.js:588
+#: menuButtonPanel.js:627 menuButtonDash.js:590
 msgid "About Arc Menu"
 msgstr ""
 
-#: menuButtonPanel.js:633
+#: menuButtonPanel.js:635
 msgid "Dash to Panel Settings"
 msgstr ""
 
-#: menuButtonDash.js:596
+#: menuButtonDash.js:598
 msgid "Dash to Dock Settings"
 msgstr ""
 
