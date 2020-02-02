@@ -187,7 +187,7 @@ var MenuSettingsController = class {
         this._menuButton.updateStyle();
     }
     _updateKRunnerSearchLayout(){
-        if(this._settings.get_enum('menu-layout') == Constants.MENU_LAYOUT.Runner)
+        if(this._settings.get_enum('menu-layout') == Constants.MENU_LAYOUT.Runner || this._settings.get_enum('menu-layout') == Constants.MENU_LAYOUT.Raven)
             this._menuButton.updateSearch();
     }
     _updateMenuHeight(){

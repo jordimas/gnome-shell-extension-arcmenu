@@ -294,7 +294,6 @@ var TweaksDialog = GObject.registerClass(
             
         }
         _loadRavenTweaks(vbox){
-            let pinnedAppsFrame = new PW.FrameBox();
             let notebook = new PW.Notebook();
 
             let generalPage = new PW.NotebookPage(_("General"));
@@ -329,7 +328,27 @@ var TweaksDialog = GObject.registerClass(
             homeScreenRow.add(homeScreenCombo);
             generalTweaksFrame.add(homeScreenRow);
             generalPage.add(generalTweaksFrame);
-            
+
+            let showMoreDetailsFrame = new PW.FrameBox();
+            let showMoreDetailsRow = new PW.FrameBoxRow();
+            let showMoreDetailsLabel = new Gtk.Label({
+                label: _("Show Extra Large Icons with App Descriptions"),
+                use_markup: true,
+                xalign: 0,
+                hexpand: true
+            });
+
+            let showMoreDetailsSwitch = new Gtk.Switch({ halign: Gtk.Align.END });
+            showMoreDetailsSwitch.set_active(this._settings.get_boolean('krunner-show-details'));
+            showMoreDetailsSwitch.connect('notify::active', (widget) => {
+                this._settings.set_boolean('krunner-show-details', widget.get_active());
+            });
+
+            showMoreDetailsRow.add(showMoreDetailsLabel);
+            showMoreDetailsRow.add(showMoreDetailsSwitch);
+            showMoreDetailsFrame.add(showMoreDetailsRow);
+            generalPage.add(showMoreDetailsFrame);
+      
             let tweakStyleFrame = new PW.FrameBox();
             let tweakStyleRow = new PW.FrameBoxRow();
             let tweakStyleLabel = new Gtk.Label({

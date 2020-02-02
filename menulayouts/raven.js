@@ -273,6 +273,9 @@ var createMenu = class{
         let height =  Math.round(screenHeight / scaleFactor);
         this.mainBox.style = `height: ${height}px`;
     }
+    updateSearch(){
+        this.newSearch._reloadRemoteProviders();
+    }
     // Load data for all menu categories
     _loadCategories() {
         this.applicationsByCategory = null;

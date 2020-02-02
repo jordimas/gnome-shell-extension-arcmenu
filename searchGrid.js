@@ -80,7 +80,7 @@ var ListSearchResult = class ArcMenu_ListSearchResultGrid {
         // An icon for, or thumbnail of, content
         let icon = this.metaInfo['createIcon'](ICON_SIZE);
         if (icon) 
-             this.menuItem.actor.add_child(icon);
+            this.menuItem.actor.add_child(icon);
         else
             this.menuItem.actor.style = (ICON_SIZE==32) ?  "padding: 12px 0px;":  "padding: 9px 0px;";
 
@@ -88,8 +88,34 @@ var ListSearchResult = class ArcMenu_ListSearchResultGrid {
             text: this.metaInfo['name'],
             y_align: Clutter.ActorAlign.CENTER 
         });
+        if(this._settings.get_boolean('krunner-show-details') && this.layout == Constants.MENU_LAYOUT.Raven){
+            title.style = "font-weight: bold;";
 
-        this.menuItem.actor.add_child(title);
+            let descriptionBox = new St.BoxLayout({
+                vertical:true
+            });
+
+            icon.icon_size = 32;
+            
+            let text = this.metaInfo['description'] ? this.metaInfo['description'] : '';
+            if(text == '')
+                text = app.get_description() ? app.get_description() : '';
+            
+            let descriptionLabel = new St.Label({ 
+                text: text,
+                x_align: Clutter.ActorAlign.START,
+                x_expand: true
+            });
+
+            descriptionBox.add(title);                           
+            descriptionBox.add(descriptionLabel);
+
+            this.menuItem.actor.add_child(descriptionBox);
+        }
+        else{
+            this.menuItem.actor.add_child(title);
+        }
+        
 
         if (this.metaInfo['description']&&  this.provider.appInfo.get_name() == "Calculator") {
             title.text = this.metaInfo['name'] + "   " + this.metaInfo['description'];
@@ -331,7 +357,12 @@ var ListSearchResults = class ArcMenu_ListSearchResultsGrid extends SearchResult
 
         if(this.layout == Constants.MENU_LAYOUT.Raven){
             this._container.vertical = true;
+            this._container.style = null;
         }
+        else{
+            this._container.style = "padding: 10px;";
+        }
+        
         this.providerInfo = new ArcSearchProviderInfo(provider,this._button);
         this.providerInfo.connect('key-focus-in', this._keyFocusIn.bind(this));
         this.providerInfo.connect('activate', () => {
@@ -354,7 +385,7 @@ var ListSearchResults = class ArcMenu_ListSearchResultsGrid extends SearchResult
         this._container.add(this._content, { 
             expand: true
         });
-        this._container.style = "padding: 10px;";
+  
         this._resultDisplayBin.set_child(this._container);
         this._resultDisplayBin.x_expand = true;
         this._resultDisplayBin.x_fill = true;
@@ -758,6 +789,7 @@ var ArcSearchProviderInfo =Utils.createClass({
         this.callParent('_init');
         this.provider = provider;
         this._button = button;
+        this._settings = button._settings;
         this.layout = button._settings.get_enum('menu-layout');
 
         this._content = new St.BoxLayout({ 
@@ -777,23 +809,45 @@ var ArcSearchProviderInfo =Utils.createClass({
         }
         if(this.layout == Constants.MENU_LAYOUT.Raven){
             icon.icon_size = 24;
+            this._content.style = "spacing: 12px;";
         }
         else{
             this.actor.style = "spacing: 0px; width: 150px;";
             icon.icon_size = 24;
         } 
-
-        this.actor.vertical = false;
-        this.actor.add_child(this._content);
         this.nameLabel = new St.Label({ 
             text: provider.appInfo.get_name() + ":",
             x_align: Clutter.ActorAlign.START,
-            y_align: .5
+            y_align: Clutter.ActorAlign.CENTER
         });
+        if(this._settings.get_boolean('krunner-show-details') && this.layout == Constants.MENU_LAYOUT.Raven){
+            this.nameLabel.style = 'font-weight: bold;';
+            let box = new St.BoxLayout({vertical:true});
+            icon.icon_size = 32;
+            let text = provider.appInfo.get_description() != null ? provider.appInfo.get_description() : '';
+
+            let descriptionLabel = new St.Label({ 
+                text: text,
+                x_align: Clutter.ActorAlign.START,
+                y_align: Clutter.ActorAlign.CENTER,
+                x_expand: true
+            });
+
+            box.add(this.nameLabel);
+            box.add(descriptionLabel);
+            this._content.add_actor(box);
+        }
+        else{
+            this._content.add_actor(this.nameLabel);
+        }
+
+        this.actor.vertical = false;
+        this.actor.add_child(this._content);
+
 
         this._moreText="";
         
-        this._content.add_actor(this.nameLabel);
+        
         this.hoverID = this.actor.connect('notify::hover', this._onHover.bind(this));
         this.actor.connect('notify::active',()=> this.setActive(this.actor.active, false));
 
@@ -816,8 +870,13 @@ var ArcSearchProviderInfo =Utils.createClass({
 
     setMoreCount(count) {
         this._moreText= ngettext("%d more", "%d more", count).format(count);
-        if(count>0)
-            this.nameLabel.text = this.provider.appInfo.get_name() + "\n("+ this._moreText+")";
+        if(count>0){
+            if(this.layout == Constants.MENU_LAYOUT.Raven)
+                this.nameLabel.text = this.provider.appInfo.get_name() + " ("+ this._moreText+")";
+            else
+                this.nameLabel.text = this.provider.appInfo.get_name() + "\n("+ this._moreText+")";
+        }
+            
     },
     _onButtonPressEvent(actor, event) {
         return Clutter.EVENT_PROPAGATE;
