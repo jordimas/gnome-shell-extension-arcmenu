@@ -129,8 +129,6 @@ var createMenu = class {
             vertical: true,
             style_class: 'right-box'
         });
-        let rightPanelWidth = this._settings.get_int('right-panel-width');
-        this.rightBox.style = "min-width: " + rightPanelWidth + "px;";
         this._createRightBox();
         //Add Vert Separator to Main Box
         this.mainBox.add(this._createVertSeparator(), {
@@ -181,6 +179,9 @@ var createMenu = class {
             overlay_scrollbars: true,
             style_class: 'vfade'
         });     
+        let rightPanelWidth = this._settings.get_int('right-panel-width');
+        this.rightBox.style = "width: " + rightPanelWidth + "px;";
+        this.placesScrollBox.style = "width: " + rightPanelWidth + "px;";
         this.placesScrollBox.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC);
         this.placesScrollBox.add_actor(this.placesBox);
         this.placesScrollBox.clip_to_allocation = true;
@@ -245,19 +246,26 @@ var createMenu = class {
             });
         }
     
-        //create new section for Power, Lock, Logout, Suspend Buttons
-        this.actionsBox = new PopupMenu.PopupBaseMenuItem({
-            reactive: false,
-            can_focus: false
+        this.actionsScrollBox = new St.ScrollView({
+            x_fill: true,
+            y_fill: true,
+            y_align: St.Align.START
         });
-        //check if custom arc menu is enabled
-        if(this._settings.get_boolean('enable-custom-arc-menu'))
-            this.actionsBox.actor.add_style_class_name('arc-menu');
+        this.actionsScrollBox.set_policy(Gtk.PolicyType.EXTERNAL, Gtk.PolicyType.NEVER);
+        this.actionsScrollBox.clip_to_allocation = true;
+        
+        //create new section for Power, Lock, Logout, Suspend Buttons
+        this.actionsBox = new St.BoxLayout({
+            vertical: false,
+            x_align: Clutter.ActorAlign.CENTER,
+        });	
+        this.actionsBox.style = "spacing: 16px;";
+        this.actionsScrollBox.add_actor(this.actionsBox);  
         //Logout Button
         if(this._settings.get_boolean('show-logout-button')){
             let logout = new MW.LogoutButton(this);
-            this.actionsBox.actor.add(logout.actor, {
-                expand: true,
+            this.actionsBox.add(logout.actor, {
+                expand: false,
                 x_fill: false,
                 y_align: St.Align.START
             });
@@ -265,8 +273,8 @@ var createMenu = class {
         //LockButton
         if(this._settings.get_boolean('show-lock-button')){
             let lock = new MW.LockButton(this);
-            this.actionsBox.actor.add(lock.actor, {
-                expand: true,
+            this.actionsBox.add(lock.actor, {
+                expand: false,
                 x_fill: false,
                 y_align: St.Align.START
             });
@@ -274,8 +282,8 @@ var createMenu = class {
         //Suspend Button
         if(this._settings.get_boolean('show-suspend-button')){
             let suspend = new MW.SuspendButton(this);
-            this.actionsBox.actor.add(suspend.actor, {
-                expand: true,
+            this.actionsBox.add(suspend.actor, {
+                expand: false,
                 x_fill: false,
                 y_align: St.Align.START
             });
@@ -283,18 +291,19 @@ var createMenu = class {
         //Power Button
         if(this._settings.get_boolean('show-power-button')){
             let power = new MW.PowerButton(this);
-            this.actionsBox.actor.add(power.actor, {
-                expand: true,
+            this.actionsBox.add(power.actor, {
+                expand: false,
                 x_fill: false,
                 y_align: St.Align.START
             });
         }
         //add actionsbox to rightbox             
-        this.rightBox.add(this.actionsBox.actor, {
+        this.rightBox.add(this.actionsScrollBox, {
             expand: true,
             x_fill: true,
             y_fill: false,
-            y_align: St.Align.END
+            y_align: St.Align.END,
+            x_align: St.Align.MIDDLE
         });
     }
     updateIcons(){
@@ -312,8 +321,6 @@ var createMenu = class {
         appsScrollBoxAdj.set_value(0);
     }
     _redisplayRightSide(){
-        let rightPanelWidth = this._settings.get_int('right-panel-width');
-        this.rightBox.style = "min-width: " + rightPanelWidth + "px;";
         this.rightBox.destroy_all_children();
         this._createRightBox();
    
@@ -344,11 +351,11 @@ var createMenu = class {
             addStyle ? this.searchBox._stEntry.set_name('arc-search-entry') : this.searchBox._stEntry.set_name('search-entry');
         }
         if(this.actionsBox){
-            this.actionsBox.actor.get_children().forEach(function (actor) {
+            this.actionsBox.get_children().forEach((actor) => {
                 if(actor instanceof St.Button){
                     addStyle ? actor.add_style_class_name('arc-menu-action') : actor.remove_style_class_name('arc-menu-action');
                 }
-            }.bind(this));
+            });
         }
     }
     // Load data for all menu categories
@@ -611,7 +618,7 @@ var createMenu = class {
         this._applicationsButtons.forEach((value,key,map) => {
             appList.push(key);
         });
-        appList.sort(function (a, b) {
+        appList.sort((a, b) => {
             return a.get_name().toLowerCase() > b.get_name().toLowerCase();
         });
         this._displayButtons(appList);
@@ -631,7 +638,7 @@ var createMenu = class {
                 applist = applist.concat(this.applicationsByCategory[directory]);
         }
         if(category_menu_id != "Frequent Apps"){
-            applist.sort(function (a, b) {
+            applist.sort((a, b) => {
                 return a.get_name().toLowerCase() > b.get_name().toLowerCase();
             });
         }

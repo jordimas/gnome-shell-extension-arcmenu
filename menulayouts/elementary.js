@@ -332,7 +332,7 @@ var createMenu = class{
         this._applicationsButtons.forEach((value,key,map) => {
             appList.push(key);
         });
-        appList.sort(function (a, b) {
+        appList.sort((a, b) => {
             return a.get_name().toLowerCase() > b.get_name().toLowerCase();
         });
         this._displayButtons(appList);
@@ -352,7 +352,7 @@ var createMenu = class{
                 applist = applist.concat(this.applicationsByCategory[directory]);
         }
         if(category_menu_id != "Frequent Apps"){
-            applist.sort(function (a, b) {
+            applist.sort((a, b) => {
                 return a.get_name().toLowerCase() > b.get_name().toLowerCase();
             });
         }
