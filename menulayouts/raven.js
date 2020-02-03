@@ -182,10 +182,10 @@ var createMenu = class{
             y_align: Clutter.ActorAlign.END
         });
         this._weatherItem = new DateMenu.WeatherSection()
-        this._weatherItem.actor.style = "margin: 10px 25px 25px 25px;";
+        this._weatherItem.actor.style = "padding: 10px; margin: 10px 25px 25px 25px;";
         this._weatherItem.actor.connect("clicked", ()=> this.leftClickMenu.close());
         this._clocksItem = new DateMenu.WorldClocksSection();
-        this._clocksItem.actor.style = "margin: 10px 25px 25px 25px;";
+        this._clocksItem.actor.style = "padding: 10px; margin: 10px 25px 25px 25px;";
         this._clocksItem.actor.connect("clicked", ()=> this.leftClickMenu.close());
 
         this.weatherBox.add(this._clocksItem.actor,{
