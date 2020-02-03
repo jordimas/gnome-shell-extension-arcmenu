@@ -190,8 +190,9 @@ var createMenu = class{
             vertical: false,
             y_align: Clutter.ActorAlign.END
         });
+        this.weatherBox.style = "width:750px;";   
         this._weatherItem = new DateMenu.WeatherSection()
-        this._weatherItem.actor.style = "width: 315px; padding: 10px; margin: 10px 25px 0px 5px;";
+        this._weatherItem.actor.style = "padding: 10px; margin: 10px 25px 0px 5px;";
         this._weatherItem.actor.connect("clicked", ()=> this.leftClickMenu.close());
         this._clocksItem = new DateMenu.WorldClocksSection();
         this._clocksItem.actor.style = "width: 275px; padding: 10px; margin: 10px 5px 0px 25px;";
