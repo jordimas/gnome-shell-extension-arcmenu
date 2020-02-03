@@ -29,6 +29,7 @@ const AppFavorites = imports.ui.appFavorites;
 const appSys = Shell.AppSystem.get_default();
 const ArcSearch = Me.imports.searchGrid;
 const Constants = Me.imports.constants;
+const DateMenu = imports.ui.dateMenu;
 const GnomeSession = imports.misc.gnomeSession;
 const Gettext = imports.gettext.domain(Me.metadata['gettext-domain']);
 const Main = imports.ui.main;
@@ -64,7 +65,7 @@ var createMenu = class{
 
         //LAYOUT------------------------------------------------------------------------------------------------
         this.mainBox.vertical = false;
-
+        this.leftClickMenu.actor.style = "-arrow-base:0px;-arrow-rise:0px; -boxpointer-gap: 0px;";
         let themeContext = St.ThemeContext.get_for_stage(global.stage);
         let scaleFactor = themeContext.scale_factor;
         
@@ -175,7 +176,24 @@ var createMenu = class{
         });
 
         this.leftClickMenu.box.style = "padding-bottom:0px; padding-top:0px;";
-      
+        
+        this.weatherBox = new St.BoxLayout({
+            vertical: true,
+            y_align: Clutter.ActorAlign.END
+        });
+        this._weatherItem = new DateMenu.WeatherSection()
+        this._weatherItem.actor.style = "margin: 10px 25px 25px 25px;";
+        this._weatherItem.actor.connect("clicked", ()=> this.leftClickMenu.close());
+        this._clocksItem = new DateMenu.WorldClocksSection();
+        this._clocksItem.actor.style = "margin: 10px 25px 25px 25px;";
+        this._clocksItem.actor.connect("clicked", ()=> this.leftClickMenu.close());
+
+        this.weatherBox.add(this._clocksItem.actor,{
+            y_align: St.Align.END
+        });
+        this.weatherBox.add(this._weatherItem.actor,{
+            y_align: St.Align.END
+        });
         
     
         this._loadCategories();
@@ -250,18 +268,38 @@ var createMenu = class{
         
     }
     updateStyle(){
-        let addStyle=this._settings.get_boolean('enable-custom-arc-menu');
+        let addStyle = this._settings.get_boolean('enable-custom-arc-menu');
+        let ravenTheme = this._settings.get_boolean('enable-raven-theme');
         if(this.newSearch){
-            addStyle ? this.newSearch.setStyle('arc-menu-status-text') :  this.newSearch.setStyle('search-statustext'); 
-            addStyle ? this.searchBox._stEntry.set_name('arc-search-entry') : this.searchBox._stEntry.set_name('search-entry');
+            if(ravenTheme){
+                this.newSearch.setStyle('arc-menu-status-text'); 
+                this.searchBox._stEntry.set_name('arc-search-entry');
+            }
+            else{
+                addStyle ? this.newSearch.setStyle('arc-menu-status-text') :  this.newSearch.setStyle('search-statustext'); 
+                addStyle ? this.searchBox._stEntry.set_name('arc-search-entry') : this.searchBox._stEntry.set_name('search-entry');
+            }
         }
         if(this.placesBottomBox){
             this.placesBottomBox.get_children().forEach((actor) => {
                 if(actor instanceof St.Button){
-                    addStyle ? actor.add_style_class_name('arc-menu-action') : actor.remove_style_class_name('arc-menu-action');
+                    if(ravenTheme)
+                        actor.add_style_class_name('arc-menu-action');
+                    else
+                        addStyle ? actor.add_style_class_name('arc-menu-action') : actor.remove_style_class_name('arc-menu-action');
                 }
             });
         } 
+        if(ravenTheme){
+            this._clocksItem.actor.add_style_class_name('arc-menu-action');
+            this._weatherItem.actor.add_style_class_name('arc-menu-action');
+        }
+        else{
+            addStyle ? this._clocksItem.actor.add_style_class_name('arc-menu-action') : this._clocksItem.actor.remove_style_class_name('arc-menu-action');
+            addStyle ? this._weatherItem.actor.add_style_class_name('arc-menu-action') : this._weatherItem.actor.remove_style_class_name('arc-menu-action');
+        }
+            
+        
         let themeContext = St.ThemeContext.get_for_stage(global.stage);
         let scaleFactor = themeContext.scale_factor;
         
@@ -407,6 +445,13 @@ var createMenu = class{
                 x_align: St.Align.MIDDLE,
                 y_align: St.Align.MIDDLE
             });
+            this.subMainBox.add(this.weatherBox,{
+                expand: true,
+                x_fill: true,
+                y_fill: false,
+                x_align: St.Align.MIDDLE,
+                y_align: St.Align.END
+            });
         }
         else
             this._displayAllApps();        
@@ -422,6 +467,9 @@ var createMenu = class{
     }
     // Clear the applications menu box
     _clearApplicationsBox() {
+        if(this.subMainBox.contains(this.weatherBox)){
+            this.subMainBox.remove_actor(this.weatherBox);
+        }
         let appsScrollBoxAdj = this.shortcutsScrollBox.get_vscroll_bar().get_adjustment();
         appsScrollBoxAdj.set_value(0);
         this.activeMenuItem = null;

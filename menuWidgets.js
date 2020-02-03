@@ -116,7 +116,9 @@ var AppRightClickMenu = class ArcMenu_AppRightClickMenu extends PopupMenu.PopupM
     redisplay(){
         this.removeAll();
         let addStyle = this._settings.get_boolean('enable-custom-arc-menu');
-        if(addStyle){
+        let layout = this._settings.get_enum('menu-layout');
+        let ravenTheme = this._settings.get_boolean('enable-raven-theme');
+        if(addStyle || (layout == Constants.MENU_LAYOUT.Raven && ravenTheme)){
             this.actor.style_class = 'arc-right-click-boxpointer';
             this.actor.add_style_class_name('arc-right-click');
             this.actor.set_name('rightClickMenu');
@@ -1764,22 +1766,8 @@ var ApplicationMenuIcon = Utils.createClass({
         if(this.actor.hover && this._button.newSearch._highlightDefault)
             this._button.newSearch.highlightDefault(false);
         if(this.tooltip==undefined && this.actor.hover){
-            let lbl = this.label.clutter_text;
-            lbl.get_allocation_box();
-            let isEllipsized = lbl.get_layout().is_ellipsized()
-            if(isEllipsized || this._app.get_description()){
-                let tooltipText = "";
-                if(isEllipsized && this._app.get_description())
-                    tooltipText = this.label.text + "\n" + this._app.get_description();
-                else if(isEllipsized && !this._app.get_description())
-                    tooltipText = this.label.text;
-                else if(!isEllipsized && this._app.get_description())
-                    tooltipText = this._app.get_description();
-                else if(!isEllipsized && !this._app.get_description())
-                    tooltipText = '';
-                this.tooltip = new Tooltip(this._button, this.actor, tooltipText);
-                this.tooltip._onHover();
-            }
+            let description = this._app.get_description();
+            Utils.createTooltip(this._button, this, this.label, description);
         }
     },
     _onKeyPressEvent(actor, event) {
@@ -1828,13 +1816,13 @@ var ApplicationMenuItem =Utils.createClass({
 
         this._iconBin = new St.Bin();
         this.actor.add_child(this._iconBin);
-        let appLabel = new St.Label({
+        this.label = new St.Label({
             text: app.get_name(),
             y_expand: true,
             y_align: Clutter.ActorAlign.CENTER
         });
-        this.actor.add_child(appLabel);
-        this.actor.label_actor = appLabel;
+        this.actor.add_child(this.label);
+        this.actor.label_actor = this.label;
 
         let textureCache = St.TextureCache.get_default();
         let iconThemeChangedId = textureCache.connect('icon-theme-changed',
@@ -1857,10 +1845,8 @@ var ApplicationMenuItem =Utils.createClass({
     },    
     _onHover() {
         if(this.tooltip==undefined && this.actor.hover){
-            if(this._app.get_description()){
-                this.tooltip = new Tooltip(this._button, this.actor, this._app.get_description());
-                this.tooltip._onHover();
-            }
+            let description = this._app.get_description();
+            Utils.createTooltip(this._button, this, this.label, description);
         }
     },
     setActive(active, callParent = true){
@@ -1935,7 +1921,6 @@ var ApplicationMenuItem =Utils.createClass({
 var SearchResultItem = Utils.createClass({
     Name: 'ArcMenu_SearchResultItem',
     Extends: PopupMenu.PopupBaseMenuItem,
-    Signals: {'hideTooltip': {}},
     // Initialize menu item
     _init(button, app,path) {
         this.callParent('_init');
@@ -1993,7 +1978,8 @@ var SearchResultItem = Utils.createClass({
             if(!this.rightClickMenu.isOpen)
                 this.rightClickMenu.redisplay();
             this.rightClickMenu.toggle();
-            this.emit('hideTooltip');
+            if(this.tooltip!=undefined)
+                this.tooltip.hide();
         }   
         return Clutter.EVENT_STOP;
     },

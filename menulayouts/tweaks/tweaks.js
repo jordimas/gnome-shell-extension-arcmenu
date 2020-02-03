@@ -352,7 +352,7 @@ var TweaksDialog = GObject.registerClass(
             let tweakStyleFrame = new PW.FrameBox();
             let tweakStyleRow = new PW.FrameBoxRow();
             let tweakStyleLabel = new Gtk.Label({
-                label: _("Disable Menu Arrow"),
+                label: _("Enable Raven Theme"),
                 use_markup: true,
                 xalign: 0,
                 hexpand: true
@@ -360,11 +360,13 @@ var TweaksDialog = GObject.registerClass(
 
             let tweakStyleSwitch = new Gtk.Switch({ 
                 halign: Gtk.Align.END,
-                tooltip_text: _("Disable current theme menu arrow pointer")
+                tooltip_text: _("Raven Theme will override all other theme settings")
             });
-            tweakStyleSwitch.set_active(this._settings.get_boolean('remove-menu-arrow'));
+            tweakStyleSwitch.set_active(this._settings.get_boolean('enable-raven-theme'));
             tweakStyleSwitch.connect('notify::active', (widget) => {
-                this._settings.set_boolean('remove-menu-arrow', widget.get_active());
+                this._settings.set_boolean('enable-raven-theme', widget.get_active());
+                Prefs.saveCSS(this._settings);
+                this._settings.set_boolean('reload-theme',true);
             });
 
             tweakStyleRow.add(tweakStyleLabel);

@@ -2186,6 +2186,8 @@ var AppearancePage = GObject.registerClass(
                 dialog.connect('response', (response) => { 
                     if(dialog.get_response()) {
                         this._settings.set_enum('menu-layout', dialog.index);
+                        saveCSS(this._settings);
+                        this._settings.set_boolean('reload-theme',true);
                         currentStyleLabel.label = Constants.MENU_STYLE_CHOOSER.Styles[dialog.index].name;
                         tweaksLabel.label = currentStyleLabel.label +" " + _("Tweaks");
                         dialog.destroy();
@@ -2223,6 +2225,8 @@ var AppearancePage = GObject.registerClass(
                     currentStyleLabel.label = Constants.MENU_STYLE_CHOOSER.Styles[0].name;
                     tweaksLabel.label = currentStyleLabel.label +" " + _("Tweaks");
                 }
+                saveCSS(this._settings);
+                this._settings.set_boolean('reload-theme',true);
                    
             });
             layoutRow.add(layoutLabel);
@@ -4823,10 +4827,10 @@ function lighten_rgb(colorString, percent, modifyAlpha){ // implemented from htt
 };
 function saveCSS(settings){
     this._settings= settings;
-    let heightValue = this._settings.get_int('menu-height');
-    let separatorColor = this._settings.get_string('separator-color');
-    let verticalSeparator = this._settings.get_boolean('vert-separator');
     let customArcMenu = this._settings.get_boolean('enable-custom-arc-menu');
+    let ravenTheme = this._settings.get_boolean('enable-raven-theme');
+    let layout = this._settings.get_enum('menu-layout');
+    let separatorColor = this._settings.get_string('separator-color');
     let menuColor = this._settings.get_string('menu-color');
     let menuForegroundColor = this._settings.get_string('menu-foreground-color');
     let borderColor = this._settings.get_string('border-color');
@@ -4842,9 +4846,26 @@ function saveCSS(settings){
     let menuButtonColor = this._settings.get_string('menu-button-color');
     let menuButtonActiveColor =  this._settings.get_string('menu-button-active-color');
     let gapAdjustment = this._settings.get_int('gap-adjustment');
-    
-    let tooltipForegroundColor= customArcMenu ? "\n color:"+  menuForegroundColor+";\n" : "";
-    let tooltipBackgroundColor= customArcMenu ? "\n background-color:"+lighten_rgb( menuColor,0.05)+";\n" : "";
+    //rgba(28, 28, 28, 0.98)', 'rgba(211, 218, 227, 1)', 'rgb(63,62,64)', 'rgba(238, 238, 236, 0.1)', 'rgb(63,62,64)'
+    let tooltipForegroundColor = customArcMenu ? "\n color:"+  menuForegroundColor+";\n" : "";
+    let tooltipBackgroundColor = customArcMenu ? "\n background-color:"+lighten_rgb(menuColor,0.05)+";\n" : "";
+    if(layout == Constants.MENU_LAYOUT.Raven && ravenTheme){
+       separatorColor = 'rgb(63,62,64)';
+       menuColor = 'rgba(48, 74, 93, .95)';
+       menuForegroundColor = 'rgba(211, 218, 227, 1)';
+       borderColor = 'rgb(63,62,64)';
+       highlightColor = 'rgba(238, 238, 236, 0.1)';
+       tooltipForegroundColor = "\n color:rgba(211, 218, 227, 1);\n";
+       tooltipBackgroundColor = "\n background-color:rgba(28, 28, 28, 0.95);\n";
+       fontSize = 9;
+       borderSize = 0;
+       cornerRadius = 0;
+       menuMargin = 24;
+       menuArrowSize = 11;
+       gapAdjustment = 4;
+       customArcMenu = true;
+    }
+
     let tooltipStyle = customArcMenu ?   
         ("#tooltip-menu-item{border-color:"+  borderColor+ ";\n border: 1px;\nfont-size:"+fontSize+"pt;\n padding: 2px 5px;\n min-height: 0px;"
         + tooltipForegroundColor + tooltipBackgroundColor+"\nmax-width:550px;\n}") 

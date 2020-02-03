@@ -101,6 +101,7 @@ var MenuSettingsController = class {
             this._settings.connect('changed::button-icon-padding', this._setButtonIconPadding.bind(this)),
             this._settings.connect('changed::enable-menu-button-arrow', this._setMenuButtonArrow.bind(this)),
             this._settings.connect('changed::enable-custom-arc-menu', this._enableCustomArcMenu.bind(this)),
+            this._settings.connect('changed::enable-raven-theme', this._enableCustomArcMenu.bind(this)),
             this._settings.connect('changed::remove-menu-arrow', this._enableCustomArcMenu.bind(this)),
             this._settings.connect('changed::krunner-show-details', this._updateKRunnerSearchLayout.bind(this)),
             this._settings.connect('changed::directory-shortcuts-list', this._redisplayRightSide.bind(this)),
