@@ -192,17 +192,21 @@ var createMenu = class{
         });
         this.weatherBox.style = "width:750px;";   
         this._weatherItem = new DateMenu.WeatherSection()
-        this._weatherItem.actor.style = "padding: 10px; margin: 10px 25px 0px 5px;";
+        this._weatherItem.actor.style = "width: 375px;padding: 10px; margin: 10px 25px 0px 5px;";
         this._weatherItem.actor.connect("clicked", ()=> this.leftClickMenu.close());
         this._clocksItem = new DateMenu.WorldClocksSection();
         this._clocksItem.actor.style = "width: 275px; padding: 10px; margin: 10px 5px 0px 25px;";
         this._clocksItem.actor.connect("clicked", ()=> this.leftClickMenu.close());
 
         this.weatherBox.add(this._clocksItem.actor,{
-            y_align: St.Align.END
+            y_align: St.Align.END,
+            x_expand: false,
+            x_fill: false
         });
         this.weatherBox.add(this._weatherItem.actor,{
-            y_align: St.Align.END
+            y_align: St.Align.END,
+            x_expand: true,
+            x_fill: true
         });
         
         this._loadCategories();
