@@ -257,7 +257,6 @@ var AppRightClickMenu = class ArcMenu_AppRightClickMenu extends PopupMenu.PopupM
                                     if(pinnedApps[i+2]==this._app.get_id()){
                                         this.close();
                                         pinnedApps.splice(i,3);
-                                        this._button.applicationsBox.remove_actor(this._button.favoritesArray[ i / 3 ].actor)
                                         this._settings.set_strv('pinned-app-list',pinnedApps);
                                         break;
                                     }
@@ -310,7 +309,6 @@ var AppRightClickMenu = class ArcMenu_AppRightClickMenu extends PopupMenu.PopupM
                         if(pinnedApps[i+2]==this._app){
                             this.close();
                             pinnedApps.splice(i,3);
-                            this._button.applicationsBox.remove_actor(this._button.favoritesArray[ i / 3 ].actor)
                             this._button.favoritesArray.splice(i / 3, 1);
                             this._settings.set_strv('pinned-app-list',pinnedApps);
                             break;
