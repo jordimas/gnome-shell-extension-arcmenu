@@ -419,6 +419,10 @@ var ListSearchResults = class ArcMenu_ListSearchResultsGrid extends SearchResult
         else
             return null;
     }
+    destroy(){
+        this._resultDisplayBin.destroy();
+        this._resultDisplayBin = null;
+    }
 };
 Signals.addSignalMethods(ListSearchResults.prototype);
 var AppSearchResults = class ArcMenu_AppSearchResultsGrid extends SearchResultsBase {
@@ -452,6 +456,10 @@ var AppSearchResults = class ArcMenu_AppSearchResultsGrid extends SearchResultsB
             return this._grid.get_child_at_index(0)._delegate;
         else
             return null;
+    }
+    destroy(){
+        this._resultDisplayBin.destroy();
+        this._resultDisplayBin = null;
     }
 };
 Signals.addSignalMethods(AppSearchResults.prototype);
@@ -524,9 +532,10 @@ var SearchResults = class ArcMenu_SearchResultsGrid {
             this._statusText.style_class = style;
     }
     destroy(){
-        this._providers.forEach(provider => {
-            provider.display.actor.destroy();
-        });
+        if (this._searchTimeoutId > 0) {
+            GLib.source_remove(this._searchTimeoutId);
+            this._searchTimeoutId = 0;
+        }
         if(this.disabledID>0){
             this._searchSettings.disconnect(this.disabledID);
             this.disabledID=0;
@@ -547,6 +556,9 @@ var SearchResults = class ArcMenu_SearchResultsGrid {
             appSys.disconnect(this.installChangedID);
             this.installChangedID=0;
         }     
+        this._providers.forEach(provider => {
+            provider.display.destroy();
+        });   
     }
     _reloadRemoteProviders() {
         let remoteProviders = this._providers.filter(p => p.isRemoteProvider);
@@ -915,4 +927,3 @@ var ArcSearchProviderInfo =Utils.createClass({
         }
     }
 });
-

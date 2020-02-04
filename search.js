@@ -405,6 +405,10 @@ var ListSearchResults = class ArcMenu_ListSearchResults extends SearchResultsBas
         else
             return null;
     }
+    destroy(){
+        this._resultDisplayBin.destroy();
+        this._resultDisplayBin = null;
+    }
 };
 Signals.addSignalMethods(ListSearchResults.prototype);
 var AppSearchResults = class ArcMenu_AppSearchResults extends SearchResultsBase {
@@ -440,6 +444,10 @@ var AppSearchResults = class ArcMenu_AppSearchResults extends SearchResultsBase 
             return this._grid.get_child_at_index(0)._delegate;
         else
             return null;
+    }
+    destroy(){
+        this._resultDisplayBin.destroy();
+        this._resultDisplayBin = null;
     }
 };
 Signals.addSignalMethods(AppSearchResults.prototype);
@@ -500,9 +508,10 @@ var SearchResults = class ArcMenu_SearchResults {
             this._statusText.style_class = style;
     }
     destroy(){
-        this._providers.forEach(provider => {
-            provider.display.actor.destroy();
-        });
+        if (this._searchTimeoutId > 0) {
+            GLib.source_remove(this._searchTimeoutId);
+            this._searchTimeoutId = 0;
+        }
         if(this.disabledID>0){
             this._searchSettings.disconnect(this.disabledID);
             this.disabledID=0;
@@ -523,6 +532,9 @@ var SearchResults = class ArcMenu_SearchResults {
             appSys.disconnect(this.installChangedID);
             this.installChangedID=0;
         }     
+        this._providers.forEach(provider => {
+            provider.display.destroy();
+        });
     }
     _reloadRemoteProviders() {
         let remoteProviders = this._providers.filter(p => p.isRemoteProvider);
@@ -653,7 +665,6 @@ var SearchResults = class ArcMenu_SearchResults {
 
         let providerDisplay;
         if (provider.appInfo)
-      
             providerDisplay = new ListSearchResults(provider, this);
         else
             providerDisplay = new AppSearchResults(provider, this);
@@ -851,4 +862,3 @@ var ArcSearchProviderInfo = Utils.createClass({
         }
     }
 });
-
