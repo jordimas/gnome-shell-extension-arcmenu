@@ -4869,9 +4869,8 @@ function saveCSS(settings){
     let tooltipStyle = customArcMenu ?   
         ("#tooltip-menu-item{border-color:"+  borderColor+ ";\n border: 1px;\nfont-size:"+fontSize+"pt;\n padding: 2px 5px;\n min-height: 0px;"
         + tooltipForegroundColor + tooltipBackgroundColor+"\nmax-width:550px;\n}") 
-        : ("#tooltip-menu-item{\n padding: 2px 5px;\nmax-width:550px;\n min-height: 0px;\n}")
-
-    let file = Gio.File.new_for_path(Me.path+"/stylesheet.css");
+        : ("#tooltip-menu-item{\n padding: 2px 5px;\nmax-width:550px;\n min-height: 0px;\n}");
+    let file = Gio.File.new_for_path(GLib.get_home_dir() + "/.local/share/ArcMenu/stylesheet.css");
     let css ="#arc-search{width: "+  menuWidth+"px;} \n.arc-menu-status-text{\ncolor:"+  menuForegroundColor+";\nfont-size:" + fontSize+"pt;\n}\n "+                                                      
         ".search-statustext {font-size:11pt;}\n "+    
         ".left-scroll-area{ \nwidth:"+  menuWidth+"px;\n}\n"   
