@@ -4865,12 +4865,20 @@ function saveCSS(settings){
        gapAdjustment = 4;
        customArcMenu = true;
     }
+    
+    let stylesheetFile = Gio.File.new_for_path(GLib.get_home_dir() + "/.local/share/ArcMenu/stylesheet.css");
 
+    let exists = stylesheetFile.query_exists(null);
+    if(!exists){
+        Util.spawnCommandLine("mkdir " + GLib.get_home_dir() + "/.local/share/ArcMenu");
+        Util.spawnCommandLine("touch " + GLib.get_home_dir() + "/.local/share/ArcMenu/stylesheet.css");
+        stylesheetFile = Gio.File.new_for_path(GLib.get_home_dir() + "/.local/share/ArcMenu/stylesheet.css");
+    }
+    
     let tooltipStyle = customArcMenu ?   
         ("#tooltip-menu-item{border-color:"+  borderColor+ ";\n border: 1px;\nfont-size:"+fontSize+"pt;\n padding: 2px 5px;\n min-height: 0px;"
         + tooltipForegroundColor + tooltipBackgroundColor+"\nmax-width:550px;\n}") 
         : ("#tooltip-menu-item{\n padding: 2px 5px;\nmax-width:550px;\n min-height: 0px;\n}");
-    let file = Gio.File.new_for_path(GLib.get_home_dir() + "/.local/share/ArcMenu/stylesheet.css");
     let css ="#arc-search{width: "+  menuWidth+"px;} \n.arc-menu-status-text{\ncolor:"+  menuForegroundColor+";\nfont-size:" + fontSize+"pt;\n}\n "+                                                      
         ".search-statustext {font-size:11pt;}\n "+    
         ".left-scroll-area{ \nwidth:"+  menuWidth+"px;\n}\n"   
@@ -4933,6 +4941,6 @@ function saveCSS(settings){
         
         +"\n.app-right-click-sep {\nheight: 1px;\nmargin: 2px 35px;\nbackground-color: transparent;"
         +"\nborder-color:"+  lighten_rgb(separatorColor,0.05) +";\nborder-bottom-width: 1px;\nborder-bottom-style: solid; \n}";
-    file.replace_contents(css,null,false,Gio.FileCreateFlags.REPLACE_DESTINATION,null);
+    stylesheetFile.replace_contents(css,null,false,Gio.FileCreateFlags.REPLACE_DESTINATION,null);
 }
 

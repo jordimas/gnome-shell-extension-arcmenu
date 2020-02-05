@@ -51,8 +51,9 @@ function enable() {
     if(!exists){
         Util.spawnCommandLine("mkdir " + GLib.get_home_dir() + "/.local/share/ArcMenu");
         Util.spawnCommandLine("touch " + GLib.get_home_dir() + "/.local/share/ArcMenu/stylesheet.css");
+        stylesheetFile = Gio.File.new_for_path(GLib.get_home_dir() + "/.local/share/ArcMenu/stylesheet.css");
     }
-        
+
     let theme = St.ThemeContext.get_for_stage(global.stage).get_theme();
     theme.unload_stylesheet(Me.stylesheet);
     Me.stylesheet = stylesheetFile;
