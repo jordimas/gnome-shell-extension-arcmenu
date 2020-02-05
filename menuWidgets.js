@@ -809,7 +809,7 @@ var SettingsButton = class ArcMenu_SettingsButton extends SessionButton {
 var ArcMenuSettingsButton = class ArcMenu_ArcMenuSettingsButton extends SessionButton {
     // Initialize the button
     constructor(button) {
-        super(button, _("Arc Menu Settings"), 'emblem-system-symbolic');
+        super(button, _("Arc Menu Settings"), Me.path + '/media/icons/arc-menu-symbolic.svg');
         this.tooltip.flipY = true;
     }
 
@@ -1359,6 +1359,7 @@ var FavoritesMenuItem = Utils.createClass({
         //Modifiy the Default Pinned Apps---------------------
         if(this._name == "Arc Menu Settings"){
             this._name = _("Arc Menu Settings");
+            this._iconPath = Me.path + '/media/icons/arc-menu-symbolic.svg';
         }
         else if(this._name == "Terminal"){
             this._name = _("Terminal");
@@ -1566,6 +1567,7 @@ var FavoritesMenuIcon = Utils.createClass({
         //Modifiy the Default Pinned Apps---------------------
         if(this._name == "Arc Menu Settings"){
             this._name = _("Arc Menu Settings");
+            this._iconPath = Me.path + '/media/icons/arc-menu-symbolic.svg';
         }
         else if(this._name == "Terminal"){
             this._name = _("Terminal");
