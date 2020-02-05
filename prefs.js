@@ -4919,8 +4919,8 @@ function saveCSS(settings){
 
     let exists = stylesheetFile.query_exists(null);
     if(!exists){
-        Util.spawnCommandLine("mkdir " + GLib.get_home_dir() + "/.local/share/ArcMenu");
-        Util.spawnCommandLine("touch " + GLib.get_home_dir() + "/.local/share/ArcMenu/stylesheet.css");
+        GLib.spawn_command_line_sync("mkdir " + GLib.get_home_dir() + "/.local/share/ArcMenu");
+        GLib.spawn_command_line_sync("touch " + GLib.get_home_dir() + "/.local/share/ArcMenu/stylesheet.css");
         stylesheetFile = Gio.File.new_for_path(GLib.get_home_dir() + "/.local/share/ArcMenu/stylesheet.css");
     }
     stylesheetFile.replace_contents(css,null,false,Gio.FileCreateFlags.REPLACE_DESTINATION,null);
