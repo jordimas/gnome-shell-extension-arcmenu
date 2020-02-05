@@ -27,8 +27,10 @@ const {GLib, Gio, St} = imports.gi;
 const Constants = Me.imports.constants;
 const Controller = Me.imports.controller;
 const Convenience = Me.imports.convenience;
+const ExtensionSystem = imports.ui.extensionSystem;
+const ExtensionUtils = imports.misc.extensionUtils;
 const Main = imports.ui.main;
-
+const Util = imports.misc.util;
 
 // Initialize panel button variables
 let settings;
@@ -43,10 +45,17 @@ function init(metadata) {
 
 // Enable the extension
 function enable() {
+    let stylesheetFile = Gio.File.new_for_path(GLib.get_home_dir() + "/.local/share/ArcMenu/stylesheet.css");
 
+    let exists = stylesheetFile.query_exists(null);
+    if(!exists){
+        Util.spawnCommandLine("mkdir " + GLib.get_home_dir() + "/.local/share/ArcMenu");
+        Util.spawnCommandLine("touch " + GLib.get_home_dir() + "/.local/share/ArcMenu/stylesheet.css");
+    }
+        
     let theme = St.ThemeContext.get_for_stage(global.stage).get_theme();
     theme.unload_stylesheet(Me.stylesheet);
-    Me.stylesheet = Gio.File.new_for_path(GLib.get_home_dir() + "/.local/share/ArcMenu/stylesheet.css");
+    Me.stylesheet = stylesheetFile;
     theme.load_stylesheet(Me.stylesheet);
 
     settings = Convenience.getSettings(Me.metadata['settings-schema']);
