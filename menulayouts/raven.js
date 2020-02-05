@@ -237,24 +237,14 @@ var createMenu = class{
     }
     updateStyle(){
         let addStyle = this._settings.get_boolean('enable-custom-arc-menu');
-        let ravenTheme = this._settings.get_boolean('enable-raven-theme');
         if(this.newSearch){
-            if(ravenTheme){
-                this.newSearch.setStyle('arc-menu-status-text'); 
-                this.searchBox._stEntry.set_name('arc-search-entry');
-            }
-            else{
-                addStyle ? this.newSearch.setStyle('arc-menu-status-text') :  this.newSearch.setStyle('search-statustext'); 
-                addStyle ? this.searchBox._stEntry.set_name('arc-search-entry') : this.searchBox._stEntry.set_name('search-entry');
-            }
+            addStyle ? this.newSearch.setStyle('arc-menu-status-text') :  this.newSearch.setStyle('search-statustext'); 
+            addStyle ? this.searchBox._stEntry.set_name('arc-search-entry') : this.searchBox._stEntry.set_name('search-entry'); 
         }
         if(this.placesBottomBox){
             this.placesBottomBox.get_children().forEach((actor) => {
                 if(actor instanceof St.Button){
-                    if(ravenTheme)
-                        actor.add_style_class_name('arc-menu-action');
-                    else
-                        addStyle ? actor.add_style_class_name('arc-menu-action') : actor.remove_style_class_name('arc-menu-action');
+                    addStyle ? actor.add_style_class_name('arc-menu-action') : actor.remove_style_class_name('arc-menu-action');
                 }
             });
         }           

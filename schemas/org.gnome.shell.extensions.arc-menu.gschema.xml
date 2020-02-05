@@ -219,11 +219,6 @@
       <summary>Gap Adjustment</summary>
       <description>Gap Adjustment</description>
     </key>
-    <key type="b" name="enable-raven-theme">
-     <default>false</default>
-      <summary>Enable Raven Theme</summary>
-      <description>Enable Raven Theme.</description>
-    </key>
     <key type="b" name="enable-custom-arc-menu">
      <default>false</default>
       <summary>Enable Custom Arc Menu Theme</summary>

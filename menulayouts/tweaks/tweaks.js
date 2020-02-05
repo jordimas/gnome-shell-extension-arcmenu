@@ -348,31 +348,6 @@ var TweaksDialog = GObject.registerClass(
             showMoreDetailsRow.add(showMoreDetailsSwitch);
             showMoreDetailsFrame.add(showMoreDetailsRow);
             generalPage.add(showMoreDetailsFrame);
-      
-            let tweakStyleFrame = new PW.FrameBox();
-            let tweakStyleRow = new PW.FrameBoxRow();
-            let tweakStyleLabel = new Gtk.Label({
-                label: _("Enable Raven Theme"),
-                use_markup: true,
-                xalign: 0,
-                hexpand: true
-            });
-
-            let tweakStyleSwitch = new Gtk.Switch({ 
-                halign: Gtk.Align.END,
-                tooltip_text: _("Raven Theme will override all other theme settings")
-            });
-            tweakStyleSwitch.set_active(this._settings.get_boolean('enable-raven-theme'));
-            tweakStyleSwitch.connect('notify::active', (widget) => {
-                this._settings.set_boolean('enable-raven-theme', widget.get_active());
-                Prefs.saveCSS(this._settings);
-                this._settings.set_boolean('reload-theme',true);
-            });
-
-            tweakStyleRow.add(tweakStyleLabel);
-            tweakStyleRow.add(tweakStyleSwitch);
-            tweakStyleFrame.add(tweakStyleRow);
-            generalPage.add(tweakStyleFrame);
         }
         _loadMintMenuTweaks(vbox){
             let mintMenuTweaksFrame = new PW.FrameBox();

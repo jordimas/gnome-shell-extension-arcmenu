@@ -116,9 +116,7 @@ var AppRightClickMenu = class ArcMenu_AppRightClickMenu extends PopupMenu.PopupM
     redisplay(){
         this.removeAll();
         let addStyle = this._settings.get_boolean('enable-custom-arc-menu');
-        let layout = this._settings.get_enum('menu-layout');
-        let ravenTheme = this._settings.get_boolean('enable-raven-theme');
-        if(addStyle || (layout == Constants.MENU_LAYOUT.Raven && ravenTheme)){
+        if(addStyle){
             this.actor.style_class = 'arc-right-click-boxpointer';
             this.actor.add_style_class_name('arc-right-click');
             this.actor.set_name('rightClickMenu');

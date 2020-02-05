@@ -225,20 +225,12 @@ var ApplicationsButton =   Utils.defineClass({
             let layout = this._settings.get_enum('menu-layout');
             let addStyle=this._settings.get_boolean('enable-custom-arc-menu');
 
-            if(layout == Constants.MENU_LAYOUT.Raven && this._settings.get_boolean('enable-raven-theme')){
-                this.leftClickMenu.actor.style_class = 'arc-menu-boxpointer';
-                this.leftClickMenu.actor.add_style_class_name('arc-menu');
-                this.rightClickMenu.actor.style_class = 'arc-menu-boxpointer';
-                this.rightClickMenu.actor.add_style_class_name('arc-menu');
-            }
-            else{
-                this.leftClickMenu.actor.style_class = addStyle ? 'arc-menu-boxpointer': 'popup-menu-boxpointer';
-                this.leftClickMenu.actor.add_style_class_name( addStyle ? 'arc-menu' : 'popup-menu');
-    
-                this.rightClickMenu.actor.style_class = addStyle ? 'arc-menu-boxpointer': 'popup-menu-boxpointer';
-                this.rightClickMenu.actor.add_style_class_name(addStyle ? 'arc-menu' : 'popup-menu');
-            }
+            this.leftClickMenu.actor.style_class = addStyle ? 'arc-menu-boxpointer': 'popup-menu-boxpointer';
+            this.leftClickMenu.actor.add_style_class_name( addStyle ? 'arc-menu' : 'popup-menu');
 
+            this.rightClickMenu.actor.style_class = addStyle ? 'arc-menu-boxpointer': 'popup-menu-boxpointer';
+            this.rightClickMenu.actor.add_style_class_name(addStyle ? 'arc-menu' : 'popup-menu');
+          
             if(removeMenuArrow)
                 this.leftClickMenu.actor.style = "-arrow-base:0px;-arrow-rise:0px; -boxpointer-gap: 0px;";
             else if(layout != Constants.MENU_LAYOUT.Raven)
