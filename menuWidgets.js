@@ -255,7 +255,6 @@ var AppRightClickMenu = class ArcMenu_AppRightClickMenu extends PopupMenu.PopupM
                                     if(pinnedApps[i+2]==this._app.get_id()){
                                         this.close();
                                         pinnedApps.splice(i,3);
-                                        this._button.applicationsBox.remove_actor(this._button.favoritesArray[ i / 3 ].actor)
                                         this._settings.set_strv('pinned-app-list',pinnedApps);
                                         break;
                                     }
@@ -308,7 +307,6 @@ var AppRightClickMenu = class ArcMenu_AppRightClickMenu extends PopupMenu.PopupM
                         if(pinnedApps[i+2]==this._app){
                             this.close();
                             pinnedApps.splice(i,3);
-                            this._button.applicationsBox.remove_actor(this._button.favoritesArray[ i / 3 ].actor)
                             this._button.favoritesArray.splice(i / 3, 1);
                             this._settings.set_strv('pinned-app-list',pinnedApps);
                             break;
@@ -1138,12 +1136,12 @@ var ShortcutMenuItem = Utils.createClass({
         let layout = this._button._settings.get_enum('menu-layout');        
         if(layout == Constants.MENU_LAYOUT.Elementary || layout == Constants.MENU_LAYOUT.UbuntuDash){
             this._iconSize = 52;
-            this.actor.style ='padding: 5px; spacing: 0px; width:95px; height:95px;';
+            this.actor.style ='border-radius:4px; padding: 5px; spacing: 0px; width:95px; height:95px;';
         }
             
         else{
             this._iconSize = 36;  
-            this.actor.style ='padding: 5px; spacing: 0px; width:80px;height:80px;';
+            this.actor.style ='border-radius:4px; padding: 5px; spacing: 0px; width:80px;height:80px;';
         }
         this._icon.icon_size = this._iconSize;
         this.label.y_expand = true;
@@ -1561,9 +1559,9 @@ var FavoritesMenuIcon = Utils.createClass({
 
         let layout = this._button._settings.get_enum('menu-layout');
         if(layout == Constants.MENU_LAYOUT.Elementary || layout == Constants.MENU_LAYOUT.UbuntuDash)
-            this.actor.style ='padding: 5px; spacing: 0px; width:95px; height:95px;';
+            this.actor.style ='border-radius:4px; padding: 5px; spacing: 0px; width:95px; height:95px;';
         else
-            this.actor.style ='padding: 5px; spacing: 0px; width:80px;height:80px;';
+            this.actor.style ='border-radius:4px; padding: 5px; spacing: 0px; width:80px;height:80px;';
         
         //Modifiy the Default Pinned Apps---------------------
         if(this._name == "Arc Menu Settings"){
@@ -1687,9 +1685,9 @@ var ApplicationMenuIcon = Utils.createClass({
 
         let layout = this._button._settings.get_enum('menu-layout');
         if(layout == Constants.MENU_LAYOUT.Elementary || layout == Constants.MENU_LAYOUT.UbuntuDash)
-            this.actor.style ='padding: 5px; spacing: 0px; width:95px; height:95px;';
+            this.actor.style ='border-radius:4px; padding: 5px; spacing: 0px; width:95px; height:95px;';
         else
-            this.actor.style ='padding: 5px; spacing: 0px; width:80px;height:80px;';
+            this.actor.style ='border-radius:4px; padding: 5px; spacing: 0px; width:80px;height:80px;';
  
         this._iconBin = new St.Bin({
             y_align: St.Align.END,
@@ -1764,22 +1762,8 @@ var ApplicationMenuIcon = Utils.createClass({
         if(this.actor.hover && this._button.newSearch._highlightDefault)
             this._button.newSearch.highlightDefault(false);
         if(this.tooltip==undefined && this.actor.hover){
-            let lbl = this.label.clutter_text;
-            lbl.get_allocation_box();
-            let isEllipsized = lbl.get_layout().is_ellipsized()
-            if(isEllipsized || this._app.get_description()){
-                let tooltipText = "";
-                if(isEllipsized && this._app.get_description())
-                    tooltipText = this.label.text + "\n" + this._app.get_description();
-                else if(isEllipsized && !this._app.get_description())
-                    tooltipText = this.label.text;
-                else if(!isEllipsized && this._app.get_description())
-                    tooltipText = this._app.get_description();
-                else if(!isEllipsized && !this._app.get_description())
-                    tooltipText = '';
-                this.tooltip = new Tooltip(this._button, this.actor, tooltipText);
-                this.tooltip._onHover();
-            }
+            let description = this._app.get_description();
+            Utils.createTooltip(this._button, this, this.label, description);
         }
     },
     _onKeyPressEvent(actor, event) {
@@ -1828,13 +1812,13 @@ var ApplicationMenuItem =Utils.createClass({
 
         this._iconBin = new St.Bin();
         this.actor.add_child(this._iconBin);
-        let appLabel = new St.Label({
+        this.label = new St.Label({
             text: app.get_name(),
             y_expand: true,
             y_align: Clutter.ActorAlign.CENTER
         });
-        this.actor.add_child(appLabel);
-        this.actor.label_actor = appLabel;
+        this.actor.add_child(this.label);
+        this.actor.label_actor = this.label;
 
         let textureCache = St.TextureCache.get_default();
         let iconThemeChangedId = textureCache.connect('icon-theme-changed',
@@ -1857,10 +1841,8 @@ var ApplicationMenuItem =Utils.createClass({
     },    
     _onHover() {
         if(this.tooltip==undefined && this.actor.hover){
-            if(this._app.get_description()){
-                this.tooltip = new Tooltip(this._button, this.actor, this._app.get_description());
-                this.tooltip._onHover();
-            }
+            let description = this._app.get_description();
+            Utils.createTooltip(this._button, this, this.label, description);
         }
     },
     setActive(active, callParent = true){
@@ -1935,7 +1917,6 @@ var ApplicationMenuItem =Utils.createClass({
 var SearchResultItem = Utils.createClass({
     Name: 'ArcMenu_SearchResultItem',
     Extends: PopupMenu.PopupBaseMenuItem,
-    Signals: {'hideTooltip': {}},
     // Initialize menu item
     _init(button, app,path) {
         this.callParent('_init');
@@ -1993,7 +1974,8 @@ var SearchResultItem = Utils.createClass({
             if(!this.rightClickMenu.isOpen)
                 this.rightClickMenu.redisplay();
             this.rightClickMenu.toggle();
-            this.emit('hideTooltip');
+            if(this.tooltip!=undefined)
+                this.tooltip.hide();
         }   
         return Clutter.EVENT_STOP;
     },
@@ -2681,6 +2663,7 @@ var SearchBox = class ArcMenu_SearchBox{
             track_hover: true,
             can_focus: true
         });
+        this._stEntry.style = "min-height: 0px; border-radius:4px; padding: 7px 9px;";
         this._findIcon = new St.Icon({
             style_class: 'search-entry-icon',
             icon_name: 'edit-find-symbolic',

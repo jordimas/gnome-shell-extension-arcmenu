@@ -70,7 +70,7 @@ var createMenu = class {
         // Set equal margin of the searchbar.
         this.searchBox.actor.style ="margin: 0px 10px 10px 10px;";
         // Remove border around searchbox.
-        this.searchBox._stEntry.style = "border: 0;";
+        this.searchBox._stEntry.style = "min-height: 0px; border: 0; border-radius:4px; padding: 7px 9px;";
         this._firstAppItem = null;
         this._firstApp = null;
         this._tabbedOnce = false;

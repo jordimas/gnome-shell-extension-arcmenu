@@ -264,6 +264,8 @@ var ApplicationsButton =   Utils.defineClass({
         updateStyle(){
             if(this.MenuLayout)
                 this.MenuLayout.updateStyle();
+            let removeMenuArrow = this._settings.get_boolean('remove-menu-arrow');   
+            let layout = this._settings.get_enum('menu-layout');
             let addStyle=this._settings.get_boolean('enable-custom-arc-menu');
 
             this.leftClickMenu.actor.style_class = addStyle ? 'arc-menu-boxpointer': 'popup-menu-boxpointer';
@@ -271,10 +273,10 @@ var ApplicationsButton =   Utils.defineClass({
 
             this.rightClickMenu.actor.style_class = addStyle ? 'arc-menu-boxpointer': 'popup-menu-boxpointer';
             this.rightClickMenu.actor.add_style_class_name(addStyle ? 'arc-menu' : 'popup-menu');
-            let removeMenuArrow = this._settings.get_boolean('remove-menu-arrow');    
+    
             if(removeMenuArrow)
                 this.leftClickMenu.actor.style = "-arrow-base:0px;-arrow-rise:0px; -boxpointer-gap: 0px;";
-            else
+            else if(layout != Constants.MENU_LAYOUT.Raven)
                 this.leftClickMenu.actor.style = null;
         },
         updateSearch(){
@@ -302,7 +304,7 @@ var ApplicationsButton =   Utils.defineClass({
                     if(layout == Constants.MENU_LAYOUT.GnomeDash)
                         Main.overview.toggle();
                     else{
-                        if(layout == Constants.MENU_LAYOUT.Runner)
+                        if(layout == Constants.MENU_LAYOUT.Runner || layout == Constants.MENU_LAYOUT.Raven)
                             this.MenuLayout.updateRunnerLocation();
                         this.leftClickMenu.toggle();
                         if(this.leftClickMenu.isOpen){
@@ -320,7 +322,7 @@ var ApplicationsButton =   Utils.defineClass({
                     if(layout == Constants.MENU_LAYOUT.GnomeDash)
                         Main.overview.toggle();
                     else{
-                        if(layout == Constants.MENU_LAYOUT.Runner)
+                        if(layout == Constants.MENU_LAYOUT.Runner || layout == Constants.MENU_LAYOUT.Raven)
                             this.MenuLayout.updateRunnerLocation();
                         this.leftClickMenu.toggle();	
                         if(this.leftClickMenu.isOpen){
@@ -343,7 +345,7 @@ var ApplicationsButton =   Utils.defineClass({
             if(layout == Constants.MENU_LAYOUT.GnomeDash)
                 Main.overview.toggle();
             else{
-                if(layout == Constants.MENU_LAYOUT.Runner)
+                if(layout == Constants.MENU_LAYOUT.Runner || layout == Constants.MENU_LAYOUT.Raven)
                     this.MenuLayout.updateRunnerLocation();
                 this.leftClickMenu.toggle();
                 if(this.leftClickMenu.isOpen){

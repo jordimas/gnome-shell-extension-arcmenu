@@ -51,16 +51,16 @@ var ListSearchResult = class ArcMenu_ListSearchResult {
         this.metaInfo = metaInfo;
         this.provider = provider;
         this._settings = this._button._settings;
-        let app = appSys.lookup_app(this.metaInfo['id']);
+        this.app = appSys.lookup_app(this.metaInfo['id']);
 
         if(this.provider.id =='org.gnome.Nautilus.desktop')
             this.menuItem = new MW.SearchResultItem(this._button, appSys.lookup_app(this.provider.id), this.metaInfo['description']);
-        else if(app)
-            this.menuItem = new MW.SearchResultItem(this._button, app);
+        else if(this.app)
+            this.menuItem = new MW.SearchResultItem(this._button, this.app);
         else
             this.menuItem = new MW.SearchResultItem(this._button);
  
-        let title = new St.Label({ 
+        this.label = new St.Label({ 
             text: this.metaInfo['name'],
             x_expand: true,
             y_align: Clutter.ActorAlign.CENTER 
@@ -68,7 +68,7 @@ var ListSearchResult = class ArcMenu_ListSearchResult {
 
         if(this._settings.get_boolean('krunner-show-details') && this._settings.get_enum('menu-layout')==Constants.MENU_LAYOUT.Runner){
             this.menuItem.actor.style = "height:40px";
-            title.style = "font-weight: bold;";
+            this.label.style = "font-weight: bold;";
 
             let descriptionBox = new St.BoxLayout({
                 vertical:true
@@ -80,7 +80,7 @@ var ListSearchResult = class ArcMenu_ListSearchResult {
             
             let text = this.metaInfo['description'] ? this.metaInfo['description'] : '';
             if(text == '')
-                text = app.get_description() ? app.get_description() : '';
+                text = this.app.get_description() ? this.app.get_description() : '';
             
             let descriptionLabel = new St.Label({ 
                 text: text,
@@ -88,40 +88,33 @@ var ListSearchResult = class ArcMenu_ListSearchResult {
                 x_expand: true
             });
 
-            descriptionBox.add(title);                           
+            descriptionBox.add(this.label);                           
             descriptionBox.add(descriptionLabel);
 
             this.menuItem.actor.add_child(descriptionBox);
         }
         else{
             this.menuItem.actor.style = null;
-            title.style = null;
+            this.label.style = null;
 
             let largeIcons = this._settings.get_boolean('enable-large-icons');
             let icon = this.metaInfo['createIcon'](largeIcons ? MEDIUM_ICON_SIZE : SMALL_ICON_SIZE);
             if(icon) 
                 this.menuItem.actor.add_child(icon);
 
-            this.menuItem.actor.add_child(title);
+            this.menuItem.actor.add_child(this.label);
         }
-
-
-
         if (this.metaInfo['description'] &&  this.provider.appInfo.get_name() == "Calculator") {
-            title.text = this.metaInfo['name'] + "   " + this.metaInfo['description'];
+            this.label.text = this.metaInfo['name'] + "   " + this.metaInfo['description'];
         }
-        
+        this.menuItem.actor.connect('notify::hover', this._onHover.bind(this));
         this.menuItem.connect('activate', this.activate.bind(this));
-
-        if(this.metaInfo['description'] || ((app!=undefined) ? app.get_description() : false)){
-            let tooltipText = this.metaInfo['description'] ? this.metaInfo['description'] : app.get_description();
-            this.tooltip = new MW.Tooltip(this._button, this.menuItem.actor, tooltipText);
-            this.tooltip.hide();
-            this.menuItem.connect('hideTooltip',() => {
-                this.tooltip.hide();
-            });
+    }
+    _onHover(){
+        if(this.menuItem.tooltip==undefined && this.menuItem.actor.hover){
+            let description = this.app ? this.app.get_description() : this.metaInfo['description'];
+            Utils.createTooltip(this._button, this.menuItem, this.label, description);
         }
-
     }
     activate() {
         this.emit('activate', this.metaInfo.id);
@@ -139,13 +132,13 @@ var AppSearchResult = class  ArcMenu_AppSearchResult {
         this.provider = provider;
         this._settings = this._button._settings;
 
-        let app = appSys.lookup_app(this.metaInfo['id']);
-        if(app)
-            this.menuItem = new MW.SearchResultItem(this._button, app);
+        this.app = appSys.lookup_app(this.metaInfo['id']);
+        if(this.app)
+            this.menuItem = new MW.SearchResultItem(this._button, this.app);
         else
             this.menuItem = new MW.SearchResultItem(this._button);
 
-        let label = new St.Label({
+        this.label = new St.Label({
             text: this.metaInfo['name'],
             y_expand: true,
             x_expand: true,
@@ -154,7 +147,7 @@ var AppSearchResult = class  ArcMenu_AppSearchResult {
 
         if(this._settings.get_boolean('krunner-show-details') && this._settings.get_enum('menu-layout')==Constants.MENU_LAYOUT.Runner){
             this.menuItem.actor.style = "height:40px";
-            label.style = "font-weight: bold;";
+            this.label.style = "font-weight: bold;";
 
             let descriptionBox = new St.BoxLayout({
                 vertical:true
@@ -166,7 +159,7 @@ var AppSearchResult = class  ArcMenu_AppSearchResult {
 
             let text = this.metaInfo['description'] ? this.metaInfo['description'] : '';
             if(text == '')
-                text = app.get_description() ? app.get_description() : '';
+                text = this.app.get_description() ? this.app.get_description() : '';
 
             let descriptionLabel = new St.Label({ 
                 text: text,
@@ -174,31 +167,29 @@ var AppSearchResult = class  ArcMenu_AppSearchResult {
                 x_expand: true
             });
 
-            descriptionBox.add(label);
+            descriptionBox.add(this.label);
             descriptionBox.add(descriptionLabel);
             this.menuItem.actor.add_child(descriptionBox);
         }
         else{
             this.menuItem.actor.style = null;
-            label.style = null;
+            this.label.style = null;
 
             let largeIcons = this._settings.get_boolean('enable-large-icons');
             this.icon = this.metaInfo['createIcon'](largeIcons ? MEDIUM_ICON_SIZE : SMALL_ICON_SIZE);
             if (this.icon) 
                 this.menuItem.actor.add_child(this.icon);     
 
-            this.menuItem.actor.add_child(label);
+            this.menuItem.actor.add_child(this.label);
         }
-
-        if(this.metaInfo['description'] || ((app!=undefined) ? app.get_description() : false)){
-            let tooltipText = this.metaInfo['description'] ? this.metaInfo['description'] : app.get_description();
-            this.tooltip = new MW.Tooltip(this._button, this.menuItem.actor, tooltipText);
-            this.tooltip.hide();
-            this.menuItem.connect('hideTooltip',() => {
-                this.tooltip.hide();
-            });
-        }
+        this.menuItem.actor.connect('notify::hover', this._onHover.bind(this));
         this.menuItem.connect('activate', this.activate.bind(this)); 
+    }
+    _onHover(){
+        if(this.menuItem.tooltip==undefined && this.menuItem.actor.hover){
+            let description = this.app ? this.app.get_description() : this.metaInfo['description'];
+            Utils.createTooltip(this._button, this.menuItem, this.label, description);
+        }
     }
     activate() {
         this.emit('activate', this.metaInfo.id);
@@ -414,6 +405,10 @@ var ListSearchResults = class ArcMenu_ListSearchResults extends SearchResultsBas
         else
             return null;
     }
+    destroy(){
+        this._resultDisplayBin.destroy();
+        this._resultDisplayBin = null;
+    }
 };
 Signals.addSignalMethods(ListSearchResults.prototype);
 var AppSearchResults = class ArcMenu_AppSearchResults extends SearchResultsBase {
@@ -449,6 +444,10 @@ var AppSearchResults = class ArcMenu_AppSearchResults extends SearchResultsBase 
             return this._grid.get_child_at_index(0)._delegate;
         else
             return null;
+    }
+    destroy(){
+        this._resultDisplayBin.destroy();
+        this._resultDisplayBin = null;
     }
 };
 Signals.addSignalMethods(AppSearchResults.prototype);
@@ -509,9 +508,10 @@ var SearchResults = class ArcMenu_SearchResults {
             this._statusText.style_class = style;
     }
     destroy(){
-        this._providers.forEach(provider => {
-            provider.display.actor.destroy();
-        });
+        if (this._searchTimeoutId > 0) {
+            GLib.source_remove(this._searchTimeoutId);
+            this._searchTimeoutId = 0;
+        }
         if(this.disabledID>0){
             this._searchSettings.disconnect(this.disabledID);
             this.disabledID=0;
@@ -532,6 +532,9 @@ var SearchResults = class ArcMenu_SearchResults {
             appSys.disconnect(this.installChangedID);
             this.installChangedID=0;
         }     
+        this._providers.forEach(provider => {
+            provider.display.destroy();
+        });
     }
     _reloadRemoteProviders() {
         let remoteProviders = this._providers.filter(p => p.isRemoteProvider);
@@ -662,7 +665,6 @@ var SearchResults = class ArcMenu_SearchResults {
 
         let providerDisplay;
         if (provider.appInfo)
-      
             providerDisplay = new ListSearchResults(provider, this);
         else
             providerDisplay = new AppSearchResults(provider, this);
@@ -811,10 +813,6 @@ var ArcSearchProviderInfo = Utils.createClass({
         this.hoverID = this.actor.connect('notify::hover', this._onHover.bind(this));
         this.actor.connect('notify::active',()=> this.setActive(this.actor.active, false));
 
-        if(provider.appInfo.get_description() != null){
-            this.tooltip = new MW.Tooltip(this._button, this.actor, provider.appInfo.get_description());
-            this.tooltip.hide();            
-        }
         if(gnome36){
             this.connect('button-press-event', this._onButtonPressEvent.bind(this));
             this.connect('button-release-event', this._onButtonReleaseEvent.bind(this));
@@ -823,6 +821,10 @@ var ArcSearchProviderInfo = Utils.createClass({
     _onHover() {
         if(this.actor.hover && this._button.newSearch._highlightDefault)
             this._button.newSearch.highlightDefault(false);
+        if(this.tooltip==undefined && this.actor.hover){
+            let description = this.provider.appInfo.get_description();
+            Utils.createTooltip(this._button, this, this.nameLabel, description);
+        }
     },
     animateLaunch() {
         let app = appSys.lookup_app(this.provider.appInfo.get_id());
@@ -860,4 +862,3 @@ var ArcSearchProviderInfo = Utils.createClass({
         }
     }
 });
-

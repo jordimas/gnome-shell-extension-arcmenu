@@ -100,6 +100,7 @@ var createMenu = class{
         //Top Search Bar
         // Create search box
         this.searchBox = new MW.SearchBox(this);
+        this.searchBox._stEntry.style = "min-height: 0px; border-radius: 18px; padding: 7px 12px;";
         this.searchBox.actor.style ="margin: 0px 10px 10px 10px;padding-top: 5px; padding-bottom: 0.0em;padding-left: 0.4em;padding-right: 0.4em;";
         this._firstAppItem = null;
         this._firstApp = null;
@@ -183,6 +184,7 @@ var createMenu = class{
             x_align: St.Align.MIDDLE,
             y_align: St.Align.MIDDLE
         });
+        
         this._loadCategories();
         this._createFavoritesMenu();
         this._loadPinnedShortcuts();

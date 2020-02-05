@@ -348,29 +348,6 @@ var TweaksDialog = GObject.registerClass(
             showMoreDetailsRow.add(showMoreDetailsSwitch);
             showMoreDetailsFrame.add(showMoreDetailsRow);
             generalPage.add(showMoreDetailsFrame);
-      
-            let tweakStyleFrame = new PW.FrameBox();
-            let tweakStyleRow = new PW.FrameBoxRow();
-            let tweakStyleLabel = new Gtk.Label({
-                label: _("Disable Menu Arrow"),
-                use_markup: true,
-                xalign: 0,
-                hexpand: true
-            });
-
-            let tweakStyleSwitch = new Gtk.Switch({ 
-                halign: Gtk.Align.END,
-                tooltip_text: _("Disable current theme menu arrow pointer")
-            });
-            tweakStyleSwitch.set_active(this._settings.get_boolean('remove-menu-arrow'));
-            tweakStyleSwitch.connect('notify::active', (widget) => {
-                this._settings.set_boolean('remove-menu-arrow', widget.get_active());
-            });
-
-            tweakStyleRow.add(tweakStyleLabel);
-            tweakStyleRow.add(tweakStyleSwitch);
-            tweakStyleFrame.add(tweakStyleRow);
-            generalPage.add(tweakStyleFrame);
         }
         _loadMintMenuTweaks(vbox){
             let mintMenuTweaksFrame = new PW.FrameBox();

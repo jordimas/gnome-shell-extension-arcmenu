@@ -64,17 +64,7 @@ var createMenu = class{
 
         //LAYOUT------------------------------------------------------------------------------------------------
         this.mainBox.vertical = false;
-
-        let themeContext = St.ThemeContext.get_for_stage(global.stage);
-        let scaleFactor = themeContext.scale_factor;
-        
-        let screen = Gdk.Screen.get_default();
-        let [x, y] = this._button._menuButtonWidget.actor.get_transformed_position();
-        let currentMonitor = screen.get_monitor_at_point(x, y);
-        let rect = screen.get_monitor_workarea(currentMonitor);
-        let screenHeight = rect.height;        
-        let height =  Math.round(screenHeight / scaleFactor);
-        this.mainBox.style = `height: ${height}px`;
+        this.leftClickMenu.actor.style = "-arrow-base:0px;-arrow-rise:0px; -boxpointer-gap: 0px;";
 
         this.placesBox = new St.BoxLayout({
             vertical: true
@@ -101,12 +91,10 @@ var createMenu = class{
             y_align: St.Align.START
         });
 
-
         this.topBox = new St.BoxLayout({
             vertical: false
         });
 
-        
         //Sub Main Box -- stores left and right box
         this.subMainBox= new St.BoxLayout({
             vertical: true
@@ -127,7 +115,7 @@ var createMenu = class{
         //Top Search Bar
         // Create search box
         this.searchBox = new MW.SearchBox(this);
-        this.searchBox._stEntry.style = "border-radius: 20px";
+        this.searchBox._stEntry.style = "min-height: 0px; border-radius: 18px; padding: 7px 12px;";
         this.searchBox.actor.style ="margin: 0px 10px 10px 10px;padding-top: 25px; padding-bottom: 0.0em;padding-left: 0.7em;padding-right: 0.7em;";
         this._firstAppItem = null;
         this._firstApp = null;
@@ -174,9 +162,7 @@ var createMenu = class{
             y_align: St.Align.START
         });
 
-        this.leftClickMenu.box.style = "padding-bottom:0px; padding-top:0px;";
-      
-        
+        this.leftClickMenu.box.style = "padding-bottom:0px; padding-top:0px;";     
     
         this._loadCategories();
         this._displayCategories();
@@ -250,10 +236,10 @@ var createMenu = class{
         
     }
     updateStyle(){
-        let addStyle=this._settings.get_boolean('enable-custom-arc-menu');
+        let addStyle = this._settings.get_boolean('enable-custom-arc-menu');
         if(this.newSearch){
             addStyle ? this.newSearch.setStyle('arc-menu-status-text') :  this.newSearch.setStyle('search-statustext'); 
-            addStyle ? this.searchBox._stEntry.set_name('arc-search-entry') : this.searchBox._stEntry.set_name('search-entry');
+            addStyle ? this.searchBox._stEntry.set_name('arc-search-entry') : this.searchBox._stEntry.set_name('search-entry'); 
         }
         if(this.placesBottomBox){
             this.placesBottomBox.get_children().forEach((actor) => {
@@ -261,7 +247,10 @@ var createMenu = class{
                     addStyle ? actor.add_style_class_name('arc-menu-action') : actor.remove_style_class_name('arc-menu-action');
                 }
             });
-        } 
+        }           
+        this.updateRunnerLocation();
+    }
+    updateRunnerLocation(){
         let themeContext = St.ThemeContext.get_for_stage(global.stage);
         let scaleFactor = themeContext.scale_factor;
         

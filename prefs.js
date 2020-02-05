@@ -2186,6 +2186,8 @@ var AppearancePage = GObject.registerClass(
                 dialog.connect('response', (response) => { 
                     if(dialog.get_response()) {
                         this._settings.set_enum('menu-layout', dialog.index);
+                        saveCSS(this._settings);
+                        this._settings.set_boolean('reload-theme',true);
                         currentStyleLabel.label = Constants.MENU_STYLE_CHOOSER.Styles[dialog.index].name;
                         tweaksLabel.label = currentStyleLabel.label +" " + _("Tweaks");
                         dialog.destroy();
@@ -2223,6 +2225,8 @@ var AppearancePage = GObject.registerClass(
                     currentStyleLabel.label = Constants.MENU_STYLE_CHOOSER.Styles[0].name;
                     tweaksLabel.label = currentStyleLabel.label +" " + _("Tweaks");
                 }
+                saveCSS(this._settings);
+                this._settings.set_boolean('reload-theme',true);
                    
             });
             layoutRow.add(layoutLabel);
@@ -4823,10 +4827,8 @@ function lighten_rgb(colorString, percent, modifyAlpha){ // implemented from htt
 };
 function saveCSS(settings){
     this._settings= settings;
-    let heightValue = this._settings.get_int('menu-height');
-    let separatorColor = this._settings.get_string('separator-color');
-    let verticalSeparator = this._settings.get_boolean('vert-separator');
     let customArcMenu = this._settings.get_boolean('enable-custom-arc-menu');
+    let separatorColor = this._settings.get_string('separator-color');
     let menuColor = this._settings.get_string('menu-color');
     let menuForegroundColor = this._settings.get_string('menu-foreground-color');
     let borderColor = this._settings.get_string('border-color');
@@ -4842,15 +4844,14 @@ function saveCSS(settings){
     let menuButtonColor = this._settings.get_string('menu-button-color');
     let menuButtonActiveColor =  this._settings.get_string('menu-button-active-color');
     let gapAdjustment = this._settings.get_int('gap-adjustment');
+    let tooltipForegroundColor = customArcMenu ? "\n color:"+  menuForegroundColor+";\n" : "";
+    let tooltipBackgroundColor = customArcMenu ? "\n background-color:"+lighten_rgb(menuColor,0.05)+";\n" : "";
     
-    let tooltipForegroundColor= customArcMenu ? "\n color:"+  menuForegroundColor+";\n" : "";
-    let tooltipBackgroundColor= customArcMenu ? "\n background-color:"+lighten_rgb( menuColor,0.05)+";\n" : "";
     let tooltipStyle = customArcMenu ?   
         ("#tooltip-menu-item{border-color:"+  borderColor+ ";\n border: 1px;\nfont-size:"+fontSize+"pt;\n padding: 2px 5px;\n min-height: 0px;"
         + tooltipForegroundColor + tooltipBackgroundColor+"\nmax-width:550px;\n}") 
-        : ("#tooltip-menu-item{\n padding: 2px 5px;\nmax-width:550px;\n min-height: 0px;\n}")
+        : ("#tooltip-menu-item{\n padding: 2px 5px;\nmax-width:550px;\n min-height: 0px;\n}");
 
-    let file = Gio.File.new_for_path(Me.path+"/stylesheet.css");
     let css ="#arc-search{width: "+  menuWidth+"px;} \n.arc-menu-status-text{\ncolor:"+  menuForegroundColor+";\nfont-size:" + fontSize+"pt;\n}\n "+                                                      
         ".search-statustext {font-size:11pt;}\n "+    
         ".left-scroll-area{ \nwidth:"+  menuWidth+"px;\n}\n"   
@@ -4913,6 +4914,15 @@ function saveCSS(settings){
         
         +"\n.app-right-click-sep {\nheight: 1px;\nmargin: 2px 35px;\nbackground-color: transparent;"
         +"\nborder-color:"+  lighten_rgb(separatorColor,0.05) +";\nborder-bottom-width: 1px;\nborder-bottom-style: solid; \n}";
-    file.replace_contents(css,null,false,Gio.FileCreateFlags.REPLACE_DESTINATION,null);
+    
+    let stylesheetFile = Gio.File.new_for_path(GLib.get_home_dir() + "/.local/share/ArcMenu/stylesheet.css");
+
+    let exists = stylesheetFile.query_exists(null);
+    if(!exists){
+        GLib.spawn_command_line_sync("mkdir " + GLib.get_home_dir() + "/.local/share/ArcMenu");
+        GLib.spawn_command_line_sync("touch " + GLib.get_home_dir() + "/.local/share/ArcMenu/stylesheet.css");
+        stylesheetFile = Gio.File.new_for_path(GLib.get_home_dir() + "/.local/share/ArcMenu/stylesheet.css");
+    }
+    stylesheetFile.replace_contents(css,null,false,Gio.FileCreateFlags.REPLACE_DESTINATION,null);
 }
 
