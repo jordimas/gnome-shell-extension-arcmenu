@@ -1518,11 +1518,14 @@ var FavoritesMenuItem = Utils.createClass({
     },
     
     getDragActor() {
-        return new St.Icon({
+        let addStyle = this._button._settings.get_boolean('enable-custom-arc-menu');
+        let icon = new St.Icon({
             gicon: Gio.icon_new_for_string(this._iconPath),
             style_class: 'popup-menu-icon',
             icon_size: 40
         });
+        addStyle ? icon.add_style_class_name('arc-menu-action') : icon.remove_style_class_name('arc-menu-action');
+        return icon;
     },
 
     // Returns the original actor that should align with the actor
