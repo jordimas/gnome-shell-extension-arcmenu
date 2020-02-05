@@ -2665,7 +2665,7 @@ var SearchBox = class ArcMenu_SearchBox{
             track_hover: true,
             can_focus: true
         });
-        this._stEntry.style = "border-radius:4px; padding: 7px 9px;";
+        this._stEntry.style = "min-height: 0px; border-radius:4px; padding: 7px 9px;";
         this._findIcon = new St.Icon({
             style_class: 'search-entry-icon',
             icon_name: 'edit-find-symbolic',
