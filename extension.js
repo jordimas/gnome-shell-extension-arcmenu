@@ -45,17 +45,18 @@ function init(metadata) {
 
 // Enable the extension
 function enable() {
-    let stylesheetFile = Gio.File.new_for_path(GLib.get_home_dir() + "/.local/share/ArcMenu/stylesheet.css");
+    let stylesheetFile = Gio.File.new_for_path(GLib.get_home_dir() + "/.local/share/arc-menu/stylesheet.css");
 
     let exists = stylesheetFile.query_exists(null);
     if(!exists){
-        Util.spawnCommandLine("mkdir " + GLib.get_home_dir() + "/.local/share/ArcMenu");
-        Util.spawnCommandLine("touch " + GLib.get_home_dir() + "/.local/share/ArcMenu/stylesheet.css");
-        stylesheetFile = Gio.File.new_for_path(GLib.get_home_dir() + "/.local/share/ArcMenu/stylesheet.css");
+        Util.spawnCommandLine("mkdir " + GLib.get_home_dir() + "/.local/share/arc-menu");
+        Util.spawnCommandLine("touch " + GLib.get_home_dir() + "/.local/share/arc-menu/stylesheet.css");
+        stylesheetFile = Gio.File.new_for_path(GLib.get_home_dir() + "/.local/share/arc-menu/stylesheet.css");
     }
-
+        
     let theme = St.ThemeContext.get_for_stage(global.stage).get_theme();
-    theme.unload_stylesheet(Me.stylesheet);
+    if(Me.stylesheet)
+        theme.unload_stylesheet(Me.stylesheet);
     Me.stylesheet = stylesheetFile;
     theme.load_stylesheet(Me.stylesheet);
 

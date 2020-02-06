@@ -373,7 +373,7 @@ var AddAppsToPinnedListWindow = GObject.registerClass(
                 this._loadCategories();
                 let defaultApplicationShortcutsFrame = new PW.FrameBox();
                 let defaultApplicationShortcuts = this._settings.get_default_value('application-shortcuts-list').deep_unpack();
-                defaultApplicationShortcuts.push([_("Arc Menu Settings"), "emblem-system-symbolic", "gnome-shell-extension-prefs arc-menu@linxgem33.com"]);
+                defaultApplicationShortcuts.push([_("Arc Menu Settings"), Me.path + '/media/icons/arc-menu-symbolic.svg', "gnome-shell-extension-prefs arc-menu@linxgem33.com"]);
                 defaultApplicationShortcuts.push([_("Run Command..."), "system-run-symbolic", "ArcMenu_RunCommand"]);
                 for(let i = 0;i < defaultApplicationShortcuts.length; i++) {
                     let frameRow = new PW.FrameBoxRow();
@@ -529,17 +529,25 @@ var AddAppsToPinnedListWindow = GObject.registerClass(
               let _b = x.get_display_name();
               return GLib.strcmp0(_a, _b);
             });
-            //iterate through allApps and create the frameboxrows, labels, and checkbuttons
-            for(let i = 0;i < allApps.length; i++) {
-                if(allApps[i].should_show()) {
+            let iter = this._dialogType == Constants.DIALOG_TYPE.Default ? -1 : 0;
+            for(let i = iter; i < allApps.length; i++) {
+                if(i == -1 ? true : allApps[i].should_show()) {
                     let frameRow = new PW.FrameBoxRow();
-                    frameRow._name = allApps[i].get_display_name();
-                    if(allApps[i].get_icon())
-                    	frameRow._icon = allApps[i].get_icon().to_string(); //stores icon as string
-                    else 
-                        frameRow._icon= "dialog-information";
-                        
-                    frameRow._cmd = allApps[i].get_id(); //string for command line to launch .desktop files
+                    if(i == -1){
+                        frameRow._name = _("Arc Menu Settings");
+                        frameRow._icon = Me.path + '/media/icons/arc-menu-symbolic.svg';
+                        frameRow._cmd = "gnome-shell-extension-prefs arc-menu@linxgem33.com";
+                    }
+                    else{
+                        frameRow._name = allApps[i].get_display_name();
+                        if(allApps[i].get_icon())
+                            frameRow._icon = allApps[i].get_icon().to_string(); //stores icon as string
+                        else 
+                            frameRow._icon= "dialog-information";
+                            
+                        frameRow._cmd = allApps[i].get_id(); //string for command line to launch .desktop files
+                    }
+                   
                     let iconImage = new Gtk.Image( {
                         gicon: Gio.icon_new_for_string(frameRow._icon),
                         pixel_size: 22
@@ -4846,7 +4854,7 @@ function saveCSS(settings){
     let gapAdjustment = this._settings.get_int('gap-adjustment');
     let tooltipForegroundColor = customArcMenu ? "\n color:"+  menuForegroundColor+";\n" : "";
     let tooltipBackgroundColor = customArcMenu ? "\n background-color:"+lighten_rgb(menuColor,0.05)+";\n" : "";
-    
+        
     let tooltipStyle = customArcMenu ?   
         ("#tooltip-menu-item{border-color:"+  borderColor+ ";\n border: 1px;\nfont-size:"+fontSize+"pt;\n padding: 2px 5px;\n min-height: 0px;"
         + tooltipForegroundColor + tooltipBackgroundColor+"\nmax-width:550px;\n}") 
@@ -4915,13 +4923,13 @@ function saveCSS(settings){
         +"\n.app-right-click-sep {\nheight: 1px;\nmargin: 2px 35px;\nbackground-color: transparent;"
         +"\nborder-color:"+  lighten_rgb(separatorColor,0.05) +";\nborder-bottom-width: 1px;\nborder-bottom-style: solid; \n}";
     
-    let stylesheetFile = Gio.File.new_for_path(GLib.get_home_dir() + "/.local/share/ArcMenu/stylesheet.css");
+    let stylesheetFile = Gio.File.new_for_path(GLib.get_home_dir() + "/.local/share/arc-menu/stylesheet.css");
 
     let exists = stylesheetFile.query_exists(null);
     if(!exists){
-        GLib.spawn_command_line_sync("mkdir " + GLib.get_home_dir() + "/.local/share/ArcMenu");
-        GLib.spawn_command_line_sync("touch " + GLib.get_home_dir() + "/.local/share/ArcMenu/stylesheet.css");
-        stylesheetFile = Gio.File.new_for_path(GLib.get_home_dir() + "/.local/share/ArcMenu/stylesheet.css");
+        GLib.spawn_command_line_sync("mkdir " + GLib.get_home_dir() + "/.local/share/arc-menu");
+        GLib.spawn_command_line_sync("touch " + GLib.get_home_dir() + "/.local/share/arc-menu/stylesheet.css");
+        stylesheetFile = Gio.File.new_for_path(GLib.get_home_dir() + "/.local/share/arc-menu/stylesheet.css");
     }
     stylesheetFile.replace_contents(css,null,false,Gio.FileCreateFlags.REPLACE_DESTINATION,null);
 }
