@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Arc Menu\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-01-14 17:56-0500\n"
-"PO-Revision-Date: 2020-01-19 22:25+0100\n"
+"POT-Creation-Date: 2020-02-07 17:51+0100\n"
+"PO-Revision-Date: 2020-02-07 21:05+0100\n"
 "Last-Translator: Morgan Antonsson <morgan.antonsson@gmail.com>\n"
 "Language-Team: \n"
 "Language: sv\n"
@@ -16,244 +16,213 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 2.2.1\n"
 
-#: search.js:701 searchGrid.js:695
-msgid "Searching..."
-msgstr "Söker..."
+#: constants.js:157 menuWidgets.js:2920 prefs.js:4628
+msgid "Arc Menu"
+msgstr "Arc Menu"
 
-#: search.js:703 searchGrid.js:697
-msgid "No results."
-msgstr "Inga resultat."
+#: constants.js:162
+msgid "Arc Menu Alt"
+msgstr "Arc Menu alt"
 
-#: search.js:800 searchGrid.js:793
-#, javascript-format
-msgid "%d more"
-msgid_plural "%d more"
-msgstr[0] "%d till"
-msgstr[1] "%d till"
+#: constants.js:163
+msgid "Arc Menu Original"
+msgstr "Arc Menu original"
 
-#: menulayouts/mint.js:435 menulayouts/arcmenu.js:247
-#: menulayouts/redmond.js:233 menuWidgets.js:1159
-msgid "Terminal"
-msgstr "Terminal"
+#: constants.js:164
+msgid "Curved A"
+msgstr "Böjt A"
 
-#: menulayouts/mint.js:436 menulayouts/brisk.js:193 menulayouts/arcmenu.js:247
-#: menulayouts/redmond.js:233 menulayouts/windows.js:285 menuWidgets.js:685
-msgid "Settings"
-msgstr "Inställningar"
+#: constants.js:165
+msgid "Start Box"
+msgstr "Startruta"
 
-#: menulayouts/mint.js:442 menulayouts/brisk.js:193 menulayouts/arcmenu.js:247
-#: menulayouts/redmond.js:233
-msgid "Software"
-msgstr "Programvara"
+#: constants.js:166
+msgid "Focus"
+msgstr "Fokus"
 
-#: menulayouts/mint.js:443
-msgid "Files"
-msgstr "Filer"
+#: constants.js:167
+msgid "Triple Dash"
+msgstr "Tre streck"
 
-#: menulayouts/mint.js:444 menuWidgets.js:803 prefs.js:3870
-msgid "Log Out"
-msgstr "Logga ut"
+#: constants.js:168
+msgid "Whirl"
+msgstr "Virvel"
 
-#: menulayouts/mint.js:445 menuWidgets.js:832 prefs.js:3853
-msgid "Lock"
-msgstr "Lås"
+#: constants.js:169
+msgid "Whirl Circle"
+msgstr "Virvel i cirkel"
 
-#: menulayouts/mint.js:446 menuWidgets.js:791 prefs.js:3887
-msgid "Power Off"
-msgstr "Stäng av"
+#: constants.js:170
+msgid "Sums"
+msgstr "Summa"
 
-#: menulayouts/tweaks/tweaks.js:84
-msgid "Category Activation"
-msgstr "Kategoriaktivering"
+#: constants.js:171
+msgid "Arrow"
+msgstr "Pil"
 
-#: menulayouts/tweaks/tweaks.js:90
-msgid "Mouse Click"
-msgstr "Klicka"
+#: constants.js:172
+msgid "Lins"
+msgstr "Lins"
 
-#: menulayouts/tweaks/tweaks.js:91
-msgid "Mouse Hover"
-msgstr "Peka"
+#: constants.js:173
+msgid "Diamond Square"
+msgstr "Rutertecken"
 
-#: menulayouts/tweaks/tweaks.js:110
-msgid "Avatar Icon Shape"
-msgstr "Avatarikonens form"
+#: constants.js:174
+msgid "Octo Maze"
+msgstr "Åtta-labyrint"
 
-#: menulayouts/tweaks/tweaks.js:115
-msgid "Circular"
-msgstr "Rund"
+#: constants.js:175
+msgid "Search"
+msgstr "Söker"
 
-#: menulayouts/tweaks/tweaks.js:116
-msgid "Square"
-msgstr "Kvadratisk"
-
-#: menulayouts/tweaks/tweaks.js:141
-msgid "KRunner Position"
-msgstr "KRunner-placering"
-
-#: menulayouts/tweaks/tweaks.js:146
-msgid "Top"
-msgstr "Överst"
-
-#: menulayouts/tweaks/tweaks.js:147
-msgid "Centered"
-msgstr "Centrerad"
-
-#: menulayouts/tweaks/tweaks.js:158
-msgid "Show Extra Large Icons with App Descriptions"
-msgstr "Visa extra stora ikoner tillsammans med app-beskrivningar"
-
-#: menulayouts/tweaks/tweaks.js:188 prefs.js:132 prefs.js:700 prefs.js:3397
-#: prefs.js:3684
-msgid "Save"
-msgstr "Spara"
-
-#: menulayouts/tweaks/tweaks.js:214
-msgid "Separator Position Index"
-msgstr "Avskiljarens placeringsindex"
-
-#: menulayouts/tweaks/tweaks.js:401
-msgid "Nothing Yet!"
-msgstr "Inga än så länge!"
-
-#: menulayouts/tweaks/tweaks.js:415 prefs.js:923
-msgid "Arc Menu Default View"
-msgstr "Arc Menus standardvy"
-
-#: menulayouts/tweaks/tweaks.js:421 prefs.js:41 prefs.js:932
-msgid "Pinned Apps"
-msgstr "Fästade appar"
-
-#: menulayouts/tweaks/tweaks.js:422 prefs.js:933
-msgid "Categories List"
-msgstr "Kategorilista"
-
-#: menulayouts/arcmenu.js:247 menulayouts/redmond.js:233 prefs.js:1967
-#: prefs.js:1996 prefs.js:2001 prefs.js:2033 prefs.js:2045
-msgid "Tweaks"
-msgstr "Justeringar"
-
-#: menulayouts/arcmenu.js:247 menulayouts/redmond.js:233 menuWidgets.js:426
-msgid "Activities Overview"
-msgstr "Aktivitetsöversikt"
-
-#: menulayouts/arcmenu.js:247 menulayouts/redmond.js:233 menuWidgets.js:698
-#: menuWidgets.js:1156 prefs.js:406 menu.js:578
+#: menuButtonDash.js:578 menuButtonPanel.js:615 menuWidgets.js:812
+#: menuWidgets.js:1361 menuWidgets.js:1572 prefs.js:376 prefs.js:537
+#: menulayouts/arcmenu.js:246 menulayouts/redmond.js:237
+#: menulayouts/ubuntudash.js:315
 msgid "Arc Menu Settings"
 msgstr "Arc Menu-inställningar"
 
-#: menulayouts/arcmenu.js:501 menulayouts/arcmenu.js:508
-#: menulayouts/redmond.js:407 menulayouts/redmond.js:414
-#: menulayouts/ubuntudash.js:143 placeDisplay.js:459
-msgid "Home"
-msgstr "Hem"
+#: menuButtonDash.js:587 menuButtonPanel.js:624
+msgid "Arc Menu on GitLab"
+msgstr "Arc Menu på GitLab"
 
-#: menulayouts/arcmenu.js:501 menulayouts/redmond.js:407
-#: menulayouts/windows.js:115 menulayouts/windows.js:280
-#: menulayouts/ubuntudash.js:150
-msgid "Documents"
-msgstr "Dokument"
+#: menuButtonDash.js:592 menuButtonPanel.js:629
+msgid "About Arc Menu"
+msgstr "Om Arc Menu"
 
-#: menulayouts/arcmenu.js:501 menulayouts/redmond.js:407
-#: menulayouts/ubuntudash.js:150
-msgid "Downloads"
-msgstr "Hämtningar"
+#: menuButtonDash.js:600
+msgid "Dash to Dock Settings"
+msgstr "Dash to Dock-inställningar"
 
-#: menulayouts/arcmenu.js:501 menulayouts/redmond.js:407
-#: menulayouts/ubuntudash.js:150
-msgid "Music"
-msgstr "Musik"
+#: menuButtonPanel.js:637
+msgid "Dash to Panel Settings"
+msgstr "Dash to Panel-inställningar"
 
-#: menulayouts/arcmenu.js:501 menulayouts/redmond.js:407
-#: menulayouts/ubuntudash.js:150
-msgid "Pictures"
-msgstr "Bilder"
-
-#: menulayouts/arcmenu.js:501 menulayouts/redmond.js:407
-#: menulayouts/ubuntudash.js:150
-msgid "Videos"
-msgstr "Video"
-
-#: menulayouts/arcmenu.js:501 menulayouts/redmond.js:407 placeDisplay.js:244
-#: placeDisplay.js:268
-msgid "Computer"
-msgstr "Dator"
-
-#: menulayouts/arcmenu.js:501 menulayouts/arcmenu.js:516
-#: menulayouts/redmond.js:407 menulayouts/redmond.js:422
-msgid "Network"
-msgstr "Nätverk"
-
-#: menuWidgets.js:124
+#: menuWidgets.js:130
 msgid "Open Folder Location"
 msgstr "Öppna mappens plats"
 
-#: menuWidgets.js:140
+#: menuWidgets.js:146
 msgid "Current Windows:"
 msgstr "Nuvarande fönster:"
 
-#: menuWidgets.js:159
+#: menuWidgets.js:165
 msgid "New Window"
 msgstr "Nytt fönster"
 
-#: menuWidgets.js:169
+#: menuWidgets.js:175
 msgid "Launch using Dedicated Graphics Card"
 msgstr "Starta med dedikerat grafikkort"
 
-#: menuWidgets.js:192
+#: menuWidgets.js:206
+msgid "Delete Desktop Shortcut"
+msgstr "Radera skrivbordsgenväg"
+
+#: menuWidgets.js:214
+msgid "Create Desktop Shortcut"
+msgstr "Skapa skrivbordsgenväg"
+
+#: menuWidgets.js:228
 msgid "Remove from Favorites"
 msgstr "Ta bort från favoriter"
 
-#: menuWidgets.js:198
+#: menuWidgets.js:234
 msgid "Add to Favorites"
 msgstr "Lägg till i favoriter"
 
-#: menuWidgets.js:219 menuWidgets.js:272
+#: menuWidgets.js:252 menuWidgets.js:303
 msgid "Unpin from Arc Menu"
 msgstr "Lossa från Arc Menu"
 
-#: menuWidgets.js:234
+#: menuWidgets.js:266
 msgid "Pin to Arc Menu"
 msgstr "Fäst i Arc Menu"
 
-#: menuWidgets.js:247
+#: menuWidgets.js:279
 msgid "Show Details"
 msgstr "Visa detaljer"
 
-#: menuWidgets.js:711 menuWidgets.js:1716 menuWidgets.js:1864
-#: menuWidgets.js:2031
-msgid "Favorites"
-msgstr "Favoriter"
+#: menuWidgets.js:462 menulayouts/arcmenu.js:246 menulayouts/redmond.js:237
+#: menulayouts/ubuntudash.js:315
+msgid "Activities Overview"
+msgstr "Översiktsvyn Aktiviteter"
 
-#: menuWidgets.js:726
-msgid "Users"
-msgstr "Användare"
+#: menuWidgets.js:693 menuWidgets.js:2021 menulayouts/tweaks/tweaks.js:204
+#: menulayouts/tweaks/tweaks.js:319
+msgid "Home Screen"
+msgstr "Startskärm"
 
-#: menuWidgets.js:815 prefs.js:3836
-msgid "Suspend"
-msgstr "Vänteläge"
-
-#: menuWidgets.js:855
-msgid "Back"
-msgstr "Bakåt"
-
-#: menuWidgets.js:923 menuWidgets.js:1716 menuWidgets.js:1864
-#: menuWidgets.js:2031
+#: menuWidgets.js:697 menuWidgets.js:1058 menuWidgets.js:2024
+#: menuWidgets.js:2170 menuWidgets.js:2382 menulayouts/ubuntudash.js:720
 msgid "All Programs"
 msgstr "Alla program"
 
-#: menuWidgets.js:1719 menuWidgets.js:1867 menuWidgets.js:2034
+#: menuWidgets.js:697 menuWidgets.js:825 menuWidgets.js:2024
+#: menuWidgets.js:2170 menuWidgets.js:2382
+msgid "Favorites"
+msgstr "Favoriter"
+
+#: menuWidgets.js:701 menuWidgets.js:2027 menuWidgets.js:2173
+#: menuWidgets.js:2385 menulayouts/ubuntudash.js:612
 msgid "Frequent Apps"
 msgstr "Vanliga appar"
 
-#: menuWidgets.js:2273
+#: menuWidgets.js:799 menulayouts/arcmenu.js:246 menulayouts/brisk.js:205
+#: menulayouts/mint.js:489 menulayouts/redmond.js:237
+#: menulayouts/ubuntudash.js:315 menulayouts/windows.js:287
+msgid "Settings"
+msgstr "Inställningar"
+
+#: menuWidgets.js:840
+msgid "Categories"
+msgstr "Kategorier"
+
+#: menuWidgets.js:855
+msgid "Users"
+msgstr "Användare"
+
+#: menuWidgets.js:920 prefs.js:4230 menulayouts/mint.js:508
+#: menulayouts/ubuntudash.js:295
+msgid "Power Off"
+msgstr "Stäng av"
+
+#: menuWidgets.js:932 prefs.js:4213 menulayouts/mint.js:506
+#: menulayouts/ubuntudash.js:293
+msgid "Log Out"
+msgstr "Logga ut"
+
+#: menuWidgets.js:947 prefs.js:4179
+msgid "Suspend"
+msgstr "Vänteläge"
+
+#: menuWidgets.js:964 prefs.js:4196 menulayouts/mint.js:507
+#: menulayouts/ubuntudash.js:294
+msgid "Lock"
+msgstr "Lås"
+
+#: menuWidgets.js:990
+msgid "Back"
+msgstr "Bakåt"
+
+#: menuWidgets.js:1365 menuWidgets.js:1576 menulayouts/arcmenu.js:246
+#: menulayouts/mint.js:488 menulayouts/redmond.js:237
+#: menulayouts/ubuntudash.js:315
+msgid "Terminal"
+msgstr "Terminal"
+
+#: menuWidgets.js:2667
 msgid "Type to search…"
 msgstr "Skriv för att söka…"
 
-#: menuWidgets.js:2442 prefs.js:3580
+#: menuWidgets.js:2837 prefs.js:3920
 msgid "Applications"
 msgstr "Applikationer"
+
+#: menuWidgets.js:2903
+msgid "Show Applications"
+msgstr "Visa applikationer"
 
 #: placeDisplay.js:145
 #, javascript-format
@@ -265,20 +234,39 @@ msgstr "Det gick inte att starta “%s”"
 msgid "Failed to mount volume for “%s”"
 msgstr "Det gick inte att montera volymen för “%s”"
 
+#: placeDisplay.js:244 placeDisplay.js:268 menulayouts/arcmenu.js:514
+#: menulayouts/redmond.js:419
+msgid "Computer"
+msgstr "Dator"
+
 #: placeDisplay.js:333
 #, javascript-format
 msgid "Ejecting drive “%s” failed:"
 msgstr "Det gick inte att mata ut disken “%s”:"
 
-#: prefs.js:59 prefs.js:3600
+#: placeDisplay.js:459 menulayouts/arcmenu.js:514 menulayouts/arcmenu.js:521
+#: menulayouts/mint.js:420 menulayouts/redmond.js:419
+#: menulayouts/redmond.js:426 menulayouts/ubuntudash.js:227
+#: menulayouts/ubuntudash.js:274
+msgid "Home"
+msgstr "Hem"
+
+#: prefs.js:41 prefs.js:826 menulayouts/ubuntudash.js:575
+#: menulayouts/tweaks/tweaks.js:598
+msgid "Pinned Apps"
+msgstr "Fästade appar"
+
+#: prefs.js:59 prefs.js:3940
 msgid "Add More Apps"
 msgstr "Lägg till fler appar"
 
 #: prefs.js:67
 msgid "Browse a list of all applications to add to your Pinned Apps list."
-msgstr "Bläddra i en lista över alla applikationer att lägga till i listan av fästade appar."
+msgstr ""
+"Bläddra i en lista över alla applikationer att lägga till i listan av "
+"fästade appar."
 
-#: prefs.js:100 prefs.js:3351 prefs.js:3639
+#: prefs.js:100 prefs.js:3720 prefs.js:3979
 msgid "Add Custom Shortcut"
 msgstr "Lägg till en anpassad genväg"
 
@@ -286,19 +274,24 @@ msgstr "Lägg till en anpassad genväg"
 msgid "Create a custom shortcut to add to your Pinned Apps list."
 msgstr "Skapa en anpassad genväg att lägga till i listan av fästade appar."
 
-#: prefs.js:191 prefs.js:3492 prefs.js:3743
+#: prefs.js:132 prefs.js:696 prefs.js:3766 prefs.js:4024
+#: menulayouts/tweaks/tweaks.js:247 menulayouts/tweaks/tweaks.js:365
+msgid "Save"
+msgstr "Spara"
+
+#: prefs.js:191 prefs.js:3832 prefs.js:4086
 msgid "Modify"
 msgstr "Ändra"
 
-#: prefs.js:196 prefs.js:3499 prefs.js:3748
+#: prefs.js:196 prefs.js:3839 prefs.js:4091
 msgid "Move Up"
 msgstr "Flytta upp"
 
-#: prefs.js:201 prefs.js:3504 prefs.js:3753
+#: prefs.js:201 prefs.js:3844 prefs.js:4096
 msgid "Move Down"
 msgstr "Flytta ned"
 
-#: prefs.js:206 prefs.js:3509 prefs.js:3758
+#: prefs.js:206 prefs.js:3849 prefs.js:4101
 msgid "Delete"
 msgstr "Radera"
 
@@ -318,729 +311,987 @@ msgstr "Välj genvägar för applikationer"
 msgid "Select Directory Shortcuts"
 msgstr "Välj mapp-genvägar"
 
-#: prefs.js:300 prefs.js:700
+#: prefs.js:300 prefs.js:696
 msgid "Add"
 msgstr "Lägg till"
 
-#: prefs.js:407 prefs.js:1197
+#: prefs.js:377 prefs.js:1346
 msgid "Run Command..."
 msgstr "Kör kommando..."
 
-#: prefs.js:455
+#: prefs.js:428
 msgid "Default Apps"
 msgstr "Standardappar"
 
-#: prefs.js:459
+#: prefs.js:432 prefs.js:507
 msgid "System Apps"
 msgstr "Systemappar"
 
-#: prefs.js:623 prefs.js:625
+#: prefs.js:503
+msgid "Presets"
+msgstr "Förinställningar"
+
+#: prefs.js:619 prefs.js:621
 msgid "Edit Pinned App"
 msgstr "Redigera fästad app"
 
-#: prefs.js:623 prefs.js:625 prefs.js:627 prefs.js:629
+#: prefs.js:619 prefs.js:621 prefs.js:623 prefs.js:625
 msgid "Add a Custom Shortcut"
 msgstr "Lägg till en anpassad genväg"
 
-#: prefs.js:627
+#: prefs.js:623
 msgid "Edit Shortcut"
 msgstr "Redigera genväg"
 
-#: prefs.js:629
+#: prefs.js:625
 msgid "Edit Custom Shortcut"
 msgstr "Redigera anpassad genväg"
 
-#: prefs.js:637
+#: prefs.js:633
 msgid "Shortcut Name:"
 msgstr "Genvägens namn:"
 
-#: prefs.js:652
+#: prefs.js:648
 msgid "Icon:"
 msgstr "Ikon:"
 
-#: prefs.js:665 prefs.js:1555
+#: prefs.js:661 prefs.js:1722
 msgid "Please select an image icon"
 msgstr "Välj ikonbild"
 
-#: prefs.js:684
+#: prefs.js:680
 msgid "Terminal Command:"
 msgstr "Terminalkommando:"
 
-#: prefs.js:691
+#: prefs.js:687
 msgid "Shortcut Path:"
 msgstr "Genvägens sökväg:"
 
-#: prefs.js:742
+#: prefs.js:738 menulayouts/tweaks/tweaks.js:181
+#: menulayouts/tweaks/tweaks.js:299
 msgid "General"
 msgstr "Allmänt"
 
-#: prefs.js:749
-msgid "Arc Menu Position in Panel"
-msgstr "Arc Menus placering i systemraden"
-
-#: prefs.js:756
-msgid "Left"
-msgstr "Vänster"
-
-#: prefs.js:757
-msgid "Position Arc Menu on the Left side of the main panel"
-msgstr "Placera Arc Menu till vänster på systemraden"
-
-#: prefs.js:760
-msgid "Center"
-msgstr "Mitten"
-
-#: prefs.js:762
-msgid "Position Arc Menu in the Center of the main panel"
-msgstr "Placera Arc Menu i mitten av systemraden"
-
-#: prefs.js:765
-msgid "Right"
-msgstr "Höger"
-
-#: prefs.js:767
-msgid "Position Arc Menu on the Right side of the main panel"
-msgstr "Placera Arc Menu till höger på systemraden"
-
-#: prefs.js:809
-msgid "Menu Alignment to Button"
-msgstr "Menyns justering gentemot knappen"
-
-#: prefs.js:820
-msgid "Adjust Arc Menu's menu alignment relative to Arc Menu's button"
-msgstr "Justera Arc Menus menyjustering relativt Arc Menu-knappen"
-
-#: prefs.js:836
-msgid "Display on all monitors when using Dash to Panel"
-msgstr "Visa på alla skärmar tillsammans med Dash to Panel"
-
-#: prefs.js:844
-msgid "Display Arc Menu on all monitors when using Dash to Panel"
-msgstr "Visa på alla skärmar tillsammans med Dash to Panel"
-
-#: prefs.js:859
+#: prefs.js:753
 msgid "Disable Tooltips"
 msgstr "Inaktivera verktygstips"
 
-#: prefs.js:867
+#: prefs.js:761
 msgid "Disable all tooltips in Arc Menu"
 msgstr "Inaktivera alla verktygstips i Arc Menu"
 
-#: prefs.js:882 prefs.js:1143
+#: prefs.js:776 prefs.js:1292
 msgid "Modify Activities Hot Corner"
-msgstr "Ändra Aktivitetshörn"
+msgstr "Ändra Aktiviteter-hörn"
 
-#: prefs.js:891
+#: prefs.js:785
 msgid "Modify the action of the Activities Hot Corner"
-msgstr "Ändra Aktivitetshörnets åtgärd"
+msgstr "Ändra Aktiviteter-hörnets åtgärd"
 
-#: prefs.js:902
+#: prefs.js:796
 msgid "Override the default behavoir of the Activities Hot Corner"
-msgstr "Åsidosätt standardbeteendet för Aktivitetshörnet"
+msgstr "Åsidosätt standardbeteendet för Aktiviteter-hörnet"
 
-#: prefs.js:930
-msgid "Choose the default menu view"
-msgstr "Välj menyns standardvy"
+#: prefs.js:817 menulayouts/tweaks/tweaks.js:592
+msgid "Arc Menu Default View"
+msgstr "Arc Menus standardvy"
 
-#: prefs.js:952
+#: prefs.js:824
+msgid "Choose the default menu view for Arc Menu"
+msgstr "Välj standardmenyvy för Arc Menu"
+
+#: prefs.js:827 menulayouts/tweaks/tweaks.js:599
+msgid "Categories List"
+msgstr "Kategorilista"
+
+#: prefs.js:846
 msgid "Hotkey activation"
 msgstr "Snabbvalstangentsaktivering"
 
-#: prefs.js:959
+#: prefs.js:853
 msgid "Choose a method for the hotkey activation"
 msgstr "Välj en metod för snabbtangentaktivering"
 
-#: prefs.js:961
+#: prefs.js:855
 msgid "Key Release"
 msgstr "Uppsläpp"
 
-#: prefs.js:962
+#: prefs.js:856
 msgid "Key Press"
 msgstr "Nedtryckning"
 
-#: prefs.js:981
+#: prefs.js:875
 msgid "Arc Menu Hotkey"
 msgstr "Arc Menus snabbtangent"
 
-#: prefs.js:990
+#: prefs.js:884
 msgid "Left Super Key"
 msgstr "Vänster supertangent"
 
-#: prefs.js:994
+#: prefs.js:888
 msgid "Set Arc Menu hotkey to Left Super Key"
 msgstr "Välj vänster supertangent som snabbtangent för Arc Menu"
 
-#: prefs.js:997
+#: prefs.js:891
 msgid "Right Super Key"
 msgstr "Höger supertangent"
 
-#: prefs.js:1002
+#: prefs.js:896
 msgid "Set Arc Menu hotkey to Right Super Key"
 msgstr "Välj höger supertangent som snabbtangent för Arc Menu"
 
-#: prefs.js:1005
+#: prefs.js:899
 msgid "Custom Hotkey"
 msgstr "Anpassad snabbtangent"
 
-#: prefs.js:1010
+#: prefs.js:904
 msgid "Set a custom hotkey for Arc Menu"
 msgstr "Ställ in en anpassad snabbtangent för Arc Menu"
 
-#: prefs.js:1013
+#: prefs.js:907
 msgid "None"
 msgstr "Ingen"
 
-#: prefs.js:1018
+#: prefs.js:912
 msgid "Clear Arc Menu hotkey, use GNOME default"
 msgstr "Rensa Arc Menus snabbtangent, använd GNOME-standard"
 
-#: prefs.js:1080
+#: prefs.js:974
 msgid "Current Hotkey"
 msgstr "Nuvarande snabbtangent"
 
-#: prefs.js:1089
+#: prefs.js:983
 msgid "Current custom hotkey"
 msgstr "Nuvarande anpassad snabbtangent"
 
-#: prefs.js:1094
+#: prefs.js:988
 msgid "Modify Hotkey"
 msgstr "Välj snabbtangent"
 
-#: prefs.js:1097
+#: prefs.js:991
 msgid "Create your own hotkey combination for Arc Menu"
 msgstr "Skapa din egen snabbtangentkombination för Arc Menu"
 
-#: prefs.js:1152
+#: prefs.js:1032
+msgid "Display Arc Menu On"
+msgstr "Visa Arc-meny på"
+
+#: prefs.js:1039
+msgid "Choose where to place Arc Menu"
+msgstr "Välj var Arc-menyn ska placeras"
+
+#: prefs.js:1044
+msgid "Main Panel"
+msgstr "Huvudpanelen"
+
+#: prefs.js:1045 prefs.js:1164 prefs.js:1169 prefs.js:1174
+msgid "Dash to Panel"
+msgstr "Dash to Panel"
+
+#: prefs.js:1046
+msgid "Dash to Dock"
+msgstr "Dash to Dock"
+
+#: prefs.js:1097
+msgid "Disable Activities Button"
+msgstr "Inaktivera Aktiviteter-knapp"
+
+#: prefs.js:1098
+msgid "Dash to Dock extension not running!"
+msgstr "Dash to Dock-tillägget kör inte!"
+
+#: prefs.js:1098
+msgid "Enable Dash to Dock for this feature to work."
+msgstr "Aktivera Dash to Dock för att den här funktionen ska fungera."
+
+#: prefs.js:1106
+msgid "Disable Activities Button in panel"
+msgstr "Inaktivera Aktiviteter-knappen i systemraden"
+
+#: prefs.js:1136
+msgid "Dash to Panel currently enabled!"
+msgstr "Dash to Panel är aktiverad!"
+
+#: prefs.js:1136
+msgid "Disable Dash to Panel for this feature to work."
+msgstr "Inaktivera Dash to Panel för att funktionen ska fungera."
+
+#: prefs.js:1137
+msgid "Dash to Panel extension not running!"
+msgstr "Dash to Panel-tillägget kör inte!"
+
+#: prefs.js:1137
+msgid "Enable Dash to Panel for this feature to work."
+msgstr "Aktivera Dash to Panel för att funktionen ska fungera."
+
+#: prefs.js:1156
+msgid "Position in Dash to Panel"
+msgstr "Placering i Dash to Panel"
+
+#: prefs.js:1156
+msgid "Position in Main Panel"
+msgstr "Placering i systemraden"
+
+#: prefs.js:1163
+msgid "Left"
+msgstr "Vänster"
+
+#: prefs.js:1164
+msgid "Position Arc Menu on the Left side of "
+msgstr "Placera Arc Menu till vänster på "
+
+#: prefs.js:1164 prefs.js:1169 prefs.js:1174
+msgid "the Main Panel"
+msgstr "systemraden"
+
+#: prefs.js:1167
+msgid "Center"
+msgstr "Mitten"
+
+#: prefs.js:1169
+msgid "Position Arc Menu in the Center of "
+msgstr "Placera Arc Menu i mitten av "
+
+#: prefs.js:1172
+msgid "Right"
+msgstr "Höger"
+
+#: prefs.js:1174
+msgid "Position Arc Menu on the Right side of "
+msgstr "Placera Arc Menu till höger på "
+
+#: prefs.js:1215
+msgid "Menu Alignment to Button"
+msgstr "Menyns justering gentemot knappen"
+
+#: prefs.js:1226
+msgid "Adjust Arc Menu's menu alignment relative to Arc Menu's icon"
+msgstr "Justera Arc Menus menyjustering relativt Arc Menu-ikonen"
+
+#: prefs.js:1239
+msgid "Display on all monitors when using Dash to Panel"
+msgstr "Visa på alla skärmar tillsammans med Dash to Panel"
+
+#: prefs.js:1247
+msgid "Display Arc Menu on all monitors when using Dash to Panel"
+msgstr "Visa på alla skärmar tillsammans med Dash to Panel"
+
+#: prefs.js:1301
 msgid "Activities Hot Corner Action"
-msgstr "Aktivitetshörnsåtgärd"
+msgstr "Aktiviteter-hörnåtgärd"
 
-#: prefs.js:1159
+#: prefs.js:1308
 msgid "Choose the action of the Activities Hot Corner"
-msgstr "Välj Aktivitetshörnets åtgärd"
+msgstr "Välj Aktiviteter-hörnets åtgärd"
 
-#: prefs.js:1161
+#: prefs.js:1310
 msgid "GNOME Default"
 msgstr "GNOME-standard"
 
-#: prefs.js:1162
+#: prefs.js:1311
 msgid "Disabled"
 msgstr "Inaktiverad"
 
-#: prefs.js:1163
+#: prefs.js:1312
 msgid "Toggle Arc Menu"
 msgstr "Växla Arc Menu"
 
-#: prefs.js:1164
+#: prefs.js:1313
 msgid "Custom"
 msgstr "Anpassad"
 
-#: prefs.js:1170
-msgid "Custom Activies Hot Corner Action"
-msgstr "Anpassade åtgärder för Aktivitetshörnet"
+#: prefs.js:1319
+msgid "Custom Activities Hot Corner Action"
+msgstr "Anpassade åtgärder för Aktiviteter-hörnet"
 
-#: prefs.js:1170
+#: prefs.js:1319
 msgid "Choose from a list of preset commands or use your own terminal command"
-msgstr "Välj från en lista med förinställda kommandon eller använd ditt eget terminalkommando"
+msgstr ""
+"Välj från en lista med förinställda kommandon eller använd ditt eget "
+"terminalkommando"
 
-#: prefs.js:1180
+#: prefs.js:1329
 msgid "Preset commands"
 msgstr "Förinställda kommandon"
 
-#: prefs.js:1186
+#: prefs.js:1335
 msgid "Choose from a list of preset Activities Hot Corner commands"
-msgstr "Välj från en lista med förinställda kommandon för Aktivitetshörnet"
+msgstr "Välj från en lista med förinställda kommandon för Aktiviteter-hörnet"
 
-#: prefs.js:1190
+#: prefs.js:1339
 msgid "Show all Applications"
 msgstr "Visa alla applikationer"
 
-#: prefs.js:1191
+#: prefs.js:1340
 msgid "GNOME Terminal"
 msgstr "GNOME Terminal"
 
-#: prefs.js:1192
+#: prefs.js:1341
 msgid "GNOME System Monitor"
 msgstr "GNOME Systemövervakare"
 
-#: prefs.js:1193
+#: prefs.js:1342
 msgid "GNOME Calculator"
 msgstr "GNOME Kalkylator"
 
-#: prefs.js:1194
+#: prefs.js:1343
 msgid "GNOME gedit"
 msgstr "GNOME Textredigerare"
 
-#: prefs.js:1195
+#: prefs.js:1344
 msgid "GNOME Screenshot"
 msgstr "GNOME Skärmbild"
 
-#: prefs.js:1196
+#: prefs.js:1345
 msgid "GNOME Weather"
 msgstr "GNOME Väder"
 
-#: prefs.js:1229
+#: prefs.js:1378
 msgid "Terminal Command"
 msgstr "Terminalkommando"
 
-#: prefs.js:1235
+#: prefs.js:1384
 msgid "Set a custom terminal command to launch on active hot corner"
-msgstr "Ställ in ett anpassat terminalkommando att starta från Aktivitetshörnet"
+msgstr ""
+"Ställ in ett anpassat terminalkommando att starta från Aktiviteter-hörnet"
 
-#: prefs.js:1255 prefs.js:1437 prefs.js:2138 prefs.js:2405 prefs.js:2622
-#: prefs.js:3205
+#: prefs.js:1404 prefs.js:1586 prefs.js:2373 prefs.js:2771 prefs.js:2990
+#: prefs.js:3574
 msgid "Apply"
 msgstr "Använd"
 
-#: prefs.js:1257
+#: prefs.js:1406
 msgid "Apply changes and set new hot corner action"
-msgstr "Tillämpa ändringar och ställ in ny Aktivitetshörnsåtgärd"
+msgstr "Tillämpa ändringar och ställ in ny Aktiviteter-hörnåtgärd"
 
-#: prefs.js:1320
+#: prefs.js:1469
 msgid "Set Custom Hotkey"
 msgstr "Anpassa snabbtangent"
 
-#: prefs.js:1329
+#: prefs.js:1478
 msgid "Press a key"
 msgstr "Tryck tangent"
 
-#: prefs.js:1354
+#: prefs.js:1503
 msgid "Modifiers"
 msgstr "Kombinationstangenter"
 
-#: prefs.js:1359
+#: prefs.js:1508
 msgid "Ctrl"
 msgstr "Kontroll"
 
-#: prefs.js:1364
+#: prefs.js:1513
 msgid "Super"
 msgstr "Super"
 
-#: prefs.js:1368
+#: prefs.js:1517
 msgid "Shift"
 msgstr "Skift"
 
-#: prefs.js:1372
+#: prefs.js:1521
 msgid "Alt"
 msgstr "Alt"
 
-#: prefs.js:1474 prefs.js:1482 prefs.js:1784
-msgid "Menu Button Appearance"
-msgstr "Menyknappens utseende"
+#: prefs.js:1630 prefs.js:2011
+msgid "Arc Menu Icon Settings"
+msgstr "Arc Menu-ikoninställningar"
 
-#: prefs.js:1488
+#: prefs.js:1638
+msgid "Arc Menu Icon Appearance"
+msgstr "Arc Menu-ikonens utseende"
+
+#: prefs.js:1644
 msgid "Icon"
 msgstr "Ikon"
 
-#: prefs.js:1489
+#: prefs.js:1645
 msgid "Text"
 msgstr "Text"
 
-#: prefs.js:1490
+#: prefs.js:1646
 msgid "Icon and Text"
 msgstr "Ikon och text"
 
-#: prefs.js:1491
+#: prefs.js:1647
 msgid "Text and Icon"
 msgstr "Text och ikon"
 
-#: prefs.js:1505
-msgid "Menu Button Text"
-msgstr "Menyknappsrubrik"
+#: prefs.js:1668
+msgid "Arc Menu Icon Text"
+msgstr "Arc Menu-ikontext"
 
-#: prefs.js:1526
-msgid "Arrow beside Menu Button"
-msgstr "Pil bredvid menyknapp"
+#: prefs.js:1692
+msgid "Arrow beside Arc Menu Icon"
+msgstr "Pil bredvid Arc Menu-ikon"
 
-#: prefs.js:1545
-msgid "Menu Button Icon"
-msgstr "Menyknappsikon"
-
-#: prefs.js:1560
+#: prefs.js:1712
 msgid "Arc Menu Icon"
 msgstr "Arc Menu-ikon"
 
-#: prefs.js:1561
-msgid "Arc Menu Alt Icon"
-msgstr "Alternativ Arc Menu-ikon"
+#: prefs.js:1768
+msgid "Browse for a custom icon"
+msgstr "Sök efter en anpassad ikon"
 
-#: prefs.js:1562
-msgid "System Icon"
-msgstr "Systemikon"
-
-#: prefs.js:1563
-msgid "Custom Icon"
-msgstr "Anpassad ikon"
-
-#: prefs.js:1601
+#: prefs.js:1806
 msgid "Icon Size"
 msgstr "Ikonstorlek"
 
-#: prefs.js:1633
+#: prefs.js:1838
 msgid "Icon Padding"
 msgstr "Ikonutfyllnad"
 
-#: prefs.js:1664
+#: prefs.js:1870
 msgid "Icon Color"
 msgstr "Ikonfärg"
 
-#: prefs.js:1685
+#: prefs.js:1891
 msgid "Active Icon Color"
 msgstr "Aktiv ikonfärg"
 
-#: prefs.js:1705
+#: prefs.js:1911
 msgid ""
 "Icon color options will only work with files ending with \"-symbolic.svg\""
 msgstr ""
 "Ikonfärgsalternativ fungerar endast för filer som slutar med \"-symbolic.svg"
 "\""
 
-#: prefs.js:1718 prefs.js:2381 prefs.js:3160
+#: prefs.js:1924 prefs.js:2741 prefs.js:3529
 msgid "Reset"
 msgstr "Återställ"
 
-#: prefs.js:1764
+#: prefs.js:1975
+msgid "System Icon"
+msgstr "Systemikon"
+
+#: prefs.js:1978
+msgid "Custom Icon"
+msgstr "Anpassad ikon"
+
+#: prefs.js:1991
 msgid "Appearance"
 msgstr "Utseende"
 
-#: prefs.js:1792
-msgid "Customize Arc Menu's Button in Main Panel"
-msgstr "Anpassa Arc Menu-knapp i systemraden"
+#: prefs.js:2019
+msgid "Customize Arc Menu's Icon"
+msgstr "Anpassa Arc Menus ikon"
 
-#: prefs.js:1812 prefs.js:2199
+#: prefs.js:2039 prefs.js:2437
 msgid "Customize Arc Menu Appearance"
 msgstr "Anpassa Arc Menus utseende"
 
-#: prefs.js:1820
+#: prefs.js:2047
 msgid "Customize various elements of Arc Menu"
-msgstr "Anpassa olika delar av Arc Menu"
+msgstr "Anpassa olika element i Arc Menu"
 
-#: prefs.js:1862 prefs.js:2767
+#: prefs.js:2092 prefs.js:3136
 msgid "Override Arc Menu Theme"
 msgstr "Anpassa Arc Menus tema"
 
-#: prefs.js:1870
+#: prefs.js:2100
 msgid "Create and manage your own custom themes for Arc Menu"
 msgstr "Skapa och hantera dina egna anpassade teman för Arc Menu"
 
-#: prefs.js:1907
+#: prefs.js:2138
 msgid "Override the shell theme for Arc Menu only"
 msgstr "Åsidosätt skalets tema endast för Arc Menu"
 
-#: prefs.js:1925
+#: prefs.js:2156
 msgid "Current Color Theme"
 msgstr "Nuvarande färgtema"
 
-#: prefs.js:1950
+#: prefs.js:2181
 msgid "Menu Layout"
 msgstr "Menylayout"
 
-#: prefs.js:1958
+#: prefs.js:2189
 msgid "Choose from a variety of menu layouts"
 msgstr "Välj bland flera olika menylayouter"
 
-#: prefs.js:1977
+#: prefs.js:2200 prefs.js:2229 prefs.js:2234 prefs.js:2268 prefs.js:2280
+#: menulayouts/arcmenu.js:246 menulayouts/redmond.js:237
+#: menulayouts/ubuntudash.js:315
+msgid "Tweaks"
+msgstr "Justeringar"
+
+#: prefs.js:2210
 msgid "Enable the selection of different menu layouts"
 msgstr "Aktivera val av menylayout"
 
-#: prefs.js:2012
+#: prefs.js:2247
 msgid "Current Layout"
 msgstr "Nuvarande layout"
 
-#: prefs.js:2042
+#: prefs.js:2277
 msgid "Tweaks for the current menu layout"
 msgstr "Justeringar för den aktuella menylayouten"
 
-#: prefs.js:2105
+#: prefs.js:2340
 msgid "Menu style chooser"
 msgstr "Menystilsväljare"
 
-#: prefs.js:2114
+#: prefs.js:2349
 msgid "Arc Menu Layout"
 msgstr "Arc Menus layout"
 
-#: prefs.js:2212
+#: prefs.js:2445
+msgid "General Settings"
+msgstr "Allmänna inställningar"
+
+#: prefs.js:2459
 msgid "Menu Height"
 msgstr "Menyns höjd"
 
-#: prefs.js:2244
+#: prefs.js:2473
+msgid "Adjust the menu height"
+msgstr "Justera menyhöjden"
+
+#: prefs.js:2473 prefs.js:2501 prefs.js:2527 prefs.js:2587 prefs.js:2609
+#: prefs.js:2631 prefs.js:2664
+msgid "Certain menu layouts only"
+msgstr "Endast vissa menylayouter"
+
+#: prefs.js:2493
 msgid "Left-Panel Width"
 msgstr "Vänsterpanelens bredd"
 
-#: prefs.js:2269
+#: prefs.js:2501
+msgid "Adjust the left-panel width"
+msgstr "Justera vänsterpanelens bredd"
+
+#: prefs.js:2519
+msgid "Right-Panel Width"
+msgstr "Högerpanelens bredd"
+
+#: prefs.js:2527
+msgid "Adjust the right-panel width"
+msgstr "Justera högerpanelens bredd"
+
+#: prefs.js:2544 menulayouts/tweaks/tweaks.js:220
+msgid "Disable Menu Arrow"
+msgstr "Inaktivera menypilen"
+
+#: prefs.js:2552 menulayouts/tweaks/tweaks.js:228
+msgid "Disable current theme menu arrow pointer"
+msgstr "Inaktivera pekare för aktuell temameny"
+
+#: prefs.js:2569
+msgid "Miscellaneous"
+msgstr "Diverse"
+
+#: prefs.js:2579
 msgid "Large Application Icons"
 msgstr "Stora applikationsikoner"
 
-#: prefs.js:2288
+#: prefs.js:2587
+msgid "Enable large application icons"
+msgstr "Aktivera stora applikationsikoner"
+
+#: prefs.js:2601
 msgid "Category Sub Menus"
 msgstr "Undermenyer för kategorier"
 
-#: prefs.js:2307 prefs.js:3116
+#: prefs.js:2609
+msgid "Show nested menus in categories"
+msgstr "Visa nästlade menyer i kategorier"
+
+#: prefs.js:2623
+msgid "Disable Category Arrows"
+msgstr "Inaktivera kategoripilar"
+
+#: prefs.js:2631
+msgid "Disable the arrow on category menu items"
+msgstr "Inaktivera pilen på kategori-menyalternativ"
+
+#: prefs.js:2647
+msgid "Separator Settings"
+msgstr "Avskiljarinställningar"
+
+#: prefs.js:2656 prefs.js:3485
 msgid "Enable Vertical Separator"
 msgstr "Visa vertikal avskiljare"
 
-#: prefs.js:2326 prefs.js:3137
+#: prefs.js:2664
+msgid "Enable a Vertical Separator"
+msgstr "Aktivera vertikal avskiljare"
+
+#: prefs.js:2679 prefs.js:3506
 msgid "Separator Color"
 msgstr "Avkiljarens färg"
 
-#: prefs.js:2348
+#: prefs.js:2687
+msgid "Change the color of all separators"
+msgstr "Ändra färgen på alla avskiljare"
+
+#: prefs.js:2707
 msgid "Fine Tune"
 msgstr "Finjustera"
 
-#: prefs.js:2356
+#: prefs.js:2715
 msgid "Gap Adjustment"
 msgstr "Mellanrumsjustering"
 
-#: prefs.js:2444
+#: prefs.js:2725
+msgid "Offset menu placement by 1px"
+msgstr "Kompensera menyplacering med 1px"
+
+#: prefs.js:2812
 msgid "Color Theme Name"
 msgstr "Färgtemats namn"
 
-#: prefs.js:2451
+#: prefs.js:2819
 msgid "Name:"
 msgstr "Namn:"
 
-#: prefs.js:2476
+#: prefs.js:2844
 msgid "Save Theme"
 msgstr "Spara tema"
 
-#: prefs.js:2501
+#: prefs.js:2869
 msgid "Select Themes to Import"
 msgstr "Välj teman att importera"
 
-#: prefs.js:2501
+#: prefs.js:2869
 msgid "Select Themes to Export"
 msgstr "Välj teman att exportera"
 
-#: prefs.js:2519
+#: prefs.js:2887
 msgid "Import"
 msgstr "Importera"
 
-#: prefs.js:2519
+#: prefs.js:2887
 msgid "Export"
 msgstr "Exportera"
 
-#: prefs.js:2550
+#: prefs.js:2918
 msgid "Select All"
 msgstr "Välj alla"
 
-#: prefs.js:2607
+#: prefs.js:2975
 msgid "Manage Themes"
 msgstr "Hantera teman"
 
-#: prefs.js:2780
+#: prefs.js:3149
 msgid "Color Theme Presets"
 msgstr "Fördefinierade färgteman"
 
-#: prefs.js:2790
+#: prefs.js:3159
 msgid "Save as Preset"
 msgstr "Spara som fördefinierat tema"
 
-#: prefs.js:2874
+#: prefs.js:3243
 msgid "Manage Presets"
 msgstr "Hantera fördefinierade teman"
 
-#: prefs.js:2903
+#: prefs.js:3272
 msgid "Menu Background Color"
 msgstr "Menyns bakgrundsfärg"
 
-#: prefs.js:2925
+#: prefs.js:3294
 msgid "Menu Foreground Color"
 msgstr "Menyns förgrundsfärg"
 
-#: prefs.js:2945
+#: prefs.js:3314
 msgid "Font Size"
 msgstr "Textstorlek"
 
-#: prefs.js:2971
+#: prefs.js:3340
 msgid "Border Color"
 msgstr "Inramningens färg"
 
-#: prefs.js:2992
+#: prefs.js:3361
 msgid "Border Size"
 msgstr "Inramningens storlek"
 
-#: prefs.js:3018
+#: prefs.js:3387
 msgid "Highlighted Item Color"
 msgstr "Markerade objekts färg"
 
-#: prefs.js:3039
+#: prefs.js:3408
 msgid "Corner Radius"
 msgstr "Hörnradie"
 
-#: prefs.js:3065
+#: prefs.js:3434
 msgid "Menu Arrow Size"
 msgstr "Menypilens storlek"
 
-#: prefs.js:3091
+#: prefs.js:3460
 msgid "Menu Displacement"
 msgstr "Menyns förskjutning"
 
-#: prefs.js:3271 prefs.js:3917
+#: prefs.js:3640 prefs.js:4260
 msgid "Configure Shortcuts"
 msgstr "Konfigurera genvägar"
 
-#: prefs.js:3292
+#: prefs.js:3661
 msgid "Directories"
 msgstr "Kataloger"
 
-#: prefs.js:3312
+#: prefs.js:3681
 msgid "Add Default User Directories"
 msgstr "Lägg till standardanvändarkataloger"
 
-#: prefs.js:3320
+#: prefs.js:3689
 msgid ""
 "Browse a list of all default User Directories to add to your Directories "
 "Shortcuts"
-msgstr "Bläddra i en lista med alla standardkataloger att lägga till i dina kataloggenvägar"
+msgstr ""
+"Bläddra i en lista med alla standardkataloger att lägga till i dina "
+"kataloggenvägar"
 
-#: prefs.js:3359
+#: prefs.js:3728
 msgid "Create a custom shortcut to add to your Directories Shortcuts"
 msgstr "Skapa en anpassad genväg att lägga till i kataloggenvägarna"
 
-#: prefs.js:3384 prefs.js:3671
+#: prefs.js:3753 prefs.js:4011
 msgid "Restore Defaults"
 msgstr "Återgå till grundinställningarna"
 
-#: prefs.js:3385
+#: prefs.js:3754
 msgid "Restore the default Directory Shortcuts"
 msgstr "Återställ standardkataloggenvägarna"
 
-#: prefs.js:3608
+#: prefs.js:3948
 msgid "Browse a list of all applications to add to your Application Shortcuts"
-msgstr "Bläddra i en lista över alla applikationer att lägga till i dina applikationsgenvägar"
+msgstr ""
+"Bläddra i en lista över alla applikationer att lägga till i dina "
+"applikationsgenvägar"
 
-#: prefs.js:3647
+#: prefs.js:3987
 msgid "Create a custom shortcut to add to your Application Shortcuts"
 msgstr "Skapa en anpassad genväg att lägga till i applikationsgenvägarna"
 
-#: prefs.js:3672
+#: prefs.js:4012
 msgid "Restore the default Application Shortcuts"
 msgstr "Återställ standardprogramgenvägar"
 
-#: prefs.js:3825
+#: prefs.js:4168
 msgid "Session Buttons"
 msgstr "Sessionsknappar"
 
-#: prefs.js:3912
+#: prefs.js:4255 menulayouts/ubuntudash.js:323 menulayouts/tweaks/tweaks.js:188
+#: menulayouts/tweaks/tweaks.js:306
 msgid "Shortcuts"
 msgstr "Snabbtangenter"
 
-#: prefs.js:3922 prefs.js:3927
+#: prefs.js:4265 prefs.js:4270
 msgid "Add, Remove, or Modify Arc Menu shortcuts"
 msgstr "Lägg till, ta bort eller ändra genvägar i Arc Menu"
 
-#: prefs.js:3957
+#: prefs.js:4300
 msgid "External Devices"
 msgstr "Externa enheter"
 
-#: prefs.js:3963
+#: prefs.js:4306
 msgid "Show all connected external devices in Arc Menu"
 msgstr "Visa alla anslutna externa enheter i Arc Menu"
 
-#: prefs.js:3979
+#: prefs.js:4322
 msgid "Bookmarks"
 msgstr "Bokmärken"
 
-#: prefs.js:3985
+#: prefs.js:4328
 msgid "Show all Nautilus bookmarks in Arc Menu"
 msgstr "Visa alla Nautilus-bokmärken i Arc Menu"
 
-#: prefs.js:4003
+#: prefs.js:4346
 msgid "Misc"
 msgstr "Diverse"
 
-#: prefs.js:4009
+#: prefs.js:4352
 msgid "Export and Import Arc Menu Settings"
 msgstr "Exportera och importera Arc Menu-inställningar"
 
-#: prefs.js:4016
+#: prefs.js:4359
 msgid "Importing settings from file may replace ALL saved settings."
 msgstr ""
-"Importering av inställningar kan skriva över ALLA sparade inställningar."
+"Importering av inställningar kan komma att skriva över ALLA sparade inställningar."
 
-#: prefs.js:4017
+#: prefs.js:4360
 msgid "This includes all saved pinned apps."
 msgstr "Detta gäller även listan av fästade appar."
 
-#: prefs.js:4026
+#: prefs.js:4369
 msgid "Import from File"
 msgstr "Importera från fil"
 
-#: prefs.js:4029
+#: prefs.js:4372
 msgid "Import Arc Menu settings from a file"
 msgstr "Importera Arc Menu-inställningar från fil"
 
-#: prefs.js:4033
+#: prefs.js:4376
 msgid "Import settings"
 msgstr "Importera inställningar"
 
-#: prefs.js:4062
+#: prefs.js:4405
 msgid "Export to File"
 msgstr "Exportera till fil"
 
-#: prefs.js:4065
+#: prefs.js:4408
 msgid "Export and save all your Arc Menu settings to a file"
 msgstr "Exportera och spara Arc Menu-inställningar till fil"
 
-#: prefs.js:4070
+#: prefs.js:4413
 msgid "Export settings"
 msgstr "Exportera inställningar"
 
-#: prefs.js:4101
+#: prefs.js:4444
 msgid "Color Theme Presets - Export/Import"
 msgstr "Fördefinierade färgteman - exportera/importera"
 
-#: prefs.js:4120
+#: prefs.js:4463
 msgid "Imported theme presets are located on the Appearance Tab"
 msgstr "Importerade teman finns under fliken Utseende"
 
-#: prefs.js:4121
+#: prefs.js:4464
 msgid "in Override Arc Menu Theme"
 msgstr "i Anpassa Arc Menus tema"
 
-#: prefs.js:4132 prefs.js:4139
+#: prefs.js:4475 prefs.js:4482
 msgid "Import Theme Preset"
 msgstr "Importera fördefinierade teman"
 
-#: prefs.js:4135
+#: prefs.js:4478
 msgid "Import Arc Menu Theme Presets from a file"
 msgstr "Importera fördefinierade Arc Menu-färgteman från fil"
 
-#: prefs.js:4176 prefs.js:4188
+#: prefs.js:4519 prefs.js:4531
 msgid "Export Theme Preset"
 msgstr "Exportera fördefinierade teman"
 
-#: prefs.js:4179
+#: prefs.js:4522
 msgid "Export and save your Arc Menu Theme Presets to a file"
 msgstr "Exportera och spara fördefinierade Arc Menu-färgteman till fil"
 
-#: prefs.js:4253
+#: prefs.js:4596
 msgid "About"
 msgstr "Om"
 
-#: prefs.js:4280
-msgid "Arc-Menu"
-msgstr "Arc-Menu"
+#: prefs.js:4602
+msgid "Development"
+msgstr "Utveckling"
 
-#: prefs.js:4285
-msgid "version: "
-msgstr "version: "
+#: prefs.js:4633
+msgid "Version: "
+msgstr "Version: "
 
-#: prefs.js:4289
-msgid "A traditional application menu for GNOME"
+#: prefs.js:4637
+msgid "A Traditional Application Menu for GNOME"
 msgstr "En traditionell applikationsmeny för GNOME"
 
-#: prefs.js:4293
+#: prefs.js:4641
 msgid "GitLab Page"
 msgstr "GitLab-sida"
 
-#: menu.js:587
-msgid "Arc Menu on GitLab"
-msgstr "Arc Menu på GitLab"
+#: search.js:725 searchGrid.js:750
+msgid "Searching..."
+msgstr "Söker..."
 
-#: menu.js:592
-msgid "About Arc Menu"
-msgstr "Om Arc Menu"
+#: search.js:727 searchGrid.js:752
+msgid "No results."
+msgstr "Inga resultat."
 
-#: menu.js:600
-msgid "Dash to Panel Settings"
-msgstr "Dash to Panel-inställningar"
+#: search.js:833 searchGrid.js:893
+#, javascript-format
+msgid "%d more"
+msgid_plural "%d more"
+msgstr[0] "%d till"
+msgstr[1] "%d till"
+
+#: menulayouts/arcmenu.js:246 menulayouts/brisk.js:197 menulayouts/mint.js:504
+#: menulayouts/redmond.js:237 menulayouts/ubuntudash.js:291
+#: menulayouts/ubuntudash.js:315
+msgid "Software"
+msgstr "Programvara"
+
+#: menulayouts/arcmenu.js:514 menulayouts/redmond.js:419
+#: menulayouts/ubuntudash.js:275 menulayouts/windows.js:115
+#: menulayouts/windows.js:282
+msgid "Documents"
+msgstr "Dokument"
+
+#: menulayouts/arcmenu.js:514 menulayouts/redmond.js:419
+#: menulayouts/ubuntudash.js:276
+msgid "Downloads"
+msgstr "Hämtningar"
+
+#: menulayouts/arcmenu.js:514 menulayouts/redmond.js:419
+msgid "Music"
+msgstr "Musik"
+
+#: menulayouts/arcmenu.js:514 menulayouts/redmond.js:419
+msgid "Pictures"
+msgstr "Bilder"
+
+#: menulayouts/arcmenu.js:514 menulayouts/redmond.js:419
+msgid "Videos"
+msgstr "Video"
+
+#: menulayouts/arcmenu.js:514 menulayouts/arcmenu.js:529
+#: menulayouts/mint.js:428 menulayouts/redmond.js:419
+#: menulayouts/redmond.js:434 menulayouts/ubuntudash.js:235
+msgid "Network"
+msgstr "Nätverk"
+
+#: menulayouts/mint.js:505 menulayouts/ubuntudash.js:292
+msgid "Files"
+msgstr "Filer"
+
+#: menulayouts/tweaks/tweaks.js:86
+msgid "Category Activation"
+msgstr "Kategoriaktivering"
+
+#: menulayouts/tweaks/tweaks.js:92
+msgid "Mouse Click"
+msgstr "Klicka"
+
+#: menulayouts/tweaks/tweaks.js:93
+msgid "Mouse Hover"
+msgstr "Peka"
+
+#: menulayouts/tweaks/tweaks.js:112
+msgid "Avatar Icon Shape"
+msgstr "Avatarikonens form"
+
+#: menulayouts/tweaks/tweaks.js:117
+msgid "Circular"
+msgstr "Rund"
+
+#: menulayouts/tweaks/tweaks.js:118
+msgid "Square"
+msgstr "Kvadratisk"
+
+#: menulayouts/tweaks/tweaks.js:143
+msgid "KRunner Position"
+msgstr "KRunner-placering"
+
+#: menulayouts/tweaks/tweaks.js:148
+msgid "Top"
+msgstr "Överst"
+
+#: menulayouts/tweaks/tweaks.js:149
+msgid "Centered"
+msgstr "Centrerad"
+
+#: menulayouts/tweaks/tweaks.js:160 menulayouts/tweaks/tweaks.js:335
+msgid "Show Extra Large Icons with App Descriptions"
+msgstr "Visa extra stora ikoner tillsammans med app-beskrivningar"
+
+#: menulayouts/tweaks/tweaks.js:191
+msgid "Buttons"
+msgstr "Knappar"
+
+#: menulayouts/tweaks/tweaks.js:199 menulayouts/tweaks/tweaks.js:314
+msgid "Default Screen"
+msgstr "Standardskärm"
+
+#: menulayouts/tweaks/tweaks.js:205 menulayouts/tweaks/tweaks.js:320
+msgid "All Applications"
+msgstr "Alla applikationer"
+
+#: menulayouts/tweaks/tweaks.js:273 menulayouts/tweaks/tweaks.js:391
+msgid "Separator Position Index"
+msgstr "Avskiljarens placeringsindex"
+
+#: menulayouts/tweaks/tweaks.js:578
+msgid "Nothing Yet!"
+msgstr "Inga än så länge!"
