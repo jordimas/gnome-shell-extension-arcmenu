@@ -1161,17 +1161,20 @@ var GeneralPage = GObject.registerClass(
 
             let menuPositionLeftButton = new Gtk.RadioButton({
                 label: _('Left'),
-                tooltip_text: _("Position Arc Menu on the Left side of ") + (extensionStates[Constants.EXTENSION.DTP] ? _("Dash to Panel") : _("the Main Panel"))
+                tooltip_text: extensionStates[Constants.EXTENSION.DTP] ? _("Position Arc Menu on the Left side of Dash to Panel")
+                                                                       : _("Position Arc Menu on the Left side of the Main Panel")
             });
             let menuPositionCenterButton = new Gtk.RadioButton({
                 label: _('Center'),
                 group: menuPositionLeftButton,
-                tooltip_text: _("Position Arc Menu in the Center of ") + (extensionStates[Constants.EXTENSION.DTP] ? _("Dash to Panel") : _("the Main Panel"))
+                tooltip_text: extensionStates[Constants.EXTENSION.DTP] ? _("Position Arc Menu in the Center of Dash to Panel")
+                                                                       : _("Position Arc Menu in the Center of the Main Panel")
             });
             let menuPositionRightButton = new Gtk.RadioButton({
                 label: _('Right'),
                 group: menuPositionLeftButton,
-                tooltip_text: _("Position Arc Menu on the Right side of ") + (extensionStates[Constants.EXTENSION.DTP] ? _("Dash to Panel") : _("the Main Panel"))
+                tooltip_text: extensionStates[Constants.EXTENSION.DTP] ? _("Position Arc Menu on the Right side of Dash to Panel") 
+                                                                       : _("Position Arc Menu on the Right side of the Main Panel")
             });
             // callback handlers for the radio buttons
             menuPositionLeftButton.connect('clicked', () => {
@@ -2722,7 +2725,7 @@ var ArcMenuCustomizationWindow = GObject.registerClass(
                 }),
                 digits: 0,round_digits: 0,hexpand: true,
                 value_pos: Gtk.PositionType.RIGHT,
-                tooltip_text: _("Offset menu placement by 1px") + "\n" +("Useful if a gap or overlap is visible")
+                tooltip_text: _("Offset menu placement by 1px\nUseful if a gap or overlap is visible")
             });
             gapAdjustmentScale.connect('format-value', (scale, value) => { return value.toString() + 'px'; });
             gapAdjustmentScale.set_value(this.gapAdjustment);
@@ -4356,8 +4359,7 @@ var MiscPage = GObject.registerClass(
             });
             let importTextRow = new PW.FrameBoxRow();
             let importTextLabel = new Gtk.Label({
-                label: _("Importing settings from file may replace ALL saved settings.") +"\n"
-                    + _("This includes all saved pinned apps."),
+                label: _("Importing settings from file may replace ALL saved settings.\nThis includes all saved pinned apps."),
                 use_markup: true,
                 xalign: 0,
                 hexpand: true
@@ -4460,8 +4462,7 @@ var MiscPage = GObject.registerClass(
 
             let importColorPresetTextRow = new PW.FrameBoxRow();
             let importColorPresetTextLabel = new Gtk.Label({
-                label: _("Imported theme presets are located on the Appearance Tab")+
-                 "\n"+ _("in Override Arc Menu Theme"),
+                label: _("Imported theme presets are located on the Appearance Tab\nin Override Arc Menu Theme"),
                 use_markup: true,
                 xalign: 0,
                 hexpand: true
