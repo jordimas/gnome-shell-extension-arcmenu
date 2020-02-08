@@ -1311,7 +1311,3 @@ msgstr "GNOME İçin Geleneksel Uygulama Menüsü"
 #: prefs.js:4633
 msgid "GitLab Page"
 msgstr "GitLab Sayfası"
-
-#~ msgid "Hot Corner Action"
-#~ msgstr Etkin Köşe Eylemi"
-
