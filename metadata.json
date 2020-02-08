@@ -7,9 +7,8 @@
     "description": "A Traditional Application Menu for GNOME",
     "version": -1,
     "shell-version": [
-      "3.28", 
-      "3.30",    
-      "3.32"
+      "3.34",    
+      "3.36"
     ],
     "url": "https://gitlab.com/LinxGem33/Arc-Menu"
 }
