@@ -29,7 +29,6 @@ const AppFavorites = imports.ui.appFavorites;
 const Constants = Me.imports.constants;
 const Dash = imports.ui.dash;
 const DND = imports.ui.dnd;
-const ExtensionUtils = imports.misc.extensionUtils;
 const Gettext = imports.gettext.domain(Me.metadata['gettext-domain']);
 const LoginManager = imports.misc.loginManager;
 const Main = imports.ui.main;
@@ -39,14 +38,15 @@ const Tweener = imports.ui.tweener;
 const Util = imports.misc.util;
 const Utils =  Me.imports.utils;
 const _ = Gettext.gettext;
+const { loadInterfaceXML } = imports.misc.fileUtils;
+
+const ClocksIntegrationIface = loadInterfaceXML('org.gnome.Shell.ClocksIntegration');
+const ClocksProxy = Gio.DBusProxy.makeProxyWrapper(ClocksIntegrationIface);
 
 const SWITCHEROO_BUS_NAME = 'net.hadess.SwitcherooControl';
 const SWITCHEROO_OBJECT_PATH = '/net/hadess/SwitcherooControl';
-const SwitcherooProxyInterface = '<node> \
-<interface name="net.hadess.SwitcherooControl"> \
-  <property name="HasDualGpu" type="b" access="read"/> \
-</interface> \
-</node>';
+
+const SwitcherooProxyInterface = loadInterfaceXML('net.hadess.SwitcherooControl');
 const SwitcherooProxy = Gio.DBusProxy.makeProxyWrapper(SwitcherooProxyInterface);
 
 // Menu Size variables
@@ -58,7 +58,6 @@ const USER_AVATAR_SIZE = 28;
 const TOOLTIP_LABEL_SHOW_TIME = 0.15;
 const TOOLTIP_LABEL_HIDE_TIME = 0.1;
 const gnome36 = imports.misc.config.PACKAGE_VERSION >= '3.35.0';
-const modernGnome = imports.misc.config.PACKAGE_VERSION >= '3.31.9';
 
 var AppRightClickMenu = class ArcMenu_AppRightClickMenu extends PopupMenu.PopupMenu {
     constructor(actor, app, button){
@@ -190,12 +189,8 @@ var AppRightClickMenu = class ArcMenu_AppRightClickMenu extends PopupMenu.PopupM
                         });
                     }
 
-                    let desktopIcons = Main.extensionManager ?
-                            Main.extensionManager.lookup("desktop-icons@csoriano") : //gnome-shell >= 3.33.4
-                            ExtensionUtils.extensions["desktop-icons@csoriano"];
-                    let desktopIconsNG = Main.extensionManager ?
-                            Main.extensionManager.lookup("ding@rastersoft.com") : //gnome-shell >= 3.33.4
-                            ExtensionUtils.extensions["ding@rastersoft.com"];        
+                    let desktopIcons = Main.extensionManager.lookup("desktop-icons@csoriano");
+                    let desktopIconsNG = Main.extensionManager.lookup("ding@rastersoft.com")   ;
                     if((desktopIcons && desktopIcons.stateObj) || (desktopIconsNG && desktopIconsNG.stateObj) ){
                         this._appendSeparator();
                         let fileSource = this.appInfo.get_filename();
@@ -384,7 +379,7 @@ var AppRightClickMenu = class ArcMenu_AppRightClickMenu extends PopupMenu.PopupM
 
 };
 
-var SeparatorDrawingArea =  GObject.registerClass(class ArcMenu_SeparatorDrawingArea extends St.DrawingArea {
+var SeparatorDrawingArea = GObject.registerClass(class ArcMenu_SeparatorDrawingArea extends St.DrawingArea {
     _init(settings,alignment,style,params) {
         super._init(params);
         this._settings = settings;
@@ -444,13 +439,9 @@ var SeparatorDrawingArea =  GObject.registerClass(class ArcMenu_SeparatorDrawing
     }
 });
 
-// Menu item to launch GNOME activities overview
-var ActivitiesMenuItem =  Utils.createClass({
-    Name: 'ArcMenu_ActivitiesMenuItem',
-    Extends: PopupMenu.PopupBaseMenuItem, 
-    // Initialize the menu item
+var ActivitiesMenuItem = GObject.registerClass(class ArcMenu_ActivitiesMenuItem extends PopupMenu.PopupBaseMenuItem{
     _init(button) {
-        this.callParent('_init');
+        super._init();
         this._button = button;
         this._icon = new St.Icon({
             icon_name: 'view-fullscreen-symbolic',
@@ -468,17 +459,15 @@ var ActivitiesMenuItem =  Utils.createClass({
             this.connect('button-press-event', this._onButtonPressEvent.bind(this));
             this.connect('button-release-event', this._onButtonReleaseEvent.bind(this));
         }
-    },
-
-    // Activate the menu item (Open activities overview)
+    }
     activate(event) {
         this._button.leftClickMenu.toggle();
         Main.overview.show();
-        this.callParent('activate',event);
-    },
+        super.activate(event);
+    }
     _onButtonPressEvent(actor, event) {
         return Clutter.EVENT_PROPAGATE;
-    },
+    }
     _onButtonReleaseEvent(actor, event) {
         if(event.get_button()==1){
             this.activate(event);
@@ -487,9 +476,6 @@ var ActivitiesMenuItem =  Utils.createClass({
     }
 });
 
-/**
- * A class representing a Tooltip.
- */
 var Tooltip = class ArcMenu_Tooltip{
     constructor(menu, sourceActor, text) {
         this._button = menu._button;
@@ -973,12 +959,9 @@ var LockButton = class ArcMenu_LockButton extends SessionButton {
 };
 
 // Menu item to go back to category view
-var BackMenuItem = Utils.createClass({
-    Name: 'ArcMenu_BackMenuItem',
-    Extends: PopupMenu.PopupBaseMenuItem,
-    // Initialize the button
+var BackMenuItem = GObject.registerClass(class ArcMenu_BackMenuItem extends PopupMenu.PopupBaseMenuItem{
     _init(button) {
-        this.callParent('_init');
+        super._init();
         this._button = button;
         this._icon = new St.Icon({
             icon_name: 'go-previous-symbolic',
@@ -996,8 +979,7 @@ var BackMenuItem = Utils.createClass({
             this.connect('button-press-event', this._onButtonPressEvent.bind(this));
             this.connect('button-release-event', this._onButtonReleaseEvent.bind(this));
         }
-    },
-    // Activate the button (go back to category view)
+    }
     activate(event) {
         if(this._button.currentMenu !== Constants.CURRENT_MENU.FAVORITES)
             this._button._clearApplicationsBox();
@@ -1026,11 +1008,11 @@ var BackMenuItem = Utils.createClass({
         else if(this._button.currentMenu == Constants.CURRENT_MENU.FAVORITES){
             this._button.favoritesMenu ? this._button.favoritesMenu.toggle() : this._button.categoriesMenu.toggle();
         }
-        this.callParent('activate',event);
-    },
+        super.activate(event);
+    }
     _onButtonPressEvent(actor, event) {
         return Clutter.EVENT_PROPAGATE;
-    },
+    }
     _onButtonReleaseEvent(actor, event) {
         if(event.get_button()==1){
             this.activate(event);
@@ -1040,12 +1022,9 @@ var BackMenuItem = Utils.createClass({
 });
 
 // Menu item to view all apps
-var ViewAllPrograms =Utils.createClass({
-    Name: 'ArcMenu_ViewAllPrograms',
-    Extends: PopupMenu.PopupBaseMenuItem, 
-    // Initialize the button
+var ViewAllPrograms = GObject.registerClass(class ArcMenu_ViewAllPrograms extends PopupMenu.PopupBaseMenuItem{
     _init(button) {
-        this.callParent('_init');
+        super._init();
         this._button = button;
         this._icon = new St.Icon({
             icon_name: 'go-next-symbolic',
@@ -1064,8 +1043,7 @@ var ViewAllPrograms =Utils.createClass({
             this.connect('button-press-event', this._onButtonPressEvent.bind(this));
             this.connect('button-release-event', this._onButtonReleaseEvent.bind(this));
         }
-    },
-    // Activate the button (go back to category view)
+    }
     activate(event) {
       this._button._clearApplicationsBox();
       if(this._button._settings.get_boolean('enable-pinned-apps')){
@@ -1076,11 +1054,11 @@ var ViewAllPrograms =Utils.createClass({
        	  this._button._displayAllApps();
           this._button.currentMenu = Constants.CURRENT_MENU.SEARCH_RESULTS;
       }
-      this.callParent('activate',event);
-    },
+      super.activate(event);
+    }
     _onButtonPressEvent(actor, event) {
         return Clutter.EVENT_PROPAGATE;
-    },
+    }
     _onButtonReleaseEvent(actor, event) {
         if(event.get_button() == 1){
             this.activate(event);
@@ -1090,12 +1068,9 @@ var ViewAllPrograms =Utils.createClass({
 });
 
 // Menu shortcut item class
-var ShortcutMenuItem = Utils.createClass({
-    Name: 'ArcMenu_ShortcutMenuItem',
-    Extends: PopupMenu.PopupBaseMenuItem,
-    // Initialize the menu item
+var ShortcutMenuItem = GObject.registerClass(class ArcMenu_ShortcutMenuItem extends PopupMenu.PopupBaseMenuItem{
     _init(button, name, icon, command) {
-        this.callParent('_init');
+        super._init();
         this._button = button;
         this._command = command;
         //Check for default commands--------
@@ -1128,17 +1103,16 @@ var ShortcutMenuItem = Utils.createClass({
             this.connect('button-press-event', this._onButtonPressEvent.bind(this));
             this.connect('button-release-event', this._onButtonReleaseEvent.bind(this));
         }
-    },
+    }
     setAsIcon(){
         this.actor.vertical = true;
-        this.actor.connect('notify::active',()=> this.setActive(this.actor.active, false));
+        this.actor.connect('notify::active',()=> this.setActive(this.actor.active));
 
         let layout = this._button._settings.get_enum('menu-layout');        
         if(layout == Constants.MENU_LAYOUT.Elementary || layout == Constants.MENU_LAYOUT.UbuntuDash){
             this._iconSize = 52;
             this.actor.style ='border-radius:4px; padding: 5px; spacing: 0px; width:95px; height:95px;';
-        }
-            
+        } 
         else{
             this._iconSize = 36;  
             this.actor.style ='border-radius:4px; padding: 5px; spacing: 0px; width:80px;height:80px;';
@@ -1148,8 +1122,8 @@ var ShortcutMenuItem = Utils.createClass({
         this.label.x_expand= true;
         this.label.x_align = Clutter.ActorAlign.CENTER;
         this.label.y_align=  Clutter.ActorAlign.CENTER;
-    },
-    setActive(active, callParent = true){
+    }
+    setActive(active){
         if(active){
             if(this._button.activeMenuItem && this._button.activeMenuItem != this)
                 this._button.activeMenuItem.setFakeActive(false);
@@ -1157,9 +1131,7 @@ var ShortcutMenuItem = Utils.createClass({
         }            
         else if(this._button.leftClickMenu.isOpen)
             this._button.activeMenuItem = null;
-        if(callParent)
-            this.callParent('setActive',active);
-    },
+    }
     _onHover() {
         let lbl = this.label.clutter_text;
         lbl.get_allocation_box();
@@ -1175,8 +1147,7 @@ var ShortcutMenuItem = Utils.createClass({
                 this.tooltip = null;
             }
         }
-    },
-    // Activate the menu item (Launch the shortcut)
+    }
     activate(event) {
         this._button.leftClickMenu.toggle();
         if(this._command =="ArcMenu_ActivitiesOverview")
@@ -1187,20 +1158,20 @@ var ShortcutMenuItem = Utils.createClass({
             this._app.open_new_window(-1);
         else
             Util.spawnCommandLine(this._command);
-        this.callParent('activate',event);
-    },
+        super.activate(event);
+    }
     setIconSizeLarge(){
         this._icon.icon_size = MEDIUM_ICON_SIZE;
-    },
+    }
     _onButtonPressEvent(actor, event) {
         return Clutter.EVENT_PROPAGATE;
-    },
+    }
     _onButtonReleaseEvent(actor, event) {
         if(event.get_button()==1){
             this.activate(event);
         }
         return Clutter.EVENT_STOP;
-    },
+    }
     setFakeActive(active) {
         if (active) {
             this.actor.add_style_class_name('selected');
@@ -1211,12 +1182,9 @@ var ShortcutMenuItem = Utils.createClass({
 });
 
 // Menu item which displays the current user
-var UserMenuItem =Utils.createClass({
-    Name: 'ArcMenu_UserMenuItem',
-    Extends: PopupMenu.PopupBaseMenuItem, 
-    // Initialize the menu item
+var UserMenuItem = GObject.registerClass(class ArcMenu_UserMenuItem extends PopupMenu.PopupBaseMenuItem{
     _init(button) {
-        this.callParent('_init');
+        super._init();
         this._button = button;
         let username = GLib.get_user_name();
         this._user = AccountsService.UserManager.get_default().get_user(username);
@@ -1239,14 +1207,12 @@ var UserMenuItem =Utils.createClass({
             this.connect('button-press-event', this._onButtonPressEvent.bind(this));
             this.connect('button-release-event', this._onButtonReleaseEvent.bind(this));
         }
-    },
-    // Activate the menu item (Open user account settings)
+    }
     activate(event) {
         Util.spawnCommandLine("gnome-control-center user-accounts");
         this._button.leftClickMenu.toggle();
-        this.callParent('activate',event);
-    },
-    // Handle changes to user information (redisplay new info)
+        super.activate(event);
+    }
     _onUserChanged() {
         if (this._user.is_loaded) {
             this._userLabel.set_text(this._user.get_real_name());
@@ -1264,8 +1230,7 @@ var UserMenuItem =Utils.createClass({
                 });
             }
         }
-    },
-    // Destroy the menu item
+    }
     _onDestroy() {
         if (this._userLoadedId != 0) {
             this._user.disconnect(this._userLoadedId);
@@ -1275,10 +1240,10 @@ var UserMenuItem =Utils.createClass({
             this._user.disconnect(this._userChangedId);
             this._userChangedId = 0;
         }
-    },
+    }
     _onButtonPressEvent(actor, event) {
         return Clutter.EVENT_PROPAGATE;
-    },
+    }
     _onButtonReleaseEvent(actor, event) {
         if(event.get_button()==1){
             this.activate(event);
@@ -1312,7 +1277,6 @@ var UserMenuIcon =  class ArcMenu_UserMenuIcon{
             this.tooltip._onHover();
         }
     }
-    // Handle changes to user information (redisplay new info)
     _onUserChanged() {
         if (this._user.is_loaded) {
             let iconFileName = this._user.get_icon_file();
@@ -1329,7 +1293,6 @@ var UserMenuIcon =  class ArcMenu_UserMenuIcon{
         }
         
     }
-    // Destroy the menu item
     _onDestroy() {
         if (this._userLoadedId != 0) {
             this._user.disconnect(this._userLoadedId);
@@ -1343,13 +1306,11 @@ var UserMenuIcon =  class ArcMenu_UserMenuIcon{
 };
 
 // Menu pinned apps/favorites item class
-var FavoritesMenuItem = Utils.createClass({
-    Name: 'ArcMenu_FavoritesMenuItem',
-    Extends: PopupMenu.PopupBaseMenuItem, 
-    Signals: {'saveSettings': {}},
-    // Initialize the menu item
+var FavoritesMenuItem = GObject.registerClass({ 
+    Signals: {  'saveSettings': {}, }, 
+}, class ArcMenu_FavoritesMenuItem extends PopupMenu.PopupBaseMenuItem{
     _init(button, name, icon, command) {
-        this.callParent('_init');
+        super._init();
         this._button = button;
         this._command = command;
         this._iconPath = icon;
@@ -1384,22 +1345,22 @@ var FavoritesMenuItem = Utils.createClass({
         this._draggable.connect('drag-cancelled', this._onDragCancelled.bind(this));
         this._draggable.connect('drag-end', this._onDragEnd.bind(this));
 
-        this.actor.connect('notify::active',()=> this.setActive(this.actor.active, false));
+        this.actor.connect('notify::active',()=> this.setActive(this.actor.active));
         this.actor.connect('notify::hover',this._onHover.bind(this));
         
         if(gnome36){
             this.connect('button-press-event', this._onButtonPressEvent.bind(this));
             this.connect('button-release-event', this._onButtonReleaseEvent.bind(this));
         }
-    },
+    }
     setFakeActive(active) {
         if (active) {
             this.actor.add_style_class_name('selected');
         } else {
             this.actor.remove_style_class_name('selected');
         }
-    },
-    setActive(active, callParent = true){
+    }
+    setActive(active){
         if(active){
             if(this._button.activeMenuItem && this._button.activeMenuItem != this)
                 this._button.activeMenuItem.setFakeActive(false);
@@ -1407,9 +1368,7 @@ var FavoritesMenuItem = Utils.createClass({
         }            
         else if(this._button.leftClickMenu.isOpen)
             this._button.activeMenuItem = null;
-        if(callParent)
-            this.callParent('setActive',active);
-    },
+    }
     _onHover() {
         let lbl = this.label.clutter_text;
         lbl.get_allocation_box();
@@ -1425,11 +1384,11 @@ var FavoritesMenuItem = Utils.createClass({
                 this.tooltip = null;
             }
         }
-    },
+    }
     _onButtonPressEvent(actor, event) {
 		
         return Clutter.EVENT_PROPAGATE;
-    },
+    }
     _onButtonReleaseEvent(actor, event) {
         if(event.get_button()==1){
             this.activate(event); 
@@ -1454,7 +1413,7 @@ var FavoritesMenuItem = Utils.createClass({
             this.rightClickMenu.toggle();
 	    }   
         return Clutter.EVENT_STOP;
-    },
+    }
    _onDragBegin() {   
         this._dragMonitor = {
             dragMotion: (this, this._onDragMotion.bind(this))
@@ -1480,7 +1439,7 @@ var FavoritesMenuItem = Utils.createClass({
         Main.overview.beginItemDrag(this);  
         this._emptyDropTarget.show(true); 
 
-    },
+    }
     _onDragMotion(dragEvent) {
     	this.newIndex = Math.floor((this._draggable._dragY - this.posY) / (this.rowHeight));
     	if(this.newIndex > this._button.applicationsBox.get_children().length -1)
@@ -1492,11 +1451,10 @@ var FavoritesMenuItem = Utils.createClass({
 	    }
 
 	    return DND.DragMotionResult.CONTINUE;
-    },
+    }
     _onDragCancelled() {
         Main.overview.cancelledItemDrag(this);
-    },
-
+    }
     _onDragEnd() {    
  	    this._button.applicationsBox.remove_child(this._emptyDropTarget); 
         let index = this.newIndex;
@@ -1515,8 +1473,7 @@ var FavoritesMenuItem = Utils.createClass({
         Main.overview.endItemDrag(this);
         DND.removeDragMonitor(this._dragMonitor);   
         this.emit('saveSettings');	  
-    },
-    
+    }
     getDragActor() {
         let addStyle = this._button._settings.get_boolean('enable-custom-arc-menu');
         let icon = new St.Icon({
@@ -1526,34 +1483,25 @@ var FavoritesMenuItem = Utils.createClass({
         });
         addStyle ? icon.add_style_class_name('arc-menu-action') : icon.remove_style_class_name('arc-menu-action');
         return icon;
-    },
-
-    // Returns the original actor that should align with the actor
-    // we show as the item is being dragged.
+    }
     getDragActorSource() {
         return this.actor;
-    },
-
-    // Activate the menu item (Launch the shortcut)
+    }
     activate(event) {
         if(this._app){
             this._app.open_new_window(-1);
-        }
-            
+        }  
         else
             Util.spawnCommandLine(this._command);
 
         this._button.leftClickMenu.toggle();
-        this.callParent('activate',event);
+        super.activate(event);
     }
 });
 // Menu pinned apps/favorites item class
-var FavoritesMenuIcon = Utils.createClass({
-    Name: 'ArcMenu_FavoritesMenuIcon',
-    Extends: PopupMenu.PopupBaseMenuItem,
-    // Initialize the menu item
+var FavoritesMenuIcon = GObject.registerClass(class ArcMenu_FavoritesMenuIcon extends PopupMenu.PopupBaseMenuItem{
     _init(button, name, icon, command) {
-        this.callParent('_init');
+        super._init();
         this._button = button;
         this._command = command;
         this._iconPath = icon;
@@ -1594,14 +1542,14 @@ var FavoritesMenuIcon = Utils.createClass({
             y_align: Clutter.ActorAlign.CENTER
         });
         this.actor.add_child(this.label);
-        this.actor.connect('notify::active',()=> this.setActive(this.actor.active, false));
+        this.actor.connect('notify::active',()=> this.setActive(this.actor.active));
         this.actor.connect('notify::hover',this._onHover.bind(this));
 
         if(gnome36){
             this.connect('button-press-event', this._onButtonPressEvent.bind(this));
             this.connect('button-release-event', this._onButtonReleaseEvent.bind(this));
         }
-    },
+    }
     _onHover() {
         let lbl = this.label.clutter_text;
         lbl.get_allocation_box();
@@ -1617,11 +1565,11 @@ var FavoritesMenuIcon = Utils.createClass({
                 this.tooltip = null;
             }
         }
-    },
+    }
     _onButtonPressEvent(actor, event) {
 		
         return Clutter.EVENT_PROPAGATE;
-    },
+    }
     _onButtonReleaseEvent(actor, event) {
         if(event.get_button()==1){
             this.activate(event); 
@@ -1647,8 +1595,8 @@ var FavoritesMenuIcon = Utils.createClass({
             this.rightClickMenu.toggle();
 	    }   
         return Clutter.EVENT_STOP;
-    },
-    setActive(active, callParent = true){
+    }
+    setActive(active){
         if(active){
             if(this._button.activeMenuItem && this._button.activeMenuItem != this)
                 this._button.activeMenuItem.setFakeActive(false);
@@ -1656,17 +1604,14 @@ var FavoritesMenuIcon = Utils.createClass({
         }            
         else if(this._button.leftClickMenu.isOpen)
             this._button.activeMenuItem = null;
-        if(callParent)
-            this.callParent('setActive',active);
-    },
+    }
     setFakeActive(active) {
         if (active) {
             this.actor.add_style_class_name('selected');
         } else {
             this.actor.remove_style_class_name('selected');
         }
-    },
-    // Activate the menu item (Launch the shortcut)
+    }
     activate(event) {
         if(this._app)
             this._app.open_new_window(-1);
@@ -1674,16 +1619,13 @@ var FavoritesMenuIcon = Utils.createClass({
             Util.spawnCommandLine(this._command);
 
         this._button.leftClickMenu.toggle();
-        this.callParent('activate',event);
+        super.activate(event);
     }
 });
 // Menu application item class
-var ApplicationMenuIcon = Utils.createClass({
-    Name: 'ArcMenu_ApplicationMenuIcon',
-    Extends: PopupMenu.PopupBaseMenuItem,
-    // Initialize menu item
+var ApplicationMenuIcon = GObject.registerClass(class ArcMenu_ApplicationMenuIcon extends PopupMenu.PopupBaseMenuItem{
     _init(button, app) {
-        this.callParent('_init');
+        super._init();
         this._button = button;
         this._app = app;
         this.actor.vertical = true;
@@ -1715,14 +1657,14 @@ var ApplicationMenuIcon = Utils.createClass({
         });
         this._updateIcon();
         this.actor.connect('notify::hover', this._onHover.bind(this));
-        this.actor.connect('notify::active',()=> this.setActive(this.actor.active, false));
+        this.actor.connect('notify::active',()=> this.setActive(this.actor.active));
 
         if(gnome36){
             this.connect('button-press-event', this._onButtonPressEvent.bind(this));
             this.connect('button-release-event', this._onButtonReleaseEvent.bind(this));
         }
-    },
-    setActive(active, callParent = true){
+    }
+    setActive(active){
         if(active){
             if(this._button.activeMenuItem && this._button.activeMenuItem != this)
                 this._button.activeMenuItem.setFakeActive(false);
@@ -1730,16 +1672,14 @@ var ApplicationMenuIcon = Utils.createClass({
         }            
         else if(this._button.leftClickMenu.isOpen)
             this._button.activeMenuItem = null;
-        if(callParent)
-            this.callParent('setActive',active);
-    },
+    }
     _createIcon(iconSize) {
         return this._app.create_icon_texture(iconSize);
-    },
+    }
     _onButtonPressEvent(actor, event) {
 		
         return Clutter.EVENT_PROPAGATE;
-    },
+    }
     _onButtonReleaseEvent(actor, event) {
         if(event.get_button()==1){
             this.activate(event);
@@ -1762,7 +1702,7 @@ var ApplicationMenuIcon = Utils.createClass({
             this.rightClickMenu.toggle();
 	    }   
         return Clutter.EVENT_STOP;
-    },
+    }
     _onHover() {
         if(this.actor.hover && this._button.newSearch._highlightDefault)
             this._button.newSearch.highlightDefault(false);
@@ -1770,7 +1710,7 @@ var ApplicationMenuIcon = Utils.createClass({
             let description = this._app.get_description();
             Utils.createTooltip(this._button, this, this.label, description);
         }
-    },
+    }
     _onKeyPressEvent(actor, event) {
         let symbol = event.get_key_symbol();
         if (symbol == Clutter.KEY_Return ||
@@ -1779,24 +1719,24 @@ var ApplicationMenuIcon = Utils.createClass({
             return Clutter.EVENT_STOP;
         }
         return Clutter.EVENT_PROPAGATE;
-    },
+    }
     get_app_id() {
         return this._app.get_id();
-    },
+    }
     activate(event) {
         this._app.open_new_window(-1);
         this._button.leftClickMenu.toggle();
-    },
+    }
     setFakeActive(active) {
         if (active) {
             this.actor.add_style_class_name('selected');
         } else {
             this.actor.remove_style_class_name('selected');
         }
-    },
+    }
     grabKeyFocus() {
         this.actor.grab_key_focus();
-    },
+    }
     _updateIcon() {
         let layout = this._button._settings.get_enum('menu-layout');
         if(layout == Constants.MENU_LAYOUT.Elementary || layout == Constants.MENU_LAYOUT.UbuntuDash)
@@ -1805,12 +1745,9 @@ var ApplicationMenuIcon = Utils.createClass({
             this._iconBin.set_child(this._app.create_icon_texture(36));    
     }
 });
-var ApplicationMenuItem =Utils.createClass({
-    Name: 'ArcMenu_ApplicationMenuItem',
-    Extends: PopupMenu.PopupBaseMenuItem,
-    // Initialize menu item
+var ApplicationMenuItem = GObject.registerClass(class ArcMenu_ApplicationMenuItem extends PopupMenu.PopupBaseMenuItem{
     _init(button, app) {
-        this.callParent('_init');
+        super._init();
         this._app = app;
         this._button = button;
         this._settings = this._button._settings;
@@ -1834,23 +1771,23 @@ var ApplicationMenuItem =Utils.createClass({
         this._updateIcon();
 
         this.actor.connect('notify::hover', this._onHover.bind(this));
-        this.actor.connect('notify::active',()=> this.setActive(this.actor.active, false));
+        this.actor.connect('notify::active',()=> this.setActive(this.actor.active));
 
         if(gnome36){
             this.connect('button-press-event', this._onButtonPressEvent.bind(this));
             this.connect('button-release-event', this._onButtonReleaseEvent.bind(this));
         }
-    },
+    }
     _onButtonPressEvent(actor, event) {	
         return Clutter.EVENT_PROPAGATE;
-    },    
+    }   
     _onHover() {
         if(this.tooltip==undefined && this.actor.hover){
             let description = this._app.get_description();
             Utils.createTooltip(this._button, this, this.label, description);
         }
-    },
-    setActive(active, callParent = true){
+    }
+    setActive(active){
         if(active){
             if(this._button.activeMenuItem && this._button.activeMenuItem != this)
                 this._button.activeMenuItem.setFakeActive(false);
@@ -1858,9 +1795,7 @@ var ApplicationMenuItem =Utils.createClass({
         }            
         else if(this._button.leftClickMenu.isOpen)
             this._button.activeMenuItem = null;
-        if(callParent)
-            this.callParent('setActive',active);
-    },
+    }
     _onButtonReleaseEvent(actor, event) {
         if(event.get_button()==1){
             this.activate(event);
@@ -1883,7 +1818,7 @@ var ApplicationMenuItem =Utils.createClass({
             this.rightClickMenu.toggle();
 	    }   
         return Clutter.EVENT_STOP;
-    },
+    }
     _onKeyPressEvent(actor, event) {
         let symbol = event.get_key_symbol();
         if (symbol == Clutter.KEY_Return ||
@@ -1892,51 +1827,48 @@ var ApplicationMenuItem =Utils.createClass({
             return Clutter.EVENT_STOP;
         }
         return Clutter.EVENT_PROPAGATE;
-    },
+    }
     get_app_id() {
         return this._app.get_id();
-    },
+    }
     _createIcon(iconSize) {
         return this._app.create_icon_texture(iconSize);
-    },
+    }
     activate(event) {
         this._app.open_new_window(-1);
         this._button.leftClickMenu.toggle();
-        this.callParent('activate',event);
-    },
+        super.activate(event);
+    }
     setFakeActive(active) {
         if (active) {
             this.actor.add_style_class_name('selected');
         } else {
             this.actor.remove_style_class_name('selected');
         }
-    },
+    }
     grabKeyFocus() {
         this.actor.grab_key_focus();
-    },
+    }
     _updateIcon() {
         let largeIcons = this._settings.get_boolean('enable-large-icons');
         this._iconBin.set_child(this._app.create_icon_texture(largeIcons ? MEDIUM_ICON_SIZE : SMALL_ICON_SIZE));
     }
 });
-var SearchResultItem = Utils.createClass({
-    Name: 'ArcMenu_SearchResultItem',
-    Extends: PopupMenu.PopupBaseMenuItem,
-    // Initialize menu item
+var SearchResultItem = GObject.registerClass(class ArcMenu_SearchResultItem extends PopupMenu.PopupBaseMenuItem{
     _init(button, app,path) {
-        this.callParent('_init');
+        super._init();
         this._button = button;
         this._app =app;
         this._path=path;
         this.actor.connect('notify::hover', this._onHover.bind(this));
-        this.actor.connect('notify::active',()=> this.setActive(this.actor.active, false));
+        this.actor.connect('notify::active',()=> this.setActive(this.actor.active));
 
         if(gnome36){
             this.connect('button-press-event', this._onButtonPressEvent.bind(this));
             this.connect('button-release-event', this._onButtonReleaseEvent.bind(this));
         }
-    },
-    setActive(active, callParent = true){
+    }
+    setActive(active){
         if(active){
             if(this._button.activeMenuItem && this._button.activeMenuItem != this)
                 this._button.activeMenuItem.setFakeActive(false);
@@ -1944,20 +1876,18 @@ var SearchResultItem = Utils.createClass({
         }            
         else if(this._button.leftClickMenu.isOpen)
             this._button.activeMenuItem = null;
-        if(callParent)
-            this.callParent('setActive',active);
-    },
+    }
     _onHover(){
         if(this.actor.hover && this._button.newSearch._highlightDefault)
             this._button.newSearch.highlightDefault(false);
-    },
+    }
     _createIcon(iconSize) {
         return this._app.create_icon_texture(iconSize);
-    },
+    }
     _onButtonPressEvent(actor, event) {
 		
         return Clutter.EVENT_PROPAGATE;
-    },
+    }
     _onButtonReleaseEvent(actor, event) {
         if(event.get_button()==1){
             this.activate(event);
@@ -1983,14 +1913,14 @@ var SearchResultItem = Utils.createClass({
                 this.tooltip.hide();
         }   
         return Clutter.EVENT_STOP;
-    },
+    }
     setFakeActive(active) {
         if (active) {
             this.actor.add_style_class_name('selected');
         } else {
             this.actor.remove_style_class_name('selected');
         }
-    },
+    }
     _onKeyPressEvent(actor, event) {
         let symbol = event.get_key_symbol();
         if (symbol == Clutter.KEY_Return ||
@@ -2002,12 +1932,9 @@ var SearchResultItem = Utils.createClass({
     }
 });
 // Menu Category item class
-var CategoryMenuItem =  Utils.createClass({    
-    Name: 'ArcMenu_CategoryMenuItem',
-    Extends: PopupMenu.PopupBaseMenuItem,
-    // Initialize menu item
+var CategoryMenuItem = GObject.registerClass(class ArcMenu_CategoryMenuItem extends PopupMenu.PopupBaseMenuItem{  
     _init(button, category, title=null) {
-        this.callParent('_init');
+        super._init();
         this._button = button;
         this.layout = this._button._settings.get_enum('menu-layout');
         this._category = category;
@@ -2063,15 +1990,14 @@ var CategoryMenuItem =  Utils.createClass({
 
         this.actor.label_actor = this.label;
         this.actor.connect('notify::hover', this._onHover.bind(this));
-        this.actor.connect('notify::active',()=> this.setActive(this.actor.active, false));
+        this.actor.connect('notify::active',()=> this.setActive(this.actor.active));
 
         if(gnome36){
             this.connect('button-press-event', this._onButtonPressEvent.bind(this));
             this.connect('button-release-event', this._onButtonReleaseEvent.bind(this));
         }
-
-    },
-    setActive(active, callParent = true){
+    }
+    setActive(active){
         if(active){
             if(this._button.activeMenuItem && this._button.activeMenuItem != this)
                 this._button.activeMenuItem.setFakeActive(false);
@@ -2079,20 +2005,17 @@ var CategoryMenuItem =  Utils.createClass({
         }            
         else if(this._button.leftClickMenu.isOpen)
             this._button.activeMenuItem = null;
-        if(callParent)
-            this.callParent('setActive',active);
-    },
+    }
     _onButtonPressEvent(actor, event) {
 		
         return Clutter.EVENT_PROPAGATE;
-    },
+    }
     _onButtonReleaseEvent(actor, event) {
         if(event.get_button()==1){
             this.activate(event);
         }
         return Clutter.EVENT_STOP;
-    },
-    // Activate menu item (Display applications in category)
+    }
     activate(event) {
         if (this._category)
             this._button.selectCategory(this._category);
@@ -2108,10 +2031,9 @@ var CategoryMenuItem =  Utils.createClass({
             || this.layout == Constants.MENU_LAYOUT.Mint ||  this.layout==Constants.MENU_LAYOUT.Budgie){
             this._button._setActiveCategory(this);
         }
-    },
-
+    }
     _onHover() {
-        if (this.actor.hover) { // mouse pointer hovers over the button
+        if (this.actor.hover){
             if((this.layout == Constants.MENU_LAYOUT.Brisk ||  this.layout==Constants.MENU_LAYOUT.Whisker || this.layout == Constants.MENU_LAYOUT.GnomeMenu
                     || this.layout == Constants.MENU_LAYOUT.Mint ||  this.layout==Constants.MENU_LAYOUT.Budgie) 
                         && this._button._settings.get_boolean('activate-on-hover')){
@@ -2140,8 +2062,7 @@ var CategoryMenuItem =  Utils.createClass({
                 }
             }
         }   
-    },
-    // Set button as active, scroll to the button
+    }
     setFakeActive(active, params) {
         if (active) {
             this.actor.add_style_class_name('selected');
@@ -2152,12 +2073,9 @@ var CategoryMenuItem =  Utils.createClass({
     }
 });
 // Simple Menu item class
-var SimpleMenuItem = Utils.createClass({
-    Name: 'ArcMenu_SimpleMenuItem',
-    Extends: PopupMenu.PopupBaseMenuItem,
-    // Initialize menu item
+var SimpleMenuItem = GObject.registerClass(class ArcMenu_SimpleMenuItem extends PopupMenu.PopupBaseMenuItem{  
     _init(button, category, title=null) {
-        this.callParent('_init');
+        super._init();
         this._category = category;
         this._button = button;
         this.name = "";
@@ -2203,12 +2121,7 @@ var SimpleMenuItem = Utils.createClass({
         }
         this.actor.label_actor = categoryLabel;
         this.actor.connect('notify::hover', this._onHover.bind(this));
-        
-        let modernGnome = imports.misc.config.PACKAGE_VERSION >= '3.31.9';
-        let sourceActor =  modernGnome ?  this : this.actor;
-        
-        
-
+            
         this.subMenu = new PopupMenu.PopupMenu(this.actor,.5,St.Side.LEFT);
 
         Main.uiGroup.add_actor(this.subMenu.actor);  
@@ -2244,7 +2157,7 @@ var SimpleMenuItem = Utils.createClass({
             x_fill: true, y_fill: true,
             y_align: St.Align.START
         });
-        this.actor.connect('notify::active',()=> this.setActive(this.actor.active, false));
+        this.actor.connect('notify::active',()=> this.setActive(this.actor.active));
         if(this.subMenu._keyPressId)
             this.actor.disconnect(this.subMenu._keyPressId);
         this.actor.connect("key-press-event",(actor, event)=>{
@@ -2271,7 +2184,7 @@ var SimpleMenuItem = Utils.createClass({
                         else
                             this._button.selectCategory("Frequent Apps",this);   
                         this.subMenu.toggle();
-                        this.subMenu.actor.navigate_focus(null, modernGnome ? St.DirectionType.TAB_FORWARD : Gtk.DirectionType.TAB_FORWARD, false);
+                        this.subMenu.actor.navigate_focus(null, St.DirectionType.TAB_FORWARD, false);
                         return Clutter.EVENT_STOP;
                     }
                     else{
@@ -2281,13 +2194,11 @@ var SimpleMenuItem = Utils.createClass({
                     return Clutter.EVENT_PROPAGATE;
             }
         });
-    },
-    setActive(active, callParent = true){
+    }
+    setActive(active){
         if(this._button.activeMenuItem != null && this._button.leftClickMenu.isOpen)
             this._button.activeMenuItem = null;
-        if(callParent)
-            this.callParent('setActive',active);
-    },
+    }
     scrollToItem(button,scrollView, direction) {
         if(button!=null){
             let appsScrollBoxAdj = scrollView.get_vscroll_bar().get_adjustment();
@@ -2311,7 +2222,7 @@ var SimpleMenuItem = Utils.createClass({
                 appsScrollBoxAdj.set_value(currentScrollValue + buttonHeight);
             }
         }
-    },
+    }
     updateStyle(){
         let addStyle=this._button._settings.get_boolean('enable-custom-arc-menu');
        
@@ -2325,8 +2236,7 @@ var SimpleMenuItem = Utils.createClass({
                 this.subMenu.actor.style_class = 'popup-menu-boxpointer';
                 this.subMenu.actor.add_style_class_name('popup-menu');
             }
-    },
-    // Activate menu item (Display applications in category)
+    }
     activate(event) {
         if (this._category)
             this._button.selectCategory(this._category,this);
@@ -2337,8 +2247,8 @@ var SimpleMenuItem = Utils.createClass({
         else
             this._button.selectCategory("Frequent Apps",this);   
         this.subMenu.toggle();
-        this.subMenu.actor.navigate_focus(null, modernGnome ? St.DirectionType.TAB_FORWARD : Gtk.DirectionType.TAB_FORWARD, false);
-    },
+        this.subMenu.actor.navigate_focus(null, St.DirectionType.TAB_FORWARD, false);
+    }
     _onHover() {
         if (this.actor.hover) { // mouse pointer hovers over the button
             if (this._category)
@@ -2351,23 +2261,18 @@ var SimpleMenuItem = Utils.createClass({
                 this._button.selectCategory("Frequent Apps",this);   
             this.subMenu.toggle();
         }
-    },
-    // Set button as active, scroll to the button
+    }
     setFakeActive(active, params) {
 
-    },
+    }
     _onDestroy(){
 
     }
 });
 // SubMenu Category item class
-var CategorySubMenuItem = Utils.createClass({
-    Name: 'ArcMenu_CategorySubMenuItem',
-    Extends: PopupMenu.PopupSubMenuMenuItem,
-    ParentConstrParams: ['', true],
-    // Initialize menu item
+var CategorySubMenuItem = GObject.registerClass(class ArcMenu_CategorySubMenuItem extends PopupMenu.PopupSubMenuMenuItem{  
     _init(button, category, title=null) {
-        this.callParent('_init','',true);
+        super._init('',true);
         this._category = category;
         this._button = button;
         this.name = "";
@@ -2411,15 +2316,15 @@ var CategorySubMenuItem = Utils.createClass({
         let scrollbar = this.menu.actor.get_vscroll_bar();
         scrollbar.style="padding-right:15px;";
         this.menu._needsScrollbar = this._needsScrollbar.bind(this);
-        this.actor.connect('notify::active',()=> this.setActive(this.actor.active, false));
+        this.actor.connect('notify::active',()=> this.setActive(this.actor.active));
         this.menu.connect('open-state-changed', () => {
             if(!this.menu.isOpen){
                 let scrollbar= this.menu.actor.get_vscroll_bar().get_adjustment();
                 scrollbar.set_value(0);
             }
         });
-    },
-    setActive(active, callParent = true){
+    }
+    setActive(active){
         if(active){
             if(this._button.activeMenuItem && this._button.activeMenuItem != this)
                 this._button.activeMenuItem.setFakeActive(false);
@@ -2427,24 +2332,22 @@ var CategorySubMenuItem = Utils.createClass({
         }            
         else if(this._button.leftClickMenu.isOpen)
             this._button.activeMenuItem = null;
-        if(callParent)
-            this.callParent('setActive',active);
-    },
+    }
     setFakeActive(active) {
         if (active) {
             this.actor.add_style_class_name('selected');
         } else {
             this.actor.remove_style_class_name('selected');
         }
-    },
+    }
     _updateIcons() {
         let largeIcons = this._button._settings.get_boolean('enable-large-icons');
         if(this._button._settings.get_enum('menu-layout') !== Constants.MENU_LAYOUT.Simple2){
             this.icon.icon_size = largeIcons ? MEDIUM_ICON_SIZE : SMALL_ICON_SIZE;
         } 
-    },
+    }
     _updateIcon() {
-    },
+    }
     _needsScrollbar() {
         let topMenu = this.menu;
         let [, topNaturalHeight] = topMenu.actor.get_preferred_height(-1);
@@ -2457,7 +2360,7 @@ var CategorySubMenuItem = Utils.createClass({
         else
             this.menu.actor.style = 'max-height: 250px;';
         return needsScrollbar;
-    },
+    }
     loadMenu(){
         let children = this.menu.box.get_children();
         for (let i = 0; i < children.length; i++) {
@@ -2479,10 +2382,9 @@ var CategorySubMenuItem = Utils.createClass({
             }
             if (!item.actor.get_parent()) {
                 this.menu.box.add_actor(item.actor);
-            }
-            
+            }  
         }
-    },
+    }
     scrollToItem(button,scrollView, direction) {
         if(button!=null){
             let appsScrollBoxAdj = scrollView.get_vscroll_bar().get_adjustment();
@@ -2506,7 +2408,7 @@ var CategorySubMenuItem = Utils.createClass({
                 appsScrollBoxAdj.set_value(currentScrollValue + buttonHeight);
             }
         }
-    },
+    }
     _setOpenState(open) {
         if(this.isSimpleMenuItem){
             if(open){
@@ -2529,24 +2431,17 @@ var CategorySubMenuItem = Utils.createClass({
     }
 });
 
-
-
 // Place Info class
 var PlaceInfo = class ArcMenu_PlaceInfo {
-    // Initialize place info
     constructor(file, name, icon) {
         this.file = file;
         this.name = name ? name : this._getFileName();
         this.icon = icon ? new Gio.ThemedIcon({ name: icon }) : this.getIcon();
     }
-
-    // Launch place with appropriate application
     launch(timestamp) {
         let launchContext = global.create_app_launch_context(timestamp, -1);
         Gio.AppInfo.launch_default_for_uri(this.file.get_uri(), launchContext);
     }
-
-    // Get Icon for place
     getIcon() {
         try {
             let info = this.file.query_info('standard::symbolic-icon', 0, null);
@@ -2562,8 +2457,6 @@ var PlaceInfo = class ArcMenu_PlaceInfo {
             }
         }
     }
-
-    // Get display name for place
     _getFileName() {
         try {
             let info = this.file.query_info('standard::display-name', 0, null);
@@ -2578,12 +2471,9 @@ var PlaceInfo = class ArcMenu_PlaceInfo {
 Signals.addSignalMethods(PlaceInfo.prototype);
 
 // Menu Place Shortcut item class
-var PlaceMenuItem = Utils.createClass({
-    Name: 'ArcMenu_PlaceMenuItem',
-    Extends: PopupMenu.PopupBaseMenuItem,
-    // Initialize menu item
+var PlaceMenuItem = GObject.registerClass(class ArcMenu_PlaceMenuItem extends PopupMenu.PopupBaseMenuItem{ 
     _init(button, info) {
-        this.callParent('_init');
+        super._init();
         this._button = button;
         this._info = info;
         this._icon = new St.Icon({
@@ -2603,8 +2493,7 @@ var PlaceMenuItem = Utils.createClass({
             this.connect('button-press-event', this._onButtonPressEvent.bind(this));
             this.connect('button-release-event', this._onButtonReleaseEvent.bind(this));
         }
-
-    },
+    }
     _onHover() {
         let lbl = this._label.clutter_text;
         lbl.get_allocation_box();
@@ -2620,31 +2509,26 @@ var PlaceMenuItem = Utils.createClass({
                 this.tooltip = null;
             }
         }
-    },
-    // Destroy menu item
+    }
     destroy() {
         if (this._changedId) {
             this._info.disconnect(this._changedId);
             this._changedId = 0;
         }
-    },
-
-    // Activate (launch) the shortcut
+    }
     activate(event) {
         this._info.launch(event.get_time());
         this._button.leftClickMenu.toggle();
-        this.callParent('activate',event);
-    },
-
-    // Handle changes in place info (redisplay new info)
+        super.activate(event);
+    }
     _propertiesChanged(info) {
         this._icon.gicon = info.icon;
         this._label.text = info.name;
-    },
+    }
     _onButtonPressEvent(actor, event) {
 		
         return Clutter.EVENT_PROPAGATE;
-    },
+    }
     _onButtonReleaseEvent(actor, event) {
         if(event.get_button()==1){
             this.activate(event);
@@ -2653,9 +2537,6 @@ var PlaceMenuItem = Utils.createClass({
     }
 });
 
-/**
- * This class represents a SearchBox.
- */
 var SearchBox = class ArcMenu_SearchBox{
     constructor(button) {
         this.newSearch= button.newSearch;
@@ -2922,8 +2803,7 @@ var DashMenuButtonWidget = class ArcMenu_DashMenuButtonWidget{
         this.label.hide();
         Main.layoutManager.addChrome(this.label);
         this.label_actor = this.label;
-        let modernGnome = imports.misc.config.PACKAGE_VERSION >= '3.31.9';
-        modernGnome ? this.actor.add_actor(this.icon) : this.actor.add_actor(this.icon.actor);
+        this.actor.add_actor(this.icon);
         
         this.child = this.actor;
     }   
@@ -2988,39 +2868,19 @@ var DashMenuButtonWidget = class ArcMenu_DashMenuButtonWidget{
     
         this.label.remove_all_transitions();
         this.label.set_position(x, y);
-        if(modernGnome){
-            this.label.ease({
-                opacity: 255,
-                duration: Dash.DASH_ITEM_LABEL_SHOW_TIME,
-                mode: Clutter.AnimationMode.EASE_OUT_QUAD
-            });
-        }   
-
-        else{
-            Tweener.addTween(this.label, {
-                opacity: 255,
-                time: Dash.DASH_ITEM_LABEL_SHOW_TIME,
-                transition: 'easeOutQuad'
-            });
-        }
+        this.label.ease({
+            opacity: 255,
+            duration: Dash.DASH_ITEM_LABEL_SHOW_TIME,
+            mode: Clutter.AnimationMode.EASE_OUT_QUAD
+        });
     }
     hideLabel() {
-        if(modernGnome){
-            this.label.ease({
-                opacity: 0,
-                duration: Dash.DASH_ITEM_LABEL_HIDE_TIME,
-                mode: Clutter.AnimationMode.EASE_OUT_QUAD,
-                onComplete: () => this.label.hide()
-            });
-        }
-        else{
-            Tweener.addTween(this.label, {
-                opacity: 0,
-                time: Dash.DASH_ITEM_LABEL_HIDE_TIME,
-                transition: 'easeOutQuad',
-                onComplete: () => this.label.hide()
-            });
-        }
+        this.label.ease({
+            opacity: 0,
+            duration: Dash.DASH_ITEM_LABEL_HIDE_TIME,
+            mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+            onComplete: () => this.label.hide()
+        });
     }
     _createIcon(size) {
         this._icon = new St.Icon({  
@@ -3061,5 +2921,369 @@ var DashMenuButtonWidget = class ArcMenu_DashMenuButtonWidget{
 
 };
 
+var WorldClocksSection = GObject.registerClass(class ArcMenu_WorldClocksSection extends St.Button {
+    _init() {
+        super._init({
+            style_class: 'world-clocks-button',
+            can_focus: true,
+            x_expand: true,
+            x_fill: true
+        });
+        this._clock = new imports.gi.GnomeDesktop.WallClock();
+        this._clockNotifyId = 0;
+
+        this._locations = [];
+
+        let layout = new Clutter.GridLayout({ orientation: Clutter.Orientation.VERTICAL });
+        this._grid = new St.Widget({ style_class: 'world-clocks-grid',
+                                        x_expand: true,
+                                        layout_manager: layout });
+        layout.hookup_style(this._grid);
+
+        this.child = this._grid;
+
+        this._clocksApp = null;
+        this._clocksProxy = new ClocksProxy(
+            Gio.DBus.session,
+            'org.gnome.clocks',
+            '/org/gnome/clocks',
+            this._onProxyReady.bind(this),
+            null /* cancellable */,
+            Gio.DBusProxyFlags.DO_NOT_AUTO_START | Gio.DBusProxyFlags.GET_INVALIDATED_PROPERTIES);
+
+        this._clockSettings = new Gio.Settings({
+            schema_id: 'org.gnome.shell.world-clocks',
+        });
+        this.clocksChangedID = this._clockSettings.connect('changed', this._clocksChanged.bind(this));
+        this._clocksChanged();
+
+        this._appSystem = Shell.AppSystem.get_default();
+        this.syncID = this._appSystem.connect('installed-changed',
+            this._sync.bind(this));
+        this._sync();
+    }
+
+    destroy(){
+        if(this.syncID){
+            this._appSystem.disconnect(this.syncID);
+            this.syncID = null;
+        } 
+        if(this.clocksChangedID){
+            this._clockSettings.disconnect(this.clocksChangedID);
+            this.clocksChangedID = null;
+        }
+        if(this.clocksProxyID){
+            this._clocksProxy.disconnect(this.clocksProxyID);
+            this.clocksProxyID = null;
+        }
+        if (this._clockNotifyId){
+            this._clock.disconnect(this._clockNotifyId);
+            this._clockNotifyId = null;
+        }
+    }
+
+    vfunc_clicked() {
+        if (this._clocksApp)
+            this._clocksApp.activate();
+    }
+
+    _sync() {
+        this._clocksApp = this._appSystem.lookup_app('org.gnome.clocks.desktop');
+        this.visible = this._clocksApp != null;
+    }
+
+    _clocksChanged() {
+        this._grid.destroy_all_children();
+        this._locations = [];
+
+        let world = imports.gi.GWeather.Location.get_world();
+        let clocks = this._clockSettings.get_value('locations').deep_unpack();
+        for (let i = 0; i < clocks.length; i++) {
+            let l = world.deserialize(clocks[i]);
+            if (l && l.get_timezone() != null)
+                this._locations.push({ location: l });
+        }
+
+        this._locations.sort((a, b) => {
+            return a.location.get_timezone().get_offset() -
+                    b.location.get_timezone().get_offset();
+        });
+
+        let layout = this._grid.layout_manager;
+        let title = this._locations.length == 0
+            ? _("Add world clocks…")
+            : _("World Clocks");
+        let header = new St.Label({ x_align: Clutter.ActorAlign.START,
+                                    text: title });
+        header.style = "font-weight: bold;";
+        layout.attach(header, 0, 0, 2, 1);
+        this.label_actor = header;
+
+        let localOffset = GLib.DateTime.new_now_local().get_utc_offset();
+
+        for (let i = 0; i < this._locations.length; i++) {
+            let l = this._locations[i].location;
+
+            let name = l.get_city_name() || l.get_name();
+            let label = new St.Label({  text: name,
+                                        x_align: Clutter.ActorAlign.START,
+                                        y_align: Clutter.ActorAlign.CENTER,
+                                        x_expand: true });
+            label.style = "font-weight: normal; font-size: 0.9em;";
+            let time = new St.Label();
+            time.style = "font-feature-settings: \"tnum\"; font-size: 1.2em;";
+            let otherOffset = this._getTimeAtLocation(l).get_utc_offset();
+            let offset = (otherOffset - localOffset) / GLib.TIME_SPAN_HOUR;
+            let fmt = Math.trunc(offset) == offset ? '%s%.0f' : '%s%.1f';
+            let prefix = offset >= 0 ? '+' : '-';
+            let tz = new St.Label({ text: fmt.format(prefix, Math.abs(offset)),
+                                    x_align: Clutter.ActorAlign.END,
+                                    y_align: Clutter.ActorAlign.CENTER });
+            tz.style = "font-feature-settings: \"tnum\"; font-size: 0.9em;";
+            if (this._grid.text_direction == Clutter.TextDirection.RTL) {
+                layout.attach(tz, 0, i + 1, 1, 1);
+                layout.attach(time, 1, i + 1, 1, 1);
+                layout.attach(label, 2, i + 1, 1, 1);
+            } else {
+                layout.attach(label, 0, i + 1, 1, 1);
+                layout.attach(time, 1, i + 1, 1, 1);
+                layout.attach(tz, 2, i + 1, 1, 1);
+            }
+
+            this._locations[i].actor = time;
+        }
+
+        if (this._grid.get_n_children() > 1) {
+            if (!this._clockNotifyId) {
+                this._clockNotifyId =
+                    this._clock.connect('notify::clock', this._updateLabels.bind(this));
+            }
+            this._updateLabels();
+        } else {
+            if (this._clockNotifyId)
+                this._clock.disconnect(this._clockNotifyId);
+            this._clockNotifyId = 0;
+        }
+    }
+
+    _getTimeAtLocation(location) {
+        let tz = GLib.TimeZone.new(location.get_timezone().get_tzid());
+        return GLib.DateTime.new_now(tz);
+    }
+
+    _updateLabels() {
+        for (let i = 0; i < this._locations.length; i++) {
+            let l = this._locations[i];
+            let now = this._getTimeAtLocation(l.location);
+            l.actor.text = Util.formatTime(now, { timeOnly: true });
+        }
+    }
+
+    _onProxyReady(proxy, error) {
+        if (error) {
+            log(`Failed to create GNOME Clocks proxy: ${error}`);
+            return;
+        }
+
+        this.clocksProxyID = this._clocksProxy.connect('g-properties-changed',
+            this._onClocksPropertiesChanged.bind(this));
+        this._onClocksPropertiesChanged();
+    }
+
+    _onClocksPropertiesChanged() {
+        if (this._clocksProxy.g_name_owner == null)
+            return;
+
+        this._clockSettings.set_value('locations',
+            new GLib.Variant('av', this._clocksProxy.Locations));
+    }
+});
+    
+var WeatherSection = GObject.registerClass(class ArcMenu_WeatherSection extends St.Button {
+    _init() {
+        super._init({
+            style_class: 'weather-button',
+            can_focus: true,
+            x_expand: true,
+            x_fill: true
+        });
+        this._weatherClient = new imports.misc.weather.WeatherClient();
+
+        let box = new St.BoxLayout({
+            vertical: true,
+            x_expand: true,
+        });
+
+        this.child = box;
+
+        let titleBox = new St.BoxLayout({ });
+        let label = new St.Label({
+            x_align: Clutter.ActorAlign.START,
+            x_expand: true,
+            y_align: Clutter.ActorAlign.END,
+            text: _('Weather'),
+        })
+        label.style = "font-weight: bold; padding-bottom: 5px;";
+        titleBox.add_child(label);
+        box.add_child(titleBox);
+
+        this._titleLocation = new St.Label({
+            x_align: Clutter.ActorAlign.END,
+            y_align: Clutter.ActorAlign.END,
+        });
+        this._titleLocation.style = "font-weight: bold; padding-bottom: 5px;";
+        titleBox.add_child(this._titleLocation);
+
+        let layout = new Clutter.GridLayout({ orientation: Clutter.Orientation.VERTICAL });
+        this._forecastGrid = new St.Widget({
+            style_class: 'weather-grid',
+            layout_manager: layout,
+        });
+        layout.hookup_style(this._forecastGrid);
+        box.add_child(this._forecastGrid);
+
+        this.syncID = this._weatherClient.connect('changed', this._sync.bind(this));
+        this._sync();
+    }
+    destroy(){
+        if(this.syncID){
+            this._weatherClient.disconnect(this.syncID);
+            this.syncID = null;
+        } 
+        this._weatherClient = null;
+    }
+    vfunc_map() {
+        this._weatherClient.update();
+        super.vfunc_map();
+    }
+
+    vfunc_clicked() {
+        this._weatherClient.activateApp();
+    }
+
+    _getInfos() {
+        let forecasts = this._weatherClient.info.get_forecast_list();
+
+        let now = GLib.DateTime.new_now_local();
+        let current = GLib.DateTime.new_from_unix_local(0);
+        let infos = [];
+        for (let i = 0; i < forecasts.length; i++) {
+            const [valid, timestamp] = forecasts[i].get_value_update();
+            if (!valid || timestamp === 0)
+                continue;  // 0 means 'never updated'
+
+            const datetime = GLib.DateTime.new_from_unix_local(timestamp);
+            if (now.difference(datetime) > 0)
+                continue; // Ignore earlier forecasts
+
+            if (datetime.difference(current) < GLib.TIME_SPAN_HOUR)
+                continue; // Enforce a minimum interval of 1h
+
+            if (infos.push(forecasts[i]) == 5)
+                break; // Use a maximum of five forecasts
+
+            current = datetime;
+        }
+        return infos;
+    }
+
+    _addForecasts() {
+        let layout = this._forecastGrid.layout_manager;
+
+        let infos = this._getInfos();
+        if (this._forecastGrid.text_direction == Clutter.TextDirection.RTL)
+            infos.reverse();
+
+        let col = 0;
+        infos.forEach(fc => {
+            const [valid_, timestamp] = fc.get_value_update();
+            let timeStr = Util.formatTime(new Date(timestamp * 1000), {
+                timeOnly: true
+            });
+            const [, tempValue] = fc.get_value_temp(imports.gi.GWeather.TemperatureUnit.DEFAULT);
+            const tempPrefix = tempValue >= 0 ? ' ' : '';
+
+            let time = new St.Label({
+                text: timeStr,
+                x_align: Clutter.ActorAlign.CENTER,
+            });
+            time.style = "font-size: 0.8em;"
+            let icon = new St.Icon({
+                style_class: 'weather-forecast-icon',
+                icon_name: fc.get_symbolic_icon_name(),
+                x_align: Clutter.ActorAlign.CENTER,
+                x_expand: true,
+            });
+            let temp = new St.Label({
+                text: '%s%.0f°'.format(tempPrefix, tempValue),
+                x_align: Clutter.ActorAlign.CENTER,
+            });
+
+            temp.clutter_text.ellipsize = imports.gi.Pango.EllipsizeMode.NONE;
+            time.clutter_text.ellipsize = imports.gi.Pango.EllipsizeMode.NONE;
+
+            layout.attach(time, col, 0, 1, 1);
+            layout.attach(icon, col, 1, 1, 1);
+            layout.attach(temp, col, 2, 1, 1);
+            col++;
+        });
+    }
+
+    _setStatusLabel(text) {
+        let layout = this._forecastGrid.layout_manager;
+        let label = new St.Label({ text });
+        layout.attach(label, 0, 0, 1, 1);
+    }
+
+    _updateForecasts() {
+        this._forecastGrid.destroy_all_children();
+
+        if (!this._weatherClient.hasLocation) {
+            this._setStatusLabel(_("Select a location…"));
+            return;
+        }
+
+        let info = this._weatherClient.info;
+        let loc = info.get_location();
+        if (loc.get_level() !== imports.gi.GWeather.LocationLevel.CITY && loc.has_coords()) {
+            let world = imports.gi.GWeather.Location.get_world();
+            loc = world.find_nearest_city(...loc.get_coords());
+        }
+        this._titleLocation.text = loc.get_name();
+
+        if (this._weatherClient.loading) {
+            this._setStatusLabel(_("Loading…"));
+            return;
+        }
+
+        if (info.is_valid()) {
+            this._addForecasts();
+            return;
+        }
+
+        if (info.network_error())
+            this._setStatusLabel(_("Go online for weather information"));
+        else
+            this._setStatusLabel(_("Weather information is currently unavailable"));
+    }
+
+    _sync() {
+        this.visible = this._weatherClient.available;
+
+        if (!this.visible)
+            return;
+
+        this._titleLocation.visible = this._weatherClient.hasLocation;
+
+        this._updateForecasts();
+    }
+});
+    
 
 
+function _isToday(date) {
+    let now = new Date();
+    return now.getYear() == date.getYear() &&
+           now.getMonth() == date.getMonth() &&
+           now.getDate() == date.getDate();
+}

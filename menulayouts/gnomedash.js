@@ -21,25 +21,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-// Import Libraries
 const Me = imports.misc.extensionUtils.getCurrentExtension();
-
-const {Clutter, GLib, Gio, GMenu, Gtk, Shell, St} = imports.gi;
-const appSys = Shell.AppSystem.get_default();
-const ArcSearch = Me.imports.search;
-const Constants = Me.imports.constants;
-const GnomeSession = imports.misc.gnomeSession;
-const Gettext = imports.gettext.domain(Me.metadata['gettext-domain']);
-const Main = imports.ui.main;
-const MenuLayouts = Me.imports.menulayouts;
-const MW = Me.imports.menuWidgets;
-const PlaceDisplay = Me.imports.placeDisplay;
-const PopupMenu = imports.ui.popupMenu;
-const Utils =  Me.imports.utils;
-const _ = Gettext.gettext;
-
-var modernGnome = imports.misc.config.PACKAGE_VERSION >= '3.31.9';
-
 var createMenu = class {
     constructor(mainButton) {
     }
