@@ -124,9 +124,9 @@ var createMenu = class {
         this.applicationsScrollBox.style = "width: " + RUNNER_WIDTH + "px";
         this.applicationsScrollBox.connect('key-press-event',(actor,event)=>{
             let key = event.get_key_symbol();
-            if(key == Clutter.Up || key == Clutter.KP_Up)
+            if(key == Clutter.KEY_Up)
                 this.scrollToItem(this.activeMenuItem,Constants.DIRECTION.UP);
-            else if(key == Clutter.Down || key == Clutter.KP_Down)
+            else if(key == Clutter.KEY_Down)
                 this.scrollToItem(this.activeMenuItem,Constants.DIRECTION.DOWN);
         }) ;         
         this.applicationsScrollBox.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC);
@@ -283,12 +283,28 @@ var createMenu = class {
     }
     // Scroll to a specific button (menu item) in the applications scroll view
     scrollToItem(button, direction) {
-        let appsScrollBoxAdj = this.applicationsScrollBox.get_vscroll_bar().get_adjustment();
-        let currentScrollValue = appsScrollBoxAdj.get_value();
-        let box = button.actor.get_allocation_box();
-        let buttonHeight = box.y1 - box.y2;
-        direction == Constants.DIRECTION.UP ? buttonHeight = buttonHeight : buttonHeight = -buttonHeight;
-        appsScrollBoxAdj.set_value(currentScrollValue + buttonHeight );
+        if(button!=null){
+            let appsScrollBoxAdj = this.applicationsScrollBox.get_vscroll_bar().get_adjustment();
+            let catsScrollBoxAlloc = this.applicationsScrollBox.get_allocation_box();
+            let boxHeight = catsScrollBoxAlloc.y2 - catsScrollBoxAlloc.y1;
+            let[v, l, upper] = appsScrollBoxAdj.get_values();
+            let currentScrollValue = appsScrollBoxAdj.get_value();
+            let box = button.actor.get_allocation_box();
+            let buttonHeight = box.y1 - box.y2;
+    
+            if(direction == Constants.DIRECTION.DOWN && currentScrollValue == 0){
+                currentScrollValue=.01;
+                appsScrollBoxAdj.set_value(currentScrollValue);
+            }
+            else if(direction == Constants.DIRECTION.UP && (currentScrollValue + boxHeight) == upper){
+                currentScrollValue-=0.01;
+                appsScrollBoxAdj.set_value(currentScrollValue);
+            }
+            else{
+                direction == Constants.DIRECTION.UP ? buttonHeight = buttonHeight : buttonHeight = - buttonHeight;
+                appsScrollBoxAdj.set_value(currentScrollValue + buttonHeight);
+            }
+        }
     }
     setCurrentMenu(menu){
         this.currentMenu = menu;
@@ -321,14 +337,10 @@ var createMenu = class {
                 return Clutter.EVENT_PROPAGATE;
             case Clutter.KEY_Tab:
             case Clutter.KEY_KP_Tab:
-            case Clutter.Up:
-            case Clutter.KP_Up:
-            case Clutter.Down:
-            case Clutter.KP_Down:
-            case Clutter.Left:
-            case Clutter.KP_Left:
-            case Clutter.Right:
-            case Clutter.KP_Right:
+            case Clutter.KEY_Up:
+            case Clutter.KEY_Down:
+            case Clutter.KEY_Left:
+            case Clutter.KEY_Right:  
                 return Clutter.EVENT_PROPAGATE;
             default:
                 if (key.length != 0) {

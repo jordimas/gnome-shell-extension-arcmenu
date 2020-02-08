@@ -70,7 +70,7 @@ var createMenu = class {
         // Set equal margin of the searchbar.
         this.searchBox.actor.style ="margin: 0px 10px 10px 10px;";
         // Remove border around searchbox.
-        this.searchBox._stEntry.style = "border: 0;";
+        this.searchBox._stEntry.style = "min-height: 0px; border: 0; border-radius:4px; padding: 7px 9px;";
         this._firstAppItem = null;
         this._firstApp = null;
         this._tabbedOnce = false;
@@ -121,14 +121,18 @@ var createMenu = class {
             overlay_scrollbars: true,
             style_class: 'vfade'
         });   
+        let rightPanelWidth = this._settings.get_int('right-panel-width');
+        rightPanelWidth += 70;
+        this.rightBox.style = "width: " + rightPanelWidth + "px;";
+        this.shortcutsScrollBox.style = "width: " + rightPanelWidth + "px;";
         this.shortcutsScrollBox.connect('key-press-event',(actor,event)=>{
             let key = event.get_key_symbol();
-            if(key == Clutter.Up || key == Clutter.KP_Up)
+            if(key == Clutter.KEY_Up)
                 this.scrollToItem(this.activeMenuItem, this.shortcutsScrollBox, Constants.DIRECTION.UP);
-            else if(key == Clutter.Down || key == Clutter.KP_Down)
+            else if(key == Clutter.KEY_Down)
                 this.scrollToItem(this.activeMenuItem, this.shortcutsScrollBox, Constants.DIRECTION.DOWN);
         }) ;  
-        this.shortcutsScrollBox.style = "padding-top:6px; width:275px;";
+        this.shortcutsScrollBox.style = "padding-top:6px;";
         // Disable horizontal scrolling, hide vertical scrollbar, but allow vertical scrolling.
         this.shortcutsScrollBox.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.EXTERNAL);
         
@@ -175,9 +179,9 @@ var createMenu = class {
         });
         this.applicationsScrollBox.connect('key-press-event',(actor,event)=>{
             let key = event.get_key_symbol();
-            if(key == Clutter.Up || key == Clutter.KP_Up)
+            if(key == Clutter.KEY_Up)
                 this.scrollToItem(this.activeMenuItem, this.applicationsScrollBox, Constants.DIRECTION.UP);
-            else if(key == Clutter.Down || key == Clutter.KP_Down)
+            else if(key == Clutter.KEY_Down)
                 this.scrollToItem(this.activeMenuItem, this.applicationsScrollBox, Constants.DIRECTION.DOWN);
         }) ;   
         this.applicationsScrollBox.style = "padding-top:6px; width:185px;";
@@ -206,15 +210,18 @@ var createMenu = class {
     setDefaultMenuView(){
         this.searchBox.clear();
         this.newSearch._reset();
-        let setDefaultActive = true;
-        this._setActiveCategory(setDefaultActive);
         this._displayAllApps();
+        this._setActiveCategory(this.categoryDirectories[0], false);
         let appsScrollBoxAdj = this.applicationsScrollBox.get_vscroll_bar().get_adjustment();
         appsScrollBoxAdj.set_value(0);
         appsScrollBoxAdj = this.shortcutsScrollBox.get_vscroll_bar().get_adjustment();
         appsScrollBoxAdj.set_value(0);
     }
     _redisplayRightSide(){
+        let rightPanelWidth = this._settings.get_int('right-panel-width');
+        rightPanelWidth += 70;
+        this.rightBox.style = "width: " + rightPanelWidth + "px;";
+        this.shortcutsScrollBox.style = "width: " + rightPanelWidth + "px;";
     }
     // Redisplay the menu
     _redisplay() {
@@ -236,9 +243,8 @@ var createMenu = class {
     }
     // Display the menu
     _display() {
-        this._displayCategories();
         this._displayAllApps();
-
+        this._displayCategories();
         if(this.horiSep!=null)
             this.horiSep.queue_repaint(); 
         if(this.vertSep!=null)
@@ -264,7 +270,8 @@ var createMenu = class {
         categoryMenuItem.actor.style = "padding: 10px 10px 10px 0; margin: 0; spacing: 0;";
         // Remove icons.
         categoryMenuItem.actor.remove_actor(categoryMenuItem._icon);
-        categoryMenuItem.actor.remove_actor(categoryMenuItem._arrowIcon);
+        if(categoryMenuItem._arrowIcon)
+            categoryMenuItem.actor.remove_actor(categoryMenuItem._arrowIcon);
         this.categoryDirectories.push(categoryMenuItem);
 
         this._tree.load_sync();
@@ -283,7 +290,8 @@ var createMenu = class {
                     categoryMenuItem.actor.style = "padding: 10px 10px 10px 0; margin: 0; spacing: 0;";
                     // Remove icons.
                     categoryMenuItem.actor.remove_actor(categoryMenuItem._icon);
-                    categoryMenuItem.actor.remove_actor(categoryMenuItem._arrowIcon);
+                    if(categoryMenuItem._arrowIcon)
+                        categoryMenuItem.actor.remove_actor(categoryMenuItem._arrowIcon);
                     this.categoryDirectories.push(categoryMenuItem); 
                 }
             }
@@ -343,7 +351,11 @@ var createMenu = class {
     _displayCategories(){
         this._clearApplicationsBox();
         for (let i = 0; i < this.categoryDirectories.length; i++) {
-            this.applicationsBox.add_actor(this.categoryDirectories[i].actor);	
+            this.applicationsBox.add_actor(this.categoryDirectories[i].actor);
+            if(i==0){
+                this.activeMenuItem = this.categoryDirectories[i];
+                this.mainBox.grab_key_focus();
+            }	 	
         }
 
         this.updateStyle();
@@ -362,10 +374,14 @@ var createMenu = class {
     }
     _createPlaces(id) {
     }
-    _setActiveCategory(setDefaultActive=false){
-        for (let i = 0; i <  this.categoryDirectories.length; i++) {
-            let actor =  this.categoryDirectories[i];
-            setDefaultActive ? actor.setFakeActive(i==0 ? true : false) : actor.setFakeActive(false);
+    _setActiveCategory(category, setActive = true){
+        this.activeMenuItem = category;
+        if(setActive){
+            category.setFakeActive(true);
+            this.activeMenuItem.actor.grab_key_focus();
+        }
+        else{
+            this.mainBox.grab_key_focus();
         }
     }
     // Clear the applications menu box
@@ -377,6 +393,7 @@ var createMenu = class {
         }
     }
     _clearShortcutsBox(){
+        this.activeMenuItem = null;
         let actors = this.shorcutsBox.get_children();
         for (let i = 0; i < actors.length; i++) {
             let actor = actors[i];
@@ -418,14 +435,10 @@ var createMenu = class {
                 if(item instanceof MW.CategorySubMenuItem){
                     this.shorcutsBox.add_actor(item.menu.actor);
                     item._updateIcons();
-                }
-                if(i==0){
-                    item.setFakeActive(true);
-                    item.actor.grab_key_focus();
-                    global.sync_pointer();
-                }      
+                }    
             }
         }
+        this.mainBox.grab_key_focus();
     }
 
     _displayAllApps(){
@@ -433,7 +446,7 @@ var createMenu = class {
         this._applicationsButtons.forEach((value,key,map) => {
             appList.push(key);
         });
-        appList.sort(function (a, b) {
+        appList.sort((a, b) => {
             return a.get_name().toLowerCase() > b.get_name().toLowerCase();
         });
         this._displayButtons(appList);
@@ -453,7 +466,7 @@ var createMenu = class {
                 applist = applist.concat(this.applicationsByCategory[directory]);
         }
         if(category_menu_id != "Frequent Apps"){
-            applist.sort(function (a, b) {
+            applist.sort((a, b) => {
                 return a.get_name().toLowerCase() > b.get_name().toLowerCase();
             });
         }
@@ -468,17 +481,19 @@ var createMenu = class {
         let symbol = event.get_key_symbol();
         if (!searchBox.isEmpty() && searchBox.hasKeyFocus()) {
             if (symbol == Clutter.Up) {
-                this.newSearch.getTopResult().actor.grab_key_focus();
+                this.newSearch.highlightDefault(false);
+                return Clutter.EVENT_PROPAGATE;
             }
             else if (symbol == Clutter.Down) {
-                this.newSearch.getTopResult().actor.grab_key_focus();
+                this.newSearch.highlightDefault(false);
+                return Clutter.EVENT_PROPAGATE;
             }
         }
         return Clutter.EVENT_PROPAGATE;
     }
     _onSearchBoxKeyFocusIn(searchBox) {
         if (!searchBox.isEmpty()) {
-            this.newSearch.highlightDefault(true);
+            this.newSearch.highlightDefault(false);
         }
     }
 
@@ -494,21 +509,36 @@ var createMenu = class {
         else{         
             this._clearShortcutsBox();
             this.shorcutsBox.add(this.newSearch.actor); 
-
             this.newSearch.highlightDefault(true);
             this.newSearch.actor.show();         
             this.newSearch.setTerms([searchString]); 
-
         }            	
     }
-    scrollToItem(button,scrollView, direction) {
-        let appsScrollBoxAdj = scrollView.get_vscroll_bar().get_adjustment();
-        let currentScrollValue = appsScrollBoxAdj.get_value();
-        let box = button.actor.get_allocation_box();
-        let buttonHeight = box.y1 - box.y2;
-        direction == Constants.DIRECTION.UP ? buttonHeight = buttonHeight : buttonHeight = -buttonHeight;
-        appsScrollBoxAdj.set_value(currentScrollValue + buttonHeight );
+    scrollToItem(button, scrollView, direction){
+        if(button!=null){
+            let appsScrollBoxAdj = scrollView.get_vscroll_bar().get_adjustment();
+            let catsScrollBoxAlloc = scrollView.get_allocation_box();
+            let boxHeight = catsScrollBoxAlloc.y2 - catsScrollBoxAlloc.y1;
+            let[v, l, upper] = appsScrollBoxAdj.get_values();
+            let currentScrollValue = appsScrollBoxAdj.get_value();
+            let box = button.actor.get_allocation_box();
+            let buttonHeight = box.y1 - box.y2;
+    
+            if(direction == Constants.DIRECTION.DOWN && currentScrollValue == 0){
+                currentScrollValue=.01;
+                appsScrollBoxAdj.set_value(currentScrollValue);
+            }
+            else if(direction == Constants.DIRECTION.UP && (currentScrollValue + boxHeight) == upper){
+                currentScrollValue-=0.01;
+                appsScrollBoxAdj.set_value(currentScrollValue);
+            }
+            else{
+                direction == Constants.DIRECTION.UP ? buttonHeight = buttonHeight : buttonHeight = - buttonHeight;
+                appsScrollBoxAdj.set_value(currentScrollValue + buttonHeight);
+            }
+        }
     }
+
     setCurrentMenu(menu){
         this.currentMenu = menu;
     }
@@ -540,14 +570,35 @@ var createMenu = class {
                 return Clutter.EVENT_PROPAGATE;
             case Clutter.KEY_Tab:
             case Clutter.KEY_KP_Tab:
-            case Clutter.Up:
-            case Clutter.KP_Up:
-            case Clutter.Down:
-            case Clutter.KP_Down:
-            case Clutter.Left:
-            case Clutter.KP_Left:
-            case Clutter.Right:
-            case Clutter.KP_Right:
+                return Clutter.EVENT_PROPAGATE;
+            case Clutter.KEY_Up:
+            case Clutter.KEY_Down:
+            case Clutter.KEY_Left:
+            case Clutter.KEY_Right:      
+                if(this.searchBox.hasKeyFocus() && this.newSearch._defaultResult){
+                    if(this.newSearch.actor.get_parent()){
+                        this.newSearch._defaultResult.actor.grab_key_focus();
+                        let appsScrollBoxAdj = this.applicationsScrollBox.get_vscroll_bar().get_adjustment();
+                        appsScrollBoxAdj.set_value(0);
+                        return Clutter.EVENT_STOP;
+                    }                   
+                    else{
+                        return Clutter.EVENT_PROPAGATE;
+                    } 
+                }
+                else if(this.activeMenuItem!=null && !this.activeMenuItem.actor.has_key_focus()){
+                    this.activeMenuItem.actor.grab_key_focus();
+                    return Clutter.EVENT_STOP;
+                }
+                else if(this.activeMenuItem!=null){
+                    this.activeMenuItem.actor.grab_key_focus();
+                    return Clutter.EVENT_PROPAGATE;
+                }
+                else{
+                    return Clutter.EVENT_PROPAGATE;
+                }
+            case Clutter.KEY_KP_Enter:
+            case Clutter.KEY_Return:
                 return Clutter.EVENT_PROPAGATE;
             default:
                 if (key.length != 0) {

@@ -4,13 +4,12 @@
     "settings-schema": "org.gnome.shell.extensions.arc-menu",
     "gettext-domain": "arc-menu",
     "name": "Arc Menu",
-    "description": "The new applications menu for Gnome 3.",
+    "description": "A Traditional Application Menu for GNOME",
     "version": -1,
     "shell-version": [
       "3.28", 
       "3.30",    
-      "3.32",    
-      "3.34"
+      "3.32"
     ],
     "url": "https://gitlab.com/LinxGem33/Arc-Menu"
 }
