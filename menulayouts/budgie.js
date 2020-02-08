@@ -23,7 +23,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-// Import Libraries
 const Me = imports.misc.extensionUtils.getCurrentExtension();
 
 const {Clutter, GLib, Gio, GMenu, Gtk, Shell, St} = imports.gi;
@@ -40,8 +39,6 @@ const PlaceDisplay = Me.imports.placeDisplay;
 const PopupMenu = imports.ui.popupMenu;
 const Utils =  Me.imports.utils;
 const _ = Gettext.gettext;
-
-var modernGnome = imports.misc.config.PACKAGE_VERSION >= '3.31.9';
 
 var createMenu = class {
     constructor(mainButton) {

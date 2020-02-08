@@ -99,6 +99,26 @@
       <summary>Embed Arc Menu button into Dash instead of panel</summary>
       <description>Embed Arc Menu button into Dash instead of panel</description>
     </key>
+    <key type="b" name="enable-weather-widget-raven">
+     <default>true</default>
+      <summary>Enable Weather Widget raven layout</summary>
+      <description>Enable Weather Widget raven layout.</description>
+    </key>
+    <key type="b" name="enable-clock-widget-raven">
+     <default>true</default>
+      <summary>Enable Clocks Widget raven layout</summary>
+      <description>Enable Clocks Widget raven layout.</description>
+    </key>
+        <key type="b" name="enable-weather-widget-ubuntu">
+     <default>false</default>
+      <summary>Enable Weather Widget ubuntu layout</summary>
+      <description>Enable Weather Widget ubuntu layout.</description>
+    </key>
+    <key type="b" name="enable-clock-widget-ubuntu">
+     <default>false</default>
+      <summary>Enable Clocks Widget ubuntu layout</summary>
+      <description>Enable Clocks Widget ubuntu layout.</description>
+    </key>
     <key type="b" name="enable-sub-menus">
      <default>false</default>
       <summary>Enable Category Sub Menus</summary>

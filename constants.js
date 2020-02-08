@@ -25,7 +25,7 @@ const Me = imports.misc.extensionUtils.getCurrentExtension();
 const Gettext = imports.gettext.domain(Me.metadata['gettext-domain']);
 const _ = Gettext.gettext;
 
-var VERSION = "40";
+var VERSION = "41";
 
 var CURRENT_MENU = {
     FAVORITES: 0,

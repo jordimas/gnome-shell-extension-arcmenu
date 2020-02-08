@@ -796,11 +796,9 @@ var SearchResults = class ArcMenu_SearchResultsGrid {
 };
 Signals.addSignalMethods(SearchResults.prototype);
 
-var ArcSearchProviderInfo =Utils.createClass({
-    Name: 'ArcMenu_ArcSearchProviderInfoGrid',
-    Extends: PopupMenu.PopupBaseMenuItem, 
+var ArcSearchProviderInfo = GObject.registerClass(class ArcMenu_ArcSearchProviderInfoGrid extends PopupMenu.PopupBaseMenuItem{
     _init(provider,button) {
-        this.callParent('_init');
+        super._init();
         this.provider = provider;
         this._button = button;
         this._settings = button._settings;
@@ -870,13 +868,13 @@ var ArcSearchProviderInfo =Utils.createClass({
         
         
         this.hoverID = this.actor.connect('notify::hover', this._onHover.bind(this));
-        this.actor.connect('notify::active',()=> this.setActive(this.actor.active, false));
+        this.actor.connect('notify::active',()=> this.setActive(this.actor.active));
 
         if(gnome36){
             this.connect('button-press-event', this._onButtonPressEvent.bind(this));
             this.connect('button-release-event', this._onButtonReleaseEvent.bind(this));
         }
-    },
+    }
     _onHover() {
         if(this.actor.hover && this._button.newSearch._highlightDefault)
             this._button.newSearch.highlightDefault(false);
@@ -884,11 +882,10 @@ var ArcSearchProviderInfo =Utils.createClass({
             let description = this.provider.appInfo.get_description();
             Utils.createTooltip(this._button, this, this.nameLabel, description);
         }
-    },
+    }
     animateLaunch() {
         let app = appSys.lookup_app(this.provider.appInfo.get_id());
-    },
-
+    }
     setMoreCount(count) {
         this._moreText= ngettext("%d more", "%d more", count).format(count);
         if(count>0){
@@ -898,17 +895,17 @@ var ArcSearchProviderInfo =Utils.createClass({
                 this.nameLabel.text = this.provider.appInfo.get_name() + "\n("+ this._moreText+")";
         }
             
-    },
+    }
     _onButtonPressEvent(actor, event) {
         return Clutter.EVENT_PROPAGATE;
-    },
+    }
     _onButtonReleaseEvent(actor, event) {
         if(event.get_button()==1){
             this.activate(event);
         }
         return Clutter.EVENT_STOP;
-    },
-    setActive(active, callParent = true){
+    }
+    setActive(active){
         if(active){
             if(this._button.activeMenuItem && this._button.activeMenuItem != this)
                 this._button.activeMenuItem.setFakeActive(false);
@@ -916,9 +913,7 @@ var ArcSearchProviderInfo =Utils.createClass({
         }            
         else if(this._button.leftClickMenu.isOpen)
             this._button.activeMenuItem = null;
-        if(callParent)
-            this.callParent('setActive',active);
-    },
+    }
     setFakeActive(active) {
         if (active) {
             this.actor.add_style_class_name('selected');
@@ -927,3 +922,4 @@ var ArcSearchProviderInfo =Utils.createClass({
         }
     }
 });
+

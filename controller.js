@@ -20,8 +20,6 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
-// Import Libraries
 const Me = imports.misc.extensionUtils.getCurrentExtension();
 
 const {Gdk, Gio, GLib, Gtk, St} = imports.gi;
@@ -33,11 +31,6 @@ const Main = imports.ui.main;
 const PanelMenu = Me.imports.menuButtonPanel;
 const _ = Gettext.gettext;
 
-var modernGnome = imports.misc.config.PACKAGE_VERSION >= '3.31.9';
-/**
- * The Menu Settings Controller class is responsible for changing and handling
- * the settings changes of the Arc Menu.
- */
 var MenuSettingsController = class {
     constructor(settings, settingsControllers, panel, isMainPanel, dashOrPanel) {
         this._settings = settings;
@@ -64,9 +57,6 @@ var MenuSettingsController = class {
         }
             
         this._settingsControllers = settingsControllers
-
-         // Create the button, a Hot Corner Manager, a Menu Keybinder as well as a Keybinding Manager
-
         this._hotCornerManager = new Helper.HotCornerManager(this._settings,() => this.toggleMenus());
         if(this.isMainPanel){
             this._menuHotKeybinder = new Helper.MenuHotKeybinder(() => this._onHotkey());
@@ -115,6 +105,10 @@ var MenuSettingsController = class {
             this._settings.connect('changed::right-panel-width', this._updateMenuHeight.bind(this)),
             this._settings.connect('changed::reload-theme',this._reloadExtension.bind(this)),
             this._settings.connect('changed::pinned-app-list',this._updateFavorites.bind(this)),
+            this._settings.connect('changed::enable-weather-widget-ubuntu',this._updateFavorites.bind(this)),
+            this._settings.connect('changed::enable-clock-widget-ubuntu',this._updateFavorites.bind(this)),
+            this._settings.connect('changed::enable-weather-widget-raven',this._updateFavorites.bind(this)),
+            this._settings.connect('changed::enable-clock-widget-raven',this._updateFavorites.bind(this)),
             this._settings.connect('changed::mint-pinned-app-list',this._updateButtonFavorites.bind(this)),
             this._settings.connect('changed::mint-separator-index',this._updateButtonFavorites.bind(this)),
             this._settings.connect('changed::ubuntu-dash-pinned-app-list',this._updateButtonFavorites.bind(this)),
@@ -289,9 +283,9 @@ var MenuSettingsController = class {
         let focusPanel;
 
         if(this.dashOrPanel == Constants.ARC_MENU_PLACEMENT.PANEL)
-            focusPanel = modernGnome ? this.panel : this.panel.actor;
+            focusPanel = this.panel;
         else
-            focusPanel = modernGnome ? this.panel._allDocks[0].dash : this.panel._allDocks[0].actor;
+            focusPanel = this.panel._allDocks[0].dash;
 
         let focusTarget = activeMenu ? 
                           (activeMenu.actor || activeMenu) : focusPanel;

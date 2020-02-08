@@ -27,10 +27,9 @@ const {GLib, Gio, St} = imports.gi;
 const Constants = Me.imports.constants;
 const Controller = Me.imports.controller;
 const Convenience = Me.imports.convenience;
-const ExtensionSystem = imports.ui.extensionSystem;
-const ExtensionUtils = imports.misc.extensionUtils;
 const Main = imports.ui.main;
 const Util = imports.misc.util;
+
 
 // Initialize panel button variables
 let settings;
@@ -45,6 +44,7 @@ function init(metadata) {
 
 // Enable the extension
 function enable() {
+
     let stylesheetFile = Gio.File.new_for_path(GLib.get_home_dir() + "/.local/share/arc-menu/stylesheet.css");
 
     let exists = stylesheetFile.query_exists(null);
@@ -71,7 +71,7 @@ function enable() {
     _enableButtons();
     
     // dash to panel might get enabled after Arc-Menu
-    extensionChangedId = (Main.extensionManager || ExtensionSystem).connect('extension-state-changed', (data, extension) => {
+    extensionChangedId = Main.extensionManager.connect('extension-state-changed', (data, extension) => {
         if (extension.uuid === 'dash-to-panel@jderose9.github.com') {
             if(extension.state === 1){
                 this.set_DtD_DtP_State(Constants.EXTENSION.DTP, true);
@@ -109,7 +109,7 @@ function set_DtD_DtP_State(extension, state){
 // Disable the extension
 function disable() {
     if ( extensionChangedId > 0){
-        (Main.extensionManager || ExtensionSystem).disconnect(extensionChangedId);
+        Main.extensionManager.disconnect(extensionChangedId);
         extensionChangedId = 0;
     }
 
@@ -163,9 +163,7 @@ function _onMultiMonitorChange() {
 }
 
 function _enableButtons() {
-       let dashToDock = Main.extensionManager ?
-                        Main.extensionManager.lookup("dash-to-dock@micxgx.gmail.com") : //gnome-shell >= 3.33.4
-                        ExtensionUtils.extensions["dash-to-dock@micxgx.gmail.com"];
+    let dashToDock = Main.extensionManager.lookup("dash-to-dock@micxgx.gmail.com")
     let arcMenuPosition = settings.get_enum('arc-menu-placement');
     if(arcMenuPosition == Constants.ARC_MENU_PLACEMENT.DTD && dashToDock && dashToDock.stateObj && dashToDock.stateObj.dockManager){
         this.set_DtD_DtP_State(Constants.EXTENSION.DTD, true);

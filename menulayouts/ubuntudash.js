@@ -21,7 +21,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-// Import Libraries
 const Me = imports.misc.extensionUtils.getCurrentExtension();
 
 const {Clutter, GLib, Gio, GMenu, Gtk, Shell, St} = imports.gi;
@@ -38,8 +37,6 @@ const PlaceDisplay = Me.imports.placeDisplay;
 const PopupMenu = imports.ui.popupMenu;
 const Utils =  Me.imports.utils;
 const _ = Gettext.gettext;
-
-var modernGnome = imports.misc.config.PACKAGE_VERSION >= '3.31.9';
 
 var createMenu = class{
     constructor(mainButton) {
@@ -100,7 +97,7 @@ var createMenu = class{
         //Top Search Bar
         // Create search box
         this.searchBox = new MW.SearchBox(this);
-        this.searchBox._stEntry.style = "min-height: 0px; border-radius: 18px; padding: 7px 12px;";
+        this.searchBox._stEntry.style = "min-height: 0px; min-height: 0px; border-radius: 18px; padding: 7px 12px;";
         this.searchBox.actor.style ="margin: 0px 10px 10px 10px;padding-top: 5px; padding-bottom: 0.0em;padding-left: 0.4em;padding-right: 0.4em;";
         this._firstAppItem = null;
         this._firstApp = null;
@@ -148,7 +145,7 @@ var createMenu = class{
         this.shortcutsScrollBox.clip_to_allocation = true;
 
         this.subMainBox.add( this.shortcutsScrollBox, {
-            expand: false,
+            expand: true,
             x_fill: false,
             y_fill: true,
             y_align: St.Align.START
@@ -184,6 +181,19 @@ var createMenu = class{
             x_align: St.Align.MIDDLE,
             y_align: St.Align.MIDDLE
         });
+
+        this.widgetBox = new St.BoxLayout({
+            vertical: false,
+            style_class: 'datemenu-displays-box'
+        });
+        
+        this.widgetBox.style = "margin: 0px; spacing: 10px; padding: 10px 50px;";   
+        this._weatherItem = new MW.WeatherSection();
+        this._weatherItem.style = "border-radius:4px; width: 350px; padding: 10px; margin: 0px";
+        this._weatherItem.connect("clicked", ()=> this.leftClickMenu.close());
+        this._clocksItem = new MW.WorldClocksSection();
+        this._clocksItem.style = "border-radius:4px; padding: 10px; margin: 0px";
+        this._clocksItem.connect("clicked", ()=> this.leftClickMenu.close());
         
         this._loadCategories();
         this._createFavoritesMenu();
@@ -440,6 +450,8 @@ var createMenu = class{
                 }
             });
         }
+        addStyle ? this._clocksItem.add_style_class_name('arc-menu-action') : this._clocksItem.remove_style_class_name('arc-menu-action');
+        addStyle ? this._weatherItem.add_style_class_name('arc-menu-action') : this._weatherItem.remove_style_class_name('arc-menu-action');
     }
     // Load data for all menu categories
     _loadCategories() {
@@ -581,6 +593,38 @@ var createMenu = class{
                 x_align: St.Align.MIDDLE,
                 y_align: St.Align.MIDDLE
             });
+            this.subMainBox.remove_actor(this.outerActionsBox)
+
+            let actors = this.widgetBox.get_children();
+            for (let i = 0; i < actors.length; i++) {
+                this.widgetBox.remove_actor(actors[i]);
+            }
+            if(this._settings.get_boolean('enable-weather-widget-ubuntu')){
+                this.widgetBox.add(this._weatherItem,{
+                    y_align: St.Align.END,
+                });
+            }
+
+            if(this._settings.get_boolean('enable-clock-widget-ubuntu')){
+                this.widgetBox.add(this._clocksItem,{
+                    y_align: St.Align.END,
+                });
+            }
+
+            this.subMainBox.add(this.widgetBox,{
+                expand: false,
+                x_fill: false,
+                y_fill: false,
+                x_align: St.Align.MIDDLE,
+                y_align: St.Align.END
+            });
+            this.subMainBox.add(this.outerActionsBox, {
+                expand: false,
+                x_fill: true,
+                y_fill: false,
+                x_align: St.Align.MIDDLE,
+                y_align: St.Align.END
+            });
         }
         else
             this._displayAllApps();        
@@ -596,6 +640,9 @@ var createMenu = class{
     }
     // Clear the applications menu box
     _clearApplicationsBox() {
+        if(this.subMainBox.contains(this.widgetBox)){
+            this.subMainBox.remove_actor(this.widgetBox);
+        }
         let appsScrollBoxAdj = this.shortcutsScrollBox.get_vscroll_bar().get_adjustment();
         appsScrollBoxAdj.set_value(0);
         this.activeMenuItem = null;
@@ -881,6 +928,11 @@ var createMenu = class{
         return Clutter.EVENT_PROPAGATE;
     }
     destroy(){
+        if(this._clocksItem)
+            this._clocksItem.destroy();
+        if(this._weatherItem)
+            this._weatherItem.destroy();
+        
         this.leftClickMenu.box.style = null;
         this.leftClickMenu.actor.style = null;
         this._applicationsButtons.forEach((value,key,map)=>{
