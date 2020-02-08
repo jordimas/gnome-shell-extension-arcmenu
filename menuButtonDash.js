@@ -96,6 +96,11 @@ var ApplicationsButton = GObject.registerClass(class ArcMenu_DashApplicationsBut
         });
         //----------------------------------------------------------------------------------
 
+        this._monitorsChangedId = Main.layoutManager.connect('monitors-changed', () => {
+            global.log("monitor changed");
+            this.updateHeight();
+        });
+
         //Update Categories on 'installed-changed' event-------------------------------------
         this._installedChangedId = appSys.connect('installed-changed', () => {
             this._reload();
@@ -133,9 +138,16 @@ var ApplicationsButton = GObject.registerClass(class ArcMenu_DashApplicationsBut
             vertical: false
         });       
         this.mainBox._delegate = this.mainBox; 
-        let themeContext = St.ThemeContext.get_for_stage(global.stage);
-        let scaleFactor = themeContext.scale_factor;
-        let height =  Math.round(this._settings.get_int('menu-height') / scaleFactor);
+
+        let monitorIndex = Main.layoutManager.findIndexForActor(this.getWidget().actor);
+        let scaleFactor = Main.layoutManager.monitors[monitorIndex].geometry_scale;
+        let monitorWorkArea = Main.layoutManager.getWorkAreaForMonitor(monitorIndex);
+        let height = Math.round(this._settings.get_int('menu-height') / scaleFactor);
+
+        if(height > monitorWorkArea.height){
+            height = (monitorWorkArea.height * 8) / 10;
+        }
+
         this.mainBox.style = `height: ${height}px`;        
         this.section.actor.add_actor(this.mainBox);          
         //Create Menu Layout--------------------------------------------------
@@ -324,11 +336,17 @@ var ApplicationsButton = GObject.registerClass(class ArcMenu_DashApplicationsBut
         return this._menuButtonWidget;
     }
     updateHeight(){
-        //set menu height
         let layout = this._settings.get_enum('menu-layout');
-        let themeContext = St.ThemeContext.get_for_stage(global.stage);
-        let scaleFactor = themeContext.scale_factor;
-        let height =  Math.round(this._settings.get_int('menu-height') / scaleFactor);
+
+        let monitorIndex = Main.layoutManager.findIndexForActor(this.getWidget().actor);
+        let scaleFactor = Main.layoutManager.monitors[monitorIndex].geometry_scale;
+        let monitorWorkArea = Main.layoutManager.getWorkAreaForMonitor(monitorIndex);
+        let height = Math.round(this._settings.get_int('menu-height') / scaleFactor);
+
+        if(height > monitorWorkArea.height){
+            height = (monitorWorkArea.height * 8) / 10;
+        }
+
         if(!(layout == Constants.MENU_LAYOUT.Simple || layout == Constants.MENU_LAYOUT.Simple2 || layout == Constants.MENU_LAYOUT.Runner) && this.MenuLayout)
             this.mainBox.style = `height: ${height}px`;
         
@@ -336,8 +354,11 @@ var ApplicationsButton = GObject.registerClass(class ArcMenu_DashApplicationsBut
         this._redisplay();
         this._redisplayRightSide();
     }
-    // Destroy the menu button
     destroy() {  
+        if (this._monitorsChangedId){
+            Main.layoutManager.disconnect(this._monitorsChangedId);
+            this._monitorsChangedId = null;
+        }
         if(this.reloadID){
             GLib.source_remove(this.reloadID);
             this.reloadID = null;

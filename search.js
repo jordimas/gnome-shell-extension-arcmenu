@@ -75,8 +75,10 @@ var ListSearchResult = class ArcMenu_ListSearchResult {
             });
 
             let icon = this.metaInfo['createIcon'](LARGE_ICON_SIZE);
-            if (icon) 
-                this.menuItem.actor.add_child(icon);
+            if (icon){
+                icon.style_class = 'icon-dropshadow';
+                this.menuItem.actor.add_child(icon);   
+            }
             
             let text = this.metaInfo['description'] ? this.metaInfo['description'] : '';
             if(text == '')
@@ -99,8 +101,10 @@ var ListSearchResult = class ArcMenu_ListSearchResult {
 
             let largeIcons = this._settings.get_boolean('enable-large-icons');
             let icon = this.metaInfo['createIcon'](largeIcons ? MEDIUM_ICON_SIZE : SMALL_ICON_SIZE);
-            if(icon) 
-                this.menuItem.actor.add_child(icon);
+            if (icon){
+                icon.style_class = 'icon-dropshadow';
+                this.menuItem.actor.add_child(icon);   
+            }
 
             this.menuItem.actor.add_child(this.label);
         }
@@ -154,8 +158,10 @@ var AppSearchResult = class  ArcMenu_AppSearchResult {
             });
 
             this.icon = this.metaInfo['createIcon'](LARGE_ICON_SIZE);
-            if (this.icon) 
-                this.menuItem.actor.add_child(this.icon);       
+            if (this.icon){
+                this.icon.style_class = 'icon-dropshadow';
+                this.menuItem.actor.add_child(this.icon);   
+            }      
 
             let text = this.metaInfo['description'] ? this.metaInfo['description'] : '';
             if(text == '')
@@ -177,8 +183,11 @@ var AppSearchResult = class  ArcMenu_AppSearchResult {
 
             let largeIcons = this._settings.get_boolean('enable-large-icons');
             this.icon = this.metaInfo['createIcon'](largeIcons ? MEDIUM_ICON_SIZE : SMALL_ICON_SIZE);
-            if (this.icon) 
-                this.menuItem.actor.add_child(this.icon);     
+            if (this.icon){
+                this.icon.style_class = 'icon-dropshadow';
+                this.menuItem.actor.add_child(this.icon);   
+            }
+                  
 
             this.menuItem.actor.add_child(this.label);
         }
@@ -468,9 +477,9 @@ var SearchResults = class ArcMenu_SearchResults {
         });
 
         if(button._settings.get_boolean('enable-custom-arc-menu'))
-            this._statusText.add_style_class_name('arc-menu-status-text');
+            this._statusText.style_class = 'arc-menu-status-text';
         else
-            this._statusText.add_style_class_name('search-statustext');
+            this._statusText.style_class = '';
         
         this.actor.add(this._statusBin, { 
             expand: true 

@@ -48,7 +48,8 @@ var PlaceMenuItem = GObject.registerClass(class ArcMenu_PlaceMenuItem2 extends P
         this._button = button;
         this._icon = new St.Icon({
             gicon: info.icon,
-            icon_size: 16
+            icon_size: 16,
+            style_class: 'icon-dropshadow'
         });
         this.actor.add_child(this._icon);
         if(info.name.length>=20)
@@ -59,7 +60,7 @@ var PlaceMenuItem = GObject.registerClass(class ArcMenu_PlaceMenuItem2 extends P
         if (info.isRemovable()) {
             this._ejectIcon = new St.Icon({
                 icon_name: 'media-eject-symbolic',
-                style_class: 'popup-menu-icon'
+                style_class: 'popup-menu-icon icon-dropshadow'
             });
             this._ejectButton = new St.Button({ child: this._ejectIcon });
             this._ejectButton.connect('clicked', info.eject.bind(info));

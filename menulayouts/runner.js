@@ -145,12 +145,10 @@ var createMenu = class {
         this.leftClickMenu.actor.style = "-arrow-base:0px;-arrow-rise:0px;";
         this.leftClickMenu._boxPointer.setSourceAlignment(0.5);
         this.leftClickMenu._arrowAlignment = 0.5
-        //Get screen, find monitor at point of menuButton, get that monitors geometry
-        let screen = Gdk.Screen.get_default();
-        let [x, y] = this._button._menuButtonWidget.actor.get_transformed_position();
-        let currentMonitor = screen.get_monitor_at_point(x,y);
         
-        let rect = screen.get_monitor_workarea(currentMonitor);
+        let monitorIndex = Main.layoutManager.findIndexForActor(this._button.getWidget().actor);
+        let rect = Main.layoutManager.getWorkAreaForMonitor(monitorIndex);
+
         //Position the runner menu in the center of the current monitor, at top of screen.
         let positionX = Math.round(rect.x + (rect.width / 2));
         let positionY = rect.y;
@@ -191,7 +189,7 @@ var createMenu = class {
     updateStyle(){
         let addStyle=this._settings.get_boolean('enable-custom-arc-menu');
         if(this.newSearch){
-            addStyle ? this.newSearch.setStyle('arc-menu-status-text') :  this.newSearch.setStyle('search-statustext'); 
+            addStyle ? this.newSearch.setStyle('arc-menu-status-text') : this.newSearch.setStyle(''); 
             addStyle ? this.searchBox._stEntry.set_name('arc-search-entry') : this.searchBox._stEntry.set_name('search-entry');
         }
         addStyle ? this.arcMenuSettingsButton.actor.add_style_class_name('arc-menu-action') : this.arcMenuSettingsButton.actor.remove_style_class_name('arc-menu-action');

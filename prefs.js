@@ -2452,10 +2452,23 @@ var ArcMenuCustomizationWindow = GObject.registerClass(
             generalLabel.set_sensitive(false);
             generalRow.add(generalLabel);
             generalSettingsFrame.add(generalRow);
-            let screen = Gdk.Screen.get_default();
-            let rect = screen.get_monitor_geometry(0);
-            let scaleFactor = screen.get_monitor_scale_factor(0);
-            let screenHeight = rect.height * scaleFactor;
+
+            //find the greatest screen height of all monitors
+            //use that value to set Menu Height cap
+            let display = Gdk.Display.get_default(); 
+            let nMonitors = display.get_n_monitors();
+            let greatestHeight = 0;
+            let scaleFactor = 1;   
+            for (let i = 0; i < nMonitors; i++) {
+                let monitor = display.get_monitor(i);
+                let monitorHeight = monitor.get_workarea().height;
+                if(monitorHeight > greatestHeight){
+                    scaleFactor = monitor.get_scale_factor();
+                    greatestHeight = monitorHeight;
+                }   
+            }        
+            let monitorHeight = greatestHeight * scaleFactor;
+            monitorHeight = Math.round((monitorHeight * 8) / 10);
             //first row  - Name of Custom link
             let heightRow = new PW.FrameBoxRow();
             let heightLabel = new Gtk.Label({
@@ -2468,7 +2481,7 @@ var ArcMenuCustomizationWindow = GObject.registerClass(
             let hscale = new Gtk.HScale({
                 adjustment: new Gtk.Adjustment({
                     lower: 300,
-                    upper: (screenHeight * 8) / 10,
+                    upper: monitorHeight,
                     step_increment: 10,
                     page_increment: 10,
                     page_size: 0

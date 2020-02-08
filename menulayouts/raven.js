@@ -194,15 +194,13 @@ var createMenu = class{
         this._display();
   
     }
-    updateRunnerLocation(){
-        let themeContext = St.ThemeContext.get_for_stage(global.stage);
-        let scaleFactor = themeContext.scale_factor;
-        
-        let screen = Gdk.Screen.get_default();
-        let [x, y] = this._button._menuButtonWidget.actor.get_transformed_position();
-        let currentMonitor = screen.get_monitor_at_point(x, y);
-        let rect = screen.get_monitor_workarea(currentMonitor);
-        let screenHeight = rect.height;        
+    updateRunnerLocation(){       
+        let monitorIndex = Main.layoutManager.findIndexForActor(this._button.getWidget().actor);
+        let scaleFactor = Main.layoutManager.monitors[monitorIndex].geometry_scale;
+        let monitorWorkArea = Main.layoutManager.getWorkAreaForMonitor(monitorIndex);
+
+        let screenHeight = monitorWorkArea.height;   
+     
         let height =  Math.round(screenHeight / scaleFactor);
         this.mainBox.style = `height: ${height}px`;
     }
@@ -271,7 +269,7 @@ var createMenu = class{
     updateStyle(){
         let addStyle = this._settings.get_boolean('enable-custom-arc-menu');
         if(this.newSearch){
-            addStyle ? this.newSearch.setStyle('arc-menu-status-text') :  this.newSearch.setStyle('search-statustext'); 
+            addStyle ? this.newSearch.setStyle('arc-menu-status-text') : this.newSearch.setStyle(''); 
             addStyle ? this.searchBox._stEntry.set_name('arc-search-entry') : this.searchBox._stEntry.set_name('search-entry');
         }
         if(this.placesBottomBox){
