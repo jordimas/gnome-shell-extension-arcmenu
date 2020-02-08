@@ -237,6 +237,8 @@ var TweaksDialog = GObject.registerClass(
             tweakStyleFrame.add(tweakStyleRow);
             generalPage.add(tweakStyleFrame);
 
+            let widgetFrame =  this._createWidgetsRows(Constants.MENU_LAYOUT.UbuntuDash);
+            generalPage.add(widgetFrame);
 
             let pinnedAppsScrollWindow = new Gtk.ScrolledWindow();
             pinnedAppsScrollWindow.set_policy(Gtk.PolicyType.AUTOMATIC, Gtk.PolicyType.AUTOMATIC);
@@ -348,6 +350,9 @@ var TweaksDialog = GObject.registerClass(
             showMoreDetailsRow.add(showMoreDetailsSwitch);
             showMoreDetailsFrame.add(showMoreDetailsRow);
             generalPage.add(showMoreDetailsFrame);
+
+            let widgetFrame =  this._createWidgetsRows(Constants.MENU_LAYOUT.Raven);
+            generalPage.add(widgetFrame);
         }
         _loadMintMenuTweaks(vbox){
             let mintMenuTweaksFrame = new PW.FrameBox();
@@ -614,5 +619,56 @@ var TweaksDialog = GObject.registerClass(
 
             arcMenuTweaksFrame.add(this._createAvatarShapeRow());
             vbox.add(arcMenuTweaksFrame);
+        }
+        _createWidgetsRows(layout){
+            let weatherWidgetSetting = 'enable-weather-widget-raven';
+            let clockWidgetSetting = 'enable-clock-widget-raven';
+            if(layout == Constants.MENU_LAYOUT.Raven){
+                weatherWidgetSetting = 'enable-weather-widget-raven';
+                clockWidgetSetting = 'enable-clock-widget-raven';
+            }
+            else{
+                weatherWidgetSetting = 'enable-weather-widget-ubuntu';
+                clockWidgetSetting = 'enable-clock-widget-ubuntu';
+            }
+            
+            let widgetFrame = new PW.FrameBox();
+            let weatherWidgetRow = new PW.FrameBoxRow();
+            let weatherWidgetLabel = new Gtk.Label({
+                label: _("Enable Weather Widget"),
+                use_markup: true,
+                xalign: 0,
+                hexpand: true
+            });
+
+            let weatherWidgetSwitch = new Gtk.Switch({ halign: Gtk.Align.END });
+            weatherWidgetSwitch.set_active(this._settings.get_boolean(weatherWidgetSetting));
+            weatherWidgetSwitch.connect('notify::active', (widget) => {
+                this._settings.set_boolean(weatherWidgetSetting, widget.get_active());
+            });
+
+            weatherWidgetRow.add(weatherWidgetLabel);
+            weatherWidgetRow.add(weatherWidgetSwitch);
+            widgetFrame.add(weatherWidgetRow);
+
+            let clockWidgetRow = new PW.FrameBoxRow();
+            let clockWidgetLabel = new Gtk.Label({
+                label: _("Enable Clock Widget"),
+                use_markup: true,
+                xalign: 0,
+                hexpand: true
+            });
+
+            let clockWidgetSwitch = new Gtk.Switch({ halign: Gtk.Align.END });
+            clockWidgetSwitch.set_active(this._settings.get_boolean(clockWidgetSetting));
+            clockWidgetSwitch.connect('notify::active', (widget) => {
+                this._settings.set_boolean(clockWidgetSetting, widget.get_active());
+            });
+
+            clockWidgetRow.add(clockWidgetLabel);
+            clockWidgetRow.add(clockWidgetSwitch);
+            widgetFrame.add(clockWidgetRow);
+
+            return widgetFrame;
         }
 });

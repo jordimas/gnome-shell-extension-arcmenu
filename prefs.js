@@ -4934,4 +4934,3 @@ function saveCSS(settings){
     }
     stylesheetFile.replace_contents(css,null,false,Gio.FileCreateFlags.REPLACE_DESTINATION,null);
 }
-
