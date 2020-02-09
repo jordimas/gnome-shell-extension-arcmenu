@@ -137,7 +137,7 @@ var ListSearchResult = class ArcMenu_ListSearchResultGrid {
 
 };Signals.addSignalMethods(ListSearchResult.prototype);
 
-var AppSearchResult = class  ArcMenu_AppSearchResultGrid {
+var AppSearchResult = class ArcMenu_AppSearchResultGrid {
     constructor(provider, metaInfo, resultsView) {
                this.provider = provider;
         this._button= resultsView._button;
@@ -161,16 +161,11 @@ var AppSearchResult = class  ArcMenu_AppSearchResultGrid {
                 this.menuItem.actor.style ='border-radius:4px; padding: 5px; spacing: 0px; width:80px;height:80px;';
                 ICON_SIZE = 36;
             } 
-            this._iconBin = new St.Bin({
-                y_align: St.Align.END,
-                x_align: gnome36 ? Clutter.ActorAlign.CENTER : St.Align.MIDDLE
-            });
 
-            this.icon = this.metaInfo['createIcon'](ICON_SIZE);
-            this._iconBin.set_child(this.icon);    
-           
+            this.icon = this.metaInfo['createIcon'](ICON_SIZE);         
             if(this.icon){
-                this.icon.style_class = 'icon-dropshadow';
+                this.icon.style_class = 'popup-menu-icon icon-dropshadow',
+                this.icon.icon_size = ICON_SIZE
                 this.menuItem.actor.add_child(this.icon);   
             }
             else{
@@ -447,7 +442,7 @@ var AppSearchResults = class ArcMenu_AppSearchResultsGrid extends SearchResultsB
     }
     
     _createResultDisplay(meta) {
-        return  new AppSearchResult(this.provider, meta, this._resultsView);
+        return new AppSearchResult(this.provider, meta, this._resultsView);
     }
 
     _addItem(display) {

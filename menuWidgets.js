@@ -234,7 +234,7 @@ var AppRightClickMenu = class ArcMenu_AppRightClickMenu extends PopupMenu.PopupM
                         }
                     }
                     if(this._isPinnedApp || this.layout == Constants.MENU_LAYOUT.Default || this.layout == Constants.MENU_LAYOUT.Windows || 
-                        this.layout == Constants.MENU_LAYOUT.UbuntuDash){
+                        this.layout == Constants.MENU_LAYOUT.UbuntuDash || this.layout == Constants.MENU_LAYOUT.Raven){
                         let pinnedApps = this._settings.get_strv('pinned-app-list');
                         let pinnedAppID=[];
                         for(let i=2;i<pinnedApps.length;i+=3){
@@ -260,6 +260,7 @@ var AppRightClickMenu = class ArcMenu_AppRightClickMenu extends PopupMenu.PopupM
                         else{ //if app is not pinned add pin
                             let item = new PopupMenu.PopupMenuItem(_("Pin to Arc Menu"));   
                             item.connect('activate', ()=>{
+                                this.close();
                                 pinnedApps.push(this.appInfo.get_display_name());
                                 pinnedApps.push(this.appInfo.get_icon().to_string());
                                 pinnedApps.push(this._app.get_id());
@@ -293,7 +294,7 @@ var AppRightClickMenu = class ArcMenu_AppRightClickMenu extends PopupMenu.PopupM
         }  
         else{  //if pinned custom shortcut add unpin option to menu    
             if(this._isPinnedApp || this.layout == Constants.MENU_LAYOUT.Default || this.layout == Constants.MENU_LAYOUT.Windows || 
-                this.layout == Constants.MENU_LAYOUT.UbuntuDash){
+                this.layout == Constants.MENU_LAYOUT.UbuntuDash || this.layout == Constants.MENU_LAYOUT.Raven){
                 this._appendSeparator();
                 let item = new PopupMenu.PopupMenuItem(_("Unpin from Arc Menu"));   
                 item.connect('activate', ()=>{
