@@ -160,6 +160,7 @@ var AppSearchResult = class  ArcMenu_AppSearchResult {
             this.icon = this.metaInfo['createIcon'](LARGE_ICON_SIZE);
             if (this.icon){
                 this.icon.style_class = 'icon-dropshadow';
+                this.icon.icon_size = LARGE_ICON_SIZE;
                 this.menuItem.actor.add_child(this.icon);   
             }      
 
@@ -185,6 +186,7 @@ var AppSearchResult = class  ArcMenu_AppSearchResult {
             this.icon = this.metaInfo['createIcon'](largeIcons ? MEDIUM_ICON_SIZE : SMALL_ICON_SIZE);
             if (this.icon){
                 this.icon.style_class = 'icon-dropshadow';
+                this.icon.icon_size = largeIcons ? MEDIUM_ICON_SIZE : SMALL_ICON_SIZE;
                 this.menuItem.actor.add_child(this.icon);   
             }
                   

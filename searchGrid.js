@@ -164,8 +164,8 @@ var AppSearchResult = class ArcMenu_AppSearchResultGrid {
 
             this.icon = this.metaInfo['createIcon'](ICON_SIZE);         
             if(this.icon){
-                this.icon.style_class = 'popup-menu-icon icon-dropshadow',
-                this.icon.icon_size = ICON_SIZE
+                this.icon.style_class = 'popup-menu-icon icon-dropshadow';
+                this.icon.icon_size = ICON_SIZE;
                 this.menuItem.actor.add_child(this.icon);   
             }
             else{
