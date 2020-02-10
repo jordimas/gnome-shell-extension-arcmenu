@@ -1040,10 +1040,16 @@ var GeneralPage = GObject.registerClass(
             });
 
             let extensionStates = this._settings.get_value('dtp-dtd-state').deep_unpack();
-            
+            let dashExtensionName = _("Dash to Dock");
+            let gnomeSettings = Gio.Settings.new("org.gnome.shell");
+            let enabledExtensions = gnomeSettings.get_strv('enabled-extensions');
+            if (enabledExtensions.includes('ubuntu-dock@ubuntu.com')) {
+                dashExtensionName = _("Ubuntu Dock");
+            }
+    
             menuPlacementCombo.append_text(_("Main Panel"));
             menuPlacementCombo.append_text(_("Dash to Panel"));
-            menuPlacementCombo.append_text(_("Dash to Dock"));
+            menuPlacementCombo.append_text(dashExtensionName);
 
             let placement =  this._settings.get_enum('arc-menu-placement');
             if(placement == Constants.ARC_MENU_PLACEMENT.PANEL && extensionStates[Constants.EXTENSION.DTP])

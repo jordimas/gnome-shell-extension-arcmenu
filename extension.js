@@ -84,7 +84,7 @@ function enable() {
             }
             else if(extension.state === 2) this.set_DtD_DtP_State(Constants.EXTENSION.DTP, false);
         }
-        if (extension.uuid === "dash-to-dock@micxgx.gmail.com" && (extension.state === 1 || extension.state === 2)) {
+        if ((extension.uuid === "dash-to-dock@micxgx.gmail.com" || extension.uuid === "ubuntu-dock@ubuntu.com") && (extension.state === 1 || extension.state === 2)) {
             let state = extension.state === 1 ? true : false;
             this.set_DtD_DtP_State(Constants.EXTENSION.DTD, state);
             let arcMenuPosition = settings.get_enum('arc-menu-placement');
@@ -163,11 +163,19 @@ function _onMultiMonitorChange() {
 }
 
 function _enableButtons() {
-    let dashToDock = Main.extensionManager.lookup("dash-to-dock@micxgx.gmail.com")
+    let dashToDock = Main.extensionManager.lookup("dash-to-dock@micxgx.gmail.com");
+    let ubuntuDash = Main.extensionManager.lookup("ubuntu-dock@ubuntu.com");
+    let dashExtension;
+    if(dashToDock && dashToDock.stateObj && dashToDock.stateObj.dockManager){
+        dashExtension = dashToDock; 
+    }
+    if(ubuntuDash && ubuntuDash.stateObj && ubuntuDash.stateObj.dockManager){
+        dashExtension = ubuntuDash; 
+    }
     let arcMenuPosition = settings.get_enum('arc-menu-placement');
-    if(arcMenuPosition == Constants.ARC_MENU_PLACEMENT.DTD && dashToDock && dashToDock.stateObj && dashToDock.stateObj.dockManager){
+    if(arcMenuPosition == Constants.ARC_MENU_PLACEMENT.DTD && dashExtension){
         this.set_DtD_DtP_State(Constants.EXTENSION.DTD, true);
-        let panel = dashToDock.stateObj.dockManager; 
+        let panel = dashExtension.stateObj.dockManager; 
         if(panel){ 
             if(panel._allDocks.length){                
                 let settingsController = new Controller.MenuSettingsController(settings, settingsControllers, panel, true, Constants.ARC_MENU_PLACEMENT.DTD);
