@@ -39,8 +39,6 @@ const _ = Gettext.gettext;
 
 const gnome36 = imports.misc.config.PACKAGE_VERSION >= '3.35.0';
 
-var DASH_TO_DOCK_UUID = 'dash-to-dock@micxgx.gmail.com';
-
 var ApplicationsButton = GObject.registerClass(class ArcMenu_DashApplicationsButton extends PanelMenu.Button{
     _init(settings, panel) {
         super._init();
@@ -589,9 +587,20 @@ var RightClickMenu = class ArcMenu_RightClickDashMenu extends PopupMenu.PopupMen
     }
     addDTDSettings(){
         if(this.DTDSettings==false){
-            let item = new PopupMenu.PopupMenuItem(_("Dash to Dock Settings"));
+            let dashToDock = Main.extensionManager.lookup("dash-to-dock@micxgx.gmail.com");
+            let ubuntuDash = Main.extensionManager.lookup("ubuntu-dock@ubuntu.com");
+            let dashExtensionSettings, dashExtensionName;
+            if(dashToDock && dashToDock.stateObj && dashToDock.stateObj.dockManager){
+                dashExtensionName = _("Dash to Dock Settings");
+                dashExtensionSettings = 'gnome-shell-extension-prefs dash-to-dock@micxgx.gmail.com'; 
+            }
+            if(ubuntuDash && ubuntuDash.stateObj && ubuntuDash.stateObj.dockManager){
+                dashExtensionName = _("Ubuntu Dock Settings");
+                dashExtensionSettings = 'gnome-control-center ubuntu'; 
+            }
+            let item = new PopupMenu.PopupMenuItem(_(dashExtensionName));
             item.connect('activate', ()=>{
-                Util.spawnCommandLine('gnome-shell-extension-prefs ' + DASH_TO_DOCK_UUID);
+                Util.spawnCommandLine(dashExtensionSettings);
             });
             this.addMenuItem(item,1);   
             this.DTDSettings=true;

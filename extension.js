@@ -177,12 +177,16 @@ function _enableButtons() {
         this.set_DtD_DtP_State(Constants.EXTENSION.DTD, true);
         let panel = dashExtension.stateObj.dockManager; 
         if(panel){ 
-            if(panel._allDocks.length){                
-                let settingsController = new Controller.MenuSettingsController(settings, settingsControllers, panel, true, Constants.ARC_MENU_PLACEMENT.DTD);
-                settingsController.enableButtonInDash();
-
-                settingsController.bindSettingsChanges();
-                settingsControllers.push(settingsController); 
+            if(panel._allDocks.length){    
+                for(var i = 0; i < panel._allDocks.length; i++){      
+                    if(!panel._allDocks[i].dash._container.arcMenuEnabled){
+                        let settingsController = new Controller.MenuSettingsController(settings, settingsControllers, panel, i == 0 ? true : false, Constants.ARC_MENU_PLACEMENT.DTD);
+                        settingsController.enableButtonInDash(i);
+    
+                        settingsController.bindSettingsChanges();
+                        settingsControllers.push(settingsController); 
+                    }      
+                }
             }
         }
     }
