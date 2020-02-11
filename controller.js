@@ -143,28 +143,24 @@ var MenuSettingsController = class {
         if(Main.overview.visible)
             Main.overview.hide();
         else{
-            if(this._settings.get_boolean('multi-monitor') && global.dashToPanel){
-                let screen = Gdk.Screen.get_default();
-                let pointer = global.get_pointer();
-                let currentMonitor = screen.get_monitor_at_point(pointer[0],pointer[1]);
-                for(let i = 0;i<screen.get_n_monitors();i++){
-                    if(i==currentMonitor)
-                        this.currentMonitorIndex=i;
-                }
+            if(this._settings.get_boolean('multi-monitor') && global.dashToPanel && this.dashOrPanel == Constants.ARC_MENU_PLACEMENT.PANEL){
+                this.currentMonitor = Main.layoutManager.currentMonitor;
                 //close current menus that are open on monitors other than current monitor
                 for (let i = 0; i < this._settingsControllers.length; i++) {
-                    if(i!=this.currentMonitorIndex){
-                    if(this._settingsControllers[i]._menuButton.leftClickMenu.isOpen)
-                        this._settingsControllers[i]._menuButton.toggleMenu();
-                    if(this._settingsControllers[i]._menuButton.rightClickMenu.isOpen)
-                        this._settingsControllers[i]._menuButton.toggleRightClickMenu();
+                    let actor = this._settingsControllers[i]._menuButton._menuButtonWidget.actor;
+                    let monitorForActor = Main.layoutManager.findMonitorForActor(actor);
+                    if(this.currentMonitor == monitorForActor){
+                        this.currentMonitorIndex = i;
                     }
-                }  
-                //toggle menu on current monitor
-                for (let i = 0; i < this._settingsControllers.length; i++) {
-                    if(i==this.currentMonitorIndex)
-                        this._settingsControllers[i]._menuButton.toggleMenu();
-                }   
+                    else{
+                        if(this._settingsControllers[i]._menuButton.leftClickMenu.isOpen)
+                            this._settingsControllers[i]._menuButton.toggleMenu();
+                        if(this._settingsControllers[i]._menuButton.rightClickMenu.isOpen)
+                            this._settingsControllers[i]._menuButton.toggleRightClickMenu(); 
+                    }
+                } 
+                //open the current monitors menu
+                this._settingsControllers[this.currentMonitorIndex]._menuButton.toggleMenu();
             }
             else {
                 this._menuButton.toggleMenu();

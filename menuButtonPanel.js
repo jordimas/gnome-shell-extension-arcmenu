@@ -114,6 +114,10 @@ var ApplicationsButton = GObject.registerClass(class ArcMenu_ApplicationsButton 
         }  
         //----------------------------------------------------------------------------------
 
+        this._monitorsChangedId = Main.layoutManager.connect('monitors-changed', () => {
+            this.updateHeight();
+        });
+
         //Update Categories on 'installed-changed' event-------------------------------------
         this._installedChangedId = appSys.connect('installed-changed', () => {
             this._reload();
@@ -141,9 +145,16 @@ var ApplicationsButton = GObject.registerClass(class ArcMenu_ApplicationsButton 
             vertical: false
         });        
         this.mainBox._delegate = this.mainBox;
-        let themeContext = St.ThemeContext.get_for_stage(global.stage);
-        let scaleFactor = themeContext.scale_factor;
-        let height =  Math.round(this._settings.get_int('menu-height') / scaleFactor);
+
+        let monitorIndex = Main.layoutManager.findIndexForActor(this.getWidget().actor);
+        let scaleFactor = Main.layoutManager.monitors[monitorIndex].geometry_scale;
+        let monitorWorkArea = Main.layoutManager.getWorkAreaForMonitor(monitorIndex);
+        let height = Math.round(this._settings.get_int('menu-height') / scaleFactor);
+
+        if(height > monitorWorkArea.height){
+            height = (monitorWorkArea.height * 8) / 10;
+        }
+
         this.mainBox.style = `height: ${height}px`;        
         this.section.actor.add_actor(this.mainBox);      
         //Create Menu Layout--------------------------------------------------
@@ -357,20 +368,28 @@ var ApplicationsButton = GObject.registerClass(class ArcMenu_ApplicationsButton 
         return this._menuButtonWidget;
     }
     updateHeight(){
-        //set menu height
         let layout = this._settings.get_enum('menu-layout');
-        let themeContext = St.ThemeContext.get_for_stage(global.stage);
-        let scaleFactor = themeContext.scale_factor;
-        let height =  Math.round(this._settings.get_int('menu-height') / scaleFactor);
+
+        let monitorIndex = Main.layoutManager.findIndexForActor(this.getWidget().actor);
+        let scaleFactor = Main.layoutManager.monitors[monitorIndex].geometry_scale;
+        let monitorWorkArea = Main.layoutManager.getWorkAreaForMonitor(monitorIndex);
+        let height = Math.round(this._settings.get_int('menu-height') / scaleFactor);
+    
+        if(height > monitorWorkArea.height){
+            height = (monitorWorkArea.height * 8) / 10;
+        }
+        
         if(!(layout == Constants.MENU_LAYOUT.Simple || layout == Constants.MENU_LAYOUT.Simple2 || layout == Constants.MENU_LAYOUT.Runner) && this.MenuLayout)
             this.mainBox.style = `height: ${height}px`;
-        
         
         this._redisplay();
         this._redisplayRightSide();
     }
-    // Destroy the menu button
     destroy() {  
+        if (this._monitorsChangedId){
+            Main.layoutManager.disconnect(this._monitorsChangedId);
+            this._monitorsChangedId = null;
+        }
         if(this.reloadID){
             GLib.source_remove(this.reloadID);
             this.reloadID = null;
@@ -539,9 +558,8 @@ var ApplicationsButton = GObject.registerClass(class ArcMenu_ApplicationsButton 
         }
     }
 });
-// Aplication menu class
+
 var ApplicationsMenu = class ArcMenu_ApplicationsMenu extends PopupMenu.PopupMenu{
-    // Initialize the menu
     constructor(sourceActor, arrowAlignment, arrowSide, button, settings) {
         super(sourceActor, arrowAlignment, arrowSide);
         this._settings = settings;
@@ -555,36 +573,25 @@ var ApplicationsMenu = class ArcMenu_ApplicationsMenu extends PopupMenu.PopupMen
                 this.menuClosingID = null;
             }
         });
-    }
-    // Return that the menu is not empty (used by parent class)
-    isEmpty() {
-        return false;
-    }
-    // Handle opening the menu
-    open(animate) {
-        super.open(animate); 
-    }
-    // Handle closing the menu
-    close(animate) {
-        //close any active menus
-        if(this._button.appMenuManager.activeMenu)
-            this._button.appMenuManager.activeMenu.toggle();
-        if(this._button.subMenuManager.activeMenu)
-            this._button.subMenuManager.activeMenu.toggle();
-        super.close(animate);   
-
-        if(this._button.MenuLayout && this._button.MenuLayout.isRunning){
-            this.menuClosingID = GLib.timeout_add(0, 100, () => {
-                this._button.setDefaultMenuView(); 
-                this.menuClosingID = null; 
-                return GLib.SOURCE_REMOVE;
-            });
-        }
+        this.connect("open-state-changed", (actor, open) => {
+            if(!open){
+                if(this._button.appMenuManager.activeMenu)
+                    this._button.appMenuManager.activeMenu.toggle();
+                if(this._button.subMenuManager.activeMenu)
+                    this._button.subMenuManager.activeMenu.toggle();
+                if(this._button.MenuLayout && this._button.MenuLayout.isRunning){
+                    this.menuClosingID = GLib.timeout_add(0, 100, () => {
+                        this._button.setDefaultMenuView(); 
+                        this.menuClosingID = null; 
+                        return GLib.SOURCE_REMOVE;
+                    });
+                }
+            }
+        });
     }
 };
-// Aplication menu class
+
 var RightClickMenu = class ArcMenu_RightClickMenu extends PopupMenu.PopupMenu {
-    // Initialize the menu
     constructor(sourceActor, arrowAlignment, arrowSide, button, settings) {
         super(sourceActor, arrowAlignment, arrowSide);
         this._settings = settings;
@@ -629,14 +636,5 @@ var RightClickMenu = class ArcMenu_RightClickMenu extends PopupMenu.PopupMenu {
         if(children[1] instanceof PopupMenu.PopupMenuItem)
             children[1].destroy();
         this.DTPSettings=false;
-    }
-    // Return that the menu is not empty (used by parent class)
-    // Handle opening the menu
-    open(animate) {
-        super.open(animate);
-    }
-    // Handle closing the menu
-    close(animate) { 
-        super.close(animate);     
     }
 };

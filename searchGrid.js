@@ -71,8 +71,10 @@ var ListSearchResult = class ArcMenu_ListSearchResultGrid {
         
         // An icon for, or thumbnail of, content
         let icon = this.metaInfo['createIcon'](ICON_SIZE);
-        if(icon) 
-            this.menuItem.actor.add_child(icon);
+        if (icon){
+            icon.style_class = 'icon-dropshadow';
+            this.menuItem.actor.add_child(icon);   
+        }
         else
             this.menuItem.actor.style = (ICON_SIZE==32) ?  "border-radius:4px; padding: 12px 0px;":  "padding: 9px 0px;";
 
@@ -135,7 +137,7 @@ var ListSearchResult = class ArcMenu_ListSearchResultGrid {
 
 };Signals.addSignalMethods(ListSearchResult.prototype);
 
-var AppSearchResult = class  ArcMenu_AppSearchResultGrid {
+var AppSearchResult = class ArcMenu_AppSearchResultGrid {
     constructor(provider, metaInfo, resultsView) {
                this.provider = provider;
         this._button= resultsView._button;
@@ -159,17 +161,13 @@ var AppSearchResult = class  ArcMenu_AppSearchResultGrid {
                 this.menuItem.actor.style ='border-radius:4px; padding: 5px; spacing: 0px; width:80px;height:80px;';
                 ICON_SIZE = 36;
             } 
-            this._iconBin = new St.Bin({
-                y_align: St.Align.END,
-                x_align: gnome36 ? Clutter.ActorAlign.CENTER : St.Align.MIDDLE
-            });
 
-            this.icon = this.metaInfo['createIcon'](ICON_SIZE);
-            this._iconBin.set_child(this.icon);    
-           
-            if (this.icon) {
-                this.menuItem.actor.add_child(this._iconBin);
-            } 
+            this.icon = this.metaInfo['createIcon'](ICON_SIZE);         
+            if(this.icon){
+                this.icon.style_class = 'popup-menu-icon icon-dropshadow';
+                this.icon.icon_size = ICON_SIZE;
+                this.menuItem.actor.add_child(this.icon);   
+            }
             else{
                 if(this.layout == Constants.MENU_LAYOUT.Elementary || this.layout == Constants.MENU_LAYOUT.UbuntuDash){
                     this.menuItem.actor.style = "border-radius:4px; padding: 25px 0px;";
@@ -444,7 +442,7 @@ var AppSearchResults = class ArcMenu_AppSearchResultsGrid extends SearchResultsB
     }
     
     _createResultDisplay(meta) {
-        return  new AppSearchResult(this.provider, meta, this._resultsView);
+        return new AppSearchResult(this.provider, meta, this._resultsView);
     }
 
     _addItem(display) {
@@ -494,9 +492,9 @@ var SearchResults = class ArcMenu_SearchResultsGrid {
         });
 
         if(button._settings.get_boolean('enable-custom-arc-menu'))
-            this._statusText.add_style_class_name('arc-menu-status-text');
+            this._statusText.style_class = 'arc-menu-status-text';
         else
-            this._statusText.add_style_class_name('search-statustext');
+            this._statusText.style_class = '';
 
         this.actor.add(this._statusBin);
         this._statusBin.add_actor(this._statusText);
@@ -811,7 +809,8 @@ var ArcSearchProviderInfo = GObject.registerClass(class ArcMenu_ArcSearchProvide
 
         let icon = new St.Icon({ 
             icon_size: 32,
-            gicon: provider.appInfo.get_icon() 
+            gicon: provider.appInfo.get_icon(),
+            style_class: 'icon-dropshadow' 
         });
         this._content.add_actor(icon);
 

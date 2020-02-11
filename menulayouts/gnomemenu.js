@@ -316,7 +316,6 @@ var createMenu = class{
             this.applicationsBox.add_actor(this.categoryDirectories[i].actor);	
             if(i==0){
                 this.activeMenuItem = this.categoryDirectories[i];
-                this.mainBox.grab_key_focus();
             }	 	
         }
         this.updateStyle();
@@ -348,10 +347,6 @@ var createMenu = class{
         this.activeMenuItem = category;
         if(setActive){
             category.setFakeActive(true);
-            this.activeMenuItem.actor.grab_key_focus();
-        }
-        else{
-            this.mainBox.grab_key_focus();
         }
     }
     // Clear the applications menu box
@@ -408,7 +403,6 @@ var createMenu = class{
                 } 
             }
         }
-        this.mainBox.grab_key_focus();
     }
 
     _displayAllApps(){

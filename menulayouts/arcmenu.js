@@ -389,7 +389,7 @@ var createMenu = class {
     updateStyle(){
         let addStyle=this._settings.get_boolean('enable-custom-arc-menu');
         if(this.newSearch){
-            addStyle ? this.newSearch.setStyle('arc-menu-status-text') :  this.newSearch.setStyle('search-statustext'); 
+            addStyle ? this.newSearch.setStyle('arc-menu-status-text') : this.newSearch.setStyle(''); 
             addStyle ? this.searchBox._stEntry.set_name('arc-search-entry') : this.searchBox._stEntry.set_name('search-entry');
         }
         if(this.actionsBox){
@@ -499,7 +499,6 @@ var createMenu = class {
             this.applicationsBox.add_actor(this.categoryDirectories[i].actor);	
             if(i==0){
                 this.activeMenuItem = this.categoryDirectories[i];
-                this.mainBox.grab_key_focus();
             }	 
         }
         this.updateStyle();
@@ -614,7 +613,6 @@ var createMenu = class {
             this.applicationsBox.add_actor(this.favoritesArray[i].actor);	
             if(i==0){
                 this.activeMenuItem = this.favoritesArray[i];
-                this.mainBox.grab_key_focus();
             }	   
         }
         this.updateStyle();  
@@ -740,7 +738,6 @@ var createMenu = class {
             }
             if(i==0){
                 this.activeMenuItem = item;
-                this.mainBox.grab_key_focus();
             }
                 
         }

@@ -432,7 +432,7 @@ var createMenu = class{
     updateStyle(){
         let addStyle=this._settings.get_boolean('enable-custom-arc-menu');
         if(this.newSearch){
-            addStyle ? this.newSearch.setStyle('arc-menu-status-text') :  this.newSearch.setStyle('search-statustext'); 
+            addStyle ? this.newSearch.setStyle('arc-menu-status-text') : this.newSearch.setStyle(''); 
             addStyle ? this.searchBox._stEntry.set_name('arc-search-entry') : this.searchBox._stEntry.set_name('search-entry');
         }
         if(this.actionsBox){
@@ -742,7 +742,6 @@ var createMenu = class{
                 });
                 if(i==0 && !shorcutsAppBox){
                     this.activeMenuItem = item;
-                    this.mainBox.grab_key_focus();
                 }     
             }
         }
