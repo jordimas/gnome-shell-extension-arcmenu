@@ -556,7 +556,6 @@ var createMenu = class{
                 });
                 if(i==0 && !shorcutsAppBox){
                     this.activeMenuItem = item;
-                    this.mainBox.grab_key_focus();
                 }     
             }
         }

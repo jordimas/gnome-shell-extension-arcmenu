@@ -559,9 +559,8 @@ var ApplicationsButton = GObject.registerClass(class ArcMenu_ApplicationsButton 
         }
     }
 });
-// Aplication menu class
+
 var ApplicationsMenu = class ArcMenu_ApplicationsMenu extends PopupMenu.PopupMenu{
-    // Initialize the menu
     constructor(sourceActor, arrowAlignment, arrowSide, button, settings) {
         super(sourceActor, arrowAlignment, arrowSide);
         this._settings = settings;
@@ -575,36 +574,25 @@ var ApplicationsMenu = class ArcMenu_ApplicationsMenu extends PopupMenu.PopupMen
                 this.menuClosingID = null;
             }
         });
-    }
-    // Return that the menu is not empty (used by parent class)
-    isEmpty() {
-        return false;
-    }
-    // Handle opening the menu
-    open(animate) {
-        super.open(animate); 
-    }
-    // Handle closing the menu
-    close(animate) {
-        //close any active menus
-        if(this._button.appMenuManager.activeMenu)
-            this._button.appMenuManager.activeMenu.toggle();
-        if(this._button.subMenuManager.activeMenu)
-            this._button.subMenuManager.activeMenu.toggle();
-        super.close(animate);   
-
-        if(this._button.MenuLayout && this._button.MenuLayout.isRunning){
-            this.menuClosingID = GLib.timeout_add(0, 100, () => {
-                this._button.setDefaultMenuView(); 
-                this.menuClosingID = null; 
-                return GLib.SOURCE_REMOVE;
-            });
-        }
+        this.connect("open-state-changed", (actor, open) => {
+            if(!open){
+                if(this._button.appMenuManager.activeMenu)
+                    this._button.appMenuManager.activeMenu.toggle();
+                if(this._button.subMenuManager.activeMenu)
+                    this._button.subMenuManager.activeMenu.toggle();
+                if(this._button.MenuLayout && this._button.MenuLayout.isRunning){
+                    this.menuClosingID = GLib.timeout_add(0, 100, () => {
+                        this._button.setDefaultMenuView(); 
+                        this.menuClosingID = null; 
+                        return GLib.SOURCE_REMOVE;
+                    });
+                }
+            }
+        });
     }
 };
-// Aplication menu class
+
 var RightClickMenu = class ArcMenu_RightClickMenu extends PopupMenu.PopupMenu {
-    // Initialize the menu
     constructor(sourceActor, arrowAlignment, arrowSide, button, settings) {
         super(sourceActor, arrowAlignment, arrowSide);
         this._settings = settings;
@@ -649,14 +637,5 @@ var RightClickMenu = class ArcMenu_RightClickMenu extends PopupMenu.PopupMenu {
         if(children[1] instanceof PopupMenu.PopupMenuItem)
             children[1].destroy();
         this.DTPSettings=false;
-    }
-    // Return that the menu is not empty (used by parent class)
-    // Handle opening the menu
-    open(animate) {
-        super.open(animate);
-    }
-    // Handle closing the menu
-    close(animate) { 
-        super.close(animate);     
     }
 };

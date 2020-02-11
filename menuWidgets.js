@@ -376,8 +376,6 @@ var AppRightClickMenu = class ArcMenu_AppRightClickMenu extends PopupMenu.PopupM
             return Clutter.EVENT_PROPAGATE;
         }
     }
-
-
 };
 
 var SeparatorDrawingArea = GObject.registerClass(class ArcMenu_SeparatorDrawingArea extends St.DrawingArea {
@@ -713,7 +711,6 @@ var CategoryMenuButton = class ArcMenu_CategoryMenuButton extends SessionButton 
 };
 // Settings Button
 var MintButton = class ArcMenu_MintButton extends SessionButton {
-    // Initialize the button
     constructor(button, name, icon, command) {
         super(button, name, icon);
         this._command = command;
@@ -744,14 +741,12 @@ var MintButton = class ArcMenu_MintButton extends SessionButton {
             this.rightClickMenu.toggle();
 	    }   
     }
-    // Activate the button (Shutdown)
     activate() {
         if(this._app){
             this._button.leftClickMenu.toggle();
             this._app.open_new_window(-1);
         }
         else if(this._command === "ArcMenu_LogOut"){
-            this._button.isRunning = false;
             this._button.leftClickMenu.toggle();
             this._button._session.LogoutRemote(0);
         }
@@ -782,12 +777,9 @@ var MintButton = class ArcMenu_MintButton extends SessionButton {
 };
 // Settings Button
 var SettingsButton = class ArcMenu_SettingsButton extends SessionButton {
-    // Initialize the button
     constructor(button) {
         super(button, _("Settings"), 'emblem-system-symbolic');
     }
-
-    // Activate the button (Shutdown)
     activate() {
         Util.spawnCommandLine('gnome-control-center');
     }
@@ -795,26 +787,20 @@ var SettingsButton = class ArcMenu_SettingsButton extends SessionButton {
 
 // Arc Menu Settings Button
 var ArcMenuSettingsButton = class ArcMenu_ArcMenuSettingsButton extends SessionButton {
-    // Initialize the button
     constructor(button) {
         super(button, _("Arc Menu Settings"), Me.path + '/media/icons/arc-menu-symbolic.svg');
         this.tooltip.flipY = true;
     }
-
-    // Activate the button (Shutdown)
     activate() {
         Util.spawnCommandLine('gnome-shell-extension-prefs arc-menu@linxgem33.com');
     }
 };
 //'Windows' layout favorites hamburger button
 var FavoritesButton = class ArcMenu_FavoritesButton extends SessionButton {
-    // Initialize the button
     constructor(button) {
         super(button, _("Favorites"), Me.path + Constants.HAMBURGER.Path);
         super.disableMenuToggle();
     }
-
-    // Activate the button (Shutdown)
     activate() {
         this.actor.hover=false;
         this.tooltip._onHover();
@@ -823,13 +809,10 @@ var FavoritesButton = class ArcMenu_FavoritesButton extends SessionButton {
 };
 //'Ubuntu Dash' layout categories hamburger button
 var CategoriesButton = class ArcMenu_CategoriesButton extends SessionButton {
-    // Initialize the button
     constructor(button) {
         super(button, _("Categories"), Me.path + Constants.HAMBURGER.Path);
         super.disableMenuToggle();
     }
-
-    // Activate the button (Shutdown)
     activate() {
         this.actor.hover=false;
         this.tooltip._onHover();
@@ -838,12 +821,9 @@ var CategoriesButton = class ArcMenu_CategoriesButton extends SessionButton {
 };
 // User Button
 var UserButton = class ArcMenu_UserButton extends SessionButton {
-    // Initialize the button
     constructor(button) {
         super(button, _("Users"), 'system-users-symbolic');
     }
-
-    // Activate the button (Shutdown)
     activate() {
         Util.spawnCommandLine("gnome-control-center user-accounts");
     }
@@ -888,7 +868,6 @@ var CurrentUserButton = class ArcMenu_CurrentUserButton extends SessionButton {
             }
         }    
     }
-    // Destroy the menu item
     _onDestroy() {
         if (this._userLoadedId != 0) {
             this._user.disconnect(this._userLoadedId);
@@ -903,11 +882,9 @@ var CurrentUserButton = class ArcMenu_CurrentUserButton extends SessionButton {
 
 // Power Button
 var PowerButton = class ArcMenu_PowerButton extends SessionButton {
-    // Initialize the button
     constructor(button) {
         super(button, _("Power Off"), 'system-shutdown-symbolic');
     }
-    // Activate the button (Shutdown)
     activate() {
         this._button._session.ShutdownRemote(0);
     }
@@ -915,14 +892,11 @@ var PowerButton = class ArcMenu_PowerButton extends SessionButton {
 
 // Logout Button
 var LogoutButton = class ArcMenu_LogoutButton extends SessionButton {
-    // Initialize the button
     constructor(button) {
         super(button, _("Log Out"), 'application-exit-symbolic');
         this.disableMenuToggle();
     }
-    // Activate the button (Logout)
     activate() {
-        this._button.isRunning = false;
         this._button.leftClickMenu.toggle();
         this._button._session.LogoutRemote(0);
     }
@@ -930,11 +904,9 @@ var LogoutButton = class ArcMenu_LogoutButton extends SessionButton {
 
 // Suspend Button
 var SuspendButton = class ArcMenu_SuspendButton extends SessionButton {
-    // Initialize the button
     constructor(button) {
         super(button, _("Suspend"), 'media-playback-pause-symbolic');
     }
-    // Activate the button (Suspend the system)
     activate() {
         let loginManager = LoginManager.getLoginManager();
         loginManager.canSuspend((result) => {
@@ -947,12 +919,10 @@ var SuspendButton = class ArcMenu_SuspendButton extends SessionButton {
 
 // Lock Screen Button
 var LockButton = class ArcMenu_LockButton extends SessionButton {
-    // Initialize the button
     constructor(button) {
         super(button, _("Lock"), 'changes-prevent-symbolic');
         this.disableMenuToggle();
     }
-    // Activate the button (Lock the screen)
     activate() {
         this._button.isRunning = false;
         this._button.leftClickMenu.toggle();
@@ -2262,7 +2232,7 @@ var SimpleMenuItem = GObject.registerClass(class ArcMenu_SimpleMenuItem extends 
         this.subMenu.actor.navigate_focus(null, St.DirectionType.TAB_FORWARD, false);
     }
     _onHover() {
-        if (this.actor.hover) { // mouse pointer hovers over the button
+        if (this.actor.hover) {
             if (this._category)
                 this._button.selectCategory(this._category,this);
             else if(this.title =="All Programs")
@@ -2620,7 +2590,6 @@ var SearchBox = class ArcMenu_SearchBox{
         this._stEntry.set_text(text);
     }
 
-    // Grab the key focus
     grabKeyFocus() {
         this._stEntry.grab_key_focus();
     }
@@ -2628,7 +2597,7 @@ var SearchBox = class ArcMenu_SearchBox{
     hasKeyFocus() {
         return this._stEntry.contains(global.stage.get_key_focus());
     }
-    // Clear the search box
+
     clear() {
         this._stEntry.set_text('');
         this.emit('cleared');

@@ -499,7 +499,6 @@ var createMenu = class {
             this.applicationsBox.add_actor(this.categoryDirectories[i].actor);	
             if(i==0){
                 this.activeMenuItem = this.categoryDirectories[i];
-                this.mainBox.grab_key_focus();
             }	 
         }
         this.updateStyle();
@@ -614,7 +613,6 @@ var createMenu = class {
             this.applicationsBox.add_actor(this.favoritesArray[i].actor);	
             if(i==0){
                 this.activeMenuItem = this.favoritesArray[i];
-                this.mainBox.grab_key_focus();
             }	   
         }
         this.updateStyle();  
@@ -740,7 +738,6 @@ var createMenu = class {
             }
             if(i==0){
                 this.activeMenuItem = item;
-                this.mainBox.grab_key_focus();
             }
                 
         }
