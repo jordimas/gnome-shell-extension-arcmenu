@@ -97,7 +97,6 @@ var ApplicationsButton = GObject.registerClass(class ArcMenu_DashApplicationsBut
         //----------------------------------------------------------------------------------
 
         this._monitorsChangedId = Main.layoutManager.connect('monitors-changed', () => {
-            global.log("monitor changed");
             this.updateHeight();
         });
 
