@@ -499,6 +499,9 @@ var createMenu = class {
             this.applicationsBox.add_actor(this.categoryDirectories[i].actor);	
             if(i==0){
                 this.activeMenuItem = this.categoryDirectories[i];
+                if(this.leftClickMenu.isOpen){
+                    this.mainBox.grab_key_focus();
+                }
             }	 
         }
         this.updateStyle();
@@ -613,6 +616,9 @@ var createMenu = class {
             this.applicationsBox.add_actor(this.favoritesArray[i].actor);	
             if(i==0){
                 this.activeMenuItem = this.favoritesArray[i];
+                if(this.leftClickMenu.isOpen){
+                    this.mainBox.grab_key_focus();
+                }
             }	   
         }
         this.updateStyle();  
@@ -738,6 +744,9 @@ var createMenu = class {
             }
             if(i==0){
                 this.activeMenuItem = item;
+                if(this.leftClickMenu.isOpen){
+                    this.mainBox.grab_key_focus();
+                }
             }
                 
         }
