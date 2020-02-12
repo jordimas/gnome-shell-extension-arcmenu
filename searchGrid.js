@@ -72,7 +72,6 @@ var ListSearchResult = class ArcMenu_ListSearchResultGrid {
         // An icon for, or thumbnail of, content
         let icon = this.metaInfo['createIcon'](ICON_SIZE);
         if (icon){
-            icon.style_class = 'icon-dropshadow';
             this.menuItem.actor.add_child(icon);   
         }
         else
@@ -164,7 +163,6 @@ var AppSearchResult = class ArcMenu_AppSearchResultGrid {
 
             this.icon = this.metaInfo['createIcon'](ICON_SIZE);         
             if(this.icon){
-                this.icon.style_class = 'popup-menu-icon icon-dropshadow';
                 this.icon.icon_size = ICON_SIZE;
                 this.menuItem.actor.add_child(this.icon);   
             }
@@ -809,8 +807,7 @@ var ArcSearchProviderInfo = GObject.registerClass(class ArcMenu_ArcSearchProvide
 
         let icon = new St.Icon({ 
             icon_size: 32,
-            gicon: provider.appInfo.get_icon(),
-            style_class: 'icon-dropshadow' 
+            gicon: provider.appInfo.get_icon()
         });
         this._content.add_actor(icon);
 
