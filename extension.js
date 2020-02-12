@@ -99,18 +99,13 @@ function enable() {
                     _disableButton(sc, 1);
                 }
                 _enableButtons();
-                dockExtension = _getDockExtensions();
-                if(dockExtension){
-                    _connectDtdSignals();
-                }
+                _connectDtdSignals();
             }
         }
     });
-    dockExtension = _getDockExtensions();
-    if(dockExtension){
-        _connectDtdSignals();
-    }
-    // listen to dash to panel if it is compatible and already enabled
+
+    // listen to dash to panel / dash to dock if they are compatible and already enabled
+    _connectDtdSignals();
     _connectDtpSignals();
 }
 function set_DtD_DtP_State(extension, state){
@@ -139,7 +134,6 @@ function disable() {
 
     settings.run_dispose();
     settings = null;
-    
 }
 
 function _connectDtpSignals() {
@@ -156,14 +150,17 @@ function _disconnectDtpSignals() {
 }
 
 function _connectDtdSignals(){
-    let dock = dockExtension.stateObj.dockManager;
-    dockToggleID = dock.connect("toggled",() => {
-        for (let i = settingsControllers.length - 1; i >= 0; --i) {
-            let sc = settingsControllers[i];
-            _disableButton(sc, 1);
-        }
-        _enableButtons();
-    });
+    dockExtension = _getDockExtensions();
+    if(dockExtension){
+        let dock = dockExtension.stateObj.dockManager;
+        dockToggleID = dock.connect("toggled",() => {
+            for (let i = settingsControllers.length - 1; i >= 0; --i) {
+                let sc = settingsControllers[i];
+                _disableButton(sc, 1);
+            }
+            _enableButtons();
+        });
+    }
 }
 
 function _disconnectDtdSignals() {
@@ -183,8 +180,8 @@ function _onArcMenuPlacementChange() {
         _connectDtpSignals();
     }
     else{
-        _connectDtdSignals();
         _disconnectDtpSignals();
+        _connectDtdSignals();
     }
     for (let i = settingsControllers.length - 1; i >= 0; --i) {
         let sc = settingsControllers[i];
@@ -192,6 +189,7 @@ function _onArcMenuPlacementChange() {
     }
     _enableButtons();
 }
+
 function _onMultiMonitorChange() {
     if (!settings.get_boolean('multi-monitor')) {
         for (let i = settingsControllers.length - 1; i >= 0; --i) {
@@ -205,6 +203,7 @@ function _onMultiMonitorChange() {
 
     _enableButtons();
 }
+
 function _getDockExtensions(){
     let dashToDock = Main.extensionManager.lookup("dash-to-dock@micxgx.gmail.com");
     let ubuntuDash = Main.extensionManager.lookup("ubuntu-dock@ubuntu.com");
@@ -217,6 +216,7 @@ function _getDockExtensions(){
     }
     return dock;
 }
+
 function _enableButtons() {
     dockExtension = _getDockExtensions();
     let arcMenuPosition = settings.get_enum('arc-menu-placement');

@@ -452,8 +452,11 @@ var createMenu = class{
         this.activeMenuItem = category;
         if(setActive){
             category.setFakeActive(true);
+            if(this.leftClickMenu.isOpen){
+                this.activeMenuItem.actor.grab_key_focus();
+            }
         }
-        if(this.leftClickMenu.isOpen){
+        else if(this.leftClickMenu.isOpen){
             this.mainBox.grab_key_focus();
         }
     }
