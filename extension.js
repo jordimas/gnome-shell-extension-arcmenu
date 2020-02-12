@@ -191,16 +191,10 @@ function _onArcMenuPlacementChange() {
 }
 
 function _onMultiMonitorChange() {
-    if (!settings.get_boolean('multi-monitor')) {
-        for (let i = settingsControllers.length - 1; i >= 0; --i) {
-            let sc = settingsControllers[i];
-
-            if (sc.panel != Main.panel) {
-                _disableButton(sc, 1);
-            }
-        }
+    for (let i = settingsControllers.length - 1; i >= 0; --i) {
+        let sc = settingsControllers[i];
+        _disableButton(sc, 1);
     }
-
     _enableButtons();
 }
 
@@ -218,14 +212,16 @@ function _getDockExtensions(){
 }
 
 function _enableButtons() {
+    let multiMonitor = settings.get_boolean('multi-monitor');
     dockExtension = _getDockExtensions();
     let arcMenuPosition = settings.get_enum('arc-menu-placement');
     if(arcMenuPosition == Constants.ARC_MENU_PLACEMENT.DTD && dockExtension){
         this.set_DtD_DtP_State(Constants.EXTENSION.DTD, true);
         let panel = dockExtension.stateObj.dockManager; 
         if(panel){ 
-            if(panel._allDocks.length){    
-                for(var i = 0; i < panel._allDocks.length; i++){      
+            if(panel._allDocks.length){  
+                let iterLength = multiMonitor ? panel._allDocks.length : 1;
+                for(var i = 0; i < iterLength; i++){      
                     if(!panel._allDocks[i].dash.arcMenuEnabled){
                         let settingsController = new Controller.MenuSettingsController(settings, settingsControllers, panel, i == 0 ? true : false, Constants.ARC_MENU_PLACEMENT.DTD);
                         settingsController.enableButtonInDash(i);
@@ -238,9 +234,9 @@ function _enableButtons() {
         }
     }
     else{
-        let panelArray = (settings.get_boolean('multi-monitor') && global.dashToPanel) ? 
-        global.dashToPanel.panels.map(pw => pw.panel || pw) : [Main.panel];
-        for(var i = 0; i<panelArray.length;i++){
+        let panelArray = global.dashToPanel ? global.dashToPanel.panels.map(pw => pw.panel || pw) : [Main.panel];
+        let iterLength = multiMonitor ? panelArray.length : 1;
+        for(var i = 0; i < iterLength; i++){
             let panel = panelArray[i];
 
             if(global.dashToPanel) this.set_DtD_DtP_State(Constants.EXTENSION.DTP, true);

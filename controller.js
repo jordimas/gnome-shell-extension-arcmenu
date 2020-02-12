@@ -143,7 +143,7 @@ var MenuSettingsController = class {
         if(Main.overview.visible)
             Main.overview.hide();
         else{
-            if((this._settings.get_boolean('multi-monitor') && global.dashToPanel) || this.dashOrPanel == Constants.ARC_MENU_PLACEMENT.DTD){
+            if((global.dashToPanel) || this.dashOrPanel == Constants.ARC_MENU_PLACEMENT.DTD){
                 this.currentMonitor = Main.layoutManager.currentMonitor;
                 //close current menus that are open on monitors other than current monitor
                 if(this._settingsControllers.length > 1){

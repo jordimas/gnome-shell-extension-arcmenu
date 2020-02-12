@@ -1090,6 +1090,8 @@ var GeneralPage = GObject.registerClass(
                 }
                 else{
                     menuPlacementFrame.add(dtdExtraRow);
+                    if(extensionStates[Constants.EXTENSION.DTD])
+                        menuPlacementFrame.add(multiMonitorRow);
                     menuPlacementFrame.show();
                 }
             });
@@ -1245,7 +1247,7 @@ var GeneralPage = GObject.registerClass(
             //Multi-monitor
             let multiMonitorRow = new PW.FrameBoxRow();
             let multiMonitorLabel = new Gtk.Label({
-                label: _("Display on all monitors when using Dash to Panel"),
+                label: _("Display Arc Menu on all monitors"),
                 use_markup: true,
                 xalign: 0,
                 hexpand: true
@@ -1253,7 +1255,7 @@ var GeneralPage = GObject.registerClass(
 
             let multiMonitorSwitch = new Gtk.Switch({ 
                 halign: Gtk.Align.END,
-                tooltip_text: _("Display Arc Menu on all monitors when using Dash to Panel") 
+                tooltip_text: _("Display Arc Menu on all monitors") 
             });
             multiMonitorSwitch.set_active(this._settings.get_boolean('multi-monitor'));
             multiMonitorSwitch.connect('notify::active', (widget) => {
@@ -1288,6 +1290,8 @@ var GeneralPage = GObject.registerClass(
             }
             else{
                 menuPlacementFrame.add(dtdExtraRow);
+                if(extensionStates[Constants.EXTENSION.DTD])
+                    menuPlacementFrame.add(multiMonitorRow);
                 menuPlacementFrame.show();
             }
         }
