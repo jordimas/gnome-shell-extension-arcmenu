@@ -392,7 +392,7 @@
     </key>
     <key name="pinned-app-list" type="as">
       <default>["ArcMenu_WebBrowser","WebBrowser", "WebBrowser","Terminal", "utilities-terminal", "org.gnome.Terminal.desktop",
-                "Arc Menu Settings", "emblem-system-symbolic", "gnome-shell-extension-prefs arc-menu@linxgem33.com"]</default>
+                "Arc Menu Settings", "ArcMenu_ArcMenuIcon", "gnome-shell-extension-prefs arc-menu@linxgem33.com"]</default>
       <summary>List of Apps Pinned to Menu</summary>
       <description>List of Apps Pinned to Menu</description>
     </key>

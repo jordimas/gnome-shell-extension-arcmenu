@@ -220,22 +220,27 @@ var ApplicationsButton = GObject.registerClass(class ArcMenu_DashApplicationsBut
             this._setMenuPositionAlignment();  
     }
     updateStyle(){
-        if(this.MenuLayout)
-            this.MenuLayout.updateStyle();
         let removeMenuArrow = this._settings.get_boolean('remove-menu-arrow');   
         let layout = this._settings.get_enum('menu-layout');
-        let addStyle=this._settings.get_boolean('enable-custom-arc-menu');
+        let addStyle = this._settings.get_boolean('enable-custom-arc-menu');
+        let gapAdjustment = this._settings.get_int('gap-adjustment');
 
         this.leftClickMenu.actor.style_class = addStyle ? 'arc-menu-boxpointer': 'popup-menu-boxpointer';
-        this.leftClickMenu.actor.add_style_class_name( addStyle ? 'arc-menu' : 'popup-menu');
+        this.leftClickMenu.actor.add_style_class_name(addStyle ? 'arc-menu' : 'popup-menu');
 
         this.rightClickMenu.actor.style_class = addStyle ? 'arc-menu-boxpointer': 'popup-menu-boxpointer';
         this.rightClickMenu.actor.add_style_class_name(addStyle ? 'arc-menu' : 'popup-menu');
-        
-        if(removeMenuArrow)
-            this.leftClickMenu.actor.style = "-arrow-base:0px;-arrow-rise:0px; -boxpointer-gap: 0px;";
-        else if(layout != Constants.MENU_LAYOUT.Raven)
-            this.leftClickMenu.actor.style = null;
+
+        if(removeMenuArrow){
+            this.leftClickMenu.actor.style = "-arrow-base:0px; -arrow-rise:0px; -boxpointer-gap: " + gapAdjustment + "px;";
+            this.leftClickMenu.box.style = "margin:0px;";
+        }  
+        else if(layout != Constants.MENU_LAYOUT.Raven){
+            this.leftClickMenu.actor.style = "-boxpointer-gap: " + gapAdjustment + "px;";
+            this.leftClickMenu.box.style = null;
+        }
+        if(this.MenuLayout)
+            this.MenuLayout.updateStyle(); 
     }
     updateSearch(){
         if(this.MenuLayout)

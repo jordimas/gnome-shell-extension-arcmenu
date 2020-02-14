@@ -61,8 +61,8 @@ var createMenu = class{
 
         //LAYOUT------------------------------------------------------------------------------------------------
         this.mainBox.vertical = false;
-        this.leftClickMenu.actor.style = "-arrow-base:0px;-arrow-rise:0px; -boxpointer-gap: 0px;";
-
+        this.leftClickMenu.actor.style = "-arrow-base:0px;-arrow-rise:0px; -boxpointer-gap: 0px;"; 
+        this.leftClickMenu.box.style = "padding-bottom:0px; padding-top:0px; margin:0px;";
         this.placesBox = new St.BoxLayout({
             vertical: true
         });
@@ -160,9 +160,7 @@ var createMenu = class{
             y_fill: true,
             y_align: St.Align.START
         });
-
-        this.leftClickMenu.box.style = "padding-bottom:0px; padding-top:0px;";
-        
+   
         this.weatherBox = new St.BoxLayout({
             vertical: true,
             y_align: Clutter.ActorAlign.END
@@ -268,6 +266,8 @@ var createMenu = class{
     }
     updateStyle(){
         let addStyle = this._settings.get_boolean('enable-custom-arc-menu');
+        let gapAdjustment = this._settings.get_int('gap-adjustment');
+
         if(this.newSearch){
             addStyle ? this.newSearch.setStyle('arc-menu-status-text') : this.newSearch.setStyle(''); 
             addStyle ? this.searchBox._stEntry.set_name('arc-search-entry') : this.searchBox._stEntry.set_name('search-entry');
@@ -281,7 +281,9 @@ var createMenu = class{
         } 
         addStyle ? this._clocksItem.add_style_class_name('arc-menu-action') : this._clocksItem.remove_style_class_name('arc-menu-action');
         addStyle ? this._weatherItem.add_style_class_name('arc-menu-action') : this._weatherItem.remove_style_class_name('arc-menu-action');
-        
+
+        this.leftClickMenu.actor.style = "-arrow-base:0px; -arrow-rise:0px; -boxpointer-gap: " + gapAdjustment + "px;";
+        this.leftClickMenu.box.style = "padding-bottom:0px; padding-top:0px; margin:0px;";
             
         this.updateRunnerLocation();
     }

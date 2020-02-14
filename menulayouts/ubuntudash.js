@@ -69,7 +69,7 @@ var createMenu = class{
         });
 
        
-        this.categoriesTopBox.style = "padding: 0px 15px 0px 0px;";
+        this.categoriesTopBox.style = "padding: 5px 15px 0px 0px; margin-bottom: 10px;";
         this.mainBox.add( this.topBox, {
             expand: false,
             x_fill: true,
@@ -431,6 +431,8 @@ var createMenu = class{
     }
     updateStyle(){
         let addStyle=this._settings.get_boolean('enable-custom-arc-menu');
+        let removeMenuArrow = this._settings.get_boolean('remove-menu-arrow'); 
+
         if(this.newSearch){
             addStyle ? this.newSearch.setStyle('arc-menu-status-text') : this.newSearch.setStyle(''); 
             addStyle ? this.searchBox._stEntry.set_name('arc-search-entry') : this.searchBox._stEntry.set_name('search-entry');
@@ -452,6 +454,12 @@ var createMenu = class{
         }
         addStyle ? this._clocksItem.add_style_class_name('arc-menu-action') : this._clocksItem.remove_style_class_name('arc-menu-action');
         addStyle ? this._weatherItem.add_style_class_name('arc-menu-action') : this._weatherItem.remove_style_class_name('arc-menu-action');
+        
+        if(removeMenuArrow){
+            this.leftClickMenu.box.style = "padding-bottom:0px; margin:0px;";
+        }  
+        else
+            this.leftClickMenu.box.style = "padding-bottom:0px;";
     }
     // Load data for all menu categories
     _loadCategories() {

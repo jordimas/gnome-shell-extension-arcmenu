@@ -153,7 +153,9 @@ var PinnedAppsPage = GObject.registerClass(
                 frameRow._name = array[i];
                 frameRow._icon = array[i+1];
                 frameRow._cmd = array[i+2];
-                
+                if(frameRow._icon === "ArcMenu_ArcMenuIcon"){
+                   frameRow._icon = Me.path + '/media/icons/arc-menu-symbolic.svg';
+                }
                 let arcMenuImage = new Gtk.Image( {
                     gicon: Gio.icon_new_for_string(frameRow._icon),
                     pixel_size: 22
