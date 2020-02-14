@@ -69,7 +69,7 @@ var createMenu = class{
         });
 
        
-        this.categoriesTopBox.style = "padding: 0px 15px 0px 0px;";
+        this.categoriesTopBox.style = "padding: 5px 15px 0px 0px; margin-bottom: 10px;";
         this.mainBox.add( this.topBox, {
             expand: false,
             x_fill: true,
