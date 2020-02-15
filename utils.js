@@ -20,8 +20,29 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+const Me = imports.misc.extensionUtils.getCurrentExtension();
 
 const GObject = imports.gi.GObject;
+const MW = Me.imports.menuWidgets;
+
+function createTooltip(button, widget, label, description){
+    let lbl = label.clutter_text;
+    lbl.get_allocation_box();
+    let isEllipsized = lbl.get_layout().is_ellipsized();
+    if(isEllipsized || description){
+        let tooltipText = "";
+        if(isEllipsized && description)
+            tooltipText = label.text.replace(/\n/g, " ") + "\n" + description;
+        else if(isEllipsized && !description)
+            tooltipText = label.text.replace(/\n/g, " ");
+        else if(!isEllipsized && description)
+            tooltipText = description;
+        else if(!isEllipsized && !description)
+            tooltipText = '';
+        widget.tooltip = new MW.Tooltip(button, widget.actor, tooltipText);
+        widget.tooltip._onHover();
+    } 
+}
 
 var defineClass = function (classDef) {
     let parentProto = classDef.Extends ? classDef.Extends.prototype : null;

@@ -49,18 +49,18 @@ var createMenu = class{
         this.mainBox = mainButton.mainBox; 
         this.appMenuManager = mainButton.appMenuManager;
         this.leftClickMenu  = mainButton.leftClickMenu;
-
-
+        this.mainBox.vertical = true;
+        this.mainBox.style = null;
         this._applicationsButtons = new Map();
         this._session = new GnomeSession.SessionManager();
-       this.leftClickMenu.removeAll();
-       this.isRunning=true;
+        this.isRunning=true;
+
+        this._mainBoxKeyPressId = this.mainBox.connect('key-press-event', this._onMainBoxKeyPress.bind(this));
 
         this._tree = new GMenu.Tree({ menu_basename: 'applications.menu' });
         this._treeChangedId = this._tree.connect('changed', ()=>{
             this._reload();
         });
-        //LAYOUT------------------------------------------------------------------------------------------------
         
         this._firstAppItem = null;
         this._firstApp = null;
@@ -82,6 +82,13 @@ var createMenu = class{
         this.setDefaultMenuView();  
     }
     setDefaultMenuView(){
+        this.activeMenuItem = this.categoryDirectories[0];
+        let actors = this.mainBox.get_children();
+        for (let i = 0; i < actors.length; i++) {
+            let actor = actors[i];
+            if(actor._delegate instanceof MW.CategorySubMenuItem)
+                actor._delegate.menu.close();
+        }
     }
     _redisplayRightSide(){
     }
@@ -97,7 +104,8 @@ var createMenu = class{
     }
     // Display the menu
     _display() {
-        this._displayCategories();       
+        this._displayCategories(); 
+        this.activeMenuItem = this.categoryDirectories[0];      
     }
     updateStyle(){
     }
@@ -109,9 +117,13 @@ var createMenu = class{
         this.categoryDirectories=[]; 
 
         let categoryMenuItem = new MW.CategorySubMenuItem(this, "","Favorites");
+        categoryMenuItem._setParent(this.leftClickMenu);
+        this.leftClickMenu._connectItemSignals(categoryMenuItem);
         categoryMenuItem.isSimpleMenuItem = true;
         this.categoryDirectories.push(categoryMenuItem);  
         categoryMenuItem = new MW.CategorySubMenuItem(this, "","All Programs");
+        categoryMenuItem._setParent(this.leftClickMenu);
+        this.leftClickMenu._connectItemSignals(categoryMenuItem);
         categoryMenuItem.isSimpleMenuItem = true;
         this.categoryDirectories.push(categoryMenuItem);
         this._tree.load_sync();
@@ -126,6 +138,8 @@ var createMenu = class{
                     this.applicationsByCategory[categoryId] = [];
                     this._loadCategory(categoryId, dir);
                     categoryMenuItem = new MW.CategorySubMenuItem(this, dir);
+                    categoryMenuItem._setParent(this.leftClickMenu);
+                    this.leftClickMenu._connectItemSignals(categoryMenuItem);
                     categoryMenuItem.isSimpleMenuItem = true;
                     this.categoryDirectories.push(categoryMenuItem);
                 }
@@ -166,14 +180,15 @@ var createMenu = class{
         this._clearApplicationsBox();
 
         for (let i = 0; i < this.categoryDirectories.length; i++) {
-            this.leftClickMenu.addMenuItem(this.categoryDirectories[i]);	
+            this.mainBox.add_actor(this.categoryDirectories[i].actor);	
+            this.mainBox.add_actor(this.categoryDirectories[i].menu.actor);
         }
         
         this.updateStyle();
     }
     _displayGnomeFavorites(categoryMenuItem){
         let appList = AppFavorites.getAppFavorites().getFavorites();
-        appList.sort(function (a, b) {
+        appList.sort((a, b) => {
             return a.get_name().toLowerCase() > b.get_name().toLowerCase();
         });
         this._displayButtons(appList,categoryMenuItem);
@@ -195,10 +210,10 @@ var createMenu = class{
     }
     // Clear the applications menu box
     _clearApplicationsBox() {
-        let children = this.leftClickMenu.box.get_children();
+        let children = this.mainBox.get_children();
         for (let i = 0; i < children.length; i++) {
             let item = children[i];
-            this.leftClickMenu.box.remove_actor(item);
+            this.mainBox.remove_actor(item);
         }
     }
     // Select a category or show category overview if no category specified
@@ -249,7 +264,7 @@ var createMenu = class{
         this._applicationsButtons.forEach((value,key,map) => {
             appList.push(key);
         });
-        appList.sort(function (a, b) {
+        appList.sort((a, b) => {
             return a.get_name().toLowerCase() > b.get_name().toLowerCase();
         });
         this._displayButtons(appList,categoryMenuItem);
@@ -269,7 +284,7 @@ var createMenu = class{
                 applist = applist.concat(this.applicationsByCategory[directory]);
         }
         if(category_menu_id != "Frequent Apps"){
-            applist.sort(function (a, b) {
+            applist.sort((a, b) => {
                 return a.get_name().toLowerCase() > b.get_name().toLowerCase();
             });
         }
@@ -285,7 +300,35 @@ var createMenu = class{
         return this.currentMenu;
     } 
     _onMainBoxKeyPress(mainBox, event) {
-        return Clutter.EVENT_PROPAGATE;
+        let symbol = event.get_key_symbol();
+        let key = event.get_key_unicode();
+
+        switch (symbol) {
+            case Clutter.KEY_BackSpace:
+            case Clutter.KEY_Tab:
+            case Clutter.KEY_KP_Tab:
+                return Clutter.EVENT_PROPAGATE;
+            case Clutter.KEY_Up:
+            case Clutter.KEY_Down:
+            case Clutter.KEY_Left:
+            case Clutter.KEY_Right:  
+                if(this.activeMenuItem!=null && !this.activeMenuItem.actor.has_key_focus()){
+                    this.activeMenuItem.actor.grab_key_focus();
+                    return Clutter.EVENT_STOP;
+                }
+                else if(this.activeMenuItem!=null){
+                    this.activeMenuItem.actor.grab_key_focus();
+                    return Clutter.EVENT_PROPAGATE;
+                }
+                else{
+                    return Clutter.EVENT_PROPAGATE;
+                }
+            case Clutter.KEY_KP_Enter:
+            case Clutter.KEY_Return:
+                return Clutter.EVENT_PROPAGATE;
+            default:
+                return Clutter.EVENT_PROPAGATE;
+        }
     }
     destroy(){
         this.leftClickMenu.actor.style = null;

@@ -54,6 +54,8 @@ var createMenu = class{
         this._applicationsButtons = new Map();
         this._session = new GnomeSession.SessionManager();
         this.subMenuManager = mainButton.subMenuManager;
+        this.mainBox.vertical = true;
+        this.mainBox.style = null;
         this._mainBoxKeyPressId = this.mainBox.connect('key-press-event', this._onMainBoxKeyPress.bind(this));
         this.isRunning=true;
 
@@ -62,7 +64,6 @@ var createMenu = class{
             this._reload();
         });
         //LAYOUT------------------------------------------------------------------------------------------------
-        this.mainBox.vertical = true;
         
         this._firstAppItem = null;
         this._firstApp = null;
@@ -79,9 +80,7 @@ var createMenu = class{
             let actor = actors[i];
             this.section.actor.remove_actor(actor);
         }
-        this.applicationsBox = new St.BoxLayout({ vertical: true });
-
-        this.section.actor.add_actor(this.applicationsBox);  
+        this.section.actor.add_actor(this.mainBox);  
     }
     updateIcons(){   
         this._applicationsButtons.forEach((value,key,map)=>{
@@ -92,12 +91,13 @@ var createMenu = class{
         this.setDefaultMenuView();  
     }
     setDefaultMenuView(){
+        this.activeMenuItem = this.categoryDirectories[0];
     }
     _redisplayRightSide(){
     }
     // Redisplay the menu
     _redisplay() {
-        if (this.applicationsBox)
+        if (this.mainBox)
             this._clearApplicationsBox();
         this._display();
     }
@@ -109,14 +109,15 @@ var createMenu = class{
             this._applicationsButtons.delete(key);
             value.destroy(); 
         });
-        this.applicationsBox.destroy_all_children();
+        this.mainBox.destroy_all_children();
         this._createLeftBox();
         this._loadCategories();
         this._display();
     }
     // Display the menu
     _display() {
-        this._displayCategories();       
+        this._displayCategories();
+        this.activeMenuItem = this.categoryDirectories[0];       
     }
     updateStyle(){
         if(this.categoryDirectories){
@@ -207,7 +208,12 @@ var createMenu = class{
     _displayCategories(){
         this._clearApplicationsBox();
         for (let i = 0; i < this.categoryDirectories.length; i++) {
-            this.applicationsBox.add_actor(this.categoryDirectories[i].actor);	
+            this.mainBox.add_actor(this.categoryDirectories[i].actor);
+            if(i==0){
+                this.activeMenuItem = this.categoryDirectories[i];
+                if(this.leftClickMenu.isOpen)
+                    this.mainBox.grab_key_focus();
+            }		
         }
         
         this.updateStyle();
@@ -215,7 +221,7 @@ var createMenu = class{
     _displayGnomeFavorites(categoryMenuItem){
         let appList = AppFavorites.getAppFavorites().getFavorites();
 
-        appList.sort(function (a, b) {
+        appList.sort((a, b) => {
             return a.get_name().toLowerCase() > b.get_name().toLowerCase();
         });
         this._displayButtons(appList,categoryMenuItem);
@@ -238,10 +244,10 @@ var createMenu = class{
     
     // Clear the applications menu box
     _clearApplicationsBox() {
-        let actors = this.applicationsBox.get_children();
+        let actors = this.mainBox.get_children();
         for (let i = 0; i < actors.length; i++) {
             let actor = actors[i];
-            this.applicationsBox.remove_actor(actor);
+            this.mainBox.remove_actor(actor);
         }
     }
 
@@ -290,13 +296,9 @@ var createMenu = class{
                     categoryMenuItem.applicationsBox.add_actor(item.menu.actor);
                     item._updateIcons();
                 }
-                if(i==0){
-                    item.setFakeActive(true);
-                    item.actor.grab_key_focus();
-                    global.sync_pointer();
-                }
             }
         }
+        //this.mainBox.grab_key_focus();
     }
 
 
@@ -305,7 +307,7 @@ var createMenu = class{
         this._applicationsButtons.forEach((value,key,map) => {
             appList.push(key);
         });
-        appList.sort(function (a, b) {
+        appList.sort((a, b) => {
             return a.get_name().toLowerCase() > b.get_name().toLowerCase();
         });
         this._displayButtons(appList,categoryMenuItem);
@@ -325,7 +327,7 @@ var createMenu = class{
                 applist = applist.concat(this.applicationsByCategory[directory]);
         }
         if(category_menu_id != "Frequent Apps"){
-            applist.sort(function (a, b) {
+            applist.sort((a, b) => {
                 return a.get_name().toLowerCase() > b.get_name().toLowerCase();
             });
         }
@@ -341,7 +343,35 @@ var createMenu = class{
         return this.currentMenu;
     } 
     _onMainBoxKeyPress(mainBox, event) {
-        return Clutter.EVENT_PROPAGATE;
+        let symbol = event.get_key_symbol();
+        let key = event.get_key_unicode();
+
+        switch (symbol) {
+            case Clutter.KEY_BackSpace:
+            case Clutter.KEY_Tab:
+            case Clutter.KEY_KP_Tab:
+                return Clutter.EVENT_PROPAGATE;
+            case Clutter.KEY_Up:
+            case Clutter.KEY_Down:
+            case Clutter.KEY_Left:
+            case Clutter.KEY_Right:  
+                if(this.activeMenuItem!=null && !this.activeMenuItem.actor.has_key_focus()){
+                    this.activeMenuItem.actor.grab_key_focus();
+                    return Clutter.EVENT_STOP;
+                }
+                else if(this.activeMenuItem!=null){
+                    this.activeMenuItem.actor.grab_key_focus();
+                    return Clutter.EVENT_PROPAGATE;
+                }
+                else{
+                    return Clutter.EVENT_PROPAGATE;
+                }
+            case Clutter.KEY_KP_Enter:
+            case Clutter.KEY_Return:
+                return Clutter.EVENT_PROPAGATE;
+            default:
+                return Clutter.EVENT_PROPAGATE;
+        }
     }
     destroy(){
         for (let i = 0; i < this.categoryDirectories.length; i++) {

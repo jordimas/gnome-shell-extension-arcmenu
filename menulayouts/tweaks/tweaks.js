@@ -68,7 +68,9 @@ var TweaksDialog = GObject.registerClass(
             else if(menuLayout == Constants.MENU_LAYOUT.Redmond)
                 this._loadRedmondMenuTweaks(vbox)
             else if(menuLayout == Constants.MENU_LAYOUT.UbuntuDash)
-                this._loadPlaceHolderTweaks(vbox);
+                this._loadUbuntuDashTweaks(vbox);
+            else if(menuLayout == Constants.MENU_LAYOUT.Raven)
+                this._loadRavenTweaks(vbox);
             else if(menuLayout == Constants.MENU_LAYOUT.Budgie)
                 this._loadBudgieMenuTweaks(vbox);
             else if(menuLayout == Constants.MENU_LAYOUT.Windows)
@@ -172,6 +174,181 @@ var TweaksDialog = GObject.registerClass(
             kRunnerMenuTweaksFrame.add(showMoreDetailsRow);
             vbox.add(kRunnerMenuTweaksFrame);
         }
+        _loadUbuntuDashTweaks(vbox){
+            let pinnedAppsFrame = new PW.FrameBox();
+            let notebook = new PW.Notebook();
+
+            let generalPage = new PW.NotebookPage(_("General"));
+            notebook.append_page(generalPage);
+
+            let pinnedAppsPage = new Prefs.PinnedAppsPage(this._settings);
+            notebook.append_page(pinnedAppsPage);
+
+            let applicationShortcutsPage = new Prefs.ApplicationShortcutsPage(this._settings);
+            applicationShortcutsPage._title.label = "<b>" + _("Shortcuts") + "</b>";
+            notebook.append_page(applicationShortcutsPage);
+
+            let buttonsPage = new PW.NotebookPage(_("Buttons"));
+            notebook.append_page(buttonsPage);
+   
+            vbox.add(notebook);
+
+            let generalTweaksFrame = new PW.FrameBox();
+            let homeScreenRow = new PW.FrameBoxRow();
+            let homeScreenLabel = new Gtk.Label({
+                label: _('Default Screen'),
+                xalign:0,
+                hexpand: true,
+            });   
+            let homeScreenCombo = new Gtk.ComboBoxText({ halign: Gtk.Align.END });
+            homeScreenCombo.append_text(_("Home Screen"));
+            homeScreenCombo.append_text(_("All Applications"));
+            let homeScreen = this._settings.get_boolean('enable-ubuntu-homescreen');
+            homeScreenCombo.set_active(homeScreen ? 0 : 1);
+            homeScreenCombo.connect('changed', (widget) => {
+                let enable =  widget.get_active() ==0 ? true : false;
+                this._settings.set_boolean('enable-ubuntu-homescreen', enable);
+            });
+            homeScreenRow.add(homeScreenLabel);
+            homeScreenRow.add(homeScreenCombo);
+            generalTweaksFrame.add(homeScreenRow);
+            generalPage.add(generalTweaksFrame);
+            
+            let tweakStyleFrame = new PW.FrameBox();
+            let tweakStyleRow = new PW.FrameBoxRow();
+            let tweakStyleLabel = new Gtk.Label({
+                label: _("Disable Menu Arrow"),
+                use_markup: true,
+                xalign: 0,
+                hexpand: true
+            });
+
+            let tweakStyleSwitch = new Gtk.Switch({ 
+                halign: Gtk.Align.END,
+                tooltip_text: _("Disable current theme menu arrow pointer")
+            });
+            tweakStyleSwitch.set_active(this._settings.get_boolean('remove-menu-arrow'));
+            tweakStyleSwitch.connect('notify::active', (widget) => {
+                this._settings.set_boolean('remove-menu-arrow', widget.get_active());
+            });
+
+            tweakStyleRow.add(tweakStyleLabel);
+            tweakStyleRow.add(tweakStyleSwitch);
+            tweakStyleFrame.add(tweakStyleRow);
+            generalPage.add(tweakStyleFrame);
+
+
+            let pinnedAppsScrollWindow = new Gtk.ScrolledWindow();
+            pinnedAppsScrollWindow.set_policy(Gtk.PolicyType.AUTOMATIC, Gtk.PolicyType.AUTOMATIC);
+            pinnedAppsScrollWindow.set_max_content_height(300);
+            pinnedAppsScrollWindow.set_min_content_height(300);
+            //last row - save settings
+            let savePinnedAppsButton = new Gtk.Button({
+                label: _("Save"),
+            });
+            savePinnedAppsButton.connect('clicked', ()=> {
+                //iterate through each frame row (containing apps to pin) to create an array to save in settings
+                let array = [];
+                for(let x = 0;x < pinnedAppsFrame.count; x++) {
+                    array.push(pinnedAppsFrame.get_index(x)._name);
+                    array.push(pinnedAppsFrame.get_index(x)._icon);
+                    array.push(pinnedAppsFrame.get_index(x)._cmd);
+                }
+                this._settings.set_strv('ubuntu-dash-pinned-app-list',array);
+                savePinnedAppsButton.set_sensitive(false);
+            }); 
+            savePinnedAppsButton.set_halign(Gtk.Align.END);
+            savePinnedAppsButton.set_sensitive(false);
+            
+            //function to load all pinned apps
+            this._loadPinnedApps(this._settings.get_strv('ubuntu-dash-pinned-app-list'), pinnedAppsFrame, savePinnedAppsButton);
+            pinnedAppsScrollWindow.add_with_viewport(pinnedAppsFrame);
+            buttonsPage.add(pinnedAppsScrollWindow);
+
+            buttonsPage.add(savePinnedAppsButton);
+
+            let pinnedAppsSeparatorFrame = new PW.FrameBox();
+            let pinnedAppsSeparatorRow = new PW.FrameBoxRow();
+            let pinnedAppsSeparatorLabel = new Gtk.Label({
+                label: _("Separator Position Index"),
+                use_markup: true,
+                xalign: 0,
+                hexpand: true
+            });
+            let pinnedAppsSeparatorScale = new Gtk.HScale({
+                adjustment: new Gtk.Adjustment({
+                    lower: 0,upper: 7, step_increment: 1, page_increment: 1, page_size: 0
+                }),
+                digits: 0,round_digits: 0,hexpand: true,
+                value_pos: Gtk.PositionType.RIGHT
+            });
+            pinnedAppsSeparatorScale.set_value(this._settings.get_int('ubuntu-dash-separator-index'));
+            pinnedAppsSeparatorScale.connect('value-changed', (widget) => {
+                this._settings.set_int('ubuntu-dash-separator-index', widget.get_value());
+            }); 
+            pinnedAppsSeparatorRow.add(pinnedAppsSeparatorLabel);
+            pinnedAppsSeparatorRow.add(pinnedAppsSeparatorScale);
+            pinnedAppsSeparatorFrame.add(pinnedAppsSeparatorRow);
+            buttonsPage.add(pinnedAppsSeparatorFrame);
+            
+            
+        }
+        _loadRavenTweaks(vbox){
+            let notebook = new PW.Notebook();
+
+            let generalPage = new PW.NotebookPage(_("General"));
+            notebook.append_page(generalPage);
+
+            let pinnedAppsPage = new Prefs.PinnedAppsPage(this._settings);
+            notebook.append_page(pinnedAppsPage);
+
+            let applicationShortcutsPage = new Prefs.ApplicationShortcutsPage(this._settings);
+            applicationShortcutsPage._title.label = "<b>" + _("Shortcuts") + "</b>";
+            notebook.append_page(applicationShortcutsPage);
+   
+            vbox.add(notebook);
+
+            let generalTweaksFrame = new PW.FrameBox();
+            let homeScreenRow = new PW.FrameBoxRow();
+            let homeScreenLabel = new Gtk.Label({
+                label: _('Default Screen'),
+                xalign:0,
+                hexpand: true,
+            });   
+            let homeScreenCombo = new Gtk.ComboBoxText({ halign: Gtk.Align.END });
+            homeScreenCombo.append_text(_("Home Screen"));
+            homeScreenCombo.append_text(_("All Applications"));
+            let homeScreen = this._settings.get_boolean('enable-ubuntu-homescreen');
+            homeScreenCombo.set_active(homeScreen ? 0 : 1);
+            homeScreenCombo.connect('changed', (widget) => {
+                let enable =  widget.get_active() ==0 ? true : false;
+                this._settings.set_boolean('enable-ubuntu-homescreen', enable);
+            });
+            homeScreenRow.add(homeScreenLabel);
+            homeScreenRow.add(homeScreenCombo);
+            generalTweaksFrame.add(homeScreenRow);
+            generalPage.add(generalTweaksFrame);
+
+            let showMoreDetailsFrame = new PW.FrameBox();
+            let showMoreDetailsRow = new PW.FrameBoxRow();
+            let showMoreDetailsLabel = new Gtk.Label({
+                label: _("Show Extra Large Icons with App Descriptions"),
+                use_markup: true,
+                xalign: 0,
+                hexpand: true
+            });
+
+            let showMoreDetailsSwitch = new Gtk.Switch({ halign: Gtk.Align.END });
+            showMoreDetailsSwitch.set_active(this._settings.get_boolean('krunner-show-details'));
+            showMoreDetailsSwitch.connect('notify::active', (widget) => {
+                this._settings.set_boolean('krunner-show-details', widget.get_active());
+            });
+
+            showMoreDetailsRow.add(showMoreDetailsLabel);
+            showMoreDetailsRow.add(showMoreDetailsSwitch);
+            showMoreDetailsFrame.add(showMoreDetailsRow);
+            generalPage.add(showMoreDetailsFrame);
+        }
         _loadMintMenuTweaks(vbox){
             let mintMenuTweaksFrame = new PW.FrameBox();
             mintMenuTweaksFrame.add(this._createActivateOnHoverRow());
@@ -238,7 +415,7 @@ var TweaksDialog = GObject.registerClass(
             for(let i = 0;i<array.length;i+=3) {
                 let frameRow = new PW.FrameBoxRow();
                 frameRow._name = array[i];
-                frameRow._icon = array[i+1];
+                frameRow._icon = Prefs.getIconPath([array[i], array[i+1], array[i+2]]);
                 frameRow._cmd = array[i+2];
                 
                 let arcMenuImage = new Gtk.Image( {

@@ -115,13 +115,13 @@ This extension also leverages some code from the gnome-shell adapted to be used 
 
 ### @[LinxGem33](https://gitlab.com/LinxGem33) | Founder - Maintainer -  Digital Art Designer |
 
-*Hi I'm LinxGem33 aka Andy and the founder of Arc menu, my role on the project is to manage and plan the technical and digital production and distribution of the Arc menu software, as you can imagine I’m a open source and Linux software enthusiast as well as a digital art designer and amateur GTK3 theme developer,I also like to contribute to other projects where i can.*
+Hi I'm LinxGem33 aka Andy and the founder of Arc menu, my role on the project is to manage and plan the technical and digital production and distribution of the Arc menu software, as you can imagine I’m a open source and Linux software enthusiast as well as a digital art designer and amateur GTK3 theme developer,I also like to contribute to other projects where i can.
 
 -----
 
-### @[Andrew  Zaech](https://gitlab.com/AndrewZaech) | Project JS Developer - UX/Backend |
+### @[Andrew  Zaech](https://gitlab.com/AndrewZaech) | Lead Project JS Developer - UX/Backend Developer |
 
-*Hi, I’m Andrew. My role on the project is to design, create, and implement features for the ArcMenu extension. I’m also involved in the code review process and front-end work, as well as improving the UX of ArcMenu. I also work on performance improvements and bug fixes, and provide help to our users with any issues related to ArcMenu.*
+Hi, I’m Andrew. My role on the project is to design, create, and implement features for the ArcMenu extension. I’m also involved in the code review process and front-end work, as well as improving the UX of ArcMenu. I also work on performance improvements and bug fixes, and provide help to our users with any issues related to ArcMenu.
 
 -----
 
@@ -169,7 +169,7 @@ This extension also leverages some code from the gnome-shell adapted to be used 
 
 -----
 
- **- @[AlexHi](https://gitlab.com/AlexHi) - Russian** | **- @[gkkulik](https://gitlab.com/gkkulik) - Silesian** | **- @[vikaig](https://gitlab.com/vikaig) - Ukrainian** | **- @[jordim](https://gitlab.com/jordim) - Catalan** | **- @[libreajans](https://gitlab.com/libreajans) - Turkish** | **- @[Vombato](https://gitlab.com/Vombato) - Italian** |
+ **- @[AlexWayfer](https://gitlab.com/AlexWayfer) - Russian** | **- @[gkkulik](https://gitlab.com/gkkulik) - Silesian** | **- @[vikaig](https://gitlab.com/vikaig) - Ukrainian** | **- @[jordim](https://gitlab.com/jordim) - Catalan** | **- @[libreajans](https://gitlab.com/libreajans) - Turkish** | **- @[Vombato](https://gitlab.com/Vombato) - Italian** |
  
 -----
 

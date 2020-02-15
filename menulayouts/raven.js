@@ -24,7 +24,8 @@
 // Import Libraries
 const Me = imports.misc.extensionUtils.getCurrentExtension();
 
-const {Clutter, GLib, Gio, GMenu, Gtk, Shell, St} = imports.gi;
+const {Clutter, Gdk, GLib, Gio, GMenu, Gtk, Shell, St} = imports.gi;
+const AppFavorites = imports.ui.appFavorites;
 const appSys = Shell.AppSystem.get_default();
 const ArcSearch = Me.imports.searchGrid;
 const Constants = Me.imports.constants;
@@ -56,7 +57,6 @@ var createMenu = class{
         this._mainBoxKeyPressId = this.mainBox.connect('key-press-event', this._onMainBoxKeyPress.bind(this));
         this.isRunning=true;
 
-        
         this._tree = new GMenu.Tree({ menu_basename: 'applications.menu' });
         this._treeChangedId = this._tree.connect('changed', ()=>{
             this._reload();
@@ -64,30 +64,25 @@ var createMenu = class{
 
         //LAYOUT------------------------------------------------------------------------------------------------
         this.mainBox.vertical = false;
+        this.leftClickMenu.actor.style = "-arrow-base:0px;-arrow-rise:0px; -boxpointer-gap: 0px;";
+
         this.placesBox = new St.BoxLayout({
             vertical: true
         });
-        this.placesTopBox = new St.BoxLayout({
-            vertical: true
-        });
+
         this.placesBottomBox = new St.BoxLayout({
             vertical: true
-        });
-        this.placesBox.add( this.placesTopBox, {
-            expand: true,
-            x_fill: false,
-            y_fill: false,
-            x_align: St.Align.START,
-            y_align: St.Align.START
         });
         this.placesBox.add( this.placesBottomBox, {
             expand: true,
             x_fill: false,
             y_fill: false,
             x_align: St.Align.START,
-            y_align: St.Align.END
+            y_align: St.Align.MIDDLE
         });
-        this.placesBox.style = "margin: 0px 5px 0px 10px; spacing: 10px;";
+        this.placesBottomBox.style = "spacing: 5px;";
+        this.placesBox.style = "margin: 0px 0px 0px 0px; spacing: 10px;background-color:rgba(186, 196,201, 0.1) ; padding: 5px 5px;"+
+                                "border-color:rgba(186, 196,201, 0.2) ; border-right-width: 1px;";
         this.mainBox.add( this.placesBox, {
             expand: true,
             x_fill: false,
@@ -95,44 +90,21 @@ var createMenu = class{
             x_align: St.Align.START,
             y_align: St.Align.START
         });
-        this.favoritesButton = new MW.FavoritesButton( this);
-        this.placesTopBox.add(this.favoritesButton.actor, {
-            expand: false,
-            x_fill: true,
-            x_align: St.Align.END,
-            margin:5,
+
+        this.topBox = new St.BoxLayout({
+            vertical: false
         });
-        let userButton= new MW.CurrentUserButton( this);
-        this.placesBottomBox.add(userButton.actor, {
-            expand: false,
-            x_fill: true,
-            x_align: St.Align.END,
-            margin:5,
-        });
-        this.placesBottomBox.style = "spacing: 5px;";
-        let path = GLib.get_user_special_dir(imports.gi.GLib.UserDirectory.DIRECTORY_DOCUMENTS);
-        if (path != null){
-            let placeInfo = new MW.PlaceInfo(Gio.File.new_for_path(path), _("Documents"));
-            let placeMenuItem = new MW.PlaceButtonItem(this, placeInfo);
-            this.placesBottomBox.add_actor(placeMenuItem.actor);
-        }
-        let settingsButton= new MW.SettingsButton( this);
-        this.placesBottomBox.add(settingsButton.actor, {
-            expand: false,
-            x_fill: true,
-            x_align: St.Align.END,
-            margin:5,
-        });
-        let powerButton= new MW.PowerButton( this);
-        this.placesBottomBox.add(powerButton.actor, {
-            expand: false,
-            x_fill: true,
-            x_align: St.Align.END,
-            margin:5,
-        });
+
         //Sub Main Box -- stores left and right box
         this.subMainBox= new St.BoxLayout({
             vertical: true
+        });
+        this.subMainBox.add( this.topBox, {
+            expand: false,
+            x_fill: true,
+            y_fill: false,
+            x_align: St.Align.START,
+            y_align: St.Align.START
         });
         this.mainBox.add(this.subMainBox, {
             expand: true,
@@ -140,20 +112,11 @@ var createMenu = class{
             y_fill: true,
             y_align: St.Align.START
         });
-        this.user = new MW.UserMenuIcon(this);
-        this.subMainBox.add(this.user.actor, {
-            expand: false,
-            x_fill: false,
-            y_fill: false,
-            y_align: St.Align.MIDDLE,
-            x_align: St.Align.MIDDLE
-        });
-
         //Top Search Bar
         // Create search box
         this.searchBox = new MW.SearchBox(this);
         this.searchBox._stEntry.style = "min-height: 0px; border-radius: 18px; padding: 7px 12px;";
-        this.searchBox.actor.style ="margin: 0px 10px 10px 10px;padding-top: 15px; padding-bottom: 0.5em;padding-left: 0.4em;padding-right: 0.4em;";
+        this.searchBox.actor.style ="margin: 0px 10px 10px 10px;padding-top: 25px; padding-bottom: 0.0em;padding-left: 0.7em;padding-right: 0.7em;";
         this._firstAppItem = null;
         this._firstApp = null;
         this._tabbedOnce = false;
@@ -161,11 +124,11 @@ var createMenu = class{
         this._searchBoxKeyPressId = this.searchBox.connect('key-press-event', this._onSearchBoxKeyPress.bind(this));
         this._searchBoxKeyFocusInId = this.searchBox.connect('key-focus-in', this._onSearchBoxKeyFocusIn.bind(this));
         //Add search box to menu
-        this.subMainBox.add(this.searchBox.actor, {
-            expand: false,
+        this.topBox.add(this.searchBox.actor, {
+            expand: true,
             x_fill: true,
             y_fill: false,
-            y_align: St.Align.START
+            y_align: St.Align.MIDDLE
         });
 
         //Right Box
@@ -187,12 +150,11 @@ var createMenu = class{
             else if(key == Clutter.KEY_Down)
                 this.scrollToItem(this.activeMenuItem,Constants.DIRECTION.DOWN);
         }) ;
-        this.shortcutsScrollBox.style = "width:525px;";   
+        this.shortcutsScrollBox.style = "width:400px;";    
         this.shortcutsScrollBox.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC);
         this.shortcutsScrollBox.add_actor( this.shorcutsBox);
         this.shortcutsScrollBox.clip_to_allocation = true;
 
-        //this.shorcutsBox.add(this.iconGrid.actor);
         this.subMainBox.add( this.shortcutsScrollBox, {
             expand: false,
             x_fill: false,
@@ -200,152 +162,39 @@ var createMenu = class{
             y_align: St.Align.START
         });
 
+        this.leftClickMenu.box.style = "padding-bottom:0px; padding-top:0px;";     
+    
         this._loadCategories();
-        this._displayAllApps();
+        this._displayCategories();
+        this._createRightBox();
+       
         this._loadFavorites();
-        this._createFavoritesMenu();
-        
-        
+        this._displayFavorites();
         this._display();
+  
     }
     _createRightBox(){
+        this.appShortcuts = [];
+        this.appShorcutsBox = new St.BoxLayout({
+            vertical: true
+        });
+        //Add Application Shortcuts to menu (Software, Settings, Tweaks, Terminal)
+        let SOFTWARE_TRANSLATIONS = [_("Software"), _("Settings"), _("Tweaks"), _("Terminal"), _("Activities Overview"), _("Arc Menu Settings")];
+        let applicationShortcuts = this._settings.get_value('application-shortcuts-list').deep_unpack();
+        for(let i = 0; i < applicationShortcuts.length; i++){
+            let applicationName = applicationShortcuts[i][0];
+            let shortcutMenuItem = new MW.ShortcutMenuItem(this, _(applicationName), applicationShortcuts[i][1], applicationShortcuts[i][2]);
+            shortcutMenuItem.setAsIcon();
+            this.appShortcuts.push(shortcutMenuItem);
+        }
+        this._displayButtons(this.appShortcuts, _("Shortcuts"), true, this.appShorcutsBox)
     }
     _createFavoritesMenu(){
-        this.dummyCursor = new St.Widget({ width: 0, height: 0, opacity: 0 });
-        Main.uiGroup.add_actor(this.dummyCursor);
-        this.favoritesMenu = new PopupMenu.PopupMenu(this.dummyCursor, 0, St.Side.TOP);
-        this.section = new PopupMenu.PopupMenuSection();
-        this.favoritesMenu.addMenuItem(this.section);  
-        
-        this.leftPanelPopup = new St.BoxLayout({
-            vertical: true
-        });   
-        this.leftPanelPopup._delegate = this.leftPanelPopup;
-        let headerBox = new St.BoxLayout({
-            vertical: true
-        });    
-        this.leftPanelPopup.add(headerBox,{
-            expand:false,
-            x_fill:true,
-            y_fill: false,
-            y_align: St.Align.START
-        })
-        //Add back button to menu
-        this.backButton = new MW.BackMenuItem(this);
-        headerBox.add(this.backButton.actor, {
-            expand: false,
-            x_fill: true,
-            y_fill: false,
-            y_align: St.Align.End
-        });
 
-        //Add Horizontal Separator
-        headerBox.add(this._createHorizontalSeparator(Constants.SEPARATOR_STYLE.LONG), {
-            x_expand: true,
-            x_fill: true,
-            y_fill: false,
-            y_align: St.Align.END
-        });
-        this.applicationsScrollBox = new St.ScrollView({
-            x_fill: true,
-            y_fill: false,
-            y_align: St.Align.START,
-            style_class: 'vfade',
-            overlay_scrollbars: true,
-            reactive:true
-        });        
-        this.applicationsScrollBox.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC);
-        this.leftPanelPopup.add(this.applicationsScrollBox, {
-            expand: true,
-            x_fill: true, y_fill: true,
-            y_align: St.Align.START
-        });
-       
-        this.applicationsBox = new St.BoxLayout({
-            vertical: true
-        });     
-        this.applicationsScrollBox.add_actor(this.applicationsBox);
-        this.applicationsScrollBox.clip_to_allocation = true;
 
-        this.leftPanelShortcutsBox = new St.BoxLayout({
-            vertical: true
-        });     
-
-        this.leftPanelPopup.add(this.leftPanelShortcutsBox,{
-            expand:true,
-            x_fill:true,
-            y_fill: false,
-            y_align: St.Align.END
-        })
-        let path = GLib.get_user_special_dir(imports.gi.GLib.UserDirectory.DIRECTORY_DOCUMENTS);
-        if (path != null){
-            let placeInfo = new MW.PlaceInfo(Gio.File.new_for_path(path), _("Documents"));
-            let placeMenuItem = new MW.PlaceMenuItem(this, placeInfo);
-            this.leftPanelShortcutsBox.add_actor(placeMenuItem.actor);
-        }
-        if (GLib.find_program_in_path("gnome-control-center")) {
-            let shortcutMenuItem = new MW.ShortcutMenuItem(this, _("Settings"), "preferences-system-symbolic", "gnome-control-center");
-            this.leftPanelShortcutsBox.add_actor(shortcutMenuItem.actor);
-           
-        }
-        let themeContext = St.ThemeContext.get_for_stage(global.stage);
-        let scaleFactor = themeContext.scale_factor;
-        let height =  Math.round(this._settings.get_int('menu-height') / scaleFactor);
-        this.leftPanelPopup.style = `height: ${height}px`;        
-        this.section.actor.add_actor(this.leftPanelPopup); 
-        this._displayFavorites();
-        this.subMenuManager.addMenu(this.favoritesMenu);
-        this.favoritesMenu.actor.hide();
-        Main.uiGroup.add_actor(this.favoritesMenu.actor);
     }
     toggleFavoritesMenu(){
-        let appsScrollBoxAdj = this.applicationsScrollBox.get_vscroll_bar().get_adjustment();
-        appsScrollBoxAdj.set_value(0);
 
-        let addStyle=this._settings.get_boolean('enable-custom-arc-menu');
-        this.favoritesMenu.actor.style_class = addStyle ? 'arc-menu-boxpointer': 'popup-menu-boxpointer';
-        this.favoritesMenu.actor.add_style_class_name( addStyle ? 'arc-menu' : 'popup-menu');
-        this.favoritesButton.tooltip.hide();
-        let themeNode = this.leftClickMenu.actor.get_theme_node();
-        let rise = themeNode.get_length('-arrow-rise');
-        let backgroundColor = themeNode.get_color('-arrow-background-color');
-        let shadeColor;
-        let drawBoxshadow = true;
-        if(backgroundColor.alpha ==0 || !backgroundColor || backgroundColor === Clutter.Color.TRANSPARENT){
-            backgroundColor = themeNode.get_color('background-color');
-            if(backgroundColor.alpha==0 || !backgroundColor || backgroundColor === Clutter.Color.TRANSPARENT){
-                    drawBoxshadow = false;
-            }
-                
-        }
-        let styleProperties;
-        if(drawBoxshadow){
-            shadeColor = backgroundColor.shade(.35);
-            backgroundColor = "rgba("+backgroundColor.red+","+backgroundColor.green+","+backgroundColor.blue+","+backgroundColor.alpha+")";
-            shadeColor ="rgba("+shadeColor.red+","+shadeColor.green+","+shadeColor.blue+","+shadeColor.alpha+")";
-            styleProperties = "box-shadow: 3px 0px 8px 0px "+shadeColor+";background-color: "+backgroundColor+";";
-        }
-
-        let borderRadius = themeNode.get_length('-arrow-border-radius');
-        this.favoritesMenu.actor.style = "-boxpointer-gap: 0px; -arrow-border-color:transparent; -arrow-border-width:0px; width: 250px;"
-                                            +"-arrow-base:0px;-arrow-rise:0px; -arrow-background-color:transparent;"
-                                            +" border-radius: "+borderRadius+"px;" + styleProperties;
-
-        let base = themeNode.get_length('-arrow-base');
-        let borderWidth = themeNode.get_length('-arrow-border-width');
-
-        this.leftClickMenu.actor.get_allocation_box();
-        let [x, y] = this.leftClickMenu.actor.get_transformed_position();
-        if(this.leftClickMenu._arrowSide == St.Side.TOP)
-            y += rise + 1;
-        else 
-            y += 1;
-        if(this.leftClickMenu._arrowSide == St.Side.LEFT)
-            x= x+(borderRadius * 2) + rise + 1;
-        else
-            x = x+(borderRadius * 2);
-        this.dummyCursor.set_position(Math.round(x+borderWidth), Math.round(y+borderWidth));
-        this.favoritesMenu.toggle();
     }
     
     updateIcons(){
@@ -358,17 +207,15 @@ var createMenu = class{
         this.searchBox.clear();
         this.newSearch._reset();
         this._clearApplicationsBox();
-        this._displayAppIcons();
+        this._displayFavorites();
         let appsScrollBoxAdj = this.shortcutsScrollBox.get_vscroll_bar().get_adjustment();
         appsScrollBoxAdj.set_value(0);
-        appsScrollBoxAdj = this.applicationsScrollBox.get_vscroll_bar().get_adjustment();
-        appsScrollBoxAdj.set_value(0);
     }
-    _redisplayRightSide(){
-        let themeContext = St.ThemeContext.get_for_stage(global.stage);
-        let scaleFactor = themeContext.scale_factor;
-        let height =  Math.round(this._settings.get_int('menu-height') / scaleFactor);
-        this.leftPanelPopup.style = `height: ${height}px`;     
+    _redisplayRightSide(){ 
+        this.appShorcutsBox.destroy_all_children();
+        this._createRightBox();
+        this._displayFavorites();
+        this.updateStyle();  
     }
     // Redisplay the menu
     _redisplay() {
@@ -376,30 +223,23 @@ var createMenu = class{
     }
     _reload() {
         this._loadCategories();
-        this._displayAllApps();
+        this._displayFavorites();
         this._display();
     }
     // Display the menu
     _display() {
         this._clearApplicationsBox();
-        this._displayAppIcons();
+        this._displayFavorites();
         
         if(this.vertSep!=null)
             this.vertSep.queue_repaint(); 
         
     }
     updateStyle(){
-        let addStyle=this._settings.get_boolean('enable-custom-arc-menu');
+        let addStyle = this._settings.get_boolean('enable-custom-arc-menu');
         if(this.newSearch){
             addStyle ? this.newSearch.setStyle('arc-menu-status-text') :  this.newSearch.setStyle('search-statustext'); 
-            addStyle ? this.searchBox._stEntry.set_name('arc-search-entry') : this.searchBox._stEntry.set_name('search-entry');
-        }
-        if(this.placesTopBox){
-            this.placesTopBox.get_children().forEach((actor) => {
-                if(actor instanceof St.Button){
-                    addStyle ? actor.add_style_class_name('arc-menu-action') : actor.remove_style_class_name('arc-menu-action');
-                }
-            });
+            addStyle ? this.searchBox._stEntry.set_name('arc-search-entry') : this.searchBox._stEntry.set_name('search-entry'); 
         }
         if(this.placesBottomBox){
             this.placesBottomBox.get_children().forEach((actor) => {
@@ -407,13 +247,37 @@ var createMenu = class{
                     addStyle ? actor.add_style_class_name('arc-menu-action') : actor.remove_style_class_name('arc-menu-action');
                 }
             });
-        }
+        }           
+        this.updateRunnerLocation();
+    }
+    updateRunnerLocation(){
+        let themeContext = St.ThemeContext.get_for_stage(global.stage);
+        let scaleFactor = themeContext.scale_factor;
         
+        let screen = Gdk.Screen.get_default();
+        let [x, y] = this._button._menuButtonWidget.actor.get_transformed_position();
+        let currentMonitor = screen.get_monitor_at_point(x, y);
+        let rect = screen.get_monitor_workarea(currentMonitor);
+        let screenHeight = rect.height;        
+        let height =  Math.round(screenHeight / scaleFactor);
+        this.mainBox.style = `height: ${height}px`;
+    }
+    updateSearch(){
+        this.newSearch._reloadRemoteProviders();
     }
     // Load data for all menu categories
     _loadCategories() {
         this.applicationsByCategory = null;
         this.applicationsByCategory = {};
+        this.categoryDirectories = null;
+        this.categoryDirectories=[];
+        
+        let categoryMenuItem = new MW.CategoryMenuButton(this, "", "Home Screen");
+        this.categoryDirectories.push(categoryMenuItem);
+
+        categoryMenuItem = new MW.CategoryMenuButton(this, "", "All Programs");
+        this.categoryDirectories.push(categoryMenuItem);
+      
 
         this._tree.load_sync();
         let root = this._tree.get_root_directory();
@@ -426,6 +290,8 @@ var createMenu = class{
                     let categoryId = dir.get_menu_id();
                     this.applicationsByCategory[categoryId] = [];
                     this._loadCategory(categoryId, dir);
+                    let categoryMenuItem = new MW.CategoryMenuButton(this, dir);
+                    this.categoryDirectories.push(categoryMenuItem);
                 }
             }
         }
@@ -460,8 +326,21 @@ var createMenu = class{
         }
     }
     _displayCategories(){
+        for (let i = 0; i < this.categoryDirectories.length; i++) {
+            this.placesBottomBox.add_actor(this.categoryDirectories[i].actor);	
+        }
+        this.updateStyle();
     }
     _displayGnomeFavorites(){
+        let appList = AppFavorites.getAppFavorites().getFavorites();
+
+        appList.sort((a, b) => {
+            return a.get_name().toLowerCase() > b.get_name().toLowerCase();
+        });
+
+        this._displayButtons(appList);
+        this._displayAppIcons();
+        this.updateStyle(); 
     }
     _displayPlaces() {
     }
@@ -472,16 +351,7 @@ var createMenu = class{
         for(let i = 0;i<pinnedApps.length;i+=3){
             if(i == 0 && pinnedApps[0]=="ArcMenu_WebBrowser")
                 this.updatePinnedAppsWebBrowser(pinnedApps);
-            let favoritesMenuItem = new MW.FavoritesMenuItem(this, pinnedApps[i], pinnedApps[i+1], pinnedApps[i+2]);
-            favoritesMenuItem.connect('saveSettings', ()=>{
-                let array = [];
-                for(let i = 0;i < this.favoritesArray.length; i++){
-                    array.push(this.favoritesArray[i]._name);
-                    array.push(this.favoritesArray[i]._iconPath);
-                    array.push(this.favoritesArray[i]._command);		   
-                }
-                this._settings.set_strv('pinned-app-list',array);
-            });
+            let favoritesMenuItem = new MW.FavoritesMenuIcon(this, pinnedApps[i], pinnedApps[i+1], pinnedApps[i+2]);
             this.favoritesArray.push(favoritesMenuItem);
         }   
     }
@@ -515,14 +385,20 @@ var createMenu = class{
         }
     }
     _displayFavorites() {
-        let actors = this.applicationsBox.get_children();
-        for (let i = 0; i < actors.length; i++) {
-            let actor = actors[i];
-            this.applicationsBox.remove_actor(actor);
+        let homeScreen = this._settings.get_boolean('enable-ubuntu-homescreen');
+        if(homeScreen){
+            this._displayButtons(this.favoritesArray,_("Pinned Apps"), true);
+            this._displayAppIcons();
+            this.shorcutsBox.add(this.appShorcutsBox, {
+                expand: true,
+                x_fill: true,
+                y_fill: true,
+                x_align: St.Align.MIDDLE,
+                y_align: St.Align.MIDDLE
+            });
         }
-        for(let i = 0;i < this.favoritesArray.length; i++){
-            this.applicationsBox.add_actor(this.favoritesArray[i].actor);		   
-        }
+        else
+            this._displayAllApps();        
         this.updateStyle();  
     }
     placesAddSeparator(id){
@@ -537,6 +413,7 @@ var createMenu = class{
     _clearApplicationsBox() {
         let appsScrollBoxAdj = this.shortcutsScrollBox.get_vscroll_bar().get_adjustment();
         appsScrollBoxAdj.set_value(0);
+        this.activeMenuItem = null;
         let actors = this.shorcutsBox.get_children();
         for (let i = 0; i < actors.length; i++) {
             let actor = actors[i];
@@ -544,11 +421,17 @@ var createMenu = class{
         }
     }
     selectCategory(dir) {
+        if (dir!="Frequent Apps") 
+            this._displayButtons(this._listApplications(dir.get_menu_id()) ,dir.get_name());
+        else if(dir=="Frequent Apps") 
+            this._displayButtons(this._listApplications("Frequent Apps"), _("Frequent Apps"));
+        this._displayAppIcons();
+        this.updateStyle();
     }
     // Display application menu items
-    _displayButtons(apps) {
+    _displayButtons(apps, category, favs = false, shorcutsAppBox = null) {
         if (apps) {
-            if(this.appsBox){
+            if(shorcutsAppBox==null && this.appsBox){
                 let inner =  this.appsBox.get_children();
                 for (let i = 0; i < inner.length; i++) {
                     let actors =  inner[i].get_children();
@@ -557,34 +440,63 @@ var createMenu = class{
                         inner[i].remove_actor(actor);
                     }
                 }
-                this.activeMenuItem = null;
                 this.appsBox.destroy();
             }
+            this._clearApplicationsBox();
+            if(shorcutsAppBox==null){
+                this.appsBox = new St.BoxLayout({
+                    vertical: true
+                });
+            }
 
-            this.appsBox= new St.BoxLayout({
-                vertical: true
+            let box = shorcutsAppBox ? shorcutsAppBox : this.appsBox;
+
+            
+            let favsLabel = new PopupMenu.PopupMenuItem(_(category));  
+            favsLabel.actor.track_hover = false;
+            favsLabel.actor.can_focus = false;
+            favsLabel.actor.add_style_pseudo_class = () => { return false;};
+            favsLabel.actor.add(this._createHorizontalSeparator(Constants.SEPARATOR_STYLE.LONG), {
+                x_expand: true,
+                x_fill: true,
+                y_fill: false,
+                y_align: St.Align.END
             });
-            this.appsBox.style ='spacing: 15px; margin: 5px'
+            favsLabel.actor.add_style_class_name('popup-menu-item');
+            favsLabel.label.style = 'font-weight: bold;';
+            box.add(favsLabel.actor, {
+                expand: false,
+                x_fill: true,
+                y_fill: false,
+                x_align: St.Align.START,
+                y_align: St.Align.START
+            });
             let count = 0;
+
             for (let i = 0; i < apps.length; i++) {
                 let app = apps[i];
-                let item = this._applicationsButtons.get(app);
+                let item;
+                if(favs)
+                    item = app;
+                else
+                    item = this._applicationsButtons.get(app);
                 if (!item) {
                     item = new MW.ApplicationMenuIcon(this, app);
                     this._applicationsButtons.set(app, item);
                 }
-                if(count%5==0){ //create a new row every 5 app icons
+                if(count%3==0){ //create a new row every 5 app icons
                     this.rowBox= new St.BoxLayout({
                         vertical: false
                     });
-                    this.rowBox.style ='spacing: 10px; margin: 5px'
-                    this.appsBox.add(this.rowBox, {
+                    this.rowBox.style ='spacing: 10px; margin: 10px;'
+                    box.add(this.rowBox, {
                         expand: false,
                         x_fill: false,
                         y_fill: false,
                         x_align: St.Align.MIDDLE,
                         y_align: St.Align.MIDDLE
                     });
+
                 }
                 count++;
 
@@ -595,10 +507,11 @@ var createMenu = class{
                     x_align: St.Align.MIDDLE,
                     y_align: St.Align.MIDDLE
                 });
-                if(i==0){
+                if(i==0 && !shorcutsAppBox){
                     this.activeMenuItem = item;
-                    this.firstItem = item;
-                }
+                    if(this.leftClickMenu.isOpen)
+                        this.mainBox.grab_key_focus();
+                }     
             }
         }
     }
@@ -610,9 +523,6 @@ var createMenu = class{
             x_align: St.Align.MIDDLE,
             y_align: St.Align.MIDDLE
         });
-        this.activeMenuItem = this.firstItem;
-        if(this.leftClickMenu.isOpen)
-            this.mainBox.grab_key_focus();
     }
     _displayAllApps(){
         let appList= []
@@ -622,11 +532,29 @@ var createMenu = class{
         appList.sort((a, b) => {
             return a.get_name().toLowerCase() > b.get_name().toLowerCase();
         });
-        this._displayButtons(appList);
+        this._displayButtons(appList, _("All Programs"));
+        this._displayAppIcons();
         this.updateStyle(); 
 
     }
     _listApplications(category_menu_id) {
+        let applist;
+
+        // Get applications in a category or all categories
+        if (category_menu_id) {
+            applist = this.applicationsByCategory[category_menu_id];
+        } else {
+            applist = [];
+            for (let directory in this.applicationsByCategory)
+                applist = applist.concat(this.applicationsByCategory[directory]);
+        }
+        if(category_menu_id != "Frequent Apps"){
+            applist.sort((a, b) => {
+                return a.get_name().toLowerCase() > b.get_name().toLowerCase();
+            });
+        }
+        
+        return applist;
     }
     getShouldShowShortcut(shortcutName){
     }
@@ -635,9 +563,11 @@ var createMenu = class{
         if (!searchBox.isEmpty() && searchBox.hasKeyFocus()) {
             if (symbol == Clutter.Up) {
                 this.newSearch.highlightDefault(false);
+                return Clutter.EVENT_PROPAGATE;
             }
             else if (symbol == Clutter.Down) {
                 this.newSearch.highlightDefault(false);
+                return Clutter.EVENT_PROPAGATE;
             }
         }
         return Clutter.EVENT_PROPAGATE;
@@ -651,11 +581,10 @@ var createMenu = class{
         if(searchBox.isEmpty()){  
             this.newSearch.setTerms(['']); 
             this.setDefaultMenuView();                     	          	
-            this.newSearch.actor.hide();
         }            
-        else{       
+        else{         
             let appsScrollBoxAdj = this.shortcutsScrollBox.get_vscroll_bar().get_adjustment();
-            appsScrollBoxAdj.set_value(0);  
+            appsScrollBoxAdj.set_value(0);
             this._clearApplicationsBox();
             this.shorcutsBox.add(this.newSearch.actor, {
                 x_expand: false,
@@ -670,7 +599,7 @@ var createMenu = class{
             this.newSearch.setTerms([searchString]);      
         }            	
     }
-    scrollToItem(button,direction) {
+    scrollToItem(button, direction) {
         if(button!=null){
             let appsScrollBoxAdj = this.shortcutsScrollBox.get_vscroll_bar().get_adjustment();
             let catsScrollBoxAlloc = this.shortcutsScrollBox.get_allocation_box();
@@ -729,12 +658,10 @@ var createMenu = class{
             case Clutter.KEY_Up:
             case Clutter.KEY_Down:
             case Clutter.KEY_Left:
-            case Clutter.KEY_Right:          
+            case Clutter.KEY_Right:            
                 if(this.searchBox.hasKeyFocus() && this.newSearch._defaultResult){
                     if(this.newSearch.actor.get_parent()){
                         this.newSearch._defaultResult.actor.grab_key_focus();
-                        let appsScrollBoxAdj = this.shortcutsScrollBox.get_vscroll_bar().get_adjustment();
-                        appsScrollBoxAdj.set_value(0);
                         return Clutter.EVENT_STOP;
                     }                   
                     else{
@@ -767,6 +694,8 @@ var createMenu = class{
         return Clutter.EVENT_PROPAGATE;
     }
     destroy(){
+        this.leftClickMenu.box.style = null;
+        this.leftClickMenu.actor.style = null;
         this._applicationsButtons.forEach((value,key,map)=>{
             value.destroy();
         });
@@ -810,5 +739,17 @@ var createMenu = class{
         });
         hSep.queue_repaint();
         return hSep;
+    }
+    // Create a vertical separator
+    _createVertSeparator(){    
+        let alignment = Constants.SEPARATOR_ALIGNMENT.VERTICAL;
+        let style = Constants.SEPARATOR_STYLE.SHORT;
+        this.vertSep = new MW.SeparatorDrawingArea(this._settings,alignment,style,{
+            x_expand:false,
+            y_expand:true,
+            style_class: 'vert-sep'
+        });
+        this.vertSep.queue_repaint();
+        return  this.vertSep;
     }
 };
