@@ -326,7 +326,8 @@ var createMenu = class{
             y_align: St.Align.MIDDLE
         });
         this.activeMenuItem = this.firstItem;
-        this.mainBox.grab_key_focus();
+        if(this.leftClickMenu.isOpen)
+            this.mainBox.grab_key_focus();
     }
     _displayAllApps(){
         let appList= []

@@ -211,7 +211,8 @@ var createMenu = class{
             this.mainBox.add_actor(this.categoryDirectories[i].actor);
             if(i==0){
                 this.activeMenuItem = this.categoryDirectories[i];
-                this.mainBox.grab_key_focus();
+                if(this.leftClickMenu.isOpen)
+                    this.mainBox.grab_key_focus();
             }		
         }
         

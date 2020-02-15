@@ -239,7 +239,7 @@ var AppRightClickMenu = class ArcMenu_AppRightClickMenu extends PopupMenu.PopupM
                         }
                     }
                     if(this._isPinnedApp || this.layout == Constants.MENU_LAYOUT.Default || this.layout == Constants.MENU_LAYOUT.Windows || 
-                        this.layout == Constants.MENU_LAYOUT.UbuntuDash){
+                        this.layout == Constants.MENU_LAYOUT.UbuntuDash || this.layout == Constants.MENU_LAYOUT.Raven){
                         let pinnedApps = this._settings.get_strv('pinned-app-list');
                         let pinnedAppID=[];
                         for(let i=2;i<pinnedApps.length;i+=3){
@@ -298,7 +298,7 @@ var AppRightClickMenu = class ArcMenu_AppRightClickMenu extends PopupMenu.PopupM
         }  
         else{  //if pinned custom shortcut add unpin option to menu    
             if(this._isPinnedApp || this.layout == Constants.MENU_LAYOUT.Default || this.layout == Constants.MENU_LAYOUT.Windows || 
-                this.layout == Constants.MENU_LAYOUT.UbuntuDash){
+                this.layout == Constants.MENU_LAYOUT.UbuntuDash || this.layout == Constants.MENU_LAYOUT.Raven){
                 this._appendSeparator();
                 let item = new PopupMenu.PopupMenuItem(_("Unpin from Arc Menu"));   
                 item.connect('activate', ()=>{
@@ -763,7 +763,6 @@ var MintButton = class ArcMenu_MintButton extends SessionButton {
             this._app.open_new_window(-1);
         }
         else if(this._command === "ArcMenu_LogOut"){
-            this._button.isRunning = false;
             this._button.leftClickMenu.toggle();
             this._button._session.LogoutRemote(0);
         }
@@ -934,7 +933,6 @@ var LogoutButton = class ArcMenu_LogoutButton extends SessionButton {
     }
     // Activate the button (Logout)
     activate() {
-        this._button.isRunning = false;
         this._button.leftClickMenu.toggle();
         this._button._session.LogoutRemote(0);
     }
