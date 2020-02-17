@@ -1660,6 +1660,7 @@ var MenuButtonCustomizationWindow = GObject.registerClass(
             menuButtonAppearanceCombo.append_text(_("Text"));
             menuButtonAppearanceCombo.append_text(_("Icon and Text"));
             menuButtonAppearanceCombo.append_text(_("Text and Icon"));
+            menuButtonAppearanceCombo.append_text(_("Hidden"));
             menuButtonAppearanceCombo.set_active(this._settings.get_enum('menu-button-appearance'));
             menuButtonAppearanceCombo.connect('changed', (widget) => {
                 resetButton.set_sensitive(true); 
