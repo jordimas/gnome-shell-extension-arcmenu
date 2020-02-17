@@ -131,7 +131,8 @@ var MENU_APPEARANCE = {
     Icon: 0,
     Text: 1,
     Icon_Text: 2,
-    Text_Icon: 3
+    Text_Icon: 3,
+    None: 4
 };
 
 var MENU_BUTTON_ICON = { 

@@ -331,6 +331,9 @@ var MenuSettingsController = class {
     _setButtonAppearance() {
         if(this.dashOrPanel == Constants.ARC_MENU_PLACEMENT.PANEL){
             let menuButtonWidget = this._menuButton.getWidget();
+            this._menuButton.container.set_width(-1);
+            this._menuButton.container.set_height(-1);
+            menuButtonWidget.actor.show();
             switch (this._settings.get_enum('menu-button-appearance')) {
                 case Constants.MENU_APPEARANCE.Text:
                     menuButtonWidget.hidePanelIcon();
@@ -347,6 +350,11 @@ var MenuSettingsController = class {
                     menuButtonWidget.hidePanelText();
                     menuButtonWidget.showPanelText();
                     menuButtonWidget.showPanelIcon();
+                    break;
+                case Constants.MENU_APPEARANCE.None:
+                    menuButtonWidget.actor.hide();
+                    this._menuButton.container.set_width(0);
+                    this._menuButton.container.set_height(0);
                     break;
                 case Constants.MENU_APPEARANCE.Icon: /* falls through */
                 default:

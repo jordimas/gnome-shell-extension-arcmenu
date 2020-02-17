@@ -34,6 +34,7 @@
     <value value="1" nick="Text"/>
     <value value="2" nick="Icon_Text"/>
     <value value="3" nick="Text_Icon"/>
+    <value value="4" nick="None"/>
   </enum>
     <enum id='org.gnome.shell.extensions.arc-menu.avatar-style'>
     <value value="0" nick="Circular"/>
