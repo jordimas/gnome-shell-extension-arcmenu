@@ -382,9 +382,7 @@ var AddAppsToPinnedListWindow = GObject.registerClass(
                     frameRow._name = _(defaultApplicationShortcuts[i][0]);
                     frameRow._icon = defaultApplicationShortcuts[i][1];
                     frameRow._cmd = defaultApplicationShortcuts[i][2];
-                    if(frameRow._cmd == "ArcMenu_Software" && GLib.find_program_in_path('io.elementary.appcenter')){
-                        frameRow._icon = 'pop-shop';
-                    }
+
                     let iconImage = new Gtk.Image( {
                         gicon: Gio.icon_new_for_string(frameRow._icon),
                         pixel_size: 22
@@ -1664,12 +1662,16 @@ var MenuButtonCustomizationWindow = GObject.registerClass(
             menuButtonAppearanceCombo.set_active(this._settings.get_enum('menu-button-appearance'));
             menuButtonAppearanceCombo.connect('changed', (widget) => {
                 resetButton.set_sensitive(true); 
-                if(widget.get_active() != Constants.MENU_APPEARANCE.Icon && menuButtonAppearanceFrame.count == 1){
-                    menuButtonAppearanceFrame.add(menuButtonCustomTextBoxRow);
+                if(menuButtonAppearanceFrame.count == 2){
+                    menuButtonAppearanceFrame.remove(menuButtonAppearanceFrame.get_index(1));
+                }
+                if(widget.get_active() == Constants.MENU_APPEARANCE.None){
+                    menuButtonAppearanceFrame.add(restoreActivitiesRow);
                     menuButtonAppearanceFrame.show();
                 }
-                else if(widget.get_active() == Constants.MENU_APPEARANCE.Icon && menuButtonAppearanceFrame.count == 2){
-                    menuButtonAppearanceFrame.remove(menuButtonCustomTextBoxRow);
+                else if(widget.get_active() != Constants.MENU_APPEARANCE.Icon){
+                    menuButtonAppearanceFrame.add(menuButtonCustomTextBoxRow);
+                    menuButtonAppearanceFrame.show();
                 }
                 this._settings.set_enum('menu-button-appearance', widget.get_active());
             });
@@ -1697,9 +1699,30 @@ var MenuButtonCustomizationWindow = GObject.registerClass(
 
             menuButtonCustomTextBoxRow.add(menuButtonCustomTextLabel);
             menuButtonCustomTextBoxRow.add(menuButtonCustomTextEntry);
-            if(this._settings.get_enum('menu-button-appearance') != Constants.MENU_APPEARANCE.Icon)
+            if(this._settings.get_enum('menu-button-appearance') != Constants.MENU_APPEARANCE.Icon && this._settings.get_enum('menu-button-appearance') != Constants.MENU_APPEARANCE.None)
                 menuButtonAppearanceFrame.add(menuButtonCustomTextBoxRow);
             vbox.add(menuButtonAppearanceFrame);
+            
+            let restoreActivitiesRow = new PW.FrameBoxRow();
+            let restoreActivitiesLabel = new Gtk.Label({
+                label: _("Restore Activities Button"),
+                use_markup: true,
+                xalign: 0,
+                hexpand: true
+            });
+
+            let restoreActivitiesSwitch = new Gtk.Switch({ 
+                halign: Gtk.Align.END,
+                tooltip_text: _("Restore Activities Button in panel") 
+            });
+            restoreActivitiesSwitch.set_active(this._settings.get_boolean('restore-activities-button'));
+            restoreActivitiesSwitch.connect('notify::active', (widget) => {
+                this._settings.set_boolean('restore-activities-button', widget.get_active());
+            });
+            restoreActivitiesRow.add(restoreActivitiesLabel);
+            restoreActivitiesRow.add(restoreActivitiesSwitch);
+            if(this._settings.get_enum('menu-button-appearance') == Constants.MENU_APPEARANCE.None)
+                menuButtonAppearanceFrame.add(restoreActivitiesRow);
 
             // third row
             let menuButtonArrowIconFrame = new PW.FrameBox();
@@ -4078,9 +4101,7 @@ var ApplicationShortcutsPage = GObject.registerClass(
             frameRow._name = applicationShortcuts[i][0];
             frameRow._icon = applicationShortcuts[i][1];
             frameRow._cmd = applicationShortcuts[i][2];
-            if(frameRow._cmd == "ArcMenu_Software" && GLib.find_program_in_path('io.elementary.appcenter')){
-                frameRow._icon = 'pop-shop';
-            }
+
             let applicationIcon = new Gtk.Image( {
                 gicon: Gio.icon_new_for_string(frameRow._icon),
                 pixel_size: 22

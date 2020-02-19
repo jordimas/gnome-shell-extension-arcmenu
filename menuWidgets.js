@@ -1052,7 +1052,6 @@ var ShortcutMenuItem = GObject.registerClass(class ArcMenu_ShortcutMenuItem exte
                 this._command='pamac-manager.desktop';
             else if(GLib.find_program_in_path('io.elementary.appcenter')){
                 this._command='io.elementary.appcenter.desktop';
-                icon = 'pop-shop';
             }  
         }
         this._app = Shell.AppSystem.get_default().lookup_app(this._command);
@@ -1937,7 +1936,7 @@ var CategoryMenuItem = GObject.registerClass(class ArcMenu_CategoryMenuItem exte
         }
         if(this.layout != Constants.MENU_LAYOUT.GnomeMenu){
             this._icon = new St.Icon({
-                gicon: this._category ? this._category.get_icon() : null,
+                icon_name: this._category ? this._category.get_icon().to_string() : null,
                 style_class: 'popup-menu-icon',
                 icon_size: MEDIUM_ICON_SIZE
             });
