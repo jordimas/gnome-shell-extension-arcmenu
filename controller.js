@@ -121,6 +121,7 @@ var MenuSettingsController = class {
             this._settings.connect('changed::enable-sub-menus', this._reload.bind(this)), 
             this._settings.connect('changed::disable-category-arrows', this._reload.bind(this)),
             this._settings.connect('changed::disable-activities-button', this._configureActivitiesButton.bind(this)),
+            this._settings.connect('changed::restore-activities-button', this._removeActivitiesButtonFromMainPanel.bind(this)),
         ];
     }
     _reload(){
@@ -331,6 +332,7 @@ var MenuSettingsController = class {
     _setButtonAppearance() {
         if(this.dashOrPanel == Constants.ARC_MENU_PLACEMENT.PANEL){
             let menuButtonWidget = this._menuButton.getWidget();
+            this._removeActivitiesButtonFromMainPanel();
             this._menuButton.container.set_width(-1);
             this._menuButton.container.set_height(-1);
             menuButtonWidget.actor.show();
@@ -352,6 +354,8 @@ var MenuSettingsController = class {
                     menuButtonWidget.showPanelIcon();
                     break;
                 case Constants.MENU_APPEARANCE.None:
+                    let activitiesButton = this._settings.get_boolean('restore-activities-button');
+                    activitiesButton ? this._addActivitiesButtonToMainPanel() : this._removeActivitiesButtonFromMainPanel();
                     menuButtonWidget.actor.hide();
                     this._menuButton.container.set_width(0);
                     this._menuButton.container.set_height(0);
@@ -451,7 +455,7 @@ var MenuSettingsController = class {
         if(this.dashOrPanel == Constants.ARC_MENU_PLACEMENT.DTD){
             let isActivitiesButtonPresent = Main.panel.statusArea.activities && Main.panel.statusArea.activities.container &&
                                             Main.panel._leftBox.contains(Main.panel.statusArea.activities.container);
-            let disable = this._settings.get_boolean('disable-activities-button');  
+            let disable = this._settings.get_boolean('disable-activities-button'); 
             if(!disable || restore){
                 if(!isActivitiesButtonPresent){
                     Main.panel._leftBox.add_child(Main.panel.statusArea.activities.container);
@@ -462,7 +466,6 @@ var MenuSettingsController = class {
                 if(isActivitiesButtonPresent)
                     Main.panel._leftBox.remove_child(Main.panel.statusArea.activities.container);   
             }
-
         }
     }
     // Check if the activities button is present on the main panel
@@ -475,7 +478,18 @@ var MenuSettingsController = class {
 
     // Remove the activities button from the main panel
     _removeActivitiesButtonFromMainPanel() {
-        if (this._isActivitiesButtonPresent()) {
+        let buttonAppearance = this._settings.get_enum('menu-button-appearance');
+        let activitiesButton = this._settings.get_boolean('restore-activities-button');
+
+        if(buttonAppearance == Constants.MENU_APPEARANCE.None){
+            if(!activitiesButton && this._isActivitiesButtonPresent()){
+                this.panel._leftBox.remove_child(this._activitiesButton.container);
+            }
+            else{
+                this._addActivitiesButtonToMainPanel();
+            }
+        }
+        else if (this._isActivitiesButtonPresent()) {
             this.panel._leftBox.remove_child(this._activitiesButton.container);
         }
     }

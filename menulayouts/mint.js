@@ -487,20 +487,16 @@ var createMenu =class{
         pinnedApps.push(_("Terminal"), "utilities-terminal", "org.gnome.Terminal.desktop");
         pinnedApps.push(_("Settings"), "emblem-system-symbolic", "gnome-control-center.desktop");
         let software = '';
-        let icon = '';
         if(GLib.find_program_in_path('gnome-software')){
-            software = 'org.gnome.Software';
-            icon = 'org.gnome.Software';
+            software = 'org.gnome.Software.desktop';
         }
         else if(GLib.find_program_in_path('pamac-manager')){
-            software = 'pamac-manager';
-            icon = 'org.gnome.Software';
+            software = 'pamac-manager.desktop';
         }
         else if(GLib.find_program_in_path('io.elementary.appcenter')){
-            software = 'io.elementary.appcenter';
-            icon = 'pop-shop';
+            software = 'io.elementary.appcenter.desktop';
         }
-        pinnedApps.push(_("Software"), icon, software+".desktop");
+        pinnedApps.push(_("Software"), 'system-software-install-symbolic', software);
         pinnedApps.push(_("Files"), "system-file-manager", "org.gnome.Nautilus.desktop");
         pinnedApps.push(_("Log Out"), "application-exit-symbolic", "ArcMenu_LogOut");
         pinnedApps.push(_("Lock"), "changes-prevent-symbolic", "ArcMenu_Lock");

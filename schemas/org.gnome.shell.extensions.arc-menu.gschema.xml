@@ -295,6 +295,11 @@
       <summary>Override action of activities hot corner</summary>
       <description>Override action of activities hot corner.</description>
     </key>
+    <key type="b" name="restore-activities-button">
+     <default>false</default>
+      <summary>Restore Activities Button in panel</summary>
+      <description>Restore Activities Button in panel. Used with "Hidden" Arc Menu icon setting</description>
+    </key>
     <key type="b" name="disable-activities-button">
      <default>false</default>
       <summary>Disable Activities Button in panel</summary>
@@ -409,7 +414,7 @@
       <description>List of default directory paths used for links on the right side of Arc Menu.</description>
     </key>
     <key name="application-shortcuts-list" type="aas">
-      <default>[["Software","org.gnome.Software-symbolic", "ArcMenu_Software"], ["Settings","preferences-system-symbolic", "gnome-control-center"],
+      <default>[["Software","system-software-install-symbolic", "ArcMenu_Software"], ["Settings","preferences-system-symbolic", "gnome-control-center"],
           ["Tweaks","org.gnome.tweaks-symbolic", "gnome-tweaks"],["Terminal","utilities-terminal-symbolic", "gnome-terminal"],
           ["Activities Overview", "view-fullscreen-symbolic", "ArcMenu_ActivitiesOverview"]]</default>
       <summary>List of default directory paths used for links on the right side of Arc Menu</summary>
