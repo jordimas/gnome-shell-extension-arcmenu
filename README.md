@@ -47,15 +47,6 @@ This extension could be even better with your help! Any items in the issue track
     </a>
 </p>
 
-
------
-
-### Manual Installation
-For installing Arc-Menu manually from source;
-
-Please take a look at the [Manual Installation Guide](https://gitlab.com/LinxGem33/Arc-Menu/wikis/Install-From-Source-Guide) 
-on the Arc-Menu Wiki.
-
 -----
 
 ### Dependencies
