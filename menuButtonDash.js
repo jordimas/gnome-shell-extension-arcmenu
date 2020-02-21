@@ -511,7 +511,7 @@ var ApplicationsButton = GObject.registerClass(class ArcMenu_DashApplicationsBut
     _onOpenStateChanged(menu, open) {
         if (open){
             if(this.menuManager.activeMenu) 
-                this.menuManager.activeMenu.close(1 << 1);
+                this.menuManager.activeMenu.close(imports.ui.boxpointer.PopupAnimation.FULL);
             this.getWidget().actor.add_style_pseudo_class('selected');
             this.getWidget()._icon.add_style_pseudo_class('active');
         }      
@@ -519,11 +519,6 @@ var ApplicationsButton = GObject.registerClass(class ArcMenu_DashApplicationsBut
             this.getWidget().actor.remove_style_pseudo_class('selected');
             if(!this.getWidget().actor.hover)
                 this.getWidget()._icon.remove_style_pseudo_class('active');
-        }
-        if (menu == this.leftClickMenu) {
-            if(open){
-                this.mainBox.show();  
-            }
         }
     }
 });

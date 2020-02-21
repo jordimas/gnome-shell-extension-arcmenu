@@ -548,18 +548,13 @@ var ApplicationsButton = GObject.registerClass(class ArcMenu_ApplicationsButton 
     _onOpenStateChanged(menu, open) {
         if (open){
             if(this.menuManager.activeMenu) 
-                this.menuManager.activeMenu.close(1 << 1);
+                this.menuManager.activeMenu.close(imports.ui.boxpointer.PopupAnimation.FULL);
             this.getWidget().getPanelIcon().add_style_pseudo_class('active');
             this.add_style_pseudo_class('active');
         }      
         else{ 
             this.getWidget().getPanelIcon().remove_style_pseudo_class('active');
             this.remove_style_pseudo_class('active');
-        }
-        if (menu == this.leftClickMenu) {
-            if(open){
-                this.mainBox.show();  
-            }
         }
     }
 });
