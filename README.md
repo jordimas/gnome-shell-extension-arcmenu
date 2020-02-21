@@ -37,7 +37,9 @@ This extension could be even better with your help! Any items in the issue track
 
 ### Installation
 
-You can now install this extension from **extensions.gnome.org** as a one click install just click on the link below
+#### To install the most recent official release: Visit ArcMenu on the [Official GNOME Extensions](https://extensions.gnome.org/extension/1228/arc-menu/) website.
+
+- **To install a Development version from source**: Please see the: [Install From Source wiki Guide](https://gitlab.com/LinxGem33/Arc-Menu/-/wikis/Install%20From%20Source%20Guide).
 
 <p align="left">
        <a href="https://extensions.gnome.org/extension/1228/arc-menu/" >
