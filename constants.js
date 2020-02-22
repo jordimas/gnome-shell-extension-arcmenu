@@ -199,7 +199,7 @@ var MENU_STYLE_CHOOSER = {
         { thumbnail: '/media/layouts/raven-menu.svg', name: 'Raven Menu Style'}
     ]
 };
-var ARCMENU_MANUAL_URL = "https://gitlab.com/LinxGem33/Arc-Menu/uploads/9daba68b11dca3b711516f952a5484e1/arcmenu-user-manual.pdf"
+var ARCMENU_MANUAL_URL = "https://gitlab.com/LinxGem33/Neon/-/raw/master/arc-menu-manual/arcmenu-user-manual.pdf?inline=false"
 
 //Path to some files
 var ARC_MENU_LOGO = {
