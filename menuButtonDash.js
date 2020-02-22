@@ -574,14 +574,14 @@ var RightClickMenu = class ArcMenu_RightClickDashMenu extends PopupMenu.PopupMen
         item._separator.style_class='arc-menu-sep';     
         this.addMenuItem(item);      
         
-        item = new PopupMenu.PopupMenuItem(_("Arc Menu on GitLab"));        
+        item = new PopupMenu.PopupMenuItem(_("Arc Menu GitLab Page"));        
         item.connect('activate', ()=>{
             Util.spawnCommandLine('xdg-open https://gitlab.com/LinxGem33/Arc-Menu');
         });     
         this.addMenuItem(item);  
-        item = new PopupMenu.PopupMenuItem(_("About Arc Menu"));          
+        item = new PopupMenu.PopupMenuItem(_("Arc Menu User Manual"));          
         item.connect('activate', ()=>{
-            Util.spawnCommandLine('xdg-open https://gitlab.com/LinxGem33/Arc-Menu/wikis/Introduction');
+            Util.spawnCommandLine('xdg-open ' + Constants.ARCMENU_MANUAL_URL);
         });      
         this.addMenuItem(item);
     }
