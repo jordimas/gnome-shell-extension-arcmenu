@@ -465,10 +465,12 @@ var ActivitiesMenuItem = GObject.registerClass(class ArcMenu_ActivitiesMenuItem 
         super.activate(event);
     }
     _onButtonPressEvent(actor, event) {
+        if(event.get_button() == 1)
+            this._button._blockActivateEvent = false;
         return Clutter.EVENT_PROPAGATE;
     }
     _onButtonReleaseEvent(actor, event) {
-        if(event.get_button()==1){
+        if(event.get_button() == 1 && !this._button._blockActivateEvent){
             this.activate(event);
         }
         return Clutter.EVENT_STOP;
@@ -982,10 +984,12 @@ var BackMenuItem = GObject.registerClass(class ArcMenu_BackMenuItem extends Popu
         super.activate(event);
     }
     _onButtonPressEvent(actor, event) {
+        if(event.get_button() == 1)
+            this._button._blockActivateEvent = false;
         return Clutter.EVENT_PROPAGATE;
     }
     _onButtonReleaseEvent(actor, event) {
-        if(event.get_button()==1){
+        if(event.get_button() == 1 && !this._button._blockActivateEvent){
             this.activate(event);
         }
         return Clutter.EVENT_STOP;
@@ -1028,10 +1032,12 @@ var ViewAllPrograms = GObject.registerClass(class ArcMenu_ViewAllPrograms extend
       super.activate(event);
     }
     _onButtonPressEvent(actor, event) {
+        if(event.get_button() == 1)
+            this._button._blockActivateEvent = false;
         return Clutter.EVENT_PROPAGATE;
     }
     _onButtonReleaseEvent(actor, event) {
-        if(event.get_button() == 1){
+        if(event.get_button() == 1 && !this._button._blockActivateEvent){
             this.activate(event);
         }
         return Clutter.EVENT_STOP;
@@ -1134,10 +1140,12 @@ var ShortcutMenuItem = GObject.registerClass(class ArcMenu_ShortcutMenuItem exte
         this._icon.icon_size = MEDIUM_ICON_SIZE;
     }
     _onButtonPressEvent(actor, event) {
+        if(event.get_button() == 1)
+            this._button._blockActivateEvent = false;
         return Clutter.EVENT_PROPAGATE;
     }
     _onButtonReleaseEvent(actor, event) {
-        if(event.get_button()==1){
+        if(event.get_button() == 1 && !this._button._blockActivateEvent){
             this.activate(event);
         }
         return Clutter.EVENT_STOP;
@@ -1212,10 +1220,12 @@ var UserMenuItem = GObject.registerClass(class ArcMenu_UserMenuItem extends Popu
         }
     }
     _onButtonPressEvent(actor, event) {
+        if(event.get_button() == 1)
+            this._button._blockActivateEvent = false;
         return Clutter.EVENT_PROPAGATE;
     }
     _onButtonReleaseEvent(actor, event) {
-        if(event.get_button()==1){
+        if(event.get_button() == 1 && !this._button._blockActivateEvent){
             this.activate(event);
         }
         return Clutter.EVENT_STOP;
@@ -1358,11 +1368,12 @@ var FavoritesMenuItem = GObject.registerClass({
         }
     }
     _onButtonPressEvent(actor, event) {
-		
+        if(event.get_button() == 1)
+            this._button._blockActivateEvent = false;
         return Clutter.EVENT_PROPAGATE;
     }
     _onButtonReleaseEvent(actor, event) {
-        if(event.get_button()==1){
+        if(event.get_button() == 1 && !this._button._blockActivateEvent){
             this.activate(event); 
         }
   	    if(event.get_button()==3){
@@ -1541,11 +1552,12 @@ var FavoritesMenuIcon = GObject.registerClass(class ArcMenu_FavoritesMenuIcon ex
         }
     }
     _onButtonPressEvent(actor, event) {
-		
+        if(event.get_button() == 1)
+            this._button._blockActivateEvent = false;
         return Clutter.EVENT_PROPAGATE;
     }
     _onButtonReleaseEvent(actor, event) {
-        if(event.get_button()==1){
+        if(event.get_button() == 1 && !this._button._blockActivateEvent){
             this.activate(event); 
         }
   	    if(event.get_button()==3){
@@ -1651,11 +1663,12 @@ var ApplicationMenuIcon = GObject.registerClass(class ArcMenu_ApplicationMenuIco
         return this._app.create_icon_texture(iconSize);
     }
     _onButtonPressEvent(actor, event) {
-		
+        if(event.get_button() == 1)
+            this._button._blockActivateEvent = false;
         return Clutter.EVENT_PROPAGATE;
     }
     _onButtonReleaseEvent(actor, event) {
-        if(event.get_button()==1){
+        if(event.get_button() == 1 && !this._button._blockActivateEvent){
             this.activate(event);
         }
         if(event.get_button()==3){
@@ -1758,9 +1771,7 @@ var ApplicationMenuItem = GObject.registerClass(class ArcMenu_ApplicationMenuIte
             this.connect('button-release-event', this._onButtonReleaseEvent.bind(this));
         }
     }
-    _onButtonPressEvent(actor, event) {	
-        return Clutter.EVENT_PROPAGATE;
-    }   
+
     _onHover() {
         if(this.tooltip==undefined && this.actor.hover){
             let description = this._app.get_description();
@@ -1776,8 +1787,13 @@ var ApplicationMenuItem = GObject.registerClass(class ArcMenu_ApplicationMenuIte
         else if(this._button.leftClickMenu.isOpen)
             this._button.activeMenuItem = null;
     }
+    _onButtonPressEvent(actor, event) {	
+        if(event.get_button() == 1)
+            this._button._blockActivateEvent = false;
+        return Clutter.EVENT_PROPAGATE;
+    }   
     _onButtonReleaseEvent(actor, event) {
-        if(event.get_button()==1){
+        if(event.get_button() == 1 && !this._button._blockActivateEvent){
             this.activate(event);
         }
         if(event.get_button()==3){ 
@@ -1866,11 +1882,12 @@ var SearchResultItem = GObject.registerClass(class ArcMenu_SearchResultItem exte
         return this._app.create_icon_texture(iconSize);
     }
     _onButtonPressEvent(actor, event) {
-		
+        if(event.get_button() == 1)
+            this._button._blockActivateEvent = false;
         return Clutter.EVENT_PROPAGATE;
     }
     _onButtonReleaseEvent(actor, event) {
-        if(event.get_button()==1){
+        if(event.get_button() == 1 && !this._button._blockActivateEvent){
             this.activate(event);
         }           
         if(event.get_button()==3 && this.rightClickMenu == undefined){
@@ -1988,11 +2005,12 @@ var CategoryMenuItem = GObject.registerClass(class ArcMenu_CategoryMenuItem exte
             this._button.activeMenuItem = null;
     }
     _onButtonPressEvent(actor, event) {
-		
+        if(event.get_button() == 1)
+            this._button._blockActivateEvent = false;
         return Clutter.EVENT_PROPAGATE;
     }
     _onButtonReleaseEvent(actor, event) {
-        if(event.get_button()==1){
+        if(event.get_button() == 1 && !this._button._blockActivateEvent){
             this.activate(event);
         }
         return Clutter.EVENT_STOP;
@@ -2121,7 +2139,17 @@ var SimpleMenuItem = GObject.registerClass(class ArcMenu_SimpleMenuItem extends 
             y_align: St.Align.START,
             style_class: 'apps-menu vfade left-scroll-area',
             overlay_scrollbars: true
-        });                
+        });           
+        
+        let panAction = new Clutter.PanAction({ interpolate: false });
+        panAction.connect('pan', (action) => {
+            this._button._blockActivateEvent = true;
+            Utils._onPan(action, this.applicationsScrollBox);
+        });
+        panAction.connect('gesture-cancel',(action) =>  Utils._onPanEnd(action, this.applicationsScrollBox));
+        panAction.connect('gesture-end', (action) => Utils._onPanEnd(action, this.applicationsScrollBox));
+        this.applicationsScrollBox.add_action(panAction);
+        
         this.applicationsScrollBox.connect('key-press-event',(actor,event)=>{
             let key = event.get_key_symbol();
             if(key == Clutter.KEY_Up)
@@ -2290,6 +2318,17 @@ var CategorySubMenuItem = GObject.registerClass(class ArcMenu_CategorySubMenuIte
             else if(key == Clutter.KEY_Down)
                 this.scrollToItem(this._button.activeMenuItem, this.menu.actor, Constants.DIRECTION.DOWN);
         }) ; 
+
+        let panAction = new Clutter.PanAction({ interpolate: false });
+        panAction.connect('pan', (action) => {
+            this._button._blockActivateEvent = true;
+            Utils._onPan(action, this.menu.actor);
+        });
+        panAction.connect('gesture-cancel',(action) =>  Utils._onPanEnd(action, this.menu.actor));
+        panAction.connect('gesture-end', (action) => Utils._onPanEnd(action, this.menu.actor));
+        this.menu.actor.add_action(panAction);
+        
+
         this._updateIcons();
         this.menu.actor.style = 'max-height: 250px;';
         this.menu.actor.overlay_scrollbars = true;
@@ -2507,11 +2546,12 @@ var PlaceMenuItem = GObject.registerClass(class ArcMenu_PlaceMenuItem extends Po
         this._label.text = info.name;
     }
     _onButtonPressEvent(actor, event) {
-		
+        if(event.get_button() == 1)
+            this._button._blockActivateEvent = false;
         return Clutter.EVENT_PROPAGATE;
     }
     _onButtonReleaseEvent(actor, event) {
-        if(event.get_button()==1){
+        if(event.get_button() == 1 && !this._button._blockActivateEvent){
             this.activate(event);
         }
         return Clutter.EVENT_STOP;

@@ -89,11 +89,12 @@ var PlaceMenuItem = GObject.registerClass(class ArcMenu_PlaceMenuItem2 extends P
         return Clutter.EVENT_PROPAGATE;
     }
     _onButtonPressEvent(actor, event) {
-		
+        if(event.get_button() == 1)
+            this._button._blockActivateEvent = false;
         return Clutter.EVENT_PROPAGATE;
     }
     _onButtonReleaseEvent(actor, event) {
-        if(event.get_button()==1){
+        if(event.get_button() == 1 && !this._button._blockActivateEvent){
             this.activate(event);
         }
   	    if(event.get_button()==3){
