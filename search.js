@@ -840,10 +840,12 @@ var ArcSearchProviderInfo = GObject.registerClass(class ArcMenu_ArcSearchProvide
             this.nameLabel.text = this.provider.appInfo.get_name() + "  ("+ this._moreText+")";
     }
     _onButtonPressEvent(actor, event) {
+        if(event.get_button() == 1)
+            this._button._blockActivateEvent = false;
         return Clutter.EVENT_PROPAGATE;
     }
     _onButtonReleaseEvent(actor, event) {
-        if(event.get_button()==1){
+        if(event.get_button() == 1 && !this._button._blockActivateEvent){
             this.activate(event);
         }
         return Clutter.EVENT_STOP;

@@ -4660,7 +4660,7 @@ var AboutPage = GObject.registerClass(
             let pixbuf = GdkPixbuf.Pixbuf.new_from_file_at_size(logoPath, imageWidth, imageHeight);
             let arcMenuImage = new Gtk.Image({ pixbuf: pixbuf });
             let arcMenuImageBox = new Gtk.VBox({
-                margin_top: 5,
+                margin_top: 0,
                 margin_bottom: 0,
                 expand: false
             });
@@ -4685,11 +4685,64 @@ var AboutPage = GObject.registerClass(
                 label: _('A Traditional Application Menu for GNOME'),
                 expand: false
             });
+            let linksBox = new Gtk.HBox({
+                margin_top: 15,
+                margin_bottom: 5,
+                expand: false,
+                halign: Gtk.Align.CENTER
+            });
+            let manualBox = new Gtk.VBox({
+                margin_top: 0,
+                margin_bottom: 0,
+                expand: false,
+                halign: Gtk.Align.CENTER
+            });
+            let gitLabBox = new Gtk.VBox({
+                margin_top: 0,
+                margin_bottom: 0,
+                expand: false,
+                halign: Gtk.Align.CENTER
+            });
+
             let projectLinkButton = new Gtk.LinkButton({
                 label: _('GitLab Page'),
                 uri: projectUrl,
-                expand: false
+                expand: false,
+                halign: Gtk.Align.CENTER
             });
+
+            let imagePath = Me.path + Constants.ARC_MENU_MANUAL_ICON.Path;
+            [imageWidth, imageHeight] = Constants.ARC_MENU_MANUAL_ICON.Size;
+            pixbuf = GdkPixbuf.Pixbuf.new_from_file_at_size(imagePath, imageWidth, imageHeight);
+            let manualImage = new Gtk.Image({ 
+                pixbuf: pixbuf,
+                expand: false,
+                halign: Gtk.Align.CENTER 
+            });
+
+            imagePath = Me.path + Constants.GITLAB_ICON.Path;
+            [imageWidth, imageHeight] = Constants.GITLAB_ICON.Size;
+            pixbuf = GdkPixbuf.Pixbuf.new_from_file_at_size(imagePath, imageWidth, imageHeight);
+            let gitlabImage = new Gtk.Image({ 
+                pixbuf: pixbuf,
+                expand: false,
+                halign: Gtk.Align.CENTER 
+            });
+
+            let projectManualLinkButton = new Gtk.LinkButton({
+                label: _('User Manual'),
+                uri: Constants.ARCMENU_MANUAL_URL,
+                expand: false,
+                halign: Gtk.Align.CENTER
+            });
+            gitLabBox.add(gitlabImage);
+            gitLabBox.add(projectLinkButton);
+            manualBox.add(manualImage);
+            manualBox.add(projectManualLinkButton);
+            linksBox.add(gitLabBox);
+            linksBox.add(manualBox);
+            
+            
             this.creditsScrollWindow = new Gtk.ScrolledWindow();
             this.creditsScrollWindow.set_policy(Gtk.PolicyType.AUTOMATIC, Gtk.PolicyType.AUTOMATIC);
             this.creditsScrollWindow.set_max_content_height(150);
@@ -4708,7 +4761,7 @@ var AboutPage = GObject.registerClass(
             arcMenuInfoBox.add(arcMenuLabel);
             arcMenuInfoBox.add(versionLabel);
             arcMenuInfoBox.add(projectDescriptionLabel);
-            arcMenuInfoBox.add(projectLinkButton);
+            arcMenuInfoBox.add(linksBox);
             arcMenuInfoBox.add(this.creditsScrollWindow);
 
             // Create the GNU software box

@@ -132,6 +132,16 @@ var createMenu = class{
             overlay_scrollbars: true,
             style_class: 'vfade'
         });   
+
+        let panAction = new Clutter.PanAction({ interpolate: false });
+        panAction.connect('pan', (action) => {
+            this._blockActivateEvent = true;
+            Utils._onPan(action, this.shortcutsScrollBox);
+        });
+        panAction.connect('gesture-cancel',(action) =>  Utils._onPanEnd(action, this.shortcutsScrollBox));
+        panAction.connect('gesture-end', (action) => Utils._onPanEnd(action, this.shortcutsScrollBox));
+        this.shortcutsScrollBox.add_action(panAction);
+
         this.shortcutsScrollBox.connect('key-press-event',(actor,event)=>{
             let key = event.get_key_symbol();
             if(key == Clutter.KEY_Up)
@@ -350,6 +360,16 @@ var createMenu = class{
             overlay_scrollbars: true,
             reactive:true
         });        
+
+        let panAction = new Clutter.PanAction({ interpolate: false });
+        panAction.connect('pan', (action) => {
+            this._blockActivateEvent = true;
+            Utils._onPan(action, this.applicationsScrollBox);
+        });
+        panAction.connect('gesture-cancel',(action) =>  Utils._onPanEnd(action, this.applicationsScrollBox));
+        panAction.connect('gesture-end', (action) => Utils._onPanEnd(action, this.applicationsScrollBox));
+        this.applicationsScrollBox.add_action(panAction);
+
         this.applicationsScrollBox.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC);
         this.leftPanelPopup.add(this.applicationsScrollBox, {
             expand: true,

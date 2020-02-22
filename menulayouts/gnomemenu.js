@@ -89,6 +89,16 @@ var createMenu = class{
             overlay_scrollbars: true,
             style_class: 'vfade'
         }); 
+
+        let panAction = new Clutter.PanAction({ interpolate: false });
+        panAction.connect('pan', (action) => {
+            this._blockActivateEvent = true;
+            Utils._onPan(action, this.shortcutsScrollBox);
+        });
+        panAction.connect('gesture-cancel',(action) =>  Utils._onPanEnd(action, this.shortcutsScrollBox));
+        panAction.connect('gesture-end', (action) => Utils._onPanEnd(action, this.shortcutsScrollBox));
+        this.shortcutsScrollBox.add_action(panAction);
+
         let rightPanelWidth = this._settings.get_int('right-panel-width');
         rightPanelWidth += 45;
         this.rightBox.style = "width: " + rightPanelWidth + "px;";

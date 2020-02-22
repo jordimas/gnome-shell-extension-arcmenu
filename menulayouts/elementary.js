@@ -49,7 +49,8 @@ var createMenu = class{
         this._session = new GnomeSession.SessionManager();
         this.newSearch = new ArcSearch.SearchResults(this);      
         this._mainBoxKeyPressId = this.mainBox.connect('key-press-event', this._onMainBoxKeyPress.bind(this));
-        this.isRunning=true;
+        this.isRunning = true;
+        this._panning = false;
 
         this._tree = new GMenu.Tree({ menu_basename: 'applications.menu' });
         this._treeChangedId = this._tree.connect('changed', ()=>{
@@ -104,7 +105,17 @@ var createMenu = class{
             overlay_scrollbars: true,
             style_class: 'apps-menu vfade',
             reactive:true
-        });   
+        });  
+
+        let panAction = new Clutter.PanAction({ interpolate: false });
+        panAction.connect('pan', (action) => {
+            this._blockActivateEvent = true;
+            Utils._onPan(action, this.shortcutsScrollBox);
+        });
+        panAction.connect('gesture-cancel',(action) =>  Utils._onPanEnd(action, this.shortcutsScrollBox));
+        panAction.connect('gesture-end', (action) => Utils._onPanEnd(action, this.shortcutsScrollBox));
+        this.shortcutsScrollBox.add_action(panAction);
+
         this.shortcutsScrollBox.connect('key-press-event',(actor,event)=>{
             let key = event.get_key_symbol();
             if(key == Clutter.KEY_Up)

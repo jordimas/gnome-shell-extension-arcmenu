@@ -548,18 +548,13 @@ var ApplicationsButton = GObject.registerClass(class ArcMenu_ApplicationsButton 
     _onOpenStateChanged(menu, open) {
         if (open){
             if(this.menuManager.activeMenu) 
-                this.menuManager.activeMenu.close(1 << 1);
+                this.menuManager.activeMenu.close(imports.ui.boxpointer.PopupAnimation.FULL);
             this.getWidget().getPanelIcon().add_style_pseudo_class('active');
             this.add_style_pseudo_class('active');
         }      
         else{ 
             this.getWidget().getPanelIcon().remove_style_pseudo_class('active');
             this.remove_style_pseudo_class('active');
-        }
-        if (menu == this.leftClickMenu) {
-            if(open){
-                this.mainBox.show();  
-            }
         }
     }
 });
@@ -614,14 +609,14 @@ var RightClickMenu = class ArcMenu_RightClickMenu extends PopupMenu.PopupMenu {
         item._separator.style_class='arc-menu-sep';     
         this.addMenuItem(item);      
         
-        item = new PopupMenu.PopupMenuItem(_("Arc Menu on GitLab"));        
+        item = new PopupMenu.PopupMenuItem(_("Arc Menu GitLab Page"));        
         item.connect('activate', ()=>{
             Util.spawnCommandLine('xdg-open https://gitlab.com/LinxGem33/Arc-Menu');
         });     
         this.addMenuItem(item);  
-        item = new PopupMenu.PopupMenuItem(_("About Arc Menu"));          
+        item = new PopupMenu.PopupMenuItem(_("Arc Menu User Manual"));          
         item.connect('activate', ()=>{
-            Util.spawnCommandLine('xdg-open https://gitlab.com/LinxGem33/Arc-Menu/wikis/Introduction');
+            Util.spawnCommandLine('xdg-open ' + Constants.ARCMENU_MANUAL_URL);
         });      
         this.addMenuItem(item);
     }
