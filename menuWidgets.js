@@ -380,7 +380,7 @@ var AppRightClickMenu = class ArcMenu_AppRightClickMenu extends PopupMenu.PopupM
 
 var ArcMenuPopupBaseMenuItem = GObject.registerClass(
     class ArcMenu_PopupBaseMenuItem extends PopupMenu.PopupBaseMenuItem{
-    _init(button) {
+    _init() {
         super._init();
         this.actor.connect('notify::active',()=> this.setActive(this.actor.active));
         this.actor.connect('notify::hover',this._onHover.bind(this));
@@ -418,13 +418,7 @@ var ArcMenuPopupBaseMenuItem = GObject.registerClass(
         this.contextMenuActive = false;
         if(event.get_button() == 1){
             this._button._blockActivateEvent = false;
-            this._popupTimeoutId = GLib.timeout_add(GLib.PRIORITY_DEFAULT, 600, () => {
-                this._popupTimeoutId = 0;
-                this.contextMenuActive = true;
-                if(this.popupContextMenu && this._button.leftClickMenu.isOpen && !this._button._blockActivateEvent)  
-                    this.popupContextMenu();
-                return GLib.SOURCE_REMOVE;
-            });
+            this.contextMenuTimeOut();
         }
         return Clutter.EVENT_PROPAGATE;
     }
@@ -445,16 +439,20 @@ var ArcMenuPopupBaseMenuItem = GObject.registerClass(
             return Clutter.EVENT_STOP;
         } else if (event.type() == Clutter.EventType.TOUCH_BEGIN) {
             this.contextMenuActive = false;
-            this._popupTimeoutId = GLib.timeout_add(GLib.PRIORITY_DEFAULT, 600, () => {
-                this._popupTimeoutId = 0;
-                this.contextMenuActive = true;
-                if(this.popupContextMenu && this._button.leftClickMenu.isOpen && !this._button._blockActivateEvent)  
-                    this.popupContextMenu();
-                return GLib.SOURCE_REMOVE;
-            });
+            this.contextMenuTimeOut();
             this.add_style_pseudo_class('active');
         }
         return Clutter.EVENT_PROPAGATE;
+    }
+    contextMenuTimeOut(){
+        this._popupTimeoutId = GLib.timeout_add(GLib.PRIORITY_DEFAULT, 600, () => {
+            this._popupTimeoutId = null;
+            this.contextMenuActive = true;
+            if(this.popupContextMenu && this._button.leftClickMenu.isOpen && !this._button._blockActivateEvent) {
+                this.popupContextMenu();
+            }
+            return GLib.SOURCE_REMOVE;
+        });
     }
 });
 
@@ -1341,6 +1339,12 @@ var FavoritesMenuItem = GObject.registerClass({
     }
 
    _onDragBegin() {   
+        if(this.rightClickMenu && this.rightClickMenu.isOpen)
+            this.rightClickMenu.toggle();
+        if(this._popupTimeoutId){
+            GLib.source_remove(this._popupTimeoutId);
+            this._popupTimeoutId = null;
+        }
         this._dragMonitor = {
             dragMotion: (this, this._onDragMotion.bind(this))
         };
