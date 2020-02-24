@@ -48,11 +48,11 @@ var ListSearchResult = class ArcMenu_ListSearchResultGrid {
         this.metaInfo = metaInfo;
         this._resultsView = resultsView;
         this._settings = this._button._settings;
-        this.app = appSys.lookup_app(this.metaInfo['id']);
+        this._app = appSys.lookup_app(this.metaInfo['id']);
         if(this.provider.id =='org.gnome.Nautilus.desktop')
             this.menuItem = new MW.SearchResultItem(this._button, appSys.lookup_app(this.provider.id), this.metaInfo['description']);
-        else if(this.app)
-            this.menuItem = new MW.SearchResultItem(this._button,this.app); 
+        else if(this._app)
+            this.menuItem = new MW.SearchResultItem(this._button,this._app); 
         else
             this.menuItem =  new MW.SearchResultItem(this._button); 
 
@@ -93,7 +93,7 @@ var ListSearchResult = class ArcMenu_ListSearchResultGrid {
             
             let text = this.metaInfo['description'] ? this.metaInfo['description'] : '';
             if(text == '')
-                text = this.app.get_description() ? this.app.get_description() : '';
+                text = this._app.get_description() ? this._app.get_description() : '';
                 this.label.y_expand = true;
             let descriptionLabel = new St.Label({ 
                 text: text,
@@ -114,18 +114,13 @@ var ListSearchResult = class ArcMenu_ListSearchResultGrid {
         else{
             this.menuItem.actor.add_child(this.label);
         }
-        
-        this.menuItem.actor.connect('notify::hover', this._onHover.bind(this));
         if (this.metaInfo['description']&&  this.provider.appInfo.get_name() == "Calculator") {
             this.label.text = this.metaInfo['name'] + "   " + this.metaInfo['description'];
         }
+        this.menuItem.label = this.label;
+        this.menuItem.description = this._app ? this._app.get_description() : this.metaInfo['description'];
     }
-    _onHover(){
-        if(this.menuItem.tooltip==undefined && this.menuItem.actor.hover){
-            let description = this.app ? this.app.get_description() : this.metaInfo['description'];
-            Utils.createTooltip(this._button, this.menuItem, this.label, description);
-        }
-    }
+
     activate() {
         this.emit('activate', this.metaInfo.id);
     }
@@ -144,9 +139,9 @@ var AppSearchResult = class ArcMenu_AppSearchResultGrid {
         this._resultsView = resultsView;
         this._settings = this._button._settings;
         this.layout = this._settings.get_enum('menu-layout');
-        this.app = appSys.lookup_app(this.metaInfo['id']);
-        if(this.app){
-            this.menuItem = new MW.ApplicationMenuIcon(this._button, this.app);
+        this._app = appSys.lookup_app(this.metaInfo['id']);
+        if(this._app){
+            this.menuItem = new MW.ApplicationMenuIcon(this._button, this._app);
         }
         else{
             let ICON_SIZE = 16;
@@ -182,17 +177,11 @@ var AppSearchResult = class ArcMenu_AppSearchResultGrid {
                 x_align: St.Align.END
             });
             this.menuItem.actor.add_child(this.label);
-            this.menuItem.actor.connect('notify::hover', this._onHover.bind(this));
-            this.menuItem.connect('activate', this.activate.bind(this));
-        }
-       
+            this.menuItem.label = this.label;
+            this.menuItem.description = this._app ? this._app.get_description() : this.metaInfo['description'];
+        }  
     }
-    _onHover(){
-        if(this.menuItem.tooltip==undefined && this.menuItem.actor.hover){
-            let description = this.app ? this.app.get_description() : this.metaInfo['description'];
-            Utils.createTooltip(this._button, this.menuItem, this.label, description);
-        }
-    }
+
     activate() {
         this.emit('activate', this.metaInfo.id);
     }
@@ -792,7 +781,7 @@ var SearchResults = class ArcMenu_SearchResultsGrid {
 };
 Signals.addSignalMethods(SearchResults.prototype);
 
-var ArcSearchProviderInfo = GObject.registerClass(class ArcMenu_ArcSearchProviderInfoGrid extends PopupMenu.PopupBaseMenuItem{
+var ArcSearchProviderInfo = GObject.registerClass(class ArcMenu_ArcSearchProviderInfoGrid extends MW.ArcMenuPopupBaseMenuItem{
     _init(provider,button) {
         super._init();
         this.provider = provider;
@@ -823,14 +812,14 @@ var ArcSearchProviderInfo = GObject.registerClass(class ArcMenu_ArcSearchProvide
             this.actor.style = "border-radius:4px; spacing: 0px; width: 150px;";
             icon.icon_size = 24;
         } 
-        this.nameLabel = new St.Label({ 
+        this.label = new St.Label({ 
             text: provider.appInfo.get_name() + ":",
             x_align: Clutter.ActorAlign.START,
             y_align: Clutter.ActorAlign.CENTER
         });
         if(this._settings.get_boolean('krunner-show-details') && this.layout == Constants.MENU_LAYOUT.Raven){
             this.actor.style = "height:40px";
-            this.nameLabel.style = 'font-weight: bold;';
+            this.label.style = 'font-weight: bold;';
             let box = new St.BoxLayout({vertical:true});
             icon.icon_size = 32;
             let text = provider.appInfo.get_description() != null ? provider.appInfo.get_description() : '';
@@ -841,8 +830,8 @@ var ArcSearchProviderInfo = GObject.registerClass(class ArcMenu_ArcSearchProvide
                 y_align: Clutter.ActorAlign.CENTER,
                 x_expand: true
             });
-            this.nameLabel.y_expand = true;
-            box.add(this.nameLabel);
+            this.label.y_expand = true;
+            box.add(this.label);
             box.add(descriptionLabel);
             this._content.add_actor(box);
             this._content.remove_actor(icon);
@@ -850,34 +839,22 @@ var ArcSearchProviderInfo = GObject.registerClass(class ArcMenu_ArcSearchProvide
         else if(this.layout == Constants.MENU_LAYOUT.Raven){
             this.actor.style = "height:25px";
             this._content.remove_actor(icon);
-            this._content.add_actor(this.nameLabel);
+            this._content.add_actor(this.label);
         }
         else{
-            this._content.add_actor(this.nameLabel);
+            this._content.add_actor(this.label);
         }
 
         this.actor.vertical = false;
         this.actor.add_child(this._content);
-
-
         this._moreText="";
-        
-        
         this.hoverID = this.actor.connect('notify::hover', this._onHover.bind(this));
-        this.actor.connect('notify::active',()=> this.setActive(this.actor.active));
-
-        if(gnome36){
-            this.connect('button-press-event', this._onButtonPressEvent.bind(this));
-            this.connect('button-release-event', this._onButtonReleaseEvent.bind(this));
-        }
+        this.description = this.provider.appInfo.get_description();
     }
     _onHover() {
         if(this.actor.hover && this._button.newSearch._highlightDefault)
             this._button.newSearch.highlightDefault(false);
-        if(this.tooltip==undefined && this.actor.hover){
-            let description = this.provider.appInfo.get_description();
-            Utils.createTooltip(this._button, this, this.nameLabel, description);
-        }
+        super._onHover();
     }
     animateLaunch() {
         let app = appSys.lookup_app(this.provider.appInfo.get_id());
@@ -886,38 +863,11 @@ var ArcSearchProviderInfo = GObject.registerClass(class ArcMenu_ArcSearchProvide
         this._moreText= ngettext("%d more", "%d more", count).format(count);
         if(count>0){
             if(this.layout == Constants.MENU_LAYOUT.Raven)
-                this.nameLabel.text = this.provider.appInfo.get_name() + " ("+ this._moreText+")";
+                this.label.text = this.provider.appInfo.get_name() + " ("+ this._moreText+")";
             else
-                this.nameLabel.text = this.provider.appInfo.get_name() + "\n("+ this._moreText+")";
+                this.label.text = this.provider.appInfo.get_name() + "\n("+ this._moreText+")";
         }
             
-    }
-    _onButtonPressEvent(actor, event) {
-        if(event.get_button() == 1)
-            this._button._blockActivateEvent = false;
-        return Clutter.EVENT_PROPAGATE;
-    }
-    _onButtonReleaseEvent(actor, event) {
-        if(event.get_button() == 1 && !this._button._blockActivateEvent){
-            this.activate(event);
-        }
-        return Clutter.EVENT_STOP;
-    }
-    setActive(active){
-        if(active){
-            if(this._button.activeMenuItem && this._button.activeMenuItem != this)
-                this._button.activeMenuItem.setFakeActive(false);
-            this._button.activeMenuItem = this;
-        }            
-        else if(this._button.leftClickMenu.isOpen)
-            this._button.activeMenuItem = null;
-    }
-    setFakeActive(active) {
-        if (active) {
-            this.actor.add_style_class_name('selected');
-        } else {
-            this.actor.remove_style_class_name('selected');
-        }
     }
 });
 

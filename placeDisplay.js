@@ -27,6 +27,7 @@ const Clutter = imports.gi.Clutter;
 const Gettext = imports.gettext.domain(Me.metadata['gettext-domain']);
 const GObject = imports.gi.GObject;
 const Main = imports.ui.main;
+const MW = Me.imports.menuWidgets;
 const PopupMenu = imports.ui.popupMenu;
 const ShellMountOperation = imports.ui.shellMountOperation;
 const Signals = imports.signals;
@@ -41,7 +42,7 @@ const Hostname1Iface = '<node> \
 const Hostname1 = Gio.DBusProxy.makeProxyWrapper(Hostname1Iface);
 const gnome36 = imports.misc.config.PACKAGE_VERSION >= '3.35.0';
 
-var PlaceMenuItem = GObject.registerClass(class ArcMenu_PlaceMenuItem2 extends PopupMenu.PopupBaseMenuItem{
+var PlaceMenuItem = GObject.registerClass(class ArcMenu_PlaceMenuItem2 extends MW.ArcMenuPopupBaseMenuItem{
     _init(info,button) {
         super._init();
         this._info = info;
@@ -53,8 +54,8 @@ var PlaceMenuItem = GObject.registerClass(class ArcMenu_PlaceMenuItem2 extends P
         this.actor.add_child(this._icon);
         if(info.name.length>=20)
             info.name = info.name.slice(0,20) + "...";
-        this._label = new St.Label({ text: info.name, x_expand: true});
-        this.actor.add_child(this._label);
+        this.label = new St.Label({ text: info.name, x_expand: true});
+        this.actor.add_child(this.label);
 
         if (info.isRemovable()) {
             this._ejectIcon = new St.Icon({
@@ -74,33 +75,8 @@ var PlaceMenuItem = GObject.registerClass(class ArcMenu_PlaceMenuItem2 extends P
                 this._changedId = 0;
             }
         });
-        if(gnome36){
-            this.connect('button-press-event', this._onButtonPressEvent.bind(this));
-            this.connect('button-release-event', this._onButtonReleaseEvent.bind(this));
-        }
     }
-    _onKeyPressEvent(actor, event) {
-        let symbol = event.get_key_symbol();
-        if (symbol == Clutter.KEY_Return ||
-            symbol == Clutter.KEY_KP_Enter) {
-            this.activate(event);
-            return Clutter.EVENT_STOP;
-        }
-        return Clutter.EVENT_PROPAGATE;
-    }
-    _onButtonPressEvent(actor, event) {
-        if(event.get_button() == 1)
-            this._button._blockActivateEvent = false;
-        return Clutter.EVENT_PROPAGATE;
-    }
-    _onButtonReleaseEvent(actor, event) {
-        if(event.get_button() == 1 && !this._button._blockActivateEvent){
-            this.activate(event);
-        }
-  	    if(event.get_button()==3){
-	    }   
-        return Clutter.EVENT_STOP;
-    }
+   
     activate(event) {
         this._info.launch(event.get_time());
         this._button.leftClickMenu.toggle();
@@ -108,7 +84,7 @@ var PlaceMenuItem = GObject.registerClass(class ArcMenu_PlaceMenuItem2 extends P
     }
     _propertiesChanged(info) {
         this._icon.gicon = info.icon;
-        this._label.text = info.name;
+        this.label.text = info.name;
     }
 });
 

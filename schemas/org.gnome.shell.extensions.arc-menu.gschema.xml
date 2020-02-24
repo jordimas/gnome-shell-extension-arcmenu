@@ -414,8 +414,8 @@
       <description>List of default directory paths used for links on the right side of Arc Menu.</description>
     </key>
     <key name="application-shortcuts-list" type="aas">
-      <default>[["Software","system-software-install-symbolic", "ArcMenu_Software"], ["Settings","preferences-system-symbolic", "gnome-control-center"],
-          ["Tweaks","org.gnome.tweaks-symbolic", "gnome-tweaks"],["Terminal","utilities-terminal-symbolic", "gnome-terminal"],
+      <default>[["Software","system-software-install-symbolic", "ArcMenu_Software"], ["Settings","preferences-system-symbolic", "gnome-control-center.desktop"],
+          ["Tweaks","org.gnome.tweaks-symbolic", "org.gnome.tweaks.desktop"],["Terminal","utilities-terminal-symbolic", "org.gnome.Terminal.desktop"],
           ["Activities Overview", "view-fullscreen-symbolic", "ArcMenu_ActivitiesOverview"]]</default>
       <summary>List of default directory paths used for links on the right side of Arc Menu</summary>
       <description>List of default directory paths used for links on the right side of Arc Menu.</description>

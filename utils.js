@@ -54,5 +54,3 @@ function _onPanEnd(action, scrollbox) {
     let adjustment = scrollbox.get_vscroll_bar().get_adjustment();
     adjustment.value = endPanValue;
 }
-
-
