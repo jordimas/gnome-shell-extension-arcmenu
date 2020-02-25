@@ -1117,6 +1117,8 @@ var ShortcutMenuItem = GObject.registerClass(class ArcMenu_ShortcutMenuItem exte
     popupContextMenu(){
         if(this._app && this.rightClickMenu == undefined){
             this.rightClickMenu = new AppRightClickMenu(this.actor, this._app, this._button);
+            if(this.actor.vertical)
+                this.rightClickMenu.centerBoxPointerPosition();
             if(this._path) 
                 this.rightClickMenu.path = this._path;
             this._button.appMenuManager.addMenu(this.rightClickMenu);
