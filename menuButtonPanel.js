@@ -76,6 +76,36 @@ var ApplicationsButton = GObject.registerClass(class ArcMenu_ApplicationsButton 
         //Applications Right Click Context Menu------------------------------------
         this.appMenuManager = new PopupMenu.PopupMenuManager(this);
         this.appMenuManager._changeMenu = (menu) => {};
+        this.appMenuManager._onMenuSourceEnter = (menu) =>{
+            if (this.appMenuManager.activeMenu && this.appMenuManager.activeMenu != menu)
+                return Clutter.EVENT_STOP;
+
+            return Clutter.EVENT_PROPAGATE;
+        }
+        this.appMenuManager._onMenuOpenState = (menu, open) => {
+            if (open) {
+                this.appMenuManager.activeMenuTimeOut = true;
+                if(this.blockEventTimeOut){
+                    GLib.source_remove(this.blockEventTimeOut);
+                    this.blockEventTimeOut = null;
+                }
+                if (this.appMenuManager.activeMenu){
+                    this.appMenuManager.activeMenu.close(imports.ui.boxpointer.PopupAnimation.FADE);
+                }
+                this.appMenuManager._grabHelper.grab({
+                    actor: menu.actor,
+                    focus: menu.focusActor,
+                    onUngrab: isUser => this.appMenuManager._closeMenu(isUser, menu),
+                });
+            } else {
+                this.appMenuManager._grabHelper.ungrab({ actor: menu.actor });
+                this.blockEventTimeOut = GLib.timeout_add(0, 300, () => {
+                    this.blockEventTimeOut = null;
+                    this.appMenuManager.activeMenuTimeOut = false;
+                    return GLib.SOURCE_REMOVE;
+                });
+            }
+        }
         //-------------------------------------------------------------------------
 
         //Dash to Panel Integration----------------------------------------------------------------------

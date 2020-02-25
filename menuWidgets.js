@@ -415,39 +415,45 @@ var ArcMenuPopupBaseMenuItem = GObject.registerClass(
             this._button.activeMenuItem = null;
     }
     _onButtonPressEvent(actor, event) {
-        this.contextMenuActive = false;
-        if(event.get_button() == 1){
+        if(event.get_button() == 1 && !this._button.appMenuManager.activeMenuTimeOut){
             this._button._blockActivateEvent = false;
             this.contextMenuTimeOut();
+        }
+        else if(this._button.appMenuManager.activeMenu){
+            this._button._blockActivateEvent = false;
+            this._button.appMenuManager.activeMenu.toggle();
         }
         return Clutter.EVENT_PROPAGATE;
     }
     _onButtonReleaseEvent(actor, event) {
-        if(event.get_button() == 1 && !this._button._blockActivateEvent && !this.contextMenuActive){
+        if(event.get_button() == 1 && !this._button._blockActivateEvent && !this._button.appMenuManager.activeMenuTimeOut){
             this.activate(event); 
         }
-  	    if(event.get_button() == 3 && !this.contextMenuActive){
-            if(this.popupContextMenu)  
+  	    if(event.get_button() == 3  && !this._button.appMenuManager.activeMenuTimeOut){
+            if(this.popupContextMenu)
                 this.popupContextMenu();
-	    }   
+        }
         return Clutter.EVENT_STOP;
     }
     _onTouchEvent(actor, event) {
-        if (event.type() == Clutter.EventType.TOUCH_END && !this._button._blockActivateEvent && !this.contextMenuActive) {
+        if (event.type() == Clutter.EventType.TOUCH_END && !this._button._blockActivateEvent && !this._button.appMenuManager.activeMenuTimeOut) {
             this.remove_style_pseudo_class('active');
             this.activate(event);
             return Clutter.EVENT_STOP;
-        } else if (event.type() == Clutter.EventType.TOUCH_BEGIN) {
-            this.contextMenuActive = false;
+        } else if (event.type() == Clutter.EventType.TOUCH_BEGIN && !this._button.appMenuManager.activeMenuTimeOut) {
+            this._button._blockActivateEvent = false;
             this.contextMenuTimeOut();
             this.add_style_pseudo_class('active');
+        }
+        else if(event.type() == Clutter.EventType.TOUCH_BEGIN && this._button.appMenuManager.activeMenu){
+            this._button._blockActivateEvent = false;
+            this._button.appMenuManager.activeMenu.toggle();
         }
         return Clutter.EVENT_PROPAGATE;
     }
     contextMenuTimeOut(){
         this._popupTimeoutId = GLib.timeout_add(GLib.PRIORITY_DEFAULT, 600, () => {
             this._popupTimeoutId = null;
-            this.contextMenuActive = true;
             if(this.popupContextMenu && this._button.leftClickMenu.isOpen && !this._button._blockActivateEvent) {
                 this.popupContextMenu();
             }
