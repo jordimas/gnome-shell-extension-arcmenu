@@ -380,10 +380,18 @@ var AppRightClickMenu = class ArcMenu_AppRightClickMenu extends PopupMenu.PopupM
 
 var ArcMenuPopupBaseMenuItem = GObject.registerClass(
     class ArcMenu_PopupBaseMenuItem extends PopupMenu.PopupBaseMenuItem{
-    _init() {
+    _init(params){
+        params = imports.misc.params.parse(params, {
+            reactive: true,
+            hover: true
+        });
         super._init();
-        this.actor.connect('notify::active',()=> this.setActive(this.actor.active));
-        this.actor.connect('notify::hover',this._onHover.bind(this));
+
+        if(params.reactive)
+            this.actor.connect('notify::active',()=> this.setActive(this.actor.active));
+        if(params.hover)   
+            this.actor.connect('notify::hover',this._onHover.bind(this));
+        
         if(gnome36){
             this.connect('button-press-event', this._onButtonPressEvent.bind(this));
             this.connect('button-release-event', this._onButtonReleaseEvent.bind(this));
@@ -1003,7 +1011,10 @@ var LockButton = class ArcMenu_LockButton extends SessionButton {
 // Menu item to go back to category view
 var BackMenuItem = GObject.registerClass(class ArcMenu_BackMenuItem extends ArcMenuPopupBaseMenuItem{
     _init(button) {
-        super._init();
+        super._init({
+            reactive:false,
+            hover: false
+        });
         this._button = button;
         this._icon = new St.Icon({
             icon_name: 'go-previous-symbolic',
@@ -1053,7 +1064,10 @@ var BackMenuItem = GObject.registerClass(class ArcMenu_BackMenuItem extends ArcM
 // Menu item to view all apps
 var ViewAllPrograms = GObject.registerClass(class ArcMenu_ViewAllPrograms extends ArcMenuPopupBaseMenuItem{
     _init(button) {
-        super._init();
+        super._init({
+            reactive:false,
+            hover: false
+        });
         this._button = button;
         this._icon = new St.Icon({
             icon_name: 'go-next-symbolic',
@@ -1175,7 +1189,10 @@ var ShortcutMenuItem = GObject.registerClass(class ArcMenu_ShortcutMenuItem exte
 // Menu item which displays the current user
 var UserMenuItem = GObject.registerClass(class ArcMenu_UserMenuItem extends ArcMenuPopupBaseMenuItem{
     _init(button) {
-        super._init();
+        super._init({
+            reactive:false,
+            hover: false
+        });
         this._button = button;
         let username = GLib.get_user_name();
         this._user = AccountsService.UserManager.get_default().get_user(username);
