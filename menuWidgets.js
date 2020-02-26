@@ -424,10 +424,13 @@ var ArcMenuPopupBaseMenuItem = GObject.registerClass(
     }
     _onButtonPressEvent(actor, event) {
         this.pressed = false;
-        if(event.get_button() == 1 && !this._button.appMenuManager.activeMenuTimeOut){
+        if(event.get_button() == 1 && !this._button.appMenuManager.activeMenu){
             this._button._blockActivateEvent = false;
             this.pressed = true;
             this.contextMenuTimeOut();
+        }
+        else if(event.get_button() == 3 && !this._button.appMenuManager.activeMenu){
+            this.pressed = true;
         }
         else if(this._button.appMenuManager.activeMenu){
             this._button._blockActivateEvent = false;
@@ -436,26 +439,29 @@ var ArcMenuPopupBaseMenuItem = GObject.registerClass(
         return Clutter.EVENT_PROPAGATE;
     }
     _onButtonReleaseEvent(actor, event) {
-        if(event.get_button() == 1 && !this._button._blockActivateEvent && !this._button.appMenuManager.activeMenuTimeOut && this.pressed){
+        if(event.get_button() == 1 && !this._button._blockActivateEvent && this.pressed){
             this.activate(event); 
         }
-  	    if(event.get_button() == 3  && !this._button.appMenuManager.activeMenuTimeOut){
+  	    if(event.get_button() == 3 && this.pressed){
             if(this.popupContextMenu)
                 this.popupContextMenu();
         }
         return Clutter.EVENT_STOP;
     }
     _onTouchEvent(actor, event) {
-        if (event.type() == Clutter.EventType.TOUCH_END && !this._button._blockActivateEvent && !this._button.appMenuManager.activeMenuTimeOut) {
+        if (event.type() == Clutter.EventType.TOUCH_END && !this._button._blockActivateEvent && this.pressed) {
             this.remove_style_pseudo_class('active');
             this.activate(event);
+            this.pressed = false;
             return Clutter.EVENT_STOP;
-        } else if (event.type() == Clutter.EventType.TOUCH_BEGIN && !this._button.appMenuManager.activeMenuTimeOut) {
+        } else if (event.type() == Clutter.EventType.TOUCH_BEGIN && !this._button.appMenuManager.activeMenu) {
+            this.pressed = true;
             this._button._blockActivateEvent = false;
             this.contextMenuTimeOut();
             this.add_style_pseudo_class('active');
         }
         else if(event.type() == Clutter.EventType.TOUCH_BEGIN && this._button.appMenuManager.activeMenu){
+            this.pressed = false;
             this._button._blockActivateEvent = false;
             this._button.appMenuManager.activeMenu.toggle();
         }
@@ -463,6 +469,7 @@ var ArcMenuPopupBaseMenuItem = GObject.registerClass(
     }
     contextMenuTimeOut(){
         this._popupTimeoutId = GLib.timeout_add(GLib.PRIORITY_DEFAULT, 600, () => {
+            this.pressed = false;
             this._popupTimeoutId = null;
             if(this.popupContextMenu && this._button.leftClickMenu.isOpen && !this._button._blockActivateEvent) {
                 this.popupContextMenu();
