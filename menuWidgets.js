@@ -423,8 +423,10 @@ var ArcMenuPopupBaseMenuItem = GObject.registerClass(
             this._button.activeMenuItem = null;
     }
     _onButtonPressEvent(actor, event) {
+        this.pressed = false;
         if(event.get_button() == 1 && !this._button.appMenuManager.activeMenuTimeOut){
             this._button._blockActivateEvent = false;
+            this.pressed = true;
             this.contextMenuTimeOut();
         }
         else if(this._button.appMenuManager.activeMenu){
@@ -434,7 +436,7 @@ var ArcMenuPopupBaseMenuItem = GObject.registerClass(
         return Clutter.EVENT_PROPAGATE;
     }
     _onButtonReleaseEvent(actor, event) {
-        if(event.get_button() == 1 && !this._button._blockActivateEvent && !this._button.appMenuManager.activeMenuTimeOut){
+        if(event.get_button() == 1 && !this._button._blockActivateEvent && !this._button.appMenuManager.activeMenuTimeOut && this.pressed){
             this.activate(event); 
         }
   	    if(event.get_button() == 3  && !this._button.appMenuManager.activeMenuTimeOut){
