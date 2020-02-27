@@ -55,7 +55,7 @@ var createMenu = class {
 
         this._tree = new GMenu.Tree({ menu_basename: 'applications.menu' });
         this._treeChangedId = this._tree.connect('changed', ()=>{
-            this._reload();
+            this.needsReload = true;
         });
 
         this.mainBox.vertical = false;
@@ -370,36 +370,28 @@ var createMenu = class {
         this._createRightBox();
         this.updateStyle();
     }
-    // Redisplay the menu
     _redisplay() {
         if (this.applicationsBox)
             this._clearApplicationsBox();
         this._display();
     }
     _reload() {
-        if(this.leftClickMenu.isOpen)
-            this.needsReload = true;
-        else{
-            for (let i = 0; i < this.categoryDirectories.length; i++) {
-                this.categoryDirectories[i].destroy();
-            }
-            for (let i = 0; i < this.favoritesArray.length; i++) {
-                this.favoritesArray[i].destroy();
-            }
-            this._applicationsButtons.forEach((value,key,map) => {
-                this._applicationsButtons.delete(key);
-                value.destroy(); 
-            });
-            this.applicationsBox.destroy_all_children();
-            this._loadCategories();
-            this._loadFavorites();
-            this._display();
+        for (let i = 0; i < this.categoryDirectories.length; i++) {
+            this.categoryDirectories[i].destroy();
         }
+        for (let i = 0; i < this.favoritesArray.length; i++) {
+            this.favoritesArray[i].destroy();
+        }
+        this._applicationsButtons.forEach((value,key,map) => {
+            this._applicationsButtons.delete(key);
+            value.destroy(); 
+        });
+        this.applicationsBox.destroy_all_children();
+        this._loadCategories();
+        this._loadFavorites();
+        this._display();
     }
-    // Display the menu
     _display() {
-        //this.mainBox.hide();
-        
         if(this._settings.get_boolean('enable-pinned-apps'))
             this._displayFavorites();
         else
