@@ -360,25 +360,27 @@ var createMenu = class {
         this._display();
     }
     _reload() {
-        for (let i = 0; i < this.categoryDirectories.length; i++) {
-            this.categoryDirectories[i].destroy();
+        if(this.leftClickMenu.isOpen)
+            this.needsReload = true;
+        else{
+            for (let i = 0; i < this.categoryDirectories.length; i++) {
+                this.categoryDirectories[i].destroy();
+            }
+            for (let i = 0; i < this.favoritesArray.length; i++) {
+                this.favoritesArray[i].destroy();
+            }
+            this._applicationsButtons.forEach((value,key,map) => {
+                this._applicationsButtons.delete(key);
+                value.destroy(); 
+            });
+            this.applicationsBox.destroy_all_children();
+            this._loadCategories();
+            this._loadFavorites();
+            this._display();
         }
-        for (let i = 0; i < this.favoritesArray.length; i++) {
-            this.favoritesArray[i].destroy();
-        }
-        this._applicationsButtons.forEach((value,key,map) => {
-            this._applicationsButtons.delete(key);
-            value.destroy(); 
-        });
-        this.applicationsBox.destroy_all_children();
-        this._loadCategories();
-        this._loadFavorites();
-        this._display();
     }
     // Display the menu
-    _display() {
-        //this.mainBox.hide();
-        
+    _display() {       
         if(this._settings.get_boolean('enable-pinned-apps'))
             this._displayFavorites();
         else
@@ -386,8 +388,7 @@ var createMenu = class {
         this.backButton.actor.hide();
 
         if(this.vertSep!=null)
-            this.vertSep.queue_repaint(); 
-        
+            this.vertSep.queue_repaint();     
     }
     updateStyle(){
         let addStyle=this._settings.get_boolean('enable-custom-arc-menu');

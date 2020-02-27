@@ -95,12 +95,16 @@ var createMenu = class{
     _redisplay() {
     }
     _reload() {
-        for (let i = 0; i < this.categoryDirectories.length; i++) {
-            this.categoryDirectories[i].destroy();
-        }    
-        this._clearApplicationsBox();
-        this._loadCategories();
-        this._display(); 
+        if(this.leftClickMenu.isOpen)
+            this.needsReload = true;
+        else{
+            for (let i = 0; i < this.categoryDirectories.length; i++) {
+                this.categoryDirectories[i].destroy();
+            }    
+            this._clearApplicationsBox();
+            this._loadCategories();
+            this._display();
+        }
     }
     // Display the menu
     _display() {

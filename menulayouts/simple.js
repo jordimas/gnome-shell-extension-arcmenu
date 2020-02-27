@@ -102,17 +102,21 @@ var createMenu = class{
         this._display();
     }
     _reload() {
-        for (let i = 0; i < this.categoryDirectories.length; i++) {
-            this.categoryDirectories[i].destroy();
-        }    
-        this._applicationsButtons.forEach((value,key,map) => {
-            this._applicationsButtons.delete(key);
-            value.destroy(); 
-        });
-        this.mainBox.destroy_all_children();
-        this._createLeftBox();
-        this._loadCategories();
-        this._display();
+        if(this.leftClickMenu.isOpen)
+            this.needsReload = true;
+        else{
+            for (let i = 0; i < this.categoryDirectories.length; i++) {
+                this.categoryDirectories[i].destroy();
+            }    
+            this._applicationsButtons.forEach((value,key,map) => {
+                this._applicationsButtons.delete(key);
+                value.destroy(); 
+            });
+            this.mainBox.destroy_all_children();
+            this._createLeftBox();
+            this._loadCategories();
+            this._display();
+        }
     }
     // Display the menu
     _display() {
