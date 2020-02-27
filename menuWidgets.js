@@ -674,8 +674,14 @@ var Tooltip = class ArcMenu_Tooltip{
     }
 
     destroy() {
-        global.stage.remove_actor(this.actor);
-        this.actor.destroy();
+        if (this._button.tooltipShowingID) {
+            GLib.source_remove(this._button.tooltipShowingID);
+            this._button.tooltipShowingID = null;
+        }
+        if (this._button.tooltipHidingID) {
+            GLib.source_remove(this._button.tooltipHidingID);
+            this._button.tooltipHidingID = null;
+        }
         if(this.toggleID>0){
             this._settings.disconnect(this.toggleID);
             this.toggleID = 0;
@@ -684,6 +690,9 @@ var Tooltip = class ArcMenu_Tooltip{
             this.sourceActor.disconnect(this.hoverID);
             this.hoverID = 0;
         }
+        
+        global.stage.remove_actor(this.actor);
+        this.actor.destroy();
     }
 };
 

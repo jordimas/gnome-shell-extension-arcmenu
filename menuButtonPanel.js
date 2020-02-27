@@ -525,7 +525,10 @@ var ApplicationsButton = GObject.registerClass(class ArcMenu_ApplicationsButton 
     _reload(){
         if(this.MenuLayout){
             this.reloadID = GLib.timeout_add(0, 100, () => {
-                this.MenuLayout._reload();
+                if(this.leftClickMenu.isOpen)
+                    this.MenuLayout.needsReload = true;
+                else
+                    this.MenuLayout._reload();
                 this.reloadID = null;
                 return GLib.SOURCE_REMOVE;
             });
@@ -586,6 +589,9 @@ var ApplicationsMenu = class ArcMenu_ApplicationsMenu extends PopupMenu.PopupMen
                     this._button.subMenuManager.activeMenu.toggle();
                 if(this._button.MenuLayout && this._button.MenuLayout.isRunning){
                     this.menuClosingID = GLib.timeout_add(0, 100, () => {
+                        if(this._button.MenuLayout.needsReload)
+                            this._button.MenuLayout._reload();
+                        this._button.MenuLayout.needsReload = false;
                         this._button.setDefaultMenuView(); 
                         this.menuClosingID = null; 
                         return GLib.SOURCE_REMOVE;

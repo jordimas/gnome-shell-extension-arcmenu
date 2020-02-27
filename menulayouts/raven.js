@@ -261,9 +261,13 @@ var createMenu = class{
         this._display();
     }
     _reload() {
-        this._loadCategories();
-        this._displayFavorites();
-        this._display();
+        if(this.leftClickMenu.isOpen)
+            this.needsReload = true;
+        else{
+            this._loadCategories();
+            this._displayFavorites();
+            this._display();
+        }
     }
     // Display the menu
     _display() {
