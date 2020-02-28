@@ -57,7 +57,7 @@ var createMenu = class{
 
         this._tree = new GMenu.Tree({ menu_basename: 'applications.menu' });
         this._treeChangedId = this._tree.connect('changed', ()=>{
-            this._reload();
+            this.needsReload = true;
         });
         //LAYOUT------------------------------------------------------------------------------------------------
         this.mainBox.vertical = true;

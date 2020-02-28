@@ -58,7 +58,7 @@ var createMenu = class {
 
         this._tree = new GMenu.Tree({ menu_basename: 'applications.menu' });
         this._treeChangedId = this._tree.connect('changed', ()=>{
-            this._reload();
+            this.needsReload = true;
         });
 
         this.mainBox.vertical = false;
@@ -376,9 +376,7 @@ var createMenu = class {
         this._display();
     }
     // Display the menu
-    _display() {
-        //this.mainBox.hide();
-        
+    _display() {       
         if(this._settings.get_boolean('enable-pinned-apps'))
             this._displayFavorites();
         else
@@ -386,8 +384,7 @@ var createMenu = class {
         this.backButton.actor.hide();
 
         if(this.vertSep!=null)
-            this.vertSep.queue_repaint(); 
-        
+            this.vertSep.queue_repaint();     
     }
     updateStyle(){
         let addStyle=this._settings.get_boolean('enable-custom-arc-menu');

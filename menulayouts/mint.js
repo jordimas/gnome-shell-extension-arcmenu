@@ -57,7 +57,7 @@ var createMenu =class{
         this.shouldLoadFavorites = true;
         this._tree = new GMenu.Tree({ menu_basename: 'applications.menu' });
         this._treeChangedId = this._tree.connect('changed', ()=>{
-            this._reload();
+            this.needsReload = true;
         });
 
         //LAYOUT------------------------------------------------------------------------------------------------
