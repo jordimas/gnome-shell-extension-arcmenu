@@ -44,7 +44,7 @@ var createMenu = class {
         this.mainBox = mainButton.mainBox; 
         this.appMenuManager = mainButton.appMenuManager;
         this._session = new GnomeSession.SessionManager();
-        this.leftClickMenu  = mainButton.leftClickMenu;
+        this.leftClickMenu = mainButton.leftClickMenu;
         this.currentMenu = Constants.CURRENT_MENU.FAVORITES; 
         this._applicationsButtons = new Map();
         this.isRunning=true;
@@ -55,7 +55,7 @@ var createMenu = class {
 
         this._tree = new GMenu.Tree({ menu_basename: 'applications.menu' });
         this._treeChangedId = this._tree.connect('changed', ()=>{
-            this._reload();
+            this.needsReload = true;
         });
 
         this.mainBox.vertical = false;
@@ -370,7 +370,6 @@ var createMenu = class {
         this._createRightBox();
         this.updateStyle();
     }
-    // Redisplay the menu
     _redisplay() {
         if (this.applicationsBox)
             this._clearApplicationsBox();
@@ -392,10 +391,7 @@ var createMenu = class {
         this._loadFavorites();
         this._display();
     }
-    // Display the menu
     _display() {
-        //this.mainBox.hide();
-        
         if(this._settings.get_boolean('enable-pinned-apps'))
             this._displayFavorites();
         else

@@ -76,6 +76,12 @@ var ApplicationsButton = GObject.registerClass(class ArcMenu_ApplicationsButton 
         //Applications Right Click Context Menu------------------------------------
         this.appMenuManager = new PopupMenu.PopupMenuManager(this);
         this.appMenuManager._changeMenu = (menu) => {};
+        this.appMenuManager._onMenuSourceEnter = (menu) =>{
+            if (this.appMenuManager.activeMenu && this.appMenuManager.activeMenu != menu)
+                return Clutter.EVENT_STOP;
+
+            return Clutter.EVENT_PROPAGATE;
+        }
         //-------------------------------------------------------------------------
 
         //Dash to Panel Integration----------------------------------------------------------------------
@@ -517,13 +523,8 @@ var ApplicationsButton = GObject.registerClass(class ArcMenu_ApplicationsButton 
             this.MenuLayout._redisplay();
     }
     _reload(){
-        if(this.MenuLayout){
-            this.reloadID = GLib.timeout_add(0, 100, () => {
-                this.MenuLayout._reload();
-                this.reloadID = null;
-                return GLib.SOURCE_REMOVE;
-            });
-        }
+        if(this.MenuLayout)
+            this.MenuLayout.needsReload = true;
     }
     setCurrentMenu(menu) {
         if(this.MenuLayout)
@@ -548,7 +549,7 @@ var ApplicationsButton = GObject.registerClass(class ArcMenu_ApplicationsButton 
     _onOpenStateChanged(menu, open) {
         if (open){
             if(this.menuManager.activeMenu) 
-                this.menuManager.activeMenu.close(imports.ui.boxpointer.PopupAnimation.FULL);
+                this.menuManager.activeMenu.toggle();
             this.getWidget().getPanelIcon().add_style_pseudo_class('active');
             this.add_style_pseudo_class('active');
         }      
@@ -571,15 +572,33 @@ var ApplicationsMenu = class ArcMenu_ApplicationsMenu extends PopupMenu.PopupMen
                 GLib.source_remove(this.menuClosingID);
                 this.menuClosingID = null;
             }
+            if (this.menuOpenID) {
+                GLib.source_remove(this.menuOpenID);
+                this.menuOpenID = null;
+            }
         });
         this.connect("open-state-changed", (actor, open) => {
+            if(open){
+                if(this._button.MenuLayout && this._button.MenuLayout.needsReload){
+                    this.menuOpenID = GLib.timeout_add(0, 300, () => {
+                        this._button.MenuLayout._reload();
+                        this._button.MenuLayout.needsReload = false;
+                        this._button.setDefaultMenuView(); 
+                        this.menuOpenID = null; 
+                        return GLib.SOURCE_REMOVE;
+                    });
+                } 
+            }
             if(!open){
                 if(this._button.appMenuManager.activeMenu)
                     this._button.appMenuManager.activeMenu.toggle();
                 if(this._button.subMenuManager.activeMenu)
                     this._button.subMenuManager.activeMenu.toggle();
                 if(this._button.MenuLayout && this._button.MenuLayout.isRunning){
-                    this.menuClosingID = GLib.timeout_add(0, 100, () => {
+                    this.menuClosingID = GLib.timeout_add(0, 300, () => {
+                        if(this._button.MenuLayout.needsReload)
+                            this._button.MenuLayout._reload();
+                        this._button.MenuLayout.needsReload = false;
                         this._button.setDefaultMenuView(); 
                         this.menuClosingID = null; 
                         return GLib.SOURCE_REMOVE;
