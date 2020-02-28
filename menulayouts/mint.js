@@ -57,7 +57,7 @@ var createMenu =class{
         this.shouldLoadFavorites = true;
         this._tree = new GMenu.Tree({ menu_basename: 'applications.menu' });
         this._treeChangedId = this._tree.connect('changed', ()=>{
-            this._reload();
+            this.needsReload = true;
         });
 
         //LAYOUT------------------------------------------------------------------------------------------------
@@ -261,20 +261,16 @@ var createMenu =class{
         this._display();
     }
     _reload() {
-        if(this.leftClickMenu.isOpen)
-            this.needsReload = true;
-        else{
-            for (let i = 0; i < this.categoryDirectories.length; i++) {
-                this.categoryDirectories[i].destroy();
-            }
-            this._applicationsButtons.forEach((value,key,map) => {
-                this._applicationsButtons.delete(key);
-                value.destroy(); 
-            });
-            this.applicationsBox.destroy_all_children();
-            this._loadCategories();
-            this._display();
+        for (let i = 0; i < this.categoryDirectories.length; i++) {
+            this.categoryDirectories[i].destroy();
         }
+        this._applicationsButtons.forEach((value,key,map) => {
+            this._applicationsButtons.delete(key);
+            value.destroy(); 
+        });
+        this.applicationsBox.destroy_all_children();
+        this._loadCategories();
+        this._display();
     }
     // Display the menu
     _display() {

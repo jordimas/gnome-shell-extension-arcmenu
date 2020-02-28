@@ -59,7 +59,7 @@ var createMenu = class{
 
         this._tree = new GMenu.Tree({ menu_basename: 'applications.menu' });
         this._treeChangedId = this._tree.connect('changed', ()=>{
-            this._reload();
+            this.needsReload = true;
         });
 
         //LAYOUT------------------------------------------------------------------------------------------------
@@ -406,13 +406,9 @@ var createMenu = class{
         this._display();
     }
     _reload() {
-        if(this.leftClickMenu.isOpen)
-            this.needsReload = true;
-        else{
-            this._loadCategories();
-            this._displayFavorites();
-            this._display();
-        }
+        this._loadCategories();
+        this._displayFavorites();
+        this._display();
     }
     // Display the menu
     _display() {
