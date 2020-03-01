@@ -115,7 +115,6 @@ var ApplicationsButton = GObject.registerClass(class ArcMenu_DashApplicationsBut
         this._menuButtonWidget.actor.connect("event",this._onEvent.bind(this));
         if(gnome36){
             this.connect('event', this._onEvent.bind(this));
-            this.connect('notify::visible', this._onVisibilityChanged.bind(this));
         }
         //Create Basic Layout ------------------------------------------------
         this.createLayoutID = GLib.timeout_add(0, 100, () => {
@@ -257,15 +256,6 @@ var ApplicationsButton = GObject.registerClass(class ArcMenu_DashApplicationsBut
         this.can_focus = sensitive;
         this.track_hover = sensitive;
     }
-    _onVisibilityChanged() {
-        if (!this.rightClickMenu || !this.leftClickMenu)
-            return;
-
-        if (!this.visible){
-            this.rightClickMenu.close();
-            this.leftClickMenu.close();
-        }     
-    }
     _onEvent(actor, event) {
             if (event.type() == Clutter.EventType.BUTTON_PRESS){   
                 
@@ -279,8 +269,7 @@ var ApplicationsButton = GObject.registerClass(class ArcMenu_DashApplicationsBut
                     this.leftClickMenu.toggle();
                     if(this.leftClickMenu.isOpen){
                         this.mainBox.grab_key_focus();	
-                    }
-                        
+                    }    
                 }                
             }    
             else if(event.get_button()==3 && actor instanceof St.Button){                      
@@ -428,10 +417,12 @@ var ApplicationsButton = GObject.registerClass(class ArcMenu_DashApplicationsBut
         });  
     }
     _loadPinnedShortcuts(){
-        this.MenuLayout._loadPinnedShortcuts();
+        if(this.MenuLayout)
+            this.MenuLayout._loadPinnedShortcuts();
     }
     updateRunnerLocation(){
-        this.MenuLayout.updateRunnerLocation();
+        if(this.MenuLayout)
+            this.MenuLayout.updateRunnerLocation();
     }
     updateIcons(){
         if(this.MenuLayout)
@@ -532,45 +523,33 @@ var ApplicationsMenu = class ArcMenu_ApplicationsDashMenu extends PopupMenu.Popu
         this.actor.add_style_class_name('panel-menu');
         Main.uiGroup.add_actor(this.actor);
         this.actor.hide();
-        this.connect("destroy", ()=>{
-            if (this.menuClosingID) {
-                GLib.source_remove(this.menuClosingID);
-                this.menuClosingID = null;
-            }
-            if (this.menuOpenID) {
-                GLib.source_remove(this.menuOpenID);
-                this.menuOpenID = null;
-            }
-        });
-        this.connect("open-state-changed", (actor, open) => {
-            if(open){
-                if(this._button.MenuLayout && this._button.MenuLayout.needsReload){
-                    this.menuOpenID = GLib.timeout_add(0, 300, () => {
-                        this._button.MenuLayout._reload();
-                        this._button.MenuLayout.needsReload = false;
-                        this._button.setDefaultMenuView(); 
-                        this.menuOpenID = null; 
-                        return GLib.SOURCE_REMOVE;
-                    });
-                } 
-            }
-            if(!open){
-                if(this._button.appMenuManager.activeMenu)
-                    this._button.appMenuManager.activeMenu.toggle();
-                if(this._button.subMenuManager.activeMenu)
-                    this._button.subMenuManager.activeMenu.toggle();
-                if(this._button.MenuLayout && this._button.MenuLayout.isRunning){
-                    this.menuClosingID = GLib.timeout_add(0, 300, () => {
-                        if(this._button.MenuLayout.needsReload)
-                            this._button.MenuLayout._reload();
-                        this._button.MenuLayout.needsReload = false;
-                        this._button.setDefaultMenuView(); 
-                        this.menuClosingID = null; 
-                        return GLib.SOURCE_REMOVE;
-                    });
-                }
-            }
-        });
+        this.connect('menu-closed', () => this._onCloseEvent());
+    }
+
+    open(animation, event){
+        this._onOpenEvent();
+        super.open(animation);
+    }
+
+    _onOpenEvent(){
+        if(this._button.MenuLayout && this._button.MenuLayout.needsReload){
+            this._button.MenuLayout._reload();
+            this._button.MenuLayout.needsReload = false;
+            this._button.setDefaultMenuView(); 
+        } 
+    }
+
+    _onCloseEvent(){
+        if(this._button.appMenuManager.activeMenu)
+            this._button.appMenuManager.activeMenu.toggle();
+        if(this._button.subMenuManager.activeMenu)
+            this._button.subMenuManager.activeMenu.toggle();
+        if(this._button.MenuLayout && this._button.MenuLayout.isRunning){
+            if(this._button.MenuLayout.needsReload)
+                this._button.MenuLayout._reload();
+            this._button.MenuLayout.needsReload = false;
+            this._button.setDefaultMenuView(); 
+        }
     }
 };
 
