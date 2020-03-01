@@ -523,21 +523,12 @@ var ApplicationsMenu = class ArcMenu_ApplicationsDashMenu extends PopupMenu.Popu
         this.actor.add_style_class_name('panel-menu');
         Main.uiGroup.add_actor(this.actor);
         this.actor.hide();
-    }
-
-    toggle(){
-        if(this.isOpen)
-            this.close(imports.ui.boxpointer.PopupAnimation.FULL);
-        else
-            this.open(imports.ui.boxpointer.PopupAnimation.FULL);
-    }
-
-    close(animation, event){
-        super.close(animation, this._onCloseEvent());
+        this.connect('menu-closed', () => this._onCloseEvent());
     }
 
     open(animation, event){
-        super.open(animation, this._onOpenEvent());
+        this._onOpenEvent();
+        super.open(animation);
     }
 
     _onOpenEvent(){

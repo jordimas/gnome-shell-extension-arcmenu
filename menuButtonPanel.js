@@ -558,21 +558,12 @@ var ApplicationsMenu = class ArcMenu_ApplicationsMenu extends PopupMenu.PopupMen
         this._button = button;  
         Main.uiGroup.add_actor(this.actor);
         this.actor.hide();
+        this.connect('menu-closed', () => this._onCloseEvent());
     }
 
-    toggle(){
-        if(this.isOpen)
-            this.close(imports.ui.boxpointer.PopupAnimation.FULL);
-        else
-            this.open(imports.ui.boxpointer.PopupAnimation.FULL);
-    }
-
-    close(animation, event){
-        super.close(animation, this._onCloseEvent());
-    }
-
-    open(animation, event){
-        super.open(animation, this._onOpenEvent());
+    open(animation){
+        this._onOpenEvent();
+        super.open(animation);
     }
 
     _onOpenEvent(){
