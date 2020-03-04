@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Arc Menu\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-01-14 17:56-0500\n"
-"PO-Revision-Date: 2020-01-22 04:22+0300\n"
+"POT-Creation-Date: 2020-02-08 10:28-0500\n"
+"PO-Revision-Date: 2020-02-08 23:04+0300\n"
 "Last-Translator: Alice Charlotte Liddell <e-liss@tuta.io>\n"
 "Language-Team: \n"
 "Language: ru\n"
@@ -19,15 +19,15 @@ msgstr ""
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
 "%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 
-#: search.js:701 searchGrid.js:695
+#: search.js:725 searchGrid.js:750
 msgid "Searching..."
 msgstr "Поиск..."
 
-#: search.js:703 searchGrid.js:697
+#: search.js:727 searchGrid.js:752
 msgid "No results."
 msgstr "Нет результатов."
 
-#: search.js:800 searchGrid.js:793
+#: search.js:831 searchGrid.js:890
 #, javascript-format
 msgid "%d more"
 msgid_plural "%d more"
@@ -35,244 +35,419 @@ msgstr[0] "ещё %d"
 msgstr[1] "ещё %d"
 msgstr[2] "ещё %d"
 
-#: menulayouts/mint.js:435 menulayouts/arcmenu.js:247
-#: menulayouts/redmond.js:233 menuWidgets.js:1159
-msgid "Terminal"
-msgstr "Терминал"
-
-#: menulayouts/mint.js:436 menulayouts/brisk.js:193 menulayouts/arcmenu.js:247
-#: menulayouts/redmond.js:233 menulayouts/windows.js:285 menuWidgets.js:685
-msgid "Settings"
-msgstr "Настройки"
-
-#: menulayouts/mint.js:442 menulayouts/brisk.js:193 menulayouts/arcmenu.js:247
-#: menulayouts/redmond.js:233
+#: menulayouts/raven.js:215 menulayouts/mint.js:501 menulayouts/brisk.js:194
+#: menulayouts/arcmenu.js:243 menulayouts/redmond.js:233
+#: menulayouts/ubuntudash.js:301 menulayouts/ubuntudash.js:325
 msgid "Software"
 msgstr "Программное обеспечение"
 
-#: menulayouts/mint.js:443
-msgid "Files"
-msgstr "Файлы"
+#: menulayouts/raven.js:215 menulayouts/mint.js:486 menulayouts/brisk.js:202
+#: menulayouts/arcmenu.js:243 menulayouts/redmond.js:233
+#: menulayouts/windows.js:284 menulayouts/ubuntudash.js:325 menuWidgets.js:785
+msgid "Settings"
+msgstr "Настройки"
 
-#: menulayouts/mint.js:444 menuWidgets.js:803 prefs.js:3870
-msgid "Log Out"
-msgstr "Выход из системы"
-
-#: menulayouts/mint.js:445 menuWidgets.js:832 prefs.js:3853
-msgid "Lock"
-msgstr "Заблокировать экран"
-
-#: menulayouts/mint.js:446 menuWidgets.js:791 prefs.js:3887
-msgid "Power Off"
-msgstr "Выключить"
-
-#: menulayouts/tweaks/tweaks.js:84
-msgid "Category Activation"
-msgstr "Активация категории"
-
-#: menulayouts/tweaks/tweaks.js:90
-msgid "Mouse Click"
-msgstr "Клик мышью"
-
-#: menulayouts/tweaks/tweaks.js:91
-msgid "Mouse Hover"
-msgstr "Наведением мышью"
-
-#: menulayouts/tweaks/tweaks.js:110
-msgid "Avatar Icon Shape"
-msgstr "Форма значка пользователя"
-
-#: menulayouts/tweaks/tweaks.js:115
-msgid "Circular"
-msgstr "Круглая"
-
-#: menulayouts/tweaks/tweaks.js:116
-msgid "Square"
-msgstr "Квадратная"
-
-#: menulayouts/tweaks/tweaks.js:141
-msgid "KRunner Position"
-msgstr "Расположение KRunner"
-
-#: menulayouts/tweaks/tweaks.js:146
-msgid "Top"
-msgstr "Наверху"
-
-#: menulayouts/tweaks/tweaks.js:147
-msgid "Centered"
-msgstr "В центре"
-
-#: menulayouts/tweaks/tweaks.js:158
-msgid "Show Extra Large Icons with App Descriptions"
-msgstr "Отображать особо крупные значки с описанием приложений"
-
-#: menulayouts/tweaks/tweaks.js:188 prefs.js:132 prefs.js:700 prefs.js:3397
-#: prefs.js:3684
-msgid "Save"
-msgstr "Сохранить"
-
-#: menulayouts/tweaks/tweaks.js:214
-msgid "Separator Position Index"
-msgstr "Порядковый номер расположения разделителя"
-
-#: menulayouts/tweaks/tweaks.js:401
-msgid "Nothing Yet!"
-msgstr "Пока ничего!"
-
-#: menulayouts/tweaks/tweaks.js:415 prefs.js:923
-msgid "Arc Menu Default View"
-msgstr "Вид Arc Menu по умолчанию"
-
-#: menulayouts/tweaks/tweaks.js:421 prefs.js:41 prefs.js:932
-msgid "Pinned Apps"
-msgstr "Закреплённые приложения"
-
-#: menulayouts/tweaks/tweaks.js:422 prefs.js:933
-msgid "Categories List"
-msgstr "Список категорий"
-
-#: menulayouts/arcmenu.js:247 menulayouts/redmond.js:233 prefs.js:1967
-#: prefs.js:1996 prefs.js:2001 prefs.js:2033 prefs.js:2045
+#: menulayouts/raven.js:215 menulayouts/arcmenu.js:243
+#: menulayouts/redmond.js:233 menulayouts/ubuntudash.js:325 prefs.js:2203
+#: prefs.js:2232 prefs.js:2237 prefs.js:2271 prefs.js:2283
 msgid "Tweaks"
 msgstr "Доп. настройки GNOME"
 
-#: menulayouts/arcmenu.js:247 menulayouts/redmond.js:233 menuWidgets.js:426
+#: menulayouts/raven.js:215 menulayouts/mint.js:485 menulayouts/arcmenu.js:243
+#: menulayouts/redmond.js:233 menulayouts/ubuntudash.js:325 menuWidgets.js:1326
+#: menuWidgets.js:1524
+msgid "Terminal"
+msgstr "Терминал"
+
+#: menulayouts/raven.js:215 menulayouts/arcmenu.js:243
+#: menulayouts/redmond.js:233 menulayouts/ubuntudash.js:325 menuWidgets.js:453
 msgid "Activities Overview"
 msgstr "Обзор активностей"
 
-#: menulayouts/arcmenu.js:247 menulayouts/redmond.js:233 menuWidgets.js:698
-#: menuWidgets.js:1156 prefs.js:406 menu.js:578
+#: menulayouts/raven.js:215 menulayouts/arcmenu.js:243
+#: menulayouts/redmond.js:233 menulayouts/ubuntudash.js:325 menuWidgets.js:798
+#: menuWidgets.js:1322 menuWidgets.js:1520 menuButtonPanel.js:597
+#: menuButtonDash.js:562 prefs.js:376 prefs.js:537
 msgid "Arc Menu Settings"
 msgstr "Настройки Arc Menu"
 
-#: menulayouts/arcmenu.js:501 menulayouts/arcmenu.js:508
-#: menulayouts/redmond.js:407 menulayouts/redmond.js:414
-#: menulayouts/ubuntudash.js:143 placeDisplay.js:459
-msgid "Home"
-msgstr "Домашняя директория"
+#: menulayouts/raven.js:223 menulayouts/tweaks/tweaks.js:188
+#: menulayouts/tweaks/tweaks.js:308 menulayouts/ubuntudash.js:333 prefs.js:4258
+msgid "Shortcuts"
+msgstr "Ярлыки"
 
-#: menulayouts/arcmenu.js:501 menulayouts/redmond.js:407
-#: menulayouts/windows.js:115 menulayouts/windows.js:280
-#: menulayouts/ubuntudash.js:150
-msgid "Documents"
-msgstr "Документы"
+#: menulayouts/raven.js:415 menulayouts/tweaks/tweaks.js:603
+#: menulayouts/ubuntudash.js:587 prefs.js:41 prefs.js:826
+msgid "Pinned Apps"
+msgstr "Закреплённые приложения"
 
-#: menulayouts/arcmenu.js:501 menulayouts/redmond.js:407
-#: menulayouts/ubuntudash.js:150
-msgid "Downloads"
-msgstr "Загрузки"
-
-#: menulayouts/arcmenu.js:501 menulayouts/redmond.js:407
-#: menulayouts/ubuntudash.js:150
-msgid "Music"
-msgstr "Музыка"
-
-#: menulayouts/arcmenu.js:501 menulayouts/redmond.js:407
-#: menulayouts/ubuntudash.js:150
-msgid "Pictures"
-msgstr "Изображения"
-
-#: menulayouts/arcmenu.js:501 menulayouts/redmond.js:407
-#: menulayouts/ubuntudash.js:150
-msgid "Videos"
-msgstr "Видео"
-
-#: menulayouts/arcmenu.js:501 menulayouts/redmond.js:407 placeDisplay.js:244
-#: placeDisplay.js:268
-msgid "Computer"
-msgstr "Компьютер"
-
-#: menulayouts/arcmenu.js:501 menulayouts/arcmenu.js:516
-#: menulayouts/redmond.js:407 menulayouts/redmond.js:422
-msgid "Network"
-msgstr "Сеть"
-
-#: menuWidgets.js:124
-msgid "Open Folder Location"
-msgstr "Открыть расположение директории"
-
-#: menuWidgets.js:140
-msgid "Current Windows:"
-msgstr "Открытые окна:"
-
-#: menuWidgets.js:159
-msgid "New Window"
-msgstr "Новое окно"
-
-#: menuWidgets.js:169
-msgid "Launch using Dedicated Graphics Card"
-msgstr "Запустить, используя дискретную видеокарту"
-
-#: menuWidgets.js:192
-msgid "Remove from Favorites"
-msgstr "Убрать из избранного"
-
-#: menuWidgets.js:198
-msgid "Add to Favorites"
-msgstr "Добавить в избранное"
-
-#: menuWidgets.js:219 menuWidgets.js:272
-msgid "Unpin from Arc Menu"
-msgstr "Открепить из Arc Menu"
-
-#: menuWidgets.js:234
-msgid "Pin to Arc Menu"
-msgstr "Закрепить в Arc Menu"
-
-#: menuWidgets.js:247
-msgid "Show Details"
-msgstr "Подробнее"
-
-#: menuWidgets.js:711 menuWidgets.js:1716 menuWidgets.js:1864
-#: menuWidgets.js:2031
-msgid "Favorites"
-msgstr "Избранное"
-
-#: menuWidgets.js:726
-msgid "Users"
-msgstr "Пользователи"
-
-#: menuWidgets.js:815 prefs.js:3836
-msgid "Suspend"
-msgstr "Сон"
-
-#: menuWidgets.js:855
-msgid "Back"
-msgstr "Назад"
-
-#: menuWidgets.js:923 menuWidgets.js:1716 menuWidgets.js:1864
-#: menuWidgets.js:2031
-msgid "All Programs"
-msgstr "Все приложения"
-
-#: menuWidgets.js:1719 menuWidgets.js:1867 menuWidgets.js:2034
+#: menulayouts/raven.js:476 menulayouts/ubuntudash.js:659 menuWidgets.js:687
+#: menuWidgets.js:1954 menuWidgets.js:2091 menuWidgets.js:2290
 msgid "Frequent Apps"
 msgstr "Часто используемые"
 
-#: menuWidgets.js:2273
+#: menulayouts/raven.js:583 menulayouts/ubuntudash.js:767 menuWidgets.js:683
+#: menuWidgets.js:1037 menuWidgets.js:1951 menuWidgets.js:2088
+#: menuWidgets.js:2287
+msgid "All Programs"
+msgstr "Все приложения"
+
+#: menulayouts/mint.js:417 menulayouts/arcmenu.js:511
+#: menulayouts/arcmenu.js:518 menulayouts/redmond.js:415
+#: menulayouts/redmond.js:422 menulayouts/ubuntudash.js:237
+#: menulayouts/ubuntudash.js:284 placeDisplay.js:452
+msgid "Home"
+msgstr "Домашняя директория"
+
+#: menulayouts/mint.js:425 menulayouts/arcmenu.js:511
+#: menulayouts/arcmenu.js:526 menulayouts/redmond.js:415
+#: menulayouts/redmond.js:430 menulayouts/ubuntudash.js:245
+msgid "Network"
+msgstr "Сеть"
+
+#: menulayouts/mint.js:502 menulayouts/ubuntudash.js:302
+msgid "Files"
+msgstr "Файлы"
+
+#: menulayouts/mint.js:503 menulayouts/ubuntudash.js:303 menuWidgets.js:918
+#: prefs.js:4216
+msgid "Log Out"
+msgstr "Выход из системы"
+
+#: menulayouts/mint.js:504 menulayouts/ubuntudash.js:304 menuWidgets.js:950
+#: prefs.js:4199
+msgid "Lock"
+msgstr "Заблокировать экран"
+
+#: menulayouts/mint.js:505 menulayouts/ubuntudash.js:305 menuWidgets.js:906
+#: prefs.js:4233
+msgid "Power Off"
+msgstr "Выключить"
+
+#: menulayouts/tweaks/tweaks.js:86
+msgid "Category Activation"
+msgstr "Активация категории"
+
+#: menulayouts/tweaks/tweaks.js:92
+msgid "Mouse Click"
+msgstr "Клик мышью"
+
+#: menulayouts/tweaks/tweaks.js:93
+msgid "Mouse Hover"
+msgstr "Наведением мышью"
+
+#: menulayouts/tweaks/tweaks.js:112
+msgid "Avatar Icon Shape"
+msgstr "Форма значка пользователя"
+
+#: menulayouts/tweaks/tweaks.js:117
+msgid "Circular"
+msgstr "Круглая"
+
+#: menulayouts/tweaks/tweaks.js:118
+msgid "Square"
+msgstr "Квадратная"
+
+#: menulayouts/tweaks/tweaks.js:143
+msgid "KRunner Position"
+msgstr "Расположение KRunner"
+
+#: menulayouts/tweaks/tweaks.js:148
+msgid "Top"
+msgstr "Наверху"
+
+#: menulayouts/tweaks/tweaks.js:149
+msgid "Centered"
+msgstr "В центре"
+
+#: menulayouts/tweaks/tweaks.js:160 menulayouts/tweaks/tweaks.js:337
+msgid "Show Extra Large Icons with App Descriptions"
+msgstr "Отображать особо крупные значки с описанием приложений"
+
+#: menulayouts/tweaks/tweaks.js:181 menulayouts/tweaks/tweaks.js:301
+#: prefs.js:738
+msgid "General"
+msgstr "Основные"
+
+#: menulayouts/tweaks/tweaks.js:191
+msgid "Buttons"
+msgstr "Кнопки"
+
+#: menulayouts/tweaks/tweaks.js:199 menulayouts/tweaks/tweaks.js:316
+msgid "Default Screen"
+msgstr "Экран по умолчанию"
+
+#: menulayouts/tweaks/tweaks.js:204 menulayouts/tweaks/tweaks.js:321
+#: menuWidgets.js:679 menuWidgets.js:1948
+msgid "Home Screen"
+msgstr "Домашний экран"
+
+#: menulayouts/tweaks/tweaks.js:205 menulayouts/tweaks/tweaks.js:322
+msgid "All Applications"
+msgstr "Все приложения"
+
+#: menulayouts/tweaks/tweaks.js:220 prefs.js:2547
+msgid "Disable Menu Arrow"
+msgstr "Отключить стрелку меню"
+
+#: menulayouts/tweaks/tweaks.js:228 prefs.js:2555
+msgid "Disable current theme menu arrow pointer"
+msgstr "Отключить стрелку меню из текущей темы"
+
+#: menulayouts/tweaks/tweaks.js:249 menulayouts/tweaks/tweaks.js:370
+#: prefs.js:132 prefs.js:696 prefs.js:3769 prefs.js:4027
+msgid "Save"
+msgstr "Сохранить"
+
+#: menulayouts/tweaks/tweaks.js:275 menulayouts/tweaks/tweaks.js:396
+msgid "Separator Position Index"
+msgstr "Порядковый номер расположения разделителя"
+
+#: menulayouts/tweaks/tweaks.js:583
+msgid "Nothing Yet!"
+msgstr "Пока ничего!"
+
+#: menulayouts/tweaks/tweaks.js:597 prefs.js:817
+msgid "Arc Menu Default View"
+msgstr "Вид Arc Menu по умолчанию"
+
+#: menulayouts/tweaks/tweaks.js:604 prefs.js:827
+msgid "Categories List"
+msgstr "Список категорий"
+
+#: menulayouts/tweaks/tweaks.js:638
+msgid "Enable Weather Widget"
+msgstr "Включить виджет \"Погода\""
+
+#: menulayouts/tweaks/tweaks.js:656
+msgid "Enable Clock Widget"
+msgstr "Включить виджет \"Часы\""
+
+#: menulayouts/arcmenu.js:511 menulayouts/redmond.js:415
+#: menulayouts/windows.js:112 menulayouts/windows.js:279
+#: menulayouts/ubuntudash.js:285
+msgid "Documents"
+msgstr "Документы"
+
+#: menulayouts/arcmenu.js:511 menulayouts/redmond.js:415
+#: menulayouts/ubuntudash.js:286
+msgid "Downloads"
+msgstr "Загрузки"
+
+#: menulayouts/arcmenu.js:511 menulayouts/redmond.js:415
+msgid "Music"
+msgstr "Музыка"
+
+#: menulayouts/arcmenu.js:511 menulayouts/redmond.js:415
+msgid "Pictures"
+msgstr "Изображения"
+
+#: menulayouts/arcmenu.js:511 menulayouts/redmond.js:415
+msgid "Videos"
+msgstr "Видео"
+
+#: menulayouts/arcmenu.js:511 menulayouts/redmond.js:415 placeDisplay.js:237
+#: placeDisplay.js:261
+msgid "Computer"
+msgstr "Компьютер"
+
+#: menuWidgets.js:129
+msgid "Open Folder Location"
+msgstr "Открыть расположение директории"
+
+#: menuWidgets.js:145
+msgid "Current Windows:"
+msgstr "Открытые окна:"
+
+#: menuWidgets.js:164
+msgid "New Window"
+msgstr "Новое окно"
+
+#: menuWidgets.js:174
+msgid "Launch using Dedicated Graphics Card"
+msgstr "Запустить, используя дискретную видеокарту"
+
+#: menuWidgets.js:201
+msgid "Delete Desktop Shortcut"
+msgstr "Удалить ярлык с рабочего стола"
+
+#: menuWidgets.js:209
+msgid "Create Desktop Shortcut"
+msgstr "Создать ярлык на рабочем столе"
+
+#: menuWidgets.js:223
+msgid "Remove from Favorites"
+msgstr "Убрать из избранного"
+
+#: menuWidgets.js:229
+msgid "Add to Favorites"
+msgstr "Добавить в избранное"
+
+#: menuWidgets.js:247 menuWidgets.js:298
+msgid "Unpin from Arc Menu"
+msgstr "Открепить из Arc Menu"
+
+#: menuWidgets.js:261
+msgid "Pin to Arc Menu"
+msgstr "Закрепить в Arc Menu"
+
+#: menuWidgets.js:274
+msgid "Show Details"
+msgstr "Подробнее"
+
+#: menuWidgets.js:683 menuWidgets.js:811 menuWidgets.js:1951
+#: menuWidgets.js:2088 menuWidgets.js:2287
+msgid "Favorites"
+msgstr "Избранное"
+
+#: menuWidgets.js:826
+msgid "Categories"
+msgstr "Категории"
+
+#: menuWidgets.js:841
+msgid "Users"
+msgstr "Пользователи"
+
+#: menuWidgets.js:933 prefs.js:4182
+msgid "Suspend"
+msgstr "Сон"
+
+#: menuWidgets.js:973
+msgid "Back"
+msgstr "Назад"
+
+#: menuWidgets.js:2548
 msgid "Type to search…"
 msgstr "Вводите для поиска…"
 
-#: menuWidgets.js:2442 prefs.js:3580
+#: menuWidgets.js:2718 prefs.js:3923
 msgid "Applications"
 msgstr "Приложения"
 
-#: placeDisplay.js:145
+#: menuWidgets.js:2784
+msgid "Show Applications"
+msgstr "Показать приложения"
+
+#: menuWidgets.js:2801 constants.js:157 prefs.js:4629
+msgid "Arc Menu"
+msgstr "Arc Menu"
+
+#: menuWidgets.js:3014
+msgid "Add world clocks…"
+msgstr "Добавить мировые часы…"
+
+#: menuWidgets.js:3015
+msgid "World Clocks"
+msgstr "Мировые часы"
+
+#: menuWidgets.js:3124
+msgid "Weather"
+msgstr "Погода"
+
+#: menuWidgets.js:3242
+msgid "Select a location…"
+msgstr "Выбрать местоположение…"
+
+#: menuWidgets.js:3255
+msgid "Loading…"
+msgstr "Загрузка…"
+
+#: menuWidgets.js:3265
+msgid "Go online for weather information"
+msgstr "Подключитесь к сети для информации о погоде"
+
+#: menuWidgets.js:3267
+msgid "Weather information is currently unavailable"
+msgstr "Информация о погоде недоступна"
+
+#: constants.js:162
+msgid "Arc Menu Alt"
+msgstr "Альтернативный Arc Menu"
+
+#: constants.js:163
+msgid "Arc Menu Original"
+msgstr "Оригинальный Arc Menu"
+
+#: constants.js:164
+msgid "Curved A"
+msgstr "Изогнутая A"
+
+#: constants.js:165
+msgid "Start Box"
+msgstr "Коробка запуска"
+
+#: constants.js:166
+msgid "Focus"
+msgstr "Средоточие"
+
+#: constants.js:167
+msgid "Triple Dash"
+msgstr "Три штриха"
+
+#: constants.js:168
+msgid "Whirl"
+msgstr "Вихрь"
+
+#: constants.js:169
+msgid "Whirl Circle"
+msgstr "Вихрь в круге"
+
+#: constants.js:170
+msgid "Sums"
+msgstr "Суммы"
+
+#: constants.js:171
+msgid "Arrow"
+msgstr "Стрелка"
+
+#: constants.js:172
+msgid "Lins"
+msgstr ""
+
+#: constants.js:173
+msgid "Diamond Square"
+msgstr "Бриллиантово-квадратная"
+
+#: constants.js:174
+msgid "Octo Maze"
+msgstr "Шестиугольный лабиринт"
+
+#: constants.js:175
+msgid "Search"
+msgstr "Поиск"
+
+#: menuButtonPanel.js:606 menuButtonDash.js:571
+msgid "Arc Menu on GitLab"
+msgstr "Arc Menu на GitLab"
+
+#: menuButtonPanel.js:611 menuButtonDash.js:576
+msgid "About Arc Menu"
+msgstr "Об Arc Menu"
+
+#: menuButtonPanel.js:619
+msgid "Dash to Panel Settings"
+msgstr "Настройки Dash to Panel"
+
+#: menuButtonDash.js:584
+msgid "Dash to Dock Settings"
+msgstr "Настройки Dash to Dock"
+
+#: placeDisplay.js:138
 #, javascript-format
 msgid "Failed to launch “%s”"
 msgstr "Не удалось запустить “%s”"
 
-#: placeDisplay.js:160
+#: placeDisplay.js:153
 #, javascript-format
 msgid "Failed to mount volume for “%s”"
 msgstr "Не удалось подключить раздел для “%s”"
 
-#: placeDisplay.js:333
+#: placeDisplay.js:326
 #, javascript-format
 msgid "Ejecting drive “%s” failed:"
 msgstr "Не удалось извлечь раздел “%s”:"
 
-#: prefs.js:59 prefs.js:3600
+#: prefs.js:59 prefs.js:3943
 msgid "Add More Apps"
 msgstr "Добавить ещё приложений"
 
@@ -282,7 +457,7 @@ msgstr ""
 "Открыть список всех приложений для добавления в ваш список закреплённых "
 "приложений."
 
-#: prefs.js:100 prefs.js:3351 prefs.js:3639
+#: prefs.js:100 prefs.js:3723 prefs.js:3982
 msgid "Add Custom Shortcut"
 msgstr "Добавить пользовательский ярлык"
 
@@ -292,19 +467,19 @@ msgstr ""
 "Создать пользовательский ярлык для добавления в ваш список закреплённых "
 "приложений."
 
-#: prefs.js:191 prefs.js:3492 prefs.js:3743
+#: prefs.js:191 prefs.js:3835 prefs.js:4089
 msgid "Modify"
 msgstr "Изменить"
 
-#: prefs.js:196 prefs.js:3499 prefs.js:3748
+#: prefs.js:196 prefs.js:3842 prefs.js:4094
 msgid "Move Up"
 msgstr "Переместить наверх"
 
-#: prefs.js:201 prefs.js:3504 prefs.js:3753
+#: prefs.js:201 prefs.js:3847 prefs.js:4099
 msgid "Move Down"
 msgstr "Переместить вниз"
 
-#: prefs.js:206 prefs.js:3509 prefs.js:3758
+#: prefs.js:206 prefs.js:3852 prefs.js:4104
 msgid "Delete"
 msgstr "Удалить"
 
@@ -324,577 +499,710 @@ msgstr "Выбрать ярлыки приложений"
 msgid "Select Directory Shortcuts"
 msgstr "Выбрать ярлыки директорий"
 
-#: prefs.js:300 prefs.js:700
+#: prefs.js:300 prefs.js:696
 msgid "Add"
 msgstr "Добавить"
 
-#: prefs.js:407 prefs.js:1197
+#: prefs.js:377 prefs.js:1349
 msgid "Run Command..."
 msgstr "Выполнить команду..."
 
-#: prefs.js:455
+#: prefs.js:428
 msgid "Default Apps"
 msgstr "Приложения по умолчанию"
 
-#: prefs.js:459
+#: prefs.js:432 prefs.js:507
 msgid "System Apps"
 msgstr "Системные приложения"
 
-#: prefs.js:623 prefs.js:625
+#: prefs.js:503
+msgid "Presets"
+msgstr "Предустановки"
+
+#: prefs.js:619 prefs.js:621
 msgid "Edit Pinned App"
 msgstr "Редактировать закреплённые приложения"
 
-#: prefs.js:623 prefs.js:625 prefs.js:627 prefs.js:629
+#: prefs.js:619 prefs.js:621 prefs.js:623 prefs.js:625
 msgid "Add a Custom Shortcut"
 msgstr "Добавить пользовательский ярлык"
 
-#: prefs.js:627
+#: prefs.js:623
 msgid "Edit Shortcut"
 msgstr "Редактировать ярлык"
 
-#: prefs.js:629
+#: prefs.js:625
 msgid "Edit Custom Shortcut"
 msgstr "Редактировать пользовательский ярлык"
 
-#: prefs.js:637
+#: prefs.js:633
 msgid "Shortcut Name:"
 msgstr "Название ярлыка:"
 
-#: prefs.js:652
+#: prefs.js:648
 msgid "Icon:"
 msgstr "Значок:"
 
-#: prefs.js:665 prefs.js:1555
+#: prefs.js:661 prefs.js:1725
 msgid "Please select an image icon"
 msgstr "Пожалуйста, выберите файл значка"
 
-#: prefs.js:684
+#: prefs.js:680
 msgid "Terminal Command:"
 msgstr "Команда терминала:"
 
-#: prefs.js:691
+#: prefs.js:687
 msgid "Shortcut Path:"
 msgstr "Путь ярлыка:"
 
-#: prefs.js:742
-msgid "General"
-msgstr "Основные"
-
-#: prefs.js:749
-msgid "Arc Menu Position in Panel"
-msgstr "Расположение Arc Menu на панели"
-
-#: prefs.js:756
-msgid "Left"
-msgstr "Слева"
-
-#: prefs.js:757
-msgid "Position Arc Menu on the Left side of the main panel"
-msgstr "Расположить Arc Menu на левой стороне основной панели"
-
-#: prefs.js:760
-msgid "Center"
-msgstr "В центре"
-
-#: prefs.js:762
-msgid "Position Arc Menu in the Center of the main panel"
-msgstr "Расположить Arc Menu в центре основной панели"
-
-#: prefs.js:765
-msgid "Right"
-msgstr "Справа"
-
-#: prefs.js:767
-msgid "Position Arc Menu on the Right side of the main panel"
-msgstr "Расположить Arc Menu на правой стороне основной панели"
-
-#: prefs.js:809
-msgid "Menu Alignment to Button"
-msgstr "Расположение меню относительно кнопки"
-
-#: prefs.js:820
-msgid "Adjust Arc Menu's menu alignment relative to Arc Menu's button"
-msgstr "Выровнять расположение Arc Menu относительно кнопки Arc Menu"
-
-#: prefs.js:836
-msgid "Display on all monitors when using Dash to Panel"
-msgstr "Отображать на всех мониторах при использовании Dash to Panel"
-
-#: prefs.js:844
-msgid "Display Arc Menu on all monitors when using Dash to Panel"
-msgstr "Отображать Arc Menu на всех мониторах при использовании Dash to Panel"
-
-#: prefs.js:859
+#: prefs.js:753
 msgid "Disable Tooltips"
 msgstr "Отключить подсказки"
 
-#: prefs.js:867
+#: prefs.js:761
 msgid "Disable all tooltips in Arc Menu"
 msgstr "Отключить все подсказки в Arc Menu"
 
-#: prefs.js:882 prefs.js:1143
+#: prefs.js:776 prefs.js:1295
 msgid "Modify Activities Hot Corner"
 msgstr "Изменить горячий угол активностей"
 
-#: prefs.js:891
+#: prefs.js:785
 msgid "Modify the action of the Activities Hot Corner"
 msgstr "Изменить действие горячего угла активностей"
 
-#: prefs.js:902
+#: prefs.js:796
 msgid "Override the default behavoir of the Activities Hot Corner"
 msgstr "Переопределить поведение горячего угла активностей по умолчанию"
 
-#: prefs.js:930
-msgid "Choose the default menu view"
-msgstr "Выберите вид меню по умолчанию"
+#: prefs.js:824
+msgid "Choose the default menu view for Arc Menu"
+msgstr "Выберите вид меню по умолчанию для Arc Menu"
 
-#: prefs.js:952
+#: prefs.js:846
 msgid "Hotkey activation"
 msgstr "Активация горячими клавишами"
 
-#: prefs.js:959
+#: prefs.js:853
 msgid "Choose a method for the hotkey activation"
 msgstr "Выберите метод для активации горячими клавишами"
 
-#: prefs.js:961
+#: prefs.js:855
 msgid "Key Release"
 msgstr "Отпускание клавиши"
 
-#: prefs.js:962
+#: prefs.js:856
 msgid "Key Press"
 msgstr "Нажатие клавиши"
 
-#: prefs.js:981
+#: prefs.js:875
 msgid "Arc Menu Hotkey"
 msgstr "Горячие клавиши для Arc Menu"
 
-#: prefs.js:990
+#: prefs.js:884
 msgid "Left Super Key"
 msgstr "Левый Super"
 
-#: prefs.js:994
+#: prefs.js:888
 msgid "Set Arc Menu hotkey to Left Super Key"
 msgstr "Установить левый Super как горячую клавишу Arc Menu"
 
-#: prefs.js:997
+#: prefs.js:891
 msgid "Right Super Key"
 msgstr "Правый Super"
 
-#: prefs.js:1002
+#: prefs.js:896
 msgid "Set Arc Menu hotkey to Right Super Key"
 msgstr "Установить правый Super как горячую клавишу Arc Menu"
 
-#: prefs.js:1005
+#: prefs.js:899
 msgid "Custom Hotkey"
 msgstr "Пользовательские горячие клавиши"
 
-#: prefs.js:1010
+#: prefs.js:904
 msgid "Set a custom hotkey for Arc Menu"
 msgstr "Установить пользовательские горячие клавиши для Arc Menu"
 
-#: prefs.js:1013
+#: prefs.js:907
 msgid "None"
 msgstr "Нет"
 
-#: prefs.js:1018
+#: prefs.js:912
 msgid "Clear Arc Menu hotkey, use GNOME default"
 msgstr "Очистить горячие клавиши Arc Menu, использовать умолчание GNOME"
 
-#: prefs.js:1080
+#: prefs.js:974
 msgid "Current Hotkey"
 msgstr "Текущие горячие клавиши"
 
-#: prefs.js:1089
+#: prefs.js:983
 msgid "Current custom hotkey"
 msgstr "Текущие пользовательские комбинации клавиш"
 
-#: prefs.js:1094
+#: prefs.js:988
 msgid "Modify Hotkey"
 msgstr "Изменить горячие клавиши"
 
-#: prefs.js:1097
+#: prefs.js:991
 msgid "Create your own hotkey combination for Arc Menu"
 msgstr "Создать собственную комбинацию горячих клавиш для Arc Menu"
 
-#: prefs.js:1152
+#: prefs.js:1032
+msgid "Display Arc Menu On"
+msgstr "Отображать значок Arc Menu"
+
+#: prefs.js:1039
+msgid "Choose where to place Arc Menu"
+msgstr "Выберите расположение Arc Menu"
+
+#: prefs.js:1044
+msgid "Main Panel"
+msgstr "Основная панель"
+
+#: prefs.js:1045
+msgid "Dash to Panel"
+msgstr "Dash to Panel"
+
+#: prefs.js:1046
+msgid "Dash to Dock"
+msgstr "Dash to Dock"
+
+#: prefs.js:1097
+msgid "Disable Activities Button"
+msgstr "Отключить кнопку активностей"
+
+#: prefs.js:1098
+msgid "Dash to Dock extension not running!"
+msgstr "Расширение Dash to Dock не включено!"
+
+#: prefs.js:1098
+msgid "Enable Dash to Dock for this feature to work."
+msgstr "Включите Dash to Dock для работы этой функции."
+
+#: prefs.js:1106
+msgid "Disable Activities Button in panel"
+msgstr "Отключить кнопку активностей в панели"
+
+#: prefs.js:1136
+msgid "Dash to Panel currently enabled!"
+msgstr "Dash to Panel сейчас включено!"
+
+#: prefs.js:1136
+msgid "Disable Dash to Panel for this feature to work."
+msgstr "Отключите Dash to Panel для работы этой функции."
+
+#: prefs.js:1137
+msgid "Dash to Panel extension not running!"
+msgstr "Расширение Dash to Panel не включено!"
+
+#: prefs.js:1137
+msgid "Enable Dash to Panel for this feature to work."
+msgstr "Включите Dash to Panel для работы этой функции."
+
+#: prefs.js:1156
+msgid "Position in Dash to Panel"
+msgstr "Расположение в Dash to Panel"
+
+#: prefs.js:1156
+msgid "Position in Main Panel"
+msgstr "Расположение в основной панели"
+
+#: prefs.js:1163
+msgid "Left"
+msgstr "Слева"
+
+#: prefs.js:1164
+msgid "Position Arc Menu on the Left side of Dash to Panel"
+msgstr "Расположить Arc Menu на левой стороне Dash to Panel"
+
+#: prefs.js:1165
+msgid "Position Arc Menu on the Left side of the Main Panel"
+msgstr "Расположить Arc Menu на левой стороне основной панели"
+
+#: prefs.js:1168
+msgid "Center"
+msgstr "В центре"
+
+#: prefs.js:1170
+msgid "Position Arc Menu in the Center of Dash to Panel"
+msgstr "Расположить Arc Menu в центре Dash to Panel"
+
+#: prefs.js:1171
+msgid "Position Arc Menu in the Center of the Main Panel"
+msgstr "Расположить Arc Menu в центре основной панели"
+
+#: prefs.js:1174
+msgid "Right"
+msgstr "Справа"
+
+#: prefs.js:1176
+msgid "Position Arc Menu on the Right side of Dash to Panel"
+msgstr "Расположить Arc Menu на правой стороне Dash to Panel"
+
+#: prefs.js:1177
+msgid "Position Arc Menu on the Right side of the Main Panel"
+msgstr "Расположить Arc Menu на правой стороне основной панели"
+
+#: prefs.js:1218
+msgid "Menu Alignment to Button"
+msgstr "Расположение меню относительно кнопки"
+
+#: prefs.js:1229
+msgid "Adjust Arc Menu's menu alignment relative to Arc Menu's icon"
+msgstr "Выровнять расположение Arc Menu относительно кнопки Arc Menu"
+
+#: prefs.js:1242
+msgid "Display on all monitors when using Dash to Panel"
+msgstr "Отображать на всех мониторах при использовании Dash to Panel"
+
+#: prefs.js:1250
+msgid "Display Arc Menu on all monitors when using Dash to Panel"
+msgstr "Отображать Arc Menu на всех мониторах при использовании Dash to Panel"
+
+#: prefs.js:1304
 msgid "Activities Hot Corner Action"
 msgstr "Действие горячего угла активностей"
 
-#: prefs.js:1159
+#: prefs.js:1311
 msgid "Choose the action of the Activities Hot Corner"
 msgstr "Выберите действие горячего угла активностей"
 
-#: prefs.js:1161
+#: prefs.js:1313
 msgid "GNOME Default"
 msgstr "Умолчание GNOME"
 
-#: prefs.js:1162
+#: prefs.js:1314
 msgid "Disabled"
 msgstr "Отключено"
 
-#: prefs.js:1163
+#: prefs.js:1315
 msgid "Toggle Arc Menu"
 msgstr "Переключать Arc Menu"
 
-#: prefs.js:1164
+#: prefs.js:1316
 msgid "Custom"
 msgstr "Другое"
 
-#: prefs.js:1170
-msgid "Custom Activies Hot Corner Action"
+#: prefs.js:1322
+msgid "Custom Activities Hot Corner Action"
 msgstr "Пользовательское действие горячего угла активностей"
 
-#: prefs.js:1170
+#: prefs.js:1322
 msgid "Choose from a list of preset commands or use your own terminal command"
 msgstr ""
-"Выберите из списка предустановленных команд или используйте свою "
-"собственную команду"
+"Выберите из списка предустановленных команд или используйте свою собственную "
+"команду"
 
-#: prefs.js:1180
+#: prefs.js:1332
 msgid "Preset commands"
 msgstr "Предустановленные команды"
 
-#: prefs.js:1186
+#: prefs.js:1338
 msgid "Choose from a list of preset Activities Hot Corner commands"
 msgstr "Выберите из списка предустановленных команд горячего угла активностей"
 
-#: prefs.js:1190
+#: prefs.js:1342
 msgid "Show all Applications"
 msgstr "Показать все приложения"
 
-#: prefs.js:1191
+#: prefs.js:1343
 msgid "GNOME Terminal"
 msgstr "GNOME Терминал"
 
-#: prefs.js:1192
+#: prefs.js:1344
 msgid "GNOME System Monitor"
 msgstr "GNOME Системный монитор"
 
-#: prefs.js:1193
+#: prefs.js:1345
 msgid "GNOME Calculator"
 msgstr "GNOME Калькулятор"
 
-#: prefs.js:1194
+#: prefs.js:1346
 msgid "GNOME gedit"
 msgstr "GNOME Текстовый редактор"
 
-#: prefs.js:1195
+#: prefs.js:1347
 msgid "GNOME Screenshot"
 msgstr "GNOME Скриншот"
 
-#: prefs.js:1196
+#: prefs.js:1348
 msgid "GNOME Weather"
 msgstr "GNOME Погода"
 
-#: prefs.js:1229
+#: prefs.js:1381
 msgid "Terminal Command"
 msgstr "Команда терминала"
 
-#: prefs.js:1235
+#: prefs.js:1387
 msgid "Set a custom terminal command to launch on active hot corner"
 msgstr "Установить пользовательскую команду для горячего угла активностей"
 
-#: prefs.js:1255 prefs.js:1437 prefs.js:2138 prefs.js:2405 prefs.js:2622
-#: prefs.js:3205
+#: prefs.js:1407 prefs.js:1589 prefs.js:2376 prefs.js:2774 prefs.js:2993
+#: prefs.js:3577
 msgid "Apply"
 msgstr "Применить"
 
-#: prefs.js:1257
+#: prefs.js:1409
 msgid "Apply changes and set new hot corner action"
 msgstr "Применить изменения и установить новое действие горячего угла"
 
-#: prefs.js:1320
+#: prefs.js:1472
 msgid "Set Custom Hotkey"
 msgstr "Установить пользовательскую горячую клавишу"
 
-#: prefs.js:1329
+#: prefs.js:1481
 msgid "Press a key"
 msgstr "Нажмите кнопку"
 
-#: prefs.js:1354
+#: prefs.js:1506
 msgid "Modifiers"
 msgstr "Модификаторы"
 
-#: prefs.js:1359
+#: prefs.js:1511
 msgid "Ctrl"
 msgstr "Ctrl"
 
-#: prefs.js:1364
+#: prefs.js:1516
 msgid "Super"
 msgstr "Super"
 
-#: prefs.js:1368
+#: prefs.js:1520
 msgid "Shift"
 msgstr "Shift"
 
-#: prefs.js:1372
+#: prefs.js:1524
 msgid "Alt"
 msgstr "Alt"
 
-#: prefs.js:1474 prefs.js:1482 prefs.js:1784
-msgid "Menu Button Appearance"
-msgstr "Внешний вид кнопки меню"
+#: prefs.js:1633 prefs.js:2014
+msgid "Arc Menu Icon Settings"
+msgstr "Настройки значка Arc Menu"
 
-#: prefs.js:1488
+#: prefs.js:1641
+msgid "Arc Menu Icon Appearance"
+msgstr "Внешний вид значка Arc Menu"
+
+#: prefs.js:1647
 msgid "Icon"
 msgstr "Значок"
 
-#: prefs.js:1489
+#: prefs.js:1648
 msgid "Text"
 msgstr "Текст"
 
-#: prefs.js:1490
+#: prefs.js:1649
 msgid "Icon and Text"
 msgstr "Значок и текст"
 
-#: prefs.js:1491
+#: prefs.js:1650
 msgid "Text and Icon"
 msgstr "Текст и значок"
 
-#: prefs.js:1505
-msgid "Menu Button Text"
-msgstr "Текст кнопки меню"
+#: prefs.js:1671
+msgid "Arc Menu Icon Text"
+msgstr "Текст значка Arc Menu"
 
-#: prefs.js:1526
-msgid "Arrow beside Menu Button"
-msgstr "Стрелка рядом с кнопкой меню"
+#: prefs.js:1695
+msgid "Arrow beside Arc Menu Icon"
+msgstr "Стрелка рядом со значком Arc Menu"
 
-#: prefs.js:1545
-msgid "Menu Button Icon"
-msgstr "Значок кнопки меню"
-
-#: prefs.js:1560
+#: prefs.js:1715
 msgid "Arc Menu Icon"
 msgstr "Значок Arc Menu"
 
-#: prefs.js:1561
-msgid "Arc Menu Alt Icon"
-msgstr "Альтернативный значок Arc Menu"
+#: prefs.js:1771
+msgid "Browse for a custom icon"
+msgstr "Найти пользовательский значок"
 
-#: prefs.js:1562
-msgid "System Icon"
-msgstr "Системный значок"
-
-#: prefs.js:1563
-msgid "Custom Icon"
-msgstr "Пользовательский значок"
-
-#: prefs.js:1601
+#: prefs.js:1809
 msgid "Icon Size"
 msgstr "Размер значка"
 
-#: prefs.js:1633
+#: prefs.js:1841
 msgid "Icon Padding"
 msgstr "Отступ значка"
 
-#: prefs.js:1664
+#: prefs.js:1873
 msgid "Icon Color"
 msgstr "Цвет значка"
 
-#: prefs.js:1685
+#: prefs.js:1894
 msgid "Active Icon Color"
 msgstr "Цвет активного значка"
 
-#: prefs.js:1705
+#: prefs.js:1914
 msgid ""
 "Icon color options will only work with files ending with \"-symbolic.svg\""
 msgstr ""
 "Опции цветов значка будут работать только для файлов, имена которых "
 "заканчиваются на \"-symbolic.svg\""
 
-#: prefs.js:1718 prefs.js:2381 prefs.js:3160
+#: prefs.js:1927 prefs.js:2744 prefs.js:3532
 msgid "Reset"
 msgstr "Сбросить"
 
-#: prefs.js:1764
+#: prefs.js:1978
+msgid "System Icon"
+msgstr "Системный значок"
+
+#: prefs.js:1981
+msgid "Custom Icon"
+msgstr "Пользовательский значок"
+
+#: prefs.js:1994
 msgid "Appearance"
 msgstr "Внешний вид"
 
-#: prefs.js:1792
-msgid "Customize Arc Menu's Button in Main Panel"
-msgstr "Настроить кнопку Arc Menu в основной панели"
+#: prefs.js:2022
+msgid "Customize Arc Menu's Icon"
+msgstr "Настроить внешний вид значка Arc Menu"
 
-#: prefs.js:1812 prefs.js:2199
+#: prefs.js:2042 prefs.js:2440
 msgid "Customize Arc Menu Appearance"
 msgstr "Настроить внешний вид Arc Menu"
 
-#: prefs.js:1820
+#: prefs.js:2050
 msgid "Customize various elements of Arc Menu"
 msgstr "Настроить различные элементы Arc Menu"
 
-#: prefs.js:1862 prefs.js:2767
+#: prefs.js:2095 prefs.js:3139
 msgid "Override Arc Menu Theme"
 msgstr "Изменить тему Arc Menu"
 
-#: prefs.js:1870
+#: prefs.js:2103
 msgid "Create and manage your own custom themes for Arc Menu"
 msgstr "Создавать и управлять вашими собственными темами для Arc Menu"
 
-#: prefs.js:1907
+#: prefs.js:2141
 msgid "Override the shell theme for Arc Menu only"
 msgstr "Переопределить тему оболочки только для Arc Menu"
 
-#: prefs.js:1925
+#: prefs.js:2159
 msgid "Current Color Theme"
 msgstr "Текущий цвет темы"
 
-#: prefs.js:1950
+#: prefs.js:2184
 msgid "Menu Layout"
 msgstr "Компоновка меню"
 
-#: prefs.js:1958
+#: prefs.js:2192
 msgid "Choose from a variety of menu layouts"
 msgstr "Выберите из разнообразия компоновок меню"
 
-#: prefs.js:1977
+#: prefs.js:2213
 msgid "Enable the selection of different menu layouts"
 msgstr "Включить выбор разных компоновок меню"
 
-#: prefs.js:2012
+#: prefs.js:2250
 msgid "Current Layout"
 msgstr "Текущая компоновка"
 
-#: prefs.js:2042
+#: prefs.js:2280
 msgid "Tweaks for the current menu layout"
 msgstr "Доп. настройки для текущей компоновки меню"
 
-#: prefs.js:2105
+#: prefs.js:2343
 msgid "Menu style chooser"
 msgstr "Выбор стиля меню"
 
-#: prefs.js:2114
+#: prefs.js:2352
 msgid "Arc Menu Layout"
 msgstr "Компоновка Arc Menu"
 
-#: prefs.js:2212
+#: prefs.js:2448
+msgid "General Settings"
+msgstr "Основные настройки"
+
+#: prefs.js:2462
 msgid "Menu Height"
 msgstr "Высота меню"
 
-#: prefs.js:2244
+#: prefs.js:2476
+msgid "Adjust the menu height"
+msgstr "Установить высоту меню"
+
+#: prefs.js:2476 prefs.js:2504 prefs.js:2530 prefs.js:2590 prefs.js:2612
+#: prefs.js:2634 prefs.js:2667
+msgid "Certain menu layouts only"
+msgstr "Только определённые компоновки меню"
+
+#: prefs.js:2496
 msgid "Left-Panel Width"
 msgstr "Ширина левой панели"
 
-#: prefs.js:2269
+#: prefs.js:2504
+msgid "Adjust the left-panel width"
+msgstr "Установить ширину левой панели"
+
+#: prefs.js:2522
+msgid "Right-Panel Width"
+msgstr "Ширина правой панели"
+
+#: prefs.js:2530
+msgid "Adjust the right-panel width"
+msgstr "Установить ширину правой панели"
+
+#: prefs.js:2572
+msgid "Miscellaneous"
+msgstr "Разнообразное"
+
+#: prefs.js:2582
 msgid "Large Application Icons"
 msgstr "Большие значки приложений"
 
-#: prefs.js:2288
+#: prefs.js:2590
+msgid "Enable large application icons"
+msgstr "Включить большие значки приложений"
+
+#: prefs.js:2604
 msgid "Category Sub Menus"
 msgstr "Подкатегории меню"
 
-#: prefs.js:2307 prefs.js:3116
+#: prefs.js:2612
+msgid "Show nested menus in categories"
+msgstr "Отображать вложенные меню в категориях"
+
+#: prefs.js:2626
+msgid "Disable Category Arrows"
+msgstr "Отключить стрелки категорий"
+
+#: prefs.js:2634
+msgid "Disable the arrow on category menu items"
+msgstr "Отключить стрелку у пунктов категорий меню"
+
+#: prefs.js:2650
+msgid "Separator Settings"
+msgstr "Настройки разделителя"
+
+#: prefs.js:2659 prefs.js:3488
 msgid "Enable Vertical Separator"
 msgstr "Включить вертикальный разделитель"
 
-#: prefs.js:2326 prefs.js:3137
+#: prefs.js:2667
+msgid "Enable a Vertical Separator"
+msgstr "Включить вертикальный разделитель"
+
+#: prefs.js:2682 prefs.js:3509
 msgid "Separator Color"
 msgstr "Цвет разделителя"
 
-#: prefs.js:2348
+#: prefs.js:2690
+msgid "Change the color of all separators"
+msgstr "Изменить цвет всех разделителей"
+
+#: prefs.js:2710
 msgid "Fine Tune"
 msgstr "Точная настройка"
 
-#: prefs.js:2356
+#: prefs.js:2718
 msgid "Gap Adjustment"
 msgstr "Регулировка зазора"
 
-#: prefs.js:2444
+#: prefs.js:2728
+msgid ""
+"Offset menu placement by 1px\n"
+"Useful if a gap or overlap is visible"
+msgstr ""
+"Сдвинуть расположение меню на 1 пиксель\n"
+"Полезно, если видны разрыв или перекрытие"
+
+#: prefs.js:2815
 msgid "Color Theme Name"
 msgstr "Название цветовой темы"
 
-#: prefs.js:2451
+#: prefs.js:2822
 msgid "Name:"
 msgstr "Название:"
 
-#: prefs.js:2476
+#: prefs.js:2847
 msgid "Save Theme"
 msgstr "Сохранить тему"
 
-#: prefs.js:2501
+#: prefs.js:2872
 msgid "Select Themes to Import"
 msgstr "Выбрать темы для импорта"
 
-#: prefs.js:2501
+#: prefs.js:2872
 msgid "Select Themes to Export"
 msgstr "Выбрать темы для экспорта"
 
-#: prefs.js:2519
+#: prefs.js:2890
 msgid "Import"
 msgstr "Импортировать"
 
-#: prefs.js:2519
+#: prefs.js:2890
 msgid "Export"
 msgstr "Экспортировать"
 
-#: prefs.js:2550
+#: prefs.js:2921
 msgid "Select All"
 msgstr "Выбрать всё"
 
-#: prefs.js:2607
+#: prefs.js:2978
 msgid "Manage Themes"
 msgstr "Управлять темами"
 
-#: prefs.js:2780
+#: prefs.js:3152
 msgid "Color Theme Presets"
 msgstr "Предустановки цветовых тем"
 
-#: prefs.js:2790
+#: prefs.js:3162
 msgid "Save as Preset"
 msgstr "Сохранить как предустановку"
 
-#: prefs.js:2874
+#: prefs.js:3246
 msgid "Manage Presets"
 msgstr "Управлять предустановками"
 
-#: prefs.js:2903
+#: prefs.js:3275
 msgid "Menu Background Color"
 msgstr "Цвет фона"
 
-#: prefs.js:2925
+#: prefs.js:3297
 msgid "Menu Foreground Color"
 msgstr "Основной цвет"
 
-#: prefs.js:2945
+#: prefs.js:3317
 msgid "Font Size"
 msgstr "Размер шрифта"
 
-#: prefs.js:2971
+#: prefs.js:3343
 msgid "Border Color"
 msgstr "Цвет границы"
 
-#: prefs.js:2992
+#: prefs.js:3364
 msgid "Border Size"
 msgstr "Размер границы"
 
-#: prefs.js:3018
+#: prefs.js:3390
 msgid "Highlighted Item Color"
 msgstr "Цвет выделенного элемента"
 
-#: prefs.js:3039
+#: prefs.js:3411
 msgid "Corner Radius"
 msgstr "Радиус закругления"
 
-#: prefs.js:3065
+#: prefs.js:3437
 msgid "Menu Arrow Size"
 msgstr "Размер стрелки меню"
 
-#: prefs.js:3091
+#: prefs.js:3463
 msgid "Menu Displacement"
 msgstr "Отступы меню"
 
-#: prefs.js:3271 prefs.js:3917
+#: prefs.js:3643 prefs.js:4263
 msgid "Configure Shortcuts"
 msgstr "Настроить ярлыки"
 
-#: prefs.js:3292
+#: prefs.js:3664
 msgid "Directories"
 msgstr "Директории"
 
-#: prefs.js:3312
+#: prefs.js:3684
 msgid "Add Default User Directories"
 msgstr "Добавить директории пользователя по умолчанию"
 
-#: prefs.js:3320
+#: prefs.js:3692
 msgid ""
 "Browse a list of all default User Directories to add to your Directories "
 "Shortcuts"
@@ -902,162 +1210,156 @@ msgstr ""
 "Открыть список всех директорий пользователя по умолчанию для добавления в "
 "ваши ярлыки директорий"
 
-#: prefs.js:3359
+#: prefs.js:3731
 msgid "Create a custom shortcut to add to your Directories Shortcuts"
-msgstr ""
-"Создать пользовательский ярлык для добавления в ваши ярлыки директорий"
+msgstr "Создать пользовательский ярлык для добавления в ваши ярлыки директорий"
 
-#: prefs.js:3384 prefs.js:3671
+#: prefs.js:3756 prefs.js:4014
 msgid "Restore Defaults"
 msgstr "Восстановить по умолчанию"
 
-#: prefs.js:3385
+#: prefs.js:3757
 msgid "Restore the default Directory Shortcuts"
 msgstr "Восстановить ярлыки директорий по умолчанию"
 
-#: prefs.js:3608
+#: prefs.js:3951
 msgid "Browse a list of all applications to add to your Application Shortcuts"
-msgstr ""
-"Открыть список всех приложений для добавления в ваши ярлыки приложений"
+msgstr "Открыть список всех приложений для добавления в ваши ярлыки приложений"
 
-#: prefs.js:3647
+#: prefs.js:3990
 msgid "Create a custom shortcut to add to your Application Shortcuts"
-msgstr ""
-"Создать пользовательский ярлык для добавления в ваши ярлыки приложений"
+msgstr "Создать пользовательский ярлык для добавления в ваши ярлыки приложений"
 
-#: prefs.js:3672
+#: prefs.js:4015
 msgid "Restore the default Application Shortcuts"
 msgstr "Восстановить ярлыки приложений по умолчанию"
 
-#: prefs.js:3825
+#: prefs.js:4171
 msgid "Session Buttons"
 msgstr "Кнопки сессии"
 
-#: prefs.js:3912
-msgid "Shortcuts"
-msgstr "Ярлыки"
-
-#: prefs.js:3922 prefs.js:3927
+#: prefs.js:4268 prefs.js:4273
 msgid "Add, Remove, or Modify Arc Menu shortcuts"
 msgstr "Добавить, удалить или изменить ярлыки Arc Menu"
 
-#: prefs.js:3957
+#: prefs.js:4303
 msgid "External Devices"
 msgstr "Внешние устройства"
 
-#: prefs.js:3963
+#: prefs.js:4309
 msgid "Show all connected external devices in Arc Menu"
 msgstr "Отображать все подключённые внешние устройства в Arc Menu"
 
-#: prefs.js:3979
+#: prefs.js:4325
 msgid "Bookmarks"
 msgstr "Закладки"
 
-#: prefs.js:3985
+#: prefs.js:4331
 msgid "Show all Nautilus bookmarks in Arc Menu"
 msgstr "Отображать все закладки Nautilus в Arc Menu"
 
-#: prefs.js:4003
+#: prefs.js:4349
 msgid "Misc"
 msgstr "Разное"
 
-#: prefs.js:4009
+#: prefs.js:4355
 msgid "Export and Import Arc Menu Settings"
 msgstr "Экспортировать и импортировать настройки Arc Menu"
 
-#: prefs.js:4016
-msgid "Importing settings from file may replace ALL saved settings."
+#: prefs.js:4362
+msgid ""
+"Importing settings from file may replace ALL saved settings.\n"
+"This includes all saved pinned apps."
 msgstr ""
-"Импортирование настроек из файла может заменить ВСЕ сохранённые настройки."
+"Импортирование настроек из файла может заменить ВСЕ сохранённые настройки.\n"
+"Включая все сохранённые закреплённые приложения."
 
-#: prefs.js:4017
-msgid "This includes all saved pinned apps."
-msgstr "Включая все сохранённые закреплённые приложения."
-
-#: prefs.js:4026
+#: prefs.js:4371
 msgid "Import from File"
 msgstr "Импортировать из файла"
 
-#: prefs.js:4029
+#: prefs.js:4374
 msgid "Import Arc Menu settings from a file"
 msgstr "Импортировать настройки Arc Menu из файла"
 
-#: prefs.js:4033
+#: prefs.js:4378
 msgid "Import settings"
 msgstr "Импортировать настройки"
 
-#: prefs.js:4062
+#: prefs.js:4407
 msgid "Export to File"
 msgstr "Экспортировать в файл"
 
-#: prefs.js:4065
+#: prefs.js:4410
 msgid "Export and save all your Arc Menu settings to a file"
 msgstr "Экспортировать и сохранить все ваши настройки Arc Menu в файл"
 
-#: prefs.js:4070
+#: prefs.js:4415
 msgid "Export settings"
 msgstr "Экспортировать настройки"
 
-#: prefs.js:4101
+#: prefs.js:4446
 msgid "Color Theme Presets - Export/Import"
 msgstr "Предустановки цветовых тем - Экспорт/Импорт"
 
-#: prefs.js:4120
-msgid "Imported theme presets are located on the Appearance Tab"
+#: prefs.js:4465
+msgid ""
+"Imported theme presets are located on the Appearance Tab\n"
+"in Override Arc Menu Theme"
 msgstr ""
-"Импортированные предустановки тем расположены во вкладке Внешнего вида"
+"Импортированные предустановки тем расположены во вкладке Внешнего вида\n"
+"в \"Изменить тему Arc Menu\""
 
-#: prefs.js:4121
-msgid "in Override Arc Menu Theme"
-msgstr "в Переопределении темы Arc Menu"
-
-#: prefs.js:4132 prefs.js:4139
+#: prefs.js:4476 prefs.js:4483
 msgid "Import Theme Preset"
 msgstr "Импортировать предустановку темы"
 
-#: prefs.js:4135
+#: prefs.js:4479
 msgid "Import Arc Menu Theme Presets from a file"
 msgstr "Импортировать предустановки тем Arc Menu из файла"
 
-#: prefs.js:4176 prefs.js:4188
+#: prefs.js:4520 prefs.js:4532
 msgid "Export Theme Preset"
 msgstr "Экспортировать предустановку темы"
 
-#: prefs.js:4179
+#: prefs.js:4523
 msgid "Export and save your Arc Menu Theme Presets to a file"
 msgstr "Экспортировать и сохранить вашу предустановку темы Arc Menu в файл"
 
-#: prefs.js:4253
+#: prefs.js:4597
 msgid "About"
 msgstr "О программе"
 
-#: prefs.js:4280
-msgid "Arc-Menu"
-msgstr "Arc-Menu"
+#: prefs.js:4603
+msgid "Development"
+msgstr "Разработка"
 
-#: prefs.js:4285
-msgid "version: "
-msgstr "версия: "
+#: prefs.js:4634
+msgid "Version: "
+msgstr "Версия: "
 
-#: prefs.js:4289
-msgid "A traditional application menu for GNOME"
+#: prefs.js:4638
+msgid "A Traditional Application Menu for GNOME"
 msgstr "Традиционное меню приложений для GNOME"
 
-#: prefs.js:4293
+#: prefs.js:4642
 msgid "GitLab Page"
 msgstr "Страница GitLab"
 
-#: menu.js:587
-msgid "Arc Menu on GitLab"
-msgstr "Arc Menu на GitLab"
+#~ msgid "This includes all saved pinned apps."
+#~ msgstr "Включая все сохранённые закреплённые приложения."
 
-#: menu.js:592
-msgid "About Arc Menu"
-msgstr "Об Arc Menu"
+#~ msgid "in Override Arc Menu Theme"
+#~ msgstr "в Переопределении темы Arc Menu"
 
-#: menu.js:600
-msgid "Dash to Panel Settings"
-msgstr "Настройки Dash to Panel"
+#~ msgid "Menu Button Text"
+#~ msgstr "Текст кнопки меню"
+
+#~ msgid "Menu Button Icon"
+#~ msgstr "Значок кнопки меню"
+
+#~ msgid "Customize Arc Menu's Button in Main Panel"
+#~ msgstr "Настроить кнопку Arc Menu в основной панели"
 
 #~ msgid "Icon Path/Icon Symbolic:"
 #~ msgstr "Путь до значка/Символ значка:"

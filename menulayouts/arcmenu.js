@@ -44,7 +44,7 @@ var createMenu = class {
         this.mainBox = mainButton.mainBox; 
         this.appMenuManager = mainButton.appMenuManager;
         this._session = new GnomeSession.SessionManager();
-        this.leftClickMenu  = mainButton.leftClickMenu;
+        this.leftClickMenu = mainButton.leftClickMenu;
         this.currentMenu = Constants.CURRENT_MENU.FAVORITES; 
         this._applicationsButtons = new Map();
         this.isRunning=true;
@@ -55,7 +55,7 @@ var createMenu = class {
 
         this._tree = new GMenu.Tree({ menu_basename: 'applications.menu' });
         this._treeChangedId = this._tree.connect('changed', ()=>{
-            this._reload();
+            this.needsReload = true;
         });
 
         this.mainBox.vertical = false;
@@ -74,6 +74,16 @@ var createMenu = class {
             overlay_scrollbars: true,
             reactive:true
         });      
+
+        let panAction = new Clutter.PanAction({ interpolate: false });
+        panAction.connect('pan', (action) => {
+            this._blockActivateEvent = true;
+            Utils._onPan(action, this.applicationsScrollBox);
+        });
+        panAction.connect('gesture-cancel',(action) =>  Utils._onPanEnd(action, this.applicationsScrollBox));
+        panAction.connect('gesture-end', (action) => Utils._onPanEnd(action, this.applicationsScrollBox));
+        this.applicationsScrollBox.add_action(panAction);
+
         this.applicationsScrollBox.connect('key-press-event',(actor,event)=>{
             let key = event.get_key_symbol();
             if(key == Clutter.KEY_Up)
@@ -187,6 +197,16 @@ var createMenu = class {
             overlay_scrollbars: true,
             style_class: 'vfade'
         });     
+
+        let panAction = new Clutter.PanAction({ interpolate: false });
+        panAction.connect('pan', (action) => {
+            this._blockActivateEvent = true;
+            Utils._onPan(action, this.shortcutsScrollBox);
+        });
+        panAction.connect('gesture-cancel',(action) =>  Utils._onPanEnd(action, this.shortcutsScrollBox));
+        panAction.connect('gesture-end', (action) => Utils._onPanEnd(action, this.shortcutsScrollBox));
+        this.shortcutsScrollBox.add_action(panAction);
+
         this.shortcutsScrollBox.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC);
         this.shortcutsScrollBox.add_actor(this.shorcutsBox);
         this.shortcutsScrollBox.clip_to_allocation = true;
@@ -350,7 +370,6 @@ var createMenu = class {
         this._createRightBox();
         this.updateStyle();
     }
-    // Redisplay the menu
     _redisplay() {
         if (this.applicationsBox)
             this._clearApplicationsBox();
@@ -372,10 +391,7 @@ var createMenu = class {
         this._loadFavorites();
         this._display();
     }
-    // Display the menu
     _display() {
-        //this.mainBox.hide();
-        
         if(this._settings.get_boolean('enable-pinned-apps'))
             this._displayFavorites();
         else
@@ -389,7 +405,7 @@ var createMenu = class {
     updateStyle(){
         let addStyle=this._settings.get_boolean('enable-custom-arc-menu');
         if(this.newSearch){
-            addStyle ? this.newSearch.setStyle('arc-menu-status-text') :  this.newSearch.setStyle('search-statustext'); 
+            addStyle ? this.newSearch.setStyle('arc-menu-status-text') : this.newSearch.setStyle(''); 
             addStyle ? this.searchBox._stEntry.set_name('arc-search-entry') : this.searchBox._stEntry.set_name('search-entry');
         }
         if(this.actionsBox){
@@ -499,7 +515,9 @@ var createMenu = class {
             this.applicationsBox.add_actor(this.categoryDirectories[i].actor);	
             if(i==0){
                 this.activeMenuItem = this.categoryDirectories[i];
-                this.mainBox.grab_key_focus();
+                if(this.leftClickMenu.isOpen){
+                    this.mainBox.grab_key_focus();
+                }
             }	 
         }
         this.updateStyle();
@@ -614,7 +632,9 @@ var createMenu = class {
             this.applicationsBox.add_actor(this.favoritesArray[i].actor);	
             if(i==0){
                 this.activeMenuItem = this.favoritesArray[i];
-                this.mainBox.grab_key_focus();
+                if(this.leftClickMenu.isOpen){
+                    this.mainBox.grab_key_focus();
+                }
             }	   
         }
         this.updateStyle();  
@@ -740,7 +760,9 @@ var createMenu = class {
             }
             if(i==0){
                 this.activeMenuItem = item;
-                this.mainBox.grab_key_focus();
+                if(this.leftClickMenu.isOpen){
+                    this.mainBox.grab_key_focus();
+                }
             }
                 
         }

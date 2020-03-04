@@ -54,7 +54,7 @@ var createMenu = class{
 
         this._tree = new GMenu.Tree({ menu_basename: 'applications.menu' });
         this._treeChangedId = this._tree.connect('changed', ()=>{
-            this._reload();
+            this.needsReload = true;
         });
 
         //LAYOUT------------------------------------------------------------------------------------------------
@@ -120,6 +120,16 @@ var createMenu = class{
         this.shortcutsScrollBox.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC);
         this.shortcutsScrollBox.add_actor( this.shorcutsBox);
         this.shortcutsScrollBox.clip_to_allocation = true;
+
+        let panAction = new Clutter.PanAction({ interpolate: false });
+        panAction.connect('pan', (action) => {
+            this._blockActivateEvent = true;
+            Utils._onPan(action, this.shortcutsScrollBox);
+        });
+        panAction.connect('gesture-cancel',(action) =>  Utils._onPanEnd(action, this.shortcutsScrollBox));
+        panAction.connect('gesture-end', (action) => Utils._onPanEnd(action, this.shortcutsScrollBox));
+        this.shortcutsScrollBox.add_action(panAction);
+
         this.rightBox.add( this.shortcutsScrollBox);
         // Left Box
         //Menus Left Box container
@@ -158,6 +168,16 @@ var createMenu = class{
             overlay_scrollbars: true,
             style_class: 'vfade'
         });
+
+        let panAction = new Clutter.PanAction({ interpolate: false });
+        panAction.connect('pan', (action) => {
+            this._blockActivateEvent = true;
+            Utils._onPan(action, this.applicationsScrollBox);
+        });
+        panAction.connect('gesture-cancel',(action) =>  Utils._onPanEnd(action, this.applicationsScrollBox));
+        panAction.connect('gesture-end', (action) => Utils._onPanEnd(action, this.applicationsScrollBox));
+        this.applicationsScrollBox.add_action(panAction);
+
         this.applicationsScrollBox.style = "width:225px;";
         this.applicationsScrollBox.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC);
         this.leftBox.add( this.applicationsScrollBox, {
@@ -323,7 +343,7 @@ var createMenu = class{
     updateStyle(){
         let addStyle=this._settings.get_boolean('enable-custom-arc-menu');
         if(this.newSearch){
-            addStyle ? this.newSearch.setStyle('arc-menu-status-text') :  this.newSearch.setStyle('search-statustext'); 
+            addStyle ? this.newSearch.setStyle('arc-menu-status-text') : this.newSearch.setStyle(''); 
             addStyle ? this.searchBox._stEntry.set_name('arc-search-entry') : this.searchBox._stEntry.set_name('search-entry');
         }
         if(this.actionsBox){
@@ -417,7 +437,9 @@ var createMenu = class{
             this.applicationsBox.add_actor(this.categoryDirectories[i].actor);	
             if(i==0){
                 this.activeMenuItem = this.categoryDirectories[i];
-                this.mainBox.grab_key_focus();
+                if(this.leftClickMenu.isOpen){
+                    this.mainBox.grab_key_focus();
+                }
             }	 
         }
         this.updateStyle();
@@ -450,12 +472,13 @@ var createMenu = class{
         this.activeMenuItem = category;
         if(setActive){
             category.setFakeActive(true);
-            this.activeMenuItem.actor.grab_key_focus();
+            if(this.leftClickMenu.isOpen){
+                this.activeMenuItem.actor.grab_key_focus();
+            }
         }
-        else{
+        else if(this.leftClickMenu.isOpen){
             this.mainBox.grab_key_focus();
         }
-
     }
     // Clear the applications menu box
     _clearApplicationsBox() {
@@ -506,7 +529,9 @@ var createMenu = class{
                 } 
             }
         }
-        this.mainBox.grab_key_focus();
+        if(this.leftClickMenu.isOpen){
+            this.mainBox.grab_key_focus();
+        }
     }
 
     _displayAllApps(){

@@ -56,7 +56,7 @@ var createMenu = class{
 
         this._tree = new GMenu.Tree({ menu_basename: 'applications.menu' });
         this._treeChangedId = this._tree.connect('changed', ()=>{
-            this._reload();
+            this.needsReload = true;
         });
 
         //LAYOUT------------------------------------------------------------------------------------------------
@@ -69,7 +69,7 @@ var createMenu = class{
         });
 
        
-        this.categoriesTopBox.style = "padding: 0px 15px 0px 0px;";
+        this.categoriesTopBox.style = "padding: 5px 15px 0px 0px; margin-bottom: 10px;";
         this.mainBox.add( this.topBox, {
             expand: false,
             x_fill: true,
@@ -132,6 +132,16 @@ var createMenu = class{
             overlay_scrollbars: true,
             style_class: 'vfade'
         });   
+
+        let panAction = new Clutter.PanAction({ interpolate: false });
+        panAction.connect('pan', (action) => {
+            this._blockActivateEvent = true;
+            Utils._onPan(action, this.shortcutsScrollBox);
+        });
+        panAction.connect('gesture-cancel',(action) =>  Utils._onPanEnd(action, this.shortcutsScrollBox));
+        panAction.connect('gesture-end', (action) => Utils._onPanEnd(action, this.shortcutsScrollBox));
+        this.shortcutsScrollBox.add_action(panAction);
+
         this.shortcutsScrollBox.connect('key-press-event',(actor,event)=>{
             let key = event.get_key_symbol();
             if(key == Clutter.KEY_Up)
@@ -350,6 +360,16 @@ var createMenu = class{
             overlay_scrollbars: true,
             reactive:true
         });        
+
+        let panAction = new Clutter.PanAction({ interpolate: false });
+        panAction.connect('pan', (action) => {
+            this._blockActivateEvent = true;
+            Utils._onPan(action, this.applicationsScrollBox);
+        });
+        panAction.connect('gesture-cancel',(action) =>  Utils._onPanEnd(action, this.applicationsScrollBox));
+        panAction.connect('gesture-end', (action) => Utils._onPanEnd(action, this.applicationsScrollBox));
+        this.applicationsScrollBox.add_action(panAction);
+
         this.applicationsScrollBox.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC);
         this.leftPanelPopup.add(this.applicationsScrollBox, {
             expand: true,
@@ -431,8 +451,10 @@ var createMenu = class{
     }
     updateStyle(){
         let addStyle=this._settings.get_boolean('enable-custom-arc-menu');
+        let removeMenuArrow = this._settings.get_boolean('remove-menu-arrow'); 
+
         if(this.newSearch){
-            addStyle ? this.newSearch.setStyle('arc-menu-status-text') :  this.newSearch.setStyle('search-statustext'); 
+            addStyle ? this.newSearch.setStyle('arc-menu-status-text') : this.newSearch.setStyle(''); 
             addStyle ? this.searchBox._stEntry.set_name('arc-search-entry') : this.searchBox._stEntry.set_name('search-entry');
         }
         if(this.actionsBox){
@@ -452,6 +474,12 @@ var createMenu = class{
         }
         addStyle ? this._clocksItem.add_style_class_name('arc-menu-action') : this._clocksItem.remove_style_class_name('arc-menu-action');
         addStyle ? this._weatherItem.add_style_class_name('arc-menu-action') : this._weatherItem.remove_style_class_name('arc-menu-action');
+        
+        if(removeMenuArrow){
+            this.leftClickMenu.box.style = "padding-bottom:0px; margin:0px;";
+        }  
+        else
+            this.leftClickMenu.box.style = "padding-bottom:0px;";
     }
     // Load data for all menu categories
     _loadCategories() {
@@ -742,7 +770,9 @@ var createMenu = class{
                 });
                 if(i==0 && !shorcutsAppBox){
                     this.activeMenuItem = item;
-                    this.mainBox.grab_key_focus();
+                    if(this.leftClickMenu.isOpen){
+                        this.mainBox.grab_key_focus();
+                    }
                 }     
             }
         }

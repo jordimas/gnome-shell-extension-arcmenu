@@ -54,7 +54,7 @@ var createMenu =class{
         this.shouldLoadFavorites = true;
         this._tree = new GMenu.Tree({ menu_basename: 'applications.menu' });
         this._treeChangedId = this._tree.connect('changed', ()=>{
-            this._reload();
+            this.needsReload = true;
         });
 
         //LAYOUT------------------------------------------------------------------------------------------------
@@ -141,6 +141,16 @@ var createMenu =class{
             overlay_scrollbars: true,
             style_class: 'vfade'
         });   
+
+        let panAction = new Clutter.PanAction({ interpolate: false });
+        panAction.connect('pan', (action) => {
+            this._blockActivateEvent = true;
+            Utils._onPan(action, this.shortcutsScrollBox);
+        });
+        panAction.connect('gesture-cancel',(action) =>  Utils._onPanEnd(action, this.shortcutsScrollBox));
+        panAction.connect('gesture-end', (action) => Utils._onPanEnd(action, this.shortcutsScrollBox));
+        this.shortcutsScrollBox.add_action(panAction);
+
         let rightPanelWidth = this._settings.get_int('right-panel-width');
         rightPanelWidth += 45;
         this.rightBox.style = "width: " + rightPanelWidth + "px;";
@@ -195,6 +205,16 @@ var createMenu =class{
             style_class: 'apps-menu vfade left-scroll-area',
             overlay_scrollbars: true
         });
+
+        let panAction = new Clutter.PanAction({ interpolate: false });
+        panAction.connect('pan', (action) => {
+            this._blockActivateEvent = true;
+            Utils._onPan(action, this.applicationsScrollBox);
+        });
+        panAction.connect('gesture-cancel',(action) =>  Utils._onPanEnd(action, this.applicationsScrollBox));
+        panAction.connect('gesture-end', (action) => Utils._onPanEnd(action, this.applicationsScrollBox));
+        this.applicationsScrollBox.add_action(panAction);
+
         this.applicationsScrollBox.connect('key-press-event',(actor,event)=>{
             let key = event.get_key_symbol();
             if(key == Clutter.KEY_Up)
@@ -280,7 +300,7 @@ var createMenu =class{
     updateStyle(){
         let addStyle=this._settings.get_boolean('enable-custom-arc-menu');
         if(this.newSearch){
-            addStyle ? this.newSearch.setStyle('arc-menu-status-text') :  this.newSearch.setStyle('search-statustext'); 
+            addStyle ? this.newSearch.setStyle('arc-menu-status-text') : this.newSearch.setStyle(''); 
             addStyle ? this.searchBox._stEntry.set_name('arc-search-entry') : this.searchBox._stEntry.set_name('search-entry');
         }
         if(this.actionsBox){
@@ -376,7 +396,9 @@ var createMenu =class{
             this.applicationsBox.add_actor(this.categoryDirectories[i].actor);	
             if(i==0){
                 this.activeMenuItem = this.categoryDirectories[i];
-                this.mainBox.grab_key_focus();
+                if(this.leftClickMenu.isOpen){
+                    this.mainBox.grab_key_focus();
+                }
             }	 	
         }
         this.updateStyle();
@@ -485,20 +507,16 @@ var createMenu =class{
         pinnedApps.push(_("Terminal"), "utilities-terminal", "org.gnome.Terminal.desktop");
         pinnedApps.push(_("Settings"), "emblem-system-symbolic", "gnome-control-center.desktop");
         let software = '';
-        let icon = '';
         if(GLib.find_program_in_path('gnome-software')){
-            software = 'org.gnome.Software';
-            icon = 'org.gnome.Software';
+            software = 'org.gnome.Software.desktop';
         }
         else if(GLib.find_program_in_path('pamac-manager')){
-            software = 'pamac-manager';
-            icon = 'org.gnome.Software';
+            software = 'pamac-manager.desktop';
         }
         else if(GLib.find_program_in_path('io.elementary.appcenter')){
-            software = 'io.elementary.appcenter';
-            icon = 'pop-shop';
+            software = 'io.elementary.appcenter.desktop';
         }
-        pinnedApps.push(_("Software"), icon, software+".desktop");
+        pinnedApps.push(_("Software"), 'system-software-install-symbolic', software);
         pinnedApps.push(_("Files"), "system-file-manager", "org.gnome.Nautilus.desktop");
         pinnedApps.push(_("Log Out"), "application-exit-symbolic", "ArcMenu_LogOut");
         pinnedApps.push(_("Lock"), "changes-prevent-symbolic", "ArcMenu_Lock");
@@ -521,9 +539,11 @@ var createMenu =class{
         this.activeMenuItem = category;
         if(setActive){
             category.setFakeActive(true);
-            this.activeMenuItem.actor.grab_key_focus();
+            if(this.leftClickMenu.isOpen){
+                this.activeMenuItem.actor.grab_key_focus();
+            }
         }
-        else{
+        else if(this.leftClickMenu.isOpen){
             this.mainBox.grab_key_focus();
         }
     }
@@ -578,7 +598,9 @@ var createMenu =class{
                 }   
             }
         }
-        this.mainBox.grab_key_focus();
+        if(this.leftClickMenu.isOpen){
+            this.mainBox.grab_key_focus();
+        }
     }
 
     _displayAllApps(){

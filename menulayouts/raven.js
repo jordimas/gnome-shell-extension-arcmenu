@@ -56,13 +56,13 @@ var createMenu = class{
 
         this._tree = new GMenu.Tree({ menu_basename: 'applications.menu' });
         this._treeChangedId = this._tree.connect('changed', ()=>{
-            this._reload();
+            this.needsReload = true;
         });
 
         //LAYOUT------------------------------------------------------------------------------------------------
         this.mainBox.vertical = false;
-        this.leftClickMenu.actor.style = "-arrow-base:0px;-arrow-rise:0px; -boxpointer-gap: 0px;";
-
+        this.leftClickMenu.actor.style = "-arrow-base:0px;-arrow-rise:0px; -boxpointer-gap: 0px;"; 
+        this.leftClickMenu.box.style = "padding-bottom:0px; padding-top:0px; margin:0px;";
         this.placesBox = new St.BoxLayout({
             vertical: true
         });
@@ -142,6 +142,16 @@ var createMenu = class{
             overlay_scrollbars: true,
             style_class: 'vfade'
         });   
+
+        let panAction = new Clutter.PanAction({ interpolate: false });
+        panAction.connect('pan', (action) => {
+            this._blockActivateEvent = true;
+            Utils._onPan(action, this.shortcutsScrollBox);
+        });
+        panAction.connect('gesture-cancel',(action) =>  Utils._onPanEnd(action, this.shortcutsScrollBox));
+        panAction.connect('gesture-end', (action) => Utils._onPanEnd(action, this.shortcutsScrollBox));
+        this.shortcutsScrollBox.add_action(panAction);
+
         this.shortcutsScrollBox.connect('key-press-event',(actor,event)=>{
             let key = event.get_key_symbol();
             if(key == Clutter.KEY_Up)
@@ -160,9 +170,7 @@ var createMenu = class{
             y_fill: true,
             y_align: St.Align.START
         });
-
-        this.leftClickMenu.box.style = "padding-bottom:0px; padding-top:0px;";
-        
+   
         this.weatherBox = new St.BoxLayout({
             vertical: true,
             y_align: Clutter.ActorAlign.END
@@ -194,15 +202,13 @@ var createMenu = class{
         this._display();
   
     }
-    updateRunnerLocation(){
-        let themeContext = St.ThemeContext.get_for_stage(global.stage);
-        let scaleFactor = themeContext.scale_factor;
-        
-        let screen = Gdk.Screen.get_default();
-        let [x, y] = this._button._menuButtonWidget.actor.get_transformed_position();
-        let currentMonitor = screen.get_monitor_at_point(x, y);
-        let rect = screen.get_monitor_workarea(currentMonitor);
-        let screenHeight = rect.height;        
+    updateRunnerLocation(){       
+        let monitorIndex = Main.layoutManager.findIndexForActor(this._button.getWidget().actor);
+        let scaleFactor = Main.layoutManager.monitors[monitorIndex].geometry_scale;
+        let monitorWorkArea = Main.layoutManager.getWorkAreaForMonitor(monitorIndex);
+
+        let screenHeight = monitorWorkArea.height;   
+     
         let height =  Math.round(screenHeight / scaleFactor);
         this.mainBox.style = `height: ${height}px`;
     }
@@ -270,8 +276,10 @@ var createMenu = class{
     }
     updateStyle(){
         let addStyle = this._settings.get_boolean('enable-custom-arc-menu');
+        let gapAdjustment = this._settings.get_int('gap-adjustment');
+
         if(this.newSearch){
-            addStyle ? this.newSearch.setStyle('arc-menu-status-text') :  this.newSearch.setStyle('search-statustext'); 
+            addStyle ? this.newSearch.setStyle('arc-menu-status-text') : this.newSearch.setStyle(''); 
             addStyle ? this.searchBox._stEntry.set_name('arc-search-entry') : this.searchBox._stEntry.set_name('search-entry');
         }
         if(this.placesBottomBox){
@@ -283,7 +291,9 @@ var createMenu = class{
         } 
         addStyle ? this._clocksItem.add_style_class_name('arc-menu-action') : this._clocksItem.remove_style_class_name('arc-menu-action');
         addStyle ? this._weatherItem.add_style_class_name('arc-menu-action') : this._weatherItem.remove_style_class_name('arc-menu-action');
-        
+
+        this.leftClickMenu.actor.style = "-arrow-base:0px; -arrow-rise:0px; -boxpointer-gap: " + gapAdjustment + "px;";
+        this.leftClickMenu.box.style = "padding-bottom:0px; padding-top:0px; margin:0px;";
             
         this.updateRunnerLocation();
     }
@@ -558,7 +568,9 @@ var createMenu = class{
                 });
                 if(i==0 && !shorcutsAppBox){
                     this.activeMenuItem = item;
-                    this.mainBox.grab_key_focus();
+                    if(this.leftClickMenu.isOpen){
+                        this.mainBox.grab_key_focus();
+                    }
                 }     
             }
         }

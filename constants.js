@@ -25,7 +25,7 @@ const Me = imports.misc.extensionUtils.getCurrentExtension();
 const Gettext = imports.gettext.domain(Me.metadata['gettext-domain']);
 const _ = Gettext.gettext;
 
-var VERSION = "41";
+var VERSION = "42.7";
 
 var CURRENT_MENU = {
     FAVORITES: 0,
@@ -131,7 +131,8 @@ var MENU_APPEARANCE = {
     Icon: 0,
     Text: 1,
     Icon_Text: 2,
-    Text_Icon: 3
+    Text_Icon: 3,
+    None: 4
 };
 
 var MENU_BUTTON_ICON = { 
@@ -179,62 +180,31 @@ var MENU_STYLE_CHOOSER = {
     ThumbnailHeight: 200,
     ThumbnailWidth: 200,
     MaxColumns: 6,
-    Styles: [
-        {   thumbnail: '/media/layouts/arc-menu.svg',
-            name: 'Arc Menu'
-        },
-        {   thumbnail: '/media/layouts/brisk-menu.svg',
-            name: 'Brisk Menu Style'
-        },
-        {   thumbnail: '/media/layouts/whisker-menu.svg',
-            name: 'Whisker Menu Style'
-        },
-        {   thumbnail: '/media/layouts/gnome-menu.svg',
-            name: 'GNOME Menu Style'
-        },
-        {   thumbnail: '/media/layouts/mint-menu.svg',
-            name: 'Mint Menu Style'
-        },
-        {   thumbnail: '/media/layouts/elementary-menu.svg',
-            name: 'Elementary Menu Style'
-        },
-        {   thumbnail: '/media/layouts/gnome-dash-menu.svg',
-            name: 'GNOME Dash Style'
-        },
-        {   thumbnail: '/media/layouts/simple-menu.svg',
-            name: 'Simple Menu Style'
-        },
-        {   thumbnail: '/media/layouts/simple-menu-2.svg',
-            name: 'Simple Menu 2 Style'
-        },
-        {   thumbnail: '/media/layouts/redmond-style-menu.svg',
-            name: 'Redmond Menu Style'
-        },
-        {   thumbnail: '/media/layouts/ubuntu-dash-menu.svg',
-            name: 'Ubuntu Dash Style'
-        },
-        {   thumbnail: '/media/layouts/budgie-menu.svg',
-            name: 'Budgie Style'
-        },
-        {   thumbnail: '/media/layouts/windows-10.svg',
-            name: 'Windows 10 Style'
-        },
-        {   thumbnail: '/media/layouts/krunner-menu.svg',
-            name: 'KRunner Style'
-        },
-        {   thumbnail: '/media/layouts/chromebook-menu.svg',
-            name: 'Chromebook Style'
-        },
-        {   thumbnail: '/media/layouts/raven-menu.svg',
-            name: 'Raven Menu Style'
-        }
+    Styles: [ 
+        { thumbnail: '/media/layouts/arc-menu.svg', name: 'Arc Menu'},
+        { thumbnail: '/media/layouts/brisk-menu.svg', name: 'Brisk Menu Style'},
+        { thumbnail: '/media/layouts/whisker-menu.svg', name: 'Whisker Menu Style'},
+        { thumbnail: '/media/layouts/gnome-menu.svg', name: 'GNOME Menu Style'},
+        { thumbnail: '/media/layouts/mint-menu.svg', name: 'Mint Menu Style'},
+        { thumbnail: '/media/layouts/elementary-menu.svg', name: 'Elementary Menu Style'},
+        { thumbnail: '/media/layouts/gnome-dash-menu.svg', name: 'GNOME Dash Style'},
+        { thumbnail: '/media/layouts/simple-menu.svg', name: 'Simple Menu Style'},
+        { thumbnail: '/media/layouts/simple-menu-2.svg', name: 'Simple Menu 2 Style'},
+        { thumbnail: '/media/layouts/redmond-style-menu.svg', name: 'Redmond Menu Style'},
+        { thumbnail: '/media/layouts/ubuntu-dash-menu.svg', name: 'Ubuntu Dash Style'},
+        { thumbnail: '/media/layouts/budgie-menu.svg', name: 'Budgie Style'},
+        { thumbnail: '/media/layouts/windows-10.svg', name: 'Windows 10 Style'},
+        { thumbnail: '/media/layouts/krunner-menu.svg', name: 'KRunner Style'},
+        { thumbnail: '/media/layouts/chromebook-menu.svg', name: 'Chromebook Style'},
+        { thumbnail: '/media/layouts/raven-menu.svg', name: 'Raven Menu Style'}
     ]
 };
+var ARCMENU_MANUAL_URL = "https://gitlab.com/LinxGem33/Neon/-/raw/master/arc-menu-manual/arcmenu-user-manual.pdf"
 
 //Path to some files
 var ARC_MENU_LOGO = {
     Path: '/media/icons/arc-menu-logo.svg',
-    Size: [210, 210]
+    Size: [150, 150]
 };
 
 var COLOR_PRESET = {
@@ -256,10 +226,20 @@ var KEYBOARD_LOGO = {
     Size: [256, 72] 
 };
 
+var ARC_MENU_MANUAL_ICON = {
+    Path: '/media/misc/arcmenu-manual-icon.svg',
+    Size: [30, 30]
+};
+
+var GITLAB_ICON = {
+    Path: '/media/misc/gitlab-icon.svg',
+    Size: [30, 30]
+};
+
 var CREDITS = '\n<b>Credits:</b>'+
-		'\n\nCurrent Developers'+
-		'\n <a href="https://gitlab.com/LinxGem33">@LinxGem33</a>  (Founder/Maintainer)'+
-		'\n<a href="https://gitlab.com/AndrewZaech">@AndrewZaech</a>  (Developer)'+
+		'\n\nCurrent Active Developers'+
+		'\n <a href="https://gitlab.com/LinxGem33">@LinxGem33</a>  (Founder/Maintainer/Graphic Designer)'+
+		'\n<a href="https://gitlab.com/AndrewZaech">@AndrewZaech</a>  (Lead JavaScript/UX Developer)'+
 		'\n\nPast Developers'+
 		'\n <a href="https://github.com/lexruee">@lexruee</a>  (Developer)'+
 		'\n\n\n<b>A Special Thanks To:</b>'+

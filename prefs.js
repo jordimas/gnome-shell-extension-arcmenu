@@ -153,7 +153,9 @@ var PinnedAppsPage = GObject.registerClass(
                 frameRow._name = array[i];
                 frameRow._icon = array[i+1];
                 frameRow._cmd = array[i+2];
-                
+                if(frameRow._icon === "ArcMenu_ArcMenuIcon"){
+                   frameRow._icon = Me.path + '/media/icons/arc-menu-symbolic.svg';
+                }
                 let arcMenuImage = new Gtk.Image( {
                     gicon: Gio.icon_new_for_string(frameRow._icon),
                     pixel_size: 22
@@ -380,9 +382,7 @@ var AddAppsToPinnedListWindow = GObject.registerClass(
                     frameRow._name = _(defaultApplicationShortcuts[i][0]);
                     frameRow._icon = defaultApplicationShortcuts[i][1];
                     frameRow._cmd = defaultApplicationShortcuts[i][2];
-                    if(frameRow._cmd == "ArcMenu_Software" && GLib.find_program_in_path('io.elementary.appcenter')){
-                        frameRow._icon = 'pop-shop';
-                    }
+
                     let iconImage = new Gtk.Image( {
                         gicon: Gio.icon_new_for_string(frameRow._icon),
                         pixel_size: 22
@@ -1040,10 +1040,16 @@ var GeneralPage = GObject.registerClass(
             });
 
             let extensionStates = this._settings.get_value('dtp-dtd-state').deep_unpack();
-            
+            let dashExtensionName = _("Dash to Dock");
+            let gnomeSettings = Gio.Settings.new("org.gnome.shell");
+            let enabledExtensions = gnomeSettings.get_strv('enabled-extensions');
+            if (enabledExtensions.includes('ubuntu-dock@ubuntu.com')) {
+                dashExtensionName = _("Ubuntu Dock");
+            }
+    
             menuPlacementCombo.append_text(_("Main Panel"));
             menuPlacementCombo.append_text(_("Dash to Panel"));
-            menuPlacementCombo.append_text(_("Dash to Dock"));
+            menuPlacementCombo.append_text(dashExtensionName);
 
             let placement =  this._settings.get_enum('arc-menu-placement');
             if(placement == Constants.ARC_MENU_PLACEMENT.PANEL && extensionStates[Constants.EXTENSION.DTP])
@@ -1084,6 +1090,8 @@ var GeneralPage = GObject.registerClass(
                 }
                 else{
                     menuPlacementFrame.add(dtdExtraRow);
+                    if(extensionStates[Constants.EXTENSION.DTD])
+                        menuPlacementFrame.add(multiMonitorRow);
                     menuPlacementFrame.show();
                 }
             });
@@ -1239,7 +1247,7 @@ var GeneralPage = GObject.registerClass(
             //Multi-monitor
             let multiMonitorRow = new PW.FrameBoxRow();
             let multiMonitorLabel = new Gtk.Label({
-                label: _("Display on all monitors when using Dash to Panel"),
+                label: _("Display Arc Menu on all monitors"),
                 use_markup: true,
                 xalign: 0,
                 hexpand: true
@@ -1247,7 +1255,7 @@ var GeneralPage = GObject.registerClass(
 
             let multiMonitorSwitch = new Gtk.Switch({ 
                 halign: Gtk.Align.END,
-                tooltip_text: _("Display Arc Menu on all monitors when using Dash to Panel") 
+                tooltip_text: _("Display Arc Menu on all monitors") 
             });
             multiMonitorSwitch.set_active(this._settings.get_boolean('multi-monitor'));
             multiMonitorSwitch.connect('notify::active', (widget) => {
@@ -1282,6 +1290,8 @@ var GeneralPage = GObject.registerClass(
             }
             else{
                 menuPlacementFrame.add(dtdExtraRow);
+                if(extensionStates[Constants.EXTENSION.DTD])
+                    menuPlacementFrame.add(multiMonitorRow);
                 menuPlacementFrame.show();
             }
         }
@@ -1648,15 +1658,20 @@ var MenuButtonCustomizationWindow = GObject.registerClass(
             menuButtonAppearanceCombo.append_text(_("Text"));
             menuButtonAppearanceCombo.append_text(_("Icon and Text"));
             menuButtonAppearanceCombo.append_text(_("Text and Icon"));
+            menuButtonAppearanceCombo.append_text(_("Hidden"));
             menuButtonAppearanceCombo.set_active(this._settings.get_enum('menu-button-appearance'));
             menuButtonAppearanceCombo.connect('changed', (widget) => {
                 resetButton.set_sensitive(true); 
-                if(widget.get_active() != Constants.MENU_APPEARANCE.Icon && menuButtonAppearanceFrame.count == 1){
-                    menuButtonAppearanceFrame.add(menuButtonCustomTextBoxRow);
+                if(menuButtonAppearanceFrame.count == 2){
+                    menuButtonAppearanceFrame.remove(menuButtonAppearanceFrame.get_index(1));
+                }
+                if(widget.get_active() == Constants.MENU_APPEARANCE.None){
+                    menuButtonAppearanceFrame.add(restoreActivitiesRow);
                     menuButtonAppearanceFrame.show();
                 }
-                else if(widget.get_active() == Constants.MENU_APPEARANCE.Icon && menuButtonAppearanceFrame.count == 2){
-                    menuButtonAppearanceFrame.remove(menuButtonCustomTextBoxRow);
+                else if(widget.get_active() != Constants.MENU_APPEARANCE.Icon){
+                    menuButtonAppearanceFrame.add(menuButtonCustomTextBoxRow);
+                    menuButtonAppearanceFrame.show();
                 }
                 this._settings.set_enum('menu-button-appearance', widget.get_active());
             });
@@ -1684,9 +1699,30 @@ var MenuButtonCustomizationWindow = GObject.registerClass(
 
             menuButtonCustomTextBoxRow.add(menuButtonCustomTextLabel);
             menuButtonCustomTextBoxRow.add(menuButtonCustomTextEntry);
-            if(this._settings.get_enum('menu-button-appearance') != Constants.MENU_APPEARANCE.Icon)
+            if(this._settings.get_enum('menu-button-appearance') != Constants.MENU_APPEARANCE.Icon && this._settings.get_enum('menu-button-appearance') != Constants.MENU_APPEARANCE.None)
                 menuButtonAppearanceFrame.add(menuButtonCustomTextBoxRow);
             vbox.add(menuButtonAppearanceFrame);
+            
+            let restoreActivitiesRow = new PW.FrameBoxRow();
+            let restoreActivitiesLabel = new Gtk.Label({
+                label: _("Restore Activities Button"),
+                use_markup: true,
+                xalign: 0,
+                hexpand: true
+            });
+
+            let restoreActivitiesSwitch = new Gtk.Switch({ 
+                halign: Gtk.Align.END,
+                tooltip_text: _("Restore Activities Button in panel") 
+            });
+            restoreActivitiesSwitch.set_active(this._settings.get_boolean('restore-activities-button'));
+            restoreActivitiesSwitch.connect('notify::active', (widget) => {
+                this._settings.set_boolean('restore-activities-button', widget.get_active());
+            });
+            restoreActivitiesRow.add(restoreActivitiesLabel);
+            restoreActivitiesRow.add(restoreActivitiesSwitch);
+            if(this._settings.get_enum('menu-button-appearance') == Constants.MENU_APPEARANCE.None)
+                menuButtonAppearanceFrame.add(restoreActivitiesRow);
 
             // third row
             let menuButtonArrowIconFrame = new PW.FrameBox();
@@ -2452,10 +2488,23 @@ var ArcMenuCustomizationWindow = GObject.registerClass(
             generalLabel.set_sensitive(false);
             generalRow.add(generalLabel);
             generalSettingsFrame.add(generalRow);
-            let screen = Gdk.Screen.get_default();
-            let rect = screen.get_monitor_geometry(0);
-            let scaleFactor = screen.get_monitor_scale_factor(0);
-            let screenHeight = rect.height * scaleFactor;
+
+            //find the greatest screen height of all monitors
+            //use that value to set Menu Height cap
+            let display = Gdk.Display.get_default(); 
+            let nMonitors = display.get_n_monitors();
+            let greatestHeight = 0;
+            let scaleFactor = 1;   
+            for (let i = 0; i < nMonitors; i++) {
+                let monitor = display.get_monitor(i);
+                let monitorHeight = monitor.get_workarea().height;
+                if(monitorHeight > greatestHeight){
+                    scaleFactor = monitor.get_scale_factor();
+                    greatestHeight = monitorHeight;
+                }   
+            }        
+            let monitorHeight = greatestHeight * scaleFactor;
+            monitorHeight = Math.round((monitorHeight * 8) / 10);
             //first row  - Name of Custom link
             let heightRow = new PW.FrameBoxRow();
             let heightLabel = new Gtk.Label({
@@ -2468,7 +2517,7 @@ var ArcMenuCustomizationWindow = GObject.registerClass(
             let hscale = new Gtk.HScale({
                 adjustment: new Gtk.Adjustment({
                     lower: 300,
-                    upper: (screenHeight * 8) / 10,
+                    upper: monitorHeight,
                     step_increment: 10,
                     page_increment: 10,
                     page_size: 0
@@ -4052,9 +4101,7 @@ var ApplicationShortcutsPage = GObject.registerClass(
             frameRow._name = applicationShortcuts[i][0];
             frameRow._icon = applicationShortcuts[i][1];
             frameRow._cmd = applicationShortcuts[i][2];
-            if(frameRow._cmd == "ArcMenu_Software" && GLib.find_program_in_path('io.elementary.appcenter')){
-                frameRow._icon = 'pop-shop';
-            }
+
             let applicationIcon = new Gtk.Image( {
                 gicon: Gio.icon_new_for_string(frameRow._icon),
                 pixel_size: 22
@@ -4613,7 +4660,7 @@ var AboutPage = GObject.registerClass(
             let pixbuf = GdkPixbuf.Pixbuf.new_from_file_at_size(logoPath, imageWidth, imageHeight);
             let arcMenuImage = new Gtk.Image({ pixbuf: pixbuf });
             let arcMenuImageBox = new Gtk.VBox({
-                margin_top: 5,
+                margin_top: 0,
                 margin_bottom: 0,
                 expand: false
             });
@@ -4638,11 +4685,64 @@ var AboutPage = GObject.registerClass(
                 label: _('A Traditional Application Menu for GNOME'),
                 expand: false
             });
+            let linksBox = new Gtk.HBox({
+                margin_top: 15,
+                margin_bottom: 5,
+                expand: false,
+                halign: Gtk.Align.CENTER
+            });
+            let manualBox = new Gtk.VBox({
+                margin_top: 0,
+                margin_bottom: 0,
+                expand: false,
+                halign: Gtk.Align.CENTER
+            });
+            let gitLabBox = new Gtk.VBox({
+                margin_top: 0,
+                margin_bottom: 0,
+                expand: false,
+                halign: Gtk.Align.CENTER
+            });
+
             let projectLinkButton = new Gtk.LinkButton({
                 label: _('GitLab Page'),
                 uri: projectUrl,
-                expand: false
+                expand: false,
+                halign: Gtk.Align.CENTER
             });
+
+            let imagePath = Me.path + Constants.ARC_MENU_MANUAL_ICON.Path;
+            [imageWidth, imageHeight] = Constants.ARC_MENU_MANUAL_ICON.Size;
+            pixbuf = GdkPixbuf.Pixbuf.new_from_file_at_size(imagePath, imageWidth, imageHeight);
+            let manualImage = new Gtk.Image({ 
+                pixbuf: pixbuf,
+                expand: false,
+                halign: Gtk.Align.CENTER 
+            });
+
+            imagePath = Me.path + Constants.GITLAB_ICON.Path;
+            [imageWidth, imageHeight] = Constants.GITLAB_ICON.Size;
+            pixbuf = GdkPixbuf.Pixbuf.new_from_file_at_size(imagePath, imageWidth, imageHeight);
+            let gitlabImage = new Gtk.Image({ 
+                pixbuf: pixbuf,
+                expand: false,
+                halign: Gtk.Align.CENTER 
+            });
+
+            let projectManualLinkButton = new Gtk.LinkButton({
+                label: _('User Manual'),
+                uri: Constants.ARCMENU_MANUAL_URL,
+                expand: false,
+                halign: Gtk.Align.CENTER
+            });
+            gitLabBox.add(gitlabImage);
+            gitLabBox.add(projectLinkButton);
+            manualBox.add(manualImage);
+            manualBox.add(projectManualLinkButton);
+            linksBox.add(gitLabBox);
+            linksBox.add(manualBox);
+            
+            
             this.creditsScrollWindow = new Gtk.ScrolledWindow();
             this.creditsScrollWindow.set_policy(Gtk.PolicyType.AUTOMATIC, Gtk.PolicyType.AUTOMATIC);
             this.creditsScrollWindow.set_max_content_height(150);
@@ -4661,7 +4761,7 @@ var AboutPage = GObject.registerClass(
             arcMenuInfoBox.add(arcMenuLabel);
             arcMenuInfoBox.add(versionLabel);
             arcMenuInfoBox.add(projectDescriptionLabel);
-            arcMenuInfoBox.add(projectLinkButton);
+            arcMenuInfoBox.add(linksBox);
             arcMenuInfoBox.add(this.creditsScrollWindow);
 
             // Create the GNU software box

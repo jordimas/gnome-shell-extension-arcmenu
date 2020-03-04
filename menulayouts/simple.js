@@ -58,7 +58,7 @@ var createMenu = class{
 
         this._tree = new GMenu.Tree({ menu_basename: 'applications.menu' });
         this._treeChangedId = this._tree.connect('changed', ()=>{
-            this._reload();
+            this.needsReload = true;
         });
         //LAYOUT------------------------------------------------------------------------------------------------
         
@@ -208,7 +208,9 @@ var createMenu = class{
             this.mainBox.add_actor(this.categoryDirectories[i].actor);
             if(i==0){
                 this.activeMenuItem = this.categoryDirectories[i];
-                this.mainBox.grab_key_focus();
+                if(this.leftClickMenu.isOpen){
+                    this.mainBox.grab_key_focus();
+                }
             }		
         }
         
@@ -294,10 +296,7 @@ var createMenu = class{
                 }
             }
         }
-        //this.mainBox.grab_key_focus();
     }
-
-
     _displayAllApps(categoryMenuItem){
         let appList= []
         this._applicationsButtons.forEach((value,key,map) => {

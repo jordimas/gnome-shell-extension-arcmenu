@@ -3,461 +3,436 @@
 # This file is distributed under the same license as the Arc Menu package.
 # Daniel Stuart <daniel.stuart14@gmail.com>, 2017.
 # Vinícius Malta, 2019.
+# Fábio Nogueira <fnogueira@gnome.org>, 2020.
 #
-#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: Arc Menu\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-07-18 16:51-0300\n"
-"PO-Revision-Date: 2019-07-18 09:00-0300\n"
-"Last-Translator: Vinícius Malta <vmalta10@gmail.com>\n"
+"POT-Creation-Date: 2020-02-08 10:28-0500\n"
+"PO-Revision-Date: 2020-02-21 01:53-0300\n"
+"Last-Translator: Fábio Nogueira <fnogueira@gnome.org>\n"
 "Language-Team: Independent\n"
 "Language: pt_BR\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"X-Generator: Poedit 2.3\n"
 
-#: prefs.js:46 prefs.js:620
-msgid "Pinned Apps"
-msgstr "Aplicativos fixados"
-
-#: prefs.js:51
-msgid "Your Pinned Apps:"
-msgstr "Aplicativos fixados:"
-
-#: prefs.js:75
-msgid "Add More Apps"
-msgstr "Adicionar mais aplicativos"
-
-#: prefs.js:119
-msgid "Add Custom Shortcut"
-msgstr "Adicionar atalho personalizado"
-
-#: prefs.js:153
-msgid "Save"
-msgstr "Salvar"
-
-#: prefs.js:278
-msgid "Select Apps to add to Pinned Apps List"
-msgstr "Selecione aplicativos para adicionar a lista de aplicativos fixados"
-
-#: prefs.js:298 prefs.js:457
-msgid "Add"
-msgstr "Adicionar"
-
-#: prefs.js:406
-msgid "Add a Custom Shortcut"
-msgstr "Adicionar um atalho personalizado"
-
-#: prefs.js:416
-msgid "Shortcut Name:"
-msgstr "Nome do atalho:"
-
-#: prefs.js:430
-msgid "Icon Path/Icon Symbolic:"
-msgstr "Caminho do Ícone (Ícone Simbólico):"
-
-#: prefs.js:444
-msgid "Terminal Command:"
-msgstr "Comando do Terminal:"
-
-#: prefs.js:491
-msgid "General"
-msgstr "Geral"
-
-#: prefs.js:500
-msgid "Menu Button Position in Panel"
-msgstr "Posição do botão Menu no Painel"
-
-#: prefs.js:507
-msgid "Left"
-msgstr "Esquerda"
-
-#: prefs.js:510
-msgid "Center"
-msgstr "Centro"
-
-#: prefs.js:514
-msgid "Right"
-msgstr "Direita"
-
-#: prefs.js:552
-msgid "Display on all monitors when using Dash to Panel"
-msgstr "Exibir em todos os monitores ao usar o Dash to Panel"
-
-#: prefs.js:573
-msgid "Disable Tooltips"
-msgstr "Dicas de ferramentas"
-
-#: prefs.js:595
-msgid "Disable activities hot corner"
-msgstr "Menu Atividades no canto da tela"
-
-#: prefs.js:614
-msgid "Choose Arc Menus Default View"
-msgstr "Visualização padrão do Arc Menu"
-
-#: prefs.js:621
-msgid "Categories List"
-msgstr "Lista de categorias"
-
-#: prefs.js:646
-msgid "Set Menu Hotkey"
-msgstr "Tecla de atalho para abrir o menu"
-
-#: prefs.js:656
-msgid "Left Super Key"
-msgstr "Tecla Super esquerda"
-
-#: prefs.js:662
-msgid "Right Super Key"
-msgstr "Tecla Super direita"
-
-#: prefs.js:667
-msgid "Custom"
-msgstr "Personalizada"
-
-#: prefs.js:672
-msgid "None"
-msgstr "Nenhuma"
-
-#: prefs.js:709
-msgid "Custom Hotkey"
-msgstr "Atalho personalizado"
-
-#: prefs.js:715 prefs.js:1266 prefs.js:1571
-msgid "Apply"
-msgstr "Aplicar"
-
-#: prefs.js:760
-msgid "Button appearance"
-msgstr "Aparência do botão"
-
-#: prefs.js:772
-msgid "Text for the menu button"
-msgstr "Texto do Menu"
-
-#: prefs.js:778
-msgid "System text"
-msgstr "Texto do sistema"
-
-#: prefs.js:781
-msgid "Custom text"
-msgstr "Texto personalizado"
-
-#: prefs.js:805
-msgid "Set custom text for the menu button"
-msgstr "Texto personalizado do Menu"
-
-#: prefs.js:825
-msgid "Enable the arrow icon beside the button text"
-msgstr "Ícone de seta ao lado do Menu"
-
-#: prefs.js:847
-msgid "Select icon for the menu button"
-msgstr "Ícone do Menu"
-
-#: prefs.js:857
-msgid "Please select an image icon"
-msgstr "Selecione uma imagem para o ícone"
-
-#: prefs.js:862
-msgid "Arc Menu Icon"
-msgstr "Ícone do Arc Menu"
-
-#: prefs.js:863
-msgid "System Icon"
-msgstr "Ícone do sistema"
-
-#: prefs.js:864
-msgid "Custom Icon"
-msgstr "Ícone personalizado"
-
-#: prefs.js:890
-msgid "Icon size"
-msgstr "Tamanho do Ícone"
-
-#: prefs.js:890
-msgid "default is"
-msgstr "o padrão é"
-
-#: prefs.js:930
-msgid "Appearance"
-msgstr "Aparência"
-
-#: prefs.js:939
-msgid "Customize Menu Button Appearance"
-msgstr "Aparência do botão Menu"
-
-#: prefs.js:949
-msgid "Icon"
-msgstr "Ícone"
-
-#: prefs.js:950
-msgid "Text"
-msgstr "Texto"
-
-#: prefs.js:951
-msgid "Icon and Text"
-msgstr "Ícone e Texto"
-
-#: prefs.js:952
-msgid "Text and Icon"
-msgstr "Texto e Ícone"
-
-#: prefs.js:975 prefs.js:1122
-msgid "Customize Arc Menu Appearance"
-msgstr "Aparência do Arc Menu"
-
-#: prefs.js:1023 prefs.js:1315
-msgid "Override Arc Menu Theme"
-msgstr "Sobrepor tema do Arc Menu"
-
-#: prefs.js:1081
-msgid "Choose Avatar Icon Shape"
-msgstr "Formato do avatar"
-
-#: prefs.js:1086
-msgid "Circular"
-msgstr "Circular"
-
-#: prefs.js:1087
-msgid "Square"
-msgstr "Quadrado"
-
-#: prefs.js:1140
-msgid "Menu Height"
-msgstr "Altura do Menu"
-
-#: prefs.js:1172
-msgid "Left-Panel Width"
-msgstr "Largura do painel esquerdo"
-
-#: prefs.js:1195
-msgid "Enable Vertical Separator"
-msgstr "Separador vertical"
-
-#: prefs.js:1214
-msgid "Separator Color"
-msgstr "Cor do separador"
-
-#: prefs.js:1236 prefs.js:1523
-msgid "Reset"
-msgstr "Redefinir"
-
-#: prefs.js:1327
-msgid "Menu Background Color"
-msgstr "Cor de fundo do Menu"
-
-#: prefs.js:1346
-msgid "Menu Foreground Color"
-msgstr "Cor do primeiro plano do Menu"
-
-#: prefs.js:1364
-msgid "Font Size"
-msgstr "Tamanho da fonte"
-
-#: prefs.js:1388
-msgid "Border Color"
-msgstr "Cor da Borda"
-
-#: prefs.js:1407
-msgid "Border Size"
-msgstr "Tamanho da Borda"
-
-#: prefs.js:1431
-msgid "Highlighted Item Color"
-msgstr "Cor de realce dos itens do Menu"
-
-#: prefs.js:1450
-msgid "Corner Radius"
-msgstr "Raio dos cantos"
-
-#: prefs.js:1474
-msgid "Menu Arrow Size"
-msgstr "Tamanho da seta do Menu"
-
-#: prefs.js:1498
-msgid "Menu Displacement"
-msgstr "Deslocamento do Menu"
-
-#: prefs.js:1605
-msgid "Configure"
-msgstr "Configurar"
-
-#: prefs.js:1612
-msgid "Enable/Disable shortcuts"
-msgstr "Atalhos no Menu"
-
-#: prefs.js:1622 menu.js:334 placeDisplay.js:447
-msgid "Home"
-msgstr "Pasta pessoal"
-
-#: prefs.js:1622 menu.js:341
-msgid "Documents"
-msgstr "Documentos"
-
-#: prefs.js:1622 menu.js:341
-msgid "Downloads"
-msgstr "Downloads"
-
-#: prefs.js:1622 menu.js:341
-msgid "Music"
-msgstr "Música"
-
-#: prefs.js:1622 menu.js:341
-msgid "Pictures"
-msgstr "Imagens"
-
-#: prefs.js:1622 menu.js:341
-msgid "Videos"
-msgstr "Vídeos"
-
-#: prefs.js:1622 placeDisplay.js:237 placeDisplay.js:260
-msgid "Computer"
-msgstr "Computador"
-
-#: prefs.js:1623 menu.js:541
-msgid "Network"
-msgstr "Rede"
-
-#: prefs.js:1667
-msgid "External Devices"
-msgstr "Dispositivos externos"
-
-#: prefs.js:1690
-msgid "Bookmarks"
-msgstr "Favoritos"
-
-#: prefs.js:1718 menu.js:596
-msgid "Software"
-msgstr "Programas"
-
-#: prefs.js:1718 menu.js:596
-msgid "Settings"
-msgstr "Configurações"
-
-#: prefs.js:1718 menu.js:596
-msgid "Tweaks"
-msgstr "Ajustes"
-
-#: prefs.js:1718 menu.js:596 menuWidgets.js:776
-msgid "Terminal"
-msgstr "Terminal"
-
-#: prefs.js:1718 menuWidgets.js:403
-msgid "Activities Overview"
-msgstr "Panorama de Atividades"
-
-#: prefs.js:1756 menuWidgets.js:555
-msgid "Suspend"
-msgstr "Suspender"
-
-#: prefs.js:1774 menuWidgets.js:573
-msgid "Lock"
-msgstr "Bloquear"
-
-#: prefs.js:1792 menuWidgets.js:542
-msgid "Log Out"
-msgstr "Encerrar sessão"
-
-#: prefs.js:1857
-msgid "About"
-msgstr "Sobre"
-
-#: prefs.js:1886
-msgid "Arc-Menu"
-msgstr "Arc-Menu"
-
-#: prefs.js:1891
-msgid "version: "
-msgstr "versão: "
-
-#: prefs.js:1899
-msgid "GitLab Page"
-msgstr "Página do GitLab"
-
-#: menuWidgets.js:129
-msgid "Current Windows:"
-msgstr "Instâncias abertas:"
-
-#: menuWidgets.js:150
-msgid "New Window"
-msgstr "Abrir"
-
-#: menuWidgets.js:165
-msgid "Launch using Dedicated Graphics Card"
-msgstr "Iniciar utilizando placa de vídeo dedicada"
-
-#: menuWidgets.js:195
-msgid "Remove from Favorites"
-msgstr "Remover dos favoritos"
-
-#: menuWidgets.js:201
-msgid "Add to Favorites"
-msgstr "Adicionar aos favoritos"
-
-#: menuWidgets.js:209 menuWidgets.js:266
-msgid "Unpin from Arc Menu"
-msgstr "Desafixar do Arc Menu"
-
-#: menuWidgets.js:230
-msgid "Pin to Arc Menu"
-msgstr "Fixar no Arc Menu"
-
-#: menuWidgets.js:245
-msgid "Show Details"
-msgstr "Mostrar detalhes"
-
-#: menuWidgets.js:529
-msgid "Power Off"
-msgstr "Desligar"
-
-#: menuWidgets.js:595
-msgid "Back"
-msgstr "Voltar"
-
-#: menuWidgets.js:651
-msgid "All Programs"
-msgstr "Todos os programas"
-
-#: menuWidgets.js:775 twoMenuButton.js:77
-msgid "Arc Menu Settings"
-msgstr "Configurações do Arc Menu"
-
-#: menuWidgets.js:1119
-msgid "Frequent Apps"
-msgstr "Aplicativos frequentes"
-
-#: menuWidgets.js:1269
-msgid "Type to search…"
-msgstr "Escreva para pesquisar..."
-
-#: menuWidgets.js:1432 controller.js:253
-msgid "Applications"
-msgstr "Aplicações"
-
-#: search.js:626
+#: search.js:725 searchGrid.js:750
 msgid "Searching..."
 msgstr "Procurando..."
 
-#: search.js:628
+#: search.js:727 searchGrid.js:752
 msgid "No results."
-msgstr "Sem resultados"
+msgstr "Sem resultados."
 
-#: twoMenuButton.js:86
+#: search.js:831 searchGrid.js:890
+#, javascript-format
+msgid "%d more"
+msgid_plural "%d more"
+msgstr[0] "%d mais"
+msgstr[1] "%d mais"
+
+#: menulayouts/raven.js:215 menulayouts/mint.js:501 menulayouts/brisk.js:194
+#: menulayouts/arcmenu.js:243 menulayouts/redmond.js:233
+#: menulayouts/ubuntudash.js:301 menulayouts/ubuntudash.js:325
+msgid "Software"
+msgstr "Programas"
+
+#: menulayouts/raven.js:215 menulayouts/mint.js:486 menulayouts/brisk.js:202
+#: menulayouts/arcmenu.js:243 menulayouts/redmond.js:233
+#: menulayouts/windows.js:284 menulayouts/ubuntudash.js:325 menuWidgets.js:785
+msgid "Settings"
+msgstr "Configurações"
+
+#: menulayouts/raven.js:215 menulayouts/arcmenu.js:243
+#: menulayouts/redmond.js:233 menulayouts/ubuntudash.js:325 prefs.js:2203
+#: prefs.js:2232 prefs.js:2237 prefs.js:2271 prefs.js:2283
+msgid "Tweaks"
+msgstr "Ajustes"
+
+#: menulayouts/raven.js:215 menulayouts/mint.js:485 menulayouts/arcmenu.js:243
+#: menulayouts/redmond.js:233 menulayouts/ubuntudash.js:325 menuWidgets.js:1326
+#: menuWidgets.js:1524
+msgid "Terminal"
+msgstr "Terminal"
+
+#: menulayouts/raven.js:215 menulayouts/arcmenu.js:243
+#: menulayouts/redmond.js:233 menulayouts/ubuntudash.js:325 menuWidgets.js:453
+msgid "Activities Overview"
+msgstr "Panorama de atividades"
+
+#: menulayouts/raven.js:215 menulayouts/arcmenu.js:243
+#: menulayouts/redmond.js:233 menulayouts/ubuntudash.js:325 menuWidgets.js:798
+#: menuWidgets.js:1322 menuWidgets.js:1520 menuButtonPanel.js:597
+#: menuButtonDash.js:562 prefs.js:376 prefs.js:537
+msgid "Arc Menu Settings"
+msgstr "Configurações do Arc Menu"
+
+#: menulayouts/raven.js:223 menulayouts/tweaks/tweaks.js:188
+#: menulayouts/tweaks/tweaks.js:308 menulayouts/ubuntudash.js:333 prefs.js:4258
+msgid "Shortcuts"
+msgstr "Atalhos"
+
+#: menulayouts/raven.js:415 menulayouts/tweaks/tweaks.js:603
+#: menulayouts/ubuntudash.js:587 prefs.js:41 prefs.js:826
+msgid "Pinned Apps"
+msgstr "Aplicativos fixados"
+
+#: menulayouts/raven.js:476 menulayouts/ubuntudash.js:659 menuWidgets.js:687
+#: menuWidgets.js:1954 menuWidgets.js:2091 menuWidgets.js:2290
+msgid "Frequent Apps"
+msgstr "Aplicativos frequentes"
+
+#: menulayouts/raven.js:583 menulayouts/ubuntudash.js:767 menuWidgets.js:683
+#: menuWidgets.js:1037 menuWidgets.js:1951 menuWidgets.js:2088
+#: menuWidgets.js:2287
+msgid "All Programs"
+msgstr "Todos os programas"
+
+#: menulayouts/mint.js:417 menulayouts/arcmenu.js:511
+#: menulayouts/arcmenu.js:518 menulayouts/redmond.js:415
+#: menulayouts/redmond.js:422 menulayouts/ubuntudash.js:237
+#: menulayouts/ubuntudash.js:284 placeDisplay.js:452
+msgid "Home"
+msgstr "Pasta pessoal"
+
+#: menulayouts/mint.js:425 menulayouts/arcmenu.js:511
+#: menulayouts/arcmenu.js:526 menulayouts/redmond.js:415
+#: menulayouts/redmond.js:430 menulayouts/ubuntudash.js:245
+msgid "Network"
+msgstr "Rede"
+
+#: menulayouts/mint.js:502 menulayouts/ubuntudash.js:302
+msgid "Files"
+msgstr "Arquivos"
+
+#: menulayouts/mint.js:503 menulayouts/ubuntudash.js:303 menuWidgets.js:918
+#: prefs.js:4216
+msgid "Log Out"
+msgstr "Encerrar sessão"
+
+#: menulayouts/mint.js:504 menulayouts/ubuntudash.js:304 menuWidgets.js:950
+#: prefs.js:4199
+msgid "Lock"
+msgstr "Bloquear"
+
+#: menulayouts/mint.js:505 menulayouts/ubuntudash.js:305 menuWidgets.js:906
+#: prefs.js:4233
+msgid "Power Off"
+msgstr "Desligar"
+
+#: menulayouts/tweaks/tweaks.js:86
+msgid "Category Activation"
+msgstr "Categoria Ativação"
+
+#: menulayouts/tweaks/tweaks.js:92
+msgid "Mouse Click"
+msgstr "Clique do mouse"
+
+#: menulayouts/tweaks/tweaks.js:93
+msgid "Mouse Hover"
+msgstr "Passar o mouse"
+
+#: menulayouts/tweaks/tweaks.js:112
+msgid "Avatar Icon Shape"
+msgstr "Formato do avatar do ícone"
+
+#: menulayouts/tweaks/tweaks.js:117
+msgid "Circular"
+msgstr "Circular"
+
+#: menulayouts/tweaks/tweaks.js:118
+msgid "Square"
+msgstr "Quadrado"
+
+#: menulayouts/tweaks/tweaks.js:143
+msgid "KRunner Position"
+msgstr "Posição do KRunner"
+
+#: menulayouts/tweaks/tweaks.js:148
+msgid "Top"
+msgstr "Topo"
+
+#: menulayouts/tweaks/tweaks.js:149
+msgid "Centered"
+msgstr "Centralizado"
+
+#: menulayouts/tweaks/tweaks.js:160 menulayouts/tweaks/tweaks.js:337
+msgid "Show Extra Large Icons with App Descriptions"
+msgstr "Exibe ícones enormes com descrições de aplicativos"
+
+#: menulayouts/tweaks/tweaks.js:181 menulayouts/tweaks/tweaks.js:301
+#: prefs.js:738
+msgid "General"
+msgstr "Geral"
+
+#: menulayouts/tweaks/tweaks.js:191
+msgid "Buttons"
+msgstr "Botões"
+
+#: menulayouts/tweaks/tweaks.js:199 menulayouts/tweaks/tweaks.js:316
+msgid "Default Screen"
+msgstr "Tela padrão"
+
+#: menulayouts/tweaks/tweaks.js:204 menulayouts/tweaks/tweaks.js:321
+#: menuWidgets.js:679 menuWidgets.js:1948
+msgid "Home Screen"
+msgstr "Tela inicial"
+
+#: menulayouts/tweaks/tweaks.js:205 menulayouts/tweaks/tweaks.js:322
+msgid "All Applications"
+msgstr "Todos os aplicativos"
+
+#: menulayouts/tweaks/tweaks.js:220 prefs.js:2547
+msgid "Disable Menu Arrow"
+msgstr "Desabilitar menu de setas"
+
+#: menulayouts/tweaks/tweaks.js:228 prefs.js:2555
+msgid "Disable current theme menu arrow pointer"
+msgstr "Desabilita o ponteiro de seta do menu do tema atual"
+
+#: menulayouts/tweaks/tweaks.js:249 menulayouts/tweaks/tweaks.js:370
+#: prefs.js:132 prefs.js:696 prefs.js:3769 prefs.js:4027
+msgid "Save"
+msgstr "Salvar"
+
+#: menulayouts/tweaks/tweaks.js:275 menulayouts/tweaks/tweaks.js:396
+msgid "Separator Position Index"
+msgstr "Índice de posição do separador"
+
+#: menulayouts/tweaks/tweaks.js:583
+msgid "Nothing Yet!"
+msgstr "Nada ainda!"
+
+#: menulayouts/tweaks/tweaks.js:597 prefs.js:817
+msgid "Arc Menu Default View"
+msgstr "Visualização padrão do Arc Menu"
+
+#: menulayouts/tweaks/tweaks.js:604 prefs.js:827
+msgid "Categories List"
+msgstr "Lista de categorias"
+
+#: menulayouts/tweaks/tweaks.js:638
+msgid "Enable Weather Widget"
+msgstr "Habilita a ferramenta de meterologia"
+
+#: menulayouts/tweaks/tweaks.js:656
+msgid "Enable Clock Widget"
+msgstr "Habilita a ferramenta do relógio"
+
+#: menulayouts/arcmenu.js:511 menulayouts/redmond.js:415
+#: menulayouts/windows.js:112 menulayouts/windows.js:279
+#: menulayouts/ubuntudash.js:285
+msgid "Documents"
+msgstr "Documentos"
+
+#: menulayouts/arcmenu.js:511 menulayouts/redmond.js:415
+#: menulayouts/ubuntudash.js:286
+msgid "Downloads"
+msgstr "Downloads"
+
+#: menulayouts/arcmenu.js:511 menulayouts/redmond.js:415
+msgid "Music"
+msgstr "Música"
+
+#: menulayouts/arcmenu.js:511 menulayouts/redmond.js:415
+msgid "Pictures"
+msgstr "Imagens"
+
+#: menulayouts/arcmenu.js:511 menulayouts/redmond.js:415
+msgid "Videos"
+msgstr "Vídeos"
+
+#: menulayouts/arcmenu.js:511 menulayouts/redmond.js:415 placeDisplay.js:237
+#: placeDisplay.js:261
+msgid "Computer"
+msgstr "Computador"
+
+#: menuWidgets.js:129
+msgid "Open Folder Location"
+msgstr "Abrir local da pasta"
+
+#: menuWidgets.js:145
+msgid "Current Windows:"
+msgstr "Instâncias abertas:"
+
+#: menuWidgets.js:164
+msgid "New Window"
+msgstr "Nova janela"
+
+#: menuWidgets.js:174
+msgid "Launch using Dedicated Graphics Card"
+msgstr "Iniciar utilizando placa de vídeo dedicada"
+
+#: menuWidgets.js:201
+msgid "Delete Desktop Shortcut"
+msgstr "Apagar atalho da área de trabalho"
+
+#: menuWidgets.js:209
+msgid "Create Desktop Shortcut"
+msgstr "Criar atalho na área de trabalho"
+
+#: menuWidgets.js:223
+msgid "Remove from Favorites"
+msgstr "Remover dos favoritos"
+
+#: menuWidgets.js:229
+msgid "Add to Favorites"
+msgstr "Adicionar aos favoritos"
+
+#: menuWidgets.js:247 menuWidgets.js:298
+msgid "Unpin from Arc Menu"
+msgstr "Desafixar do Arc Menu"
+
+#: menuWidgets.js:261
+msgid "Pin to Arc Menu"
+msgstr "Fixar no Arc Menu"
+
+#: menuWidgets.js:274
+msgid "Show Details"
+msgstr "Mostrar detalhes"
+
+#: menuWidgets.js:683 menuWidgets.js:811 menuWidgets.js:1951
+#: menuWidgets.js:2088 menuWidgets.js:2287
+msgid "Favorites"
+msgstr "Favoritos"
+
+#: menuWidgets.js:826
+msgid "Categories"
+msgstr "Categorias"
+
+#: menuWidgets.js:841
+msgid "Users"
+msgstr "Usuários"
+
+#: menuWidgets.js:933 prefs.js:4182
+msgid "Suspend"
+msgstr "Suspender"
+
+#: menuWidgets.js:973
+msgid "Back"
+msgstr "Voltar"
+
+#: menuWidgets.js:2548
+msgid "Type to search…"
+msgstr "Digite para pesquisar…"
+
+#: menuWidgets.js:2718 prefs.js:3923
+msgid "Applications"
+msgstr "Aplicações"
+
+#: menuWidgets.js:2784
+msgid "Show Applications"
+msgstr "Exibir aoplicativos"
+
+#: menuWidgets.js:2801 constants.js:157 prefs.js:4629
+#| msgid "Arc-Menu"
+msgid "Arc Menu"
+msgstr "Arc Menu"
+
+#: menuWidgets.js:3014
+msgid "Add world clocks…"
+msgstr "Adicionar relógios mundiais…"
+
+#: menuWidgets.js:3015
+msgid "World Clocks"
+msgstr "Relógios mundiais"
+
+#: menuWidgets.js:3124
+msgid "Weather"
+msgstr "Meterologia"
+
+#: menuWidgets.js:3242
+msgid "Select a location…"
+msgstr "Selecione um local…"
+
+#: menuWidgets.js:3255
+msgid "Loading…"
+msgstr "Carregando…"
+
+#: menuWidgets.js:3265
+msgid "Go online for weather information"
+msgstr "Fique on-line para obter informações sobre o clima"
+
+#: menuWidgets.js:3267
+msgid "Weather information is currently unavailable"
+msgstr "As informações meteorológicas estão indisponíveis no momento"
+
+#: constants.js:162
+msgid "Arc Menu Alt"
+msgstr "Arc Menu alternativo"
+
+#: constants.js:163
+#| msgid "Arc Menu Icon"
+msgid "Arc Menu Original"
+msgstr "Arc Menu original"
+
+#: constants.js:164
+msgid "Curved A"
+msgstr "A curvado"
+
+#: constants.js:165
+msgid "Start Box"
+msgstr "Caixa de início"
+
+#: constants.js:166
+msgid "Focus"
+msgstr "Foco"
+
+#: constants.js:167
+msgid "Triple Dash"
+msgstr "Traço triplo"
+
+#: constants.js:168
+msgid "Whirl"
+msgstr "Redemoinho"
+
+#: constants.js:169
+msgid "Whirl Circle"
+msgstr "Redemoinho circulado"
+
+#: constants.js:170
+msgid "Sums"
+msgstr "Montante"
+
+#: constants.js:171
+msgid "Arrow"
+msgstr "Seta"
+
+#: constants.js:172
+msgid "Lins"
+msgstr "Lins"
+
+#: constants.js:173
+msgid "Diamond Square"
+msgstr "Quadrado do diamante"
+
+#: constants.js:174
+msgid "Octo Maze"
+msgstr "Octo Maze"
+
+#: constants.js:175
+msgid "Search"
+msgstr "Pesquisar"
+
+#: menuButtonPanel.js:606 menuButtonDash.js:571
 msgid "Arc Menu on GitLab"
 msgstr "Arc Menu no GitLab"
 
-#: twoMenuButton.js:91
+#: menuButtonPanel.js:611 menuButtonDash.js:576
 msgid "About Arc Menu"
 msgstr "Sobre o Arc Menu"
 
-#: twoMenuButton.js:112
+#: menuButtonPanel.js:619
 msgid "Dash to Panel Settings"
 msgstr "Configurações do Dash to Panel"
+
+#: menuButtonDash.js:584
+msgid "Dash to Dock Settings"
+msgstr "Configurações do Dash to Dock"
 
 #: placeDisplay.js:138
 #, javascript-format
@@ -469,12 +444,939 @@ msgstr "Falha ao iniciar “%s”"
 msgid "Failed to mount volume for “%s”"
 msgstr "Falha ao montar volume para “%s”"
 
-#: placeDisplay.js:321
+#: placeDisplay.js:326
 #, javascript-format
 msgid "Ejecting drive “%s” failed:"
 msgstr "Ejeção da unidade “%s” falhou:"
 
-#~ msgid "%d more"
-#~ msgid_plural "%d more"
-#~ msgstr[0] "%d mais"
-#~ msgstr[1] "%d mais"
+#: prefs.js:59 prefs.js:3943
+msgid "Add More Apps"
+msgstr "Adicionar mais aplicativos"
+
+#: prefs.js:67
+msgid "Browse a list of all applications to add to your Pinned Apps list."
+msgstr ""
+"Navegue numa lista de todos os aplicativos para adicionar à lista de "
+"aplicativos fixados."
+
+#: prefs.js:100 prefs.js:3723 prefs.js:3982
+msgid "Add Custom Shortcut"
+msgstr "Adicionar atalho personalizado"
+
+#: prefs.js:108
+msgid "Create a custom shortcut to add to your Pinned Apps list."
+msgstr ""
+"Cria um atalho customizado para adicionar à lista de aplicativos fixados."
+
+#: prefs.js:191 prefs.js:3835 prefs.js:4089
+msgid "Modify"
+msgstr "Modificar"
+
+#: prefs.js:196 prefs.js:3842 prefs.js:4094
+msgid "Move Up"
+msgstr "Mover para cima"
+
+#: prefs.js:201 prefs.js:3847 prefs.js:4099
+msgid "Move Down"
+msgstr "Mover para baixo"
+
+#: prefs.js:206 prefs.js:3852 prefs.js:4104
+msgid "Delete"
+msgstr "Excluir"
+
+#: prefs.js:275
+msgid "Add to your Pinned Apps"
+msgstr "Adicionar a seus aplicativos fixados"
+
+#: prefs.js:277
+msgid "Change Selected Pinned App"
+msgstr "Altera o aplicativo fixado selecionado"
+
+#: prefs.js:279
+msgid "Select Application Shortcuts"
+msgstr "Selecionar atalhos dos aplicativos"
+
+#: prefs.js:281
+msgid "Select Directory Shortcuts"
+msgstr "Selecione atalhos de diretórios"
+
+#: prefs.js:300 prefs.js:696
+msgid "Add"
+msgstr "Adicionar"
+
+#: prefs.js:377 prefs.js:1349
+msgid "Run Command..."
+msgstr "Executar comando..."
+
+#: prefs.js:428
+msgid "Default Apps"
+msgstr "Aplicativos padrão"
+
+#: prefs.js:432 prefs.js:507
+msgid "System Apps"
+msgstr "Aplicativos do sistema"
+
+#: prefs.js:503
+msgid "Presets"
+msgstr "Predefinições"
+
+#: prefs.js:619 prefs.js:621
+msgid "Edit Pinned App"
+msgstr "Editar aplicativos fixados"
+
+#: prefs.js:619 prefs.js:621 prefs.js:623 prefs.js:625
+msgid "Add a Custom Shortcut"
+msgstr "Adicionar um atalho personalizado"
+
+#: prefs.js:623
+msgid "Edit Shortcut"
+msgstr "Editar atalho"
+
+#: prefs.js:625
+msgid "Edit Custom Shortcut"
+msgstr "Editar atalho personalizado"
+
+#: prefs.js:633
+msgid "Shortcut Name:"
+msgstr "Nome do atalho:"
+
+#: prefs.js:648
+#| msgid "Icon"
+msgid "Icon:"
+msgstr "Ícone:"
+
+#: prefs.js:661 prefs.js:1725
+msgid "Please select an image icon"
+msgstr "Selecione uma imagem para o ícone"
+
+#: prefs.js:680
+msgid "Terminal Command:"
+msgstr "Comando do terminal:"
+
+#: prefs.js:687
+msgid "Shortcut Path:"
+msgstr "Caminho do atalho:"
+
+#: prefs.js:753
+msgid "Disable Tooltips"
+msgstr "Desabilitar dicas de ferramentas"
+
+#: prefs.js:761
+msgid "Disable all tooltips in Arc Menu"
+msgstr "Desabilita todas as dicas de ferramentas no Arc Menu"
+
+#: prefs.js:776 prefs.js:1295
+msgid "Modify Activities Hot Corner"
+msgstr "Modificar Atividades no canto da tela"
+
+#: prefs.js:785
+msgid "Modify the action of the Activities Hot Corner"
+msgstr "Modifica a ação do Atividades no canto da tela"
+
+#: prefs.js:796
+msgid "Override the default behavoir of the Activities Hot Corner"
+msgstr "Substitui o comportamento padrão do Atividades no canto da tela"
+
+#: prefs.js:824
+msgid "Choose the default menu view for Arc Menu"
+msgstr "Escolha a visualização padrão do menu para o Arc Menu"
+
+#: prefs.js:846
+msgid "Hotkey activation"
+msgstr "Ativação da tecla de atalho"
+
+#: prefs.js:853
+msgid "Choose a method for the hotkey activation"
+msgstr "Escolha um método de ativação da tecla de atalho"
+
+#: prefs.js:855
+msgid "Key Release"
+msgstr "Tecla solta"
+
+#: prefs.js:856
+msgid "Key Press"
+msgstr "Tecla pressionada"
+
+#: prefs.js:875
+msgid "Arc Menu Hotkey"
+msgstr "Tecla de atalho do Arc Menu"
+
+#: prefs.js:884
+msgid "Left Super Key"
+msgstr "Tecla Super esquerda"
+
+#: prefs.js:888
+msgid "Set Arc Menu hotkey to Left Super Key"
+msgstr "Define a tecla de atalho do Arc Menu como Super esquerda"
+
+#: prefs.js:891
+msgid "Right Super Key"
+msgstr "Tecla Super direita"
+
+#: prefs.js:896
+msgid "Set Arc Menu hotkey to Right Super Key"
+msgstr "Define a tecla de atalho do Arc Menu como Super direita"
+
+#: prefs.js:899
+msgid "Custom Hotkey"
+msgstr "Atalho personalizado"
+
+#: prefs.js:904
+msgid "Set a custom hotkey for Arc Menu"
+msgstr "Define uma tecla de atalho personalizada para o Arc Menu"
+
+#: prefs.js:907
+msgid "None"
+msgstr "Nenhuma"
+
+#: prefs.js:912
+msgid "Clear Arc Menu hotkey, use GNOME default"
+msgstr "Limpa tecla de atalho do Arc Menu, utilizar a padrão do GNOME"
+
+#: prefs.js:974
+msgid "Current Hotkey"
+msgstr "Tecla de atalho atual"
+
+#: prefs.js:983
+msgid "Current custom hotkey"
+msgstr "Tecla de atalho personalizada atual"
+
+#: prefs.js:988
+msgid "Modify Hotkey"
+msgstr "Tecla de atalho modificada"
+
+#: prefs.js:991
+msgid "Create your own hotkey combination for Arc Menu"
+msgstr "Crie sua própria combinação de tecla de atalho para o Arc Menu"
+
+#: prefs.js:1032
+msgid "Display Arc Menu On"
+msgstr "Exibir Arc Menu no"
+
+#: prefs.js:1039
+msgid "Choose where to place Arc Menu"
+msgstr "Escolha onde colocar o Arc Menu"
+
+#: prefs.js:1044
+msgid "Main Panel"
+msgstr "Painel principal"
+
+#: prefs.js:1045
+#| msgid "Dash to Panel Settings"
+msgid "Dash to Panel"
+msgstr "Dash to Panel"
+
+#: prefs.js:1046
+msgid "Dash to Dock"
+msgstr "Dash to Dock"
+
+#: prefs.js:1097
+msgid "Disable Activities Button"
+msgstr "Desabilitar botão Atividades"
+
+#: prefs.js:1098
+msgid "Dash to Dock extension not running!"
+msgstr "Extensão Dash to Dock não está rodando!"
+
+#: prefs.js:1098
+msgid "Enable Dash to Dock for this feature to work."
+msgstr "Habilitar o Dash to Dock para que este recurso funcione."
+
+#: prefs.js:1106
+msgid "Disable Activities Button in panel"
+msgstr "Desabilitar botão Atividades no painel"
+
+#: prefs.js:1136
+msgid "Dash to Panel currently enabled!"
+msgstr "Dash to Panel está atualmente habilitado!"
+
+#: prefs.js:1136
+msgid "Disable Dash to Panel for this feature to work."
+msgstr "Desabilita o Dash to Panel para que este recurso funcione."
+
+#: prefs.js:1137
+msgid "Dash to Panel extension not running!"
+msgstr "Extensão do Dash to Panel não está rodando!"
+
+#: prefs.js:1137
+msgid "Enable Dash to Panel for this feature to work."
+msgstr "Habilitar o Dash to Panel para que este recurso funcione."
+
+#: prefs.js:1156
+msgid "Position in Dash to Panel"
+msgstr "Posição no Dash to Panel"
+
+#: prefs.js:1156
+msgid "Position in Main Panel"
+msgstr "Posição no Painel principal"
+
+#: prefs.js:1163
+msgid "Left"
+msgstr "Esquerda"
+
+#: prefs.js:1164
+msgid "Position Arc Menu on the Left side of Dash to Panel"
+msgstr "Posição do Arc Menu no lado esquerdo do Dash to Panel"
+
+#: prefs.js:1165
+msgid "Position Arc Menu on the Left side of the Main Panel"
+msgstr "Posição do Arc Menu no lado esquerdo do Painel principal"
+
+#: prefs.js:1168
+msgid "Center"
+msgstr "Centro"
+
+#: prefs.js:1170
+msgid "Position Arc Menu in the Center of Dash to Panel"
+msgstr "Posição do Arc Menu no Centro do Dash to Panel"
+
+#: prefs.js:1171
+msgid "Position Arc Menu in the Center of the Main Panel"
+msgstr "Posição do Arc Menu no Centro do Painel principal"
+
+#: prefs.js:1174
+msgid "Right"
+msgstr "Direita"
+
+#: prefs.js:1176
+msgid "Position Arc Menu on the Right side of Dash to Panel"
+msgstr "Posição do Arc Menu no lado direito do Dash to Panel"
+
+#: prefs.js:1177
+msgid "Position Arc Menu on the Right side of the Main Panel"
+msgstr "Posição do Arc Menu no lado direito do Painel principal"
+
+#: prefs.js:1218
+msgid "Menu Alignment to Button"
+msgstr "Alinhamento do menu no botão"
+
+#: prefs.js:1229
+msgid "Adjust Arc Menu's menu alignment relative to Arc Menu's icon"
+msgstr ""
+"Ajusta o alinhamento do menu do Arc Menu em relação ao ícone de Arc Menu"
+
+#: prefs.js:1242
+msgid "Display on all monitors when using Dash to Panel"
+msgstr "Exibir em todos os monitores ao usar o Dash to Panel"
+
+#: prefs.js:1250
+msgid "Display Arc Menu on all monitors when using Dash to Panel"
+msgstr "Exibe o Arc Menu em todos os monitores ao usar o Dash to Panel"
+
+#: prefs.js:1304
+msgid "Activities Hot Corner Action"
+msgstr "Ação do Atividades no canto da tela"
+
+#: prefs.js:1311
+msgid "Choose the action of the Activities Hot Corner"
+msgstr "Escolha a ação do Atividades no canto da tela"
+
+#: prefs.js:1313
+msgid "GNOME Default"
+msgstr "Padrão GNOME"
+
+#: prefs.js:1314
+msgid "Disabled"
+msgstr "Desabilitado"
+
+#: prefs.js:1315
+msgid "Toggle Arc Menu"
+msgstr "Alternar para Arc Menu"
+
+#: prefs.js:1316
+msgid "Custom"
+msgstr "Personalizada"
+
+#: prefs.js:1322
+msgid "Custom Activities Hot Corner Action"
+msgstr "Ação personalizada do Atividades no canto da tela"
+
+#: prefs.js:1322
+msgid "Choose from a list of preset commands or use your own terminal command"
+msgstr ""
+"Escolha a partir de uma lista de comandos predefinidos ou utilize seu "
+"próprio comando do terminal"
+
+#: prefs.js:1332
+msgid "Preset commands"
+msgstr "Comandos predefinidos"
+
+#: prefs.js:1338
+msgid "Choose from a list of preset Activities Hot Corner commands"
+msgstr ""
+"Escolha a partir de uma lista de comandos predefinidos do Atividades do "
+"canto de tela"
+
+#: prefs.js:1342
+msgid "Show all Applications"
+msgstr "Exibir todos os aplicativos"
+
+#: prefs.js:1343
+#| msgid "Terminal"
+msgid "GNOME Terminal"
+msgstr "Terminal do GNOME"
+
+#: prefs.js:1344
+msgid "GNOME System Monitor"
+msgstr "Monitor do sistema"
+
+#: prefs.js:1345
+msgid "GNOME Calculator"
+msgstr "Calculadora"
+
+#: prefs.js:1346
+msgid "GNOME gedit"
+msgstr "Editor de textos"
+
+#: prefs.js:1347
+msgid "GNOME Screenshot"
+msgstr "Captura de tela"
+
+#: prefs.js:1348
+msgid "GNOME Weather"
+msgstr "Meterologia"
+
+#: prefs.js:1381
+msgid "Terminal Command"
+msgstr "Comando do terminal"
+
+#: prefs.js:1387
+msgid "Set a custom terminal command to launch on active hot corner"
+msgstr ""
+"Defina um comando personalizado de terminal para carregar ao ativar o canto "
+"de tela"
+
+#: prefs.js:1407 prefs.js:1589 prefs.js:2376 prefs.js:2774 prefs.js:2993
+#: prefs.js:3577
+msgid "Apply"
+msgstr "Aplicar"
+
+#: prefs.js:1409
+msgid "Apply changes and set new hot corner action"
+msgstr "Aplica alterações e define nova ação do canto da tela"
+
+#: prefs.js:1472
+msgid "Set Custom Hotkey"
+msgstr "Definir tecla de atalho customizada"
+
+#: prefs.js:1481
+msgid "Press a key"
+msgstr "Pressione uma tecla"
+
+#: prefs.js:1506
+msgid "Modifiers"
+msgstr "Modificadores"
+
+#: prefs.js:1511
+msgid "Ctrl"
+msgstr "Ctrl"
+
+#: prefs.js:1516
+msgid "Super"
+msgstr "Super"
+
+#: prefs.js:1520
+msgid "Shift"
+msgstr "Shift"
+
+#: prefs.js:1524
+msgid "Alt"
+msgstr "Alt"
+
+#: prefs.js:1633 prefs.js:2014
+msgid "Arc Menu Icon Settings"
+msgstr "Configurações do ícone do Arc Menu"
+
+#: prefs.js:1641
+msgid "Arc Menu Icon Appearance"
+msgstr "Aparência do ícone do Arc Menu"
+
+#: prefs.js:1647
+msgid "Icon"
+msgstr "Ícone"
+
+#: prefs.js:1648
+msgid "Text"
+msgstr "Texto"
+
+#: prefs.js:1649
+msgid "Icon and Text"
+msgstr "Ícone e texto"
+
+#: prefs.js:1650
+msgid "Text and Icon"
+msgstr "Texto e ícone"
+
+#: prefs.js:1671
+msgid "Arc Menu Icon Text"
+msgstr "Texto do ícone do Arc Menu"
+
+#: prefs.js:1695
+msgid "Arrow beside Arc Menu Icon"
+msgstr "Seta ao lado do ícone do Arc Menu"
+
+#: prefs.js:1715
+msgid "Arc Menu Icon"
+msgstr "Ícone do Arc Menu"
+
+#: prefs.js:1771
+msgid "Browse for a custom icon"
+msgstr "Procure um ícone personalizado"
+
+#: prefs.js:1809
+msgid "Icon Size"
+msgstr "Tamanho do ícone"
+
+#: prefs.js:1841
+msgid "Icon Padding"
+msgstr "Preenchimento do ícone"
+
+#: prefs.js:1873
+msgid "Icon Color"
+msgstr "Cor do ícone"
+
+#: prefs.js:1894
+msgid "Active Icon Color"
+msgstr "Cor do ícone ativo"
+
+#: prefs.js:1914
+msgid ""
+"Icon color options will only work with files ending with \"-symbolic.svg\""
+msgstr ""
+"As opções de cores dos ícones funcionarão apenas com arquivos que terminam "
+"com \"-symbolic.svg\""
+
+#: prefs.js:1927 prefs.js:2744 prefs.js:3532
+msgid "Reset"
+msgstr "Redefinir"
+
+#: prefs.js:1978
+msgid "System Icon"
+msgstr "Ícone do sistema"
+
+#: prefs.js:1981
+msgid "Custom Icon"
+msgstr "Ícone personalizado"
+
+#: prefs.js:1994
+msgid "Appearance"
+msgstr "Aparência"
+
+#: prefs.js:2022
+msgid "Customize Arc Menu's Icon"
+msgstr "Customiza o ícone do Arc Menu"
+
+#: prefs.js:2042 prefs.js:2440
+msgid "Customize Arc Menu Appearance"
+msgstr "Aparência do Arc Menu"
+
+#: prefs.js:2050
+msgid "Customize various elements of Arc Menu"
+msgstr "Customiza vários elementos do Arc Menu"
+
+#: prefs.js:2095 prefs.js:3139
+msgid "Override Arc Menu Theme"
+msgstr "Substituir tema do Arc Menu"
+
+#: prefs.js:2103
+msgid "Create and manage your own custom themes for Arc Menu"
+msgstr "Cria e gerencia seus temas próprios para o Arc Menu"
+
+#: prefs.js:2141
+msgid "Override the shell theme for Arc Menu only"
+msgstr "Substitui o tema do shell apenas no Arc Menu"
+
+#: prefs.js:2159
+msgid "Current Color Theme"
+msgstr "Tema atual da cor"
+
+#: prefs.js:2184
+msgid "Menu Layout"
+msgstr "Layout do menu"
+
+#: prefs.js:2192
+msgid "Choose from a variety of menu layouts"
+msgstr "Escolha a partir de uma variedade de layouts de menu"
+
+#: prefs.js:2213
+msgid "Enable the selection of different menu layouts"
+msgstr "Habilita a seleção de diferentes layouts do menu"
+
+#: prefs.js:2250
+msgid "Current Layout"
+msgstr "Layout atual"
+
+#: prefs.js:2280
+msgid "Tweaks for the current menu layout"
+msgstr "Ajustes para o layout do menu atual"
+
+#: prefs.js:2343
+msgid "Menu style chooser"
+msgstr "Seletor de estilo do menu"
+
+#: prefs.js:2352
+msgid "Arc Menu Layout"
+msgstr "Layout do Arc Menu"
+
+#: prefs.js:2448
+msgid "General Settings"
+msgstr "Configurações gerais"
+
+#: prefs.js:2462
+msgid "Menu Height"
+msgstr "Altura do menu"
+
+#: prefs.js:2476
+msgid "Adjust the menu height"
+msgstr "Ajusta a altura do menu"
+
+#: prefs.js:2476 prefs.js:2504 prefs.js:2530 prefs.js:2590 prefs.js:2612
+#: prefs.js:2634 prefs.js:2667
+msgid "Certain menu layouts only"
+msgstr "Apenas para alguns layouts de menu"
+
+#: prefs.js:2496
+msgid "Left-Panel Width"
+msgstr "Largura do painel esquerdo"
+
+#: prefs.js:2504
+msgid "Adjust the left-panel width"
+msgstr "Ajusta a largura do painel esquerdo"
+
+#: prefs.js:2522
+msgid "Right-Panel Width"
+msgstr "Largura do painel direito"
+
+#: prefs.js:2530
+msgid "Adjust the right-panel width"
+msgstr "Ajusta a largura do painel direito"
+
+#: prefs.js:2572
+msgid "Miscellaneous"
+msgstr "Diversos"
+
+#: prefs.js:2582
+msgid "Large Application Icons"
+msgstr "Ícones de aplicativos grandes"
+
+#: prefs.js:2590
+msgid "Enable large application icons"
+msgstr "Habilita ícones grandes nos aplicativos"
+
+#: prefs.js:2604
+msgid "Category Sub Menus"
+msgstr "Categoria Sub Menus"
+
+#: prefs.js:2612
+msgid "Show nested menus in categories"
+msgstr "Mostra menus aninhados em categorias"
+
+#: prefs.js:2626
+msgid "Disable Category Arrows"
+msgstr "Desabilitar Categoria Setas"
+
+#: prefs.js:2634
+msgid "Disable the arrow on category menu items"
+msgstr "Desabilita a seta nos itens de menu da categoria"
+
+#: prefs.js:2650
+msgid "Separator Settings"
+msgstr "Configurações do separador"
+
+#: prefs.js:2659 prefs.js:3488
+msgid "Enable Vertical Separator"
+msgstr "Habilitar separador vertical"
+
+#: prefs.js:2667
+msgid "Enable a Vertical Separator"
+msgstr "Habilita um separador vertical"
+
+#: prefs.js:2682 prefs.js:3509
+msgid "Separator Color"
+msgstr "Cor do separador"
+
+#: prefs.js:2690
+msgid "Change the color of all separators"
+msgstr "Altera a cor de todos os separadores"
+
+#: prefs.js:2710
+msgid "Fine Tune"
+msgstr "Ajuste fino"
+
+#: prefs.js:2718
+msgid "Gap Adjustment"
+msgstr "Ajuste de lacuna"
+
+#: prefs.js:2728
+msgid ""
+"Offset menu placement by 1px\n"
+"Useful if a gap or overlap is visible"
+msgstr ""
+"Posicionamento do menu deslocado por 1 px\n"
+"Útil se uma lacuna ou sobreposição for visível"
+
+#: prefs.js:2815
+msgid "Color Theme Name"
+msgstr "Nome do tema de cores"
+
+#: prefs.js:2822
+msgid "Name:"
+msgstr "Nome:"
+
+#: prefs.js:2847
+msgid "Save Theme"
+msgstr "Salvar tema"
+
+#: prefs.js:2872
+msgid "Select Themes to Import"
+msgstr "Selecione temas para importar"
+
+#: prefs.js:2872
+msgid "Select Themes to Export"
+msgstr "Selecione temas para exportar"
+
+#: prefs.js:2890
+msgid "Import"
+msgstr "Importar"
+
+#: prefs.js:2890
+msgid "Export"
+msgstr "Exportar"
+
+#: prefs.js:2921
+msgid "Select All"
+msgstr "Selecionar tudo"
+
+#: prefs.js:2978
+msgid "Manage Themes"
+msgstr "Gerenciar temas"
+
+#: prefs.js:3152
+msgid "Color Theme Presets"
+msgstr "Predefinições do tema de cores"
+
+#: prefs.js:3162
+msgid "Save as Preset"
+msgstr "Salvar como predefinido"
+
+#: prefs.js:3246
+msgid "Manage Presets"
+msgstr "Gerenciar predefinições"
+
+#: prefs.js:3275
+msgid "Menu Background Color"
+msgstr "Cor de fundo do menu"
+
+#: prefs.js:3297
+msgid "Menu Foreground Color"
+msgstr "Cor do primeiro plano do menu"
+
+#: prefs.js:3317
+msgid "Font Size"
+msgstr "Tamanho da fonte"
+
+#: prefs.js:3343
+msgid "Border Color"
+msgstr "Cor da borda"
+
+#: prefs.js:3364
+msgid "Border Size"
+msgstr "Tamanho da borda"
+
+#: prefs.js:3390
+msgid "Highlighted Item Color"
+msgstr "Cor do item destacado"
+
+#: prefs.js:3411
+msgid "Corner Radius"
+msgstr "Raio dos cantos"
+
+#: prefs.js:3437
+msgid "Menu Arrow Size"
+msgstr "Tamanho da seta do menu"
+
+#: prefs.js:3463
+msgid "Menu Displacement"
+msgstr "Deslocamento do menu"
+
+#: prefs.js:3643 prefs.js:4263
+msgid "Configure Shortcuts"
+msgstr "Configurar atalhos"
+
+#: prefs.js:3664
+msgid "Directories"
+msgstr "Diretórios"
+
+#: prefs.js:3684
+msgid "Add Default User Directories"
+msgstr "Adicionar diretórios padrão de usuário"
+
+#: prefs.js:3692
+msgid ""
+"Browse a list of all default User Directories to add to your Directories "
+"Shortcuts"
+msgstr ""
+"Navegue numa lista de todos os Diretórios padrão do usuário para adicionar "
+"aos seus atalhos de diretórios"
+
+#: prefs.js:3731
+msgid "Create a custom shortcut to add to your Directories Shortcuts"
+msgstr ""
+"Cria um atalho personalizado para adicionar a seus atalhos de diretórios"
+
+#: prefs.js:3756 prefs.js:4014
+msgid "Restore Defaults"
+msgstr "Restaurar padrão"
+
+#: prefs.js:3757
+msgid "Restore the default Directory Shortcuts"
+msgstr "Restaura o padrão dos atalhos de diretórios"
+
+#: prefs.js:3951
+msgid "Browse a list of all applications to add to your Application Shortcuts"
+msgstr ""
+"Navega numa lista de todos os aplicativos para adicionar aos seus atalhos de "
+"aplicativos"
+
+#: prefs.js:3990
+msgid "Create a custom shortcut to add to your Application Shortcuts"
+msgstr ""
+"Cria um atalho personalizado para adicionar a seus atalhos de aplicativos"
+
+#: prefs.js:4015
+msgid "Restore the default Application Shortcuts"
+msgstr "Restaura o padrão dos atalhos de aplicativos"
+
+#: prefs.js:4171
+msgid "Session Buttons"
+msgstr "Botões de sessão"
+
+#: prefs.js:4268 prefs.js:4273
+msgid "Add, Remove, or Modify Arc Menu shortcuts"
+msgstr "Adiciona, apaga ou modifica atalhos do Arc Menu"
+
+#: prefs.js:4303
+msgid "External Devices"
+msgstr "Dispositivos externos"
+
+#: prefs.js:4309
+msgid "Show all connected external devices in Arc Menu"
+msgstr "Exibe todos os dispositivos externos conectados ao Arc Menu"
+
+#: prefs.js:4325
+msgid "Bookmarks"
+msgstr "Favoritos"
+
+#: prefs.js:4331
+msgid "Show all Nautilus bookmarks in Arc Menu"
+msgstr "Exibe todos os favoritos do Nautilus no Arc Menu"
+
+#: prefs.js:4349
+msgid "Misc"
+msgstr "Misc"
+
+#: prefs.js:4355
+msgid "Export and Import Arc Menu Settings"
+msgstr "Exportar e importar as configurações do Arc Menu"
+
+#: prefs.js:4362
+msgid ""
+"Importing settings from file may replace ALL saved settings.\n"
+"This includes all saved pinned apps."
+msgstr ""
+"A importação de configurações a partir de um arquivo pode substituir TODAS "
+"as configurações salvas.\n"
+"Isso inclui todos os aplicativos fixados salvos."
+
+#: prefs.js:4371
+msgid "Import from File"
+msgstr "Importar de um arquivo"
+
+#: prefs.js:4374
+msgid "Import Arc Menu settings from a file"
+msgstr "Importa configurações do Arc Menu a partir de um arquivo"
+
+#: prefs.js:4378
+msgid "Import settings"
+msgstr "Importar configurações"
+
+#: prefs.js:4407
+msgid "Export to File"
+msgstr "Exportar para arquivo"
+
+#: prefs.js:4410
+msgid "Export and save all your Arc Menu settings to a file"
+msgstr "Exporta e salva todas suas configurações do Arc Menu para um arquivo"
+
+#: prefs.js:4415
+msgid "Export settings"
+msgstr "Exportar configurações"
+
+#: prefs.js:4446
+msgid "Color Theme Presets - Export/Import"
+msgstr "Predefinições do tema de cores - Exportar/importar"
+
+#: prefs.js:4465
+msgid ""
+"Imported theme presets are located on the Appearance Tab\n"
+"in Override Arc Menu Theme"
+msgstr ""
+"As predefinições de temas importados estão localizadas na aba Aparência\n"
+"em Importar tema do Arc Menu"
+
+#: prefs.js:4476 prefs.js:4483
+msgid "Import Theme Preset"
+msgstr "Importar predefinições de tema"
+
+#: prefs.js:4479
+msgid "Import Arc Menu Theme Presets from a file"
+msgstr "Importa as predefinições de tema do Arc Menu para um arquivo"
+
+#: prefs.js:4520 prefs.js:4532
+msgid "Export Theme Preset"
+msgstr "Exportar predefinições de tema"
+
+#: prefs.js:4523
+msgid "Export and save your Arc Menu Theme Presets to a file"
+msgstr "Exporta e salva suas predefinições de tema do Arc Menu para um arquivo"
+
+#: prefs.js:4597
+msgid "About"
+msgstr "Sobre"
+
+#: prefs.js:4603
+msgid "Development"
+msgstr "Desenvolvimento"
+
+#: prefs.js:4634
+msgid "Version: "
+msgstr "Versão: "
+
+#: prefs.js:4638
+msgid "A Traditional Application Menu for GNOME"
+msgstr "Um menu tradicional de aplicativos para o GNOME"
+
+#: prefs.js:4642
+msgid "GitLab Page"
+msgstr "Página do GitLab"
+
+#~ msgid "Icon Path/Icon Symbolic:"
+#~ msgstr "Caminho do Ícone (Ícone Simbólico):"
+
+#~ msgid "Button appearance"
+#~ msgstr "Aparência do botão"
+
+#~ msgid "Custom text"
+#~ msgstr "Texto personalizado"
+
+#~ msgid "Enable the arrow icon beside the button text"
+#~ msgstr "Ícone de seta ao lado do Menu"
+
+#~ msgid "Select icon for the menu button"
+#~ msgstr "Ícone do Menu"
+
+#~ msgid "Customize Menu Button Appearance"
+#~ msgstr "Aparência do botão Menu"
+
+#~ msgid "Enable/Disable shortcuts"
+#~ msgstr "Atalhos no Menu"

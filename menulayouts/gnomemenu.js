@@ -54,7 +54,7 @@ var createMenu = class{
 
         this._tree = new GMenu.Tree({ menu_basename: 'applications.menu' });
         this._treeChangedId = this._tree.connect('changed', ()=>{
-            this._reload();
+            this.needsReload = true;
         });
         //LAYOUT------------------------------------------------------------------------------------------------
         this.mainBox.vertical = true;
@@ -89,6 +89,16 @@ var createMenu = class{
             overlay_scrollbars: true,
             style_class: 'vfade'
         }); 
+
+        let panAction = new Clutter.PanAction({ interpolate: false });
+        panAction.connect('pan', (action) => {
+            this._blockActivateEvent = true;
+            Utils._onPan(action, this.shortcutsScrollBox);
+        });
+        panAction.connect('gesture-cancel',(action) =>  Utils._onPanEnd(action, this.shortcutsScrollBox));
+        panAction.connect('gesture-end', (action) => Utils._onPanEnd(action, this.shortcutsScrollBox));
+        this.shortcutsScrollBox.add_action(panAction);
+
         let rightPanelWidth = this._settings.get_int('right-panel-width');
         rightPanelWidth += 45;
         this.rightBox.style = "width: " + rightPanelWidth + "px;";
@@ -316,7 +326,9 @@ var createMenu = class{
             this.applicationsBox.add_actor(this.categoryDirectories[i].actor);	
             if(i==0){
                 this.activeMenuItem = this.categoryDirectories[i];
-                this.mainBox.grab_key_focus();
+                if(this.leftClickMenu.isOpen){
+                    this.mainBox.grab_key_focus();
+                }
             }	 	
         }
         this.updateStyle();
@@ -348,9 +360,11 @@ var createMenu = class{
         this.activeMenuItem = category;
         if(setActive){
             category.setFakeActive(true);
-            this.activeMenuItem.actor.grab_key_focus();
+            if(this.leftClickMenu.isOpen){
+                this.activeMenuItem.actor.grab_key_focus();
+            }
         }
-        else{
+        else if(this.leftClickMenu.isOpen){
             this.mainBox.grab_key_focus();
         }
     }
@@ -408,7 +422,9 @@ var createMenu = class{
                 } 
             }
         }
-        this.mainBox.grab_key_focus();
+        if(this.leftClickMenu.isOpen){
+            this.mainBox.grab_key_focus();
+        }
     }
 
     _displayAllApps(){

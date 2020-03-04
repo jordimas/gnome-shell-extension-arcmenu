@@ -121,6 +121,7 @@ var MenuSettingsController = class {
             this._settings.connect('changed::enable-sub-menus', this._reload.bind(this)), 
             this._settings.connect('changed::disable-category-arrows', this._reload.bind(this)),
             this._settings.connect('changed::disable-activities-button', this._configureActivitiesButton.bind(this)),
+            this._settings.connect('changed::restore-activities-button', this._removeActivitiesButtonFromMainPanel.bind(this)),
         ];
     }
     _reload(){
@@ -143,28 +144,29 @@ var MenuSettingsController = class {
         if(Main.overview.visible)
             Main.overview.hide();
         else{
-            if(this._settings.get_boolean('multi-monitor') && global.dashToPanel){
-                let screen = Gdk.Screen.get_default();
-                let pointer = global.get_pointer();
-                let currentMonitor = screen.get_monitor_at_point(pointer[0],pointer[1]);
-                for(let i = 0;i<screen.get_n_monitors();i++){
-                    if(i==currentMonitor)
-                        this.currentMonitorIndex=i;
-                }
+            if((global.dashToPanel) || this.dashOrPanel == Constants.ARC_MENU_PLACEMENT.DTD){
+                this.currentMonitor = Main.layoutManager.currentMonitor;
                 //close current menus that are open on monitors other than current monitor
-                for (let i = 0; i < this._settingsControllers.length; i++) {
-                    if(i!=this.currentMonitorIndex){
-                    if(this._settingsControllers[i]._menuButton.leftClickMenu.isOpen)
-                        this._settingsControllers[i]._menuButton.toggleMenu();
-                    if(this._settingsControllers[i]._menuButton.rightClickMenu.isOpen)
-                        this._settingsControllers[i]._menuButton.toggleRightClickMenu();
-                    }
-                }  
-                //toggle menu on current monitor
-                for (let i = 0; i < this._settingsControllers.length; i++) {
-                    if(i==this.currentMonitorIndex)
-                        this._settingsControllers[i]._menuButton.toggleMenu();
-                }   
+                if(this._settingsControllers.length > 1){
+                    for (let i = 0; i < this._settingsControllers.length; i++) {
+                        let actor = this._settingsControllers[i]._menuButton._menuButtonWidget.actor;
+                        let monitorForActor = Main.layoutManager.findMonitorForActor(actor);
+                        if(this.currentMonitor == monitorForActor){
+                            this.currentMonitorIndex = i;
+                        }
+                        else{
+                            if(this._settingsControllers[i]._menuButton.leftClickMenu.isOpen)
+                                this._settingsControllers[i]._menuButton.toggleMenu();
+                            if(this._settingsControllers[i]._menuButton.rightClickMenu.isOpen)
+                                this._settingsControllers[i]._menuButton.toggleRightClickMenu(); 
+                        }
+                    } 
+                    //open the current monitors menu
+                    this._settingsControllers[this.currentMonitorIndex]._menuButton.toggleMenu();
+                }
+                else{
+                    this._menuButton.toggleMenu();
+                }
             }
             else {
                 this._menuButton.toggleMenu();
@@ -330,6 +332,10 @@ var MenuSettingsController = class {
     _setButtonAppearance() {
         if(this.dashOrPanel == Constants.ARC_MENU_PLACEMENT.PANEL){
             let menuButtonWidget = this._menuButton.getWidget();
+            this._removeActivitiesButtonFromMainPanel();
+            this._menuButton.container.set_width(-1);
+            this._menuButton.container.set_height(-1);
+            menuButtonWidget.actor.show();
             switch (this._settings.get_enum('menu-button-appearance')) {
                 case Constants.MENU_APPEARANCE.Text:
                     menuButtonWidget.hidePanelIcon();
@@ -346,6 +352,13 @@ var MenuSettingsController = class {
                     menuButtonWidget.hidePanelText();
                     menuButtonWidget.showPanelText();
                     menuButtonWidget.showPanelIcon();
+                    break;
+                case Constants.MENU_APPEARANCE.None:
+                    let activitiesButton = this._settings.get_boolean('restore-activities-button');
+                    activitiesButton ? this._addActivitiesButtonToMainPanel() : this._removeActivitiesButtonFromMainPanel();
+                    menuButtonWidget.actor.hide();
+                    this._menuButton.container.set_width(0);
+                    this._menuButton.container.set_height(0);
                     break;
                 case Constants.MENU_APPEARANCE.Icon: /* falls through */
                 default:
@@ -442,7 +455,7 @@ var MenuSettingsController = class {
         if(this.dashOrPanel == Constants.ARC_MENU_PLACEMENT.DTD){
             let isActivitiesButtonPresent = Main.panel.statusArea.activities && Main.panel.statusArea.activities.container &&
                                             Main.panel._leftBox.contains(Main.panel.statusArea.activities.container);
-            let disable = this._settings.get_boolean('disable-activities-button');  
+            let disable = this._settings.get_boolean('disable-activities-button'); 
             if(!disable || restore){
                 if(!isActivitiesButtonPresent){
                     Main.panel._leftBox.add_child(Main.panel.statusArea.activities.container);
@@ -453,7 +466,6 @@ var MenuSettingsController = class {
                 if(isActivitiesButtonPresent)
                     Main.panel._leftBox.remove_child(Main.panel.statusArea.activities.container);   
             }
-
         }
     }
     // Check if the activities button is present on the main panel
@@ -466,7 +478,18 @@ var MenuSettingsController = class {
 
     // Remove the activities button from the main panel
     _removeActivitiesButtonFromMainPanel() {
-        if (this._isActivitiesButtonPresent()) {
+        let buttonAppearance = this._settings.get_enum('menu-button-appearance');
+        let activitiesButton = this._settings.get_boolean('restore-activities-button');
+
+        if(buttonAppearance == Constants.MENU_APPEARANCE.None){
+            if(!activitiesButton && this._isActivitiesButtonPresent()){
+                this.panel._leftBox.remove_child(this._activitiesButton.container);
+            }
+            else{
+                this._addActivitiesButtonToMainPanel();
+            }
+        }
+        else if (this._isActivitiesButtonPresent()) {
             this.panel._leftBox.remove_child(this._activitiesButton.container);
         }
     }
@@ -498,31 +521,32 @@ var MenuSettingsController = class {
         this._removeActivitiesButtonFromMainPanel(); // disable the activities button
         this._addMenuButtonToMainPanel();
     }
-    reEstablishDash(){  
-        let container = this.panel._allDocks[0].dash._container;
-        
-        this.oldShowAppsIcon = this.panel._allDocks[0].dash._showAppsIcon;
+    reEstablishDash(index){  
+        let container = this.panel._allDocks[this.dashIndex].dash._container;
+        this.panel._allDocks[this.dashIndex].dash.arcMenuEnabled = true;
+        this.oldShowAppsIcon = this.panel._allDocks[this.dashIndex].dash._showAppsIcon;
         container.remove_actor(this.oldShowAppsIcon);
 
         this._setButtonIcon();
-        let iconSize = this.panel._allDocks[0].dash.iconSize;
+        let iconSize = this.panel._allDocks[this.dashIndex].dash.iconSize;
         this._menuButton._menuButtonWidget.icon.setIconSize(iconSize);
 
         container.add_actor(this.menuButtonAdjustedActor);
-        this.panel._allDocks[0].dash._showAppsIcon = this.menuButtonAdjustedActor;
+        this.panel._allDocks[this.dashIndex].dash._showAppsIcon = this.menuButtonAdjustedActor;
 
         this.hoverID = this.menuButtonAdjustedActor.child.connect('notify::hover', () => {
-            this.panel._allDocks[0].dash._syncLabel(this.menuButtonAdjustedActor, null);
+            this.panel._allDocks[this.dashIndex].dash._syncLabel(this.menuButtonAdjustedActor, null);
         });
 
         this.hidingID = Main.overview.connect('hiding', () => {
-            this.panel._allDocks[0].dash._labelShowing = false;
+            this.panel._allDocks[this.dashIndex].dash._labelShowing = false;
             this.menuButtonAdjustedActor.hideLabel();
         });
 
-        this.panel._allDocks[0].dash._queueRedisplay();
-        this.oldDashDestroy = this.panel._allDocks[0].dash.destroy;
-        this.panel._allDocks[0].dash.destroy = ()=> {
+        this.panel._allDocks[this.dashIndex].dash._queueRedisplay();
+        this.oldDashDestroy = this.panel._allDocks[this.dashIndex].dash.destroy;
+        this.panel._allDocks[this.dashIndex].dash.destroy = ()=> {
+            this.panel._allDocks[this.dashIndex].dash.arcMenuEnabled = false;
             if(this.hoverID){
                 this.menuButtonAdjustedActor.child.disconnect(this.hoverID);
                 this.hoverID = null;
@@ -532,22 +556,17 @@ var MenuSettingsController = class {
                 this.hidingID = null;
             }
             
-            let container = this.panel._allDocks[0].dash._container;
+            let container = this.panel._allDocks[this.dashIndex].dash._container;
             if(container)
                 container.remove_actor(this.menuButtonAdjustedActor);
             
-            this.panel._allDocks[0].dash._signalsHandler.destroy();
+            this.panel._allDocks[this.dashIndex].dash._signalsHandler.destroy();
         };
     }
     // Enable the menu button
-    enableButtonInDash() {
-        this.reEstablishDash();       
-        this.panelConnectID = this.panel.connect("toggled",()=>{
-            this.reEstablishDash();
-            this._menuButton.leftClickMenu.toggle();
-            this._menuButton.leftClickMenu.toggle();
-        });
-
+    enableButtonInDash(index) {
+        this.dashIndex = index;
+        this.reEstablishDash(this.dashIndex);       
     }
 
     // Disable the menu button
@@ -571,28 +590,28 @@ var MenuSettingsController = class {
         this._hotCornerManager.destroy();
         
         if(this.dashOrPanel == Constants.ARC_MENU_PLACEMENT.DTD){
-            if(this.panelConnectID && this.panel){
-                this.panel.disconnect(this.panelConnectID);
-                this.panelConnectID = null;
-            } 
-            if(this.hoverID){
-                this.menuButtonAdjustedActor.child.disconnect(this.hoverID);
-                this.hoverID = null;
+            if(this.panel._allDocks[this.dashIndex] && this.panel._allDocks[this.dashIndex].dash.arcMenuEnabled){
+                if(this.hoverID){
+                    this.menuButtonAdjustedActor.child.disconnect(this.hoverID);
+                    this.hoverID = null;
+                }
+                if(this.hidingID){
+                    Main.overview.disconnect(this.hidingID);
+                    this.hidingID = null;
+                }
+                let parent = this.menuButtonAdjustedActor.get_parent();
+                if(parent)
+                    parent.remove_actor(this.menuButtonAdjustedActor);
+                if(this.panel._allDocks[this.dashIndex]){
+                    this.panel._allDocks[this.dashIndex].dash.arcMenuEnabled = false;
+                    let container = this.panel._allDocks[this.dashIndex].dash._container;
+                    this.panel._allDocks[this.dashIndex].dash._showAppsIcon = this.oldShowAppsIcon;
+                    container.add_actor(this.panel._allDocks[this.dashIndex].dash._showAppsIcon);
+                    this.panel._allDocks[this.dashIndex].dash.destroy = this.oldDashDestroy;
+                    this.panel._allDocks[this.dashIndex].dash._queueRedisplay();
+                }
             }
-            if(this.hidingID){
-                Main.overview.disconnect(this.hidingID);
-                this.hidingID = null;
-            }
-            let parent = this.menuButtonAdjustedActor.get_parent();
-            if(parent)
-                parent.remove_actor(this.menuButtonAdjustedActor);
-            if(this.panel._allDocks.length){
-                let container = this.panel._allDocks[0].dash._container;
-                this.panel._allDocks[0].dash._showAppsIcon = this.oldShowAppsIcon;
-                container.add_actor(this.panel._allDocks[0].dash._showAppsIcon);
-                this.panel._allDocks[0].dash.destroy = this.oldDashDestroy;
-                this.panel._allDocks[0].dash._queueRedisplay();
-            }
+
             this._configureActivitiesButton(true);
             this._menuButton.destroy();
         }

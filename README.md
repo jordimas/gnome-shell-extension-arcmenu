@@ -25,27 +25,27 @@ This extension could be even better with your help! Any items in the issue track
 
 ![](https://gitlab.com/LinxGem33/Neon/raw/master/comp-screen-arcmenu-wide.png)
 
+-----
+
+#### Arc Menu integrated with [Dash-to-Dock](https://extensions.gnome.org/extension/307/dash-to-dock/)
+
+-----
+
+![](https://gitlab.com/LinxGem33/Neon/-/raw/master/dash-to-dock-inter-screen.png)
 
 -----
 
 ### Installation
 
-You can now install this extension from **extensions.gnome.org** as a one click install just click on the link below
+#### To install the most recent official release: Visit ArcMenu on the [Official GNOME Extensions](https://extensions.gnome.org/extension/1228/arc-menu/) website.
+
+- **To install a Development version from source**: Please see the: [Install From Source wiki Guide](https://gitlab.com/LinxGem33/Arc-Menu/-/wikis/Install%20From%20Source%20Guide).
 
 <p align="left">
        <a href="https://extensions.gnome.org/extension/1228/arc-menu/" >
     <img src="https://gitlab.com/LinxGem33/Neon/raw/master/artwork/get-it-ego.png" width="240" style="margin-left: 4px"/>
     </a>
 </p>
-
-
------
-
-### Manual Installation
-For installing Arc-Menu manually from source;
-
-Please take a look at the [Manual Installation Guide](https://gitlab.com/LinxGem33/Arc-Menu/wikis/Install-From-Source-Guide) 
-on the Arc-Menu Wiki.
 
 -----
 
@@ -165,7 +165,7 @@ Hi, I’m Andrew. My role on the project is to design, create, and implement fea
 
 -----
 
-**- @[Nilvus](https://gitlab.com/Nilvus) - French** | **- @[Etamuk](https://gitlab.com/Etamuk) - German** | **- @[alex4401](https://gitlab.com/alex4401) - Polish** | **- @[vmalta10](https://gitlab.com/vmalta10) - Brazilian Portuguese** | **- @[sigbjokj](https://gitlab.com/sigbjokj) - Norwegian** |
+**- @[Nilvus](https://gitlab.com/Nilvus) - French** | **- @[Etamuk](https://gitlab.com/Etamuk) - German** | **- @[alex4401](https://gitlab.com/alex4401) - Polish** | **- @[frnogueira](https://gitlab.com/frnogueira) - Brazilian Portuguese** | **- @[sigbjokj](https://gitlab.com/sigbjokj) - Norwegian** |
 
 -----
 

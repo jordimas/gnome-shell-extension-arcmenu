@@ -41,3 +41,16 @@ function createTooltip(button, widget, label, description){
         widget.tooltip._onHover();
     } 
 }
+
+function _onPan(action, scrollbox) {
+    let [dist_, dx_, dy] = action.get_motion_delta(0);
+    let adjustment = scrollbox.get_vscroll_bar().get_adjustment();
+    adjustment.value -= (dy / scrollbox.height) * adjustment.page_size;
+    return false;
+}
+function _onPanEnd(action, scrollbox) {
+    let velocity = -action.get_velocity(0)[2];
+    let endPanValue = scrollbox.get_vscroll_bar().get_adjustment().value + velocity;
+    let adjustment = scrollbox.get_vscroll_bar().get_adjustment();
+    adjustment.value = endPanValue;
+}
