@@ -177,4 +177,4 @@ Hi, I’m Andrew. My role on the project is to design, create, and implement fea
 
 -----
 
-**- @[skygmin](https://gitlab.com/skygmin) - Simplified Chinese** | **- @[vinno97](https://gitlab.com/vinno97) - Dutch**
+**- @[skygmin](https://gitlab.com/skygmin) - Simplified Chinese** | **- @[vinno97](https://gitlab.com/vinno97) - Dutch** | **- @[artnay](https://gitlab.com/artnay) - Finnish**
