@@ -44,6 +44,8 @@ var DASH_TO_PANEL_UUID = 'dash-to-panel@jderose9.github.com';
 var ApplicationsButton = GObject.registerClass(class ArcMenu_ApplicationsButton extends PanelMenu.Button{
     _init(settings, panel) {
         super._init();
+        this.x_expand = false;
+        this.y_expand = false;
         this._settings = settings;
         this._panel = panel;
         this._menuButtonWidget = new MW.MenuButtonWidget();
