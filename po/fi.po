@@ -1,227 +1,1341 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the Arc Menu package.
+# This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Arc Menu\n"
+"Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-03-19 15:14+0100\n"
-"PO-Revision-Date: 2017-10-28 10:01+0300\n"
-"Last-Translator: Jiri Grönroos <jiri.gronroos+l10n@iki.fi>\n"
+"POT-Creation-Date: 2020-02-08 10:28-0500\n"
+"PO-Revision-Date: 2020-03-07 15:12+0200\n"
 "Language-Team: \n"
-"Language: fi\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 1.8.7.1\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Poedit 2.3\n"
+"Last-Translator: Jiri Grönroos <jiri.gronroos+l10n@iki.fi>\n"
+"Language: fi\n"
 
-#: prefs.js:42
-msgid "General"
-msgstr ""
+#: search.js:725 searchGrid.js:750
+msgid "Searching..."
+msgstr "Haetaan…"
 
-#: prefs.js:54
-msgid "Behaviour"
-msgstr "Toiminta"
+#: search.js:727 searchGrid.js:752
+msgid "No results."
+msgstr "Ei tuloksia."
 
-#: prefs.js:63
-msgid "Disable activities hot corner"
-msgstr "Poista Toiminnot-toimintokulma käytöstä"
+#: search.js:831 searchGrid.js:890
+#, javascript-format
+msgid "%d more"
+msgid_plural "%d more"
+msgstr[0] "%d lisää"
+msgstr[1] "%d lisää"
 
-#: prefs.js:85
-msgid "Set menu hotkey"
-msgstr "Aseta valikon pikanäppäin"
-
-#: prefs.js:91
-msgid "Undefined"
-msgstr "Määrittämätön"
-
-#: prefs.js:92
-msgid "Left Super Key"
-msgstr "Vasen Super-näppäin"
-
-#: prefs.js:93
-msgid "Right Super Key"
-msgstr "Oikea Super-näppäin"
-
-#: prefs.js:105
-msgid "Enable custom menu keybinding"
-msgstr "Käytä mukautettua valikon pikanäppäintä"
-
-#: prefs.js:112
-msgid "Syntax: <Shift>, <Ctrl>, <Alt>, <Super>"
-msgstr "Syntaksi: <Shift>, <Ctrl>, <Alt>, <Super>"
-
-#: prefs.js:153
-msgid "Button appearance"
-msgstr "Painikkeen ulkoasu"
-
-#: prefs.js:165
-msgid "Text for the menu button"
-msgstr "Valikkopainikkeen teksti"
-
-#: prefs.js:171
-msgid "System text"
-msgstr "Järjestelmäteksti"
-
-#: prefs.js:174
-msgid "Custom text"
-msgstr "Mukautettu teksti"
-
-#: prefs.js:198
-msgid "Set custom text for the menu button"
-msgstr "Aseta mukautettu teksti valikkopainikkeelle"
-
-#: prefs.js:218
-msgid "Enable the arrow icon beside the button text"
-msgstr "Käytä nuolipainiketta painiketekstin vieressä"
-
-#: prefs.js:240
-msgid "Select icon for the menu button"
-msgstr "Valitse kuvake valikkopainikkeelle"
-
-#: prefs.js:250
-msgid "Please select an image icon"
-msgstr "Valitse kuvakuvake"
-
-#: prefs.js:255
-msgid "Arc Menu Icon"
-msgstr "Arc Menu -kuvake"
-
-#: prefs.js:256
-msgid "System Icon"
-msgstr "Järjestelmäkuvake"
-
-#: prefs.js:257
-msgid "Custom Icon"
-msgstr "Mukautettu kuvake"
-
-#: prefs.js:283
-msgid "Icon size"
-msgstr "Kuvakkeen koko"
-
-#: prefs.js:283
-msgid "default is"
-msgstr "oletus on"
-
-#: prefs.js:323
-msgid "Appearance"
-msgstr "Ulkoasu"
-
-#: prefs.js:332
-msgid "Customize menu button appearance"
-msgstr "Mukauta valikkopainikkeen ulkoasua"
-
-#: prefs.js:342
-msgid "Icon"
-msgstr "Kuvake"
-
-#: prefs.js:343
-msgid "Text"
-msgstr "Teksti"
-
-#: prefs.js:344
-msgid "Icon and Text"
-msgstr "Kuvake ja teksti"
-
-#: prefs.js:345
-msgid "Text and Icon"
-msgstr "Teksti ja kuvake"
-
-#: prefs.js:370
-msgid "Menu position in panel"
-msgstr "Valikon sijainti paneelissa"
-
-#: prefs.js:377
-msgid "Left"
-msgstr "Vasemmalla"
-
-#: prefs.js:380
-msgid "Center"
-msgstr "Keskellä"
-
-#: prefs.js:384
-msgid "Right"
-msgstr "Oikealla"
-
-#: prefs.js:461
-msgid "About"
-msgstr "Tietoja"
-
-#: prefs.js:490
-msgid "Arc-Menu"
-msgstr "Arc-Menu"
-
-#: prefs.js:495
-msgid "version: "
-msgstr "versio: "
-
-#: prefs.js:503
-msgid "GitLab Page"
-msgstr ""
-
-#: menu.js:272
-msgid "Home"
-msgstr "Koti"
-
-#: menu.js:456 menu.js:461
+#: menulayouts/raven.js:215 menulayouts/mint.js:501 menulayouts/brisk.js:194
+#: menulayouts/arcmenu.js:243 menulayouts/redmond.js:233
+#: menulayouts/ubuntudash.js:301 menulayouts/ubuntudash.js:325
 msgid "Software"
 msgstr "Ohjelmistot"
 
-#: menu.js:466
+#: menulayouts/raven.js:215 menulayouts/mint.js:486 menulayouts/brisk.js:202
+#: menulayouts/arcmenu.js:243 menulayouts/redmond.js:233
+#: menulayouts/windows.js:284 menulayouts/ubuntudash.js:325 menuWidgets.js:785
 msgid "Settings"
 msgstr "Asetukset"
 
-#: menu.js:471
-msgid "Tweak Tool"
-msgstr "Lisäasetukset"
-
-#: menu.js:476
-#, fuzzy
+#: menulayouts/raven.js:215 menulayouts/arcmenu.js:243
+#: menulayouts/redmond.js:233 menulayouts/ubuntudash.js:325 prefs.js:2203
+#: prefs.js:2232 prefs.js:2237 prefs.js:2271 prefs.js:2283
 msgid "Tweaks"
 msgstr "Lisäasetukset"
 
-#: menu.js:481
+#: menulayouts/raven.js:215 menulayouts/mint.js:485 menulayouts/arcmenu.js:243
+#: menulayouts/redmond.js:233 menulayouts/ubuntudash.js:325 menuWidgets.js:1326
+#: menuWidgets.js:1524
 msgid "Terminal"
-msgstr ""
+msgstr "Pääte"
 
-#: menuWidgets.js:86
+#: menulayouts/raven.js:215 menulayouts/arcmenu.js:243
+#: menulayouts/redmond.js:233 menulayouts/ubuntudash.js:325 menuWidgets.js:453
 msgid "Activities Overview"
-msgstr "Toiminnot-yleisnäkymä"
+msgstr "Yleisnäkymä"
 
-#: menuWidgets.js:199
-msgid "Power Off"
-msgstr "Sammuta"
+#: menulayouts/raven.js:215 menulayouts/arcmenu.js:243
+#: menulayouts/redmond.js:233 menulayouts/ubuntudash.js:325 menuWidgets.js:798
+#: menuWidgets.js:1322 menuWidgets.js:1520 menuButtonPanel.js:597
+#: menuButtonDash.js:562 prefs.js:376 prefs.js:537
+msgid "Arc Menu Settings"
+msgstr "Arc-valikon asetukset"
 
-#: menuWidgets.js:212
+#: menulayouts/raven.js:223 menulayouts/tweaks/tweaks.js:188
+#: menulayouts/tweaks/tweaks.js:308 menulayouts/ubuntudash.js:333 prefs.js:4258
+msgid "Shortcuts"
+msgstr "Pikavalinnat"
+
+#: menulayouts/raven.js:415 menulayouts/tweaks/tweaks.js:603
+#: menulayouts/ubuntudash.js:587 prefs.js:41 prefs.js:826
+msgid "Pinned Apps"
+msgstr "Kiinnitetyt"
+
+#: menulayouts/raven.js:476 menulayouts/ubuntudash.js:659 menuWidgets.js:687
+#: menuWidgets.js:1954 menuWidgets.js:2091 menuWidgets.js:2290
+msgid "Frequent Apps"
+msgstr "Käytetyimmät"
+
+#: menulayouts/raven.js:583 menulayouts/ubuntudash.js:767 menuWidgets.js:683
+#: menuWidgets.js:1037 menuWidgets.js:1951 menuWidgets.js:2088
+#: menuWidgets.js:2287
+msgid "All Programs"
+msgstr "Kaikki ohjelmat"
+
+#: menulayouts/mint.js:417 menulayouts/arcmenu.js:511
+#: menulayouts/arcmenu.js:518 menulayouts/redmond.js:415
+#: menulayouts/redmond.js:422 menulayouts/ubuntudash.js:237
+#: menulayouts/ubuntudash.js:284 placeDisplay.js:452
+msgid "Home"
+msgstr "Koti"
+
+#: menulayouts/mint.js:425 menulayouts/arcmenu.js:511
+#: menulayouts/arcmenu.js:526 menulayouts/redmond.js:415
+#: menulayouts/redmond.js:430 menulayouts/ubuntudash.js:245
+msgid "Network"
+msgstr "Verkko"
+
+#: menulayouts/mint.js:502 menulayouts/ubuntudash.js:302
+msgid "Files"
+msgstr "Tiedostot"
+
+#: menulayouts/mint.js:503 menulayouts/ubuntudash.js:303 menuWidgets.js:918
+#: prefs.js:4216
 msgid "Log Out"
 msgstr "Kirjaudu ulos"
 
-#: menuWidgets.js:225
-msgid "Suspend"
-msgstr "Valmiustila"
-
-#: menuWidgets.js:243
+#: menulayouts/mint.js:504 menulayouts/ubuntudash.js:304 menuWidgets.js:950
+#: prefs.js:4199
 msgid "Lock"
 msgstr "Lukitse"
 
-#: menuWidgets.js:265
-msgid "Back"
-msgstr "Takaisin"
+#: menulayouts/mint.js:505 menulayouts/ubuntudash.js:305 menuWidgets.js:906
+#: prefs.js:4233
+msgid "Power Off"
+msgstr "Sammuta"
 
-#: menuWidgets.js:483
+#: menulayouts/tweaks/tweaks.js:86
+msgid "Category Activation"
+msgstr "Luokan aktivointi"
+
+#: menulayouts/tweaks/tweaks.js:92
+msgid "Mouse Click"
+msgstr "Hiiren napsautus"
+
+#: menulayouts/tweaks/tweaks.js:93
+msgid "Mouse Hover"
+msgstr "Hiiren kohdistus"
+
+#: menulayouts/tweaks/tweaks.js:112
+msgid "Avatar Icon Shape"
+msgstr "Avatarin kuvakkeen muoto"
+
+#: menulayouts/tweaks/tweaks.js:117
+msgid "Circular"
+msgstr "Ympyrä"
+
+#: menulayouts/tweaks/tweaks.js:118
+msgid "Square"
+msgstr "Neliö"
+
+#: menulayouts/tweaks/tweaks.js:143
+msgid "KRunner Position"
+msgstr "KRunnerin sijainti"
+
+#: menulayouts/tweaks/tweaks.js:148
+msgid "Top"
+msgstr "Ylhäällä"
+
+#: menulayouts/tweaks/tweaks.js:149
+msgid "Centered"
+msgstr "Keskitetty"
+
+#: menulayouts/tweaks/tweaks.js:160 menulayouts/tweaks/tweaks.js:337
+msgid "Show Extra Large Icons with App Descriptions"
+msgstr "Näytä erittäin suuret kuvakkeet sovelluskuvausten kera"
+
+#: menulayouts/tweaks/tweaks.js:181 menulayouts/tweaks/tweaks.js:301
+#: prefs.js:738
+msgid "General"
+msgstr "Yleiset"
+
+#: menulayouts/tweaks/tweaks.js:191
+msgid "Buttons"
+msgstr "Painikkeet"
+
+#: menulayouts/tweaks/tweaks.js:199 menulayouts/tweaks/tweaks.js:316
+msgid "Default Screen"
+msgstr "Oletusnäkymä"
+
+#: menulayouts/tweaks/tweaks.js:204 menulayouts/tweaks/tweaks.js:321
+#: menuWidgets.js:679 menuWidgets.js:1948
+msgid "Home Screen"
+msgstr "Kotinäkymä"
+
+#: menulayouts/tweaks/tweaks.js:205 menulayouts/tweaks/tweaks.js:322
+msgid "All Applications"
+msgstr "Kaikki sovellukset"
+
+#: menulayouts/tweaks/tweaks.js:220 prefs.js:2547
+msgid "Disable Menu Arrow"
+msgstr "Poista käytöstä valikon nuoli"
+
+#: menulayouts/tweaks/tweaks.js:228 prefs.js:2555
+msgid "Disable current theme menu arrow pointer"
+msgstr "Poista käytöstä nykyisen teeman valikkonuolen osoitin"
+
+#: menulayouts/tweaks/tweaks.js:249 menulayouts/tweaks/tweaks.js:370
+#: prefs.js:132 prefs.js:696 prefs.js:3769 prefs.js:4027
+msgid "Save"
+msgstr "Tallenna"
+
+#: menulayouts/tweaks/tweaks.js:275 menulayouts/tweaks/tweaks.js:396
+msgid "Separator Position Index"
+msgstr ""
+
+#: menulayouts/tweaks/tweaks.js:583
+msgid "Nothing Yet!"
+msgstr "Ei vielä mitään!"
+
+#: menulayouts/tweaks/tweaks.js:597 prefs.js:817
+msgid "Arc Menu Default View"
+msgstr "Arc-valikon oletusnäkymä"
+
+#: menulayouts/tweaks/tweaks.js:604 prefs.js:827
+msgid "Categories List"
+msgstr "Luokkalista"
+
+#: menulayouts/tweaks/tweaks.js:638
+msgid "Enable Weather Widget"
+msgstr "Käytä sääsovelmaa"
+
+#: menulayouts/tweaks/tweaks.js:656
+msgid "Enable Clock Widget"
+msgstr "Käytä kellosovelmaa"
+
+#: menulayouts/arcmenu.js:511 menulayouts/redmond.js:415
+#: menulayouts/windows.js:112 menulayouts/windows.js:279
+#: menulayouts/ubuntudash.js:285
+msgid "Documents"
+msgstr "Asiakirjat"
+
+#: menulayouts/arcmenu.js:511 menulayouts/redmond.js:415
+#: menulayouts/ubuntudash.js:286
+msgid "Downloads"
+msgstr "Lataukset"
+
+#: menulayouts/arcmenu.js:511 menulayouts/redmond.js:415
+msgid "Music"
+msgstr "Musiikki"
+
+#: menulayouts/arcmenu.js:511 menulayouts/redmond.js:415
+msgid "Pictures"
+msgstr "Kuvat"
+
+#: menulayouts/arcmenu.js:511 menulayouts/redmond.js:415
+msgid "Videos"
+msgstr "Videot"
+
+#: menulayouts/arcmenu.js:511 menulayouts/redmond.js:415 placeDisplay.js:237
+#: placeDisplay.js:261
+msgid "Computer"
+msgstr "Tietokone"
+
+#: menuWidgets.js:129
+msgid "Open Folder Location"
+msgstr "Avaa kansio"
+
+#: menuWidgets.js:145
+msgid "Current Windows:"
+msgstr "Nykyiset ikkunat:"
+
+#: menuWidgets.js:164
+msgid "New Window"
+msgstr "Uusi ikkuna"
+
+#: menuWidgets.js:174
+msgid "Launch using Dedicated Graphics Card"
+msgstr "Käynnistä erillisnäytönohjainta käyttäen"
+
+#: menuWidgets.js:201
+msgid "Delete Desktop Shortcut"
+msgstr "Poista työpöydän pikakuvake"
+
+#: menuWidgets.js:209
+msgid "Create Desktop Shortcut"
+msgstr "Luo pikakuvake työpöydälle"
+
+#: menuWidgets.js:223
+msgid "Remove from Favorites"
+msgstr "Poista suosikeista"
+
+#: menuWidgets.js:229
+msgid "Add to Favorites"
+msgstr "Lisää suosikkeihin"
+
+#: menuWidgets.js:247 menuWidgets.js:298
+msgid "Unpin from Arc Menu"
+msgstr "Poista kiinnitys Arc-valikosta"
+
+#: menuWidgets.js:261
+msgid "Pin to Arc Menu"
+msgstr "Kiinnitä Arc-valikkoon"
+
+#: menuWidgets.js:274
+msgid "Show Details"
+msgstr "Näytä lisätietoja"
+
+#: menuWidgets.js:683 menuWidgets.js:811 menuWidgets.js:1951
+#: menuWidgets.js:2088 menuWidgets.js:2287
 msgid "Favorites"
 msgstr "Suosikit"
 
-#: menuWidgets.js:616
+#: menuWidgets.js:826
+msgid "Categories"
+msgstr "Luokat"
+
+#: menuWidgets.js:841
+msgid "Users"
+msgstr "Käyttäjät"
+
+#: menuWidgets.js:933 prefs.js:4182
+msgid "Suspend"
+msgstr "Valmiustila"
+
+#: menuWidgets.js:973
+msgid "Back"
+msgstr "Takaisin"
+
+#: menuWidgets.js:2548
 msgid "Type to search…"
 msgstr "Kirjoita hakeaksesi…"
 
-#: menuWidgets.js:781
+#: menuWidgets.js:2718 prefs.js:3923
 msgid "Applications"
 msgstr "Sovellukset"
 
-#~ msgid "Webpage"
-#~ msgstr "Verkkosivusto"
+#: menuWidgets.js:2784
+msgid "Show Applications"
+msgstr "Näytä sovellukset"
+
+#: menuWidgets.js:2801 constants.js:157 prefs.js:4629
+msgid "Arc Menu"
+msgstr "Arc-valikko"
+
+#: menuWidgets.js:3014
+msgid "Add world clocks…"
+msgstr "Lisää maailmankelloja…"
+
+#: menuWidgets.js:3015
+msgid "World Clocks"
+msgstr "Maailmankellot"
+
+#: menuWidgets.js:3124
+msgid "Weather"
+msgstr "Sää"
+
+#: menuWidgets.js:3242
+msgid "Select a location…"
+msgstr "Valitse sijainti…"
+
+#: menuWidgets.js:3255
+msgid "Loading…"
+msgstr "Ladataan…"
+
+#: menuWidgets.js:3265
+msgid "Go online for weather information"
+msgstr "Yhdistä verkkoon saadaksesi säätietoja"
+
+#: menuWidgets.js:3267
+msgid "Weather information is currently unavailable"
+msgstr "Säätiedot eivät ole juuri nyt saatavilla"
+
+#: constants.js:162
+msgid "Arc Menu Alt"
+msgstr "Arc-valikko, vaihtoehtoinen"
+
+#: constants.js:163
+msgid "Arc Menu Original"
+msgstr "Arc-valikko, alkuperäinen"
+
+#: constants.js:164
+msgid "Curved A"
+msgstr "Taivutettu A"
+
+#: constants.js:165
+msgid "Start Box"
+msgstr "Käynnistysboksi"
+
+#: constants.js:166
+msgid "Focus"
+msgstr "Fokus"
+
+#: constants.js:167
+msgid "Triple Dash"
+msgstr "Kolmiviiva"
+
+#: constants.js:168
+msgid "Whirl"
+msgstr "Kierre"
+
+#: constants.js:169
+msgid "Whirl Circle"
+msgstr "Kierre ympyrässä"
+
+#: constants.js:170
+msgid "Sums"
+msgstr "Sums"
+
+#: constants.js:171
+msgid "Arrow"
+msgstr "Nuoli"
+
+#: constants.js:172
+msgid "Lins"
+msgstr "Lins"
+
+#: constants.js:173
+msgid "Diamond Square"
+msgstr "Timantti"
+
+#: constants.js:174
+msgid "Octo Maze"
+msgstr "Octo Maze"
+
+#: constants.js:175
+msgid "Search"
+msgstr "Haku"
+
+#: menuButtonPanel.js:606 menuButtonDash.js:571
+msgid "Arc Menu on GitLab"
+msgstr "Arc-valikko GitLabissa"
+
+#: menuButtonPanel.js:611 menuButtonDash.js:576
+msgid "About Arc Menu"
+msgstr "Tietoja Arc-valikosta"
+
+#: menuButtonPanel.js:619
+msgid "Dash to Panel Settings"
+msgstr "Dash to Panel -asetukset"
+
+#: menuButtonDash.js:584
+msgid "Dash to Dock Settings"
+msgstr "Dash to Dock -asetukset"
+
+#: placeDisplay.js:138
+#, javascript-format
+msgid "Failed to launch “%s”"
+msgstr "Ei voitu käynnistää “%s”"
+
+#: placeDisplay.js:153
+#, javascript-format
+msgid "Failed to mount volume for “%s”"
+msgstr "Taltion “%s” liittäminen epäonnistui"
+
+#: placeDisplay.js:326
+#, javascript-format
+msgid "Ejecting drive “%s” failed:"
+msgstr "Aseman “%s” irrottaminen epäonnistui:"
+
+#: prefs.js:59 prefs.js:3943
+msgid "Add More Apps"
+msgstr "Aseta lisää sovelluksia"
+
+#: prefs.js:67
+msgid "Browse a list of all applications to add to your Pinned Apps list."
+msgstr ""
+
+#: prefs.js:100 prefs.js:3723 prefs.js:3982
+msgid "Add Custom Shortcut"
+msgstr "Lisää mukautettu pikavalinta"
+
+#: prefs.js:108
+msgid "Create a custom shortcut to add to your Pinned Apps list."
+msgstr ""
+"Luo mukautettu pikavalinta lisättäväksi \"Kiinnitetyt sovellukset\"-"
+"luetteloon."
+
+#: prefs.js:191 prefs.js:3835 prefs.js:4089
+msgid "Modify"
+msgstr "Muokkaa"
+
+#: prefs.js:196 prefs.js:3842 prefs.js:4094
+msgid "Move Up"
+msgstr "Siirrä ylös"
+
+#: prefs.js:201 prefs.js:3847 prefs.js:4099
+msgid "Move Down"
+msgstr "Siirrä alas"
+
+#: prefs.js:206 prefs.js:3852 prefs.js:4104
+msgid "Delete"
+msgstr "Poista"
+
+#: prefs.js:275
+msgid "Add to your Pinned Apps"
+msgstr "Lisää kiinnitettyihin sovelluksiin"
+
+#: prefs.js:277
+msgid "Change Selected Pinned App"
+msgstr "Vaihda valittua kiinnitettyä sovellusta"
+
+#: prefs.js:279
+msgid "Select Application Shortcuts"
+msgstr "Valitse sovelluspikavalinnat"
+
+#: prefs.js:281
+msgid "Select Directory Shortcuts"
+msgstr "Valitse kansiopikavalinnat"
+
+#: prefs.js:300 prefs.js:696
+msgid "Add"
+msgstr "Lisää"
+
+#: prefs.js:377 prefs.js:1349
+msgid "Run Command..."
+msgstr "Suorita komento…"
+
+#: prefs.js:428
+msgid "Default Apps"
+msgstr "Oletussovellukset"
+
+#: prefs.js:432 prefs.js:507
+msgid "System Apps"
+msgstr "Järjestelmäsovellukset"
+
+#: prefs.js:503
+msgid "Presets"
+msgstr "Esivalinnat"
+
+#: prefs.js:619 prefs.js:621
+msgid "Edit Pinned App"
+msgstr "Muokkaa kiinnitettyä sovellusta"
+
+#: prefs.js:619 prefs.js:621 prefs.js:623 prefs.js:625
+msgid "Add a Custom Shortcut"
+msgstr "Lisää mukautettu pikavalinta"
+
+#: prefs.js:623
+msgid "Edit Shortcut"
+msgstr "Muokkaa pikavalintaa"
+
+#: prefs.js:625
+msgid "Edit Custom Shortcut"
+msgstr "Muokkaa mukautettua pikavalintaa"
+
+#: prefs.js:633
+msgid "Shortcut Name:"
+msgstr "Pikavalinnan nimi:"
+
+#: prefs.js:648
+msgid "Icon:"
+msgstr "Kuvake:"
+
+#: prefs.js:661 prefs.js:1725
+msgid "Please select an image icon"
+msgstr "Valitse kuvamuotoa oleva kuvake"
+
+#: prefs.js:680
+msgid "Terminal Command:"
+msgstr "Päätekomento:"
+
+#: prefs.js:687
+msgid "Shortcut Path:"
+msgstr "Pikavalinnan polku:"
+
+#: prefs.js:753
+msgid "Disable Tooltips"
+msgstr "Poista työkaluvihjeet käytöstä"
+
+#: prefs.js:761
+msgid "Disable all tooltips in Arc Menu"
+msgstr "Poista käytöstä kaikki työkaluvihjeet Arc-valikosta"
+
+#: prefs.js:776 prefs.js:1295
+msgid "Modify Activities Hot Corner"
+msgstr "Muokkaa Toiminnot-aktivointikulmaa"
+
+#: prefs.js:785
+msgid "Modify the action of the Activities Hot Corner"
+msgstr "Muokkaa Toiminnot-aktivointikulman toimintaa"
+
+#: prefs.js:796
+msgid "Override the default behavoir of the Activities Hot Corner"
+msgstr "Ohita Toiminnot-aktivointikulman oletustoiminta"
+
+#: prefs.js:824
+msgid "Choose the default menu view for Arc Menu"
+msgstr "Valitse Arc-valikon oletusarvoinen valikkonäkymä"
+
+#: prefs.js:846
+msgid "Hotkey activation"
+msgstr "Pikanäppäimen aktivointi"
+
+#: prefs.js:853
+msgid "Choose a method for the hotkey activation"
+msgstr "Valitse pikanäppäimen aktivointitapa"
+
+#: prefs.js:855
+msgid "Key Release"
+msgstr "Näppäimen vapautus"
+
+#: prefs.js:856
+msgid "Key Press"
+msgstr "Näppäimen painallus"
+
+#: prefs.js:875
+msgid "Arc Menu Hotkey"
+msgstr "Arc-valikon pikanäppäin"
+
+#: prefs.js:884
+msgid "Left Super Key"
+msgstr "Vasen Super-näppäin"
+
+#: prefs.js:888
+msgid "Set Arc Menu hotkey to Left Super Key"
+msgstr "Aseta Arc-valikon pikanäppäimeksi vasen Super-näppäin"
+
+#: prefs.js:891
+msgid "Right Super Key"
+msgstr "Oikea Super-näppäin"
+
+#: prefs.js:896
+msgid "Set Arc Menu hotkey to Right Super Key"
+msgstr "Aseta Arc-valikon pikanäppäimeksi oikea Super-näppäin"
+
+#: prefs.js:899
+msgid "Custom Hotkey"
+msgstr "Mukautettu pikanäppäin"
+
+#: prefs.js:904
+msgid "Set a custom hotkey for Arc Menu"
+msgstr "Aseta mukautettu pikanäppäin Arc-valikolle"
+
+#: prefs.js:907
+msgid "None"
+msgstr "Ei mitään"
+
+#: prefs.js:912
+msgid "Clear Arc Menu hotkey, use GNOME default"
+msgstr "Tyhjennä Arc-valikon pikanäppäin, käytä Gnomen oletusta"
+
+#: prefs.js:974
+msgid "Current Hotkey"
+msgstr "Nykyinen pikanäppäin"
+
+#: prefs.js:983
+msgid "Current custom hotkey"
+msgstr "Nykyinen mukautettu pikanäppäin"
+
+#: prefs.js:988
+msgid "Modify Hotkey"
+msgstr "Muokkaa pikanäppäintä"
+
+#: prefs.js:991
+msgid "Create your own hotkey combination for Arc Menu"
+msgstr "Luo oma pikanäppäinyhdistelmä Arc-valikon aktivointia varten"
+
+#: prefs.js:1032
+msgid "Display Arc Menu On"
+msgstr "Näytä Arc-valikko"
+
+#: prefs.js:1039
+msgid "Choose where to place Arc Menu"
+msgstr "Valitse mihin Arc-valikko sijoitetaan"
+
+#: prefs.js:1044
+msgid "Main Panel"
+msgstr "Pääpaneelissa"
+
+#: prefs.js:1045
+msgid "Dash to Panel"
+msgstr "Dash to Panel"
+
+#: prefs.js:1046
+msgid "Dash to Dock"
+msgstr "Dash to Dock"
+
+#: prefs.js:1097
+msgid "Disable Activities Button"
+msgstr "Poista Toiminnot-painike käytöstä"
+
+#: prefs.js:1098
+msgid "Dash to Dock extension not running!"
+msgstr "Dash to Dock -laajennus ei ole käynnissä!"
+
+#: prefs.js:1098
+msgid "Enable Dash to Dock for this feature to work."
+msgstr "Ota Dash to Dock -laajennus käyttöön, jotta tämä ominaisuus toimii."
+
+#: prefs.js:1106
+msgid "Disable Activities Button in panel"
+msgstr "Poista käytöstä paneelin Toiminnot-painike"
+
+#: prefs.js:1136
+msgid "Dash to Panel currently enabled!"
+msgstr "Dash to Panel on käytössä!"
+
+#: prefs.js:1136
+msgid "Disable Dash to Panel for this feature to work."
+msgstr ""
+"Poista Dash to Panel -laajennus käytöstä, jotta tämä ominaisuus toimii."
+
+#: prefs.js:1137
+msgid "Dash to Panel extension not running!"
+msgstr "Dash to Panel -laajennus ei ole käynnissä!"
+
+#: prefs.js:1137
+msgid "Enable Dash to Panel for this feature to work."
+msgstr "Ota Dash to Panel -laajennus käyttöön, jotta tämä ominaisuus toimii."
+
+#: prefs.js:1156
+msgid "Position in Dash to Panel"
+msgstr "Sijainti Dash to Panelissa"
+
+#: prefs.js:1156
+msgid "Position in Main Panel"
+msgstr "Sijainti pääpaneelissa"
+
+#: prefs.js:1163
+msgid "Left"
+msgstr "Vasemmalla"
+
+#: prefs.js:1164
+msgid "Position Arc Menu on the Left side of Dash to Panel"
+msgstr "Aseta Arc-valikko Dash to Panelin vasempaan laitaan"
+
+#: prefs.js:1165
+msgid "Position Arc Menu on the Left side of the Main Panel"
+msgstr "Aseta Arc-valikko pääpaneelin vasempaan laitaan"
+
+#: prefs.js:1168
+msgid "Center"
+msgstr "Keskellä"
+
+#: prefs.js:1170
+msgid "Position Arc Menu in the Center of Dash to Panel"
+msgstr "Aseta Arc-valikko Dash to Panelin keskelle"
+
+#: prefs.js:1171
+msgid "Position Arc Menu in the Center of the Main Panel"
+msgstr "Aseta Arc-valikko päävalikon keskelle"
+
+#: prefs.js:1174
+msgid "Right"
+msgstr "Oikealla"
+
+#: prefs.js:1176
+msgid "Position Arc Menu on the Right side of Dash to Panel"
+msgstr "Aseta Arc-valikko Dash to Panelin oikeaan laitaan"
+
+#: prefs.js:1177
+msgid "Position Arc Menu on the Right side of the Main Panel"
+msgstr "Aseta Arc-valikko pääpaneelin oikeaan laitaan"
+
+#: prefs.js:1218
+msgid "Menu Alignment to Button"
+msgstr ""
+
+#: prefs.js:1229
+msgid "Adjust Arc Menu's menu alignment relative to Arc Menu's icon"
+msgstr ""
+
+#: prefs.js:1242
+msgid "Display on all monitors when using Dash to Panel"
+msgstr "Näytä kaikilla näytöillä käyttäessä Dash to Panel -laajennusta"
+
+#: prefs.js:1250
+msgid "Display Arc Menu on all monitors when using Dash to Panel"
+msgstr ""
+"Näytä Arc-valikko kaikilla näytöillä käyttäessä Dash to Panel -laajennusta"
+
+#: prefs.js:1304
+msgid "Activities Hot Corner Action"
+msgstr "Toiminnot-aktivointikulman toiminto"
+
+#: prefs.js:1311
+msgid "Choose the action of the Activities Hot Corner"
+msgstr "Valitse Toiminnot-aktivointikulman toiminto"
+
+#: prefs.js:1313
+msgid "GNOME Default"
+msgstr "Gnomen oletus"
+
+#: prefs.js:1314
+msgid "Disabled"
+msgstr "Pois käytöstä"
+
+#: prefs.js:1315
+msgid "Toggle Arc Menu"
+msgstr "Näytä tai piilota Arc-valikko"
+
+#: prefs.js:1316
+msgid "Custom"
+msgstr "Mukautettu"
+
+#: prefs.js:1322
+msgid "Custom Activities Hot Corner Action"
+msgstr "Mukautettu Toiminnot-aktivointikulman toiminto"
+
+#: prefs.js:1322
+msgid "Choose from a list of preset commands or use your own terminal command"
+msgstr "Valitse esivalittujen komentojen luettelosta tai luo oma päätekomento"
+
+#: prefs.js:1332
+msgid "Preset commands"
+msgstr "Esivalitut komennot"
+
+#: prefs.js:1338
+msgid "Choose from a list of preset Activities Hot Corner commands"
+msgstr ""
+
+#: prefs.js:1342
+msgid "Show all Applications"
+msgstr "Näytä kaikki sovellukset"
+
+#: prefs.js:1343
+msgid "GNOME Terminal"
+msgstr "Gnomen pääte"
+
+#: prefs.js:1344
+msgid "GNOME System Monitor"
+msgstr "Gnomen järjestelmän valvonta"
+
+#: prefs.js:1345
+msgid "GNOME Calculator"
+msgstr "Gnomen laskin"
+
+#: prefs.js:1346
+msgid "GNOME gedit"
+msgstr "Gnomen gedit"
+
+#: prefs.js:1347
+msgid "GNOME Screenshot"
+msgstr "Gnomen kuvakaappaus"
+
+#: prefs.js:1348
+msgid "GNOME Weather"
+msgstr "Gnomen sää"
+
+#: prefs.js:1381
+msgid "Terminal Command"
+msgstr "Päätekomento"
+
+#: prefs.js:1387
+msgid "Set a custom terminal command to launch on active hot corner"
+msgstr ""
+"Aseta mukautettu päätekomento käynnistettäväksi aktivointikulman toimintona"
+
+#: prefs.js:1407 prefs.js:1589 prefs.js:2376 prefs.js:2774 prefs.js:2993
+#: prefs.js:3577
+msgid "Apply"
+msgstr "Toteuta"
+
+#: prefs.js:1409
+msgid "Apply changes and set new hot corner action"
+msgstr "Toteuta muutokset ja aseta uusi aktivointikulman toiminto"
+
+#: prefs.js:1472
+msgid "Set Custom Hotkey"
+msgstr "Aseta mukautettu pikanäppäin"
+
+#: prefs.js:1481
+msgid "Press a key"
+msgstr "Paina näppäintä"
+
+#: prefs.js:1506
+msgid "Modifiers"
+msgstr "Muokkaimet"
+
+#: prefs.js:1511
+msgid "Ctrl"
+msgstr "Ctrl"
+
+#: prefs.js:1516
+msgid "Super"
+msgstr "Super"
+
+#: prefs.js:1520
+msgid "Shift"
+msgstr "Shift"
+
+#: prefs.js:1524
+msgid "Alt"
+msgstr "Alt"
+
+#: prefs.js:1633 prefs.js:2014
+msgid "Arc Menu Icon Settings"
+msgstr "Arc-valikon kuvakeasetukset"
+
+#: prefs.js:1641
+msgid "Arc Menu Icon Appearance"
+msgstr "Arc-valikon kuvakkeen ulkoasu"
+
+#: prefs.js:1647
+msgid "Icon"
+msgstr "Kuvake"
+
+#: prefs.js:1648
+msgid "Text"
+msgstr "Teksti"
+
+#: prefs.js:1649
+msgid "Icon and Text"
+msgstr "Kuvake ja teksti"
+
+#: prefs.js:1650
+msgid "Text and Icon"
+msgstr "Teksti ja kuvake"
+
+#: prefs.js:1671
+msgid "Arc Menu Icon Text"
+msgstr "Arc-valikon kuvaketeksti"
+
+#: prefs.js:1695
+msgid "Arrow beside Arc Menu Icon"
+msgstr "Nuoli Arc-valikon kuvakkeen vieressä"
+
+#: prefs.js:1715
+msgid "Arc Menu Icon"
+msgstr "Arc-valikon kuvake"
+
+#: prefs.js:1771
+msgid "Browse for a custom icon"
+msgstr "Selaa mukautettua kuvaketta"
+
+#: prefs.js:1809
+msgid "Icon Size"
+msgstr "Kuvakkeen koko"
+
+#: prefs.js:1841
+msgid "Icon Padding"
+msgstr "Kuvakkeen padding"
+
+#: prefs.js:1873
+msgid "Icon Color"
+msgstr "Kuvakkeen väri"
+
+#: prefs.js:1894
+msgid "Active Icon Color"
+msgstr "Aktiivisen kuvakkeen väri"
+
+#: prefs.js:1914
+msgid ""
+"Icon color options will only work with files ending with \"-symbolic.svg\""
+msgstr ""
+"Kuvakkeen värivalinnat toimivat vain niiden tiedostojen kohdalla, joiden "
+"nimi päättyy \"-symbolic.svg\""
+
+#: prefs.js:1927 prefs.js:2744 prefs.js:3532
+msgid "Reset"
+msgstr "Palauta oletukset"
+
+#: prefs.js:1978
+msgid "System Icon"
+msgstr "Järjestelmäkuvake"
+
+#: prefs.js:1981
+msgid "Custom Icon"
+msgstr "Mukautettu kuvake"
+
+#: prefs.js:1994
+msgid "Appearance"
+msgstr "Ulkoasu"
+
+#: prefs.js:2022
+msgid "Customize Arc Menu's Icon"
+msgstr "Mukauta Arc-valikon kuvaketta"
+
+#: prefs.js:2042 prefs.js:2440
+msgid "Customize Arc Menu Appearance"
+msgstr "Mukauta Arc-valikon ulkoasua"
+
+#: prefs.js:2050
+msgid "Customize various elements of Arc Menu"
+msgstr "Muokkaa Arc-valikon eri osioita"
+
+#: prefs.js:2095 prefs.js:3139
+msgid "Override Arc Menu Theme"
+msgstr "Ohita Arc-valikon teema"
+
+#: prefs.js:2103
+msgid "Create and manage your own custom themes for Arc Menu"
+msgstr "Luo ja hallitse omia teemoja Arc-valikolle"
+
+#: prefs.js:2141
+msgid "Override the shell theme for Arc Menu only"
+msgstr ""
+
+#: prefs.js:2159
+msgid "Current Color Theme"
+msgstr "Nykyinen väriteema"
+
+#: prefs.js:2184
+msgid "Menu Layout"
+msgstr "Valikon asettelu"
+
+#: prefs.js:2192
+msgid "Choose from a variety of menu layouts"
+msgstr "Valitse useista eri valikkoasetteluista"
+
+#: prefs.js:2213
+msgid "Enable the selection of different menu layouts"
+msgstr ""
+
+#: prefs.js:2250
+msgid "Current Layout"
+msgstr "Nykyinen asettelu"
+
+#: prefs.js:2280
+msgid "Tweaks for the current menu layout"
+msgstr "Säätöjä nykyisen valikon asetteluun"
+
+#: prefs.js:2343
+msgid "Menu style chooser"
+msgstr "Valikkotyylin valitsin"
+
+#: prefs.js:2352
+msgid "Arc Menu Layout"
+msgstr "Arc-valikon asettelu"
+
+#: prefs.js:2448
+msgid "General Settings"
+msgstr "Yleiset asetukset"
+
+#: prefs.js:2462
+msgid "Menu Height"
+msgstr "Valikon korkeus"
+
+#: prefs.js:2476
+msgid "Adjust the menu height"
+msgstr "Säädä valikon korkeutta"
+
+#: prefs.js:2476 prefs.js:2504 prefs.js:2530 prefs.js:2590 prefs.js:2612
+#: prefs.js:2634 prefs.js:2667
+msgid "Certain menu layouts only"
+msgstr ""
+
+#: prefs.js:2496
+msgid "Left-Panel Width"
+msgstr "Vasemman paneelin leveys"
+
+#: prefs.js:2504
+msgid "Adjust the left-panel width"
+msgstr "Säädä vasemman paneelin leveyttä"
+
+#: prefs.js:2522
+msgid "Right-Panel Width"
+msgstr "Oikean paneelin leveys"
+
+#: prefs.js:2530
+msgid "Adjust the right-panel width"
+msgstr "Säädä oikean paneelin leveyttä"
+
+#: prefs.js:2572
+msgid "Miscellaneous"
+msgstr "Sekalaiset"
+
+#: prefs.js:2582
+msgid "Large Application Icons"
+msgstr "Suuret sovelluskuvakkeet"
+
+#: prefs.js:2590
+msgid "Enable large application icons"
+msgstr "Käytä suuria sovelluskuvakkeita"
+
+#: prefs.js:2604
+msgid "Category Sub Menus"
+msgstr "Luokkien alavalikot"
+
+#: prefs.js:2612
+msgid "Show nested menus in categories"
+msgstr ""
+
+#: prefs.js:2626
+msgid "Disable Category Arrows"
+msgstr "Poista käytöstä luokkanuolet"
+
+#: prefs.js:2634
+msgid "Disable the arrow on category menu items"
+msgstr "Poista käytöstä nuoli valikon luokkatietueissa"
+
+#: prefs.js:2650
+msgid "Separator Settings"
+msgstr "Erottimen asetukset"
+
+#: prefs.js:2659 prefs.js:3488
+msgid "Enable Vertical Separator"
+msgstr "Käytä pystyerotinta"
+
+#: prefs.js:2667
+msgid "Enable a Vertical Separator"
+msgstr "Käytä pystysuunnan erotinta"
+
+#: prefs.js:2682 prefs.js:3509
+msgid "Separator Color"
+msgstr "Erottimen väri"
+
+#: prefs.js:2690
+msgid "Change the color of all separators"
+msgstr "Vaihda kaikkien erottimien väriä"
+
+#: prefs.js:2710
+msgid "Fine Tune"
+msgstr "Hienosäätö"
+
+#: prefs.js:2718
+msgid "Gap Adjustment"
+msgstr "Välin säätö"
+
+#: prefs.js:2728
+msgid ""
+"Offset menu placement by 1px\n"
+"Useful if a gap or overlap is visible"
+msgstr ""
+
+#: prefs.js:2815
+msgid "Color Theme Name"
+msgstr "Väriteeman nimi"
+
+#: prefs.js:2822
+msgid "Name:"
+msgstr "Nimi:"
+
+#: prefs.js:2847
+msgid "Save Theme"
+msgstr "Tallenna teema"
+
+#: prefs.js:2872
+msgid "Select Themes to Import"
+msgstr "Valitse tuotavat teemat"
+
+#: prefs.js:2872
+msgid "Select Themes to Export"
+msgstr "Valitse vietävät teemat"
+
+#: prefs.js:2890
+msgid "Import"
+msgstr "Tuo"
+
+#: prefs.js:2890
+msgid "Export"
+msgstr "Vie"
+
+#: prefs.js:2921
+msgid "Select All"
+msgstr "Valitse kaikki"
+
+#: prefs.js:2978
+msgid "Manage Themes"
+msgstr "Hallitse teemoja"
+
+#: prefs.js:3152
+msgid "Color Theme Presets"
+msgstr "Väriteeman esivalinnat"
+
+#: prefs.js:3162
+msgid "Save as Preset"
+msgstr "Tallenna esivalinnoiksi"
+
+#: prefs.js:3246
+msgid "Manage Presets"
+msgstr "Hallitse esivalintoja"
+
+#: prefs.js:3275
+msgid "Menu Background Color"
+msgstr "Valikon taustaväri"
+
+#: prefs.js:3297
+msgid "Menu Foreground Color"
+msgstr "Valikon edustaväri"
+
+#: prefs.js:3317
+msgid "Font Size"
+msgstr "Fontin koko"
+
+#: prefs.js:3343
+msgid "Border Color"
+msgstr "Reunuksen väri"
+
+#: prefs.js:3364
+msgid "Border Size"
+msgstr "Reunuksen koko"
+
+#: prefs.js:3390
+msgid "Highlighted Item Color"
+msgstr "Korostetun tietueen väri"
+
+#: prefs.js:3411
+msgid "Corner Radius"
+msgstr "Kulmasäde"
+
+#: prefs.js:3437
+msgid "Menu Arrow Size"
+msgstr "Valikon nuolen koko"
+
+#: prefs.js:3463
+msgid "Menu Displacement"
+msgstr "Valikon poikkeama"
+
+#: prefs.js:3643 prefs.js:4263
+msgid "Configure Shortcuts"
+msgstr "Muokkaa pikavalintoja"
+
+#: prefs.js:3664
+msgid "Directories"
+msgstr "Kansiot"
+
+#: prefs.js:3684
+msgid "Add Default User Directories"
+msgstr "Lisää oletusarvoiset käyttäjäkansiot"
+
+#: prefs.js:3692
+msgid ""
+"Browse a list of all default User Directories to add to your Directories "
+"Shortcuts"
+msgstr ""
+
+#: prefs.js:3731
+msgid "Create a custom shortcut to add to your Directories Shortcuts"
+msgstr "Luo mukautettu pikavalinta kansiopikavalintoihin"
+
+#: prefs.js:3756 prefs.js:4014
+msgid "Restore Defaults"
+msgstr "Palauta oletukset"
+
+#: prefs.js:3757
+msgid "Restore the default Directory Shortcuts"
+msgstr "Palauta oletusarvoiset kansiopikavalinnat"
+
+#: prefs.js:3951
+msgid "Browse a list of all applications to add to your Application Shortcuts"
+msgstr ""
+
+#: prefs.js:3990
+msgid "Create a custom shortcut to add to your Application Shortcuts"
+msgstr ""
+
+#: prefs.js:4015
+msgid "Restore the default Application Shortcuts"
+msgstr "Palauta oletusarvoiset sovelluspikavalinnat"
+
+#: prefs.js:4171
+msgid "Session Buttons"
+msgstr "Istuntopainikkeet"
+
+#: prefs.js:4268 prefs.js:4273
+msgid "Add, Remove, or Modify Arc Menu shortcuts"
+msgstr "Lisää, poista tai muokkaa Arc-valikon pikavalintoja"
+
+#: prefs.js:4303
+msgid "External Devices"
+msgstr "Erilliset laitteet"
+
+#: prefs.js:4309
+msgid "Show all connected external devices in Arc Menu"
+msgstr "Näytä kaikki yhdistetyt erilliset laitteet Arc-valikossa"
+
+#: prefs.js:4325
+msgid "Bookmarks"
+msgstr "Kirjanmerkit"
+
+#: prefs.js:4331
+msgid "Show all Nautilus bookmarks in Arc Menu"
+msgstr "Näytä kaikki Nautiluksen kirjanmerkit Arc-valikossa"
+
+#: prefs.js:4349
+msgid "Misc"
+msgstr "Sekalaiset"
+
+#: prefs.js:4355
+msgid "Export and Import Arc Menu Settings"
+msgstr "Vie ja tuo Arc-valikon asetuksia"
+
+#: prefs.js:4362
+msgid ""
+"Importing settings from file may replace ALL saved settings.\n"
+"This includes all saved pinned apps."
+msgstr ""
+"Asetusten tuominen tiedostosta saattaa korvata KAIKKI tallennetut "
+"asetukset.\n"
+"Mukaan lukien kaikki kiinnitetyt sovellukset."
+
+#: prefs.js:4371
+msgid "Import from File"
+msgstr "Tuo tiedostosta"
+
+#: prefs.js:4374
+msgid "Import Arc Menu settings from a file"
+msgstr "Tuo Arc-valikon asetukset tiedostosta"
+
+#: prefs.js:4378
+msgid "Import settings"
+msgstr "Tuo asetukset"
+
+#: prefs.js:4407
+msgid "Export to File"
+msgstr "Vie tiedostoon"
+
+#: prefs.js:4410
+msgid "Export and save all your Arc Menu settings to a file"
+msgstr "Vie ja tallenna kaikki Arc-valikon asetukset tiedostoon"
+
+#: prefs.js:4415
+msgid "Export settings"
+msgstr "Viennin asetukset"
+
+#: prefs.js:4446
+msgid "Color Theme Presets - Export/Import"
+msgstr "Väriteeman esivalinnat - vie/tuo"
+
+#: prefs.js:4465
+msgid ""
+"Imported theme presets are located on the Appearance Tab\n"
+"in Override Arc Menu Theme"
+msgstr ""
+"Tuodut teemojen esivalinnat ovat näkyvissä Ulkoasu-osiossa\n"
+"\"Ohita Arc-valikon teema\"-valinnan alla"
+
+#: prefs.js:4476 prefs.js:4483
+msgid "Import Theme Preset"
+msgstr "Tuo teeman esivalinta"
+
+#: prefs.js:4479
+msgid "Import Arc Menu Theme Presets from a file"
+msgstr "Tuo Arc-valikon teeman esivalinnat tiedostosta"
+
+#: prefs.js:4520 prefs.js:4532
+msgid "Export Theme Preset"
+msgstr "Vie teeman esivalinta"
+
+#: prefs.js:4523
+msgid "Export and save your Arc Menu Theme Presets to a file"
+msgstr "Vie ja tallenna Arc-valikon teeman esivalinnat tiedostoon"
+
+#: prefs.js:4597
+msgid "About"
+msgstr "Tietoja"
+
+#: prefs.js:4603
+msgid "Development"
+msgstr "Kehitys"
+
+#: prefs.js:4634
+msgid "Version: "
+msgstr "Versio: "
+
+#: prefs.js:4638
+msgid "A Traditional Application Menu for GNOME"
+msgstr "Perinteinen sovellusvalikko Gnomelle"
+
+#: prefs.js:4642
+msgid "GitLab Page"
+msgstr "GitLab-sivu"
