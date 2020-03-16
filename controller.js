@@ -29,6 +29,7 @@ const Gettext = imports.gettext.domain(Me.metadata['gettext-domain']);
 const Helper = Me.imports.helper;
 const Main = imports.ui.main;
 const PanelMenu = Me.imports.menuButtonPanel;
+const Utils = Me.imports.utils;
 const _ = Gettext.gettext;
 
 var MenuSettingsController = class {
@@ -38,7 +39,7 @@ var MenuSettingsController = class {
         this.dashOrPanel = dashOrPanel;
 
         this.updateThemeID = GLib.timeout_add(0, 100, () => {
-            Me.imports.prefs.saveCSS(this._settings);
+            Utils.createStylesheet(this._settings);
             Main.loadTheme();
             this.updateThemeID = null;
             return GLib.SOURCE_REMOVE;

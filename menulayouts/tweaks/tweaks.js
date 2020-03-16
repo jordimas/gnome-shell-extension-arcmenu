@@ -29,6 +29,7 @@ const Convenience = Me.imports.convenience;
 const Gettext = imports.gettext.domain(Me.metadata['gettext-domain']);
 const Prefs = Me.imports.prefs;
 const PW = Me.imports.prefsWidgets;
+const Utils = Me.imports.utils;
 const _ = Gettext.gettext;
 
 
@@ -119,7 +120,7 @@ var TweaksDialog = GObject.registerClass(
             avatarStyleCombo.set_active(this._settings.get_enum('avatar-style'));
             avatarStyleCombo.connect('changed', (widget) => {
                 this._settings.set_enum('avatar-style', widget.get_active());
-                Prefs.saveCSS(this._settings);
+                Utils.createStylesheet(this._settings);
                 this._settings.set_boolean('reload-theme',true);
             });
             avatarStyleRow.add(avatarStyleLabel);
