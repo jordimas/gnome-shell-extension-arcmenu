@@ -21,7 +21,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-// Import Libraries
 const Me = imports.misc.extensionUtils.getCurrentExtension();
 
 const {Atk, Clutter, GLib, GMenu, GObject, Gtk, Shell, St} = imports.gi;
@@ -35,6 +34,7 @@ const MW = Me.imports.menuWidgets;
 const PanelMenu = imports.ui.panelMenu;
 const PopupMenu = imports.ui.popupMenu;
 const Util = imports.misc.util;
+const Utils = Me.imports.utils;
 const _ = Gettext.gettext;
 
 const gnome36 = imports.misc.config.PACKAGE_VERSION >= '3.35.0';
@@ -152,41 +152,7 @@ var ApplicationsButton = GObject.registerClass(class ArcMenu_DashApplicationsBut
 
         this.mainBox.style = `height: ${height}px`;        
         this.section.actor.add_actor(this.mainBox);          
-        //Create Menu Layout--------------------------------------------------
-        let layout = this._settings.get_enum('menu-layout');
-        if(layout == Constants.MENU_LAYOUT.Default)
-            this.MenuLayout =  new MenuLayouts.arcmenu.createMenu(this);
-        else if(layout == Constants.MENU_LAYOUT.Brisk)
-            this.MenuLayout =  new MenuLayouts.brisk.createMenu(this); 
-        else if(layout == Constants.MENU_LAYOUT.Whisker)
-            this.MenuLayout = new MenuLayouts.whisker.createMenu(this); 
-        else if (layout == Constants.MENU_LAYOUT.GnomeMenu)
-            this.MenuLayout = new MenuLayouts.gnomemenu.createMenu(this); 
-        else if (layout == Constants.MENU_LAYOUT.Mint)
-            this.MenuLayout = new MenuLayouts.mint.createMenu(this); 
-        else if (layout == Constants.MENU_LAYOUT.GnomeDash)
-            this.MenuLayout = new MenuLayouts.gnomedash.createMenu(this); 
-        else if (layout == Constants.MENU_LAYOUT.Elementary)
-            this.MenuLayout = new MenuLayouts.elementary.createMenu(this); 
-        else if (layout == Constants.MENU_LAYOUT.Redmond)
-            this.MenuLayout = new MenuLayouts.redmond.createMenu(this); 
-        else if (layout == Constants.MENU_LAYOUT.Simple)
-            this.MenuLayout = new MenuLayouts.simple.createMenu(this);  
-        else if (layout == Constants.MENU_LAYOUT.Simple2)
-            this.MenuLayout = new MenuLayouts.simple2.createMenu(this);  
-        else if (layout == Constants.MENU_LAYOUT.UbuntuDash)
-            this.MenuLayout = new MenuLayouts.ubuntudash.createMenu(this); 
-        else if (layout == Constants.MENU_LAYOUT.Budgie)
-            this.MenuLayout = new MenuLayouts.budgie.createMenu(this);
-        else if (layout == Constants.MENU_LAYOUT.Windows)
-            this.MenuLayout = new MenuLayouts.windows.createMenu(this);
-        else if (layout == Constants.MENU_LAYOUT.Runner)
-            this.MenuLayout = new MenuLayouts.runner.createMenu(this);
-        else if (layout == Constants.MENU_LAYOUT.Chromebook)
-            this.MenuLayout = new MenuLayouts.chromebook.createMenu(this);
-        else if (layout == Constants.MENU_LAYOUT.Raven)
-            this.MenuLayout = new MenuLayouts.raven.createMenu(this);
-        ///--------------------------------------------------------------------
+        this.MenuLayout = Utils.getMenuLayout(this, this._settings.get_enum('menu-layout'));
         this._setMenuPositionAlignment();
         this.updateStyle();
     }
