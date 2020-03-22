@@ -41,7 +41,7 @@ const gnome36 = imports.misc.config.PACKAGE_VERSION >= '3.35.0';
 
 var ApplicationsButton = GObject.registerClass(class ArcMenu_DashApplicationsButton extends PanelMenu.Button{
     _init(settings, panel) {
-        super._init();
+        super._init(0.5, null, true);
         this._settings = settings;
         this._panel = panel;
         this._menuButtonWidget = new MW.DashMenuButtonWidget(this, this._settings);

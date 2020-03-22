@@ -538,11 +538,11 @@ var createMenu = class {
             }
             else if(directory[2]=="ArcMenu_Computer"){
                 placeInfo = new PlaceDisplay.RootInfo();
-                placeMenuItem = new PlaceDisplay.PlaceMenuItem(placeInfo,this);
+                placeMenuItem = new PlaceDisplay.PlaceMenuItem(placeInfo, this);
             }
             else if(directory[2]=="ArcMenu_Network"){
                 placeInfo = new PlaceDisplay.PlaceInfo('network',Gio.File.new_for_uri('network:///'), _('Network'),'network-workgroup-symbolic');
-                placeMenuItem = new PlaceDisplay.PlaceMenuItem(placeInfo,this);    
+                placeMenuItem = new PlaceDisplay.PlaceMenuItem(placeInfo, this);    
             }
             else if(directory[2].startsWith("ArcMenu_")){
                 let path = directory[2].replace("ArcMenu_",'');
@@ -566,7 +566,7 @@ var createMenu = class {
             }
             else{
                 let path = directory[2];
-                placeInfo = new MW.PlaceInfo(Gio.File.new_for_path(path), _(directory[0]));
+                placeInfo = new MW.PlaceInfo(Gio.File.new_for_path(path), _(directory[0]), (directory[1] !== "ArcMenu_Folder") ? directory[1] : null);
                 placeMenuItem = new MW.PlaceMenuItem(this, placeInfo);
             }
             

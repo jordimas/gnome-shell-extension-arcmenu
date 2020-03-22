@@ -472,7 +472,7 @@ var createMenu = class {
             }
             else{
                 let path = directory[2];
-                placeInfo = new MW.PlaceInfo(Gio.File.new_for_path(path), _(directory[0]));
+                placeInfo = new MW.PlaceInfo(Gio.File.new_for_path(path), _(directory[0]), (directory[1] !== "ArcMenu_Folder") ? directory[1] : null);
                 placeMenuItem = new MW.PlaceMenuItem(this, placeInfo);
             }
             

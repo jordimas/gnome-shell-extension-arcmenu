@@ -61,7 +61,7 @@ const gnome36 = imports.misc.config.PACKAGE_VERSION >= '3.35.0';
 
 var AppRightClickMenu = class ArcMenu_AppRightClickMenu extends PopupMenu.PopupMenu {
     constructor(actor, app, button){
-        super(actor,0.0,St.Side.TOP);
+        super(actor, 0.0, St.Side.TOP);
         this._button = button;
         this._settings = this._button._settings;
         this._app = app;
@@ -722,13 +722,10 @@ var SessionButton = class ArcMenu_SessionButton{
         else
             iconSize = SMALL_ICON_SIZE;
         this._icon = new St.Icon({ 
-            gicon: icon_name ? Gio.icon_new_for_string(icon_name) : null,
+            gicon: gicon ? gicon : Gio.icon_new_for_string(icon_name),
             icon_size: iconSize
         });
-        if(gicon)
-            this._icon.gicon = gicon;
-        else
-            this._icon.gicon = icon_name ? Gio.icon_new_for_string(icon_name) : "";
+
         this.actor.child = this._icon;
         this.actor.connect('clicked', this._onClick.bind(this));
     }
@@ -751,7 +748,7 @@ var SessionButton = class ArcMenu_SessionButton{
 var PlaceButtonItem = class ArcMenu_PlaceButtonItem extends SessionButton {
     // Initialize menu item
     constructor(button, info) {
-        super(button, _(info.name), null, info.icon);
+        super(button, _(info.name), info.icon, info.gicon);
         this._button = button;
         this._info = info;
     }
@@ -2201,7 +2198,8 @@ var PlaceInfo = class ArcMenu_PlaceInfo {
     constructor(file, name, icon) {
         this.file = file;
         this.name = name ? name : this._getFileName();
-        this.icon = icon ? new Gio.ThemedIcon({ name: icon }) : this.getIcon();
+        this.icon = icon ? icon : null;
+        this.gicon = icon ? null : this.getIcon();
     }
     launch(timestamp) {
         let launchContext = global.create_app_launch_context(timestamp, -1);
@@ -2242,9 +2240,10 @@ var PlaceMenuItem = GObject.registerClass(class ArcMenu_PlaceMenuItem extends Ar
         this._button = button;
         this._info = info;
         this._icon = new St.Icon({
-            gicon: info.icon,
+            gicon: info.gicon ? info.gicon : Gio.icon_new_for_string(info.icon),
             icon_size: SMALL_ICON_SIZE
         });
+
         this.actor.add_child(this._icon);
         this.label = new St.Label({
             text: _(info.name),
