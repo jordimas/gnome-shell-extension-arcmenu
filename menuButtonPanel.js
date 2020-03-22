@@ -259,10 +259,10 @@ var ApplicationsButton = GObject.registerClass(class ArcMenu_ApplicationsButton 
     }
     vfunc_event(event){
         if(gnome36){
-            this._onEvent(null,event);
+            this._onEvent(null, event);
         }
         else{
-            super.vfunc_event(event);
+            return Clutter.EVENT_PROPAGATE;
         }
     }
     _onEvent(actor, event) {
