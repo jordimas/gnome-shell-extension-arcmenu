@@ -473,7 +473,7 @@ var createMenu =class{
             }
             else{
                 let path = pinnedApps[i+2];
-                placeInfo = new MW.PlaceInfo(Gio.File.new_for_path(path), _(pinnedApps[i]));
+                placeInfo = new MW.PlaceInfo(Gio.File.new_for_path(path), _(pinnedApps[i]), (pinnedApps[i+1] !== "ArcMenu_Folder") ? pinnedApps[i+1] : null);
                 placeMenuItem = new MW.PlaceButtonItem(this, placeInfo);
             }   
             if(addStyle) 

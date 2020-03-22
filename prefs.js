@@ -672,8 +672,9 @@ var AddCustomLinkDialogWindow = GObject.registerClass(
             iconFrameRow.add(iconFrameLabel);
             iconFrameRow.add(fileChooserButton);
             iconFrameRow.add(iconEntry);
-            if(this._dialogType !== Constants.DIALOG_TYPE.Directories_Shortcuts)
-                mainFrame.add(iconFrameRow);
+            mainFrame.add(iconFrameRow);
+            if(this._dialogType == Constants.DIALOG_TYPE.Directories_Shortcuts)
+                iconEntry.set_text("ArcMenu_Folder");  
 
             //third row  - Command of Custom link
             let cmdFrameRow = new PW.FrameBoxRow();
@@ -708,10 +709,7 @@ var AddCustomLinkDialogWindow = GObject.registerClass(
             }
             addButton.connect('clicked', ()=> {
                 this.newPinnedAppsArray.push(nameEntry.get_text());
-                if(this._dialogType !== Constants.DIALOG_TYPE.Directories_Shortcuts)
-                    this.newPinnedAppsArray.push(iconEntry.get_text());
-                else
-                    this.newPinnedAppsArray.push("ArcMenu_Folder");
+                this.newPinnedAppsArray.push(iconEntry.get_text());
                 this.newPinnedAppsArray.push(cmdEntry.get_text());
                 this.addResponse = true;
                 this.response(-10);

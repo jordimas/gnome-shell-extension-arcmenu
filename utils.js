@@ -21,8 +21,46 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 const Me = imports.misc.extensionUtils.getCurrentExtension();
+const Constants = Me.imports.constants;
 const {Gio, GLib} = imports.gi;
 
+function getMenuLayout(button, layout){
+    let MenuLayout = Me.imports.menulayouts;
+    switch(layout){
+        case Constants.MENU_LAYOUT.Default:
+            return new MenuLayout.arcmenu.createMenu(button);
+        case Constants.MENU_LAYOUT.Brisk:
+            return new MenuLayout.brisk.createMenu(button); 
+        case Constants.MENU_LAYOUT.Whisker:
+            return new MenuLayout.whisker.createMenu(button); 
+        case Constants.MENU_LAYOUT.GnomeMenu:
+            return new MenuLayout.gnomemenu.createMenu(button); 
+        case Constants.MENU_LAYOUT.Mint:
+            return new MenuLayout.mint.createMenu(button); 
+        case Constants.MENU_LAYOUT.GnomeDash:
+            return new MenuLayout.gnomedash.createMenu(button); 
+        case Constants.MENU_LAYOUT.Elementary:
+            return new MenuLayout.elementary.createMenu(button); 
+        case Constants.MENU_LAYOUT.Redmond:
+            return new MenuLayout.redmond.createMenu(button); 
+        case Constants.MENU_LAYOUT.Simple:
+            return new MenuLayout.simple.createMenu(button);  
+        case Constants.MENU_LAYOUT.Simple2:
+            return new MenuLayout.simple2.createMenu(button);  
+        case Constants.MENU_LAYOUT.UbuntuDash:
+            return new MenuLayout.ubuntudash.createMenu(button); 
+        case Constants.MENU_LAYOUT.Budgie:
+            return new MenuLayout.budgie.createMenu(button);
+        case Constants.MENU_LAYOUT.Windows:
+            return new MenuLayout.windows.createMenu(button);
+        case Constants.MENU_LAYOUT.Runner:
+            return new MenuLayout.runner.createMenu(button);
+        case Constants.MENU_LAYOUT.Chromebook:
+            return new MenuLayout.chromebook.createMenu(button);
+        case Constants.MENU_LAYOUT.Raven:
+            return new MenuLayout.raven.createMenu(button);
+    }
+}
 function createTooltip(button, widget, label, description){
     let lbl = label.clutter_text;
     lbl.get_allocation_box();
