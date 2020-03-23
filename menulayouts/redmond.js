@@ -92,7 +92,7 @@ var createMenu = class {
             y_expand: true,
             x_fill:false,
             y_fill: false,
-            y_align: St.Align.START,
+            y_align: Clutter.ActorAlign.START,
             overlay_scrollbars: true,
             style_class: 'vfade'
         });   
@@ -159,7 +159,7 @@ var createMenu = class {
         this.placesScrollBox = new St.ScrollView({
             x_fill: true,
             y_fill: false,
-            y_align: St.Align.START,
+            y_align: Clutter.ActorAlign.START,
             overlay_scrollbars: true,
             style_class: 'vfade'
         });     
