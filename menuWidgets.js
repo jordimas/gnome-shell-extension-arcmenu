@@ -57,7 +57,6 @@ const USER_AVATAR_SIZE = 28;
 
 const TOOLTIP_LABEL_SHOW_TIME = 0.15;
 const TOOLTIP_LABEL_HIDE_TIME = 0.1;
-const gnome36 = imports.misc.config.PACKAGE_VERSION >= '3.35.0';
 
 var AppRightClickMenu = class ArcMenu_AppRightClickMenu extends PopupMenu.PopupMenu {
     constructor(actor, app, button){
@@ -391,12 +390,6 @@ var ArcMenuPopupBaseMenuItem = GObject.registerClass(
             this.actor.connect('notify::active',()=> this.setActive(this.actor.active));
         if(params.hover)   
             this.actor.connect('notify::hover',this._onHover.bind(this));
-        
-        if(gnome36){
-            this.connect('button-press-event', this._onButtonPressEvent.bind(this));
-            this.connect('button-release-event', this._onButtonReleaseEvent.bind(this));
-            this.connect('touch-event', this._onTouchEvent.bind(this));
-        }
     }
     setFakeActive(active) {
         if (active) {
@@ -422,7 +415,8 @@ var ArcMenuPopupBaseMenuItem = GObject.registerClass(
         else if(this._button.leftClickMenu.isOpen)
             this._button.activeMenuItem = null;
     }
-    _onButtonPressEvent(actor, event) {
+    vfunc_button_press_event(){
+        let event = Clutter.get_current_event();
         this.pressed = false;
         if(event.get_button() == 1 && !this._button.appMenuManager.activeMenu){
             this._button._blockActivateEvent = false;
@@ -438,7 +432,8 @@ var ArcMenuPopupBaseMenuItem = GObject.registerClass(
         }
         return Clutter.EVENT_PROPAGATE;
     }
-    _onButtonReleaseEvent(actor, event) {
+    vfunc_button_release_event(){
+        let event = Clutter.get_current_event();
         if(event.get_button() == 1 && !this._button._blockActivateEvent && this.pressed){
             this.activate(event); 
         }
@@ -448,7 +443,7 @@ var ArcMenuPopupBaseMenuItem = GObject.registerClass(
         }
         return Clutter.EVENT_STOP;
     }
-    _onTouchEvent(actor, event) {
+    vfunc_touch_event(event){
         if (event.type() == Clutter.EventType.TOUCH_END && !this._button._blockActivateEvent && this.pressed) {
             this.remove_style_pseudo_class('active');
             this.activate(event);
@@ -570,12 +565,12 @@ var Tooltip = class ArcMenu_Tooltip{
         this._settings = this._button._settings;
         this.flipY = false;
         this.actor = new St.Label({
+            name: 'tooltip-menu-item',
             style_class: 'dash-label',
             text: text ? _(text) : "",
             opacity: 0,
             y_align: .5
         });
-        this.actor.set_name('tooltip-menu-item');
         global.stage.add_actor(this.actor);
         this.actor.connect('destroy',()=>{
             if(this.destroyID){
@@ -1088,7 +1083,7 @@ var ViewAllPrograms = GObject.registerClass(class ArcMenu_ViewAllPrograms extend
             icon_name: 'go-next-symbolic',
             style_class: 'popup-menu-icon',
             icon_size: 24,
-             x_align: St.Align.START
+             x_align: Clutter.ActorAlign.START
         });
         this.actor.add_child(this._icon);
         let backLabel = new St.Label({
@@ -1560,16 +1555,16 @@ var ApplicationMenuIcon = GObject.registerClass(class ArcMenu_ApplicationMenuIco
             this.actor.style ='border-radius:4px; padding: 5px; spacing: 0px; width:80px;height:80px;';
  
         this._iconBin = new St.Bin({
-            y_align: St.Align.END,
-            x_align: gnome36 ? Clutter.ActorAlign.CENTER : St.Align.MIDDLE
+            y_align: Clutter.ActorAlign.END,
+            x_align: Clutter.ActorAlign.CENTER
         });
         this.actor.add_child(this._iconBin);
 
         this.label = new St.Label({
             text: app.get_name(),
             y_expand: false,
-            y_align: St.Align.END,
-            x_align: St.Align.END
+            y_align: Clutter.ActorAlign.END,
+            x_align: Clutter.ActorAlign.CENTER
         });
         this.actor.add_child(this.label);
                 
@@ -1773,7 +1768,7 @@ var CategoryMenuItem = GObject.registerClass(class ArcMenu_CategoryMenuItem exte
             this._arrowIcon = new St.Icon({
                 icon_name: 'go-next-symbolic',
                 style_class: 'popup-menu-icon',
-                x_align: St.Align.END,
+                x_align: Clutter.ActorAlign.END,
                 icon_size: 12,
             });
             this.actor.add_child(this._arrowIcon);
@@ -1858,7 +1853,7 @@ var SimpleMenuItem = GObject.registerClass(class ArcMenu_SimpleMenuItem extends 
             this._arrowIcon = new St.Icon({
                 icon_name: 'go-next-symbolic',
                 style_class: 'popup-menu-icon',
-                x_align: St.Align.END,
+                x_align: Clutter.ActorAlign.END,
                 icon_size: 12,
             });
             this.actor.add_child(this._arrowIcon);
@@ -1879,9 +1874,11 @@ var SimpleMenuItem = GObject.registerClass(class ArcMenu_SimpleMenuItem extends 
         this.mainBox.style = 'max-height: 25em;';
         this.section.actor.add_actor(this.mainBox);   
         this.applicationsScrollBox = new St.ScrollView({
+            x_expand: true, 
+            y_expand: true,
             x_fill: true,
             y_fill: false,
-            y_align: St.Align.START,
+            y_align: Clutter.ActorAlign.START,
             style_class: 'apps-menu vfade left-scroll-area',
             overlay_scrollbars: true
         });           
@@ -1906,11 +1903,7 @@ var SimpleMenuItem = GObject.registerClass(class ArcMenu_SimpleMenuItem extends 
         this._button.subMenuManager.addMenu(this.subMenu);
         this.applicationsBox = new St.BoxLayout({ vertical: true });
         this.applicationsScrollBox.add_actor(this.applicationsBox);
-        this.mainBox.add(this.applicationsScrollBox, {
-            expand: true,
-            x_fill: true, y_fill: true,
-            y_align: St.Align.START
-        });
+        this.mainBox.add(this.applicationsScrollBox);
         this.actor.connect('notify::active',()=> this.setActive(this.actor.active));
         if(this.subMenu._keyPressId)
             this.actor.disconnect(this.subMenu._keyPressId);
@@ -2274,13 +2267,17 @@ var SearchBox = class ArcMenu_SearchBox{
     constructor(button) {
         this.newSearch= button.newSearch;
         this.actor = new St.BoxLayout({
+            x_expand: true,
             style_class: 'search-box search-box-padding'
         });
         this._stEntry = new St.Entry({
             name: 'search-entry',
             hint_text: _("Type to search…"),
             track_hover: true,
-            can_focus: true
+            can_focus: true,
+            x_expand: true,
+            x_align: Clutter.ActorAlign.FILL,
+            y_align: Clutter.ActorAlign.START
         });
         this._stEntry.style = "min-height: 0px; border-radius:4px; padding: 7px 9px;";
         this._findIcon = new St.Icon({
@@ -2294,11 +2291,7 @@ var SearchBox = class ArcMenu_SearchBox{
             icon_size: 16
         });
         this._stEntry.set_primary_icon(this._findIcon);
-        this.actor.add(this._stEntry, {
-            expand: true,
-            x_align: St.Align.START,
-            y_align: St.Align.START
-        });
+        this.actor.add(this._stEntry);
 
         this._text = this._stEntry.get_clutter_text();
         this._textChangedId = this._text.connect('text-changed', this._onTextChanged.bind(this));

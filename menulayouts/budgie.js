@@ -75,38 +75,27 @@ var createMenu = class {
         this._searchBoxKeyPressId = this.searchBox.connect('key-press-event', this._onSearchBoxKeyPress.bind(this));
         this._searchBoxKeyFocusInId = this.searchBox.connect('key-focus-in', this._onSearchBoxKeyFocusIn.bind(this));
         //Add search box to menu
-        this.mainBox.add(this.searchBox.actor, {
-            expand: false,
-            x_fill: true,
-            y_fill: false,
-            y_align: St.Align.START
-        });
+        this.mainBox.add(this.searchBox.actor);
 
         // Add horizontal separator below the searchbox. Span the entire width.
-        this.mainBox.add( this._createHorizontalSeparator(Constants.SEPARATOR_STYLE.MAX), {
-            x_expand: true,
-            x_fill: true,
-            y_fill: false,
-            y_align: St.Align.END
-        });
-
-
+        this.mainBox.add(this._createHorizontalSeparator(Constants.SEPARATOR_STYLE.MAX));
 
         //Sub Main Box -- stores left and right box
         this.subMainBox= new St.BoxLayout({
-            vertical: false
+            vertical: false,
+            x_expand: true,
+            y_expand: true,
+            y_align: Clutter.ActorAlign.START
         });
-        this.mainBox.add(this.subMainBox, {
-            expand: true,
-            x_fill: true,
-            y_fill: true,
-            y_align: St.Align.START
-        });
+        this.mainBox.add(this.subMainBox);
 
         //Right Box
         this.rightBox = new St.BoxLayout({
             vertical: true,
-            style_class: 'right-box'
+            style_class: 'right-box',
+            x_expand: true,
+            y_expand: true,
+            y_align: Clutter.ActorAlign.START
         });
         this.shorcutsBox = new St.BoxLayout({
             vertical: true
@@ -114,7 +103,7 @@ var createMenu = class {
         this.shortcutsScrollBox = new St.ScrollView({
             x_fill: true,
             y_fill: false,
-            y_align: St.Align.START,
+            y_align: Clutter.ActorAlign.START,
             overlay_scrollbars: true,
             style_class: 'vfade'
         });  
@@ -149,27 +138,16 @@ var createMenu = class {
         // Left Box
         //Menus Left Box container
         this.leftBox = new St.BoxLayout({
-            vertical: true
+            vertical: true,
+            x_expand: true,
+            y_expand: true,
+            y_align: Clutter.ActorAlign.START
         });
-        this.subMainBox.add( this.leftBox, {
-            expand: true,
-            x_fill: true,
-            y_fill: true,
-            y_align: St.Align.START
-        });
+        this.subMainBox.add(this.leftBox);
         //Add Vert Separator to Main Box
-        this.subMainBox.add( this._createVertSeparator(), {
-            expand: true,
-            x_fill: true,
-            y_fill: true
-        });
+        this.subMainBox.add(this._createVertSeparator());
         this._createLeftBox();
-        this.subMainBox.add( this.rightBox, {
-            expand: true,
-            x_fill: true,
-            y_fill: true,
-            y_align: St.Align.START
-        });
+        this.subMainBox.add(this.rightBox);
 
         this._loadCategories();
 
@@ -180,7 +158,10 @@ var createMenu = class {
         this.applicationsScrollBox = new St.ScrollView({
             x_fill: true,
             y_fill: true,
-            y_align: St.Align.START,
+            x_expand: true,
+            y_expand: true,
+            y_align: Clutter.ActorAlign.START,
+            y_align: Clutter.ActorAlign.START,
             style_class: 'vfade',
             overlay_scrollbars: true
         });
@@ -193,11 +174,7 @@ var createMenu = class {
         }) ;   
         this.applicationsScrollBox.style = "padding-top:6px; width:185px;";
         this.applicationsScrollBox.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC);
-        this.leftBox.add( this.applicationsScrollBox, {
-            expand: true,
-            x_fill: true, y_fill: true,
-            y_align: St.Align.START
-        });    
+        this.leftBox.add(this.applicationsScrollBox);    
         this.applicationsBox = new St.BoxLayout({ vertical: true });
         this.applicationsScrollBox.add_actor( this.applicationsBox);
         this.applicationsScrollBox.clip_to_allocation = true;
@@ -669,7 +646,8 @@ var createMenu = class {
         let alignment = Constants.SEPARATOR_ALIGNMENT.HORIZONTAL;
         let hSep = new MW.SeparatorDrawingArea(this._settings,alignment,style,{
             x_expand:true,
-            y_expand:false
+            y_expand:false,
+            y_align: Clutter.ActorAlign.END
         });
         hSep.queue_repaint();
         return hSep;

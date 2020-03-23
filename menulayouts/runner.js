@@ -75,6 +75,8 @@ var createMenu = class {
         this.mainBox.vertical = true;
         //Menus Left Box container
         this.topBox = new St.BoxLayout({
+            x_expand: true,
+            y_expand: true,
             vertical: false
         });
         this.topBox.style = "width: " + RUNNER_WIDTH + "px";
@@ -88,30 +90,22 @@ var createMenu = class {
         this._searchBoxKeyPressId = this.searchBox.connect('key-press-event', this._onSearchBoxKeyPress.bind(this));
         this._searchBoxKeyFocusInId = this.searchBox.connect('key-focus-in', this._onSearchBoxKeyFocusIn.bind(this));
         //Add search box to menu
-        this.topBox.add(this.searchBox.actor, {
-            expand: true,
-            x_fill: true,
-            y_fill: false,
-            y_align: St.Align.START
-        });
+        this.topBox.add(this.searchBox.actor);
         //Add LeftBox to MainBox
-        this.mainBox.add(this.topBox, {
-            expand: true,
-            x_fill: true,
-            y_fill: true
-        });
-        this.arcMenuSettingsButton = new MW.ArcMenuSettingsButton( this);
-        this.topBox.add(this.arcMenuSettingsButton.actor, {
-            expand: false,
-            x_fill: false,
-            y_fill: false,
-            y_align: St.Align.START,
-            x_align: St.Align.CENTER
-        });
+        this.mainBox.add(this.topBox);
+        this.arcMenuSettingsButton = new MW.ArcMenuSettingsButton(this);
+        this.arcMenuSettingsButton.actor.x_expand = false;
+        this.arcMenuSettingsButton.actor.y_expand = false;
+        this.arcMenuSettingsButton.actor.y_align = Clutter.ActorAlign.CENTER;
+        this.arcMenuSettingsButton.actor.x_align = Clutter.ActorAlign.CENTER;
+        this.topBox.add(this.arcMenuSettingsButton.actor);
+
         this.arcMenuSettingsButton.actor.style = "margin-right: .5em;";
         //Applications Box - Contains Favorites, Categories or programs
         this.applicationsScrollBox = new St.ScrollView({
-            x_fill:true,
+            x_expand: true,
+            y_expand: true,
+            x_fill: true,
             y_fill: false,
             y_align: St.Align.START,
             x_align: St.Align.START,
@@ -138,12 +132,7 @@ var createMenu = class {
                 this.scrollToItem(this.activeMenuItem,Constants.DIRECTION.DOWN);
         }) ;         
         this.applicationsScrollBox.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC);
-        this.mainBox.add(this.applicationsScrollBox, {
-            expand: true,
-            x_fill: true,
-            y_fill: true,
-            y_align: St.Align.START
-        });
+        this.mainBox.add(this.applicationsScrollBox);
         this.applicationsBox = new St.BoxLayout({ vertical: true });
         this.applicationsScrollBox.add_actor(this.applicationsBox);
         this.applicationsScrollBox.clip_to_allocation = true;
@@ -275,13 +264,7 @@ var createMenu = class {
         }            
         else{         
             this._clearApplicationsBox(); 
-            this.applicationsBox.add(this.newSearch.actor,{
-                expand: true,
-                x_fill: true,
-                y_fill: true,
-                x_align: St.Align.MIDDLE,
-                y_align: St.Align.MIDDLE
-            }); 
+            this.applicationsBox.add(this.newSearch.actor); 
             this.newSearch.highlightDefault(true);
             this.newSearch.actor.show();         
             this.newSearch.setTerms([searchString]);           	    

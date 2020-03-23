@@ -60,25 +60,23 @@ var createMenu = class {
         this.mainBox.vertical = true;
         //TOP BAR
         this.topBox= new St.BoxLayout({
+            x_expand: true,
+            y_expand: false,
+            y_align: Clutter.ActorAlign.START,
+            x_align: Clutter.ActorAlign.START,
             vertical: false
         });
         this.topBox.style ="margin: 0px 10px;spacing: 5px;";
-        this.mainBox.add(this.topBox, {
-            expand: false,
-            x_fill: true,
-            y_fill: true,
-            y_align: St.Align.START,
-            x_align: St.Align.END,
-        });
+        this.mainBox.add(this.topBox);
         this.user = new MW.UserMenuItem(this);
-        this.topBox.add(this.user.actor, {
-            expand: true,
-            x_fill: true,
-            y_fill: false,
-            y_align: St.Align.START
-        });
+        this.user.actor.x_expand = true;
+        this.topBox.add(this.user.actor);
         //create new section for Power, Lock, Logout, Suspend Buttons
         this.actionsBox = new St.BoxLayout({
+            x_expand: false,
+            y_expand: false,
+            y_align: Clutter.ActorAlign.START,
+            x_align: Clutter.ActorAlign.END,
             vertical: false
         });
         
@@ -88,46 +86,32 @@ var createMenu = class {
             this.actionsBox.add_style_class_name('arc-menu');
         
         //SettingsButton  
-        let settingsButton= new MW.SettingsButton( this);
+        let settingsButton = new MW.SettingsButton(this);
+        settingsButton.actor.expand = false;
         this.actionsBox.add(settingsButton.actor, {
-            expand: false,
-            x_fill: true,
-            x_align: St.Align.END,
-            margin:5,
+            margin:5
         });
         //UserButton  
-        let userButton= new MW.UserButton( this);
+        let userButton = new MW.UserButton(this);
+        userButton.actor.expand = false;
         this.actionsBox.add(userButton.actor, {
-            expand: false,
-            x_fill: true,
-            x_align: St.Align.END,
             margin:5,
         });
         //LockButton
-        let lock = new MW.LockButton( this);
+        let lock = new MW.LockButton(this);
+        lock.actor.expand = false;
         this.actionsBox.add(lock.actor, {
-            expand: false,
-            x_fill: true,
-            x_align: St.Align.END,
             margin:5,
         });
         //Logout Button
-        let logout = new MW.LogoutButton( this);
+        let logout = new MW.LogoutButton(this);
+        logout.actor.expand = false;
         this.actionsBox.add(logout.actor, {
-            expand: false,
-            x_fill: true,
-            x_align: St.Align.END,
             margin:5,
         });
 
         //add actionsbox to leftbox             
-        this.topBox.add( this.actionsBox, {
-            expand: false,
-            x_fill: false,
-            y_fill: false,
-            y_align: St.Align.START,
-            x_align: St.Align.END
-        });
+        this.topBox.add(this.actionsBox);
 
         //Top Search Bar
         // Create search box
@@ -140,26 +124,22 @@ var createMenu = class {
         this._searchBoxKeyPressId = this.searchBox.connect('key-press-event', this._onSearchBoxKeyPress.bind(this));
         this._searchBoxKeyFocusInId = this.searchBox.connect('key-focus-in', this._onSearchBoxKeyFocusIn.bind(this));
         //Add search box to menu
-        this.mainBox.add(this.searchBox.actor, {
-            expand: false,
-            x_fill: true,
-            y_fill: false,
-            y_align: St.Align.START
-        });
+        this.mainBox.add(this.searchBox.actor);
 
         //Sub Main Box -- stores left and right box
         this.subMainBox= new St.BoxLayout({
+            x_expand: true,
+            y_expand: true,
+            y_align: Clutter.ActorAlign.START,
             vertical: false
         });
-        this.mainBox.add(this.subMainBox, {
-            expand: true,
-            x_fill: true,
-            y_fill: true,
-            y_align: St.Align.START
-        });
+        this.mainBox.add(this.subMainBox);
 
         //Right Box
         this.rightBox = new St.BoxLayout({
+            x_expand: true,
+            y_expand: true,
+            y_align: Clutter.ActorAlign.START,
             vertical: true,
             style_class: 'right-box'
         });
@@ -169,7 +149,7 @@ var createMenu = class {
         this.shortcutsScrollBox = new St.ScrollView({
             x_fill: true,
             y_fill: false,
-            y_align: St.Align.START,
+            y_align: Clutter.ActorAlign.START,
             overlay_scrollbars: true,
             style_class: 'vfade'
         }); 
@@ -196,34 +176,23 @@ var createMenu = class {
         }) ;  
         this.shortcutsScrollBox.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC);
 
-        this.shortcutsScrollBox.add_actor( this.shorcutsBox);
+        this.shortcutsScrollBox.add_actor(this.shorcutsBox);
         this.shortcutsScrollBox.clip_to_allocation = true;
-        this.rightBox.add( this.shortcutsScrollBox);
+        this.rightBox.add(this.shortcutsScrollBox);
         // Left Box
         //Menus Left Box container
         this.leftBox = new St.BoxLayout({
+            x_expand: true,
+            y_expand: true,
+            y_align: Clutter.ActorAlign.START,
             vertical: true,
             style_class: 'left-box'
         });
-        this.subMainBox.add( this.leftBox, {
-            expand: true,
-            x_fill: true,
-            y_fill: true,
-            y_align: St.Align.START
-        });
+        this.subMainBox.add(this.leftBox);
         //Add Vert Separator to Main Box
-        this.subMainBox.add( this._createVertSeparator(), {
-            expand: true,
-            x_fill: true,
-            y_fill: true
-        });
+        this.subMainBox.add(this._createVertSeparator());
         this._createLeftBox();
-        this.subMainBox.add( this.rightBox, {
-            expand: true,
-            x_fill: true,
-            y_fill: true,
-            y_align: St.Align.START
-        });
+        this.subMainBox.add(this.rightBox);
 
         this._loadCategories();
 
@@ -232,9 +201,11 @@ var createMenu = class {
     _createLeftBox(){
         //Applications Box - Contains Favorites, Categories or programs
         this.applicationsScrollBox = new St.ScrollView({
+            x_expand: true, 
+            y_expand: true,
             x_fill: true,
             y_fill: true,
-            y_align: St.Align.START,
+            y_align: Clutter.ActorAlign.START,
             style_class: 'apps-menu vfade left-scroll-area',
             overlay_scrollbars: true
         });
@@ -256,11 +227,7 @@ var createMenu = class {
                 this.scrollToItem(this.activeMenuItem, this.applicationsScrollBox, Constants.DIRECTION.DOWN);
         }) ; 
         this.applicationsScrollBox.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC);
-        this.leftBox.add( this.applicationsScrollBox, {
-            expand: true,
-            x_fill: true, y_fill: true,
-            y_align: St.Align.START
-        });
+        this.leftBox.add(this.applicationsScrollBox);
         this.applicationsBox = new St.BoxLayout({ vertical: true });
         this.applicationsScrollBox.add_actor( this.applicationsBox);
         this.applicationsScrollBox.clip_to_allocation = true;

@@ -151,24 +151,23 @@ function lighten_rgb(colorString, percent, modifyAlpha){ // implemented from htt
 }
 
 function createStylesheet(settings){
-    this._settings = settings;
-    let customArcMenu = this._settings.get_boolean('enable-custom-arc-menu');
-    let separatorColor = this._settings.get_string('separator-color');
-    let menuColor = this._settings.get_string('menu-color');
-    let menuForegroundColor = this._settings.get_string('menu-foreground-color');
-    let borderColor = this._settings.get_string('border-color');
-    let highlightColor = this._settings.get_string('highlight-color');
-    let fontSize = this._settings.get_int('menu-font-size');
-    let borderSize = this._settings.get_int('menu-border-size');
-    let cornerRadius = this._settings.get_int('menu-corner-radius');
-    let menuMargin = this._settings.get_int('menu-margin');
-    let menuArrowSize = this._settings.get_int('menu-arrow-size');
-    let menuWidth = this._settings.get_int('menu-width');
-    let avatarStyle =  this._settings.get_enum('avatar-style');
+    let customArcMenu = settings.get_boolean('enable-custom-arc-menu');
+    let separatorColor = settings.get_string('separator-color');
+    let menuColor = settings.get_string('menu-color');
+    let menuForegroundColor = settings.get_string('menu-foreground-color');
+    let borderColor = settings.get_string('border-color');
+    let highlightColor = settings.get_string('highlight-color');
+    let fontSize = settings.get_int('menu-font-size');
+    let borderSize = settings.get_int('menu-border-size');
+    let cornerRadius = settings.get_int('menu-corner-radius');
+    let menuMargin = settings.get_int('menu-margin');
+    let menuArrowSize = settings.get_int('menu-arrow-size');
+    let menuWidth = settings.get_int('menu-width');
+    let avatarStyle =  settings.get_enum('avatar-style');
     let avatarRadius = avatarStyle == 0 ? 999 : 0;
-    let menuButtonColor = this._settings.get_string('menu-button-color');
-    let menuButtonActiveColor =  this._settings.get_string('menu-button-active-color');
-    let gapAdjustment = this._settings.get_int('gap-adjustment');
+    let menuButtonColor = settings.get_string('menu-button-color');
+    let menuButtonActiveColor =  settings.get_string('menu-button-active-color');
+    let gapAdjustment = settings.get_int('gap-adjustment');
     let tooltipForegroundColor = customArcMenu ? "\n color:"+  menuForegroundColor+";\n" : "";
     let tooltipBackgroundColor = customArcMenu ? "\n background-color:"+lighten_rgb(menuColor,0.05)+";\n" : "";
         

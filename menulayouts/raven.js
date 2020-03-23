@@ -64,53 +64,44 @@ var createMenu = class{
         this.leftClickMenu.actor.style = "-arrow-base:0px;-arrow-rise:0px; -boxpointer-gap: 0px;"; 
         this.leftClickMenu.box.style = "padding-bottom:0px; padding-top:0px; margin:0px;";
         this.placesBox = new St.BoxLayout({
+            x_expand: false,
+            y_expand: true,
+            x_align: Clutter.ActorAlign.START,
+            y_align: Clutter.ActorAlign.FILL,
             vertical: true
         });
 
         this.placesBottomBox = new St.BoxLayout({
+            x_expand: false,
+            y_expand: true,
+            x_align: Clutter.ActorAlign.START,
+            y_align: Clutter.ActorAlign.CENTER,
             vertical: true
         });
-        this.placesBox.add( this.placesBottomBox, {
-            expand: true,
-            x_fill: false,
-            y_fill: false,
-            x_align: St.Align.START,
-            y_align: St.Align.MIDDLE
-        });
+        this.placesBox.add(this.placesBottomBox);
         this.placesBottomBox.style = "spacing: 5px;";
         this.placesBox.style = "margin: 0px 0px 0px 0px; spacing: 10px;background-color:rgba(186, 196,201, 0.1) ; padding: 5px 5px;"+
                                 "border-color:rgba(186, 196,201, 0.2) ; border-right-width: 1px;";
-        this.mainBox.add( this.placesBox, {
-            expand: true,
-            x_fill: false,
-            y_fill: true,
-            x_align: St.Align.START,
-            y_align: St.Align.START
-        });
+        this.mainBox.add(this.placesBox);
 
 
         this.topBox = new St.BoxLayout({
+            x_expand: true,
+            y_expand: false,
+            x_align: Clutter.ActorAlign.FILL,
+            y_align: Clutter.ActorAlign.START,
             vertical: false
         });
 
-        
         //Sub Main Box -- stores left and right box
         this.subMainBox= new St.BoxLayout({
+            x_expand: true,
+            y_expand: true,
+            y_align: Clutter.ActorAlign.FILL,
             vertical: true
         });
-        this.subMainBox.add( this.topBox, {
-            expand: false,
-            x_fill: true,
-            y_fill: false,
-            x_align: St.Align.START,
-            y_align: St.Align.START
-        });
-        this.mainBox.add(this.subMainBox, {
-            expand: true,
-            x_fill: true,
-            y_fill: true,
-            y_align: St.Align.START
-        });
+        this.subMainBox.add(this.topBox);
+        this.mainBox.add(this.subMainBox);
         //Top Search Bar
         // Create search box
         this.searchBox = new MW.SearchBox(this);
@@ -123,22 +114,20 @@ var createMenu = class{
         this._searchBoxKeyPressId = this.searchBox.connect('key-press-event', this._onSearchBoxKeyPress.bind(this));
         this._searchBoxKeyFocusInId = this.searchBox.connect('key-focus-in', this._onSearchBoxKeyFocusIn.bind(this));
         //Add search box to menu
-        this.topBox.add(this.searchBox.actor, {
-            expand: true,
-            x_fill: true,
-            y_fill: false,
-            y_align: St.Align.MIDDLE
-        });
+        this.topBox.add(this.searchBox.actor);
 
         //Right Box
         this.shorcutsBox = new St.BoxLayout({
+            x_align: Clutter.ActorAlign.FILL,
             vertical: true
         });
 
         this.shortcutsScrollBox = new St.ScrollView({
+            x_expand: false,
+            y_expand: false,
             x_fill:false,
             y_fill: false,
-            y_align: St.Align.START,
+            y_align: Clutter.ActorAlign.START,
             overlay_scrollbars: true,
             style_class: 'vfade'
         });   
@@ -161,19 +150,17 @@ var createMenu = class{
         }) ;
         this.shortcutsScrollBox.style = "width:400px;";    
         this.shortcutsScrollBox.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC);
-        this.shortcutsScrollBox.add_actor( this.shorcutsBox);
+        this.shortcutsScrollBox.add_actor(this.shorcutsBox);
         this.shortcutsScrollBox.clip_to_allocation = true;
 
-        this.subMainBox.add( this.shortcutsScrollBox, {
-            expand: false,
-            x_fill: false,
-            y_fill: true,
-            y_align: St.Align.START
-        });
+        this.subMainBox.add(this.shortcutsScrollBox);
    
         this.weatherBox = new St.BoxLayout({
-            vertical: true,
-            y_align: Clutter.ActorAlign.END
+            x_expand: true,
+            y_expand: true,
+            x_align: Clutter.ActorAlign.CENTER,
+            y_align: Clutter.ActorAlign.END,
+            vertical: true
         });
         this.weatherBox.style = "width:400px;"; 
         this._weatherItem = new MW.WeatherSection();
@@ -181,16 +168,12 @@ var createMenu = class{
         this._weatherItem.connect("clicked", ()=> this.leftClickMenu.close());
         this._clocksItem = new MW.WorldClocksSection();
         this._clocksItem.x_expand = true;
-        this._clocksItem.x_fill = true;
+        this._clocksItem.x_align = Clutter.ActorAlign.FILL;
         this._clocksItem.style = "border-radius:4px; padding: 10px; margin: 0px 25px 25px 25px;";
         this._clocksItem.connect("clicked", ()=> this.leftClickMenu.close());
 
-        this.weatherBox.add(this._clocksItem,{
-            y_align: St.Align.END
-        });
-        this.weatherBox.add(this._weatherItem,{
-            y_align: St.Align.END
-        });
+        this.weatherBox.add(this._clocksItem);
+        this.weatherBox.add(this._weatherItem);
         
     
         this._loadCategories();
@@ -215,6 +198,10 @@ var createMenu = class{
     _createRightBox(){
         this.appShortcuts = [];
         this.appShorcutsBox = new St.BoxLayout({
+            x_expand: true,
+            y_expand: true,
+            x_align: Clutter.ActorAlign.FILL,
+            y_align: Clutter.ActorAlign.CENTER,
             vertical: true
         });
         //Add Application Shortcuts to menu (Software, Settings, Tweaks, Terminal)
@@ -424,34 +411,18 @@ var createMenu = class{
         if(homeScreen){
             this._displayButtons(this.favoritesArray,_("Pinned Apps"), true);
             this._displayAppIcons();
-            this.shorcutsBox.add(this.appShorcutsBox, {
-                expand: true,
-                x_fill: true,
-                y_fill: true,
-                x_align: St.Align.MIDDLE,
-                y_align: St.Align.MIDDLE
-            });
+            this.shorcutsBox.add(this.appShorcutsBox);
             let actors = this.weatherBox.get_children();
             for (let i = 0; i < actors.length; i++) {
                 this.weatherBox.remove_actor(actors[i]);
             }
             if(this._settings.get_boolean('enable-clock-widget-raven')){
-                this.weatherBox.add(this._clocksItem,{
-                    y_align: St.Align.END
-                });
+                this.weatherBox.add(this._clocksItem);
             }
             if(this._settings.get_boolean('enable-weather-widget-raven')){
-                this.weatherBox.add(this._weatherItem,{
-                    y_align: St.Align.END
-                });
+                this.weatherBox.add(this._weatherItem);
             }
-            this.subMainBox.add(this.weatherBox,{
-                expand: true,
-                x_fill: true,
-                y_fill: false,
-                x_align: St.Align.MIDDLE,
-                y_align: St.Align.END
-            });
+            this.subMainBox.add(this.weatherBox);
         }
         else
             this._displayAllApps();        
@@ -504,6 +475,10 @@ var createMenu = class{
             this._clearApplicationsBox();
             if(shorcutsAppBox==null){
                 this.appsBox = new St.BoxLayout({
+                    x_expand: true,
+                    y_expand: true,
+                    x_align: Clutter.ActorAlign.FILL,
+                    y_align: Clutter.ActorAlign.CENTER,
                     vertical: true
                 });
             }
@@ -515,21 +490,10 @@ var createMenu = class{
             favsLabel.actor.track_hover = false;
             favsLabel.actor.can_focus = false;
             favsLabel.actor.add_style_pseudo_class = () => { return false;};
-            favsLabel.actor.add(this._createHorizontalSeparator(Constants.SEPARATOR_STYLE.LONG), {
-                x_expand: true,
-                x_fill: true,
-                y_fill: false,
-                y_align: St.Align.END
-            });
+            favsLabel.actor.add(this._createHorizontalSeparator(Constants.SEPARATOR_STYLE.LONG));
             favsLabel.actor.add_style_class_name('popup-menu-item');
             favsLabel.label.style = 'font-weight: bold;';
-            box.add(favsLabel.actor, {
-                expand: false,
-                x_fill: true,
-                y_fill: false,
-                x_align: St.Align.START,
-                y_align: St.Align.START
-            });
+            box.add(favsLabel.actor);
             let count = 0;
 
             for (let i = 0; i < apps.length; i++) {
@@ -545,27 +509,19 @@ var createMenu = class{
                 }
                 if(count%3==0){ //create a new row every 5 app icons
                     this.rowBox= new St.BoxLayout({
+                        x_expand: false,
+                        y_expand: false,
+                        x_align: Clutter.ActorAlign.CENTER,
+                        y_align: Clutter.ActorAlign.CENTER,
                         vertical: false
                     });
                     this.rowBox.style ='spacing: 10px; margin: 10px;'
-                    box.add(this.rowBox, {
-                        expand: false,
-                        x_fill: false,
-                        y_fill: false,
-                        x_align: St.Align.MIDDLE,
-                        y_align: St.Align.MIDDLE
-                    });
+                    box.add(this.rowBox);
 
                 }
                 count++;
 
-                this.rowBox.add(item.actor, {
-                    expand: false,
-                    x_fill: false,
-                    y_fill: false,
-                    x_align: St.Align.MIDDLE,
-                    y_align: St.Align.MIDDLE
-                });
+                this.rowBox.add(item.actor);
                 if(i==0 && !shorcutsAppBox){
                     this.activeMenuItem = item;
                     if(this.leftClickMenu.isOpen){
@@ -576,13 +532,7 @@ var createMenu = class{
         }
     }
     _displayAppIcons(){
-        this.shorcutsBox.add(this.appsBox, {
-            expand: true,
-            x_fill: true,
-            y_fill: true,
-            x_align: St.Align.MIDDLE,
-            y_align: St.Align.MIDDLE
-        });
+        this.shorcutsBox.add(this.appsBox);
     }
     _displayAllApps(){
         let appList= []
@@ -646,13 +596,7 @@ var createMenu = class{
             let appsScrollBoxAdj = this.shortcutsScrollBox.get_vscroll_bar().get_adjustment();
             appsScrollBoxAdj.set_value(0);
             this._clearApplicationsBox();
-            this.shorcutsBox.add(this.newSearch.actor, {
-                x_expand: false,
-                y_expand:false,
-                x_fill: true,
-                y_fill: false,
-                x_align: St.Align.MIDDLE
-            });    
+            this.shorcutsBox.add(this.newSearch.actor);    
                 
             this.newSearch.highlightDefault(true);
             this.newSearch.actor.show();         
@@ -799,6 +743,8 @@ var createMenu = class{
     _createHorizontalSeparator(style){
         let alignment = Constants.SEPARATOR_ALIGNMENT.HORIZONTAL;
         let hSep = new MW.SeparatorDrawingArea(this._settings,alignment,style,{
+            x_align: Clutter.ActorAlign.FILL,
+            y_align: Clutter.ActorAlign.END,
             x_expand:true,
             y_expand:false
         });

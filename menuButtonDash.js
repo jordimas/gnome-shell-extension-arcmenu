@@ -37,8 +37,6 @@ const Util = imports.misc.util;
 const Utils = Me.imports.utils;
 const _ = Gettext.gettext;
 
-const gnome36 = imports.misc.config.PACKAGE_VERSION >= '3.35.0';
-
 var ApplicationsButton = GObject.registerClass(class ArcMenu_DashApplicationsButton extends PanelMenu.Button{
     _init(settings, panel) {
         super._init(0.5, null, true);
@@ -113,9 +111,6 @@ var ApplicationsButton = GObject.registerClass(class ArcMenu_DashApplicationsBut
         //Add Menu Button Widget to Button
         this.add_actor(this._menuButtonWidget.actor);
         this._menuButtonWidget.actor.connect("event",this._onEvent.bind(this));
-        if(gnome36){
-            this.connect('event', this._onEvent.bind(this));
-        }
         //Create Basic Layout ------------------------------------------------
         this.createLayoutID = GLib.timeout_add(0, 100, () => {
             this.createMenuLayout();
@@ -222,7 +217,7 @@ var ApplicationsButton = GObject.registerClass(class ArcMenu_DashApplicationsBut
         this.can_focus = sensitive;
         this.track_hover = sensitive;
     }
-    _onEvent(actor, event) {
+    vfunc_event(event){
             if (event.type() == Clutter.EventType.BUTTON_PRESS){   
                 
             if(event.get_button()==1 && actor instanceof St.Button ){    

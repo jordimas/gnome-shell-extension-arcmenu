@@ -37,8 +37,6 @@ const Util = imports.misc.util;
 const Utils = Me.imports.utils;
 const _ = Gettext.gettext;
 
-const gnome36 = imports.misc.config.PACKAGE_VERSION >= '3.35.0';
-
 var DASH_TO_PANEL_UUID = 'dash-to-panel@jderose9.github.com';
 
 var ApplicationsButton = GObject.registerClass(class ArcMenu_ApplicationsButton extends PanelMenu.Button{
@@ -258,14 +256,6 @@ var ApplicationsButton = GObject.registerClass(class ArcMenu_ApplicationsButton 
         this.track_hover = sensitive;
     }
     vfunc_event(event){
-        if(gnome36){
-            this._onEvent(null, event);
-        }
-        else{
-            return Clutter.EVENT_PROPAGATE;
-        }
-    }
-    _onEvent(actor, event) {
         if (event.type() == Clutter.EventType.BUTTON_PRESS){   
             if(event.get_button()==1){    
                 let layout = this._settings.get_enum('menu-layout');
