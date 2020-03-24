@@ -329,11 +329,8 @@ var createMenu = class{
     }
     destroy(){
         this.leftClickMenu.actor.style = null;
-        for (let i = 0; i < this.categoryDirectories.length; i++) {
-            this.categoryDirectories[i].destroy();
-        }
-        this.categoryDirectories=null;
-        this._applicationsButtons=null;
+        this.categoryDirectories = null;
+        this._applicationsButtons = null;
 
         if (this._treeChangedId > 0) {
             this._tree.disconnect(this._treeChangedId);
@@ -341,7 +338,5 @@ var createMenu = class{
             this._tree = null;
         }
         this.isRunning=false;
-
     }
-
 };
