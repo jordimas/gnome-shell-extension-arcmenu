@@ -2270,7 +2270,6 @@ var SearchBox = class ArcMenu_SearchBox{
             style_class: 'search-box search-box-padding'
         });
         this._stEntry = new St.Entry({
-            name: 'search-entry',
             hint_text: _("Type to search…"),
             track_hover: true,
             can_focus: true,

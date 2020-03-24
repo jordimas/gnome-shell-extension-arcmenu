@@ -239,7 +239,14 @@ var createMenu = class {
         let addStyle=this._settings.get_boolean('enable-custom-arc-menu');
         if(this.newSearch){
             addStyle ? this.newSearch.setStyle('arc-menu-status-text') : this.newSearch.setStyle(''); 
-            addStyle ? this.searchBox._stEntry.set_name('arc-search-entry') : this.searchBox._stEntry.set_name('search-entry');
+            if(addStyle){
+                this.searchBox._stEntry.remove_style_class_name('default-search-entry');
+                this.searchBox._stEntry.add_style_class_name('arc-search-entry');
+            }
+            else{
+                this.searchBox._stEntry.remove_style_class_name('arc-search-entry');
+                this.searchBox._stEntry.add_style_class_name('default-search-entry');
+            } 
         }
     }
     // Load data for all menu categories

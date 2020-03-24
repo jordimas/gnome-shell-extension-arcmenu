@@ -123,7 +123,7 @@ function lighten_rgb(colorString, percent, modifyAlpha){ // implemented from htt
 	else
         a = 1;
     if(modifyAlpha)
-        a = 0.4;
+        a = a * (1 - modifyAlpha);
 	let m = Math.max(r, g, b);
 	let threshold = 255.9999;
 	r = Math.round(r);
@@ -176,15 +176,16 @@ function createStylesheet(settings){
         + tooltipForegroundColor + tooltipBackgroundColor+"\nmax-width:550px;\n}") 
         : ("#tooltip-menu-item{\n padding: 2px 5px;\nmax-width:550px;\n min-height: 0px;\n}");
 
-    let stylesheetCSS = "#arc-search{width: "+  menuWidth+"px;} \n.arc-menu-status-text{\ncolor:"+  menuForegroundColor+";\nfont-size:" + fontSize+"pt;\n}\n "+                                                      
+    let stylesheetCSS = "#arc-search{width: "+  menuWidth+"px;} \n.arc-menu-status-text{\ncolor:"+ menuForegroundColor +";\nfont-size:" + fontSize+"pt;\n}\n "+                                                      
         ".search-statustext {font-size:11pt;}\n "+    
         ".left-scroll-area{ \nwidth:"+  menuWidth+"px;\n}\n"   
     	+".arc-empty-dash-drop-target{\nwidth: "+  menuWidth+"px; \nheight: 2px; \nbackground-color:"+  separatorColor+"; \npadding: 0 0; \nmargin:0;\n}\n"     
         +".left-box{\nwidth:"+  menuWidth+"px;\n}" + "\n.vert-sep{\nwidth:11px;\n}\n"
-        +"#search-entry{\nmax-width: 17.667em;\n}\n#search-entry:focus { \nborder-color:"+  separatorColor+";\n}\n"
-        +"#arc-search-entry{\nmax-width: 17.667em;\nfont-size:" + fontSize+"pt;\n border-color:"+  separatorColor+";\n"
+        +".default-search-entry{\nmax-width: 17.667em;\n}\n"
+        +".arc-search-entry{\nmax-width: 17.667em;\nfont-size:" + fontSize+"pt;\n border-color:"+ separatorColor+"; border-width: 1px;\n"
         +" color:"+  menuForegroundColor+";\n background-color:" +  menuColor + ";\n}\n"
-        +"#arc-search-entry:focus { \nborder-color:"+ lighten_rgb( separatorColor,0.25)+";\n}\n"
+        +".arc-search-entry:focus { \nborder-color:"+separatorColor+";border-width: 1px; box-shadow: inset 0 0 0 1px "+lighten_rgb(separatorColor, 0.05)+";}\n"
+        +".arc-search-entry StLabel.hint-text { color: "+lighten_rgb( menuForegroundColor,0, 0.3)+";}"
 
         +".arc-menu-icon{\ncolor: "+menuButtonColor+";\n}\n"
         +"\n.arc-menu-icon:hover,\n.arc-menu-icon:active{\ncolor: "+menuButtonActiveColor+";\n}\n"
