@@ -62,49 +62,39 @@ var createMenu = class{
         //LAYOUT------------------------------------------------------------------------------------------------
         this.mainBox.vertical = false;
         this.placesBox = new St.BoxLayout({
+            x_expand: true,
+            y_expand: true,
+            x_align: Clutter.ActorAlign.START,
+            y_align: Clutter.ActorAlign.FILL,
             vertical: true
         });
         this.placesTopBox = new St.BoxLayout({
+            x_expand: true,
+            y_expand: true,
+            x_align: Clutter.ActorAlign.START,
+            y_align: Clutter.ActorAlign.START,
             vertical: true
         });
         this.placesBottomBox = new St.BoxLayout({
+            x_expand: true,
+            y_expand: true,
+            x_align: Clutter.ActorAlign.START,
+            y_align: Clutter.ActorAlign.END,
             vertical: true
         });
-        this.placesBox.add( this.placesTopBox, {
-            expand: true,
-            x_fill: false,
-            y_fill: false,
-            x_align: St.Align.START,
-            y_align: St.Align.START
-        });
-        this.placesBox.add( this.placesBottomBox, {
-            expand: true,
-            x_fill: false,
-            y_fill: false,
-            x_align: St.Align.START,
-            y_align: St.Align.END
-        });
+        this.placesBox.add(this.placesTopBox);
+        this.placesBox.add(this.placesBottomBox);
         this.placesBox.style = "margin: 0px 5px 0px 10px; spacing: 10px;";
-        this.mainBox.add( this.placesBox, {
-            expand: true,
-            x_fill: false,
-            y_fill: true,
-            x_align: St.Align.START,
-            y_align: St.Align.START
-        });
-        this.favoritesButton = new MW.FavoritesButton( this);
+        this.mainBox.add(this.placesBox);
+        this.favoritesButton = new MW.FavoritesButton(this);
+        this.favoritesButton.actor.expand = false;
         this.placesTopBox.add(this.favoritesButton.actor, {
-            expand: false,
-            x_fill: true,
-            x_align: St.Align.END,
-            margin:5,
+            margin:5
         });
-        let userButton= new MW.CurrentUserButton( this);
+        let userButton = new MW.CurrentUserButton(this);
+        userButton.actor.expand = false;
         this.placesBottomBox.add(userButton.actor, {
-            expand: false,
-            x_fill: true,
-            x_align: St.Align.END,
-            margin:5,
+            margin:5
         });
         this.placesBottomBox.style = "spacing: 5px;";
         let path = GLib.get_user_special_dir(imports.gi.GLib.UserDirectory.DIRECTORY_DOCUMENTS);
@@ -113,38 +103,31 @@ var createMenu = class{
             let placeMenuItem = new MW.PlaceButtonItem(this, placeInfo);
             this.placesBottomBox.add_actor(placeMenuItem.actor);
         }
-        let settingsButton= new MW.SettingsButton( this);
+        let settingsButton = new MW.SettingsButton(this);
+        settingsButton.actor.expand = false;
         this.placesBottomBox.add(settingsButton.actor, {
-            expand: false,
-            x_fill: true,
-            x_align: St.Align.END,
-            margin:5,
+            margin:5
         });
-        let powerButton= new MW.PowerButton( this);
+        let powerButton = new MW.PowerButton(this);
+        powerButton.actor.expand = false;
         this.placesBottomBox.add(powerButton.actor, {
-            expand: false,
-            x_fill: true,
-            x_align: St.Align.END,
-            margin:5,
+            margin:5
         });
         //Sub Main Box -- stores left and right box
-        this.subMainBox= new St.BoxLayout({
+        this.subMainBox = new St.BoxLayout({
+            x_expand: true,
+            y_expand: true,
+            y_align: Clutter.ActorAlign.START,
             vertical: true
         });
-        this.mainBox.add(this.subMainBox, {
-            expand: true,
-            x_fill: true,
-            y_fill: true,
-            y_align: St.Align.START
-        });
+        this.mainBox.add(this.subMainBox);
+
         this.user = new MW.UserMenuIcon(this);
-        this.subMainBox.add(this.user.actor, {
-            expand: false,
-            x_fill: false,
-            y_fill: false,
-            y_align: St.Align.MIDDLE,
-            x_align: St.Align.MIDDLE
-        });
+        this.user.actor.x_expand = false;
+        this.user.actor.y_expand = false;
+        this.user.actor.x_align = Clutter.ActorAlign.CENTER;
+        this.user.actor.y_align = Clutter.ActorAlign.CENTER;
+        this.subMainBox.add(this.user.actor);
 
         //Top Search Bar
         // Create search box
@@ -158,12 +141,7 @@ var createMenu = class{
         this._searchBoxKeyPressId = this.searchBox.connect('key-press-event', this._onSearchBoxKeyPress.bind(this));
         this._searchBoxKeyFocusInId = this.searchBox.connect('key-focus-in', this._onSearchBoxKeyFocusIn.bind(this));
         //Add search box to menu
-        this.subMainBox.add(this.searchBox.actor, {
-            expand: false,
-            x_fill: true,
-            y_fill: false,
-            y_align: St.Align.START
-        });
+        this.subMainBox.add(this.searchBox.actor);
 
         //Right Box
         this.shorcutsBox = new St.BoxLayout({
@@ -171,9 +149,11 @@ var createMenu = class{
         });
 
         this.shortcutsScrollBox = new St.ScrollView({
-            x_fill:false,
+            x_expand: false,
+            y_expand: false,
+            x_fill: false,
             y_fill: false,
-            y_align: St.Align.START,
+            y_align: Clutter.ActorAlign.START,
             overlay_scrollbars: true,
             style_class: 'vfade'
         });   
@@ -200,12 +180,7 @@ var createMenu = class{
         this.shortcutsScrollBox.clip_to_allocation = true;
 
         //this.shorcutsBox.add(this.iconGrid.actor);
-        this.subMainBox.add( this.shortcutsScrollBox, {
-            expand: false,
-            x_fill: false,
-            y_fill: true,
-            y_align: St.Align.START
-        });
+        this.subMainBox.add(this.shortcutsScrollBox);
 
         this._loadCategories();
         this._displayAllApps();
@@ -229,34 +204,27 @@ var createMenu = class{
         });   
         this.leftPanelPopup._delegate = this.leftPanelPopup;
         let headerBox = new St.BoxLayout({
+            x_expand: false,
+            y_expand: false,
+            x_align: Clutter.ActorAlign.FILL,
+            y_align: Clutter.ActorAlign.START,
             vertical: true
         });    
-        this.leftPanelPopup.add(headerBox,{
-            expand:false,
-            x_fill:true,
-            y_fill: false,
-            y_align: St.Align.START
-        })
+        this.leftPanelPopup.add(headerBox);
+
         //Add back button to menu
         this.backButton = new MW.BackMenuItem(this);
-        headerBox.add(this.backButton.actor, {
-            expand: false,
-            x_fill: true,
-            y_fill: false,
-            y_align: St.Align.End
-        });
+        headerBox.add(this.backButton.actor);
 
         //Add Horizontal Separator
-        headerBox.add(this._createHorizontalSeparator(Constants.SEPARATOR_STYLE.LONG), {
-            x_expand: true,
-            x_fill: true,
-            y_fill: false,
-            y_align: St.Align.END
-        });
+        headerBox.add(this._createHorizontalSeparator(Constants.SEPARATOR_STYLE.LONG));
+
         this.applicationsScrollBox = new St.ScrollView({
+            x_expand: true, 
+            y_expand: true,
             x_fill: true,
             y_fill: false,
-            y_align: St.Align.START,
+            y_align: Clutter.ActorAlign.START,
             style_class: 'vfade',
             overlay_scrollbars: true,
             reactive:true
@@ -272,11 +240,7 @@ var createMenu = class{
         this.applicationsScrollBox.add_action(panAction);
         
         this.applicationsScrollBox.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC);
-        this.leftPanelPopup.add(this.applicationsScrollBox, {
-            expand: true,
-            x_fill: true, y_fill: true,
-            y_align: St.Align.START
-        });
+        this.leftPanelPopup.add(this.applicationsScrollBox);
        
         this.applicationsBox = new St.BoxLayout({
             vertical: true
@@ -285,15 +249,15 @@ var createMenu = class{
         this.applicationsScrollBox.clip_to_allocation = true;
 
         this.leftPanelShortcutsBox = new St.BoxLayout({
+            x_expand: true,
+            y_expand: true,
+            x_align: Clutter.ActorAlign.FILL,
+            y_align: Clutter.ActorAlign.END,
             vertical: true
         });     
 
-        this.leftPanelPopup.add(this.leftPanelShortcutsBox,{
-            expand:true,
-            x_fill:true,
-            y_fill: false,
-            y_align: St.Align.END
-        })
+        this.leftPanelPopup.add(this.leftPanelShortcutsBox);
+
         let path = GLib.get_user_special_dir(imports.gi.GLib.UserDirectory.DIRECTORY_DOCUMENTS);
         if (path != null){
             let placeInfo = new MW.PlaceInfo(Gio.File.new_for_path(path), _("Documents"));
@@ -409,7 +373,14 @@ var createMenu = class{
         let addStyle=this._settings.get_boolean('enable-custom-arc-menu');
         if(this.newSearch){
             addStyle ? this.newSearch.setStyle('arc-menu-status-text') : this.newSearch.setStyle(''); 
-            addStyle ? this.searchBox._stEntry.set_name('arc-search-entry') : this.searchBox._stEntry.set_name('search-entry');
+            if(addStyle){
+                this.searchBox._stEntry.remove_style_class_name('default-search-entry');
+                this.searchBox._stEntry.add_style_class_name('arc-search-entry');
+            }
+            else{
+                this.searchBox._stEntry.remove_style_class_name('arc-search-entry');
+                this.searchBox._stEntry.add_style_class_name('default-search-entry');
+            } 
         }
         if(this.placesTopBox){
             this.placesTopBox.get_children().forEach((actor) => {
@@ -579,6 +550,10 @@ var createMenu = class{
             }
 
             this.appsBox= new St.BoxLayout({
+                x_expand: true,
+                y_expand: true,
+                x_align: Clutter.ActorAlign.CENTER,
+                y_align: Clutter.ActorAlign.CENTER,
                 vertical: true
             });
             this.appsBox.style ='spacing: 15px; margin: 5px'
@@ -592,26 +567,18 @@ var createMenu = class{
                 }
                 if(count%5==0){ //create a new row every 5 app icons
                     this.rowBox= new St.BoxLayout({
+                        x_expand: false,
+                        y_expand: false,
+                        x_align: Clutter.ActorAlign.CENTER,
+                        y_align: Clutter.ActorAlign.CENTER,
                         vertical: false
                     });
                     this.rowBox.style ='spacing: 10px; margin: 5px'
-                    this.appsBox.add(this.rowBox, {
-                        expand: false,
-                        x_fill: false,
-                        y_fill: false,
-                        x_align: St.Align.MIDDLE,
-                        y_align: St.Align.MIDDLE
-                    });
+                    this.appsBox.add(this.rowBox);
                 }
                 count++;
 
-                this.rowBox.add(item.actor, {
-                    expand: false,
-                    x_fill: false,
-                    y_fill: false,
-                    x_align: St.Align.MIDDLE,
-                    y_align: St.Align.MIDDLE
-                });
+                this.rowBox.add(item.actor);
                 if(i==0){
                     this.activeMenuItem = item;
                     this.firstItem = item;
@@ -620,13 +587,7 @@ var createMenu = class{
         }
     }
     _displayAppIcons(){
-        this.shorcutsBox.add(this.appsBox, {
-            expand: true,
-            x_fill: true,
-            y_fill: true,
-            x_align: St.Align.MIDDLE,
-            y_align: St.Align.MIDDLE
-        });
+        this.shorcutsBox.add(this.appsBox);
         this.activeMenuItem = this.firstItem;
         if(this.leftClickMenu.isOpen){
             this.mainBox.grab_key_focus();
@@ -675,13 +636,7 @@ var createMenu = class{
             let appsScrollBoxAdj = this.shortcutsScrollBox.get_vscroll_bar().get_adjustment();
             appsScrollBoxAdj.set_value(0);  
             this._clearApplicationsBox();
-            this.shorcutsBox.add(this.newSearch.actor, {
-                x_expand: false,
-                y_expand:false,
-                x_fill: true,
-                y_fill: false,
-                x_align: St.Align.MIDDLE
-            });    
+            this.shorcutsBox.add(this.newSearch.actor);    
                 
             this.newSearch.highlightDefault(true);
             this.newSearch.actor.show();         
@@ -822,9 +777,10 @@ var createMenu = class{
     //Create a horizontal separator
     _createHorizontalSeparator(style){
         let alignment = Constants.SEPARATOR_ALIGNMENT.HORIZONTAL;
-        let hSep = new MW.SeparatorDrawingArea(this._settings,alignment,style,{
-            x_expand:true,
-            y_expand:false
+        let hSep = new MW.SeparatorDrawingArea(this._settings, alignment, style, {
+            x_align: Clutter.ActorAlign.FILL,
+            x_expand: true,
+            y_expand: true
         });
         hSep.queue_repaint();
         return hSep;

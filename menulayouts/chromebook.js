@@ -71,24 +71,17 @@ var createMenu = class{
         this._searchBoxKeyPressId = this.searchBox.connect('key-press-event', this._onSearchBoxKeyPress.bind(this));
         this._searchBoxKeyFocusInId = this.searchBox.connect('key-focus-in', this._onSearchBoxKeyFocusIn.bind(this));
         //Add search box to menu
-        this.mainBox.add(this.searchBox.actor, {
-            expand: false,
-            x_fill: true,
-            y_fill: false,
-            y_align: St.Align.START
-        });
+        this.mainBox.add(this.searchBox.actor);
 
         //Sub Main Box -- stores left and right box
         this.subMainBox= new St.BoxLayout({
-            vertical: false
+            vertical: false,
+            x_expand: false,
+            y_expand: false,
+            y_align: Clutter.ActorAlign.START,
+            x_align: Clutter.ActorAlign.START
         });
-        this.mainBox.add(this.subMainBox, {
-            expand: false,
-            x_fill: true,
-            y_fill: true,
-            y_align: St.Align.START,
-            x_align: St.Align.START
-        });
+        this.mainBox.add(this.subMainBox);
 
         //Right Box
 
@@ -97,13 +90,15 @@ var createMenu = class{
         });
 
         this.shortcutsScrollBox = new St.ScrollView({
-            x_fill:true,
+            x_expand: true,
+            y_expand: true,
+            x_fill: true,
             y_fill: false,
-            y_align: St.Align.START,
-            x_align: St.Align.START,
+            y_align: Clutter.ActorAlign.START,
+            x_align: Clutter.ActorAlign.START,
             overlay_scrollbars: true,
             style_class: 'apps-menu vfade',
-            reactive:true
+            reactive: true
         });   
 
         let panAction = new Clutter.PanAction({ interpolate: false });
@@ -124,17 +119,12 @@ var createMenu = class{
         }) ;  
         this.shortcutsScrollBox.style = "width:450px;";   
         this.shortcutsScrollBox.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC);
-        this.shortcutsScrollBox.add_actor( this.shorcutsBox);
+        this.shortcutsScrollBox.add_actor(this.shorcutsBox);
         this.shortcutsScrollBox.clip_to_allocation = true;
 
         
         //this.shorcutsBox.add(this.iconGrid.actor);
-        this.subMainBox.add( this.shortcutsScrollBox, {
-            expand: true,
-            x_fill: true,
-            y_fill: true,
-            y_align: St.Align.START
-        });
+        this.subMainBox.add(this.shortcutsScrollBox);
 
         this._loadCategories();
         this._displayAllApps();
@@ -179,7 +169,14 @@ var createMenu = class{
         let addStyle=this._settings.get_boolean('enable-custom-arc-menu');
         if(this.newSearch){
             addStyle ? this.newSearch.setStyle('arc-menu-status-text') : this.newSearch.setStyle(''); 
-            addStyle ? this.searchBox._stEntry.set_name('arc-search-entry') : this.searchBox._stEntry.set_name('search-entry');
+            if(addStyle){
+                this.searchBox._stEntry.remove_style_class_name('default-search-entry');
+                this.searchBox._stEntry.add_style_class_name('arc-search-entry');
+            }
+            else{
+                this.searchBox._stEntry.remove_style_class_name('arc-search-entry');
+                this.searchBox._stEntry.add_style_class_name('default-search-entry');
+            } 
         }
     }
     // Load data for all menu categories
@@ -283,6 +280,10 @@ var createMenu = class{
 
         
             this.appsBox= new St.BoxLayout({
+                x_expand: true,
+                y_expand: true,
+                x_align: Clutter.ActorAlign.CENTER,
+                y_align: Clutter.ActorAlign.CENTER,
                 vertical: true
             });
             this.appsBox.style ='spacing: 15px; margin: 5px;'
@@ -296,26 +297,18 @@ var createMenu = class{
                 }
                 if(count%4==0){ //create a new row every 4 app icons
                     this.rowBox= new St.BoxLayout({
-                        vertical: false
+                        vertical: false,
+                        x_expand: false,
+                        y_expand: false,
+                        x_align: Clutter.ActorAlign.CENTER,
+                        y_align: Clutter.ActorAlign.CENTER
                     });
                     this.rowBox.style ='spacing: 10px; margin: 5px;'
-                    this.appsBox.add(this.rowBox, {
-                        expand: false,
-                        x_fill: false,
-                        y_fill: false,
-                        x_align: St.Align.MIDDLE,
-                        y_align: St.Align.MIDDLE
-                    });
+                    this.appsBox.add(this.rowBox);
                 }
                 count++;
 
-                this.rowBox.add(item.actor, {
-                    expand: false,
-                    x_fill: false,
-                    y_fill: false,
-                    x_align: St.Align.MIDDLE,
-                    y_align: St.Align.MIDDLE
-                });
+                this.rowBox.add(item.actor);
                 if(i==0){
                     this.activeMenuItem = item;
                     this.firstItem = item;
@@ -325,13 +318,7 @@ var createMenu = class{
         }
     }
     _displayAppIcons(){
-        this.shorcutsBox.add(this.appsBox, {
-            expand: true,
-            x_fill: true,
-            y_fill: true,
-            x_align: St.Align.MIDDLE,
-            y_align: St.Align.MIDDLE
-        });
+        this.shorcutsBox.add(this.appsBox);
         this.activeMenuItem = this.firstItem;
         if(this.leftClickMenu.isOpen){
             this.mainBox.grab_key_focus();
@@ -404,13 +391,7 @@ var createMenu = class{
             let appsScrollBoxAdj = this.shortcutsScrollBox.get_vscroll_bar().get_adjustment();
             appsScrollBoxAdj.set_value(0);
             this._clearApplicationsBox();
-            this.shorcutsBox.add(this.newSearch.actor, {
-                x_expand: false,
-                y_expand:false,
-                x_fill: true,
-                y_fill: false,
-                x_align: St.Align.MIDDLE
-            });    
+            this.shorcutsBox.add(this.newSearch.actor);    
                 
             this.newSearch.highlightDefault(true);
             this.newSearch.actor.show();         

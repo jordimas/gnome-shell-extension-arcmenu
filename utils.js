@@ -123,7 +123,7 @@ function lighten_rgb(colorString, percent, modifyAlpha){ // implemented from htt
 	else
         a = 1;
     if(modifyAlpha)
-        a = 0.4;
+        a = a * (1 - modifyAlpha);
 	let m = Math.max(r, g, b);
 	let threshold = 255.9999;
 	r = Math.round(r);
@@ -151,24 +151,23 @@ function lighten_rgb(colorString, percent, modifyAlpha){ // implemented from htt
 }
 
 function createStylesheet(settings){
-    this._settings = settings;
-    let customArcMenu = this._settings.get_boolean('enable-custom-arc-menu');
-    let separatorColor = this._settings.get_string('separator-color');
-    let menuColor = this._settings.get_string('menu-color');
-    let menuForegroundColor = this._settings.get_string('menu-foreground-color');
-    let borderColor = this._settings.get_string('border-color');
-    let highlightColor = this._settings.get_string('highlight-color');
-    let fontSize = this._settings.get_int('menu-font-size');
-    let borderSize = this._settings.get_int('menu-border-size');
-    let cornerRadius = this._settings.get_int('menu-corner-radius');
-    let menuMargin = this._settings.get_int('menu-margin');
-    let menuArrowSize = this._settings.get_int('menu-arrow-size');
-    let menuWidth = this._settings.get_int('menu-width');
-    let avatarStyle =  this._settings.get_enum('avatar-style');
+    let customArcMenu = settings.get_boolean('enable-custom-arc-menu');
+    let separatorColor = settings.get_string('separator-color');
+    let menuColor = settings.get_string('menu-color');
+    let menuForegroundColor = settings.get_string('menu-foreground-color');
+    let borderColor = settings.get_string('border-color');
+    let highlightColor = settings.get_string('highlight-color');
+    let fontSize = settings.get_int('menu-font-size');
+    let borderSize = settings.get_int('menu-border-size');
+    let cornerRadius = settings.get_int('menu-corner-radius');
+    let menuMargin = settings.get_int('menu-margin');
+    let menuArrowSize = settings.get_int('menu-arrow-size');
+    let menuWidth = settings.get_int('menu-width');
+    let avatarStyle =  settings.get_enum('avatar-style');
     let avatarRadius = avatarStyle == 0 ? 999 : 0;
-    let menuButtonColor = this._settings.get_string('menu-button-color');
-    let menuButtonActiveColor =  this._settings.get_string('menu-button-active-color');
-    let gapAdjustment = this._settings.get_int('gap-adjustment');
+    let menuButtonColor = settings.get_string('menu-button-color');
+    let menuButtonActiveColor =  settings.get_string('menu-button-active-color');
+    let gapAdjustment = settings.get_int('gap-adjustment');
     let tooltipForegroundColor = customArcMenu ? "\n color:"+  menuForegroundColor+";\n" : "";
     let tooltipBackgroundColor = customArcMenu ? "\n background-color:"+lighten_rgb(menuColor,0.05)+";\n" : "";
         
@@ -177,15 +176,16 @@ function createStylesheet(settings){
         + tooltipForegroundColor + tooltipBackgroundColor+"\nmax-width:550px;\n}") 
         : ("#tooltip-menu-item{\n padding: 2px 5px;\nmax-width:550px;\n min-height: 0px;\n}");
 
-    let stylesheetCSS = "#arc-search{width: "+  menuWidth+"px;} \n.arc-menu-status-text{\ncolor:"+  menuForegroundColor+";\nfont-size:" + fontSize+"pt;\n}\n "+                                                      
+    let stylesheetCSS = "#arc-search{width: "+  menuWidth+"px;} \n.arc-menu-status-text{\ncolor:"+ menuForegroundColor +";\nfont-size:" + fontSize+"pt;\n}\n "+                                                      
         ".search-statustext {font-size:11pt;}\n "+    
         ".left-scroll-area{ \nwidth:"+  menuWidth+"px;\n}\n"   
     	+".arc-empty-dash-drop-target{\nwidth: "+  menuWidth+"px; \nheight: 2px; \nbackground-color:"+  separatorColor+"; \npadding: 0 0; \nmargin:0;\n}\n"     
         +".left-box{\nwidth:"+  menuWidth+"px;\n}" + "\n.vert-sep{\nwidth:11px;\n}\n"
-        +"#search-entry{\nmax-width: 17.667em;\n}\n#search-entry:focus { \nborder-color:"+  separatorColor+";\n}\n"
-        +"#arc-search-entry{\nmax-width: 17.667em;\nfont-size:" + fontSize+"pt;\n border-color:"+  separatorColor+";\n"
+        +".default-search-entry{\nmax-width: 17.667em;\n}\n"
+        +".arc-search-entry{\nmax-width: 17.667em;\nfont-size:" + fontSize+"pt;\n border-color:"+ separatorColor+"; border-width: 1px;\n"
         +" color:"+  menuForegroundColor+";\n background-color:" +  menuColor + ";\n}\n"
-        +"#arc-search-entry:focus { \nborder-color:"+ lighten_rgb( separatorColor,0.25)+";\n}\n"
+        +".arc-search-entry:focus { \nborder-color:"+separatorColor+";border-width: 1px; box-shadow: inset 0 0 0 1px "+lighten_rgb(separatorColor, 0.05)+";}\n"
+        +".arc-search-entry StLabel.hint-text { color: "+lighten_rgb( menuForegroundColor,0, 0.3)+";}"
 
         +".arc-menu-icon{\ncolor: "+menuButtonColor+";\n}\n"
         +"\n.arc-menu-icon:hover,\n.arc-menu-icon:active{\ncolor: "+menuButtonActiveColor+";\n}\n"

@@ -5,9 +5,8 @@
     "gettext-domain": "arc-menu",
     "name": "Arc Menu",
     "description": "A Traditional Application Menu for GNOME",
-    "version": 44.2,
-    "shell-version": [
-      "3.34",    
+    "version": 44.3,
+    "shell-version": [  
       "3.36"
     ],
     "url": "https://gitlab.com/LinxGem33/Arc-Menu"
