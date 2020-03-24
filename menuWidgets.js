@@ -919,7 +919,7 @@ var UserButton = class ArcMenu_UserButton extends SessionButton {
 // User Button
 var CurrentUserButton = class ArcMenu_CurrentUserButton extends SessionButton {
     constructor(button) {
-        super(button, GLib.get_user_name(), 'system-users-symbolic');
+        super(button, GLib.get_real_name(), 'system-users-symbolic');
         this._button = button;
         let username = GLib.get_user_name();
         this._user = AccountsService.UserManager.get_default().get_user(username);
@@ -940,7 +940,6 @@ var CurrentUserButton = class ArcMenu_CurrentUserButton extends SessionButton {
     // Handle changes to user information (redisplay new info)
     _onUserChanged() {
         if (this._user.is_loaded) {
-            this.tooltip.actor.text = this._user.get_real_name();
             let iconFileName = this._user.get_icon_file();
             if (iconFileName && !GLib.file_test(iconFileName, GLib.FileTest.EXISTS))
                 iconFileName = null;

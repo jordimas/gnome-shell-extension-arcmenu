@@ -126,7 +126,7 @@ var createMenu = class{
         this.user.actor.x_expand = false;
         this.user.actor.y_expand = false;
         this.user.actor.x_align = Clutter.ActorAlign.CENTER;
-        this.user.actor.x_align = Clutter.ActorAlign.CENTER;
+        this.user.actor.y_align = Clutter.ActorAlign.CENTER;
         this.subMainBox.add(this.user.actor);
 
         //Top Search Bar
