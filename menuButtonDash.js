@@ -97,14 +97,31 @@ var ApplicationsButton = GObject.registerClass(class ArcMenu_DashApplicationsBut
             this.updateArrowSide(side);
         });
         //----------------------------------------------------------------------------------
+        this._iconThemeChangedId = St.TextureCache.get_default().connect('icon-theme-changed', this.reload.bind(this));
 
         this._monitorsChangedId = Main.layoutManager.connect('monitors-changed', () => {
             this.updateHeight();
         });
 
+        this._appList = this.listAllApps();
+
         //Update Categories on 'installed-changed' event-------------------------------------
         this._installedChangedId = appSys.connect('installed-changed', () => {
-            this._reload();
+            this._newAppList = this.listAllApps();
+
+            //Filter to find if a new application has been installed
+            let newApps = this._newAppList.filter(app => !this._appList.includes(app));
+
+            //A New Application has been installed
+            //Save it in settings
+            if(newApps.length){
+                let recentApps = this._settings.get_strv('recently-installed-apps');
+                let newRecentApps = [...new Set(recentApps.concat(newApps))];
+                this._settings.set_strv('recently-installed-apps', newRecentApps);
+            }
+            
+            this._appList = this._newAppList;
+            this.reload();
         });
         //-----------------------------------------------------------------------------------
         this._setMenuPositionAlignment();
@@ -119,6 +136,18 @@ var ApplicationsButton = GObject.registerClass(class ArcMenu_DashApplicationsBut
         });
         //--------------------------------------------------------------------
     }
+    listAllApps(){
+        let appList = appSys.get_installed().filter(appInfo => {
+            try {
+                appInfo.get_id(); // catch invalid file encodings
+            } catch (e) {
+                return false;
+            }
+            return appInfo.should_show();
+        });
+
+        return appList.map(app => app.get_id());
+    }
     setDragApp(){
 
     }
@@ -132,7 +161,11 @@ var ApplicationsButton = GObject.registerClass(class ArcMenu_DashApplicationsBut
         this.section = new PopupMenu.PopupMenuSection();
         this.leftClickMenu.addMenuItem(this.section);            
         this.mainBox = new St.BoxLayout({
-            vertical: false
+            vertical: false,
+            x_expand: true,
+            y_expand: true,
+            x_align: Clutter.ActorAlign.FILL,
+            y_align: Clutter.ActorAlign.FILL
         });       
         this.mainBox._delegate = this.mainBox; 
 
@@ -218,7 +251,7 @@ var ApplicationsButton = GObject.registerClass(class ArcMenu_DashApplicationsBut
         this.track_hover = sensitive;
     }
     _onEvent(actor, event){
-        if (event.type() == Clutter.EventType.BUTTON_PRESS){      
+        if (event.type() == Clutter.EventType.BUTTON_PRESS){   
             if(event.get_button()==1 && actor instanceof St.Button ){    
                 let layout = this._settings.get_enum('menu-layout');
                 if(layout == Constants.MENU_LAYOUT.GnomeDash)
@@ -308,10 +341,13 @@ var ApplicationsButton = GObject.registerClass(class ArcMenu_DashApplicationsBut
             this.mainBox.style = `height: ${height}px`;
         
         
-        this._redisplay();
-        this._redisplayRightSide();
+        this.reload();
     }
     destroy() {  
+        if (this._iconThemeChangedId){
+            St.TextureCache.get_default().disconnect(this._iconThemeChangedId);
+            this._iconThemeChangedId = null;
+        }
         if (this._monitorsChangedId){
             Main.layoutManager.disconnect(this._monitorsChangedId);
             this._monitorsChangedId = null;
@@ -378,7 +414,7 @@ var ApplicationsButton = GObject.registerClass(class ArcMenu_DashApplicationsBut
     }
     _loadPinnedShortcuts(){
         if(this.MenuLayout)
-            this.MenuLayout._loadPinnedShortcuts();
+            this.MenuLayout.loadPinnedShortcuts();
     }
     updateRunnerLocation(){
         if(this.MenuLayout)
@@ -390,27 +426,27 @@ var ApplicationsButton = GObject.registerClass(class ArcMenu_DashApplicationsBut
     }
     _loadCategories(){
         if(this.MenuLayout)
-            this.MenuLayout._loadCategories();
+            this.MenuLayout.loadCategories();
     }
     _clearApplicationsBox() {
         if(this.MenuLayout)
-            this.MenuLayout._clearApplicationsBox();
+            this.MenuLayout.clearApplicationsBox();
     }
     _displayCategories() {
         if(this.MenuLayout)
-            this.MenuLayout._displayCategories();
+            this.MenuLayout.displayCategories();
     }
     _displayFavorites() {
         if(this.MenuLayout)
-            this.MenuLayout._displayFavorites();
+            this.MenuLayout.displayFavorites();
     }
     _loadFavorites() {
         if(this.MenuLayout)
-            this.MenuLayout._loadFavorites();
+            this.MenuLayout.loadFavorites();
     }
     _displayAllApps() {
         if(this.MenuLayout)
-            this.MenuLayout._displayAllApps();
+            this.MenuLayout.displayAllApps();
     }
     selectCategory(dir) {
         if(this.MenuLayout)
@@ -418,25 +454,17 @@ var ApplicationsButton = GObject.registerClass(class ArcMenu_DashApplicationsBut
     }
     _displayGnomeFavorites(){
         if(this.MenuLayout)
-            this.MenuLayout._displayGnomeFavorites();
+            this.MenuLayout.displayGnomeFavorites();
     }
     _setActiveCategory(){
         if(this.MenuLayout)
-            this.MenuLayout._setActiveCategory();
+            this.MenuLayout.setActiveCategory();
     }
     scrollToButton(button){
         if(this.MenuLayout)
             this.MenuLayout.scrollToButton(button);
     }
-    _redisplayRightSide(){
-        if(this.MenuLayout)
-            this.MenuLayout._redisplayRightSide();
-    }
-    _redisplay() {
-        if(this.MenuLayout)
-            this.MenuLayout._redisplay();
-    }
-    _reload(){
+    reload(){
         if(this.MenuLayout)
             this.MenuLayout.needsReload = true;
     }
@@ -452,7 +480,7 @@ var ApplicationsButton = GObject.registerClass(class ArcMenu_DashApplicationsBut
         if(this.MenuLayout)
             return this.MenuLayout.shouldLoadFavorites;
     }
-    resetSearch(){ //used by back button to clear results
+    resetSearch(){
         if(this.MenuLayout)
             this.MenuLayout.resetSearch();
     }
@@ -500,8 +528,9 @@ var ApplicationsMenu = class ArcMenu_ApplicationsDashMenu extends PopupMenu.Popu
     }
 
     _onOpenEvent(){
+        this._button.leftClickMenu.actor._muteInput = false;
         if(this._button.MenuLayout && this._button.MenuLayout.needsReload){
-            this._button.MenuLayout._reload();
+            this._button.MenuLayout.reload();
             this._button.MenuLayout.needsReload = false;
             this._button.setDefaultMenuView(); 
         } 
@@ -510,7 +539,7 @@ var ApplicationsMenu = class ArcMenu_ApplicationsDashMenu extends PopupMenu.Popu
     _onCloseEvent(){
         if(this._button.MenuLayout && this._button.MenuLayout.isRunning){
             if(this._button.MenuLayout.needsReload)
-                this._button.MenuLayout._reload();
+                this._button.MenuLayout.reload();
             this._button.MenuLayout.needsReload = false;
             this._button.setDefaultMenuView(); 
         }
@@ -529,7 +558,7 @@ var RightClickMenu = class ArcMenu_RightClickDashMenu extends PopupMenu.PopupMen
         this.actor.hide();
         let item = new PopupMenu.PopupMenuItem(_("Arc Menu Settings"));
         item.connect('activate', ()=>{
-            Util.spawnCommandLine('gnome-shell-extension-prefs arc-menu@linxgem33.com');
+            Util.spawnCommandLine('gnome-extensions prefs arc-menu@linxgem33.com');
         });
         this.addMenuItem(item);        
         item = new PopupMenu.PopupSeparatorMenuItem();     
@@ -554,7 +583,7 @@ var RightClickMenu = class ArcMenu_RightClickDashMenu extends PopupMenu.PopupMen
             let dashExtensionSettings, dashExtensionName;
             if(dashToDock && dashToDock.stateObj && dashToDock.stateObj.dockManager){
                 dashExtensionName = _("Dash to Dock Settings");
-                dashExtensionSettings = 'gnome-shell-extension-prefs dash-to-dock@micxgx.gmail.com'; 
+                dashExtensionSettings = 'gnome-extensions prefs dash-to-dock@micxgx.gmail.com'; 
             }
             if(ubuntuDash && ubuntuDash.stateObj && ubuntuDash.stateObj.dockManager){
                 dashExtensionName = _("Ubuntu Dock Settings");

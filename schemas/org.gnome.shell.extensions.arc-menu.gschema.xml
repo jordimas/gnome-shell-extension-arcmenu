@@ -68,6 +68,10 @@
     <value value="0" nick="Top"/>
     <value value="1" nick="Centered"/>
   </enum>
+  <enum id='org.gnome.shell.extensions.arc-menu.searchbar-location'>
+    <value value="0" nick="Bottom"/>
+    <value value="1" nick="Top"/>
+  </enum>
   <enum id='org.gnome.shell.extensions.arc-menu.hot-corners'>
     <value value="0" nick="Default"/>
     <value value="1" nick="Disabled"/>
@@ -140,6 +144,11 @@
       <summary>Activate Categories on Hover</summary>
       <description>Activate Categories on Hover.</description>
     </key>
+    <key type="b" name="disable-recently-installed-apps">
+     <default>false</default>
+      <summary>disable recently installed apps</summary>
+      <description>disable recently installed apps.</description>
+    </key>
     <key type="b" name="disable-tooltips">
      <default>false</default>
       <summary>disable tooltips</summary>
@@ -159,6 +168,26 @@
      <default>false</default>
       <summary>Remove the themes menu arrow and displacement</summary>
       <description>Remove the themes menu arrow and displacement</description>
+    </key>
+    <key type="b" name="disable-searchbox-border">
+     <default>false</default>
+      <summary>Remove border around the searchbox</summary>
+      <description>Remove border around the searchbox</description>
+    </key>
+    <key type="b" name="disable-user-avatar">
+     <default>false</default>
+      <summary>Disable the user avatar icon from the menu</summary>
+      <description>Disable the user avatar icon from the menu</description>
+    </key>
+    <key enum="org.gnome.shell.extensions.arc-menu.searchbar-location" name="searchbar-location">
+     <default>'Bottom'</default>
+      <summary>Disable the user avatar icon from the menu</summary>
+      <description>Disable the user avatar icon from the menu</description>
+    </key>
+    <key type="b" name="enable-horizontal-flip">
+     <default>false</default>
+      <summary>Flip menu horizontally</summary>
+      <description>Flip menu horizontally</description>
     </key>
     <key type="b" name="reload-theme">
      <default>false</default>
@@ -240,6 +269,11 @@
       <summary>Gap Adjustment</summary>
       <description>Gap Adjustment</description>
     </key>
+    <key type="s" name="indicator-color">
+     <default>"rgb(41, 165, 249)"</default>
+      <summary>Recently Installed Application Inidcator Color</summary>
+      <description>Recently Installed Application Inidcator Color..</description>
+    </key>
     <key type="b" name="enable-custom-arc-menu">
      <default>false</default>
       <summary>Enable Custom Arc Menu Theme</summary>
@@ -255,7 +289,7 @@
       <summary>Show External Devices</summary>
       <description>Show External Devices.</description>
     </key>
-	<key type="b" name="show-bookmarks">
+	  <key type="b" name="show-bookmarks">
      <default>false</default>
       <summary>Show Bookmarks</summary>
       <description>Show Bookmarks.</description>
@@ -396,9 +430,14 @@
       <summary>Active color for for the menu button icon</summary>
       <description>Active for color for the menu button icon.</description>
     </key>
+    <key name="recently-installed-apps" type="as">
+      <default>[]</default>
+      <summary>List of recently installed apps</summary>
+      <description>List of recently installed apps</description>
+    </key>
     <key name="pinned-app-list" type="as">
       <default>["ArcMenu_WebBrowser","WebBrowser", "WebBrowser","Terminal", "utilities-terminal", "org.gnome.Terminal.desktop",
-                "Arc Menu Settings", "ArcMenu_ArcMenuIcon", "gnome-shell-extension-prefs arc-menu@linxgem33.com"]</default>
+                "Arc Menu Settings", "ArcMenu_ArcMenuIcon", "gnome-extensions prefs arc-menu@linxgem33.com"]</default>
       <summary>List of Apps Pinned to Menu</summary>
       <description>List of Apps Pinned to Menu</description>
     </key>
@@ -442,8 +481,8 @@
     </key>
      <key name="color-themes" type="aas">
       <default>[['Arc Menu Theme', 'rgba(28, 28, 28, 0.98)', 'rgba(211, 218, 227, 1)', 'rgb(63,62,64)', 'rgba(238, 238, 236, 0.1)', 'rgb(63,62,64)', '9', '0', '0', '0', '0', 'false'], 
-      ['Dark Blue Theme', 'rgb(25,31,34)', 'rgb(189,230,251)', 'rgb(41,50,55)', 'rgb(41,50,55)', 'rgb(41,50,55)', '9', '1', '5', '15', '20', 'true'], 
-      ['Light Blue Theme', 'rgb(255,255,255)', 'rgb(51,51,51)', 'rgb(235,235,235)', 'rgba(189,230,251,0.9)', 'rgba(189,230,251,0.9)', '9', '1', '5', '15', '20', 'true']]</default>
+      ['Dark Blue Theme', 'rgb(25,31,34)', 'rgb(189,230,251)', 'rgb(41,50,55)', 'rgb(41,50,55)', 'rgb(41,50,55)', '9', '1', '5', '12', '24', 'true'], 
+      ['Light Blue Theme', 'rgb(255,255,255)', 'rgb(51,51,51)', 'rgb(235,235,235)', 'rgba(189,230,251,0.9)', 'rgba(189,230,251,0.9)', '9', '1', '5', '12', '24', 'true']]</default>
       <summary>List of color-themes</summary>
       <description> List of color themes.
       </description>
