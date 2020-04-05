@@ -496,6 +496,7 @@ var ApplicationsMenu = class ArcMenu_ApplicationsDashMenu extends PopupMenu.Popu
             this._button.appMenuManager.activeMenu.toggle();
         if(this._button.subMenuManager.activeMenu)
             this._button.subMenuManager.activeMenu.toggle();
+        super.close(animation);
     }
 
     _onOpenEvent(){
