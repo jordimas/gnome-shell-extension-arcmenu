@@ -545,6 +545,13 @@ var ApplicationsMenu = class ArcMenu_ApplicationsMenu extends PopupMenu.PopupMen
         super.open(animation);
     }
 
+    close(animation){
+        if(this._button.appMenuManager.activeMenu)
+            this._button.appMenuManager.activeMenu.toggle();
+        if(this._button.subMenuManager.activeMenu)
+            this._button.subMenuManager.activeMenu.toggle();
+    }
+
     _onOpenEvent(){
         if(this._button.MenuLayout && this._button.MenuLayout.needsReload){
             this._button.MenuLayout._reload();
@@ -554,10 +561,6 @@ var ApplicationsMenu = class ArcMenu_ApplicationsMenu extends PopupMenu.PopupMen
     }
 
     _onCloseEvent(){
-        if(this._button.appMenuManager.activeMenu)
-            this._button.appMenuManager.activeMenu.toggle();
-        if(this._button.subMenuManager.activeMenu)
-            this._button.subMenuManager.activeMenu.toggle();
         if(this._button.MenuLayout && this._button.MenuLayout.isRunning){
             if(this._button.MenuLayout.needsReload)
                 this._button.MenuLayout._reload();
