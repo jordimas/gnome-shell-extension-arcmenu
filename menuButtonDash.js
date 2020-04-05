@@ -217,9 +217,8 @@ var ApplicationsButton = GObject.registerClass(class ArcMenu_DashApplicationsBut
         this.can_focus = sensitive;
         this.track_hover = sensitive;
     }
-    vfunc_event(event){
-            if (event.type() == Clutter.EventType.BUTTON_PRESS){   
-                
+    _onEvent(actor, event){
+        if (event.type() == Clutter.EventType.BUTTON_PRESS){      
             if(event.get_button()==1 && actor instanceof St.Button ){    
                 let layout = this._settings.get_enum('menu-layout');
                 if(layout == Constants.MENU_LAYOUT.GnomeDash)
@@ -487,9 +486,17 @@ var ApplicationsMenu = class ArcMenu_ApplicationsDashMenu extends PopupMenu.Popu
         this.connect('menu-closed', () => this._onCloseEvent());
     }
 
-    open(animation, event){
+    open(animation){
         this._onOpenEvent();
         super.open(animation);
+    }
+
+    close(animation){
+        if(this._button.appMenuManager.activeMenu)
+            this._button.appMenuManager.activeMenu.toggle();
+        if(this._button.subMenuManager.activeMenu)
+            this._button.subMenuManager.activeMenu.toggle();
+        super.close(animation);
     }
 
     _onOpenEvent(){
@@ -501,10 +508,6 @@ var ApplicationsMenu = class ArcMenu_ApplicationsDashMenu extends PopupMenu.Popu
     }
 
     _onCloseEvent(){
-        if(this._button.appMenuManager.activeMenu)
-            this._button.appMenuManager.activeMenu.toggle();
-        if(this._button.subMenuManager.activeMenu)
-            this._button.subMenuManager.activeMenu.toggle();
         if(this._button.MenuLayout && this._button.MenuLayout.isRunning){
             if(this._button.MenuLayout.needsReload)
                 this._button.MenuLayout._reload();
