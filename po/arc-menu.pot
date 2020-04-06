@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-04-05 09:07-0400\n"
+"POT-Creation-Date: 2020-04-06 07:53-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -617,7 +617,7 @@ msgstr ""
 msgid "Current Color Theme"
 msgstr ""
 
-#: prefs.js:2249
+#: prefs.js:2249 prefs.js:2417
 msgid "Menu Layout"
 msgstr ""
 
@@ -645,10 +645,6 @@ msgstr ""
 
 #: prefs.js:2408
 msgid "Menu style chooser"
-msgstr ""
-
-#: prefs.js:2417
-msgid "Arc Menu Layout"
 msgstr ""
 
 #: prefs.js:2517
