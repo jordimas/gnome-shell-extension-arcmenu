@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: Arc Menu\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-04-06 07:53-0400\n"
-"PO-Revision-Date: 2020-04-06 16:33+0200\n"
+"PO-Revision-Date: 2020-04-06 20:07+0200\n"
 "Last-Translator: Onno Giesmann <nutzer3105@gmail.com>\n"
 "Language-Team: German <>\n"
 "Language: de\n"
@@ -1250,11 +1250,9 @@ msgstr "Position der Suchleiste"
 msgid "Bottom"
 msgstr "Unten"
 
-# Cannot translate it at the moment, I am using GNOME 3.34 at the moment
 #: menulayouts/tweaks/tweaks.js:662
-#, fuzzy
 msgid "Flip Horizontally"
-msgstr "Horizontal …?"
+msgstr "Horizontal umkehren"
 
 #: menulayouts/tweaks/tweaks.js:695
 msgid "Enable Weather Widget"
