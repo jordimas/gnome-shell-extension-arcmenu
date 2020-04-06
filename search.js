@@ -178,10 +178,10 @@ var AppSearchResult = class  ArcMenu_AppSearchResult {
             this.icon = this.metaInfo['createIcon'](largeIcons ? MEDIUM_ICON_SIZE : SMALL_ICON_SIZE);
             if (this.icon){
                 this.icon.icon_size = largeIcons ? MEDIUM_ICON_SIZE : SMALL_ICON_SIZE;
+                this.icon.y_align = Clutter.ActorAlign.CENTER;
+                this.icon.x_align = Clutter.ActorAlign.CENTER;
                 this.menuItem.actor.add_child(this.icon);   
             }
-                  
-
             this.menuItem.actor.add_child(this.label);
         }
         this.menuItem.connect('activate', this.activate.bind(this)); 

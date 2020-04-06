@@ -25,11 +25,28 @@ const Me = imports.misc.extensionUtils.getCurrentExtension();
 const Gettext = imports.gettext.domain(Me.metadata['gettext-domain']);
 const _ = Gettext.gettext;
 
+var SearchbarLocation = {
+    BOTTOM: 0,
+    TOP: 1
+}
+
+var SearchType = {
+    LIST_VIEW: 0,
+    GRID_VIEW: 1
+}
+
 var CURRENT_MENU = {
     FAVORITES: 0,
     CATEGORIES: 1,
     CATEGORY_APPLIST: 2,
     SEARCH_RESULTS: 3
+};
+
+var CategoryType = {
+    FREQUENT_APPS: 0,
+    FAVORITES: 1,
+    ALL_PROGRAMS: 2,
+    HOME_SCREEN: 3
 };
 
 var ARC_MENU_PLACEMENT = {
@@ -55,10 +72,12 @@ var DIRECTION = {
     UP: 0,
     DOWN: 1
 };
+
 var SEPARATOR_ALIGNMENT = {
     VERTICAL: 0,
     HORIZONTAL: 1
 };
+
 var SEPARATOR_STYLE = {
     NORMAL: 0,
     LONG: 1,
@@ -104,25 +123,6 @@ var DIALOG_TYPE = {
     Mint_Pinned_Apps: 1,
     Application_Shortcuts: 2,
     Directories_Shortcuts: 3
-};
-
-var MENU_LAYOUT = { // See: org.gnome.shell.extensions.arc-menu.menu-position
-    Default: 0,
-    Brisk: 1,
-    Whisker: 2,
-    GnomeMenu: 3,
-    Mint: 4,
-    Elementary: 5,
-    GnomeDash: 6,
-    Simple: 7,
-    Simple2: 8,
-    Redmond: 9,
-    UbuntuDash: 10,
-    Budgie: 11,
-    Windows: 12,
-    Runner: 13,
-    Chromebook: 14,
-    Raven: 15
 };
 
 var MENU_APPEARANCE = {
@@ -173,6 +173,25 @@ var MENU_ICONS = [
     { name: _("Octo Maze"), path: '/media/icons/octo-maze-symbolic.svg'},
     { name: _("Search"), path: '/media/icons/search-symbolic.svg'}
 ]
+
+var MENU_LAYOUT = {
+    Default: 0,
+    Brisk: 1,
+    Whisker: 2,
+    GnomeMenu: 3,
+    Mint: 4,
+    Elementary: 5,
+    GnomeDash: 6,
+    Simple: 7,
+    Simple2: 8,
+    Redmond: 9,
+    UbuntuDash: 10,
+    Budgie: 11,
+    Windows: 12,
+    Runner: 13,
+    Chromebook: 14,
+    Raven: 15
+};
 
 var MENU_STYLE_CHOOSER = {
     ThumbnailHeight: 200,

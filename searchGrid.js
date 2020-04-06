@@ -128,7 +128,7 @@ var ListSearchResult = class ArcMenu_ListSearchResultGrid {
 
 var AppSearchResult = class ArcMenu_AppSearchResultGrid {
     constructor(provider, metaInfo, resultsView) {
-               this.provider = provider;
+        this.provider = provider;
         this._button= resultsView._button;
         this.metaInfo = metaInfo;
         this._resultsView = resultsView;
@@ -136,7 +136,8 @@ var AppSearchResult = class ArcMenu_AppSearchResultGrid {
         this.layout = this._settings.get_enum('menu-layout');
         this._app = appSys.lookup_app(this.metaInfo['id']);
         if(this._app){
-            this.menuItem = new MW.ApplicationMenuIcon(this._button, this._app);
+            let isIconGrid = true;
+            this.menuItem = new MW.ApplicationMenuItem(this._button, this._app, isIconGrid);
         }
         else{
             let ICON_SIZE = 16;
@@ -150,10 +151,11 @@ var AppSearchResult = class ArcMenu_AppSearchResultGrid {
                 this.menuItem.actor.style ='border-radius:4px; padding: 5px; spacing: 0px; width:80px;height:80px;';
                 ICON_SIZE = 36;
             } 
-
             this.icon = this.metaInfo['createIcon'](ICON_SIZE);         
             if(this.icon){
                 this.icon.icon_size = ICON_SIZE;
+                this.icon.y_align = Clutter.ActorAlign.CENTER;
+                this.icon.x_align = Clutter.ActorAlign.CENTER;
                 this.menuItem.actor.add_child(this.icon);   
             }
             else{
@@ -169,7 +171,7 @@ var AppSearchResult = class ArcMenu_AppSearchResultGrid {
                 text: this.metaInfo['name'],
                 y_expand: false,
                 y_align: Clutter.ActorAlign.END,
-                x_align: Clutter.ActorAlign.END
+                x_align: Clutter.ActorAlign.CENTER
             });
             this.menuItem.actor.add_child(this.label);
             this.menuItem.label = this.label;
