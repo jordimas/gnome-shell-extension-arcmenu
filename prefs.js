@@ -4778,7 +4778,7 @@ var AboutPage = GObject.registerClass(
                 expand: false
             });
             let projectDescriptionLabel = new Gtk.Label({
-                label: _('A Traditional Application Menu for GNOME'),
+                label: _('ArcMenu is a Dynamic, Traditional, Modern Extension Menu for GNOME'),
                 expand: false
             });
             let linksBox = new Gtk.HBox({
