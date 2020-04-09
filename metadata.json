@@ -4,7 +4,7 @@
     "settings-schema": "org.gnome.shell.extensions.arc-menu",
     "gettext-domain": "arc-menu",
     "name": "Arc Menu",
-    "description": "A Dynamic, Traditional, Modern Extension Menu for GNOME",
+    "description": "A Dynamic, Traditional, Modern Menu for GNOME",
     "version": 45.1,
     "shell-version": [  
       "3.36"
