@@ -2265,7 +2265,7 @@ var AppearancePage = GObject.registerClass(
                         this._settings.set_enum('menu-layout', dialog.index);
                         this._settings.set_boolean('reload-theme', false);
                         this._settings.set_boolean('reload-theme', true);
-                        currentStyleLabel.label = Constants.MENU_STYLE_CHOOSER.Styles[dialog.index].name;
+                        currentStyleLabel.label = this.getMenuLayoutName(dialog.index);
                         tweaksLabel.label = currentStyleLabel.label +" " + _("Tweaks");
                         dialog.destroy();
                     }
@@ -2291,15 +2291,14 @@ var AppearancePage = GObject.registerClass(
                     layoutFrame.remove(currentLayoutRow);
                     layoutFrame.remove(tweaksRow);
                 }
-
+                let index = this._settings.get_enum('menu-layout');
                 if(widget.get_active()){
-                    let index = this._settings.get_enum('menu-layout');
-                    currentStyleLabel.label = Constants.MENU_STYLE_CHOOSER.Styles[index].name;
+                    currentStyleLabel.label = this.getMenuLayoutName(index);
                     tweaksLabel.label = currentStyleLabel.label +" " + _("Tweaks");
                 }
                 if(!widget.get_active()){
                     this._settings.set_enum('menu-layout', 0);
-                    currentStyleLabel.label = Constants.MENU_STYLE_CHOOSER.Styles[0].name;
+                    currentStyleLabel.label = this.getMenuLayoutName(index);
                     tweaksLabel.label = currentStyleLabel.label +" " + _("Tweaks");
                 }
                 this._settings.set_boolean('reload-theme', false);
@@ -2324,8 +2323,9 @@ var AppearancePage = GObject.registerClass(
                 xalign: 0,
                 hexpand: false
             }); 
+
             let index = this._settings.get_enum('menu-layout');
-            currentStyleLabel.label = Constants.MENU_STYLE_CHOOSER.Styles[index].name;
+            currentStyleLabel.label = this.getMenuLayoutName(index);
             currentLayoutRow.add(currentLayoutLabel);
             currentLayoutRow.add(currentStyleLabel);
             if(this._settings.get_boolean('enable-custom-arc-menu-layout'))
@@ -2363,6 +2363,15 @@ var AppearancePage = GObject.registerClass(
 
             this.add(layoutFrame);
     }
+
+    getMenuLayoutName(index){
+        for(let style of Constants.MENU_STYLE_CHOOSER.Styles){
+            if(style.layoutEnum == index){
+                return style.name;
+            }
+        }
+    }
+
     checkIfPresetMatch(){
         this.presetName="Custom Theme";
         this.separatorColor = this._settings.get_string('separator-color');
@@ -2423,18 +2432,16 @@ var ArcMenuLayoutWindow = GObject.registerClass(
             this._scrolled = new Gtk.ScrolledWindow();
             this._scrolled.overlay_scrolling = false;
             this._scrolled.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC);
-            let index = 0;
 
             //Add each menu layout to frame
             this._params.styles.forEach((style) => {
-                this._addTile(style.name, Me.path + style.thumbnail,index);
-                index++;
+                this._addTile(style.name, Me.path + style.thumbnail, style.layoutEnum);
             });
             this._scrolled.add(this._tileGrid);
             vbox.add(this._scrolled);
 
             this._tileGrid.connect('selected-children-changed', () => {
-                    applyButton.set_sensitive(true);
+                applyButton.set_sensitive(true);
             });
 
             //Apply Button
@@ -2443,30 +2450,31 @@ var ArcMenuLayoutWindow = GObject.registerClass(
                 halign: Gtk.Align.END
             });
             applyButton.connect('clicked', ()=> {
-                let temp = this._tileGrid.get_selected_children();
-                let array= this._tileGrid.get_children();
-                for(let i = 0; i < array.length; i++){
-                    if(array[i]==temp[0])
-                            this.index=i;
-                }
+                let selectedBox = this._tileGrid.get_selected_children();
+                this.index = selectedBox[0].get_child().layoutEnum;
                 this.addResponse = true;
                 this.response(-10);
             });
             vbox.add(applyButton);
             this._tileGrid.set_selection_mode(Gtk.SelectionMode.SINGLE);
+            
+            let children = this._tileGrid.get_children();
+            for(let i = 0; i < children.length; i++){
+                if(children[i].get_child().layoutEnum === this.index){
+                    this._tileGrid.select_child(children[i]);
+                    break;
+                }
+            }
             this.show();
-            let temp = this._tileGrid.get_child_at_index(this.index);
-            this._tileGrid.select_child(temp);
             applyButton.set_sensitive(false); 
         }
 
-        _addTile(name, thumbnail, index) {
-            let tile = new PW.Tile(name, thumbnail, this._params.thumbnailWidth, this._params.thumbnailHeight);
+        _addTile(name, thumbnail, layoutEnum) {
+            let tile = new PW.Tile(name, thumbnail, this._params.thumbnailWidth, this._params.thumbnailHeight, layoutEnum);
             this._tileGrid.add(tile);
            
             tile.connect('clicked', ()=> {
-                let temp = this._tileGrid.get_child_at_index(index);
-                this._tileGrid.select_child(temp);  
+                this._tileGrid.select_child(tile.get_parent());  
             });
         }
 

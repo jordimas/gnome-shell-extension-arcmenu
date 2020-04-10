@@ -176,11 +176,12 @@ var TileGrid = GObject.registerClass(class ArcMenu_TileGrid extends Gtk.FlowBox{
 });
 
 var Tile =  GObject.registerClass(class ArcMenu_Tile extends Gtk.Button{
-     _init(label, file, width, height) {
+     _init(label, file, width, height, layoutEnum) {
         super._init();
         let pixbuf = GdkPixbuf.Pixbuf.new_from_file_at_size(file, width, height);
         this._image = new Gtk.Image({ pixbuf: pixbuf });
         this._label = new Gtk.Label({ label: label });
+        this.layoutEnum = layoutEnum;
 
         this._vbox = new Gtk.Box({ orientation: Gtk.Orientation.VERTICAL });
         this._vbox.add(this._image);

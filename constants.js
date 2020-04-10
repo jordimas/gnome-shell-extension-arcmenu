@@ -194,26 +194,26 @@ var MENU_LAYOUT = {
 };
 
 var MENU_STYLE_CHOOSER = {
-    ThumbnailHeight: 200,
-    ThumbnailWidth: 200,
+    ThumbnailHeight: 150,
+    ThumbnailWidth: 150,
     MaxColumns: 6,
     Styles: [ 
-        { thumbnail: '/media/layouts/arc-menu.svg', name: 'Arc Menu'},
-        { thumbnail: '/media/layouts/brisk-menu.svg', name: 'Brisk Menu Style'},
-        { thumbnail: '/media/layouts/whisker-menu.svg', name: 'Whisker Menu Style'},
-        { thumbnail: '/media/layouts/gnome-menu.svg', name: 'GNOME Menu Style'},
-        { thumbnail: '/media/layouts/mint-menu.svg', name: 'Mint Menu Style'},
-        { thumbnail: '/media/layouts/elementary-menu.svg', name: 'Elementary Menu Style'},
-        { thumbnail: '/media/layouts/gnome-dash-menu.svg', name: 'GNOME Dash Style'},
-        { thumbnail: '/media/layouts/simple-menu.svg', name: 'Simple Menu Style'},
-        { thumbnail: '/media/layouts/simple-menu-2.svg', name: 'Simple Menu 2 Style'},
-        { thumbnail: '/media/layouts/redmond-style-menu.svg', name: 'Redmond Menu Style'},
-        { thumbnail: '/media/layouts/ubuntu-dash-menu.svg', name: 'Ubuntu Dash Style'},
-        { thumbnail: '/media/layouts/budgie-menu.svg', name: 'Budgie Style'},
-        { thumbnail: '/media/layouts/windows-10.svg', name: 'Windows 10 Style'},
-        { thumbnail: '/media/layouts/krunner-menu.svg', name: 'KRunner Style'},
-        { thumbnail: '/media/layouts/chromebook-menu.svg', name: 'Chromebook Style'},
-        { thumbnail: '/media/layouts/raven-menu.svg', name: 'Raven Menu Style'}
+        { thumbnail: '/media/layouts/arc-menu.svg', name: 'Arc Menu', layoutEnum: MENU_LAYOUT.Default},
+        { thumbnail: '/media/layouts/brisk-menu.svg', name: 'Brisk Menu Style', layoutEnum: MENU_LAYOUT.Brisk},
+        { thumbnail: '/media/layouts/whisker-menu.svg', name: 'Whisker Menu Style', layoutEnum: MENU_LAYOUT.Whisker},
+        { thumbnail: '/media/layouts/gnome-menu.svg', name: 'GNOME Menu Style', layoutEnum: MENU_LAYOUT.GnomeMenu},
+        { thumbnail: '/media/layouts/mint-menu.svg', name: 'Mint Menu Style', layoutEnum: MENU_LAYOUT.Mint},
+        { thumbnail: '/media/layouts/elementary-menu.svg', name: 'Elementary Menu Style', layoutEnum: MENU_LAYOUT.Elementary},
+        { thumbnail: '/media/layouts/gnome-dash-menu.svg', name: 'GNOME Dash Style', layoutEnum: MENU_LAYOUT.GnomeDash},
+        { thumbnail: '/media/layouts/simple-menu.svg', name: 'Simple Menu Style', layoutEnum: MENU_LAYOUT.Simple},
+        { thumbnail: '/media/layouts/simple-menu-2.svg', name: 'Simple Menu 2 Style', layoutEnum: MENU_LAYOUT.Simple2},
+        { thumbnail: '/media/layouts/redmond-style-menu.svg', name: 'Redmond Menu Style', layoutEnum: MENU_LAYOUT.Redmond},
+        { thumbnail: '/media/layouts/ubuntu-dash-menu.svg', name: 'Ubuntu Dash Style', layoutEnum: MENU_LAYOUT.UbuntuDash},
+        { thumbnail: '/media/layouts/budgie-menu.svg', name: 'Budgie Style', layoutEnum: MENU_LAYOUT.Budgie},
+        { thumbnail: '/media/layouts/windows-10.svg', name: 'Windows 10 Style', layoutEnum: MENU_LAYOUT.Windows},
+        { thumbnail: '/media/layouts/krunner-menu.svg', name: 'KRunner Style', layoutEnum: MENU_LAYOUT.Runner},
+        { thumbnail: '/media/layouts/chromebook-menu.svg', name: 'Chromebook Style', layoutEnum: MENU_LAYOUT.Chromebook},
+        { thumbnail: '/media/layouts/raven-menu.svg', name: 'Raven Menu Style', layoutEnum: MENU_LAYOUT.Raven}
     ]
 };
 var ARCMENU_MANUAL_URL = "https://gitlab.com/LinxGem33/Neon/-/raw/master/arc-menu-manual/arcmenu-user-manual.pdf"
