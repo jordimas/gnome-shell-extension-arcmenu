@@ -169,19 +169,23 @@ var TileGrid = GObject.registerClass(class ArcMenu_TileGrid extends Gtk.FlowBox{
             column_spacing: 5,
             max_children_per_line: maxColumns,
             vexpand: true,
+            hexpand: true,
             valign: Gtk.Align.START,
+            halign: Gtk.Align.CENTER,
+            homogeneous: true,
             selection_mode: Gtk.SelectionMode.NONE
         });
     }
 });
 
-var Tile =  GObject.registerClass(class ArcMenu_Tile extends Gtk.Button{
-     _init(label, file, width, height, layoutEnum) {
+var Tile = GObject.registerClass(class ArcMenu_Tile extends Gtk.Button{
+     _init(name, file, width, height, layout) {
         super._init();
         let pixbuf = GdkPixbuf.Pixbuf.new_from_file_at_size(file, width, height);
         this._image = new Gtk.Image({ pixbuf: pixbuf });
-        this._label = new Gtk.Label({ label: label });
-        this.layoutEnum = layoutEnum;
+        this.name = name;
+        this._label = new Gtk.Label({ label: this.name });
+        this.layout = layout;
 
         this._vbox = new Gtk.Box({ orientation: Gtk.Orientation.VERTICAL });
         this._vbox.add(this._image);

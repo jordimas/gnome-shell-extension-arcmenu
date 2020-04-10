@@ -2258,7 +2258,7 @@ var AppearancePage = GObject.registerClass(
                 tooltip_text: _("Choose from a variety of menu layouts")
             });
             layoutButton.connect('clicked', () => {
-                let dialog = new ArcMenuLayoutWindow(this._settings, this);
+                let dialog = new MenuLayoutsWindow(this._settings, this);
                 dialog.show_all();
                 dialog.connect('response', (response) => { 
                     if(dialog.get_response()) {
@@ -2365,9 +2365,11 @@ var AppearancePage = GObject.registerClass(
     }
 
     getMenuLayoutName(index){
-        for(let style of Constants.MENU_STYLE_CHOOSER.Styles){
-            if(style.layoutEnum == index){
-                return style.name;
+        for(let styles of Constants.MENU_STYLES.Styles){
+            for(let style of styles.layoutStyle){
+                if(style.layout == index){
+                    return style.name;
+                }
             }
         }
     }
@@ -2406,9 +2408,8 @@ var AppearancePage = GObject.registerClass(
 });
 
 //Dialog Window for Arc Menu Customization    
-var ArcMenuLayoutWindow = GObject.registerClass(
-    class ArcMenu_ArcMenuLayoutWindow extends PW.DialogWindow {
-
+var MenuLayoutsWindow = GObject.registerClass(
+    class ArcMenu_MenuLayoutsWindow extends PW.DialogWindow {
         _init(settings, parent) {
             this._settings = settings;
             this.addResponse = false;
@@ -2416,16 +2417,15 @@ var ArcMenuLayoutWindow = GObject.registerClass(
             
             this._params = {
                 title: _("Menu style chooser"),
-                height: Constants.MENU_STYLE_CHOOSER.WindowHeight,
-                width: Constants.MENU_STYLE_CHOOSER.WindowWidth,
-                maxColumns: Constants.MENU_STYLE_CHOOSER.MaxColumns,
-                thumbnailHeight: Constants.MENU_STYLE_CHOOSER.ThumbnailHeight,
-                thumbnailWidth: Constants.MENU_STYLE_CHOOSER.ThumbnailWidth,
-                styles: Constants.MENU_STYLE_CHOOSER.Styles
+                maxColumns: Constants.MENU_STYLES.MaxColumns,
+                thumbnailHeight: Constants.MENU_STYLES.ThumbnailHeight,
+                thumbnailWidth: Constants.MENU_STYLES.ThumbnailWidth,
+                styles: Constants.MENU_STYLES.Styles
             };
             this._tileGrid = new PW.TileGrid(this._params.maxColumns);
-            super._init(_('Menu Layout'), parent);
-            this.resize(725,480);
+            super._init(_('Menu Layouts'), parent);
+            this.resize(750, 525);
+            this.halign = Gtk.Align.FILL;
         }
 
         _createLayout(vbox) {         
@@ -2435,7 +2435,71 @@ var ArcMenuLayoutWindow = GObject.registerClass(
 
             //Add each menu layout to frame
             this._params.styles.forEach((style) => {
-                this._addTile(style.name, Me.path + style.thumbnail, style.layoutEnum);
+                this._addTile(style.name, Me.path + style.thumbnail, style.layoutStyle);
+            });
+            this._scrolled.add(this._tileGrid);
+            vbox.add(this._scrolled);
+
+            this._tileGrid.set_selection_mode(Gtk.SelectionMode.SINGLE);
+
+            this.show();
+
+        }
+
+        _addTile(name, thumbnail, layoutStyle) {
+            let tile = new PW.Tile(name, thumbnail, this._params.thumbnailWidth, this._params.thumbnailHeight, layoutStyle);
+            this._tileGrid.add(tile);
+           
+            tile.connect('clicked', ()=> {
+                let dialog = new MenuLayoutsDialog(this._settings, this, tile);
+                dialog.show_all();
+                dialog.connect('response', (response) => { 
+                    if(dialog.get_response()) {
+                        this.index = dialog.index;
+                        this.addResponse = true;
+                        this.response(-10);
+                        dialog.destroy();
+                    }
+                    else
+                        dialog.destroy();
+                }); 
+            });
+        }
+
+        get_response(){
+            return this.addResponse;
+        }
+});
+
+//Dialog Window for Arc Menu Customization    
+var MenuLayoutsDialog = GObject.registerClass(
+    class ArcMenu_MenuLayoutsDialog extends PW.DialogWindow {
+        _init(settings, parent, tile) {
+            this._settings = settings;
+            this.addResponse = false;
+            this.index = this._settings.get_enum('menu-layout');
+            this.layoutStyle = tile.layout;
+
+            this._params = {
+                title: _("Traditional Menu Layouts"),
+                maxColumns: tile.layout.length > 2 ? 3 : 2,
+                thumbnailHeight: 155,
+                thumbnailWidth: 155,
+                styles: tile.layout
+            };
+            this._tileGrid = new PW.TileGrid(this._params.maxColumns);
+            super._init(_(tile.name + " " + _("Layouts")), parent);
+            this.resize(675, 465);
+        }
+
+        _createLayout(vbox) {         
+            this._scrolled = new Gtk.ScrolledWindow();
+            this._scrolled.overlay_scrolling = false;
+            this._scrolled.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC);
+
+            //Add each menu layout to frame
+            this._params.styles.forEach((style) => {
+                this._addTile(style.name, Me.path + style.thumbnail, style.layout);
             });
             this._scrolled.add(this._tileGrid);
             vbox.add(this._scrolled);
@@ -2451,7 +2515,7 @@ var ArcMenuLayoutWindow = GObject.registerClass(
             });
             applyButton.connect('clicked', ()=> {
                 let selectedBox = this._tileGrid.get_selected_children();
-                this.index = selectedBox[0].get_child().layoutEnum;
+                this.index = selectedBox[0].get_child().layout;
                 this.addResponse = true;
                 this.response(-10);
             });
@@ -2460,7 +2524,7 @@ var ArcMenuLayoutWindow = GObject.registerClass(
             
             let children = this._tileGrid.get_children();
             for(let i = 0; i < children.length; i++){
-                if(children[i].get_child().layoutEnum === this.index){
+                if(children[i].get_child().layout === this.index){
                     this._tileGrid.select_child(children[i]);
                     break;
                 }
@@ -2469,8 +2533,8 @@ var ArcMenuLayoutWindow = GObject.registerClass(
             applyButton.set_sensitive(false); 
         }
 
-        _addTile(name, thumbnail, layoutEnum) {
-            let tile = new PW.Tile(name, thumbnail, this._params.thumbnailWidth, this._params.thumbnailHeight, layoutEnum);
+        _addTile(name, thumbnail, layout) {
+            let tile = new PW.Tile(name, thumbnail, this._params.thumbnailWidth, this._params.thumbnailHeight, layout);
             this._tileGrid.add(tile);
            
             tile.connect('clicked', ()=> {
@@ -2482,7 +2546,6 @@ var ArcMenuLayoutWindow = GObject.registerClass(
             return this.addResponse;
         }
 });
-
 
 //Dialog Window for Arc Menu Customization    
 var ArcMenuCustomizationWindow = GObject.registerClass(
