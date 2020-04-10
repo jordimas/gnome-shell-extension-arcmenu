@@ -68,6 +68,19 @@ function isTwoPanedLayout(layout){
                     || layout == Constants.MENU_LAYOUT.Mint || layout==Constants.MENU_LAYOUT.Budgie);
 }
 
+function getArraysEqual(a, b) {
+    if(a instanceof Array && b instanceof Array){
+        if (a.length !== b.length)
+            return false;
+        for(let i = 0; i < a.length; i++)
+            if (!getArraysEqual(a[i], b[i]))
+                return false;
+        return true;
+    } 
+    else
+        return a === b;
+}
+
 function createTooltip(button, widget, label, description){
     let lbl = label.clutter_text;
     lbl.get_allocation_box();

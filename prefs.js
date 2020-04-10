@@ -331,12 +331,13 @@ var AddAppsToPinnedListWindow = GObject.registerClass(
                 defaultApplicationShortcuts.push(["Network", "ArcMenu_Network", "ArcMenu_Network"]);
                 for(let i = 0;i < defaultApplicationShortcuts.length; i++) {
                     let frameRow = new PW.FrameBoxRow();
-                    frameRow._icon = getIconPath(defaultApplicationShortcuts[i]);
+                    
                     frameRow._name = _(defaultApplicationShortcuts[i][0]);
+                    frameRow._icon = defaultApplicationShortcuts[i][1];
                     frameRow._cmd = defaultApplicationShortcuts[i][2];
 
                     let iconImage = new Gtk.Image( {
-                        gicon: Gio.icon_new_for_string(frameRow._icon),
+                        gicon: Gio.icon_new_for_string(getIconPath(defaultApplicationShortcuts[i])),
                         pixel_size: 22
                     });
 
@@ -464,12 +465,12 @@ var AddAppsToPinnedListWindow = GObject.registerClass(
                 for(let i = 0;i < defaultApplicationShortcuts.length; i++) {
                     let frameRow = new PW.FrameBoxRow();
 
-                    frameRow._icon = getIconPath(defaultApplicationShortcuts[i]);                        
                     frameRow._name = _(defaultApplicationShortcuts[i][0]);
+                    frameRow._icon = defaultApplicationShortcuts[i][1];
                     frameRow._cmd = defaultApplicationShortcuts[i][2];
 
                     let iconImage = new Gtk.Image( {
-                        gicon: Gio.icon_new_for_string(frameRow._icon),
+                        gicon: Gio.icon_new_for_string(getIconPath(defaultApplicationShortcuts[i])),
                         pixel_size: 22
                     });
 
@@ -3904,7 +3905,8 @@ var DefaultDirectoriesPage = GObject.registerClass(
             tooltip_text: _("Restore the default Directory Shortcuts")
         });
 
-        resetButton.set_sensitive(true);
+        resetButton.set_sensitive(this.getSensitive());
+
         resetButton.connect('clicked', ()=> {
             this.savePinnedAppsButton.set_sensitive(true);
             softwareShortcutsFrame.remove_all_children();
@@ -3922,16 +3924,23 @@ var DefaultDirectoriesPage = GObject.registerClass(
             let array = [];
             for(let i = 0; i < softwareShortcutsFrame.count; i++) {
                 let frame = softwareShortcutsFrame.get_index(i);
-                array.push([frame._name,frame._icon, frame._cmd]);
+                array.push([frame._name, frame._icon, frame._cmd]);
             }
             this._settings.set_value('directory-shortcuts-list', new GLib.Variant('aas', array));
             this.savePinnedAppsButton.set_sensitive(false);
+            resetButton.set_sensitive(this.getSensitive());
         }); 
         this.savePinnedAppsButton.set_halign(Gtk.Align.END);
         this.savePinnedAppsButton.set_sensitive(false);
         buttonRow.add(resetButton);
         buttonRow.add(this.savePinnedAppsButton);
         this.add(buttonRow);
+    }
+
+    getSensitive(){
+        let defaultShortcuts = this._settings.get_default_value('directory-shortcuts-list').deep_unpack();
+        let currentShortcuts = this._settings.get_value('directory-shortcuts-list').deep_unpack();
+        return !Utils.getArraysEqual(defaultShortcuts, currentShortcuts);
     }
 
     _loadPinnedApps(applicationShortcuts,softwareShortcutsFrame){
@@ -3944,11 +3953,11 @@ var DefaultDirectoriesPage = GObject.registerClass(
 
             let frameRow = new PW.FrameBoxRow();
             frameRow._name = applicationName;
-            frameRow._icon = getIconPath(applicationShortcuts[i]);   
+            frameRow._icon = applicationShortcuts[i][1];   
        
             frameRow._cmd = applicationShortcuts[i][2];
             let applicationIcon = new Gtk.Image( {
-                gicon: Gio.icon_new_for_string(frameRow._icon),
+                gicon: Gio.icon_new_for_string(getIconPath(applicationShortcuts[i])),
                 pixel_size: 22
             });
             let applicationImageBox = new Gtk.VBox({
@@ -4162,7 +4171,9 @@ var ApplicationShortcutsPage = GObject.registerClass(
             label: _("Restore Defaults"),
             tooltip_text: _("Restore the default Application Shortcuts")
         });   
-        resetButton.set_sensitive(true);
+
+        resetButton.set_sensitive(this.getSensitive());
+
         resetButton.connect('clicked', ()=> {
             this.savePinnedAppsButton.set_sensitive(true);
             softwareShortcutsFrame.remove_all_children();
@@ -4184,12 +4195,19 @@ var ApplicationShortcutsPage = GObject.registerClass(
             }
             this._settings.set_value('application-shortcuts-list', new GLib.Variant('aas', array));
             this.savePinnedAppsButton.set_sensitive(false);
+            resetButton.set_sensitive(this.getSensitive());
         }); 
         this.savePinnedAppsButton.set_halign(Gtk.Align.END);
         this.savePinnedAppsButton.set_sensitive(false);
         buttonRow.add(resetButton);
         buttonRow.add(this.savePinnedAppsButton);
         this.add(buttonRow);
+    }
+
+    getSensitive(){
+        let defaultShortcuts = this._settings.get_default_value('application-shortcuts-list').deep_unpack();
+        let currentShortcuts = this._settings.get_value('application-shortcuts-list').deep_unpack();
+        return !Utils.getArraysEqual(defaultShortcuts, currentShortcuts);
     }
 
     _loadPinnedApps(applicationShortcuts,softwareShortcutsFrame){
