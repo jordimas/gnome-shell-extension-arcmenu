@@ -214,7 +214,7 @@ var LAUNCHER_MENU_STYLE = [
     { thumbnail: '/media/layouts/krunner-menu.svg', name: 'KRunner Style', layout: MENU_LAYOUT.Runner},
     { thumbnail: '/media/layouts/gnome-dash-menu.svg', name: 'GNOME Dash Style', layout: MENU_LAYOUT.GnomeDash}];
 
-var SIMPLE_MENU_STYLE = [   
+var CLEAN_MENU_STYLE = [   
     { thumbnail: '/media/layouts/simple-menu.svg', name: 'Simple Menu Style', layout: MENU_LAYOUT.Simple},
     { thumbnail: '/media/layouts/simple-menu-2.svg', name: 'Simple Menu 2 Style', layout: MENU_LAYOUT.Simple2}];
 
@@ -226,22 +226,20 @@ var MENU_STYLES = {
     ThumbnailWidth: 200,
     MaxColumns: 6,
     Styles: [ 
-        { thumbnail: '/media/layouts/traditional.svg', name: 'Traditional Layouts', layoutStyle: TRADITIONAL_MENU_STYLE, 
+        { thumbnail: '/media/layouts/categories/traditional-symbolic.svg', name: 'Traditional Layouts', layoutStyle: TRADITIONAL_MENU_STYLE, 
                 description: _("Traditional layouts use a familiar style and have a traditional user experience.")},
-        { thumbnail: '/media/layouts/modern.svg', name: 'Modern Layouts', layoutStyle: MODERN_MENU_STYLE, 
+        { thumbnail: '/media/layouts/categories/modern-symbolic.svg', name: 'Modern Layouts', layoutStyle: MODERN_MENU_STYLE, 
                 description: _("Modern layouts use a familiar style and have a traditional user experience.")},
-        { thumbnail: '/media/layouts/touch.svg', name: 'Touch Layouts', layoutStyle: TOUCH_MENU_STYLE, 
+        { thumbnail: '/media/layouts/categories/touch-symbolic.svg', name: 'Touch Layouts', layoutStyle: TOUCH_MENU_STYLE, 
                 description: _("Touch layouts use a familiar style and have a traditional user experience.")},
-        { thumbnail: '/media/layouts/simple.svg', name: 'Simple Layouts', layoutStyle: SIMPLE_MENU_STYLE, 
+        { thumbnail: '/media/layouts/categories/clean-symbolic.svg', name: 'Clean Layouts', layoutStyle: CLEAN_MENU_STYLE, 
                 description: _("Simple layouts use a familiar style and have a traditional user experience.")},
-        { thumbnail: '/media/layouts/launcher.svg', name: 'Launcher Layouts', layoutStyle: LAUNCHER_MENU_STYLE, 
+        { thumbnail: '/media/layouts/categories/launcher-symbolic.svg', name: 'Launcher Layouts', layoutStyle: LAUNCHER_MENU_STYLE, 
                 description: _("Launcher layouts use a familiar style and have a traditional user experience.")},
-        { thumbnail: '/media/layouts/alternative.svg', name: 'Alternative Layouts', layoutStyle: ALTERNATIVE_MENU_STYLE, 
+        { thumbnail: '/media/layouts/categories/alternative-symbolic.svg', name: 'Alternative Layouts', layoutStyle: ALTERNATIVE_MENU_STYLE, 
                 description: _("Alternative layouts use a familiar style and have a traditional user experience.")}
     ]
 };
-
-
 
 var ARCMENU_MANUAL_URL = "https://gitlab.com/LinxGem33/Neon/-/raw/master/arc-menu-manual/arcmenu-user-manual.pdf"
 

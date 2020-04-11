@@ -209,7 +209,7 @@ var LayoutTile = GObject.registerClass(class ArcMenu_LayoutTile extends Gtk.Box{
             this.layoutList += "•   " + style.name + "\n";
         });
 
-        let pixbuf = GdkPixbuf.Pixbuf.new_from_file_at_size(file, width, height);
+        let pixbuf = GdkPixbuf.Pixbuf.new_from_file_at_scale(file, width, height, false);
         this._image = new Gtk.Image({ pixbuf: pixbuf });
         this.add(this._image);
 
