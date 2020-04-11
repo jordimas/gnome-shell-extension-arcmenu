@@ -222,7 +222,7 @@ var ALTERNATIVE_MENU_STYLE = [
     { thumbnail: '/media/layouts/raven-menu.svg', name: 'Raven Menu Style', layout: MENU_LAYOUT.Raven}];
 
 var MENU_STYLES = {
-    ThumbnailHeight: 200,
+    ThumbnailHeight: 160,
     ThumbnailWidth: 200,
     MaxColumns: 6,
     Styles: [ 

@@ -238,7 +238,8 @@ var LayoutTile = GObject.registerClass(class ArcMenu_LayoutTile extends Gtk.Box{
 
         this.add(this._hbox);
         
-        this.margin=1;
+        this.margin = 1;
+        this.spacing = 10;
    }
 });
 

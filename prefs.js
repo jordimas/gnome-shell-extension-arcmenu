@@ -2423,6 +2423,9 @@ var MenuLayoutsWindow = GObject.registerClass(
                 styles: Constants.MENU_STYLES.Styles
             };
             this._tileGrid = new PW.TileGrid(this._params.maxColumns);
+            this._tileGrid.column_spacing = 15;
+            this._tileGrid.row_spacing = 15;
+            this._tileGrid.valign = Gtk.Align.CENTER;
             super._init(_('Menu Layouts'), parent);
             this.resize(750, 525);
             this.halign = Gtk.Align.FILL;
