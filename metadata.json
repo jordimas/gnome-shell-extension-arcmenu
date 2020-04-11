@@ -5,7 +5,7 @@
     "gettext-domain": "arc-menu",
     "name": "Arc Menu",
     "description": "A Dynamic, Traditional, Modern Menu for GNOME",
-    "version": 45.1,
+    "version": 45.2,
     "shell-version": [  
       "3.36"
     ],
