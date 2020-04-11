@@ -2468,13 +2468,12 @@ var MenuLayoutsWindow = GObject.registerClass(
             });
             tile.infoButton.connect('clicked', ()=> {
                 let dialog = new Gtk.MessageDialog({
-                    title: tile.name,
                     text: tile.info,
                     use_markup: true,
                     secondary_text: tile.layoutList,
                     secondary_use_markup: true,
                     buttons: Gtk.ButtonsType.OK,
-                    message_type: Gtk.MessageType.INFO,
+                    message_type: Gtk.MessageType.OTHER,
                     transient_for: this.get_toplevel(),
                     modal: true
                 });

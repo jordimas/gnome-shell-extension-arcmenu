@@ -202,7 +202,7 @@ var LayoutTile = GObject.registerClass(class ArcMenu_LayoutTile extends Gtk.Box{
         super._init({orientation: Gtk.Orientation.VERTICAL});
         this.name = name;
         this.layout = layout.layoutStyle;
-        this.info = layout.description + "\n\n" + _("Included Layouts") + ":";
+        this.info = "<b>"+ this.name + "</b>\n\n" +layout.description + "\n\n" + _("Included Layouts") + ":";
         
         this.layoutList = "";
         this.layout.forEach((style) => {
