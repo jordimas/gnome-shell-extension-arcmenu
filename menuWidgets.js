@@ -788,7 +788,7 @@ var CategoryMenuButton = class ArcMenu_CategoryMenuButton extends SessionButton 
         }  
         else{
             name = category.get_name();
-            icon = category.get_icon().to_string();
+            icon = category.get_icon() ? category.get_icon().to_string() : null;
         }    
         super(button, _(name), icon);
         this._name = name;
@@ -1729,7 +1729,7 @@ var CategoryMenuItem = GObject.registerClass(class ArcMenu_CategoryMenuItem exte
         }  
         else{
             this._name = this._category.get_name();
-            this._icon.icon_name = this._category.get_icon().to_string();
+            this._icon.icon_name = this._category.get_icon() ? this._category.get_icon().to_string() : null;
         }            
         this.actor.add_child(this._icon);
         
@@ -1834,7 +1834,7 @@ var SimpleMenuItem = GObject.registerClass(class ArcMenu_SimpleMenuItem extends 
         }  
         else{
             this._name = this._category.get_name();
-            this._icon.icon_name = this._category.get_icon().to_string();
+            this._icon.icon_name = this._category.get_icon() ? this._category.get_icon().to_string() : null;
         }           
 
         this.actor.add_child(this._icon);
@@ -2014,7 +2014,7 @@ var CategorySubMenuItem = GObject.registerClass(class ArcMenu_CategorySubMenuIte
         }  
         else{
             this.name = this._category.get_name();
-            this.icon.icon_name = this._category.get_icon().to_string();
+            this.icon.icon_name = this._category.get_icon() ? this._category.get_icon().to_string() : null;
         }           
 
         this.label.text = this.name;
