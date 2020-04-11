@@ -204,7 +204,6 @@ var TRADITIONAL_MENU_STYLE = [
 var MODERN_MENU_STYLE = [   
     { thumbnail: '/media/layouts/windows-10.svg', name: 'Windows 10 Style', layout: MENU_LAYOUT.Windows},
     { thumbnail: '/media/layouts/ubuntu-dash-menu.svg', name: 'Ubuntu Dash Style', layout: MENU_LAYOUT.UbuntuDash},
-    { thumbnail: '/media/layouts/raven-menu.svg', name: 'Raven Menu Style', layout: MENU_LAYOUT.Raven},
     { thumbnail: '/media/layouts/redmond-style-menu.svg', name: 'Redmond Menu Style', layout: MENU_LAYOUT.Redmond}];
 
 var TOUCH_MENU_STYLE = [   
@@ -219,16 +218,26 @@ var SIMPLE_MENU_STYLE = [
     { thumbnail: '/media/layouts/simple-menu.svg', name: 'Simple Menu Style', layout: MENU_LAYOUT.Simple},
     { thumbnail: '/media/layouts/simple-menu-2.svg', name: 'Simple Menu 2 Style', layout: MENU_LAYOUT.Simple2}];
 
+var ALTERNATIVE_MENU_STYLE = [   
+    { thumbnail: '/media/layouts/raven-menu.svg', name: 'Raven Menu Style', layout: MENU_LAYOUT.Raven}];
+
 var MENU_STYLES = {
     ThumbnailHeight: 200,
     ThumbnailWidth: 200,
     MaxColumns: 6,
     Styles: [ 
-        { thumbnail: '/media/layouts/traditional.svg', name: 'Traditional Layouts', layoutStyle: TRADITIONAL_MENU_STYLE},
-        { thumbnail: '/media/layouts/modern.svg', name: 'Modern Layouts', layoutStyle: MODERN_MENU_STYLE},
-        { thumbnail: '/media/layouts/touch.svg', name: 'Touch Layouts', layoutStyle: TOUCH_MENU_STYLE},
-        { thumbnail: '/media/layouts/simple.svg', name: 'Simple Layouts', layoutStyle: SIMPLE_MENU_STYLE},
-        { thumbnail: '/media/layouts/launcher.svg', name: 'Launcher Layouts', layoutStyle: LAUNCHER_MENU_STYLE}
+        { thumbnail: '/media/layouts/traditional.svg', name: 'Traditional Layouts', layoutStyle: TRADITIONAL_MENU_STYLE, 
+                description: _("Traditional layouts use a familiar style and have a traditional user experience.")},
+        { thumbnail: '/media/layouts/modern.svg', name: 'Modern Layouts', layoutStyle: MODERN_MENU_STYLE, 
+                description: _("Modern layouts use a familiar style and have a traditional user experience.")},
+        { thumbnail: '/media/layouts/touch.svg', name: 'Touch Layouts', layoutStyle: TOUCH_MENU_STYLE, 
+                description: _("Touch layouts use a familiar style and have a traditional user experience.")},
+        { thumbnail: '/media/layouts/simple.svg', name: 'Simple Layouts', layoutStyle: SIMPLE_MENU_STYLE, 
+                description: _("Simple layouts use a familiar style and have a traditional user experience.")},
+        { thumbnail: '/media/layouts/launcher.svg', name: 'Launcher Layouts', layoutStyle: LAUNCHER_MENU_STYLE, 
+                description: _("Launcher layouts use a familiar style and have a traditional user experience.")},
+        { thumbnail: '/media/layouts/alternative.svg', name: 'Alternative Layouts', layoutStyle: ALTERNATIVE_MENU_STYLE, 
+                description: _("Alternative layouts use a familiar style and have a traditional user experience.")}
     ]
 };
 

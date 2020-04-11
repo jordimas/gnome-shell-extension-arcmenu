@@ -20,8 +20,10 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
+const Me = imports.misc.extensionUtils.getCurrentExtension();
 const {GdkPixbuf, Gio, GLib, GObject, Gtk} = imports.gi;
+const Gettext = imports.gettext.domain(Me.metadata['gettext-domain']);
+const _ = Gettext.gettext;
 
 var Notebook = GObject.registerClass(class ArcMenu_Notebook extends Gtk.Notebook{
     _init() {
@@ -179,7 +181,7 @@ var TileGrid = GObject.registerClass(class ArcMenu_TileGrid extends Gtk.FlowBox{
 });
 
 var Tile = GObject.registerClass(class ArcMenu_Tile extends Gtk.Button{
-     _init(name, file, width, height, layout) {
+    _init(name, file, width, height, layout) {
         super._init();
         let pixbuf = GdkPixbuf.Pixbuf.new_from_file_at_size(file, width, height);
         this._image = new Gtk.Image({ pixbuf: pixbuf });
@@ -194,3 +196,49 @@ var Tile = GObject.registerClass(class ArcMenu_Tile extends Gtk.Button{
         this.margin=1;
     }
 });
+
+var LayoutTile = GObject.registerClass(class ArcMenu_LayoutTile extends Gtk.Box{
+    _init(name, file, width, height, layout) {
+        super._init({orientation: Gtk.Orientation.VERTICAL});
+        this.name = name;
+        this.layout = layout.layoutStyle;
+        this.info = layout.description + "\n\n" + _("Included Layouts") + ":";
+        
+        this.layoutList = "";
+        this.layout.forEach((style) => {
+            this.layoutList += "•   " + style.name + "\n";
+        });
+
+        let pixbuf = GdkPixbuf.Pixbuf.new_from_file_at_size(file, width, height);
+        this._image = new Gtk.Image({ pixbuf: pixbuf });
+        this.add(this._image);
+
+        this._hbox = new Gtk.Box({ 
+            orientation: Gtk.Orientation.HORIZONTAL,
+            spacing: 10,
+            homogeneous: false,
+            margin: 5 
+        });
+        this.layoutButton = new Gtk.Button({
+            label: this.name,
+            halign: Gtk.Align.FILL,
+            hexpand: true,
+            tooltip_text: _("Browse all") + " " + this.name
+        });
+        this._hbox.add(this.layoutButton);
+
+        pixbuf = GdkPixbuf.Pixbuf.new_from_file_at_size(Me.path + '/media/misc/info-circle.svg', 20, 20);
+        let infoImage = new Gtk.Image({ pixbuf: pixbuf });
+        this.infoButton = new Gtk.Button({
+            image: infoImage,
+            halign: Gtk.Align.END,
+            tooltip_text: this.name + " " + _("Information")
+        });
+        this._hbox.add(this.infoButton);
+
+        this.add(this._hbox);
+        
+        this.margin=1;
+   }
+});
+

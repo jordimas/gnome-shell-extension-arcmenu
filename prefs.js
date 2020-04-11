@@ -2435,22 +2435,21 @@ var MenuLayoutsWindow = GObject.registerClass(
 
             //Add each menu layout to frame
             this._params.styles.forEach((style) => {
-                this._addTile(style.name, Me.path + style.thumbnail, style.layoutStyle);
+                this._addTile(style.name, Me.path + style.thumbnail, style);
             });
             this._scrolled.add(this._tileGrid);
             vbox.add(this._scrolled);
 
-            this._tileGrid.set_selection_mode(Gtk.SelectionMode.SINGLE);
+            this._tileGrid.set_selection_mode(Gtk.SelectionMode.NONE);
 
             this.show();
-
         }
 
         _addTile(name, thumbnail, layoutStyle) {
-            let tile = new PW.Tile(name, thumbnail, this._params.thumbnailWidth, this._params.thumbnailHeight, layoutStyle);
+            let tile = new PW.LayoutTile(name, thumbnail, this._params.thumbnailWidth, this._params.thumbnailHeight, layoutStyle);
             this._tileGrid.add(tile);
            
-            tile.connect('clicked', ()=> {
+            tile.layoutButton.connect('clicked', ()=> {
                 let dialog = new MenuLayoutsDialog(this._settings, this, tile);
                 dialog.show_all();
                 dialog.connect('response', (response) => { 
@@ -2463,6 +2462,21 @@ var MenuLayoutsWindow = GObject.registerClass(
                     else
                         dialog.destroy();
                 }); 
+            });
+            tile.infoButton.connect('clicked', ()=> {
+                let dialog = new Gtk.MessageDialog({
+                    title: tile.name,
+                    text: tile.info,
+                    use_markup: true,
+                    secondary_text: tile.layoutList,
+                    secondary_use_markup: true,
+                    buttons: Gtk.ButtonsType.OK,
+                    message_type: Gtk.MessageType.INFO,
+                    transient_for: this.get_toplevel(),
+                    modal: true
+                });
+                dialog.connect ('response', ()=> dialog.destroy());
+                dialog.show();
             });
         }
 
@@ -2482,13 +2496,13 @@ var MenuLayoutsDialog = GObject.registerClass(
 
             this._params = {
                 title: _("Traditional Menu Layouts"),
-                maxColumns: tile.layout.length > 2 ? 3 : 2,
+                maxColumns: tile.layout.length > 3 ? 3 : tile.layout.length,
                 thumbnailHeight: 155,
                 thumbnailWidth: 155,
                 styles: tile.layout
             };
             this._tileGrid = new PW.TileGrid(this._params.maxColumns);
-            super._init(_(tile.name + " " + _("Layouts")), parent);
+            super._init(_(tile.name), parent);
             this.resize(675, 465);
         }
 
@@ -4926,7 +4940,6 @@ var AboutPage = GObject.registerClass(
             manualBox.add(projectManualLinkButton);
             linksBox.add(gitLabBox);
             linksBox.add(manualBox);
-            
             
             this.creditsScrollWindow = new Gtk.ScrolledWindow();
             this.creditsScrollWindow.set_policy(Gtk.PolicyType.AUTOMATIC, Gtk.PolicyType.AUTOMATIC);
