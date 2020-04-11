@@ -214,7 +214,7 @@ var LAUNCHER_MENU_STYLE = [
     { thumbnail: '/media/layouts/krunner-menu.svg', name: 'KRunner Style', layout: MENU_LAYOUT.Runner},
     { thumbnail: '/media/layouts/gnome-dash-menu.svg', name: 'GNOME Dash Style', layout: MENU_LAYOUT.GnomeDash}];
 
-var CLEAN_MENU_STYLE = [   
+var SIMPLE_MENU_STYLE = [   
     { thumbnail: '/media/layouts/simple-menu.svg', name: 'Simple Menu Style', layout: MENU_LAYOUT.Simple},
     { thumbnail: '/media/layouts/simple-menu-2.svg', name: 'Simple Menu 2 Style', layout: MENU_LAYOUT.Simple2}];
 
@@ -229,15 +229,15 @@ var MENU_STYLES = {
         { thumbnail: '/media/layouts/categories/traditional-symbolic.svg', name: 'Traditional Layouts', layoutStyle: TRADITIONAL_MENU_STYLE, 
                 description: _("Traditional layouts use a familiar style and have a traditional user experience.")},
         { thumbnail: '/media/layouts/categories/modern-symbolic.svg', name: 'Modern Layouts', layoutStyle: MODERN_MENU_STYLE, 
-                description: _("Modern layouts use a familiar style and have a traditional user experience.")},
+                description: _("Modern layouts use a style and UX based approach with a focus on design and functionality.")},
         { thumbnail: '/media/layouts/categories/touch-symbolic.svg', name: 'Touch Layouts', layoutStyle: TOUCH_MENU_STYLE, 
-                description: _("Touch layouts use a familiar style and have a traditional user experience.")},
-        { thumbnail: '/media/layouts/categories/clean-symbolic.svg', name: 'Clean Layouts', layoutStyle: CLEAN_MENU_STYLE, 
-                description: _("Simple layouts use a familiar style and have a traditional user experience.")},
+                description: _("Touch layouts contain large menu elements that are well suited for touch based devices.")},
+        { thumbnail: '/media/layouts/categories/simple-symbolic.svg', name: 'Simple Layouts', layoutStyle: SIMPLE_MENU_STYLE, 
+                description: _("Simple layouts are designed for mouse based devices and contain simplistic menu elements.")},
         { thumbnail: '/media/layouts/categories/launcher-symbolic.svg', name: 'Launcher Layouts', layoutStyle: LAUNCHER_MENU_STYLE, 
-                description: _("Launcher layouts use a familiar style and have a traditional user experience.")},
+                description: _("Launcher layouts are well suited for keyboard driven devices and provide the user with quick and simple menu elements.")},
         { thumbnail: '/media/layouts/categories/alternative-symbolic.svg', name: 'Alternative Layouts', layoutStyle: ALTERNATIVE_MENU_STYLE, 
-                description: _("Alternative layouts use a familiar style and have a traditional user experience.")}
+                description: _("Alternative layouts have an unconventional style that provide a unique user experience.")}
     ]
 };
 
