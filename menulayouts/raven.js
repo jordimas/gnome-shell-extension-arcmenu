@@ -208,10 +208,12 @@ var createMenu = class extends BaseMenuLayout.BaseLayout{
         let homeScreen = this._settings.get_boolean('enable-ubuntu-homescreen');
         if(homeScreen){
             this.activeCategory = _("Pinned Apps");
+            this.currentMenu = Constants.CURRENT_MENU.FAVORITES;
             this.displayFavorites();
         }
         else{
             this.activeCategory = _("All Programs");
+            this.currentMenu = Constants.CURRENT_MENU.CATEGORY_APPLIST;
             this.displayAllApps();   
         }
     }
@@ -257,8 +259,8 @@ var createMenu = class extends BaseMenuLayout.BaseLayout{
 
     displayFavorites() {
         this._clearActorsFromBox();
-        this._displayAppList(this.favoritesArray, 1);
-        this._displayAppList(this.appShortcuts, 1, this.shortcutsGrid);
+        this._displayAppList(this.favoritesArray, true);
+        this._displayAppList(this.appShortcuts, true, this.shortcutsGrid);
         if(!this.applicationsBox.contains(this.shortcutsBox))
             this.applicationsBox.add(this.shortcutsBox);
         let actors = this.weatherBox.get_children();
@@ -282,7 +284,11 @@ var createMenu = class extends BaseMenuLayout.BaseLayout{
         super._clearActorsFromBox(box);
     }
 
-    _displayAppList(apps, isFavoriteMenuItem = false, differentGrid = null){      
+    _displayAppList(apps, isFavoriteMenuItem = false, differentGrid = null){  
+        if(!isFavoriteMenuItem)
+            this.currentMenu = Constants.CURRENT_MENU.CATEGORY_APPLIST;
+        else
+            this.currentMenu = Constants.CURRENT_MENU.FAVORITES;    
         let grid = differentGrid ? differentGrid : this.grid;  
         grid.remove_all_children();
         super._displayAppGridList(apps, 3, isFavoriteMenuItem, differentGrid);

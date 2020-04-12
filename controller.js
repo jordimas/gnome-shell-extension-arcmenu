@@ -213,7 +213,7 @@ var MenuSettingsController = class {
             layout == Constants.MENU_LAYOUT.Windows || layout == Constants.MENU_LAYOUT.Raven){
             if(this._menuButton.getShouldLoadFavorites())
                 this._menuButton._loadFavorites();
-            if(this._menuButton.getCurrentMenu() == Constants.CURRENT_MENU.FAVORITES)
+            if(this._menuButton.getCurrentMenu() == Constants.CURRENT_MENU.FAVORITES || layout == Constants.MENU_LAYOUT.Windows)
                this._menuButton._displayFavorites();
         }
         if(layout == Constants.MENU_LAYOUT.Mint){
