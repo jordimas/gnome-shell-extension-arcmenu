@@ -108,6 +108,7 @@ var MenuSettingsController = class {
             this._settings.connect('changed::disable-user-avatar', this._reload.bind(this)),
             this._settings.connect('changed::enable-horizontal-flip', this._reload.bind(this)),
             this._settings.connect('changed::searchbar-location', this._reload.bind(this)),
+            this._settings.connect('changed::searchbar-location-redmond', this._reload.bind(this)),
             this._settings.connect('changed::menu-height', this._updateMenuHeight.bind(this)),
             this._settings.connect('changed::right-panel-width', this._updateMenuHeight.bind(this)),
             this._settings.connect('changed::reload-theme', this._reloadExtension.bind(this)),

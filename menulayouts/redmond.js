@@ -55,9 +55,9 @@ var createMenu = class extends BaseMenuLayout.BaseLayout{
             y_align: Clutter.ActorAlign.FILL,
             vertical: true
         });
-        this.subMainBox.add(this.searchBox.actor);
-        this.mainBox.add(this.subMainBox);
-
+        if(this._settings.get_enum('searchbar-location-redmond') === Constants.SearchbarLocation.TOP)
+            this.subMainBox.add(this.searchBox.actor);
+        
         this.applicationsBox = new St.BoxLayout({
             vertical: true
         });
@@ -88,7 +88,11 @@ var createMenu = class extends BaseMenuLayout.BaseLayout{
         this.applicationsScrollBox.add_actor(this.applicationsBox);
 
         this.subMainBox.add(this.applicationsScrollBox);
-
+        if(this._settings.get_enum('searchbar-location-redmond') === Constants.SearchbarLocation.BOTTOM){
+            this.searchBox.actor.style = "padding-top: 0.75em; padding-bottom: 0.25em; padding-left: 1em; padding-right: 0.25em; margin-right: .5em;";
+            this.subMainBox.add(this.searchBox.actor);
+        }
+            
         this.rightBox = new St.BoxLayout({
             y_align: Clutter.ActorAlign.FILL,
             y_expand: true,
@@ -215,8 +219,10 @@ var createMenu = class extends BaseMenuLayout.BaseLayout{
         this.rightBox.style = "width: " + rightPanelWidth + "px;";
         this.shortcutsScrollBox.style = "width: " + rightPanelWidth + "px;";
         
+        let horizonalFlip = this._settings.get_boolean("enable-horizontal-flip");
+        this.mainBox.add(horizonalFlip ? this.rightBox : this.subMainBox);
         this.mainBox.add(this._createVerticalSeparator());
-        this.mainBox.add(this.rightBox);  
+        this.mainBox.add(horizonalFlip ? this.subMainBox: this.rightBox);  
 
         this.loadCategories();
         this.displayAllApps();

@@ -574,7 +574,40 @@ var TweaksDialog = GObject.registerClass(
         }
         _loadRedmondMenuTweaks(vbox){
             let redmondMenuTweaksFrame = new PW.FrameBox();
+            let searchbarLocationRow = new PW.FrameBoxRow();
+            let searchbarLocationLabel = new Gtk.Label({
+                label: _("Searchbar Location"),
+                use_markup: true,
+                xalign: 0,
+                hexpand: true
+            });
+            let searchbarLocationCombo = new Gtk.ComboBoxText({ halign: Gtk.Align.END });
+            searchbarLocationCombo.append_text(_("Bottom"));
+            searchbarLocationCombo.append_text(_("Top"));
+            searchbarLocationCombo.set_active(this._settings.get_enum('searchbar-location-redmond'));
+            searchbarLocationCombo.connect('changed', (widget) => {
+                    this._settings.set_enum('searchbar-location-redmond', widget.get_active());
+            });
 
+            searchbarLocationRow.add(searchbarLocationLabel);
+            searchbarLocationRow.add(searchbarLocationCombo);
+            redmondMenuTweaksFrame.add(searchbarLocationRow);
+
+            let horizontalFlipRow = new PW.FrameBoxRow();
+            let horizontalFlipLabel = new Gtk.Label({
+                label: _("Flip Horizontally"),
+                use_markup: true,
+                xalign: 0,
+                hexpand: true
+            });
+            let horizontalFlipSwitch = new Gtk.Switch({ halign: Gtk.Align.END });
+            horizontalFlipSwitch.set_active(this._settings.get_boolean('enable-horizontal-flip'));
+            horizontalFlipSwitch.connect('notify::active', (widget) => {
+                this._settings.set_boolean('enable-horizontal-flip', widget.get_active());
+            });
+            horizontalFlipRow.add(horizontalFlipLabel);
+            horizontalFlipRow.add(horizontalFlipSwitch);
+            redmondMenuTweaksFrame.add(horizontalFlipRow);
             redmondMenuTweaksFrame.add(this._createAvatarShapeRow());
             redmondMenuTweaksFrame.add(this._disableAvatarRow());
 
