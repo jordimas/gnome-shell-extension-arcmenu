@@ -246,9 +246,9 @@ var AppRightClickMenu = class ArcMenu_AppRightClickMenu extends PopupMenu.PopupM
                         if(match){ //if app is pinned add Unpin
                             let item = new PopupMenu.PopupMenuItem(_("Unpin from Arc Menu"));  
                             item.connect('activate', ()=>{
+                                this.close();
                                 for(let i = 0;i<pinnedApps.length;i+=3){
                                     if(pinnedApps[i+2]==this._app.get_id()){
-                                        this.close();
                                         pinnedApps.splice(i,3);
                                         this._settings.set_strv('pinned-app-list',pinnedApps);
                                         break;
@@ -298,12 +298,11 @@ var AppRightClickMenu = class ArcMenu_AppRightClickMenu extends PopupMenu.PopupM
                 this._appendSeparator();
                 let item = new PopupMenu.PopupMenuItem(_("Unpin from Arc Menu"));   
                 item.connect('activate', ()=>{
+                    this.close();
                     let pinnedApps = this._settings.get_strv('pinned-app-list');
                     for(let i = 0;i<pinnedApps.length;i+=3){
                         if(pinnedApps[i+2]==this._app){
-                            this.close();
                             pinnedApps.splice(i,3);
-                            this._button.favoritesArray.splice(i / 3, 1);
                             this._settings.set_strv('pinned-app-list',pinnedApps);
                             break;
                         }

@@ -108,6 +108,7 @@ var MenuSettingsController = class {
             this._settings.connect('changed::disable-user-avatar', this._reload.bind(this)),
             this._settings.connect('changed::enable-horizontal-flip', this._reload.bind(this)),
             this._settings.connect('changed::searchbar-location', this._reload.bind(this)),
+            this._settings.connect('changed::searchbar-location-redmond', this._reload.bind(this)),
             this._settings.connect('changed::menu-height', this._updateMenuHeight.bind(this)),
             this._settings.connect('changed::right-panel-width', this._updateMenuHeight.bind(this)),
             this._settings.connect('changed::reload-theme', this._reloadExtension.bind(this)),
@@ -213,14 +214,9 @@ var MenuSettingsController = class {
             layout == Constants.MENU_LAYOUT.Windows || layout == Constants.MENU_LAYOUT.Raven){
             if(this._menuButton.getShouldLoadFavorites())
                 this._menuButton._loadFavorites();
-            if(this._menuButton.getCurrentMenu() == Constants.CURRENT_MENU.FAVORITES)
+            if(this._menuButton.getCurrentMenu() == Constants.CURRENT_MENU.FAVORITES || layout == Constants.MENU_LAYOUT.Windows)
                this._menuButton._displayFavorites();
         }
-        if(layout == Constants.MENU_LAYOUT.Mint){
-            if(this._menuButton.getShouldLoadFavorites())
-                this._menuButton._loadFavorites();
-        }
-
     }
 
     _updateButtonFavorites(){
