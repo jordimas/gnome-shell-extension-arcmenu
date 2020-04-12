@@ -2416,7 +2416,6 @@ var MenuLayoutsWindow = GObject.registerClass(
             this.index = this._settings.get_enum('menu-layout');
             
             this._params = {
-                title: _("Menu style chooser"),
                 maxColumns: Constants.MENU_STYLES.MaxColumns,
                 thumbnailHeight: Constants.MENU_STYLES.ThumbnailHeight,
                 thumbnailWidth: Constants.MENU_STYLES.ThumbnailWidth,
@@ -2497,7 +2496,6 @@ var MenuLayoutsDialog = GObject.registerClass(
             this.layoutStyle = tile.layout;
 
             this._params = {
-                title: _("Traditional Menu Layouts"),
                 maxColumns: tile.layout.length > 3 ? 3 : tile.layout.length,
                 thumbnailHeight: 155,
                 thumbnailWidth: 155,
