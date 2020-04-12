@@ -216,11 +216,6 @@ var MenuSettingsController = class {
             if(this._menuButton.getCurrentMenu() == Constants.CURRENT_MENU.FAVORITES || layout == Constants.MENU_LAYOUT.Windows)
                this._menuButton._displayFavorites();
         }
-        if(layout == Constants.MENU_LAYOUT.Mint){
-            if(this._menuButton.getShouldLoadFavorites())
-                this._menuButton._loadFavorites();
-        }
-
     }
 
     _updateButtonFavorites(){
