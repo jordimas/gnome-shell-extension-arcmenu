@@ -732,6 +732,7 @@ var SessionButton = class ArcMenu_SessionButton{
             iconSize = SMALL_ICON_SIZE;
         this._icon = new St.Icon({ 
             gicon: gicon ? gicon : Gio.icon_new_for_string(icon_name),
+            fallback_icon_name : icon_name,
             icon_size: iconSize
         });
 
@@ -769,6 +770,7 @@ var CategoryMenuButton = class ArcMenu_CategoryMenuButton extends SessionButton 
     constructor(button, category) {
         let name;
         let icon;
+        let gicon;
         if(category == Constants.CategoryType.FREQUENT_APPS){
             name = _("Frequent Apps");
             icon = 'emblem-favorite-symbolic';
@@ -787,9 +789,10 @@ var CategoryMenuButton = class ArcMenu_CategoryMenuButton extends SessionButton 
         }  
         else{
             name = category.get_name();
+            gicon = category.get_icon() ? category.get_icon() : null;
             icon = category.get_icon() ? category.get_icon().to_string() : null;
         }    
-        super(button, _(name), icon);
+        super(button, _(name), icon, gicon);
         this._name = name;
         this.appList = [];
         this.isRecentlyInstalled = false;
@@ -1728,7 +1731,8 @@ var CategoryMenuItem = GObject.registerClass(class ArcMenu_CategoryMenuItem exte
         }  
         else{
             this._name = this._category.get_name();
-            this._icon.icon_name = this._category.get_icon() ? this._category.get_icon().to_string() : null;
+            this._icon.gicon = this._category.get_icon() ? this._category.get_icon() : null;
+            this._icon.fallback_icon_name = this._category.get_icon() ? this._category.get_icon().to_string() : null;
         }            
         this.actor.add_child(this._icon);
         
@@ -1833,7 +1837,8 @@ var SimpleMenuItem = GObject.registerClass(class ArcMenu_SimpleMenuItem extends 
         }  
         else{
             this._name = this._category.get_name();
-            this._icon.icon_name = this._category.get_icon() ? this._category.get_icon().to_string() : null;
+            this._icon.gicon = this._category.get_icon() ? this._category.get_icon() : null;
+            this._icon.fallback_icon_name = this._category.get_icon() ? this._category.get_icon().to_string() : null;
         }           
 
         this.actor.add_child(this._icon);
@@ -2013,7 +2018,8 @@ var CategorySubMenuItem = GObject.registerClass(class ArcMenu_CategorySubMenuIte
         }  
         else{
             this.name = this._category.get_name();
-            this.icon.icon_name = this._category.get_icon() ? this._category.get_icon().to_string() : null;
+            this.icon.gicon = this._category.get_icon() ? this._category.get_icon() : null;
+            this.icon.fallback_icon_name = this._category.get_icon() ? this._category.get_icon().to_string() : null;
         }           
 
         this.label.text = this.name;
