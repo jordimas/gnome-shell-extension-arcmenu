@@ -237,10 +237,15 @@ var BaseLayout = class {
                             categoryMenuItem.appList.push(subdir);
                             this.applicationsMap.set(subdir, submenuItem);
                         }
-                        this._loadCategory(isIconGrid, categoryId, subdir, submenuItem);
+                        let recentlyInstallApp = this._loadCategory(isIconGrid, categoryId, subdir, submenuItem);
+                        if(recentlyInstallApp)
+                            foundRecentlyInstallApp = true;
+                        submenuItem.setRecentlyInstalledIndicator(foundRecentlyInstallApp);
                     }
                     else{
-                        this._loadCategory(isIconGrid, categoryId, subdir);
+                        let recentlyInstallApp = this._loadCategory(isIconGrid, categoryId, subdir);
+                        if(recentlyInstallApp)
+                            foundRecentlyInstallApp = true;
                     }
                 }    
             }
@@ -255,6 +260,15 @@ var BaseLayout = class {
                 for(let i = 0; i < categoryMenuItem.appList.length; i++){
                     categoryMenuItem.setRecentlyInstalledIndicator(false);
                     let item = this.applicationsMap.get(categoryMenuItem.appList[i]);
+                    if(item instanceof MW.CategorySubMenuItem){
+                        item.setRecentlyInstalledIndicator(false);
+                        for(let menuItem of item.applicationsMap.values()){
+                            if(menuItem.isRecentlyInstalled){
+                                item.setRecentlyInstalledIndicator(true);
+                                break;
+                            }
+                        }
+                    }
                     if(item.isRecentlyInstalled){
                         categoryMenuItem.setRecentlyInstalledIndicator(true);
                         break;
