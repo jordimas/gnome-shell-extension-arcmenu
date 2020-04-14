@@ -144,7 +144,7 @@ var createMenu = class extends BaseMenuLayout.BaseLayout{
 
         super.loadCategories();
         for(let categoryMenuItem of this.categoryDirectories.values()){
-            categoryMenuItem.actor.style = "padding: 10px 10px 10px 0; margin: 0; spacing: 0;";
+            categoryMenuItem.actor.style = "padding-top: 10px; padding-bottom: 10px; margin: 0; spacing: 0;";
             categoryMenuItem.actor.remove_actor(categoryMenuItem._icon);
             if(categoryMenuItem._arrowIcon)
                 categoryMenuItem.actor.remove_actor(categoryMenuItem._arrowIcon);

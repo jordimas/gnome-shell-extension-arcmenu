@@ -95,6 +95,7 @@ var MenuSettingsController = class {
             this._settings.connect('changed::remove-menu-arrow', this._updateStyle.bind(this)),
             this._settings.connect('changed::disable-searchbox-border', this._updateStyle.bind(this)),
             this._settings.connect('changed::indicator-color', this._updateStyle.bind(this)),
+            this._settings.connect('changed::indicator-text-color', this._updateStyle.bind(this)),
             this._settings.connect('changed::krunner-show-details', this._updateKRunnerSearchLayout.bind(this)),
             this._settings.connect('changed::directory-shortcuts-list', this._reload.bind(this)),
             this._settings.connect('changed::application-shortcuts-list', this._reload.bind(this)),

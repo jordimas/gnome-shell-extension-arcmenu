@@ -279,6 +279,11 @@
       <summary>Recently Installed Application Inidcator Color</summary>
       <description>Recently Installed Application Inidcator Color..</description>
     </key>
+    <key type="s" name="indicator-text-color">
+      <default>"rgba(196, 196, 196, 0.3)"</default>
+      <summary>Recently Installed Application Inidcator Text Background Color</summary>
+      <description>Recently Installed Application Inidcator Text Background Color..</description>
+    </key>
     <key type="b" name="enable-custom-arc-menu">
       <default>false</default>
       <summary>Enable Custom Arc Menu Theme</summary>

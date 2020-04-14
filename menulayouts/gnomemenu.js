@@ -135,7 +135,7 @@ var createMenu = class extends BaseMenuLayout.BaseLayout{
         super.loadCategories();
 
         for(let categoryMenuItem of this.categoryDirectories.values()){
-            categoryMenuItem.actor.style = "padding: 10px;";
+            categoryMenuItem.actor.style = "padding-top: 10px; padding-bottom: 10px;";
             categoryMenuItem.actor.remove_actor(categoryMenuItem._icon);
         }
     }

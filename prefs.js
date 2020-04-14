@@ -2122,6 +2122,7 @@ var AppearancePage = GObject.registerClass(
                         this._settings.set_int('right-panel-width', dialog.rightPanelWidth);
                         this._settings.set_string('separator-color',dialog.separatorColor);
                         this._settings.set_string('indicator-color',dialog.indicatorColor);
+                        this._settings.set_string('indicator-text-color',dialog.indicatorTextColor);
                         this._settings.set_boolean('vert-separator',dialog.verticalSeparator);
                         this._settings.set_boolean('enable-custom-arc-menu', dialog.customArcMenu); 
                         this._settings.set_string('menu-color',dialog.menuColor);
@@ -2573,6 +2574,7 @@ var ArcMenuCustomizationWindow = GObject.registerClass(
             this.menuWidth = this._settings.get_int('menu-width');
             this.separatorColor = this._settings.get_string('separator-color');
             this.indicatorColor = this._settings.get_string('indicator-color');
+            this.indicatorTextColor = this._settings.get_string('indicator-text-color');
             this.verticalSeparator = this._settings.get_boolean('vert-separator');
             this.customArcMenu = this._settings.get_boolean('enable-custom-arc-menu');
             this.menuColor = this._settings.get_string('menu-color');
@@ -2878,7 +2880,7 @@ var ArcMenuCustomizationWindow = GObject.registerClass(
             let appIndicatorColorFrame = new PW.FrameBox();
             let appIndicatorColorRow = new PW.FrameBoxRow();
             let appIndicatorColorLabel = new Gtk.Label({
-                label: _('New Application Indicator Color'),
+                label: _('New Application Indicator - Color'),
                 use_markup: true,
                 xalign: 0,
                 hexpand: true,
@@ -2886,7 +2888,7 @@ var ArcMenuCustomizationWindow = GObject.registerClass(
             });
             let appIndicatorColorChooser = new Gtk.ColorButton({
                 use_alpha: true,
-                tooltip_text: _("Change the color of the newly installed application indicator")
+                tooltip_text: _("Change the color of the newly installed application indicator dot")
             });     
             color = new Gdk.RGBA();
             color.parse(this.indicatorColor);
@@ -2899,6 +2901,30 @@ var ArcMenuCustomizationWindow = GObject.registerClass(
             appIndicatorColorRow.add(appIndicatorColorLabel);            
             appIndicatorColorRow.add(appIndicatorColorChooser);             
             appIndicatorColorFrame.add(appIndicatorColorRow);
+
+            let appIndicatorTextColorRow = new PW.FrameBoxRow();
+            let appIndicatorTextColorLabel = new Gtk.Label({
+                label: _('New Application Text - Background Color'),
+                use_markup: true,
+                xalign: 0,
+                hexpand: true,
+                selectable: false
+            });
+            let appIndicatorTextColorChooser = new Gtk.ColorButton({
+                use_alpha: true,
+                tooltip_text: _("Change the background color of the newly installed application indicator text")
+            });     
+            color = new Gdk.RGBA();
+            color.parse(this.indicatorTextColor);
+            appIndicatorTextColorChooser.set_rgba(color);    
+            appIndicatorTextColorChooser.connect('color-set', ()=>{
+                this.indicatorTextColor = appIndicatorTextColorChooser.get_rgba().to_string();
+                applyButton.set_sensitive(true);
+                resetButton.set_sensitive(true);
+            });
+            appIndicatorTextColorRow.add(appIndicatorTextColorLabel);            
+            appIndicatorTextColorRow.add(appIndicatorTextColorChooser);             
+            appIndicatorColorFrame.add(appIndicatorTextColorRow);
             fineTunePage.add(appIndicatorColorFrame);
 
             let gapAdjustmentFrame = new PW.FrameBox();
@@ -2941,6 +2967,7 @@ var ArcMenuCustomizationWindow = GObject.registerClass(
                     this.rightPanelWidth = 205;
                     this.separatorColor = "rgb(63,62,64)";
                     this.indicatorColor = "rgb(41, 165, 249)";
+                    this.indicatorTextColor = "rgba(196, 196, 196, 0.3)";
                     this.verticalSeparator = false;
                     this.largeIcons = false;
                     this.subMenus = false;
@@ -2962,6 +2989,8 @@ var ArcMenuCustomizationWindow = GObject.registerClass(
 
                     color.parse(this.indicatorColor);
                     appIndicatorColorChooser.set_rgba(color);
+                    color.parse(this.indicatorTextColor);
+                    appIndicatorTextColorChooser.set_rgba(color);
                     resetButton.set_sensitive(false);
                     applyButton.set_sensitive(true);               
             });
@@ -2986,8 +3015,9 @@ var ArcMenuCustomizationWindow = GObject.registerClass(
             return (this.heightValue != 550 ||
                 this.menuWidth != 290 ||
                 this.rightPanelWidth != 205 ||
-                this.separatorColor != "rgb(63,62,64)"||
-                this.indicatorColor != "rgb(41, 165, 249)"||
+                this.separatorColor !== "rgb(63,62,64)"||
+                this.indicatorColor !== "rgb(41, 165, 249)"||
+                this.indicatorTextColor !== "rgba(196, 196, 196, 0.3)"||
                 this.verticalSeparator != false||
                 this.subMenus != false ||
                 this.disableCategoryArrow != false ||
