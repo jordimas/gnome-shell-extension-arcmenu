@@ -100,20 +100,6 @@ function createTooltip(button, widget, label, description){
     } 
 }
 
-function _onPan(action, scrollbox) {
-    let [dist_, dx_, dy] = action.get_motion_delta(0);
-    let adjustment = scrollbox.get_vscroll_bar().get_adjustment();
-    adjustment.value -= (dy / scrollbox.height) * adjustment.page_size;
-    return false;
-}
-
-function _onPanEnd(action, scrollbox) {
-    let velocity = -action.get_velocity(0)[2];
-    let endPanValue = scrollbox.get_vscroll_bar().get_adjustment().value + velocity;
-    let adjustment = scrollbox.get_vscroll_bar().get_adjustment();
-    adjustment.value = endPanValue;
-}
-
 function getStylesheet(){
     let stylesheet = Gio.File.new_for_path(GLib.get_home_dir() + "/.local/share/arc-menu/stylesheet.css");
 
@@ -191,6 +177,7 @@ function createStylesheet(settings){
     let tooltipForegroundColor = customArcMenu ? "\n color:"+  menuForegroundColor+";\n" : "";
     let tooltipBackgroundColor = customArcMenu ? "\n background-color:"+lighten_rgb(menuColor,0.05)+";\n" : "";
     let indicatorColor = settings.get_string('indicator-color');
+    let indicatorTextBackgroundColor = settings.get_string('indicator-text-color');
         
     let tooltipStyle = customArcMenu ?   
         ("#tooltip-menu-item{border-color:"+  borderColor+ ";\n border: 1px;\nfont-size:"+fontSize+"pt;\n padding: 2px 5px;\n min-height: 0px;"
@@ -218,6 +205,7 @@ function createStylesheet(settings){
         +".arc-menu-action:hover, .arc-menu-action:focus {\ncolor:"+ lighten_rgb( menuForegroundColor,0.15)+";\n background-color:"+  highlightColor+";\n}\n"
 
         +".arc-menu-menu-item-indicator{color: " + indicatorColor + ";}\n"
+        +".arc-menu-menu-item-text-indicator{background-color: " + indicatorTextBackgroundColor + ";}\n"
 
         +tooltipStyle
 

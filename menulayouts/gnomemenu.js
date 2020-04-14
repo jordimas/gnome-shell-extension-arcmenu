@@ -92,7 +92,7 @@ var createMenu = class extends BaseMenuLayout.BaseLayout{
             x_expand: true,
             y_expand: true,
             x_fill: true,
-            y_fill: true,
+            y_fill: false,
             y_align: Clutter.ActorAlign.START,
             style_class: 'apps-menu vfade left-scroll-area',
             overlay_scrollbars: true
@@ -135,7 +135,7 @@ var createMenu = class extends BaseMenuLayout.BaseLayout{
         super.loadCategories();
 
         for(let categoryMenuItem of this.categoryDirectories.values()){
-            categoryMenuItem.actor.style = "padding: 10px;";
+            categoryMenuItem.actor.style = "padding-top: 10px; padding-bottom: 10px;";
             categoryMenuItem.actor.remove_actor(categoryMenuItem._icon);
         }
     }

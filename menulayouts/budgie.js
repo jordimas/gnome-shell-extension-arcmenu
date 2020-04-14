@@ -74,8 +74,8 @@ var createMenu = class extends BaseMenuLayout.BaseLayout{
 
         this.applicationsScrollBox = this._createScrollBox({
             x_fill: true,
-            y_fill: true,
-            y_align: Clutter.ActorAlign.FILL,
+            y_fill: false,
+            y_align: Clutter.ActorAlign.START,
             overlay_scrollbars: true,
             style_class: 'vfade'
         });  
@@ -103,9 +103,9 @@ var createMenu = class extends BaseMenuLayout.BaseLayout{
 
         this.categoriesScrollBox = this._createScrollBox({
             x_fill: true,
-            y_fill: true,
+            y_fill: false,
             x_expand: true,
-            y_expand: true,
+            y_expand: false,
             y_align: Clutter.ActorAlign.START,
             y_align: Clutter.ActorAlign.START,
             style_class: 'vfade',
@@ -144,7 +144,7 @@ var createMenu = class extends BaseMenuLayout.BaseLayout{
 
         super.loadCategories();
         for(let categoryMenuItem of this.categoryDirectories.values()){
-            categoryMenuItem.actor.style = "padding: 10px 10px 10px 0; margin: 0; spacing: 0;";
+            categoryMenuItem.actor.style = "padding-top: 10px; padding-bottom: 10px; margin: 0; spacing: 0;";
             categoryMenuItem.actor.remove_actor(categoryMenuItem._icon);
             if(categoryMenuItem._arrowIcon)
                 categoryMenuItem.actor.remove_actor(categoryMenuItem._arrowIcon);

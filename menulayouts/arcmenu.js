@@ -72,7 +72,7 @@ var createMenu = class extends BaseMenuLayout.BaseLayout{
         //Applications Box - Contains Favorites, Categories or programs
         this.applicationsScrollBox = this._createScrollBox({
             x_fill: true,
-            y_fill: true,
+            y_fill: false,
             x_expand: true,
             y_expand: true, 
             y_align: Clutter.ActorAlign.START,

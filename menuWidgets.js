@@ -1565,7 +1565,8 @@ var ApplicationMenuItem = GObject.registerClass(class ArcMenu_ApplicationMenuIte
         if(this.isRecentlyInstalled){
             this._indicator = new St.Label({
                 text: _('New'),
-                style: "background-color:rgba(196, 196, 196, 0.3); border-radius: 15px; margin: 0px; padding: 0px 10px;",
+                style_class: "arc-menu-menu-item-text-indicator",
+                style: "border-radius: 15px; margin: 0px; padding: 0px 10px;",
                 x_expand: true,
                 x_align: Clutter.ActorAlign.END,
                 y_align: Clutter.ActorAlign.CENTER
@@ -1761,6 +1762,7 @@ var CategoryMenuItem = GObject.registerClass(class ArcMenu_CategoryMenuItem exte
     }
 
     setRecentlyInstalledIndicator(shouldShow){
+        this.isRecentlyInstalled = shouldShow;
         if(shouldShow){
             this._indicator = new St.Icon({
                 icon_name: 'message-indicator-symbolic',
@@ -1932,6 +1934,7 @@ var SimpleMenuItem = GObject.registerClass(class ArcMenu_SimpleMenuItem extends 
     }
 
     setRecentlyInstalledIndicator(shouldShow){
+        this.isRecentlyInstalled = shouldShow;
         if(shouldShow){
             this._indicator = new St.Icon({
                 icon_name: 'message-indicator-symbolic',
@@ -2036,10 +2039,10 @@ var CategorySubMenuItem = GObject.registerClass(class ArcMenu_CategorySubMenuIte
         let panAction = new Clutter.PanAction({ interpolate: false });
         panAction.connect('pan', (action) => {
             this._button._blockActivateEvent = true;
-            Utils._onPan(action, this.menu.actor);
+            this._button.onPan(action, this.menu.actor);
         });
-        panAction.connect('gesture-cancel',(action) =>  Utils._onPanEnd(action, this.menu.actor));
-        panAction.connect('gesture-end', (action) => Utils._onPanEnd(action, this.menu.actor));
+        panAction.connect('gesture-cancel',(action) =>  this._button.onPanEnd(action, this.menu.actor));
+        panAction.connect('gesture-end', (action) => this._button.onPanEnd(action, this.menu.actor));
         this.menu.actor.add_action(panAction);
         
         this._updateIcons();
@@ -2059,6 +2062,7 @@ var CategorySubMenuItem = GObject.registerClass(class ArcMenu_CategorySubMenuIte
     }
 
     setRecentlyInstalledIndicator(shouldShow){
+        this.isRecentlyInstalled = shouldShow;
         if(shouldShow){
             this._indicator = new St.Icon({
                 icon_name: 'message-indicator-symbolic',

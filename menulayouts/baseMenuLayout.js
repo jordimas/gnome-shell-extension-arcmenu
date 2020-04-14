@@ -178,6 +178,9 @@ var BaseLayout = class {
             let appList = [];
             this.applicationsMap.forEach((value,key,map) => {
                 appList.push(key);
+                //Show Recently Installed Indicator on All Programs category
+                if(value.isRecentlyInstalled && !categoryMenuItem.isRecentlyInstalled)
+                    categoryMenuItem.setRecentlyInstalledIndicator(true);
             });
             appList.sort((a, b) => {
                 return a.get_name().toLowerCase() > b.get_name().toLowerCase();
@@ -257,8 +260,8 @@ var BaseLayout = class {
         let disabled = this._settings.get_boolean("disable-recently-installed-apps")
         if(!disabled){
             for(let categoryMenuItem of this.categoryDirectories.values()){
+                categoryMenuItem.setRecentlyInstalledIndicator(false);
                 for(let i = 0; i < categoryMenuItem.appList.length; i++){
-                    categoryMenuItem.setRecentlyInstalledIndicator(false);
                     let item = this.applicationsMap.get(categoryMenuItem.appList[i]);
                     if(item instanceof MW.CategorySubMenuItem){
                         item.setRecentlyInstalledIndicator(false);
@@ -318,6 +321,13 @@ var BaseLayout = class {
         appList.sort((a, b) => {
             return a.get_name().toLowerCase() > b.get_name().toLowerCase();
         });
+
+        //Show Recently Installed Indicator on GNOME favorites category
+        for(let i = 0; i < appList.length; i++){
+            let item = this.applicationsMap.get(appList[i]);
+            if(item && item.isRecentlyInstalled && !categoryMenuItem.isRecentlyInstalled)
+                categoryMenuItem.setRecentlyInstalledIndicator(true);
+        }
 
         categoryMenuItem.appList = appList;
     }
@@ -922,10 +932,10 @@ var BaseLayout = class {
         let panAction = new Clutter.PanAction({ interpolate: false });
         panAction.connect('pan', (action) => {
             this._blockActivateEvent = true;
-            Utils._onPan(action, scrollBox);
+            this.onPan(action, scrollBox);
         });
-        panAction.connect('gesture-cancel',(action) => Utils._onPanEnd(action, scrollBox));
-        panAction.connect('gesture-end', (action) => Utils._onPanEnd(action, scrollBox));
+        panAction.connect('gesture-cancel',(action) => this.onPanEnd(action, scrollBox));
+        panAction.connect('gesture-end', (action) => this.onPanEnd(action, scrollBox));
         scrollBox.add_action(panAction);
 
         scrollBox.connect('key-press-event', (actor, event) => {
@@ -939,6 +949,20 @@ var BaseLayout = class {
         scrollBox.clip_to_allocation = true;
 
         return scrollBox;
+    }
+
+    onPan(action, scrollbox) {
+        let [dist_, dx_, dy] = action.get_motion_delta(0);
+        let adjustment = scrollbox.get_vscroll_bar().get_adjustment();
+        adjustment.value -= (dy / scrollbox.height) * adjustment.page_size;
+        return false;
+    }
+    
+    onPanEnd(action, scrollbox) {
+        let velocity = -action.get_velocity(0)[2];
+        let endPanValue = scrollbox.get_vscroll_bar().get_adjustment().value + velocity;
+        let adjustment = scrollbox.get_vscroll_bar().get_adjustment();
+        adjustment.value = endPanValue;
     }
 
     _createHorizontalSeparator(style){
@@ -964,4 +988,3 @@ var BaseLayout = class {
         return this.vertSep;
     }
 };
-
