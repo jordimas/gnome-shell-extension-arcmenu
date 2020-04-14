@@ -92,7 +92,7 @@ var createMenu = class extends BaseMenuLayout.BaseLayout{
             x_expand: true,
             y_expand: true,
             x_fill: true,
-            y_fill: true,
+            y_fill: false,
             y_align: Clutter.ActorAlign.START,
             style_class: 'apps-menu vfade left-scroll-area',
             overlay_scrollbars: true

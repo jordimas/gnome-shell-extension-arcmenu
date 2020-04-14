@@ -2880,7 +2880,7 @@ var ArcMenuCustomizationWindow = GObject.registerClass(
             let appIndicatorColorFrame = new PW.FrameBox();
             let appIndicatorColorRow = new PW.FrameBoxRow();
             let appIndicatorColorLabel = new Gtk.Label({
-                label: _('New Application Indicator - Color'),
+                label: _('Category Indicator Color'),
                 use_markup: true,
                 xalign: 0,
                 hexpand: true,
@@ -2888,7 +2888,7 @@ var ArcMenuCustomizationWindow = GObject.registerClass(
             });
             let appIndicatorColorChooser = new Gtk.ColorButton({
                 use_alpha: true,
-                tooltip_text: _("Change the color of the newly installed application indicator dot")
+                tooltip_text: _("Change the color of the 'recently installed application' category indicator")
             });     
             color = new Gdk.RGBA();
             color.parse(this.indicatorColor);
@@ -2904,7 +2904,7 @@ var ArcMenuCustomizationWindow = GObject.registerClass(
 
             let appIndicatorTextColorRow = new PW.FrameBoxRow();
             let appIndicatorTextColorLabel = new Gtk.Label({
-                label: _('New Application Text - Background Color'),
+                label: _('Application Indicator Label Color'),
                 use_markup: true,
                 xalign: 0,
                 hexpand: true,
@@ -2912,7 +2912,7 @@ var ArcMenuCustomizationWindow = GObject.registerClass(
             });
             let appIndicatorTextColorChooser = new Gtk.ColorButton({
                 use_alpha: true,
-                tooltip_text: _("Change the background color of the newly installed application indicator text")
+                tooltip_text: _("Change the background color of the 'recently installed application' indicator label")
             });     
             color = new Gdk.RGBA();
             color.parse(this.indicatorTextColor);

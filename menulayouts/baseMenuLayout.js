@@ -260,8 +260,8 @@ var BaseLayout = class {
         let disabled = this._settings.get_boolean("disable-recently-installed-apps")
         if(!disabled){
             for(let categoryMenuItem of this.categoryDirectories.values()){
+                categoryMenuItem.setRecentlyInstalledIndicator(false);
                 for(let i = 0; i < categoryMenuItem.appList.length; i++){
-                    categoryMenuItem.setRecentlyInstalledIndicator(false);
                     let item = this.applicationsMap.get(categoryMenuItem.appList[i]);
                     if(item instanceof MW.CategorySubMenuItem){
                         item.setRecentlyInstalledIndicator(false);
