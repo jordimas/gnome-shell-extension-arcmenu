@@ -179,8 +179,8 @@ var BaseLayout = class {
             this.applicationsMap.forEach((value,key,map) => {
                 appList.push(key);
                 //Show Recently Installed Indicator on All Programs category
-                /*if(value.isRecentlyInstalled && !categoryMenuItem.isRecentlyInstalled)
-                    categoryMenuItem.setRecentlyInstalledIndicator(true);*/
+                if(value.isRecentlyInstalled && !categoryMenuItem.isRecentlyInstalled)
+                    categoryMenuItem.setRecentlyInstalledIndicator(true);
             });
             appList.sort((a, b) => {
                 return a.get_name().toLowerCase() > b.get_name().toLowerCase();
@@ -323,11 +323,11 @@ var BaseLayout = class {
         });
 
         //Show Recently Installed Indicator on GNOME favorites category
-        /*for(let i = 0; i < appList.length; i++){
+        for(let i = 0; i < appList.length; i++){
             let item = this.applicationsMap.get(appList[i]);
             if(item && item.isRecentlyInstalled && !categoryMenuItem.isRecentlyInstalled)
                 categoryMenuItem.setRecentlyInstalledIndicator(true);
-        }*/
+        }
 
         categoryMenuItem.appList = appList;
     }
@@ -988,4 +988,3 @@ var BaseLayout = class {
         return this.vertSep;
     }
 };
-
