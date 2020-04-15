@@ -34,7 +34,6 @@ const LoginManager = imports.misc.loginManager;
 const Main = imports.ui.main;
 const PopupMenu = imports.ui.popupMenu;
 const Signals = imports.signals;
-const Tweener = imports.ui.tweener;
 const Util = imports.misc.util;
 const Utils =  Me.imports.utils;
 const _ = Gettext.gettext;
@@ -55,9 +54,6 @@ const MEDIUM_ICON_SIZE = 25;
 const INDICATOR_ICON_SIZE = 18;
 const SMALL_ICON_SIZE = 16;
 const USER_AVATAR_SIZE = 28;
-
-const TOOLTIP_LABEL_SHOW_TIME = 0.15;
-const TOOLTIP_LABEL_HIDE_TIME = 0.1;
 
 var AppRightClickMenu = class ArcMenu_AppRightClickMenu extends PopupMenu.PopupMenu {
     constructor(actor, app, button){
@@ -659,23 +655,21 @@ var Tooltip = class ArcMenu_Tooltip{
 
             this.actor.show();
             this.actor.set_position(x, y);
-            Tweener.addTween(this.actor, {
+            this.actor.ease({
                 opacity: 255,
-                time: TOOLTIP_LABEL_SHOW_TIME,
-                transition: 'easeOutQuad'
+                duration: Dash.DASH_ITEM_LABEL_SHOW_TIME,
+                mode: Clutter.AnimationMode.EASE_OUT_QUAD,
             });
         }
     }
 
     hide() {
         if(this._useTooltips){
-            Tweener.addTween(this.actor, {
+            this.actor.ease({
                 opacity: 0,
-                time: TOOLTIP_LABEL_HIDE_TIME,
-                transition: 'easeOutQuad',
-                onComplete: () => {
-                    this.actor.hide();
-                }
+                duration: Dash.DASH_ITEM_LABEL_HIDE_TIME,
+                mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+                onComplete: () => this.actor.hide()
             });
         }
     }
