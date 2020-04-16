@@ -61,6 +61,26 @@ function getMenuLayout(button, layout){
             return new MenuLayout.raven.createMenu(button);
     }
 }
+
+//Menu Layouts that have two panes with categories on left and apps on right
+function isTwoPanedLayout(layout){
+    return (layout == Constants.MENU_LAYOUT.Brisk || layout == Constants.MENU_LAYOUT.Whisker || layout == Constants.MENU_LAYOUT.GnomeMenu
+                    || layout == Constants.MENU_LAYOUT.Mint || layout==Constants.MENU_LAYOUT.Budgie);
+}
+
+function getArraysEqual(a, b) {
+    if(a instanceof Array && b instanceof Array){
+        if (a.length !== b.length)
+            return false;
+        for(let i = 0; i < a.length; i++)
+            if (!getArraysEqual(a[i], b[i]))
+                return false;
+        return true;
+    } 
+    else
+        return a === b;
+}
+
 function createTooltip(button, widget, label, description){
     let lbl = label.clutter_text;
     lbl.get_allocation_box();
@@ -78,20 +98,6 @@ function createTooltip(button, widget, label, description){
         widget.tooltip = new Me.imports.menuWidgets.Tooltip(button, widget.actor, tooltipText);
         widget.tooltip._onHover();
     } 
-}
-
-function _onPan(action, scrollbox) {
-    let [dist_, dx_, dy] = action.get_motion_delta(0);
-    let adjustment = scrollbox.get_vscroll_bar().get_adjustment();
-    adjustment.value -= (dy / scrollbox.height) * adjustment.page_size;
-    return false;
-}
-
-function _onPanEnd(action, scrollbox) {
-    let velocity = -action.get_velocity(0)[2];
-    let endPanValue = scrollbox.get_vscroll_bar().get_adjustment().value + velocity;
-    let adjustment = scrollbox.get_vscroll_bar().get_adjustment();
-    adjustment.value = endPanValue;
 }
 
 function getStylesheet(){
@@ -170,6 +176,8 @@ function createStylesheet(settings){
     let gapAdjustment = settings.get_int('gap-adjustment');
     let tooltipForegroundColor = customArcMenu ? "\n color:"+  menuForegroundColor+";\n" : "";
     let tooltipBackgroundColor = customArcMenu ? "\n background-color:"+lighten_rgb(menuColor,0.05)+";\n" : "";
+    let indicatorColor = settings.get_string('indicator-color');
+    let indicatorTextBackgroundColor = settings.get_string('indicator-text-color');
         
     let tooltipStyle = customArcMenu ?   
         ("#tooltip-menu-item{border-color:"+  borderColor+ ";\n border: 1px;\nfont-size:"+fontSize+"pt;\n padding: 2px 5px;\n min-height: 0px;"
@@ -195,6 +203,9 @@ function createStylesheet(settings){
 
         +".arc-menu-action{background-color:transparent;\ncolor:"+  menuForegroundColor+";\n}\n"
         +".arc-menu-action:hover, .arc-menu-action:focus {\ncolor:"+ lighten_rgb( menuForegroundColor,0.15)+";\n background-color:"+  highlightColor+";\n}\n"
+
+        +".arc-menu-menu-item-indicator{color: " + indicatorColor + ";}\n"
+        +".arc-menu-menu-item-text-indicator{background-color: " + indicatorTextBackgroundColor + ";}\n"
 
         +tooltipStyle
 
