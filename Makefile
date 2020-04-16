@@ -24,15 +24,8 @@ INSTALLNAME = arc-menu@linxgem33.com
 ifdef VERSION
 	FILESUFFIX = _v$(VERSION)
 else
-	LATEST_TAG = $(shell git describe --match "v[0-9]*" --abbrev=0 --tags HEAD)
-	ifneq ($(LATEST_TAG:v%=%),)
-		VERSION = "$(LATEST_TAG:v%=%)"
-		COMMIT = $(shell git rev-parse HEAD)
-	else
-		VERSION = 
-		COMMIT =
-	endif
-
+	COMMIT = $(shell git rev-parse HEAD)
+	VERSION = 
 	FILESUFFIX =
 endif
 
@@ -90,8 +83,8 @@ _build: all
 		mkdir -p $$lf/LC_MESSAGES; \
 		cp $$l $$lf/LC_MESSAGES/arc-menu.mo; \
 	done;
-ifneq ($(and $(COMMIT),$(VERSION)),)
-	sed -i 's/"version": .*,/"version": $(VERSION),\n"commit": "$(COMMIT)",/'  _build/metadata.json;
+ifneq ($(COMMIT),)
+	sed -i '/"version": .*,/a "commit": "$(COMMIT)",'  _build/metadata.json;
 else ifneq ($(VERSION),)
 	sed -i 's/"version": .*,/"version": $(VERSION),/'  _build/metadata.json;
 endif
