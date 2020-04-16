@@ -25,7 +25,7 @@ ifdef VERSION
 	FILESUFFIX = _v$(VERSION)
 else
 	LATEST_TAG = $(shell git describe --match "v[0-9]*" --abbrev=0 --tags HEAD)
-	VERSION = $(LATEST_TAG:v%=%)
+	VERSION = "$(LATEST_TAG:v%=%)"
 	COMMIT = $(shell git rev-parse HEAD)
 	FILESUFFIX =
 endif
@@ -85,7 +85,7 @@ _build: all
 		cp $$l $$lf/LC_MESSAGES/arc-menu.mo; \
 	done;
 ifneq ($(and $(COMMIT),$(VERSION)),)
-	sed -i 's/"version": [[:digit:]][[:digit:]]*/"version": $(VERSION),\n"commit": "$(COMMIT)"/'  _build/metadata.json;
+	sed -i 's/"version": .*,/"version": $(VERSION),\n"commit": "$(COMMIT)",/'  _build/metadata.json;
 else ifneq ($(VERSION),)
-	sed -i 's/"version": [[:digit:]][[:digit:]]*/"version": $(VERSION)/'  _build/metadata.json;
+	sed -i 's/"version": .*,/"version": $(VERSION),/'  _build/metadata.json;
 endif

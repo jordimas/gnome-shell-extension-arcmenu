@@ -4880,6 +4880,11 @@ var AboutPage = GObject.registerClass(
                 releaseVersion = Me.metadata.version;
             else
                 releaseVersion = 'unknown';
+
+            let commitVersion;
+            if(Me.metadata.commit)
+                commitVersion = Me.metadata.commit;
+
             let projectUrl = Me.metadata.url;
 
             // Create GUI elements
@@ -4908,6 +4913,10 @@ var AboutPage = GObject.registerClass(
             });
             let versionLabel = new Gtk.Label({
                 label: _('Version: ') + releaseVersion,
+                expand: false
+            });
+            let commitLabel = new Gtk.Label({
+                label: _('Commit: ') + commitVersion,
                 expand: false
             });
             let projectDescriptionLabel = new Gtk.Label({
@@ -4988,6 +4997,8 @@ var AboutPage = GObject.registerClass(
             
             arcMenuInfoBox.add(arcMenuLabel);
             arcMenuInfoBox.add(versionLabel);
+            if(commitVersion)
+                arcMenuInfoBox.add(commitLabel);
             arcMenuInfoBox.add(projectDescriptionLabel);
             arcMenuInfoBox.add(linksBox);
             arcMenuInfoBox.add(this.creditsScrollWindow);
