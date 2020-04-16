@@ -181,4 +181,4 @@ Hi, I’m Andrew. My role on the project is to design, create, and implement fea
  
 -----
 
-**- @[stevendobay](https://gitlab.com/stevendobay) - Hungarian**
+ **- @[stevendobay](https://gitlab.com/stevendobay) - Hungarian** |
