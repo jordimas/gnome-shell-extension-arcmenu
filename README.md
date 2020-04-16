@@ -177,8 +177,8 @@ Hi, I’m Andrew. My role on the project is to design, create, and implement fea
 
 -----
 
- **- @[Vombato](https://gitlab.com/Vombato) - Italian** | **- @[skygmin](https://gitlab.com/skygmin) - Simplified Chinese** | **- @[vinno97](https://gitlab.com/vinno97) - Dutch** | **- @[artnay](https://gitlab.com/artnay) - Finnish** | **- @[stevendobay](https://gitlab.com/stevendobay) - Hungarian**
+ **- @[Vombato](https://gitlab.com/Vombato) - Italian** | **- @[skygmin](https://gitlab.com/skygmin) - Simplified Chinese** | **- @[vinno97](https://gitlab.com/vinno97) - Dutch** | **- @[artnay](https://gitlab.com/artnay) - Finnish** |  **- @[rimasx](https://gitlab.com/rimasx) - Estonian** |
  
 -----
 
- **- @[rimasx](https://gitlab.com/rimasx) - Estonian** |
+**- @[stevendobay](https://gitlab.com/stevendobay) - Hungarian**
