@@ -25,8 +25,14 @@ ifdef VERSION
 	FILESUFFIX = _v$(VERSION)
 else
 	LATEST_TAG = $(shell git describe --match "v[0-9]*" --abbrev=0 --tags HEAD)
-	VERSION = "$(LATEST_TAG:v%=%)"
-	COMMIT = $(shell git rev-parse HEAD)
+	ifneq ($(LATEST_TAG:v%=%),)
+		VERSION = "$(LATEST_TAG:v%=%)"
+		COMMIT = $(shell git rev-parse HEAD)
+	else
+		VERSION = 
+		COMMIT =
+	endif
+
 	FILESUFFIX =
 endif
 
