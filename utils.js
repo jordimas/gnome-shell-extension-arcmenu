@@ -157,12 +157,27 @@ function lighten_rgb(colorString, percent, modifyAlpha){ // implemented from htt
 }
 
 function createStylesheet(settings){
+    //Added "Active Item Foreground Color" setting in v46. To update older color themes,
+    //add a preset color based on "Menu Foreground Color' into existing array.
+    //Old aray length was 12, New array length is 13
+    let all_color_themes = settings.get_value('color-themes').deep_unpack();
+    let changesMade = false;
+    for(let i = 0; i < all_color_themes.length; i++){
+        if(all_color_themes[i].length === 12){
+            all_color_themes[i].splice(5, 0, lighten_rgb(all_color_themes[i][2], 0.15));
+            changesMade = true;
+        }
+    }
+    if(changesMade)
+        settings.set_value('color-themes',new GLib.Variant('aas', all_color_themes));
+
     let customArcMenu = settings.get_boolean('enable-custom-arc-menu');
     let separatorColor = settings.get_string('separator-color');
     let menuColor = settings.get_string('menu-color');
     let menuForegroundColor = settings.get_string('menu-foreground-color');
     let borderColor = settings.get_string('border-color');
     let highlightColor = settings.get_string('highlight-color');
+    let highlightForegroundColor = settings.get_string('highlight-foreground-color');
     let fontSize = settings.get_int('menu-font-size');
     let borderSize = settings.get_int('menu-border-size');
     let cornerRadius = settings.get_int('menu-corner-radius');
@@ -202,7 +217,7 @@ function createStylesheet(settings){
         +".arc-menu-button:hover, .arc-menu-button:focus{ background-color: rgba(146, 146, 146, 0.25);}"
 
         +".arc-menu-action{background-color:transparent;\ncolor:"+  menuForegroundColor+";\n}\n"
-        +".arc-menu-action:hover, .arc-menu-action:focus {\ncolor:"+ lighten_rgb( menuForegroundColor,0.15)+";\n background-color:"+  highlightColor+";\n}\n"
+        +".arc-menu-action:hover, .arc-menu-action:focus {\ncolor:"+ highlightForegroundColor+";\n background-color:"+  highlightColor+";\n}\n"
 
         +".arc-menu-menu-item-indicator{color: " + indicatorColor + ";}\n"
         +".arc-menu-menu-item-text-indicator{background-color: " + indicatorTextBackgroundColor + ";}\n"
@@ -214,7 +229,7 @@ function createStylesheet(settings){
         +".arc-menu .popup-menu-content {padding: 1em 0em;}\n .arc-menu .popup-menu-item {\nspacing: 12px; \nborder: 0;\ncolor:"+  menuForegroundColor+";\n }\n" 
         +".arc-menu .popup-menu-item:ltr {padding: .4em 1.75em .4em 0em; }\n.arc-menu .popup-menu-item:rtl {padding: .4em 0em .4em 1.75em;}\n"
         +".arc-menu .popup-menu-item:checked {\nbackground-color:"+lighten_rgb( menuColor,0.04)+";\n box-shadow: 0;\nfont-weight: bold;\n border-color: "+lighten_rgb( menuColor,0.15)+";\n border-top-width:1px;\n}\n"
-        +".arc-menu .popup-menu-item.selected, .arc-menu .popup-menu-item:active{\nbackground-color:"+  highlightColor+"; \ncolor: "+ lighten_rgb( menuForegroundColor,0.15)+";\n }\n" 
+        +".arc-menu .popup-menu-item.selected, .arc-menu .popup-menu-item:active{\nbackground-color:"+  highlightColor+"; \ncolor: "+ highlightForegroundColor+";\n }\n" 
         +".arc-menu .popup-menu-item:disabled {color: rgba(238, 238, 236, 0.5); }\n"
         +".arc-menu-boxpointer{ \n-arrow-border-radius:"+  cornerRadius+"px;\n"
         +"-arrow-background-color:" +  menuColor + ";\n"
@@ -236,9 +251,9 @@ function createStylesheet(settings){
         +".arc-right-click .popup-menu-content {padding: 2px;}\n .arc-right-click .popup-menu-item {\nspacing: 12px; \nborder: 0;\ncolor:"+  menuForegroundColor+";\n }\n" 
         +".arc-right-click .popup-menu-item:ltr {padding: .4em 1.75em .4em 0em; }\n.arc-right-click .popup-menu-item:rtl {padding: .4em 0em .4em 1.75em;}\n"
         +".arc-right-click .popup-menu-item:checked {\nbackground-color: #3a393b;\n box-shadow: inset 0 1px 0px #323233;\nfont-weight: bold;\n }\n"
-        +".arc-right-click .popup-menu-item.selected, .arc-right-click .popup-menu-item:active{\nbackground-color:"+  highlightColor+"; \ncolor: "+ lighten_rgb( menuForegroundColor,0.15)+";\n }\n" 
+        +".arc-right-click .popup-menu-item.selected, .arc-right-click .popup-menu-item:active{\nbackground-color:"+  highlightColor+"; \ncolor: "+ highlightForegroundColor +";\n }\n" 
         +".arc-right-click .popup-menu-item:disabled {color: rgba(238, 238, 236, 0.5); }\n"
-        +".arc-right-click .popup-menu-item:insensitive {color:" +  lighten_rgb( menuForegroundColor,-0.30) + "; }\n"
+        +".arc-right-click .popup-menu-item:insensitive {color:" +  lighten_rgb(menuForegroundColor, -0.30) + "; }\n"
         +".arc-right-click-boxpointer{ \n-arrow-border-radius:"+  cornerRadius+"px;\n"
         +"-arrow-background-color:" +  lighten_rgb( menuColor,0.05) + ";\n"
         +"-arrow-border-color:"+  borderColor+ ";\n"
