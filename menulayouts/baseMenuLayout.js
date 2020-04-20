@@ -27,7 +27,6 @@ const {Clutter, GLib, Gio, GMenu, Gtk, Shell, St} = imports.gi;
 const AppFavorites = imports.ui.appFavorites;
 const appSys = Shell.AppSystem.get_default();
 const ArcSearch = Me.imports.search;
-const ArcGridSearch = Me.imports.searchGrid;
 const Constants = Me.imports.constants;
 const GnomeSession = imports.misc.gnomeSession;
 const Gettext = imports.gettext.domain(Me.metadata['gettext-domain']);
@@ -58,10 +57,7 @@ var BaseLayout = class {
         this.shouldLoadFavorites = true;
 
         if(this.layoutProperties.Search){
-            if(this.layoutProperties.SearchType == Constants.SearchType.LIST_VIEW)
-                this.newSearch = new ArcSearch.SearchResults(this);    
-            else if(this.layoutProperties.SearchType == Constants.SearchType.GRID_VIEW)
-                this.newSearch = new ArcGridSearch.SearchResults(this);  
+            this.newSearch = new ArcSearch.SearchResults(this);    
         }
 
         this._mainBoxKeyPressId = this.mainBox.connect('key-press-event', this._onMainBoxKeyPress.bind(this));

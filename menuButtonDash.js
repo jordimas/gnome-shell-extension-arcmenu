@@ -567,7 +567,7 @@ var RightClickMenu = class ArcMenu_RightClickDashMenu extends PopupMenu.PopupMen
         
         item = new PopupMenu.PopupMenuItem(_("Arc Menu GitLab Page"));        
         item.connect('activate', ()=>{
-            Util.spawnCommandLine('xdg-open https://gitlab.com/LinxGem33/Arc-Menu');
+            Util.spawnCommandLine('xdg-open ' + Me.metadata.url);
         });     
         this.addMenuItem(item);  
         item = new PopupMenu.PopupMenuItem(_("Arc Menu User Manual"));          

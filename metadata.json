@@ -1,11 +1,13 @@
 {
-"extension-id": "arc-menu",
-"uuid": "arc-menu@linxgem33.com",
-"settings-schema": "org.gnome.shell.extensions.arc-menu",
-"gettext-domain": "arc-menu",
-"name": "Arc Menu",
-"description": "A Dynamic, Traditional, Modern Menu for GNOME",
-"version": 45.8,
-"shell-version": [ "3.36" ],
-"url": "https://gitlab.com/LinxGem33/Arc-Menu"
+    "extension-id": "arc-menu",
+    "uuid": "arc-menu@linxgem33.com",
+    "settings-schema": "org.gnome.shell.extensions.arc-menu",
+    "gettext-domain": "arc-menu",
+    "name": "Arc Menu",
+    "description": "A Dynamic, Traditional, Modern Menu for GNOME",
+    "version": 46.0,
+    "shell-version": [  
+      "3.36"
+    ],
+    "url": "https://gitlab.com/arcmenu-team/Arc-Menu"
 }

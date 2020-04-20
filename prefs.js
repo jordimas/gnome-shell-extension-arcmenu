@@ -4884,7 +4884,7 @@ var AboutPage = GObject.registerClass(
             let commitVersion;
             if(Me.metadata.commit)
                 commitVersion = Me.metadata.commit;
-
+                
             let projectUrl = Me.metadata.url;
 
             // Create GUI elements
@@ -5029,8 +5029,8 @@ class ArcMenu_ArcMenuPreferencesWidget extends Gtk.Box{
     _init() {
         super._init({
             orientation: Gtk.Orientation.VERTICAL,
-            spacing: 5,
-            border_width: 5
+            spacing: 0,
+            border_width: 0
         });
         this._settings = Convenience.getSettings(Me.metadata['settings-schema']);
         
