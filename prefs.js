@@ -3436,7 +3436,7 @@ var OverrideArcMenuThemeWindow = GObject.registerClass(
             this.colorPresetCombo.connect('changed', (widget) => { 
                 if(this.updatePresetComboBox){
                     let index = widget.get_active();
-                    /*let defaultArray = ["Theme Name","Background Color", "Foreground Color","Border Color", "Highlight Color", "Separator Color"
+                    /*let defaultArray = ["Theme Name","Background Color", "Foreground Color","Border Color", "Highlight Color", "Hightlight Foreground Color", "Separator Color"
                                             , "Font Size", "Border Size", "Corner Radius", "Arrow Size", "Menu Displacement", "Vertical Separator"];*/
                     if(index>=0){
                         this.menuColor = this.color_themes[index][1];
@@ -3482,7 +3482,8 @@ var OverrideArcMenuThemeWindow = GObject.registerClass(
                         colorChooser.set_rgba(color);  
                         this.saveButton.set_sensitive(false);
                         applyButton.set_sensitive(true);  
-                        this.shouldDeselect = true;           
+                        this.shouldDeselect = true;    
+                        resetButton.set_sensitive(this.checkIfResetButtonSensitive()); 
                     }         
                 }    
             });
