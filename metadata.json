@@ -6,8 +6,6 @@
 "name": "Arc Menu",
 "description": "A Dynamic, Traditional, Modern Menu for GNOME",
 "version": 46.0,
-"shell-version": [  
-  "3.36"
-],
+"shell-version": [ "3.36" ],
 "url": "https://gitlab.com/arcmenu-team/Arc-Menu"
 }
