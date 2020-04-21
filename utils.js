@@ -198,7 +198,7 @@ function createStylesheet(settings){
         ("#tooltip-menu-item{border-color:"+  borderColor+ ";\n border: 1px;\nfont-size:"+fontSize+"pt;\n padding: 2px 5px;\n min-height: 0px;"
         + tooltipForegroundColor + tooltipBackgroundColor+"\nmax-width:550px;\n}") 
         : ("#tooltip-menu-item{\n padding: 2px 5px;\nmax-width:550px;\n min-height: 0px;\n}");
-
+    
     let stylesheetCSS = "#arc-search{width: "+  menuWidth+"px;} \n.arc-menu-status-text{\ncolor:"+ menuForegroundColor +";\nfont-size:" + fontSize+"pt;\n}\n "+                                                      
         ".search-statustext {font-size:11pt;}\n "+    
         ".left-scroll-area{ \nwidth:"+  menuWidth+"px;\n}\n"   
@@ -213,10 +213,9 @@ function createStylesheet(settings){
         +".arc-menu-icon{\ncolor: "+menuButtonColor+";\n}\n"
         +"\n.arc-menu-icon:hover,\n.arc-menu-icon:active{\ncolor: "+menuButtonActiveColor+";\n}\n"
         
-        +".arc-menu-button{ -st-icon-style: symbolic;  border-radius: 32px; border: 0; padding: 13px;\n background-color:transparent;}"
-        +".arc-menu-button:hover, .arc-menu-button:focus{ background-color: rgba(146, 146, 146, 0.25);}"
+        +".arc-menu-button{ -st-icon-style: symbolic; min-height:0px; border-radius: 26px; padding: 13px;}"
 
-        +".arc-menu-action{background-color:transparent;\ncolor:"+  menuForegroundColor+";\n}\n"
+        +".arc-menu-action{background-color:transparent;\ncolor:"+  menuForegroundColor+";\n border: 0;}\n"
         +".arc-menu-action:hover, .arc-menu-action:focus {\ncolor:"+ highlightForegroundColor+";\n background-color:"+  highlightColor+";\n}\n"
 
         +".arc-menu-menu-item-indicator{color: " + indicatorColor + ";}\n"

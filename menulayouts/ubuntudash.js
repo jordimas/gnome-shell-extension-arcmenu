@@ -65,7 +65,7 @@ var createMenu = class extends BaseMenuLayout.BaseLayout{
             vertical: true
         });
 
-        this.categoriesTopBox.style = "padding: 5px 15px 0px 0px; margin-bottom: 10px;";
+        this.categoriesTopBox.style = "padding: 0px 15px 0px 0px; margin-bottom: 10px;";
         this.mainBox.add(this.topBox);
         this.categoriesButton = new MW.CategoriesButton(this);
         this.categoriesButton.actor.x_expand = false;
@@ -85,7 +85,7 @@ var createMenu = class extends BaseMenuLayout.BaseLayout{
 
         this.searchBox = new MW.SearchBox(this);
         this.searchBox._stEntry.style = "min-height: 0px; min-height: 0px; border-radius: 18px; padding: 7px 12px;";
-        this.searchBox.actor.style ="margin: 0px 10px 10px 10px;padding-top: 5px; padding-bottom: 0.0em;padding-left: 0.4em;padding-right: 0.4em;";
+        this.searchBox.actor.style ="margin: 0px 10px 10px 10px;padding-top: 4px; padding-bottom: 0.0em;padding-left: 0.4em;padding-right: 0.4em;";
         this._searchBoxChangedId = this.searchBox.connect('changed', this._onSearchBoxChanged.bind(this));
         this._searchBoxKeyPressId = this.searchBox.connect('key-press-event', this._onSearchBoxKeyPress.bind(this));
         this._searchBoxKeyFocusInId = this.searchBox.connect('key-focus-in', this._onSearchBoxKeyFocusIn.bind(this));
