@@ -230,7 +230,7 @@
       <description>Highlight/Active Menu Item Background Color.</description>
     </key>
     <key type="s" name="highlight-foreground-color">
-      <default>"rgba(238, 238, 236, 0.1)"</default>
+      <default>"rgba(255,255,255,1)"</default>
       <summary>Highlight/Active Menu Item Foreground Color</summary>
       <description>Highlight/Active Menu Item Foreground Color.</description>
     </key>

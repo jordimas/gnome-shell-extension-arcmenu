@@ -190,9 +190,9 @@ var MenuSettingsController = class {
 
     _reloadExtension(){
         if(this._settings.get_boolean('reload-theme')){
+            this._settings.reset('reload-theme');
             Utils.createStylesheet(this._settings);
             Main.loadTheme();
-            this._settings.set_boolean('reload-theme', false);
         }
     }
 

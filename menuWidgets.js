@@ -745,6 +745,11 @@ var SessionButton = class ArcMenu_SessionButton{
     }
 
     activate() {
+
+    }
+
+    destroy(){
+        this.actor.destroy();
     }
 };
 // Menu Place Button Shortcut item class
@@ -820,9 +825,6 @@ var CategoryMenuButton = class ArcMenu_CategoryMenuButton extends SessionButton 
         }  
         else
             this._button.displayCategoryAppList(this.appList);
-    }
-    destroy(){
-        
     }
 }
 // Settings Button
@@ -2213,8 +2215,9 @@ var PlaceMenuItem = GObject.registerClass(class ArcMenu_PlaceMenuItem extends Ar
         });
         this.actor.add_child(this.label);
         this._changedId = this._info.connect('changed', this._propertiesChanged.bind(this));
+        this.connect('destroy', this._onDestroy.bind(this));
     }
-    destroy() {
+    _onDestroy() {
         if (this._changedId) {
             this._info.disconnect(this._changedId);
             this._changedId = 0;
@@ -2659,10 +2662,11 @@ var WorldClocksSection = GObject.registerClass(class ArcMenu_WorldClocksSection 
         this._appSystem = Shell.AppSystem.get_default();
         this.syncID = this._appSystem.connect('installed-changed',
             this._sync.bind(this));
+        this.connect('destroy', this._onDestroy.bind(this));
         this._sync();
     }
 
-    destroy(){
+    _onDestroy(){
         if(this.syncID){
             this._appSystem.disconnect(this.syncID);
             this.syncID = null;
@@ -2842,9 +2846,11 @@ var WeatherSection = GObject.registerClass(class ArcMenu_WeatherSection extends 
         box.add_child(this._forecastGrid);
 
         this.syncID = this._weatherClient.connect('changed', this._sync.bind(this));
+        this.connect('destroy', this._onDestroy.bind(this));
         this._sync();
+
     }
-    destroy(){
+    _onDestroy(){
         if(this.syncID){
             this._weatherClient.disconnect(this.syncID);
             this.syncID = null;

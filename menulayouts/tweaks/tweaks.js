@@ -120,7 +120,7 @@ var TweaksDialog = GObject.registerClass(
             avatarStyleCombo.set_active(this._settings.get_enum('avatar-style'));
             avatarStyleCombo.connect('changed', (widget) => {
                 this._settings.set_enum('avatar-style', widget.get_active());
-                this._settings.set_boolean('reload-theme', false);
+                this._settings.reset('reload-theme');
                 this._settings.set_boolean('reload-theme', true);
             });
             avatarStyleRow.add(avatarStyleLabel);

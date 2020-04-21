@@ -311,7 +311,6 @@ var createMenu = class extends BaseMenuLayout.BaseLayout{
     }
    
     destroy(isReload){
-        this.actionsBox.remove_all_children();
         if(this._clocksItem)
             this._clocksItem.destroy();
         if(this._weatherItem)
