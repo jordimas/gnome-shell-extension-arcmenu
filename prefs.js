@@ -1946,7 +1946,7 @@ var MenuButtonCustomizationWindow = GObject.registerClass(
                 resetButton.set_sensitive(true); 
                 this.menuButtonColor = menuButtonColorChooser.get_rgba().to_string();
                 this._settings.set_string('menu-button-color',this.menuButtonColor);
-                this._settings.set_boolean('reload-theme', false);
+                this._settings.reset('reload-theme');
                 this._settings.set_boolean('reload-theme', true);
             });
             menuButtonColorRow.add(menuButtonColorLabel);
@@ -1966,7 +1966,7 @@ var MenuButtonCustomizationWindow = GObject.registerClass(
                 resetButton.set_sensitive(true); 
                 this.menuButtonActiveColor = menuButtonActiveColorChooser.get_rgba().to_string();
                 this._settings.set_string('menu-button-active-color',this.menuButtonActiveColor);
-                this._settings.set_boolean('reload-theme', false);
+                this._settings.reset('reload-theme');
                 this._settings.set_boolean('reload-theme', true);
             });
             menuButtonActiveColorRow.add(menuButtonActiveColorLabel);
@@ -2007,7 +2007,7 @@ var MenuButtonCustomizationWindow = GObject.registerClass(
                 enableArrowIconSwitch.set_active(false);
                 this._settings.set_string('menu-button-active-color','rgb(214,214,214)');
                 this._settings.set_string('menu-button-color','rgb(240,240,240)');
-                this._settings.set_boolean('reload-theme', false);
+                this._settings.reset('reload-theme');
                 this._settings.set_boolean('reload-theme', true);
   
                 resetButton.set_sensitive(false);        
@@ -2143,7 +2143,7 @@ var AppearancePage = GObject.registerClass(
                         this._settings.set_boolean('disable-category-arrows', dialog.disableCategoryArrow);
                         this._settings.set_boolean('remove-menu-arrow', dialog.removeMenuArrow);
                         this._settings.set_boolean('disable-searchbox-border', dialog.disableSearchStyle);
-                        this._settings.set_boolean('reload-theme', false);
+                        this._settings.reset('reload-theme');
                         this._settings.set_boolean('reload-theme', true);
                         dialog.destroy();
                     }
@@ -2193,7 +2193,7 @@ var AppearancePage = GObject.registerClass(
                         this._settings.set_int('menu-margin',dialog.menuMargin);
                         this._settings.set_int('menu-arrow-size',dialog.menuArrowSize);
                         this._settings.set_int('menu-width', dialog.menuWidth);
-                        this._settings.set_boolean('reload-theme', false);
+                        this._settings.reset('reload-theme');
                         this._settings.set_boolean('reload-theme', true);
                         this.presetName = dialog.presetName;
                         currentPresetTextLabel.label = dialog.presetName;
@@ -2214,7 +2214,7 @@ var AppearancePage = GObject.registerClass(
             overrideArcMenuSwitch.connect('notify::active', (widget) => {
                 this._settings.set_boolean('enable-custom-arc-menu',widget.get_active());
                 overrideArcMenuButton.set_sensitive(widget.get_active());
-                this._settings.set_boolean('reload-theme', false);
+                this._settings.reset('reload-theme');
                 this._settings.set_boolean('reload-theme', true);
                 if(widget.get_active() && overrideArcMenuFrame.count==1) {
                     overrideArcMenuFrame.add(presetTextRow);
@@ -2267,7 +2267,7 @@ var AppearancePage = GObject.registerClass(
                 dialog.connect('response', (response) => { 
                     if(dialog.get_response()) {
                         this._settings.set_enum('menu-layout', dialog.index);
-                        this._settings.set_boolean('reload-theme', false);
+                        this._settings.reset('reload-theme');
                         this._settings.set_boolean('reload-theme', true);
                         currentStyleLabel.label = this.getMenuLayoutName(dialog.index);
                         tweaksLabel.label = currentStyleLabel.label +" " + _("Tweaks");
@@ -2305,7 +2305,7 @@ var AppearancePage = GObject.registerClass(
                     currentStyleLabel.label = this.getMenuLayoutName(index);
                     tweaksLabel.label = currentStyleLabel.label +" " + _("Tweaks");
                 }
-                this._settings.set_boolean('reload-theme', false);
+                this._settings.reset('reload-theme');
                 this._settings.set_boolean('reload-theme', true);
                    
             });
