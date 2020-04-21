@@ -385,7 +385,7 @@ var ApplicationsButton = GObject.registerClass(class ArcMenu_ApplicationsButton 
         
         this.reload();
     }
-    destroy(){
+    _onDestroy(){
         if (this._iconThemeChangedId){
             St.TextureCache.get_default().disconnect(this._iconThemeChangedId);
             this._iconThemeChangedId = null;
@@ -435,8 +435,8 @@ var ApplicationsButton = GObject.registerClass(class ArcMenu_ApplicationsButton 
         if(this.rightClickMenu){
             this.rightClickMenu.destroy();
         }
-        this.container.child = null;
-        this.container.destroy();
+
+        super._onDestroy();
     }
     _updateMenuLayout(){
         this.tooltipShowing = false;
