@@ -286,7 +286,7 @@ var CREDITS = '\n<b>Credits:</b>'+
 		'\n <a href="https://github.com/lexruee">@lexruee</a>  (Developer)'+
 		'\n\n\n<b>A Special Thanks To:</b>'+
 		'\n\nTranslators'+
-		'\n<a href="https://gitlab.com/LinxGem33/Arc-Menu#please-refer-to-the-wiki-section-for-a-translation-guide">Full List</a>'+
+		'\n<a href="https://gitlab.com/arcmenu-team/Arc-Menu#please-refer-to-the-wiki-section-for-a-translation-guide">Full List</a>'+
 		'\nPlease See Details'+
 		'\n\nOther'+
 		'\n<a href="https://gitlab.com/tingvarsson">@Thomas Ingvarsson</a>  (Contributor)'+

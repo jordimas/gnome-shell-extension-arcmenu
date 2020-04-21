@@ -2064,6 +2064,7 @@ var AppearancePage = GObject.registerClass(
             this.menuForegroundColor = this._settings.get_string('menu-foreground-color');
             this.borderColor = this._settings.get_string('border-color');
             this.highlightColor = this._settings.get_string('highlight-color');
+            this.highlightForegroundColor = this._settings.get_string('highlight-foreground-color');
             this.fontSize = this._settings.get_int('menu-font-size');
             this.borderSize = this._settings.get_int('menu-border-size');
             this.cornerRadius = this._settings.get_int('menu-corner-radius');
@@ -2128,7 +2129,8 @@ var AppearancePage = GObject.registerClass(
                         this._settings.set_string('menu-color',dialog.menuColor);
                         this._settings.set_string('menu-foreground-color',dialog.menuForegroundColor);
                         this._settings.set_string('border-color',dialog.borderColor);
-                        this._settings.set_string('highlight-color',dialog.highlightColor );
+                        this._settings.set_string('highlight-color',dialog.highlightColor);
+                        this._settings.set_string('highlight-foreground-color', dialog.highlightForegroundColor);
                         this._settings.set_int('menu-font-size',dialog.fontSize);
                         this._settings.set_int('menu-border-size',dialog.borderSize);
                         this._settings.set_int('menu-corner-radius',dialog.cornerRadius);
@@ -2184,6 +2186,7 @@ var AppearancePage = GObject.registerClass(
                         this._settings.set_string('menu-foreground-color',dialog.menuForegroundColor);
                         this._settings.set_string('border-color',dialog.borderColor);
                         this._settings.set_string('highlight-color',dialog.highlightColor );
+                        this._settings.set_string('highlight-foreground-color', dialog.highlightForegroundColor);
                         this._settings.set_int('menu-font-size',dialog.fontSize);
                         this._settings.set_int('menu-border-size',dialog.borderSize);
                         this._settings.set_int('menu-corner-radius',dialog.cornerRadius);
@@ -2383,12 +2386,13 @@ var AppearancePage = GObject.registerClass(
         this.menuForegroundColor = this._settings.get_string('menu-foreground-color');
         this.borderColor = this._settings.get_string('border-color');
         this.highlightColor = this._settings.get_string('highlight-color');
+        this.highlightForegroundColor = this._settings.get_string('highlight-foreground-color');
         this.fontSize = this._settings.get_int('menu-font-size');
         this.borderSize = this._settings.get_int('menu-border-size');
         this.cornerRadius = this._settings.get_int('menu-corner-radius');
         this.menuMargin = this._settings.get_int('menu-margin');
         this.menuArrowSize = this._settings.get_int('menu-arrow-size');
-        let currentSettingsArray = [this.menuColor, this.menuForegroundColor, this.borderColor, this.highlightColor, this.separatorColor, 
+        let currentSettingsArray = [this.menuColor, this.menuForegroundColor, this.borderColor, this.highlightColor, this.highlightForegroundColor, this.separatorColor, 
                                     this.fontSize.toString(), this.borderSize.toString(), this.cornerRadius.toString(), this.menuArrowSize.toString(), 
                                     this.menuMargin.toString(), this.verticalSeparator.toString()];
         let all_color_themes = this._settings.get_value('color-themes').deep_unpack();
@@ -2581,6 +2585,7 @@ var ArcMenuCustomizationWindow = GObject.registerClass(
             this.menuForegroundColor = this._settings.get_string('menu-foreground-color');
             this.borderColor = this._settings.get_string('border-color');
             this.highlightColor = this._settings.get_string('highlight-color');
+            this.highlightForegroundColor = this._settings.get_string('highlight-foreground-color');
             this.fontSize = this._settings.get_int('menu-font-size');
             this.borderSize = this._settings.get_int('menu-border-size');
             this.cornerRadius = this._settings.get_int('menu-corner-radius');
@@ -3235,13 +3240,13 @@ var ManageColorThemeDialogWindow = GObject.registerClass(
                 let string = content.toString();
                 let themes = string.split("\n")
                 themes.pop(); //remove last blank array 
-                this.color_themes = [];
+                let colorThemes = [];
                 for(let i = 0; i < themes.length; i++){
                     let array = themes[i].split('//')
                     array.pop();
-                    this.color_themes.push(array);
+                    colorThemes.push(array);
                 }
-                let dialog = new ExportColorThemeDialogWindow(this._settings, this, this.color_themes);
+                let dialog = new ExportColorThemeDialogWindow(this._settings, this, colorThemes);
                 dialog.show_all();
                 dialog.connect('response', (response) => { 
                     if(dialog.get_response()){
@@ -3392,6 +3397,7 @@ var OverrideArcMenuThemeWindow = GObject.registerClass(
             this.menuForegroundColor = this._settings.get_string('menu-foreground-color');
             this.borderColor = this._settings.get_string('border-color');
             this.highlightColor = this._settings.get_string('highlight-color');
+            this.highlightForegroundColor = this._settings.get_string('highlight-foreground-color');
             this.fontSize = this._settings.get_int('menu-font-size');
             this.borderSize = this._settings.get_int('menu-border-size');
             this.cornerRadius = this._settings.get_int('menu-corner-radius');
@@ -3430,20 +3436,21 @@ var OverrideArcMenuThemeWindow = GObject.registerClass(
             this.colorPresetCombo.connect('changed', (widget) => { 
                 if(this.updatePresetComboBox){
                     let index = widget.get_active();
-                    /*let defaultArray = ["Theme Name","Background Color", "Foreground Color","Border Color", "Highlight Color", "Separator Color"
+                    /*let defaultArray = ["Theme Name","Background Color", "Foreground Color","Border Color", "Highlight Color", "Hightlight Foreground Color", "Separator Color"
                                             , "Font Size", "Border Size", "Corner Radius", "Arrow Size", "Menu Displacement", "Vertical Separator"];*/
                     if(index>=0){
                         this.menuColor = this.color_themes[index][1];
                         this.menuForegroundColor = this.color_themes[index][2];
                         this.borderColor = this.color_themes[index][3];
                         this.highlightColor = this.color_themes[index][4];
-                        this.separatorColor = this.color_themes[index][5];
-                        this.fontSize = parseInt(this.color_themes[index][6]);
-                        this.borderSize = parseInt(this.color_themes[index][7]);
-                        this.cornerRadius = parseInt(this.color_themes[index][8]);
-                        this.menuArrowSize = parseInt(this.color_themes[index][9]);
-                        this.menuMargin = parseInt(this.color_themes[index][10]);
-                        this.verticalSeparator = (this.color_themes[index][11] === 'true');
+                        this.highlightForegroundColor = this.color_themes[index][5];
+                        this.separatorColor = this.color_themes[index][6];
+                        this.fontSize = parseInt(this.color_themes[index][7]);
+                        this.borderSize = parseInt(this.color_themes[index][8]);
+                        this.cornerRadius = parseInt(this.color_themes[index][9]);
+                        this.menuArrowSize = parseInt(this.color_themes[index][10]);
+                        this.menuMargin = parseInt(this.color_themes[index][11]);
+                        this.verticalSeparator = (this.color_themes[index][12] === 'true');
                         
                         this.shouldDeselect = false;
                         this.presetName=this.color_themes[index][0];
@@ -3462,6 +3469,9 @@ var OverrideArcMenuThemeWindow = GObject.registerClass(
         
                         color.parse(this.highlightColor);
                         itemColorChooser.set_rgba(color);
+
+                        color.parse(this.highlightForegroundColor);
+                        itemForegroundColorChooser.set_rgba(color);
         
                         cornerScale.set_value(this.cornerRadius);
                         marginScale.set_value(this.menuMargin);
@@ -3472,7 +3482,8 @@ var OverrideArcMenuThemeWindow = GObject.registerClass(
                         colorChooser.set_rgba(color);  
                         this.saveButton.set_sensitive(false);
                         applyButton.set_sensitive(true);  
-                        this.shouldDeselect = true;           
+                        this.shouldDeselect = true;    
+                        resetButton.set_sensitive(this.checkIfResetButtonSensitive()); 
                     }         
                 }    
             });
@@ -3490,7 +3501,7 @@ var OverrideArcMenuThemeWindow = GObject.registerClass(
                 dialog.show_all();
                 dialog.connect('response', (response) => { 
                     if(dialog.get_response()){
-                        let array = [dialog.themeName, this.menuColor, this.menuForegroundColor, this.borderColor, this.highlightColor, this.separatorColor, 
+                        let array = [dialog.themeName, this.menuColor, this.menuForegroundColor, this.borderColor, this.highlightColor, this.highlightForegroundColor, this.separatorColor, 
                                         this.fontSize.toString(), this.borderSize.toString(), this.cornerRadius.toString(), this.menuArrowSize.toString(), 
                                         this.menuMargin.toString(), this.verticalSeparator.toString()];
                         this.color_themes.push(array);
@@ -3647,10 +3658,10 @@ var OverrideArcMenuThemeWindow = GObject.registerClass(
             borderSizeRow.add(borderSizeLabel);
             borderSizeRow.add(borderScale);
             customArcMenuOptionsFrame.add(borderSizeRow);
-            //ROW 5- ITEM highlight Color-----------------------------------------------
+            //ROW 5- ITEM active background Color-----------------------------------------------
             let itemColorRow = new PW.FrameBoxRow();
             let itemColorLabel = new Gtk.Label({
-                label: _('Highlighted Item Color'),
+                label: _('Active Item Background Color'),
                 xalign:0,
                 hexpand: true,
             });   
@@ -3668,6 +3679,27 @@ var OverrideArcMenuThemeWindow = GObject.registerClass(
             itemColorRow.add(itemColorLabel);
             itemColorRow.add(itemColorChooser);
             customArcMenuOptionsFrame.add(itemColorRow);
+            //ROW 5- ITEM active Foreground Color-----------------------------------------------
+            let itemForegroundColorRow = new PW.FrameBoxRow();
+            let itemForegroundColorLabel = new Gtk.Label({
+                label: _('Active Item Foreground Color'),
+                xalign:0,
+                hexpand: true,
+            });   
+            let itemForegroundColorChooser = new Gtk.ColorButton({use_alpha:true});     
+            color = new Gdk.RGBA();
+            color.parse(this.highlightForegroundColor);
+            itemForegroundColorChooser.set_rgba(color);            
+            itemForegroundColorChooser.connect('color-set', () => {
+                this.highlightForegroundColor = itemForegroundColorChooser.get_rgba().to_string();
+                applyButton.set_sensitive(true);
+                if(this.shouldDeselect)
+                    this.checkIfPresetMatch();
+                resetButton.set_sensitive(true);
+            });
+            itemForegroundColorRow.add(itemForegroundColorLabel);
+            itemForegroundColorRow.add(itemForegroundColorChooser);
+            customArcMenuOptionsFrame.add(itemForegroundColorRow);
             //ROW 6 - CORNER RADIUS-----------------------------------------------------
             let cornerRadiusRow = new PW.FrameBoxRow();
             let cornerRadiusLabel = new Gtk.Label({
@@ -3796,43 +3828,47 @@ var OverrideArcMenuThemeWindow = GObject.registerClass(
             });   
             resetButton.set_sensitive( this.checkIfResetButtonSensitive());
             resetButton.connect('clicked', ()=> {
-                 this.separatorColor = "rgb(63,62,64)";
-                 this.verticalSeparator = false;
-                 this.menuColor = "rgba(28, 28, 28, 0.98)";
-                 this.menuForegroundColor = "rgba(211, 218, 227, 1)";
-                 this.borderColor = "rgb(63,62,64)";
-                 this.highlightColor = "rgba(238, 238, 236, 0.1)";
-                 this.fontSize = 9;
-                 this.borderSize = 0;
-                 this.cornerRadius = 0;
-                 this.menuMargin = 0;
-                 this.menuArrowSize = 0;
-                 color.parse(this.menuColor);
-                 menuBackgroudColorChooser.set_rgba(color);
- 
-                 color.parse(this.menuForegroundColor);
-                 menuForegroundColorChooser.set_rgba(color); 
- 
-                 fontScale.set_value(this.fontSize); 
- 
-                 color.parse(this.borderColor);
-                 borderColorChooser.set_rgba(color); 
- 
-                 borderScale.set_value(this.borderSize);
- 
-                 color.parse("rgba(238, 238, 236, 0.1)");
-                 itemColorChooser.set_rgba(color);
- 
-                 cornerScale.set_value(this.cornerRadius);
-                 marginScale.set_value(this.menuMargin);
-                 arrowScale.set_value(this.menuArrowSize);
+                this.separatorColor = "rgb(63,62,64)";
+                this.verticalSeparator = false;
+                this.menuColor = "rgba(28, 28, 28, 0.98)";
+                this.menuForegroundColor = "rgba(211, 218, 227, 1)";
+                this.borderColor = "rgb(63,62,64)";
+                this.highlightColor = "rgba(238, 238, 236, 0.1)";
+                this.highlightForegroundColor = "rgba(255,255,255,1)";
+                this.fontSize = 9;
+                this.borderSize = 0;
+                this.cornerRadius = 0;
+                this.menuMargin = 0;
+                this.menuArrowSize = 0;
+                color.parse(this.menuColor);
+                menuBackgroudColorChooser.set_rgba(color);
 
-                 vertSeparatorSwitch.set_active(this.verticalSeparator);
-                 color.parse(this.separatorColor);
-                 colorChooser.set_rgba(color);    
- 
-                 resetButton.set_sensitive(false);
-                 applyButton.set_sensitive(true);               
+                color.parse(this.menuForegroundColor);
+                menuForegroundColorChooser.set_rgba(color); 
+
+                fontScale.set_value(this.fontSize); 
+
+                color.parse(this.borderColor);
+                borderColorChooser.set_rgba(color); 
+
+                borderScale.set_value(this.borderSize);
+
+                color.parse(this.highlightColor);
+                itemColorChooser.set_rgba(color);
+
+                color.parse(this.highlightForegroundColor);
+                itemForegroundColorChooser.set_rgba(color);
+
+                cornerScale.set_value(this.cornerRadius);
+                marginScale.set_value(this.menuMargin);
+                arrowScale.set_value(this.menuArrowSize);
+
+                vertSeparatorSwitch.set_active(this.verticalSeparator);
+                color.parse(this.separatorColor);
+                colorChooser.set_rgba(color);    
+
+                resetButton.set_sensitive(false);
+                applyButton.set_sensitive(true);               
             });
  
             
@@ -3857,15 +3893,15 @@ var OverrideArcMenuThemeWindow = GObject.registerClass(
             return this.addResponse;
         }
         checkIfPresetMatch(){
-            this.presetName="Custom Theme";
-            let currentSettingsArray = [this.menuColor, this.menuForegroundColor, this.borderColor, this.highlightColor, this.separatorColor, 
+            this.presetName = "Custom Theme";
+            let currentSettingsArray = [this.menuColor, this.menuForegroundColor, this.borderColor, this.highlightColor, this.highlightForegroundColor, this.separatorColor, 
                                         this.fontSize.toString(), this.borderSize.toString(), this.cornerRadius.toString(), this.menuArrowSize.toString(), 
                                         this.menuMargin.toString(), this.verticalSeparator.toString()];
             let all_color_themes = this._settings.get_value('color-themes').deep_unpack();
             for(let i = 0;i < all_color_themes.length;i++){
                 this.isEqual=true;
                 for(let l = 0; l<currentSettingsArray.length;l++){
-                    if(currentSettingsArray[l] !=  all_color_themes[i][l+1]){
+                    if(currentSettingsArray[l] != all_color_themes[i][l+1]){
                         this.isEqual=false;
                         break; //If not equal then break out of inner loop
                     }
@@ -3889,6 +3925,7 @@ var OverrideArcMenuThemeWindow = GObject.registerClass(
             this.menuForegroundColor != "rgba(211, 218, 227, 1)"||
             this.borderColor != "rgb(63,62,64)"||
             this.highlightColor != "rgba(238, 238, 236, 0.1)"||
+            this.highlightForegroundColor != "rgba(255,255,255,1)"||
             this.fontSize != 9||
             this.borderSize != 0||
             this.cornerRadius != 0||
@@ -4884,7 +4921,7 @@ var AboutPage = GObject.registerClass(
             let commitVersion;
             if(Me.metadata.commit)
                 commitVersion = Me.metadata.commit;
-
+                
             let projectUrl = Me.metadata.url;
 
             // Create GUI elements
@@ -5029,8 +5066,8 @@ class ArcMenu_ArcMenuPreferencesWidget extends Gtk.Box{
     _init() {
         super._init({
             orientation: Gtk.Orientation.VERTICAL,
-            spacing: 5,
-            border_width: 5
+            spacing: 0,
+            border_width: 0
         });
         this._settings = Convenience.getSettings(Me.metadata['settings-schema']);
         

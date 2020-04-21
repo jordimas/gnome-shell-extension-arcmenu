@@ -328,7 +328,8 @@ var ApplicationsButton = GObject.registerClass(class ArcMenu_ApplicationsButton 
 
         if(this.subMenuManager.activeMenu)
             this.subMenuManager.activeMenu.toggle();
-
+        if(Main.panel.menuManager && Main.panel.menuManager.activeMenu)
+            Main.panel.menuManager.activeMenu.toggle();
         //If Layout is GnomeDash - toggle Main Overview   
         let layout = this._settings.get_enum('menu-layout');
         if(layout == Constants.MENU_LAYOUT.GnomeDash)
@@ -621,7 +622,7 @@ var RightClickMenu = class ArcMenu_RightClickMenu extends PopupMenu.PopupMenu {
         
         item = new PopupMenu.PopupMenuItem(_("Arc Menu GitLab Page"));        
         item.connect('activate', ()=>{
-            Util.spawnCommandLine('xdg-open https://gitlab.com/LinxGem33/Arc-Menu');
+            Util.spawnCommandLine('xdg-open ' + Me.metadata.url);
         });     
         this.addMenuItem(item);  
         item = new PopupMenu.PopupMenuItem(_("Arc Menu User Manual"));          

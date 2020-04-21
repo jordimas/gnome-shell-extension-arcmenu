@@ -211,8 +211,8 @@
     </key>
     <key type="s" name="menu-color">
       <default>"rgba(28, 28, 28, 0.98)"</default>
-      <summary>Menu Color</summary>
-      <description>Menu Color.</description>
+      <summary>Menu Background Color</summary>
+      <description>Menu Background Color.</description>
     </key>
     <key type="s" name="menu-foreground-color">
       <default>"rgba(211, 218, 227, 1)"</default>
@@ -226,8 +226,13 @@
     </key>
     <key type="s" name="highlight-color">
       <default>"rgba(238, 238, 236, 0.1)"</default>
-      <summary>Highlight Color</summary>
-      <description>Highlight Color.</description>
+      <summary>Highlight/Active Menu Item Background Color</summary>
+      <description>Highlight/Active Menu Item Background Color.</description>
+    </key>
+    <key type="s" name="highlight-foreground-color">
+      <default>"rgba(238, 238, 236, 0.1)"</default>
+      <summary>Highlight/Active Menu Item Foreground Color</summary>
+      <description>Highlight/Active Menu Item Foreground Color.</description>
     </key>
     <key type="i" name="menu-font-size">
       <default>9</default>
@@ -489,9 +494,9 @@
       <description>Index of Mint Layout Pinned App Separator, 0 = none</description>
     </key>
     <key name="color-themes" type="aas">
-      <default>[['Arc Menu Theme', 'rgba(28, 28, 28, 0.98)', 'rgba(211, 218, 227, 1)', 'rgb(63,62,64)', 'rgba(238, 238, 236, 0.1)', 'rgb(63,62,64)', '9', '0', '0', '0', '0', 'false'], 
-      ['Dark Blue Theme', 'rgb(25,31,34)', 'rgb(189,230,251)', 'rgb(41,50,55)', 'rgb(41,50,55)', 'rgb(41,50,55)', '9', '1', '5', '12', '24', 'true'], 
-      ['Light Blue Theme', 'rgb(255,255,255)', 'rgb(51,51,51)', 'rgb(235,235,235)', 'rgba(189,230,251,0.9)', 'rgba(189,230,251,0.9)', '9', '1', '5', '12', '24', 'true']]</default>
+      <default>[['Arc Menu Theme', 'rgba(28, 28, 28, 0.98)', 'rgba(211, 218, 227, 1)', 'rgb(63,62,64)', 'rgba(238, 238, 236, 0.1)', 'rgba(255,255,255,1)', 'rgb(63,62,64)', '9', '0', '0', '0', '0', 'false'], 
+      ['Dark Blue Theme', 'rgb(25,31,34)', 'rgb(189,230,251)', 'rgb(41,50,55)', 'rgb(41,50,55)', 'rgba(255,255,255,1)', 'rgb(41,50,55)', '9', '1', '5', '12', '24', 'true'], 
+      ['Light Blue Theme', 'rgb(255,255,255)', 'rgb(51,51,51)', 'rgb(235,235,235)', 'rgba(189,230,251,0.9)', 'rgba(89,89,89,1)', 'rgba(189,230,251,0.9)', '9', '1', '5', '12', '24', 'true']]</default>
       <summary>List of color-themes</summary>
       <description> List of color themes.
       </description>

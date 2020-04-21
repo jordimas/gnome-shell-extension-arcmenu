@@ -28,8 +28,8 @@ const _ = Gettext.gettext;
 var Notebook = GObject.registerClass(class ArcMenu_Notebook extends Gtk.Notebook{
     _init() {
         super._init({
-            margin_left: 6,
-            margin_right: 6
+            margin_left: 0,
+            margin_right: 0
         });
     }
 
