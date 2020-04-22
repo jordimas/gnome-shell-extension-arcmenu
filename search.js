@@ -665,6 +665,7 @@ var SearchResults = class ArcMenu_SearchResults {
         this._providers.forEach(provider => {
             provider.display.destroy();
         });
+        this.actor.destroy();
     }
     _reloadRemoteProviders() {
         let remoteProviders = this._providers.filter(p => p.isRemoteProvider);

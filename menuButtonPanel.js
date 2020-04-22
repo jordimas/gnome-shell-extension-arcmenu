@@ -562,7 +562,8 @@ var ApplicationsMenu = class ArcMenu_ApplicationsMenu extends PopupMenu.PopupMen
         this._button = button;  
         Main.uiGroup.add_actor(this.actor);
         this.actor.hide();
-        this.connect('menu-closed', () => this._onCloseEvent());
+        this._menuCloseID = this.connect('menu-closed', () => this._onCloseEvent());
+        this.connect('destroy', () => this._onDestroy());
     }
 
     open(animation){
@@ -597,6 +598,13 @@ var ApplicationsMenu = class ArcMenu_ApplicationsMenu extends PopupMenu.PopupMen
                 this._button.MenuLayout.reload();
             this._button.MenuLayout.needsReload = false;
             this._button.setDefaultMenuView(); 
+        }
+    }
+
+    _onDestroy(){
+        if(this._menuCloseID){
+            this.disconnect(this._menuCloseID)
+            this._menuCloseID = null;
         }
     }
 };
