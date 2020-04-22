@@ -43,14 +43,17 @@ var createMenu = class extends BaseMenuLayout.BaseLayout{
     }
     createLayout(){
         this.searchBox = new MW.SearchBox(this);
-        this.searchBox.actor.style ="margin: 0px 10px 10px 10px;";
         this._searchBoxChangedId = this.searchBox.connect('changed', this._onSearchBoxChanged.bind(this));
         this._searchBoxKeyPressId = this.searchBox.connect('key-press-event', this._onSearchBoxKeyPress.bind(this));
         this._searchBoxKeyFocusInId = this.searchBox.connect('key-focus-in', this._onSearchBoxKeyFocusIn.bind(this));
-        this.mainBox.add(this.searchBox.actor);
-
-        this.mainBox.add(this._createHorizontalSeparator(Constants.SEPARATOR_STYLE.MAX));
-
+        if(this._settings.get_enum('searchbar-location-redmond') === Constants.SearchbarLocation.TOP){
+            this.searchBox.actor.style ="margin: 0px 10px 10px 10px;";
+            this.mainBox.add(this.searchBox.actor);
+            let horizontalSep = this._createHorizontalSeparator(Constants.SEPARATOR_STYLE.MAX);
+            horizontalSep.style = "margin-bottom: 6px;";
+            this.mainBox.add(horizontalSep);
+        }
+        
         //Sub Main Box -- stores left and right box
         this.subMainBox = new St.BoxLayout({
             vertical: false,
@@ -83,7 +86,7 @@ var createMenu = class extends BaseMenuLayout.BaseLayout{
         let rightPanelWidth = this._settings.get_int('right-panel-width');
         rightPanelWidth += 70;
         this.rightBox.style = "width: " + rightPanelWidth + "px;";
-        this.applicationsScrollBox.style = "width: " + rightPanelWidth + "px; padding-top:6px;";
+        this.applicationsScrollBox.style = "width: " + rightPanelWidth + "px;";
 
         // Disable horizontal scrolling, hide vertical scrollbar, but allow vertical scrolling.
         this.applicationsScrollBox.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.EXTERNAL);
@@ -108,14 +111,26 @@ var createMenu = class extends BaseMenuLayout.BaseLayout{
             y_expand: false,
             y_align: Clutter.ActorAlign.START,
             y_align: Clutter.ActorAlign.START,
-            style_class: 'vfade',
+            style_class: 'apps-menu vfade left-scroll-area-small',
             overlay_scrollbars: true
         });
-        this.categoriesScrollBox.style = "padding-top:6px; width:185px;";
         this.leftBox.add(this.categoriesScrollBox);   
          
         this.categoriesBox = new St.BoxLayout({ vertical: true });
         this.categoriesScrollBox.add_actor(this.categoriesBox);
+
+        if(this._settings.get_boolean('enable-activities-shortcut')){
+            this.activities = new MW.ActivitiesMenuItem(this);
+            this.leftBox.add(this.activities.actor)
+        }
+
+        if(this._settings.get_enum('searchbar-location-redmond') === Constants.SearchbarLocation.BOTTOM){
+            let horizontalSep = this._createHorizontalSeparator(Constants.SEPARATOR_STYLE.MAX);
+            horizontalSep.style = "margin-top: 6px;";
+            this.mainBox.add(horizontalSep);
+            this.searchBox.actor.style ="margin: 10px 10px 0px 10px;";
+            this.mainBox.add(this.searchBox.actor); 
+        }
 
         this.loadCategories();
         this.displayCategories();
@@ -131,7 +146,7 @@ var createMenu = class extends BaseMenuLayout.BaseLayout{
         let rightPanelWidth = this._settings.get_int('right-panel-width');
         rightPanelWidth += 70;
         this.rightBox.style = "width: " + rightPanelWidth + "px;";
-        this.applicationsScrollBox.style = "width: " + rightPanelWidth + "px;  padding-top:6px;";
+        this.applicationsScrollBox.style = "width: " + rightPanelWidth + "px;";
         super.reload(); 
     }
 

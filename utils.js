@@ -183,7 +183,8 @@ function createStylesheet(settings){
     let cornerRadius = settings.get_int('menu-corner-radius');
     let menuMargin = settings.get_int('menu-margin');
     let menuArrowSize = settings.get_int('menu-arrow-size');
-    let menuWidth = settings.get_int('menu-width');
+    let leftPanelWidth = settings.get_int('menu-width');
+    let leftPanelWidthSmall = settings.get_int('menu-width') - 85;
     let avatarStyle =  settings.get_enum('avatar-style');
     let avatarRadius = avatarStyle == 0 ? 999 : 0;
     let menuButtonColor = settings.get_string('menu-button-color');
@@ -199,11 +200,12 @@ function createStylesheet(settings){
         + tooltipForegroundColor + tooltipBackgroundColor+"\nmax-width:550px;\n}") 
         : ("#tooltip-menu-item{\n padding: 2px 5px;\nmax-width:550px;\n min-height: 0px;\n}");
     
-    let stylesheetCSS = "#arc-search{width: "+  menuWidth+"px;} \n.arc-menu-status-text{\ncolor:"+ menuForegroundColor +";\nfont-size:" + fontSize+"pt;\n}\n "+                                                      
-        ".search-statustext {font-size:11pt;}\n "+    
-        ".left-scroll-area{ \nwidth:"+  menuWidth+"px;\n}\n"   
-    	+".arc-empty-dash-drop-target{\nwidth: "+  menuWidth+"px; \nheight: 2px; \nbackground-color:"+  separatorColor+"; \npadding: 0 0; \nmargin:0;\n}\n"     
-        +".left-box{\nwidth:"+  menuWidth+"px;\n}" + "\n.vert-sep{\nwidth:11px;\n}\n"
+    let stylesheetCSS = "#arc-search{width: "+  leftPanelWidth+"px;} \n.arc-menu-status-text{\ncolor:"+ menuForegroundColor +";\nfont-size:" + fontSize+"pt;\n}\n "                                                     
+        +".search-statustext {font-size:11pt;}\n "    
+        +".left-scroll-area{ \nwidth:"+  leftPanelWidth+"px;\n}\n"   
+        +".left-scroll-area-small{ \nwidth:"+  leftPanelWidthSmall+"px;\n}\n"  
+    	+".arc-empty-dash-drop-target{\nwidth: "+  leftPanelWidth+"px; \nheight: 2px; \nbackground-color:"+  separatorColor+"; \npadding: 0 0; \nmargin:0;\n}\n"     
+        +".left-box{\nwidth:"+  leftPanelWidth+"px;\n}" + "\n.vert-sep{\nwidth:11px;\n}\n"
         +".default-search-entry{\nmax-width: 17.667em;\n}\n"
         +".arc-search-entry{\nmax-width: 17.667em;\nfont-size:" + fontSize+"pt;\n border-color:"+ separatorColor+"; border-width: 1px;\n"
         +" color:"+  menuForegroundColor+";\n background-color:" +  menuColor + ";\n}\n"

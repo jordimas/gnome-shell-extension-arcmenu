@@ -107,6 +107,7 @@ var MenuSettingsController = class {
             this._settings.connect('changed::show-bookmarks', this._reload.bind(this)),
             this._settings.connect('changed::show-suspend-button', this._reload.bind(this)),
             this._settings.connect('changed::disable-user-avatar', this._reload.bind(this)),
+            this._settings.connect('changed::enable-activities-shortcut', this._reload.bind(this)),
             this._settings.connect('changed::enable-horizontal-flip', this._reload.bind(this)),
             this._settings.connect('changed::searchbar-location', this._reload.bind(this)),
             this._settings.connect('changed::searchbar-location-redmond', this._reload.bind(this)),

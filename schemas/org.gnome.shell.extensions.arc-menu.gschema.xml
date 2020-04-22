@@ -179,6 +179,11 @@
       <summary>Disable the user avatar icon from the menu</summary>
       <description>Disable the user avatar icon from the menu</description>
     </key>
+    <key type="b" name="enable-activities-shortcut">
+      <default>false</default>
+      <summary>Enable an Activitities Overview Shortcut</summary>
+      <description>Enable an Activitities Overview Shortcut</description>
+    </key>
     <key enum="org.gnome.shell.extensions.arc-menu.searchbar-location" name="searchbar-location">
       <default>'Bottom'</default>
       <summary>Searchbar location for ArcMenu layout</summary>

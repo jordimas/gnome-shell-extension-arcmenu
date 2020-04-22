@@ -151,6 +151,40 @@ var TweaksDialog = GObject.registerClass(
         _loadBudgieMenuTweaks(vbox){
             let budgieMenuTweaksFrame = new PW.FrameBox();
             budgieMenuTweaksFrame.add(this._createActivateOnHoverRow());
+
+            let searchbarLocationRow = new PW.FrameBoxRow();
+            let searchbarLocationLabel = new Gtk.Label({
+                label: _("Searchbar Location"),
+                use_markup: true,
+                xalign: 0,
+                hexpand: true
+            });
+            let searchbarLocationCombo = new Gtk.ComboBoxText({ halign: Gtk.Align.END });
+            searchbarLocationCombo.append_text(_("Bottom"));
+            searchbarLocationCombo.append_text(_("Top"));
+            searchbarLocationCombo.set_active(this._settings.get_enum('searchbar-location-redmond'));
+            searchbarLocationCombo.connect('changed', (widget) => {
+                    this._settings.set_enum('searchbar-location-redmond', widget.get_active());
+            });
+            searchbarLocationRow.add(searchbarLocationLabel);
+            searchbarLocationRow.add(searchbarLocationCombo);
+            budgieMenuTweaksFrame.add(searchbarLocationRow);
+
+            let enableActivitiesRow = new PW.FrameBoxRow();
+            let enableActivitiesLabel = new Gtk.Label({
+                label: _('Enable Activities Overview Shortcut'),
+                xalign:0,
+                hexpand: true,
+            });   
+            let enableActivitiesSwitch = new Gtk.Switch({ halign: Gtk.Align.END });
+            enableActivitiesSwitch.set_active(this._settings.get_boolean('enable-activities-shortcut'));
+            enableActivitiesSwitch.connect('notify::active', (widget) => {
+                this._settings.set_boolean('enable-activities-shortcut', widget.get_active());
+            });
+            enableActivitiesRow.add(enableActivitiesLabel);
+            enableActivitiesRow.add(enableActivitiesSwitch);
+            budgieMenuTweaksFrame.add(enableActivitiesRow);
+
             vbox.add(budgieMenuTweaksFrame);
         }
         _loadKRunnerMenuTweaks(vbox){
