@@ -98,7 +98,7 @@ var createMenu = class extends BaseMenuLayout.BaseLayout{
             vertical: true,
             x_expand: true,
             y_expand: true,
-            y_align: Clutter.ActorAlign.START
+            y_align: Clutter.ActorAlign.FILL
         });
         this.subMainBox.add(this.leftBox);
         this.subMainBox.add(this._createVerticalSeparator());
@@ -108,7 +108,7 @@ var createMenu = class extends BaseMenuLayout.BaseLayout{
             x_fill: true,
             y_fill: false,
             x_expand: true,
-            y_expand: false,
+            y_expand: true,
             y_align: Clutter.ActorAlign.START,
             y_align: Clutter.ActorAlign.START,
             style_class: 'apps-menu vfade left-scroll-area-small',
