@@ -1414,7 +1414,21 @@ var FavoritesMenuItem = GObject.registerClass({
         }
         this.setShouldShow();
     }
-   
+    _updateIcon() {
+        if(this._isIconGrid){
+            let layout = this._settings.get_enum('menu-layout');
+            if(layout == Constants.MENU_LAYOUT.Elementary || layout == Constants.MENU_LAYOUT.UbuntuDash){
+                this._icon.icon_size = 52;  
+            } 
+            else{
+                this._icon.icon_size = 36;
+            }        
+        }
+        else{
+            let largeIcons = this._settings.get_boolean('enable-large-icons');
+            this._icon.icon_size = largeIcons ? MEDIUM_ICON_SIZE : SMALL_ICON_SIZE;  
+        }
+    }
     popupContextMenu(){
         if(this.rightClickMenu == undefined){
             let app = this._app ? this._app : this._command;
@@ -1712,7 +1726,7 @@ var CategoryMenuItem = GObject.registerClass(class ArcMenu_CategoryMenuItem exte
 
         if(this._category == Constants.CategoryType.FREQUENT_APPS){
             this._name = _("Frequent Apps");
-            this._icon.icon_name = 'emblem-favorite-symbolic';
+            this._icon.icon_name = 'user-bookmarks-symbolic';
         }
         else if(this._category == Constants.CategoryType.HOME_SCREEN){
             this._name = _("Home Screen");  
@@ -1723,9 +1737,13 @@ var CategoryMenuItem = GObject.registerClass(class ArcMenu_CategoryMenuItem exte
             this._icon.icon_name = 'view-grid-symbolic';
         }  
         else if(this._category == Constants.CategoryType.FAVORITES){
-            this._name = _("Favorites");
+            this._name = _("GNOME Favorites");
             this._icon.icon_name = 'emblem-favorite-symbolic';
         }  
+        else if(this._category == Constants.CategoryType.PINNED_APPS){
+            this._name = _("Pinned Apps");
+            this._icon.gicon = Gio.icon_new_for_string(Me.path + '/media/icons/arc-menu-symbolic.svg');
+        }
         else{
             this._name = this._category.get_name();
             this._icon.gicon = this._category.get_icon() ? this._category.get_icon() : null;
@@ -1784,6 +1802,14 @@ var CategoryMenuItem = GObject.registerClass(class ArcMenu_CategoryMenuItem exte
         if(this._category == Constants.CategoryType.HOME_SCREEN){
             this._button.activeCategory = _("Pinned Apps");
             this._button.displayFavorites();
+        }
+        else if(this._category == Constants.CategoryType.PINNED_APPS){
+            this._button.displayFavorites();
+            if(this._button.viewProgramsButton){
+                this._button.backButton.actor.show();
+                this._button.viewProgramsButton.actor.hide();
+                this._button.currentMenu = Constants.CURRENT_MENU.CATEGORY_APPLIST;
+            }
         }
         else
             this._button.displayCategoryAppList(this.appList);       

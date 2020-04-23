@@ -224,23 +224,26 @@ var createMenu = class extends BaseMenuLayout.BaseLayout{
         let rightPanelWidth = this._settings.get_int('right-panel-width');
         this.rightBox.style = "width: " + rightPanelWidth + "px;";
         this.shortcutsScrollBox.style = "width: " + rightPanelWidth + "px;";
-
-        this.loadCategories();
+        
         this.loadFavorites();
+        this.loadCategories();
         this.setDefaultMenuView(); 
     }
 
     loadCategories(){
         this.categoryDirectories = null;
         this.categoryDirectories = new Map();
-        
-        let categoryMenuItem = new MW.CategoryMenuItem(this, Constants.CategoryType.FREQUENT_APPS);
-        this.categoryDirectories.set(Constants.CategoryType.FREQUENT_APPS, categoryMenuItem);
-        let mostUsed = Shell.AppUsage.get_default().get_most_used();
-        for (let i = 0; i < mostUsed.length; i++) {
-            if (mostUsed[i] && mostUsed[i].get_app_info().should_show())
-                categoryMenuItem.appList.push(mostUsed[i]);
-        }
+
+        let extraCategories = this._settings.get_value("extra-categories").deep_unpack();
+
+        for(let i = 0; i < extraCategories.length; i++){
+            let categoryEnum = extraCategories[i][0];
+            let shouldShow = extraCategories[i][1];
+            if(shouldShow){
+                let categoryMenuItem = new MW.CategoryMenuItem(this, categoryEnum);
+                this.categoryDirectories.set(categoryEnum, categoryMenuItem);
+            }
+        }        
 
         super.loadCategories();
     }

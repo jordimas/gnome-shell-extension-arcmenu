@@ -100,6 +100,7 @@ var MenuSettingsController = class {
             this._settings.connect('changed::directory-shortcuts-list', this._reload.bind(this)),
             this._settings.connect('changed::application-shortcuts-list', this._reload.bind(this)),
             this._settings.connect('changed::disable-recently-installed-apps', this._reload.bind(this)),
+            this._settings.connect('changed::extra-categories', this._reload.bind(this)),
             this._settings.connect('changed::show-power-button', this._reload.bind(this)),
             this._settings.connect('changed::show-logout-button', this._reload.bind(this)),
             this._settings.connect('changed::show-lock-button', this._reload.bind(this)),

@@ -82,6 +82,12 @@ var BaseLayout = class {
         this.applicationsMap.forEach((value,key,map)=>{
             map.get(key)._updateIcon();
         });
+        let categoryMenuItem = this.categoryDirectories.get(Constants.CategoryType.PINNED_APPS);
+        if(categoryMenuItem){
+            for(let favoriteMenuItem of categoryMenuItem.appList){
+                favoriteMenuItem._updateIcon();
+            }
+        }
         this.newSearch._reset(); 
     }
 
@@ -187,6 +193,22 @@ var BaseLayout = class {
         if(categoryMenuItem){
             this._loadGnomeFavorites(categoryMenuItem);
         }
+        categoryMenuItem = this.categoryDirectories.get(Constants.CategoryType.FREQUENT_APPS);
+        if(categoryMenuItem){
+            let mostUsed = Shell.AppUsage.get_default().get_most_used();
+            for (let i = 0; i < mostUsed.length; i++) {
+                if (mostUsed[i] && mostUsed[i].get_app_info().should_show())
+                    categoryMenuItem.appList.push(mostUsed[i]);
+            }
+        }
+        categoryMenuItem = this.categoryDirectories.get(Constants.CategoryType.PINNED_APPS);
+        if(categoryMenuItem){
+            categoryMenuItem.appList = categoryMenuItem.appList.concat(this.favoritesArray);
+            for(let favoriteMenuItem of categoryMenuItem.appList){
+                favoriteMenuItem._updateIcon();
+            }
+        }
+            
     }
 
     _loadCategory(isIconGrid, categoryId, dir, submenuItem) {

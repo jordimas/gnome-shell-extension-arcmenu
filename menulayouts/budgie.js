@@ -131,7 +131,8 @@ var createMenu = class extends BaseMenuLayout.BaseLayout{
             this.searchBox.actor.style ="margin: 10px 10px 0px 10px;";
             this.mainBox.add(this.searchBox.actor); 
         }
-
+        
+        this.loadFavorites();
         this.loadCategories();
         this.displayCategories();
         this.setDefaultMenuView(); 
@@ -139,7 +140,7 @@ var createMenu = class extends BaseMenuLayout.BaseLayout{
 
     setDefaultMenuView(){
         super.setDefaultMenuView();
-        this.displayAllApps();
+        this.categoryDirectories.values().next().value.activate();
     }
     
     reload() {
@@ -154,8 +155,16 @@ var createMenu = class extends BaseMenuLayout.BaseLayout{
         this.categoryDirectories = null;
         this.categoryDirectories = new Map(); 
 
-        let categoryMenuItem = new MW.CategoryMenuItem(this, Constants.CategoryType.ALL_PROGRAMS);
-        this.categoryDirectories.set(Constants.CategoryType.ALL_PROGRAMS, categoryMenuItem);
+        let extraCategories = this._settings.get_value("extra-categories").deep_unpack();
+
+        for(let i = 0; i < extraCategories.length; i++){
+            let categoryEnum = extraCategories[i][0];
+            let shouldShow = extraCategories[i][1];
+            if(shouldShow){
+                let categoryMenuItem = new MW.CategoryMenuItem(this, categoryEnum);
+                this.categoryDirectories.set(categoryEnum, categoryMenuItem);
+            }
+        }
 
         super.loadCategories();
         for(let categoryMenuItem of this.categoryDirectories.values()){

@@ -449,6 +449,11 @@
       <summary>Active color for for the menu button icon</summary>
       <description>Active for color for the menu button icon.</description>
     </key>
+    <key name="extra-categories" type="a(ib)">
+      <default>[(0, true), (1, true), (2, true), (3, true)]</default>
+      <summary>List of recently installed apps</summary>
+      <description>List of recently installed apps</description>
+    </key>
     <key name="recently-installed-apps" type="as">
       <default>[]</default>
       <summary>List of recently installed apps</summary>
