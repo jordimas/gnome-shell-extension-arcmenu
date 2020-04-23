@@ -2598,7 +2598,7 @@ var ArcMenuCustomizationWindow = GObject.registerClass(
             this.removeMenuArrow = this._settings.get_boolean('remove-menu-arrow');
             this.disableSearchStyle = this._settings.get_boolean('disable-searchbox-border');
             super._init(_('Customize Arc Menu Appearance'), parent);
-	        this.resize(550,400);
+            this.resize(550,400);
         }
 
         _createLayout(vbox) {
@@ -2606,7 +2606,10 @@ var ArcMenuCustomizationWindow = GObject.registerClass(
 
             let generalPage = new PW.NotebookPage(_("General"));
             notebook.append_page(generalPage);
-    
+
+            let categoryPage = new CategoriesPage(this._settings);
+            notebook.append_page(categoryPage);
+
             let fineTunePage = new PW.NotebookPage(_("Fine Tune"));
             notebook.append_page(fineTunePage);
     
@@ -3034,6 +3037,156 @@ var ArcMenuCustomizationWindow = GObject.registerClass(
         }
    
 });
+
+var CategoriesPage = GObject.registerClass(
+    class ArcMenu_CategoriesPage extends PW.NotebookPage {
+    _init(settings) {
+        super._init(_('Categories'));
+        this._settings = settings;
+        let softwareShortcutsFrame = new PW.FrameBox();
+        let softwareShortcutsScrollWindow = new Gtk.ScrolledWindow();
+        softwareShortcutsScrollWindow.set_policy(Gtk.PolicyType.AUTOMATIC, Gtk.PolicyType.AUTOMATIC);
+        softwareShortcutsScrollWindow.set_max_content_height(300);
+        softwareShortcutsScrollWindow.set_min_content_height(300);
+        softwareShortcutsScrollWindow.add(softwareShortcutsFrame);
+
+
+        this._createFrame(softwareShortcutsFrame);
+        this.add(softwareShortcutsScrollWindow);
+        let buttonRow = new PW.FrameBoxRow();
+        let resetButton = new Gtk.Button({
+            label: _("Restore Defaults"),
+            tooltip_text: _("Restore the default Directory Shortcuts")
+        });
+
+        resetButton.set_sensitive(this.getSensitive());
+
+        resetButton.connect('clicked', ()=> {
+           
+        });
+
+        //last row - save settings
+        this.savePinnedAppsButton = new Gtk.Button({
+            label: _("Save"),
+            hexpand: true
+        });
+        this.savePinnedAppsButton.connect('clicked', ()=> {
+            //iterate through each frame row (containing apps to pin) to create an array to save in settings
+            let array = [];
+            for(let i = 0; i < softwareShortcutsFrame.count; i++) {
+                let frame = softwareShortcutsFrame.get_index(i);
+                array.push([frame._enum, frame._shouldShow]);
+            }
+            this._settings.set_value('extra-categories', new GLib.Variant('a(ib)', array));
+            this.savePinnedAppsButton.set_sensitive(false);
+            resetButton.set_sensitive(this.getSensitive());
+        }); 
+        this.savePinnedAppsButton.set_halign(Gtk.Align.END);
+        this.savePinnedAppsButton.set_sensitive(false);
+        buttonRow.add(resetButton);
+        buttonRow.add(this.savePinnedAppsButton);
+        this.add(buttonRow);
+    }
+
+    getSensitive(){
+
+    }
+
+    _createFrame(softwareShortcutsFrame){
+        let extraCategories = this._settings.get_value("extra-categories").deep_unpack();
+
+        for(let i = 0; i < extraCategories.length; i++){
+            let categoryEnum = extraCategories[i][0];
+            let name = Constants.CATEGORIES[categoryEnum].Name;
+
+            let frameRow = new PW.FrameBoxRow();
+            frameRow._enum = extraCategories[i][0];
+            frameRow._shouldShow = extraCategories[i][1]; 
+            
+            let applicationIcon = new Gtk.Image( {
+                gicon: Gio.icon_new_for_string(Constants.CATEGORIES[categoryEnum].Icon),
+                pixel_size: 22
+            });
+            let applicationImageBox = new Gtk.VBox({
+                margin_left:5,
+                expand: false
+            });
+            applicationImageBox.add(applicationIcon);
+            frameRow.add(applicationImageBox);
+
+            let softwareShortcutsLabel = new Gtk.Label({
+                label: _(name),
+                use_markup: true,
+                xalign: 0,
+                hexpand: true
+            });
+            let buttonBox = new Gtk.Grid({
+                margin_top:0,
+                margin_bottom: 0,
+                vexpand: false,
+                hexpand: false,
+                margin_right: 15,
+                column_spacing: 2
+            });
+         
+            let upButton = new PW.IconButton({
+                circular: false,
+                icon_name: 'go-up-symbolic',
+                tooltip_text: _('Move Up')
+            });
+            let downButton = new PW.IconButton({
+                circular: false,
+                icon_name: 'go-down-symbolic',
+                tooltip_text: _('Move Down')
+            });
+            let deleteButton = new Gtk.Switch({
+                valign: Gtk.Align.CENTER,
+                margin_left: 10,
+                tooltip_text: _('Enable/Disble')
+            });
+            
+            upButton.connect('clicked', ()=> {
+                //find index of frameRow in frame
+                //remove and reinsert at new position
+                let index = frameRow.get_index();
+                if(index!=0) {
+                    softwareShortcutsFrame.remove(frameRow);
+                    softwareShortcutsFrame.insert(frameRow, index-1);
+                }
+                
+                softwareShortcutsFrame.show();
+                this.savePinnedAppsButton.set_sensitive(true);
+            });
+
+            downButton.connect('clicked', ()=> {
+                //find index of frameRow in frame
+                //remove and reinsert at new position
+                let index = frameRow.get_index();
+                if(index+1 < softwareShortcutsFrame.count) {
+                    softwareShortcutsFrame.remove(frameRow);
+                    softwareShortcutsFrame.insert(frameRow,index+1);
+                }
+                softwareShortcutsFrame.show();
+                this.savePinnedAppsButton.set_sensitive(true);
+            });
+            deleteButton.set_active(frameRow._shouldShow);
+            deleteButton.connect('notify::active', ()=> {
+                //remove frameRow
+                frameRow._shouldShow = deleteButton.get_active(); 
+                this.savePinnedAppsButton.set_sensitive(true);
+            });
+            //add everything to frame
+            buttonBox.add(upButton);
+            buttonBox.add(downButton);
+            buttonBox.add(deleteButton);
+            
+            frameRow.add(softwareShortcutsLabel);
+            frameRow.add(buttonBox);
+            softwareShortcutsFrame.add(frameRow);
+        }
+    }
+});
+
 //Dialog Window for Arc Menu Customization    
 var ColorThemeDialogWindow = GObject.registerClass(
     class ArcMenu_ColorThemeDialogWindow extends PW.DialogWindow {
@@ -5067,7 +5220,8 @@ class ArcMenu_ArcMenuPreferencesWidget extends Gtk.Box{
         super._init({
             orientation: Gtk.Orientation.VERTICAL,
             spacing: 0,
-            border_width: 0
+            border_width: 0,
+            margin: 0
         });
         this._settings = Convenience.getSettings(Me.metadata['settings-schema']);
         
