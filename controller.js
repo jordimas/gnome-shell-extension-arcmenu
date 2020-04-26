@@ -124,7 +124,7 @@ var MenuSettingsController = class {
             this._settings.connect('changed::mint-separator-index',this._updateButtonFavorites.bind(this)),
             this._settings.connect('changed::ubuntu-dash-pinned-app-list',this._updateButtonFavorites.bind(this)),
             this._settings.connect('changed::ubuntu-dash-separator-index',this._updateButtonFavorites.bind(this)),
-            this._settings.connect('changed::enable-pinned-apps',this._updateMenuDefaultView.bind(this)),
+            this._settings.connect('changed::enable-pinned-apps',this._reload.bind(this)),
             this._settings.connect('changed::enable-ubuntu-homescreen',this._setDefaultMenuView.bind(this)),
             this._settings.connect('changed::menu-layout', this._updateMenuLayout.bind(this)),
             this._settings.connect('changed::enable-large-icons', this.updateIcons.bind(this)),
@@ -212,36 +212,20 @@ var MenuSettingsController = class {
     }
 
     _updateFavorites(){
-        let layout = this._settings.get_enum('menu-layout');
-        if(layout == Constants.MENU_LAYOUT.Default || layout == Constants.MENU_LAYOUT.UbuntuDash ||
-            layout == Constants.MENU_LAYOUT.Windows || layout == Constants.MENU_LAYOUT.Raven){
-            if(this._menuButton.getShouldLoadFavorites())
-                this._menuButton._loadFavorites();
-            if(this._menuButton.getCurrentMenu() == Constants.CURRENT_MENU.FAVORITES || layout == Constants.MENU_LAYOUT.Windows)
-               this._menuButton._displayFavorites();
-        }
+        if(this._menuButton.getShouldLoadFavorites())
+            this._menuButton._loadFavorites();
+        if(this._menuButton.MenuLayout.shouldDisplayFavorites)
+            this._menuButton._displayFavorites();
+        //If the active category is Pinned Apps, redisplay the new Pinned Apps
+        else if(this._menuButton.MenuLayout.activeCategoryType === Constants.CategoryType.PINNED_APPS)
+            this._menuButton._displayFavorites();  
     }
 
     _updateButtonFavorites(){
         let layout = this._settings.get_enum('menu-layout');
-        if(layout == Constants.MENU_LAYOUT.UbuntuDash){
+        if(layout == Constants.MENU_LAYOUT.UbuntuDash || layout == Constants.MENU_LAYOUT.Mint){
             if(this._menuButton.getShouldLoadFavorites())
                 this._menuButton._loadPinnedShortcuts();
-        }
-        if(layout == Constants.MENU_LAYOUT.Mint ){
-            if(this._menuButton.getShouldLoadFavorites())
-                this._menuButton._loadFavorites();
-        }
-
-    }
-
-    _updateMenuDefaultView(){
-        let layout = this._settings.get_enum('menu-layout');
-        if(layout == Constants.MENU_LAYOUT.Default){
-            if(this._settings.get_boolean('enable-pinned-apps'))
-                this._menuButton._displayFavorites();
-            else
-                this._menuButton._displayCategories();
         }
     }
 

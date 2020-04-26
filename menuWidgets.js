@@ -229,43 +229,41 @@ var AppRightClickMenu = class ArcMenu_AppRightClickMenu extends PopupMenu.PopupM
                             });
                         }
                     }
-                    if(this._isPinnedApp || this.layout == Constants.MENU_LAYOUT.Default || this.layout == Constants.MENU_LAYOUT.Windows || 
-                        this.layout == Constants.MENU_LAYOUT.UbuntuDash || this.layout == Constants.MENU_LAYOUT.Raven){
-                        let pinnedApps = this._settings.get_strv('pinned-app-list');
-                        let pinnedAppID=[];
-                        for(let i=2;i<pinnedApps.length;i+=3){
-                            pinnedAppID.push(pinnedApps[i]);  
-                        }
-                        let match = pinnedAppID.find( (element)=>{
-                            return element == this._app.get_id();
-                        });
-                        if(match){ //if app is pinned add Unpin
-                            let item = new PopupMenu.PopupMenuItem(_("Unpin from Arc Menu"));  
-                            item.connect('activate', ()=>{
-                                this.close();
-                                for(let i = 0;i<pinnedApps.length;i+=3){
-                                    if(pinnedApps[i+2]==this._app.get_id()){
-                                        pinnedApps.splice(i,3);
-                                        this._settings.set_strv('pinned-app-list',pinnedApps);
-                                        break;
-                                    }
-                                }
-                            });      
-                            this.addMenuItem(item);
-                        }
-                        else{ //if app is not pinned add pin
-                            let item = new PopupMenu.PopupMenuItem(_("Pin to Arc Menu"));   
-                            item.connect('activate', ()=>{
-                                this.close();
-                                pinnedApps.push(this.appInfo.get_display_name());
-                                pinnedApps.push(this.appInfo.get_icon().to_string());
-                                pinnedApps.push(this._app.get_id());
-                                this._settings.set_strv('pinned-app-list',pinnedApps);
-                            });      
-                            this.addMenuItem(item);
-                        }
+
+                    let pinnedApps = this._settings.get_strv('pinned-app-list');
+                    let pinnedAppID=[];
+                    for(let i=2;i<pinnedApps.length;i+=3){
+                        pinnedAppID.push(pinnedApps[i]);  
                     }
-                    
+                    let match = pinnedAppID.find( (element)=>{
+                        return element == this._app.get_id();
+                    });
+                    if(match){ //if app is pinned add Unpin
+                        let item = new PopupMenu.PopupMenuItem(_("Unpin from Arc Menu"));  
+                        item.connect('activate', ()=>{
+                            this.close();
+                            for(let i = 0;i<pinnedApps.length;i+=3){
+                                if(pinnedApps[i+2]==this._app.get_id()){
+                                    pinnedApps.splice(i,3);
+                                    this._settings.set_strv('pinned-app-list',pinnedApps);
+                                    break;
+                                }
+                            }
+                        });      
+                        this.addMenuItem(item);
+                    }
+                    else{ //if app is not pinned add pin
+                        let item = new PopupMenu.PopupMenuItem(_("Pin to Arc Menu"));   
+                        item.connect('activate', ()=>{
+                            this.close();
+                            pinnedApps.push(this.appInfo.get_display_name());
+                            pinnedApps.push(this.appInfo.get_icon().to_string());
+                            pinnedApps.push(this._app.get_id());
+                            this._settings.set_strv('pinned-app-list',pinnedApps);
+                        });      
+                        this.addMenuItem(item);
+                    }
+                                        
                     if (Shell.AppSystem.get_default().lookup_app('org.gnome.Software.desktop')) {
                         this._appendSeparator();
                         let item = this._appendMenuItem(_("Show Details"));
@@ -289,23 +287,20 @@ var AppRightClickMenu = class ArcMenu_AppRightClickMenu extends PopupMenu.PopupM
             }
         }  
         else{  //if pinned custom shortcut add unpin option to menu    
-            if(this._isPinnedApp || this.layout == Constants.MENU_LAYOUT.Default || this.layout == Constants.MENU_LAYOUT.Windows || 
-                this.layout == Constants.MENU_LAYOUT.UbuntuDash || this.layout == Constants.MENU_LAYOUT.Raven){
-                this._appendSeparator();
-                let item = new PopupMenu.PopupMenuItem(_("Unpin from Arc Menu"));   
-                item.connect('activate', ()=>{
-                    this.close();
-                    let pinnedApps = this._settings.get_strv('pinned-app-list');
-                    for(let i = 0;i<pinnedApps.length;i+=3){
-                        if(pinnedApps[i+2]==this._app){
-                            pinnedApps.splice(i,3);
-                            this._settings.set_strv('pinned-app-list',pinnedApps);
-                            break;
-                        }
+            this._appendSeparator();
+            let item = new PopupMenu.PopupMenuItem(_("Unpin from Arc Menu"));   
+            item.connect('activate', ()=>{
+                this.close();
+                let pinnedApps = this._settings.get_strv('pinned-app-list');
+                for(let i = 0;i<pinnedApps.length;i+=3){
+                    if(pinnedApps[i+2]==this._app){
+                        pinnedApps.splice(i,3);
+                        this._settings.set_strv('pinned-app-list',pinnedApps);
+                        break;
                     }
-                });      
-                this.addMenuItem(item);
-            }
+                }
+            });      
+            this.addMenuItem(item);
         }
     }
 
@@ -1737,7 +1732,7 @@ var CategoryMenuItem = GObject.registerClass(class ArcMenu_CategoryMenuItem exte
             this._icon.icon_name = 'view-grid-symbolic';
         }  
         else if(this._category == Constants.CategoryType.FAVORITES){
-            this._name = _("GNOME Favorites");
+            this._name = _("Favorites");
             this._icon.icon_name = 'emblem-favorite-symbolic';
         }  
         else if(this._category == Constants.CategoryType.PINNED_APPS){
@@ -1815,13 +1810,13 @@ var CategoryMenuItem = GObject.registerClass(class ArcMenu_CategoryMenuItem exte
             this._button.displayCategoryAppList(this.appList);       
         if(Utils.isTwoPanedLayout(this._layout))
             this._button.setActiveCategory(this, true);
+        this._button.activeCategoryType = this._category;    
     }
 
     _onHover() {
         if (this.actor.hover){
             if(Utils.isTwoPanedLayout(this._layout) && this._settings.get_boolean('activate-on-hover')){
-                this._button.displayCategoryAppList(this.appList);    
-                this._button.setActiveCategory(this, true);
+                this.activate();
             } 
         }  
         super._onHover(); 

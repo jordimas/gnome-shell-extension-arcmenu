@@ -43,16 +43,16 @@ var CURRENT_MENU = {
 };
 
 var CategoryType = {
-  FREQUENT_APPS: 0,
-    FAVORITES: 1,
+    FAVORITES: 0,
+    FREQUENT_APPS: 1,
     ALL_PROGRAMS: 2,
     PINNED_APPS: 3,
     HOME_SCREEN: 4
 };
 
 var CATEGORIES = [
+    {Category: CategoryType.FAVORITES, Name: _("Favorites"), Icon: 'emblem-favorite-symbolic'},
     {Category: CategoryType.FREQUENT_APPS, Name: _("Frequent Apps"), Icon: 'user-bookmarks-symbolic'},
-    {Category: CategoryType.FAVORITES, Name: _("GNOME Favorites"), Icon: 'emblem-favorite-symbolic'},
     {Category: CategoryType.ALL_PROGRAMS, Name: _("All Programs"), Icon: 'view-grid-symbolic'},
     {Category: CategoryType.PINNED_APPS, Name: _("Pinned Apps"), Icon: Me.path + '/media/icons/arc-menu-symbolic.svg'}
 ]

@@ -132,6 +132,7 @@ var createMenu = class extends BaseMenuLayout.BaseLayout{
 
         this.applicationsScrollBox.add_actor( this.applicationsBox);
         this.subMainBox.add(this.applicationsScrollBox);
+        this.shouldDisplayFavorites = true;
 
         this.loadCategories();
         this.displayAllApps();

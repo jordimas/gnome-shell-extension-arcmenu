@@ -73,7 +73,7 @@ var IconButton = GObject.registerClass(class ArcMenu_IconButton extends Gtk.Butt
         if (this._params.icon_name) {
             let image = new Gtk.Image({
                 icon_name: this._params.icon_name,
-                xalign: 0.5
+                xalign: Gtk.Align.CENTER
             });
             this.add(image);
         }

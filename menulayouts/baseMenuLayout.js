@@ -485,7 +485,16 @@ var BaseLayout = class {
                 this._settings.set_strv('pinned-app-list',array);
             });
             this.favoritesArray.push(favoritesMenuItem);
-        }   
+        }  
+        let categoryMenuItem = this.categoryDirectories ? this.categoryDirectories.get(Constants.CategoryType.PINNED_APPS) : null;
+        if(categoryMenuItem){
+            categoryMenuItem.appList = null;
+            categoryMenuItem.appList = [];
+            categoryMenuItem.appList = categoryMenuItem.appList.concat(this.favoritesArray);
+            for(let favoriteMenuItem of categoryMenuItem.appList){
+                favoriteMenuItem._updateIcon();
+            }
+        } 
     }
 
     _updatePinnedAppsWebBrowser(pinnedApps){
@@ -520,7 +529,7 @@ var BaseLayout = class {
 
     displayFavorites() {
         this._clearActorsFromBox();
-        if(this.viewProgramsButton){
+        if(this.viewProgramsButton && this.activeCategoryType !== Constants.CategoryType.PINNED_APPS){
             this.viewProgramsButton.actor.show();
             this.backButton.actor.hide();
         }
@@ -608,9 +617,10 @@ var BaseLayout = class {
         }
     }
 
-    _clearActorsFromBox(box) {
+    _clearActorsFromBox(box){
         if(!box){
             box = this.applicationsBox;
+            this.activeCategoryType = -1;
         }
         this.activeMenuItem = null;
         let actors = box.get_children();

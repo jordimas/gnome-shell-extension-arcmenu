@@ -148,6 +148,7 @@ var createMenu = class extends BaseMenuLayout.BaseLayout{
         this.categoriesScrollBox.clip_to_allocation = true;
 
         this.loadFavorites();
+        this.loadPinnedShortcuts();
         this.loadCategories();
         this.displayCategories();
         this.setDefaultMenuView(); 
@@ -187,8 +188,8 @@ var createMenu = class extends BaseMenuLayout.BaseLayout{
 
         super.loadCategories();
     }
-   
-    loadFavorites() {
+
+    loadPinnedShortcuts(){
         this.actionsScrollBox.remove_actor(this.actionsBox);
         this.actionsBox.destroy_all_children();
         this.actionsBox.destroy();
@@ -199,7 +200,6 @@ var createMenu = class extends BaseMenuLayout.BaseLayout{
         this.actionsScrollBox.add_actor(this.actionsBox);
 
         super.loadPinnedApps(this._settings.get_strv('mint-pinned-app-list'), this._settings.get_int('mint-separator-index'));
-        super.loadFavorites();
     }
 
     _updatePinnedApps(){

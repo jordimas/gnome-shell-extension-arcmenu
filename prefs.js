@@ -820,6 +820,7 @@ var GeneralPage = GObject.registerClass(
             });
             let modifyHotCornerSwitch = new Gtk.Switch({ 
                 halign: Gtk.Align.END,
+                valign: Gtk.Align.CENTER,
                 tooltip_text: _("Override the default behavoir of the Activities Hot Corner")
             });
             modifyHotCornerSwitch.set_active(this._settings.get_boolean('override-hot-corners'));
@@ -835,37 +836,6 @@ var GeneralPage = GObject.registerClass(
             modifyHotCornerRow.add(modifyHotCornerButton);
             modifyHotCornerRow.add(modifyHotCornerSwitch);
             modifyHotCornerFrame.add(modifyHotCornerRow);
-
-           
-            //Pinned Apps / Categories Default View Toggle 
-            let defaultLeftBoxFrame = new PW.FrameBox();
-            let defaultLeftBoxRow = new PW.FrameBoxRow();
-            let defaultLeftBoxLabel = new Gtk.Label({
-                label: _("Arc Menu Default View"),
-                use_markup: true,
-                xalign: 0,
-                hexpand: true
-            });
-            let defaultLeftBoxCombo = new Gtk.ComboBoxText({ 
-                halign: Gtk.Align.END,
-                tooltip_text: _("Choose the default menu view for Arc Menu") 
-            });
-            defaultLeftBoxCombo.append_text(_("Pinned Apps"));
-            defaultLeftBoxCombo.append_text(_("Categories List"));
-            if(this._settings.get_boolean('enable-pinned-apps'))
-                defaultLeftBoxCombo.set_active(0);
-            else 
-            defaultLeftBoxCombo.set_active(1);
-            defaultLeftBoxCombo.connect('changed', (widget) => {
-                if(widget.get_active()==0)
-                    this._settings.set_boolean('enable-pinned-apps',true);
-            if(widget.get_active()==1)
-                    this._settings.set_boolean('enable-pinned-apps',false);
-            });
-            
-            defaultLeftBoxRow.add(defaultLeftBoxLabel);
-            defaultLeftBoxRow.add(defaultLeftBoxCombo);
-            defaultLeftBoxFrame.add(defaultLeftBoxRow);
             
             //Hotkey On Key Release
             let keyReleaseRow = new PW.FrameBoxRow();
@@ -1044,9 +1014,7 @@ var GeneralPage = GObject.registerClass(
                 this.menuKeybindingFrame.add(keyReleaseRow);
             }
 
-            
             // add the frames
-            this.add(defaultLeftBoxFrame);
             this.add(menuPlacementFrame);
             this.add(recentAppsFrame);
             this.add(tooltipFrame);
@@ -2208,6 +2176,7 @@ var AppearancePage = GObject.registerClass(
             });
             let overrideArcMenuSwitch = new Gtk.Switch({ 
                 halign: Gtk.Align.END,
+                valign: Gtk.Align.CENTER,
                 tooltip_text: _("Override the shell theme for Arc Menu only")
             });
             overrideArcMenuSwitch.set_active(this._settings.get_boolean('enable-custom-arc-menu'));
@@ -2251,7 +2220,7 @@ var AppearancePage = GObject.registerClass(
             let layoutFrame = new PW.FrameBox();
             let layoutRow = new PW.FrameBoxRow();
             let layoutLabel = new Gtk.Label({
-                label: _("Menu Layout"),
+                label: _("Choose Menu Layout"),
                 use_markup: true,
                 xalign: 0,
                 hexpand: true
@@ -2277,41 +2246,9 @@ var AppearancePage = GObject.registerClass(
                         dialog.destroy();
                 }); 
             });
-            layoutButton.set_sensitive(this._settings.get_boolean('enable-custom-arc-menu-layout'));
-            let layoutSwitch = new Gtk.Switch({ 
-                halign: Gtk.Align.END,
-                tooltip_text: _("Enable the selection of different menu layouts")
-            });
-            layoutSwitch.set_active(this._settings.get_boolean('enable-custom-arc-menu-layout'));
-            layoutSwitch.connect('notify::active', (widget) => { 
-                this._settings.set_boolean('enable-custom-arc-menu-layout',widget.get_active());
-                layoutButton.set_sensitive(widget.get_active());
-                if(widget.get_active() && layoutFrame.count==1){
-                    layoutFrame.add(currentLayoutRow);
-                    layoutFrame.add(tweaksRow);
-                    layoutFrame.show();
-                }
-                if(!widget.get_active() && layoutFrame.count>1){
-                    layoutFrame.remove(currentLayoutRow);
-                    layoutFrame.remove(tweaksRow);
-                }
-                let index = this._settings.get_enum('menu-layout');
-                if(widget.get_active()){
-                    currentStyleLabel.label = this.getMenuLayoutName(index);
-                    tweaksLabel.label = currentStyleLabel.label +" " + _("Tweaks");
-                }
-                if(!widget.get_active()){
-                    this._settings.set_enum('menu-layout', 0);
-                    currentStyleLabel.label = this.getMenuLayoutName(index);
-                    tweaksLabel.label = currentStyleLabel.label +" " + _("Tweaks");
-                }
-                this._settings.reset('reload-theme');
-                this._settings.set_boolean('reload-theme', true);
-                   
-            });
+            
             layoutRow.add(layoutLabel);
             layoutRow.add(layoutButton);
-            layoutRow.add(layoutSwitch);
             layoutFrame.add(layoutRow);
     
             let currentLayoutRow = new PW.FrameBoxRow();
@@ -2332,8 +2269,7 @@ var AppearancePage = GObject.registerClass(
             currentStyleLabel.label = this.getMenuLayoutName(index);
             currentLayoutRow.add(currentLayoutLabel);
             currentLayoutRow.add(currentStyleLabel);
-            if(this._settings.get_boolean('enable-custom-arc-menu-layout'))
-                layoutFrame.add(currentLayoutRow);
+            layoutFrame.add(currentLayoutRow);
 
 
             let tweaksRow = new PW.FrameBoxRow();
@@ -2362,8 +2298,7 @@ var AppearancePage = GObject.registerClass(
             });
             tweaksRow.add(tweaksLabel);
             tweaksRow.add(menuTweaksButton);
-            if(this._settings.get_boolean('enable-custom-arc-menu-layout'))
-                layoutFrame.add(tweaksRow);
+            layoutFrame.add(tweaksRow);
 
             this.add(layoutFrame);
     }
@@ -4737,7 +4672,10 @@ var ShortcutsPage = GObject.registerClass(
             xalign: 0,
             hexpand: true
         });
-        let configureShortcutsSwitch = new Gtk.Switch({tooltip_text:_("Add, Remove, or Modify Arc Menu shortcuts")});
+        let configureShortcutsSwitch = new Gtk.Switch({
+            tooltip_text:_("Add, Remove, or Modify Arc Menu shortcuts"),
+            valign: Gtk.Align.CENTER
+        });
         
         let configureShortcutsButton = new PW.IconButton({
             circular: true,

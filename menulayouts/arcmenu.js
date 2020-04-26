@@ -239,6 +239,11 @@ var createMenu = class extends BaseMenuLayout.BaseLayout{
         for(let i = 0; i < extraCategories.length; i++){
             let categoryEnum = extraCategories[i][0];
             let shouldShow = extraCategories[i][1];
+            //If ArcMenu layout set to "Pinned Apps" default view 
+            //and Extra Categories "Pinned Apps" is enabled
+            //do not display "Pinned Apps" as an extra category
+            if(categoryEnum == Constants.CategoryType.PINNED_APPS && shouldShow && this._settings.get_boolean('enable-pinned-apps'))
+                shouldShow = false;
             if(shouldShow){
                 let categoryMenuItem = new MW.CategoryMenuItem(this, categoryEnum);
                 this.categoryDirectories.set(categoryEnum, categoryMenuItem);
@@ -246,6 +251,17 @@ var createMenu = class extends BaseMenuLayout.BaseLayout{
         }        
 
         super.loadCategories();
+    }
+
+    displayFavorites(){
+        this.shouldDisplayFavorites = true;
+        super.displayFavorites();
+    }
+
+    _clearActorsFromBox(box){
+        if(box == this.applicationsBox)
+            this.shouldDisplayFavorites = false;
+        super._clearActorsFromBox(box);
     }
 
     setDefaultMenuView(){
