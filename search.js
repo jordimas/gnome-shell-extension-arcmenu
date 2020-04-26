@@ -320,11 +320,11 @@ var SearchResultsBase = class ArcMenu_SearchResultsBase{
 
     clear() {
         this._cancellable.cancel();
-        this._clearResultDisplay();
-        this.actor.hide();
         for (let resultId in this._resultDisplays)
             this._resultDisplays[resultId].menuItem.destroy();
         this._resultDisplays = {};
+        this._clearResultDisplay();
+        this.actor.hide();
     }
 
     _keyFocusIn(actor) {
@@ -663,8 +663,10 @@ var SearchResults = class ArcMenu_SearchResults {
             this.installChangedID=0;
         }     
         this._providers.forEach(provider => {
+            provider.display.clear();
             provider.display.destroy();
         });
+        this.actor.destroy();
     }
     _reloadRemoteProviders() {
         let remoteProviders = this._providers.filter(p => p.isRemoteProvider);
