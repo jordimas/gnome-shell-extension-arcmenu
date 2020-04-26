@@ -199,26 +199,26 @@ var Tile = GObject.registerClass(class ArcMenu_Tile extends Gtk.Button{
 
 var LayoutTile = GObject.registerClass(class ArcMenu_LayoutTile extends Gtk.Box{
     _init(name, file, width, height, layout) {
-        super._init({orientation: Gtk.Orientation.VERTICAL});
+        super._init({orientation: Gtk.Orientation.HORIZONTAL});
         this.name = name;
         this.layout = layout.layoutStyle;
         this.info = "<b>"+ this.name + "</b>\n\n" +layout.description + "\n\n" + _("Included Layouts") + ":";
         
+        this._hbox = new Gtk.Box({ 
+            orientation: Gtk.Orientation.VERTICAL,
+            spacing: 10,
+            homogeneous: false,
+        });
+
         this.layoutList = "";
         this.layout.forEach((style) => {
             this.layoutList += "•   " + style.name + "\n";
         });
 
-        let pixbuf = GdkPixbuf.Pixbuf.new_from_file_at_scale(file, width, height, false);
+        let pixbuf = GdkPixbuf.Pixbuf.new_from_file_at_size(file, width, height);
         this._image = new Gtk.Image({ pixbuf: pixbuf });
-        this.add(this._image);
+        this._hbox.add(this._image);
 
-        this._hbox = new Gtk.Box({ 
-            orientation: Gtk.Orientation.HORIZONTAL,
-            spacing: 10,
-            homogeneous: false,
-            margin: 5 
-        });
         this.layoutButton = new Gtk.Button({
             label: this.name,
             halign: Gtk.Align.FILL,
@@ -232,14 +232,13 @@ var LayoutTile = GObject.registerClass(class ArcMenu_LayoutTile extends Gtk.Box{
         this.infoButton = new Gtk.Button({
             image: infoImage,
             halign: Gtk.Align.END,
+            valign: Gtk.Align.END,
             tooltip_text: this.name + " " + _("Information")
         });
-        this._hbox.add(this.infoButton);
-
         this.add(this._hbox);
-        
+
+        this.add(this.infoButton);
         this.margin = 1;
         this.spacing = 10;
    }
 });
-

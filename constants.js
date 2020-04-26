@@ -43,7 +43,7 @@ var CURRENT_MENU = {
 };
 
 var CategoryType = {
-    FREQUENT_APPS: 0,
+  FREQUENT_APPS: 0,
     FAVORITES: 1,
     ALL_PROGRAMS: 2,
     PINNED_APPS: 3,
@@ -230,8 +230,8 @@ var ALTERNATIVE_MENU_STYLE = [
     { thumbnail: '/media/layouts/raven-menu.svg', name: _('Raven Menu Style'), layout: MENU_LAYOUT.Raven}];
 
 var MENU_STYLES = {
-    ThumbnailHeight: 160,
-    ThumbnailWidth: 200,
+    ThumbnailHeight: 175,
+    ThumbnailWidth: 175,
     MaxColumns: 6,
     Styles: [ 
         { thumbnail: '/media/layouts/categories/traditional-symbolic.svg', name: _('Traditional Layouts'), layoutStyle: TRADITIONAL_MENU_STYLE, 
