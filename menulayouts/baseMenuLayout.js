@@ -126,6 +126,9 @@ var BaseLayout = class {
     reload(){
         let isReload = true;
         this.destroy(isReload);
+        if(this.layoutProperties.Search){
+            this.newSearch = new ArcSearch.SearchResults(this);    
+        }
         this.createLayout();
         this.updateStyle();
     }
@@ -928,11 +931,11 @@ var BaseLayout = class {
             }
         }
 
-        if(!isReload){
-            if(this.newSearch){
-                this.newSearch.destroy();
-            }
+        if(this.newSearch){
+            this.newSearch.destroy();
+        }
 
+        if(!isReload){
             if (this._mainBoxKeyPressId > 0) {
                 this.mainBox.disconnect(this._mainBoxKeyPressId);
                 this._mainBoxKeyPressId = 0;
