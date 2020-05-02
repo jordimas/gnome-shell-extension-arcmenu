@@ -528,10 +528,15 @@ var BaseLayout = class {
     }
 
     displayFavorites() {
-        this._clearActorsFromBox();
         if(this.viewProgramsButton && this.activeCategoryType !== Constants.CategoryType.PINNED_APPS){
             this.viewProgramsButton.actor.show();
             this.backButton.actor.hide();
+        }
+        if(this.viewProgramsButton && this.activeCategoryType === Constants.CategoryType.PINNED_APPS){
+            this._clearActorsFromBox(this.applicationsBox);
+        }
+        else{
+            this._clearActorsFromBox();
         }
 
         for(let i = 0;i < this.favoritesArray.length; i++){
