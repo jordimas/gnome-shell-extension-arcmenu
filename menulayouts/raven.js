@@ -180,9 +180,9 @@ var createMenu = class extends BaseMenuLayout.BaseLayout{
             this.appShortcuts.push(shortcutMenuItem);
         }
 
+        this.loadFavorites();
         this.loadCategories();
         this.displayCategories();
-        this.loadFavorites();
         this.displayFavorites();
         this.setDefaultMenuView();
     }
@@ -244,8 +244,18 @@ var createMenu = class extends BaseMenuLayout.BaseLayout{
         let categoryMenuItem = new MW.CategoryMenuButton(this, Constants.CategoryType.HOME_SCREEN);
         this.categoryDirectories.set(Constants.CategoryType.HOME_SCREEN, categoryMenuItem);
 
-        categoryMenuItem = new MW.CategoryMenuButton(this, Constants.CategoryType.ALL_PROGRAMS);
-        this.categoryDirectories.set(Constants.CategoryType.ALL_PROGRAMS, categoryMenuItem);
+        let extraCategories = this._settings.get_value("extra-categories").deep_unpack();
+
+        for(let i = 0; i < extraCategories.length; i++){
+            let categoryEnum = extraCategories[i][0];
+            let shouldShow = extraCategories[i][1];
+            if(categoryEnum == Constants.CategoryType.PINNED_APPS)
+                shouldShow = false;
+            if(shouldShow){
+                let categoryMenuItem = new MW.CategoryMenuButton(this, categoryEnum);
+                this.categoryDirectories.set(categoryEnum, categoryMenuItem);
+            }
+        }
 
         let isIconGrid = true;
         super.loadCategories(MW.CategoryMenuButton, isIconGrid);

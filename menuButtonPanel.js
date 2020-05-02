@@ -47,7 +47,6 @@ var ApplicationsButton = GObject.registerClass(class ArcMenu_ApplicationsButton 
         this._settings = settings;
         this._panel = panel;
         this._menuButtonWidget = new MW.MenuButtonWidget();
-        
         //Tooltip showing/hiding
         this.tooltipShowing = false;
         this.tooltipHidingID = null;

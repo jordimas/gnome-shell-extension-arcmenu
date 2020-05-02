@@ -765,9 +765,10 @@ var CategoryMenuButton = class ArcMenu_CategoryMenuButton extends SessionButton 
         let name;
         let icon;
         let gicon;
+
         if(category == Constants.CategoryType.FREQUENT_APPS){
             name = _("Frequent Apps");
-            icon = 'emblem-favorite-symbolic';
+            icon = 'user-bookmarks-symbolic';
         }
         else if(category == Constants.CategoryType.HOME_SCREEN){
             name = _("Home Screen");  
@@ -781,11 +782,16 @@ var CategoryMenuButton = class ArcMenu_CategoryMenuButton extends SessionButton 
             name = _("Favorites");
             icon = 'emblem-favorite-symbolic';
         }  
+        else if(category == Constants.CategoryType.PINNED_APPS){
+            name = _("Pinned Apps");
+            gicon = Gio.icon_new_for_string(Me.path + '/media/icons/arc-menu-symbolic.svg');
+        }
         else{
             name = category.get_name();
             gicon = category.get_icon() ? category.get_icon() : null;
             icon = category.get_icon() ? category.get_icon().to_string() : null;
-        }    
+        }  
+
         super(button, _(name), icon, gicon);
         this._name = name;
         this.appList = [];
@@ -817,9 +823,18 @@ var CategoryMenuButton = class ArcMenu_CategoryMenuButton extends SessionButton 
         if(this._category == Constants.CategoryType.HOME_SCREEN){
             this._button.activeCategory = _("Pinned Apps");
             this._button.displayFavorites();
-        }  
+        }
+        else if(this._category == Constants.CategoryType.PINNED_APPS){
+            this._button.displayFavorites();
+            if(this._button.viewProgramsButton){
+                this._button.backButton.actor.show();
+                this._button.viewProgramsButton.actor.hide();
+                this._button.currentMenu = Constants.CURRENT_MENU.CATEGORY_APPLIST;
+            }
+        }
         else
-            this._button.displayCategoryAppList(this.appList);
+            this._button.displayCategoryAppList(this.appList);       
+        this._button.activeCategoryType = this._category;
     }
 }
 // Settings Button
@@ -1154,7 +1169,7 @@ var ShortcutMenuItem = GObject.registerClass(class ArcMenu_ShortcutMenuItem exte
                 this._command='pamac-manager.desktop';
             else if(GLib.find_program_in_path('io.elementary.appcenter')){
                 this._command='io.elementary.appcenter.desktop';
-            }  
+            }
         }
         this._app = Shell.AppSystem.get_default().lookup_app(this._command);
         //---------
@@ -1840,7 +1855,7 @@ var SimpleMenuItem = GObject.registerClass(class ArcMenu_SimpleMenuItem extends 
 
         if(this._category == Constants.CategoryType.FREQUENT_APPS){
             this._name = _("Frequent Apps");
-            this._icon.icon_name = 'emblem-favorite-symbolic';
+            this._icon.icon_name = 'user-bookmarks-symbolic';
         }
         else if(this._category == Constants.CategoryType.HOME_SCREEN){
             this._name = _("Home Screen");  
@@ -1854,11 +1869,15 @@ var SimpleMenuItem = GObject.registerClass(class ArcMenu_SimpleMenuItem extends 
             this._name = _("Favorites");
             this._icon.icon_name = 'emblem-favorite-symbolic';
         }  
+        else if(this._category == Constants.CategoryType.PINNED_APPS){
+            this._name = _("Pinned Apps");
+            this._icon.gicon = Gio.icon_new_for_string(Me.path + '/media/icons/arc-menu-symbolic.svg');
+        }
         else{
             this._name = this._category.get_name();
             this._icon.gicon = this._category.get_icon() ? this._category.get_icon() : null;
             this._icon.fallback_icon_name = this._category.get_icon() ? this._category.get_icon().to_string() : null;
-        }           
+        }
 
         this.actor.add_child(this._icon);
         let categoryLabel = new St.Label({
@@ -1992,7 +2011,11 @@ var SimpleMenuItem = GObject.registerClass(class ArcMenu_SimpleMenuItem extends 
     }
     activate(event, navigateFocus = true) {
         this._button.activeCategory = this._name;
-        this._button.displayCategoryAppList(this.appList, this);
+        if(this._category == Constants.CategoryType.PINNED_APPS)
+            this._button.displayFavorites();
+        else
+            this._button.displayCategoryAppList(this.appList, this);       
+        this._button.activeCategoryType = this._category;
         this.subMenu.toggle();
         if(navigateFocus)
             this.subMenu.actor.navigate_focus(null, St.DirectionType.TAB_FORWARD, false);
@@ -2022,7 +2045,7 @@ var CategorySubMenuItem = GObject.registerClass(class ArcMenu_CategorySubMenuIte
 
         if(this._category == Constants.CategoryType.FREQUENT_APPS){
             this.name = _("Frequent Apps");
-            this.icon.icon_name = 'emblem-favorite-symbolic';
+            this.icon.icon_name = 'user-bookmarks-symbolic';
         }
         else if(this._category == Constants.CategoryType.HOME_SCREEN){
             this.name = _("Home Screen");  
@@ -2036,11 +2059,15 @@ var CategorySubMenuItem = GObject.registerClass(class ArcMenu_CategorySubMenuIte
             this.name = _("Favorites");
             this.icon.icon_name = 'emblem-favorite-symbolic';
         }  
+        else if(this._category == Constants.CategoryType.PINNED_APPS){
+            this.name = _("Pinned Apps");
+            this.icon.gicon = Gio.icon_new_for_string(Me.path + '/media/icons/arc-menu-symbolic.svg');
+        }
         else{
             this.name = this._category.get_name();
             this.icon.gicon = this._category.get_icon() ? this._category.get_icon() : null;
             this.icon.fallback_icon_name = this._category.get_icon() ? this._category.get_icon().to_string() : null;
-        }           
+        }
 
         this.label.text = this.name;
         this.icon.icon_size = MEDIUM_ICON_SIZE;
@@ -2165,7 +2192,11 @@ var CategorySubMenuItem = GObject.registerClass(class ArcMenu_CategorySubMenuIte
         if(this.isSimpleMenuItem){
             if(open){
                 this._button.activeCategory = this._name;
-                this._button.displayCategoryAppList(this.appList, this);
+                if(this._category == Constants.CategoryType.PINNED_APPS)
+                    this._button.displayFavorites();
+                else
+                    this._button.displayCategoryAppList(this.appList, this);
+                this._button.activeCategoryType = this._category;
             }
         }
         else{
