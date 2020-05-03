@@ -66,6 +66,7 @@ var IconButton = GObject.registerClass(class ArcMenu_IconButton extends Gtk.Butt
     _init(params) {
         super._init();
         this._params = params;
+
         if (this._params.circular) {
             let context = this.get_style_context();
             context.add_class('circular');
@@ -73,7 +74,8 @@ var IconButton = GObject.registerClass(class ArcMenu_IconButton extends Gtk.Butt
         if (this._params.icon_name) {
             let image = new Gtk.Image({
                 icon_name: this._params.icon_name,
-                xalign: Gtk.Align.CENTER
+                halign: Gtk.Align.CENTER,
+                margin: this._params.circular ? 4 : 0
             });
             this.add(image);
         }

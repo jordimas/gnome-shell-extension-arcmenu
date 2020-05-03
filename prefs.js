@@ -2218,12 +2218,25 @@ var AppearancePage = GObject.registerClass(
                 xalign: 0,
                 hexpand: true
             });
+            let pixbuf = GdkPixbuf.Pixbuf.new_from_file_at_size(Me.path + "/media/misc/browse-layouts-symbolic.svg", 18, 14);
+            let image = new Gtk.Image({
+                pixbuf: pixbuf,
+                margin: 3
+            });
             let layoutButton = new Gtk.Button({
-                label: _("Browse Layouts"),
+                label: _("Browse Layouts") + "  ",
+                image: image,
+                always_show_image: true,
+                image_position: Gtk.PositionType.RIGHT,
                 xalign:0,
                 hexpand: false,
                 tooltip_text: _("Choose from a variety of menu layouts")
             });
+            /*let layoutButton =  new PW.IconButton({
+                circular: true,
+                tooltip_text: _("Choose from a variety of menu layouts")
+            });*/
+            layoutButton.add(image);
             layoutButton.connect('clicked', () => {
                 let dialog = new MenuLayoutsWindow(this._settings, this);
                 dialog.show_all();
@@ -2277,7 +2290,7 @@ var AppearancePage = GObject.registerClass(
             let menuTweaksButton = new PW.IconButton({
                 circular: true,
                 icon_name: 'emblem-system-symbolic',
-                tooltip_text: _("Tweaks for the current menu layout")
+                tooltip_text: _("Tweaks for the current menu layout"),
             });
             menuTweaksButton.connect('clicked', () => {
                 let dialog = new LayoutTweaks.tweaks.TweaksDialog(this._settings, this, currentStyleLabel.label +" " + _("Tweaks"));

@@ -773,6 +773,7 @@ var CategoryMenuButton = class ArcMenu_CategoryMenuButton extends SessionButton 
         else if(category == Constants.CategoryType.HOME_SCREEN){
             name = _("Home Screen");  
             icon = 'emblem-favorite-symbolic';
+            gicon = Gio.icon_new_for_string(Me.path + '/media/misc/homescreen-symbolic.svg');
         }    
         else if(category == Constants.CategoryType.ALL_PROGRAMS){
             name = _("All Programs"); 
@@ -1740,7 +1741,7 @@ var CategoryMenuItem = GObject.registerClass(class ArcMenu_CategoryMenuItem exte
         }
         else if(this._category == Constants.CategoryType.HOME_SCREEN){
             this._name = _("Home Screen");  
-            this._icon.icon_name = 'emblem-favorite-symbolic';
+            this._icon.gicon = Gio.icon_new_for_string(Me.path + '/media/misc/homescreen-symbolic.svg');
         }    
         else if(this._category == Constants.CategoryType.ALL_PROGRAMS){
             this._name = _("All Programs"); 
@@ -1859,7 +1860,7 @@ var SimpleMenuItem = GObject.registerClass(class ArcMenu_SimpleMenuItem extends 
         }
         else if(this._category == Constants.CategoryType.HOME_SCREEN){
             this._name = _("Home Screen");  
-            this._icon.icon_name = 'emblem-favorite-symbolic';
+            this._icon.gicon = Gio.icon_new_for_string(Me.path + '/media/misc/homescreen-symbolic.svg');
         }    
         else if(this._category == Constants.CategoryType.ALL_PROGRAMS){
             this._name = _("All Programs"); 
@@ -2049,7 +2050,7 @@ var CategorySubMenuItem = GObject.registerClass(class ArcMenu_CategorySubMenuIte
         }
         else if(this._category == Constants.CategoryType.HOME_SCREEN){
             this.name = _("Home Screen");  
-            this.icon.icon_name = 'emblem-favorite-symbolic';
+            this.icon.gicon = Gio.icon_new_for_string(Me.path + '/media/misc/homescreen-symbolic.svg');
         }    
         else if(this._category == Constants.CategoryType.ALL_PROGRAMS){
             this.name = _("All Programs"); 
