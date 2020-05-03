@@ -244,7 +244,19 @@ var createMenu = class extends BaseMenuLayout.BaseLayout{
             software = 'io.elementary.appcenter';
             icon = 'pop-shop';
         }
-        pinnedApps.push(_("Software"), icon, software+".desktop");
+        else if(GLib.find_program_in_path('snap-store')){
+            software = 'snap-store_ubuntu-software';
+            icon = 'org.gnome.Software';
+        }
+        else{
+            software = null;
+        }
+        if(software)
+            pinnedApps.push(_("Software"), icon, software+".desktop");
+        else{
+            pinnedApps.push(_("Computer"), "ArcMenu_Computer", "ArcMenu_Computer");
+        }
+        
         pinnedApps.push(_("Files"), "system-file-manager", "org.gnome.Nautilus.desktop");
         pinnedApps.push(_("Log Out"), "application-exit-symbolic", "ArcMenu_LogOut");
         pinnedApps.push(_("Lock"), "changes-prevent-symbolic", "ArcMenu_Lock");

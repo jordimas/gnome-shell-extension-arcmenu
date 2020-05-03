@@ -232,7 +232,17 @@ var createMenu = class extends BaseMenuLayout.BaseLayout{
         else if(GLib.find_program_in_path('io.elementary.appcenter')){
             software = 'io.elementary.appcenter.desktop';
         }
-        pinnedApps.push(_("Software"), 'system-software-install-symbolic', software);
+        else if(GLib.find_program_in_path('snap-store')){
+            software = 'snap-store_ubuntu-software.desktop';
+        }
+        else{
+            software = null;
+        }
+        if(software)
+            pinnedApps.push(_("Software"), 'system-software-install-symbolic', software);
+        else{
+            pinnedApps.push(_("Documents"), "ArcMenu_Documents", "ArcMenu_Documents");
+        }
         pinnedApps.push(_("Files"), "system-file-manager", "org.gnome.Nautilus.desktop");
         pinnedApps.push(_("Log Out"), "application-exit-symbolic", "ArcMenu_LogOut");
         pinnedApps.push(_("Lock"), "changes-prevent-symbolic", "ArcMenu_Lock");

@@ -1165,12 +1165,15 @@ var ShortcutMenuItem = GObject.registerClass(class ArcMenu_ShortcutMenuItem exte
         //Check for default commands--------
         if(this._command == "ArcMenu_Software"){
             if(GLib.find_program_in_path('gnome-software'))
-                this._command='org.gnome.Software.desktop';
+                this._command = 'org.gnome.Software.desktop';
             else if(GLib.find_program_in_path('pamac-manager'))
-                this._command='pamac-manager.desktop';
-            else if(GLib.find_program_in_path('io.elementary.appcenter')){
-                this._command='io.elementary.appcenter.desktop';
-            }
+                this._command = 'pamac-manager.desktop';
+            else if(GLib.find_program_in_path('io.elementary.appcenter'))
+                this._command = 'io.elementary.appcenter.desktop';
+            else if(GLib.find_program_in_path('snap-store'))
+                this._command = 'snap-store_ubuntu-software.desktop';
+            else
+                this._command = 'ArcMenu_unfound.desktop'
         }
         this._app = Shell.AppSystem.get_default().lookup_app(this._command);
         //---------
