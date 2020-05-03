@@ -2935,7 +2935,7 @@ var AppearanceFineTunePage = GObject.registerClass(
             label: _("Restore Defaults"),
             tooltip_text: _("Restore the default Extra Categories")
         });
-        this.resetButton.set_sensitive(true);
+        this.resetButton.set_sensitive(this.checkIfResetButtonSensitive());
         this.resetButton.connect('clicked', ()=> {
             this.indicatorColor = this._settings.get_default_value('indicator-color').unpack();
             this.indicatorTextColor = this._settings.get_default_value('indicator-text-color').unpack();
