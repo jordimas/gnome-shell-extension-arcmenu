@@ -1637,6 +1637,7 @@ var MenuButtonCustomizationWindow = GObject.registerClass(
             this.menuButtonColor = this._settings.get_string('menu-button-color');
             this.menuButtonActiveColor = this._settings.get_string('menu-button-active-color');
             super._init(_('Arc Menu Icon Settings'), parent);
+            this.resize(500,500);
         }
 
         _createLayout(vbox) {
@@ -1767,15 +1768,12 @@ var MenuButtonCustomizationWindow = GObject.registerClass(
             
             this.createIconList(store);
 
-            
             let renderer = new Gtk.CellRendererPixbuf({xpad:10});
             menuButtonIconCombo.pack_start(renderer, false);
             menuButtonIconCombo.add_attribute(renderer, "pixbuf", 0);
             renderer = new Gtk.CellRendererText();
             menuButtonIconCombo.pack_start(renderer, true);
             menuButtonIconCombo.add_attribute(renderer, "text", 1);
-
-           
 
             menuButtonIconCombo.set_active(this._settings.get_enum('menu-button-icon'));
             menuButtonIconCombo.connect('changed', (widget) => {
@@ -1823,7 +1821,6 @@ var MenuButtonCustomizationWindow = GObject.registerClass(
             if (iconFilepath && menuButtonIconCombo.get_active()==Constants.MENU_BUTTON_ICON.Custom) {
                 fileChooserButton.set_filename(iconFilepath);
             }
-
 
             menuButtonIconRow.add(menuButtonIconLabel);
             menuButtonIconRow.add(menuButtonIconCombo);
@@ -1917,8 +1914,28 @@ var MenuButtonCustomizationWindow = GObject.registerClass(
                 this._settings.reset('reload-theme');
                 this._settings.set_boolean('reload-theme', true);
             });
+            let pixbuf = GdkPixbuf.Pixbuf.new_from_file_at_size(Me.path + '/media/misc/info-circle.svg', 20, 20);
+            let infoImage = new Gtk.Image({ pixbuf: pixbuf });
+            let menuButtonColorInfoButton = new Gtk.Button({
+                image: infoImage,
+                halign: Gtk.Align.END,
+                valign: Gtk.Align.END
+            });
+            menuButtonColorInfoButton.connect('clicked', ()=> {
+                let dialog = new Gtk.MessageDialog({
+                    text: "<b>" + _("Change the color of the Arc Menu Icon") + '</b>\n\n' + _('Icon color options will only work with files ending with "-symbolic.svg"'),
+                    use_markup: true,
+                    buttons: Gtk.ButtonsType.OK,
+                    message_type: Gtk.MessageType.OTHER,
+                    transient_for: this,
+                    modal: true
+                });
+                dialog.connect ('response', ()=> dialog.destroy());
+                dialog.show();
+            });
             menuButtonColorRow.add(menuButtonColorLabel);
             menuButtonColorRow.add(menuButtonColorChooser);
+            menuButtonColorRow.add(menuButtonColorInfoButton);
             menuButtonIconColorFrame.add(menuButtonColorRow);
 
             let menuButtonActiveColorRow = new PW.FrameBoxRow();
@@ -1937,21 +1954,29 @@ var MenuButtonCustomizationWindow = GObject.registerClass(
                 this._settings.reset('reload-theme');
                 this._settings.set_boolean('reload-theme', true);
             });
+            pixbuf = GdkPixbuf.Pixbuf.new_from_file_at_size(Me.path + '/media/misc/info-circle.svg', 20, 20);
+            infoImage = new Gtk.Image({ pixbuf: pixbuf });
+            let menuButtonActiveColorInfoButton = new Gtk.Button({
+                image: infoImage,
+                halign: Gtk.Align.END,
+                valign: Gtk.Align.END
+            });
+            menuButtonActiveColorInfoButton.connect('clicked', ()=> {
+                let dialog = new Gtk.MessageDialog({
+                    text: "<b>" + _("Change the active/hover color of the Arc Menu Icon") + '</b>\n\n' + _('Icon color options will only work with files ending with "-symbolic.svg"'),
+                    use_markup: true,
+                    buttons: Gtk.ButtonsType.OK,
+                    message_type: Gtk.MessageType.OTHER,
+                    transient_for: this,
+                    modal: true
+                });
+                dialog.connect ('response', ()=> dialog.destroy());
+                dialog.show();
+            });
             menuButtonActiveColorRow.add(menuButtonActiveColorLabel);
             menuButtonActiveColorRow.add(menuButtonActiveColorChooser);
+            menuButtonActiveColorRow.add(menuButtonActiveColorInfoButton);
             menuButtonIconColorFrame.add(menuButtonActiveColorRow);
-
-            let textRow = new PW.FrameBoxRow();
-            let textLabel = new Gtk.Label({
-                label: _('Icon color options will only work with files ending with "-symbolic.svg"'),
-                use_markup: true,
-                xalign: 0,
-                hexpand: true
-            }); 
-            textLabel.set_sensitive(false);
-            textRow.add(textLabel);
-            menuButtonIconColorFrame.add(textRow);
-            // add the frames to the vbox
             vbox.add(menuButtonIconColorFrame);
 
             // Button Row -------------------------------------------------------
@@ -2915,7 +2940,7 @@ var AppearanceFineTunePage = GObject.registerClass(
             }),
             digits: 0,round_digits: 0,hexpand: true,
             value_pos: Gtk.PositionType.RIGHT,
-            tooltip_text: _("Offset menu placement by 1px\nUseful if a gap or overlap is visible")
+            tooltip_text: _("Offset Arc Menu by 1px") +'\n' + _("Useful if you notice a 1px gap or overlap between Arc Menu and the panel")
         });
         gapAdjustmentScale.connect('format-value', (scale, value) => { return value.toString() + 'px'; });
         gapAdjustmentScale.set_value(this.gapAdjustment);
@@ -2924,8 +2949,28 @@ var AppearanceFineTunePage = GObject.registerClass(
             this.saveButton.set_sensitive(true);
             this.resetButton.set_sensitive(true);
         });
+        let pixbuf = GdkPixbuf.Pixbuf.new_from_file_at_size(Me.path + '/media/misc/info-circle.svg', 20, 20);
+        let infoImage = new Gtk.Image({ pixbuf: pixbuf });
+        let gapAdjustmentInfoButton = new Gtk.Button({
+            image: infoImage,
+            halign: Gtk.Align.END,
+            valign: Gtk.Align.END
+        });
+        gapAdjustmentInfoButton.connect('clicked', ()=> {
+            let dialog = new Gtk.MessageDialog({
+                text: "<b>" + _("Offset Arc Menu by 1px") + '</b>\n\n' + _('Useful if you notice a 1px gap or overlap between Arc Menu and the panel'),
+                use_markup: true,
+                buttons: Gtk.ButtonsType.OK,
+                message_type: Gtk.MessageType.OTHER,
+                transient_for: this.get_toplevel(),
+                modal: true
+            });
+            dialog.connect ('response', ()=> dialog.destroy());
+            dialog.show();
+        });
         gapAdjustmentRow.add(gapAdjustmentLabel);
         gapAdjustmentRow.add(gapAdjustmentScale);
+        gapAdjustmentRow.add(gapAdjustmentInfoButton);
         gapAdjustmentFrame.add(gapAdjustmentRow);
         this.add(gapAdjustmentFrame);
 
@@ -4791,15 +4836,26 @@ var MiscPage = GObject.registerClass(
                 xalign: 0,
                 hexpand: true
             });
-            let importTextRow = new PW.FrameBoxRow();
-            let importTextLabel = new Gtk.Label({
-                label: _("Importing settings from file may replace ALL saved settings.\nThis includes all saved pinned apps."),
-                use_markup: true,
-                xalign: 0,
-                hexpand: true
-            }); 
-            importTextLabel.set_sensitive(false);
-            importTextRow.add(importTextLabel);
+            let pixbuf = GdkPixbuf.Pixbuf.new_from_file_at_size(Me.path + '/media/misc/info-circle.svg', 20, 20);
+            let infoImage = new Gtk.Image({ pixbuf: pixbuf });
+            let settingsImportInfoButton = new Gtk.Button({
+                image: infoImage,
+                halign: Gtk.Align.END,
+                valign: Gtk.Align.END
+            });
+            settingsImportInfoButton.connect('clicked', ()=> {
+                let dialog = new Gtk.MessageDialog({
+                    text: "<b>" + _("Import/Export ALL Arc Menu Settings") + '</b>\n\n' + _('Importing settings from file may replace ALL saved settings.\nThis includes all saved pinned apps.'),
+                    use_markup: true,
+                    buttons: Gtk.ButtonsType.OK,
+                    message_type: Gtk.MessageType.OTHER,
+                    transient_for: this.get_toplevel(),
+                    modal: true
+                });
+                dialog.connect ('response', ()=> dialog.destroy());
+                dialog.show();
+            });
+
             let importButtonsRow = new PW.FrameBoxRow();
             let importButton = new Gtk.Button({
                 label: _("Import from File"),
@@ -4864,10 +4920,10 @@ var MiscPage = GObject.registerClass(
             });
        
             importRow.add(importLabel);
+            importRow.add(settingsImportInfoButton);
             importButtonsRow.add(exportButton);
             importButtonsRow.add(importButton);
             importFrame.add(importRow);     
-            importFrame.add(importTextRow);
             importFrame.add(importButtonsRow);
 
             let importColorPresetFrame = new PW.FrameBox();
@@ -4880,7 +4936,7 @@ var MiscPage = GObject.registerClass(
             });
             let imgPath = Me.path + Constants.COLOR_PRESET.Path;
             let [imageWidth, imageHeight] = Constants.COLOR_PRESET.Size;
-            let pixbuf = GdkPixbuf.Pixbuf.new_from_file_at_size(imgPath, imageWidth, imageHeight);
+            pixbuf = GdkPixbuf.Pixbuf.new_from_file_at_size(imgPath, imageWidth, imageHeight);
             let colorPresetImage = new Gtk.Image({ pixbuf: pixbuf });
             let colorPresetBox = new Gtk.VBox({
                 margin_top: 5,
@@ -4889,17 +4945,25 @@ var MiscPage = GObject.registerClass(
             });
             colorPresetBox.add(colorPresetImage);
             
-
-            let importColorPresetTextRow = new PW.FrameBoxRow();
-            let importColorPresetTextLabel = new Gtk.Label({
-                label: _("Imported theme presets are located on the Appearance Tab\nin Override Arc Menu Theme"),
-                use_markup: true,
-                xalign: 0,
-                hexpand: true
-            }); 
-            importColorPresetTextLabel.set_sensitive(false);
-            importColorPresetTextRow.add(importColorPresetTextLabel);
-           
+            pixbuf = GdkPixbuf.Pixbuf.new_from_file_at_size(Me.path + '/media/misc/info-circle.svg', 20, 20);
+            infoImage = new Gtk.Image({ pixbuf: pixbuf });
+            let colorThemesImportInfoButton = new Gtk.Button({
+                image: infoImage,
+                halign: Gtk.Align.END,
+                valign: Gtk.Align.END
+            });
+            colorThemesImportInfoButton.connect('clicked', ()=> {
+                let dialog = new Gtk.MessageDialog({
+                    text: "<b>" + _("Import/Export Color Theme Presets") + '</b>\n\n' + _('Imported theme presets are located on the Appearance Tab\nin Override Arc Menu Theme'),
+                    use_markup: true,
+                    buttons: Gtk.ButtonsType.OK,
+                    message_type: Gtk.MessageType.OTHER,
+                    transient_for: this.get_toplevel(),
+                    modal: true
+                });
+                dialog.connect ('response', ()=> dialog.destroy());
+                dialog.show();
+            });
 
             let importColorPresetButtonsRow = new PW.FrameBoxRow();
             let importColorPresetButton = new Gtk.Button({
@@ -4985,10 +5049,10 @@ var MiscPage = GObject.registerClass(
 
             importColorPresetRow.add(importColorPresetLabel);
             importColorPresetRow.add(colorPresetBox);
+            importColorPresetRow.add(colorThemesImportInfoButton);
             importColorPresetButtonsRow.add(exportColorPresetButton);
             importColorPresetButtonsRow.add(importColorPresetButton);
             importColorPresetFrame.add(importColorPresetRow);   
-            importColorPresetFrame.add(importColorPresetTextRow);
             importColorPresetFrame.add(importColorPresetButtonsRow);
 
             this.add(importFrame);
