@@ -3395,47 +3395,9 @@ var ManageColorThemeDialogWindow = GObject.registerClass(
             });
 	        applyButton.set_halign(Gtk.Align.END);
 
-            let addButton = new Gtk.Button({
-                label: _("Browse Presets..."),
-                xalign: 1
-            });
-            addButton.connect('clicked', () => {
-                let settingsFile = Gio.File.new_for_path(Me.path + '/media/misc/ArcMenuDefaultPresets');
-                let [ success, content, etags] = settingsFile.load_contents(null);
-                let string = content.toString();
-                let themes = string.split("\n")
-                themes.pop(); //remove last blank array 
-                let colorThemes = [];
-                for(let i = 0; i < themes.length; i++){
-                    let array = themes[i].split('//')
-                    array.pop();
-                    colorThemes.push(array);
-                }
-                let dialog = new ExportColorThemeDialogWindow(this._settings, this, colorThemes);
-                dialog.show_all();
-                dialog.connect('response', (response) => { 
-                    if(dialog.get_response()){
-                        let selectedThemes = dialog.selectedThemes;
-                        this.color_themes = this._settings.get_value('color-themes').deep_unpack();
-                        for(let i = 0; i < selectedThemes.length; i++){
-                            this.color_themes.push(selectedThemes[i]);
-                        }
-                        
-                        this._settings.set_value('color-themes',new GLib.Variant('aas',this.color_themes));
-                
-                        dialog.destroy();
-                        this.addResponse = true;
-                        this.response(-10);
-                    }
-                    else
-                        dialog.destroy();
-                });  
-            });
-
             // add the frames to the vbox
             themesListScrollWindow.add_with_viewport(this.mainFrame);
             vbox.add(themesListScrollWindow);
-            buttonRow.add(addButton);
             buttonRow.add(applyButton);
             vbox.add(buttonRow);
 
@@ -3703,7 +3665,53 @@ var OverrideArcMenuThemeWindow = GObject.registerClass(
                         dialog.destroy();
                 }); 
             });
+            let pixbuf = GdkPixbuf.Pixbuf.new_from_file_at_size(Me.path + "/media/misc/browse-presets-symbolic.svg", 18, 14);
+            let image = new Gtk.Image({
+                pixbuf: pixbuf
+            });
+            let addButton = new Gtk.Button({
+                label: _("Browse Presets") + " ",
+                image: image,
+                always_show_image: true,
+                image_position: Gtk.PositionType.RIGHT,
+                xalign:0,
+                hexpand: false
+            });
+            addButton.connect('clicked', () => {
+                let settingsFile = Gio.File.new_for_path(Me.path + '/media/misc/ArcMenuDefaultPresets');
+                let [ success, content, etags] = settingsFile.load_contents(null);
+                let string = content.toString();
+                let themes = string.split("\n")
+                themes.pop(); //remove last blank array 
+                let colorThemes = [];
+                for(let i = 0; i < themes.length; i++){
+                    let array = themes[i].split('//')
+                    array.pop();
+                    colorThemes.push(array);
+                }
+                let dialog = new ExportColorThemeDialogWindow(this._settings, this, colorThemes);
+                dialog.show_all();
+                dialog.connect('response', (response) => { 
+                    if(dialog.get_response()){
+                        let selectedThemes = dialog.selectedThemes;
+                        this.color_themes = this._settings.get_value('color-themes').deep_unpack();
+                        for(let i = 0; i < selectedThemes.length; i++){
+                            this.color_themes.push(selectedThemes[i]);
+                        }
+                        for(let i= 0; i < dialog.selectedThemes.length; i++){
+                            this.colorPresetCombo.append_text(_(dialog.selectedThemes[i][0]));
+                        }
+                        this._settings.set_value('color-themes',new GLib.Variant('aas',this.color_themes));
+                
+                        dialog.destroy();
+                    }
+                    else
+                        dialog.destroy();
+                });  
+            });
+
             presetsButtonRow.add(manageButton);
+            presetsButtonRow.add(addButton);
             presetsButtonRow.add(this.saveButton);
             this.colorPresetFrame.add(presetsButtonRow);
             vbox.add(this.colorPresetFrame);
@@ -5054,7 +5062,15 @@ var MiscPage = GObject.registerClass(
                         dialog.destroy();
                 }); 
             });
-
+            let browseColorPresetRow = new PW.FrameBoxRow();
+            let browseColorPresetButton = new Gtk.Button({
+                label: _("Browse Themes by ArcMenu Team"),
+                halign: Gtk.Align.CENTER,
+                hexpand: true,
+                tooltip_text: _("Import Arc Menu Theme Presets from a file")  
+            });
+            browseColorPresetRow.add(browseColorPresetButton);
+            
             importColorPresetRow.add(importColorPresetLabel);
             importColorPresetRow.add(colorPresetBox);
             importColorPresetRow.add(colorThemesImportInfoButton);
@@ -5062,6 +5078,7 @@ var MiscPage = GObject.registerClass(
             importColorPresetButtonsRow.add(importColorPresetButton);
             importColorPresetFrame.add(importColorPresetRow);   
             importColorPresetFrame.add(importColorPresetButtonsRow);
+            importColorPresetFrame.add(browseColorPresetRow);
 
             this.add(importFrame);
             this.add(importColorPresetFrame);
