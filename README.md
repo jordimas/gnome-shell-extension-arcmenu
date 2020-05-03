@@ -159,6 +159,14 @@ Hi, I’m Andrew. My role on the project is to design, create, and implement fea
 
 -----
 
+**Disclaimer..**
+
+*" Translations are not provided by the ArcMenu team members and may contain incorrect or inaccurate translations. The ArcMenu team relies on user contributions for translations. Therefore if you wish to correct or modify a translation that you feel is inaccurate please send a Merge Request with a brief description with the reason for any corrections. "*
+
+Kind regards - **ArcMenu Team**
+
+-----
+
 #### Please refer to the Wiki section for a [Translation Guide](https://gitlab.com/LinxGem33/Arc-Menu/wikis/Translation-Guide)
 
 - **Current translated languages and translators..**
