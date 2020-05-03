@@ -162,6 +162,11 @@ var FrameBoxRow = GObject.registerClass(class ArcMenu_FrameBoxRow extends Gtk.Li
     add(widget) {
         this._grid.add(widget);
     }
+    
+    setVerticalAlignmentBottom(){
+        this._grid.vexpand = true;
+        this._grid.valign = Gtk.Align.END;
+    }
 });
 
 var TileGrid = GObject.registerClass(class ArcMenu_TileGrid extends Gtk.FlowBox{

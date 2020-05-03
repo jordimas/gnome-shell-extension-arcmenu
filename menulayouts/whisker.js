@@ -48,7 +48,7 @@ var createMenu = class extends BaseMenuLayout.BaseLayout{
             vertical: false
         });
 
-        this.actionsBox.style ="spacing: 10px; margin-right: 10px;";
+        this.actionsBox.style ="spacing: 10px; margin-right: 10px; padding-right: 0.4em;";
         this.mainBox.add(this.actionsBox);
 
         let userAvatarSize = 30;
