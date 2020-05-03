@@ -317,11 +317,13 @@ var createMenu = class extends BaseMenuLayout.BaseLayout{
         if(homeScreen){
             this.activeCategory = _("Pinned Apps");
             this.currentMenu = Constants.CURRENT_MENU.FAVORITES;
+            this.activeCategoryType = Constants.CategoryType.HOME_SCREEN;
             this.displayFavorites();
         }
         else{
             this.activeCategory = _("All Programs");
             this.currentMenu = Constants.CURRENT_MENU.CATEGORY_APPLIST;
+            this.activeCategoryType = Constants.CategoryType.ALL_PROGRAMS;
             this.displayAllApps();   
         }
     }
@@ -386,8 +388,11 @@ var createMenu = class extends BaseMenuLayout.BaseLayout{
     }
 
     displayFavorites() {
-        this._clearActorsFromBox();
-        this.subMainBox.remove_actor(this.actionsContainerBox)
+        if(this.activeCategoryType === Constants.CategoryType.HOME_SCREEN)
+            this._clearActorsFromBox(this.applicationsBox);
+        else
+            this._clearActorsFromBox();
+        this.subMainBox.remove_actor(this.actionsContainerBox);
         this._displayAppList(this.favoritesArray, true);
         this._displayAppList(this.appShortcuts, true, this.shortcutsGrid);
         if(!this.applicationsBox.contains(this.shortcutsBox))

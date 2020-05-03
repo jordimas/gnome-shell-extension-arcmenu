@@ -532,12 +532,12 @@ var BaseLayout = class {
             this.viewProgramsButton.actor.show();
             this.backButton.actor.hide();
         }
-        if(this.viewProgramsButton && this.activeCategoryType === Constants.CategoryType.PINNED_APPS){
+        if(this.viewProgramsButton && this.activeCategoryType === Constants.CategoryType.PINNED_APPS)
             this._clearActorsFromBox(this.applicationsBox);
-        }
-        else{
+        else if(this.activeCategoryType === Constants.CategoryType.HOME_SCREEN)
+            this._clearActorsFromBox(this.applicationsBox);
+        else
             this._clearActorsFromBox();
-        }
 
         for(let i = 0;i < this.favoritesArray.length; i++){
             this.applicationsBox.add_actor(this.favoritesArray[i].actor);	
