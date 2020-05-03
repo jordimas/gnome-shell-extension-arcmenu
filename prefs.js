@@ -2220,11 +2220,10 @@ var AppearancePage = GObject.registerClass(
             });
             let pixbuf = GdkPixbuf.Pixbuf.new_from_file_at_size(Me.path + "/media/misc/browse-layouts-symbolic.svg", 18, 14);
             let image = new Gtk.Image({
-                pixbuf: pixbuf,
-                margin: 3
+                pixbuf: pixbuf
             });
             let layoutButton = new Gtk.Button({
-                label: _("Browse Layouts") + "  ",
+                label: _("Browse Layouts") + " ",
                 image: image,
                 always_show_image: true,
                 image_position: Gtk.PositionType.RIGHT,
@@ -2232,12 +2231,7 @@ var AppearancePage = GObject.registerClass(
                 hexpand: false,
                 tooltip_text: _("Choose from a variety of menu layouts")
             });
-            /*let layoutButton =  new PW.IconButton({
-                circular: true,
-                tooltip_text: _("Choose from a variety of menu layouts")
-            });
-            layoutButton.add(image);
-            */
+            
             layoutButton.connect('clicked', () => {
                 let dialog = new MenuLayoutsWindow(this._settings, this);
                 dialog.show_all();
