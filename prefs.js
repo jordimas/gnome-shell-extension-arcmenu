@@ -2235,8 +2235,9 @@ var AppearancePage = GObject.registerClass(
             /*let layoutButton =  new PW.IconButton({
                 circular: true,
                 tooltip_text: _("Choose from a variety of menu layouts")
-            });*/
+            });
             layoutButton.add(image);
+            */
             layoutButton.connect('clicked', () => {
                 let dialog = new MenuLayoutsWindow(this._settings, this);
                 dialog.show_all();
