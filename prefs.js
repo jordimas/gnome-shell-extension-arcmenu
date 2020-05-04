@@ -3674,7 +3674,6 @@ var OverrideArcMenuThemeWindow = GObject.registerClass(
                 image: image,
                 always_show_image: true,
                 image_position: Gtk.PositionType.RIGHT,
-                xalign:0,
                 hexpand: false
             });
             addButton.connect('clicked', () => {

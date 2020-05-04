@@ -35,19 +35,15 @@ var SearchType = {
     GRID_VIEW: 1
 }
 
-var CURRENT_MENU = {
-    FAVORITES: 0,
-    CATEGORIES: 1,
-    CATEGORY_APPLIST: 2,
-    SEARCH_RESULTS: 3
-};
-
 var CategoryType = {
     FAVORITES: 0,
     FREQUENT_APPS: 1,
     ALL_PROGRAMS: 2,
     PINNED_APPS: 3,
-    HOME_SCREEN: 4
+    HOME_SCREEN: 4,
+    SEARCH_RESULTS: 5,
+    CATEGORIES_LIST: 6,
+    CATEGORY_APP_LIST: 7
 };
 
 var CATEGORIES = [

@@ -827,11 +827,6 @@ var CategoryMenuButton = class ArcMenu_CategoryMenuButton extends SessionButton 
         }
         else if(this._category == Constants.CategoryType.PINNED_APPS){
             this._button.displayFavorites();
-            if(this._button.viewProgramsButton){
-                this._button.backButton.actor.show();
-                this._button.viewProgramsButton.actor.hide();
-                this._button.currentMenu = Constants.CURRENT_MENU.CATEGORY_APPLIST;
-            }
         }
         else
             this._button.displayCategoryAppList(this.appList);       
@@ -1083,31 +1078,19 @@ var BackMenuItem = GObject.registerClass(class ArcMenu_BackMenuItem extends ArcM
         this.actor.add_child(backLabel);
     }
     activate(event) {
-        if(this._layout == Constants.MENU_LAYOUT.Default){
-            if(this._button.currentMenu !== Constants.CURRENT_MENU.FAVORITES)
-                this._button._clearActorsFromBox();
-            if(this._button.currentMenu == Constants.CURRENT_MENU.SEARCH_RESULTS){ 
-                if(this._settings.get_boolean('enable-pinned-apps')){
-                    this._button.currentMenu = Constants.CURRENT_MENU.FAVORITES;
-                    this._button.resetSearch();
+        if(this._layout === Constants.MENU_LAYOUT.Default){
+            if(this._button.activeCategoryType === Constants.CategoryType.SEARCH_RESULTS || this._button.activeCategoryType === Constants.CategoryType.ALL_PROGRAMS){ 
+                this._button.resetSearch();
+                if(this._settings.get_boolean('enable-pinned-apps'))
                     this._button.displayFavorites();
-                }
-                else {
-                    this._button.currentMenu = Constants.CURRENT_MENU.CATEGORIES;
-                    this._button.resetSearch();
+                else 
                     this._button.displayCategories();
-                }
             }
-            else if(this._button.currentMenu == Constants.CURRENT_MENU.CATEGORIES){ 
-                if(this._settings.get_boolean('enable-pinned-apps')){
-                    this._button.currentMenu = Constants.CURRENT_MENU.FAVORITES;
-                    this._button.displayFavorites();
-                }   
+            else if(this._button.activeCategoryType === Constants.CategoryType.CATEGORIES_LIST && this._settings.get_boolean('enable-pinned-apps')){ 
+                this._button.displayFavorites();
             }
-            else if(this._button.currentMenu == Constants.CURRENT_MENU.CATEGORY_APPLIST){
-                this._button.currentMenu = Constants.CURRENT_MENU.CATEGORIES;
+            else
                 this._button.displayCategories();
-            }
         }
         else{
             if(this._button.favoritesMenu) 
@@ -1143,13 +1126,11 @@ var ViewAllPrograms = GObject.registerClass(class ArcMenu_ViewAllPrograms extend
     }
     activate(event) {
       this._button._clearActorsFromBox();
-      if(this._settings.get_boolean('enable-pinned-apps')){
-	      this._button.displayCategories();
-	      this._button.currentMenu = Constants.CURRENT_MENU.CATEGORIES;
-      }
+      if(this._settings.get_boolean('enable-pinned-apps'))
+          this._button.displayCategories();
       else{ 
        	  this._button.displayAllApps();
-          this._button.currentMenu = Constants.CURRENT_MENU.SEARCH_RESULTS;
+          this._button.activeCategoryType = Constants.CategoryType.ALL_PROGRAMS;
       }
       super.activate(event);
     }
@@ -1819,11 +1800,6 @@ var CategoryMenuItem = GObject.registerClass(class ArcMenu_CategoryMenuItem exte
         }
         else if(this._category == Constants.CategoryType.PINNED_APPS){
             this._button.displayFavorites();
-            if(this._button.viewProgramsButton){
-                this._button.backButton.actor.show();
-                this._button.viewProgramsButton.actor.hide();
-                this._button.currentMenu = Constants.CURRENT_MENU.CATEGORY_APPLIST;
-            }
         }
         else
             this._button.displayCategoryAppList(this.appList);       

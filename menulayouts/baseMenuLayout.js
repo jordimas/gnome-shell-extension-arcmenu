@@ -49,10 +49,7 @@ var BaseLayout = class {
         this.leftClickMenu = mainButton.leftClickMenu;
         this.layout = this._settings.get_enum('menu-layout');
         this.layoutProperties = layoutProperties;
-
         this._session = new GnomeSession.SessionManager();
-        
-        this.currentMenu = Constants.CURRENT_MENU.FAVORITES; 
         this.isRunning = true;
         this.shouldLoadFavorites = true;
 
@@ -304,15 +301,7 @@ var BaseLayout = class {
             categoriesBox = this.applicationsBox;
         }
         this._clearActorsFromBox(categoriesBox);
-        if(this.viewProgramsButton){
-            this.viewProgramsButton.actor.hide();
-            if(this._settings.get_boolean('enable-pinned-apps'))
-                this.backButton.actor.show();
-            else{
-                this.viewProgramsButton.actor.show();
-                this.backButton.actor.hide();
-            }
-        }
+        
         let isActiveMenuItemSet = false;
         for(let categoryMenuItem of this.categoryDirectories.values()){
             categoriesBox.add_actor(categoryMenuItem.actor);	
@@ -527,14 +516,8 @@ var BaseLayout = class {
         }
     }
 
-    displayFavorites() {
-        if(this.viewProgramsButton && this.activeCategoryType !== Constants.CategoryType.PINNED_APPS){
-            this.viewProgramsButton.actor.show();
-            this.backButton.actor.hide();
-        }
-        if(this.viewProgramsButton && this.activeCategoryType === Constants.CategoryType.PINNED_APPS)
-            this._clearActorsFromBox(this.applicationsBox);
-        else if(this.activeCategoryType === Constants.CategoryType.HOME_SCREEN)
+    displayFavorites() {          
+        if(this.activeCategoryType === Constants.CategoryType.HOME_SCREEN || this.activeCategoryType === Constants.CategoryType.PINNED_APPS)
             this._clearActorsFromBox(this.applicationsBox);
         else
             this._clearActorsFromBox();
@@ -640,11 +623,6 @@ var BaseLayout = class {
     displayCategoryAppList(appList){
         this._clearActorsFromBox();
         this._displayAppList(appList);
-        if(this.viewProgramsButton){
-            this.backButton.actor.show();
-            this.viewProgramsButton.actor.hide();
-            this.currentMenu = Constants.CURRENT_MENU.CATEGORY_APPLIST;
-        }
     }
 
     _displayAppList(apps) {    
@@ -731,10 +709,6 @@ var BaseLayout = class {
         });
         this._clearActorsFromBox();
         this._displayAppList(appList);
-        if(this.viewProgramsButton){
-            this.backButton.actor.show();
-            this.viewProgramsButton.actor.hide();  
-        }
     }
 
     _onSearchBoxKeyPress(searchBox, event) {
@@ -759,9 +733,6 @@ var BaseLayout = class {
     }
 
     _onSearchBoxChanged(searchBox, searchString) {        
-        if(this.currentMenu != Constants.CURRENT_MENU.SEARCH_RESULTS){              
-            this.currentMenu = Constants.CURRENT_MENU.SEARCH_RESULTS;        
-        }
         if(searchBox.isEmpty()){  
             this.newSearch.setTerms(['']); 
             this.setDefaultMenuView();                     	          	
@@ -773,11 +744,6 @@ var BaseLayout = class {
             this.newSearch.highlightDefault(true);
             this.newSearch.actor.show();         
             this.newSearch.setTerms([searchString]); 
-
-            if(this.viewProgramsButton){
-                this.backButton.actor.show();
-                this.viewProgramsButton.actor.hide();   
-            }  
         }            	
     }
 
@@ -805,14 +771,6 @@ var BaseLayout = class {
             }
         }
     }
-
-    setCurrentMenu(menu){
-        this.currentMenu = menu;
-    }
-
-    getCurrentMenu(){
-        return this.currentMenu;
-    } 
 
     _onMainBoxKeyPress(mainBox, event) {
         if (event.has_control_modifier()) {

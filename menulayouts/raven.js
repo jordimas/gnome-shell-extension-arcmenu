@@ -208,13 +208,11 @@ var createMenu = class extends BaseMenuLayout.BaseLayout{
         let homeScreen = this._settings.get_boolean('enable-ubuntu-homescreen');
         if(homeScreen){
             this.activeCategory = _("Pinned Apps");
-            this.currentMenu = Constants.CURRENT_MENU.FAVORITES;
             this.activeCategoryType = Constants.CategoryType.HOME_SCREEN;
             this.displayFavorites();
         }
         else{
             this.activeCategory = _("All Programs");
-            this.currentMenu = Constants.CURRENT_MENU.CATEGORY_APPLIST;
             this.activeCategoryType = Constants.CategoryType.ALL_PROGRAMS;
             this.displayAllApps();   
         }
@@ -300,10 +298,6 @@ var createMenu = class extends BaseMenuLayout.BaseLayout{
     }
 
     _displayAppList(apps, isFavoriteMenuItem = false, differentGrid = null){  
-        if(!isFavoriteMenuItem)
-            this.currentMenu = Constants.CURRENT_MENU.CATEGORY_APPLIST;
-        else
-            this.currentMenu = Constants.CURRENT_MENU.FAVORITES;    
         let grid = differentGrid ? differentGrid : this.grid;  
         grid.remove_all_children();
         super._displayAppGridList(apps, 3, isFavoriteMenuItem, differentGrid);

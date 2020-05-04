@@ -254,27 +254,63 @@ var createMenu = class extends BaseMenuLayout.BaseLayout{
     }
 
     displayFavorites(){
-        this.shouldDisplayFavorites = true;
+        this.activeCategoryType = Constants.CategoryType.PINNED_APPS;
+        if(!this._settings.get_boolean('enable-pinned-apps')){
+            this.viewProgramsButton.actor.hide();
+            this.backButton.actor.show();
+        }
+        else{
+            this.viewProgramsButton.actor.show();
+            this.backButton.actor.hide();
+        }
         super.displayFavorites();
     }
 
-    _clearActorsFromBox(box){
-        if(box == this.applicationsBox)
-            this.shouldDisplayFavorites = false;
-        super._clearActorsFromBox(box);
+    displayAllApps(){
+        super.displayAllApps();
+        this.backButton.actor.show();
+        this.viewProgramsButton.actor.hide();  
+    }
+
+    displayCategories(){
+        this.activeCategoryType = Constants.CategoryType.CATEGORIES_LIST;
+        if(this._settings.get_boolean('enable-pinned-apps')){
+            this.viewProgramsButton.actor.hide();
+            this.backButton.actor.show();
+        }
+        else{
+            this.viewProgramsButton.actor.show();
+            this.backButton.actor.hide();
+        }
+        
+        super.displayCategories();
     }
 
     setDefaultMenuView(){
         super.setDefaultMenuView();
         if(this._settings.get_boolean('enable-pinned-apps')){
-            this.currentMenu = Constants.CURRENT_MENU.FAVORITES;
             this.displayFavorites();
         }	
         else{
-            this.currentMenu = Constants.CURRENT_MENU.CATEGORIES;
             this.displayCategories();
         }
         this.backButton.actor.hide();
         this.viewProgramsButton.actor.show();
+    }
+
+    displayCategoryAppList(appList){
+        super.displayCategoryAppList(appList);
+        this.backButton.actor.show();
+        this.viewProgramsButton.actor.hide();
+        this.activeCategoryType = Constants.CategoryType.CATEGORY_APP_LIST; 
+    }
+
+    _onSearchBoxChanged(searchBox, searchString){  
+        super._onSearchBoxChanged(searchBox, searchString);  
+        if(!searchBox.isEmpty()){  
+            this.backButton.actor.show();
+            this.viewProgramsButton.actor.hide(); 
+            this.activeCategoryType = Constants.CategoryType.SEARCH_RESULTS;   
+        }            
     }
 }
