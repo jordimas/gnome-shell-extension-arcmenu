@@ -187,7 +187,6 @@ var PinnedAppsPage = GObject.registerClass(
                     margin_bottom: 0,
                     vexpand: false,
                     hexpand: false,
-                    margin_right: 15,
                     column_spacing: 2
                 });
 
@@ -3135,7 +3134,6 @@ var CategoriesPage = GObject.registerClass(
                 margin_bottom: 0,
                 vexpand: false,
                 hexpand: false,
-                margin_right: 15,
                 column_spacing: 2
             });
          
@@ -3420,7 +3418,6 @@ var ManageColorThemeDialogWindow = GObject.registerClass(
                     margin_bottom: 0,
                     vexpand: false,
                     hexpand: false,
-                    margin_right: 15,
                     column_spacing: 2
                 });
                 //create the three buttons to handle the ordering of pinned apps
@@ -4107,29 +4104,7 @@ var OverrideArcMenuThemeWindow = GObject.registerClass(
             this.separatorColor != "rgb(63,62,64)") ? true : false
         }
 });
-var ConfigureShortcuts = GObject.registerClass(
-    class ArcMenu_ConfigureShortcutsDialog extends PW.DialogWindow {
-        _init(settings, parent) {
-            this._settings = settings;
-            this.addResponse = false;
-            super._init(_("Configure Shortcuts"), parent);
-            this.resize(550,250);
-        }
-        _createLayout(vbox) {    
-            let notebook = new PW.Notebook();
 
-            let defautlDirectoriesPage = new DefaultDirectoriesPage(this._settings);
-            notebook.append_page(defautlDirectoriesPage);
-    
-            let applicationShortcutsPage = new ApplicationShortcutsPage(this._settings);
-            notebook.append_page(applicationShortcutsPage);
-    
-            let sessionButtonsPage = new SessionButtonsPage(this._settings);
-            notebook.append_page(sessionButtonsPage);
-    
-            vbox.add(notebook);
-        }
-});
 var DefaultDirectoriesPage = GObject.registerClass(
     class ArcMenu_DefaultDirectoriesPage extends PW.NotebookPage {
     _init(settings) {
@@ -4302,7 +4277,6 @@ var DefaultDirectoriesPage = GObject.registerClass(
                 margin_bottom: 0,
                 vexpand: false,
                 hexpand: false,
-                margin_right: 15,
                 column_spacing: 2
             });
 
@@ -4568,7 +4542,6 @@ var ApplicationShortcutsPage = GObject.registerClass(
                 margin_bottom: 0,
                 vexpand: false,
                 hexpand: false,
-                margin_right: 15,
                 column_spacing: 2
             });
 
@@ -4748,47 +4721,27 @@ var ShortcutsPage = GObject.registerClass(
     _init(settings) {
         super._init(_('Shortcuts'));
         this._settings = settings;
-        let configureShortcutsFrame = new PW.FrameBox();
-        let configureShortcutsRow = new PW.FrameBoxRow();
-        let configureShortcutsLabel = new Gtk.Label({
-            label: _("Configure Shortcuts"),
-            use_markup: true,
-            xalign: 0,
-            hexpand: true
-        });
-        let configureShortcutsSwitch = new Gtk.Switch({
-            tooltip_text:_("Add, Remove, or Modify Arc Menu shortcuts"),
-            valign: Gtk.Align.CENTER
-        });
-        
-        let configureShortcutsButton = new PW.IconButton({
-            circular: true,
-            icon_name: 'emblem-system-symbolic',
-            tooltip_text:_("Add, Remove, or Modify Arc Menu shortcuts")
-        });
-        configureShortcutsSwitch.connect('notify::active', (widget) => {
-            configureShortcutsButton.set_sensitive(widget.get_active());
-            this._settings.set_boolean('enable-custom-shortcuts',widget.get_active());
-        });
-        configureShortcutsSwitch.set_active(this._settings.get_boolean('enable-custom-shortcuts'));
-        configureShortcutsButton.set_sensitive(configureShortcutsSwitch.get_active());
-        configureShortcutsButton.connect('clicked', () => {
-            let dialog = new ConfigureShortcuts(this._settings, this);
-            dialog.show_all();
-            dialog.connect('response', (response) => { 
-                if(dialog.get_response()) {
-               
-                }
-                else
-                    dialog.destroy();
-            }); 
-        });
-        configureShortcutsRow.add(configureShortcutsLabel);
-        configureShortcutsRow.add(configureShortcutsButton);
-        configureShortcutsRow.add(configureShortcutsSwitch);
-        configureShortcutsFrame.add(configureShortcutsRow);
+        let notebook = new PW.Notebook();
+        notebook.show_border = false;
+        this.margin_bottom = 0;
 
-        this.add(configureShortcutsFrame);
+        let defautlDirectoriesPage = new DefaultDirectoriesPage(this._settings);
+        defautlDirectoriesPage.margin = 0;
+        notebook.append_page(defautlDirectoriesPage);
+
+        let applicationShortcutsPage = new ApplicationShortcutsPage(this._settings);
+        applicationShortcutsPage.margin = 0;
+        notebook.append_page(applicationShortcutsPage);
+
+        let extrasPage = new PW.NotebookPage(_("Extras"));
+        extrasPage.margin = 0;
+        notebook.append_page(extrasPage);
+        
+        let sessionButtonsPage = new SessionButtonsPage(this._settings);
+        sessionButtonsPage.margin = 0;
+        notebook.append_page(sessionButtonsPage);
+
+        this.add(notebook);
         
         //EXTERNAL DEVICES/BOOKMARKS--------------------------------------------------------------
         let placesFrame = new PW.FrameBox();
@@ -4811,7 +4764,7 @@ var ShortcutsPage = GObject.registerClass(
 
         //ADD TO FRAME
         placesFrame.add(externalDeviceRow);
-        this.add(placesFrame);
+        extrasPage.add(placesFrame);
         
         //BOOKMARKS LIST       
         let bookmarksRow = new PW.FrameBoxRow();
@@ -5061,14 +5014,6 @@ var MiscPage = GObject.registerClass(
                         dialog.destroy();
                 }); 
             });
-            let browseColorPresetRow = new PW.FrameBoxRow();
-            let browseColorPresetButton = new Gtk.Button({
-                label: _("Browse Themes by ArcMenu Team"),
-                halign: Gtk.Align.CENTER,
-                hexpand: true,
-                tooltip_text: _("Import Arc Menu Theme Presets from a file")  
-            });
-            browseColorPresetRow.add(browseColorPresetButton);
             
             importColorPresetRow.add(importColorPresetLabel);
             importColorPresetRow.add(colorPresetBox);
@@ -5077,7 +5022,6 @@ var MiscPage = GObject.registerClass(
             importColorPresetButtonsRow.add(importColorPresetButton);
             importColorPresetFrame.add(importColorPresetRow);   
             importColorPresetFrame.add(importColorPresetButtonsRow);
-            importColorPresetFrame.add(browseColorPresetRow);
 
             this.add(importFrame);
             this.add(importColorPresetFrame);
