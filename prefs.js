@@ -5061,14 +5061,6 @@ var MiscPage = GObject.registerClass(
                         dialog.destroy();
                 }); 
             });
-            let browseColorPresetRow = new PW.FrameBoxRow();
-            let browseColorPresetButton = new Gtk.Button({
-                label: _("Browse Themes by ArcMenu Team"),
-                halign: Gtk.Align.CENTER,
-                hexpand: true,
-                tooltip_text: _("Import Arc Menu Theme Presets from a file")  
-            });
-            browseColorPresetRow.add(browseColorPresetButton);
             
             importColorPresetRow.add(importColorPresetLabel);
             importColorPresetRow.add(colorPresetBox);
@@ -5077,7 +5069,6 @@ var MiscPage = GObject.registerClass(
             importColorPresetButtonsRow.add(importColorPresetButton);
             importColorPresetFrame.add(importColorPresetRow);   
             importColorPresetFrame.add(importColorPresetButtonsRow);
-            importColorPresetFrame.add(browseColorPresetRow);
 
             this.add(importFrame);
             this.add(importColorPresetFrame);
