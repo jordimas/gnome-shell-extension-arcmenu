@@ -147,6 +147,8 @@ var createMenu = class extends BaseMenuLayout.BaseLayout{
         this.categoriesScrollBox.add_actor( this.categoriesBox);  
         this.categoriesScrollBox.clip_to_allocation = true;
 
+        this.loadFavorites();
+        this.loadPinnedShortcuts();
         this.loadCategories();
         this.displayCategories();
         this.setDefaultMenuView(); 
@@ -158,7 +160,7 @@ var createMenu = class extends BaseMenuLayout.BaseLayout{
    
     setDefaultMenuView(){
         super.setDefaultMenuView();
-        this.displayGnomeFavorites();
+        this.categoryDirectories.values().next().value.activate();
     }
 
     _reload() {
@@ -172,16 +174,22 @@ var createMenu = class extends BaseMenuLayout.BaseLayout{
     loadCategories() {
         this.categoryDirectories = null;
         this.categoryDirectories = new Map(); 
-        let categoryMenuItem = new MW.CategoryMenuItem(this, Constants.CategoryType.FAVORITES);
-        this.categoryDirectories.set(Constants.CategoryType.FAVORITES, categoryMenuItem);
 
-        categoryMenuItem = new MW.CategoryMenuItem(this, Constants.CategoryType.ALL_PROGRAMS);
-        this.categoryDirectories.set(Constants.CategoryType.ALL_PROGRAMS, categoryMenuItem);
+        let extraCategories = this._settings.get_value("extra-categories").deep_unpack();
+
+        for(let i = 0; i < extraCategories.length; i++){
+            let categoryEnum = extraCategories[i][0];
+            let shouldShow = extraCategories[i][1];
+            if(shouldShow){
+                let categoryMenuItem = new MW.CategoryMenuItem(this, categoryEnum);
+                this.categoryDirectories.set(categoryEnum, categoryMenuItem);
+            }
+        }
 
         super.loadCategories();
     }
-   
-    loadFavorites() {
+
+    loadPinnedShortcuts(){
         this.actionsScrollBox.remove_actor(this.actionsBox);
         this.actionsBox.destroy_all_children();
         this.actionsBox.destroy();
@@ -224,7 +232,17 @@ var createMenu = class extends BaseMenuLayout.BaseLayout{
         else if(GLib.find_program_in_path('io.elementary.appcenter')){
             software = 'io.elementary.appcenter.desktop';
         }
-        pinnedApps.push(_("Software"), 'system-software-install-symbolic', software);
+        else if(GLib.find_program_in_path('snap-store')){
+            software = 'snap-store_ubuntu-software.desktop';
+        }
+        else{
+            software = null;
+        }
+        if(software)
+            pinnedApps.push(_("Software"), 'system-software-install-symbolic', software);
+        else{
+            pinnedApps.push(_("Documents"), "ArcMenu_Documents", "ArcMenu_Documents");
+        }
         pinnedApps.push(_("Files"), "system-file-manager", "org.gnome.Nautilus.desktop");
         pinnedApps.push(_("Log Out"), "application-exit-symbolic", "ArcMenu_LogOut");
         pinnedApps.push(_("Lock"), "changes-prevent-symbolic", "ArcMenu_Lock");

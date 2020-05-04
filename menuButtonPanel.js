@@ -47,7 +47,6 @@ var ApplicationsButton = GObject.registerClass(class ArcMenu_ApplicationsButton 
         this._settings = settings;
         this._panel = panel;
         this._menuButtonWidget = new MW.MenuButtonWidget();
-        
         //Tooltip showing/hiding
         this.tooltipShowing = false;
         this.tooltipHidingID = null;
@@ -512,14 +511,6 @@ var ApplicationsButton = GObject.registerClass(class ArcMenu_ApplicationsButton 
     reload(){
         if(this.MenuLayout)
             this.MenuLayout.needsReload = true;
-    }
-    setCurrentMenu(menu) {
-        if(this.MenuLayout)
-            this.MenuLayout.setCurrentMenu(menu);
-    }
-    getCurrentMenu(){
-        if(this.MenuLayout)
-            return this.MenuLayout.getCurrentMenu();
     }
     getShouldLoadFavorites(){
         if(this.MenuLayout)

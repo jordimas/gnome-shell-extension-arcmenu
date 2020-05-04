@@ -49,10 +49,7 @@ var BaseLayout = class {
         this.leftClickMenu = mainButton.leftClickMenu;
         this.layout = this._settings.get_enum('menu-layout');
         this.layoutProperties = layoutProperties;
-
         this._session = new GnomeSession.SessionManager();
-        
-        this.currentMenu = Constants.CURRENT_MENU.FAVORITES; 
         this.isRunning = true;
         this.shouldLoadFavorites = true;
 
@@ -82,6 +79,12 @@ var BaseLayout = class {
         this.applicationsMap.forEach((value,key,map)=>{
             map.get(key)._updateIcon();
         });
+        let categoryMenuItem = this.categoryDirectories.get(Constants.CategoryType.PINNED_APPS);
+        if(categoryMenuItem){
+            for(let favoriteMenuItem of categoryMenuItem.appList){
+                favoriteMenuItem._updateIcon();
+            }
+        }
         this.newSearch._reset(); 
     }
 
@@ -190,6 +193,22 @@ var BaseLayout = class {
         if(categoryMenuItem){
             this._loadGnomeFavorites(categoryMenuItem);
         }
+        categoryMenuItem = this.categoryDirectories.get(Constants.CategoryType.FREQUENT_APPS);
+        if(categoryMenuItem){
+            let mostUsed = Shell.AppUsage.get_default().get_most_used();
+            for (let i = 0; i < mostUsed.length; i++) {
+                if (mostUsed[i] && mostUsed[i].get_app_info().should_show())
+                    categoryMenuItem.appList.push(mostUsed[i]);
+            }
+        }
+        categoryMenuItem = this.categoryDirectories.get(Constants.CategoryType.PINNED_APPS);
+        if(categoryMenuItem){
+            categoryMenuItem.appList = categoryMenuItem.appList.concat(this.favoritesArray);
+            for(let favoriteMenuItem of categoryMenuItem.appList){
+                favoriteMenuItem._updateIcon();
+            }
+        }
+            
     }
 
     _loadCategory(isIconGrid, categoryId, dir, submenuItem) {
@@ -285,15 +304,7 @@ var BaseLayout = class {
             categoriesBox = this.applicationsBox;
         }
         this._clearActorsFromBox(categoriesBox);
-        if(this.viewProgramsButton){
-            this.viewProgramsButton.actor.hide();
-            if(this._settings.get_boolean('enable-pinned-apps'))
-                this.backButton.actor.show();
-            else{
-                this.viewProgramsButton.actor.show();
-                this.backButton.actor.hide();
-            }
-        }
+        
         let isActiveMenuItemSet = false;
         for(let categoryMenuItem of this.categoryDirectories.values()){
             categoriesBox.add_actor(categoryMenuItem.actor);	
@@ -466,7 +477,16 @@ var BaseLayout = class {
                 this._settings.set_strv('pinned-app-list',array);
             });
             this.favoritesArray.push(favoritesMenuItem);
-        }   
+        }  
+        let categoryMenuItem = this.categoryDirectories ? this.categoryDirectories.get(Constants.CategoryType.PINNED_APPS) : null;
+        if(categoryMenuItem){
+            categoryMenuItem.appList = null;
+            categoryMenuItem.appList = [];
+            categoryMenuItem.appList = categoryMenuItem.appList.concat(this.favoritesArray);
+            for(let favoriteMenuItem of categoryMenuItem.appList){
+                favoriteMenuItem._updateIcon();
+            }
+        } 
     }
 
     _updatePinnedAppsWebBrowser(pinnedApps){
@@ -499,12 +519,11 @@ var BaseLayout = class {
         }
     }
 
-    displayFavorites() {
-        this._clearActorsFromBox();
-        if(this.viewProgramsButton){
-            this.viewProgramsButton.actor.show();
-            this.backButton.actor.hide();
-        }
+    displayFavorites() {          
+        if(this.activeCategoryType === Constants.CategoryType.HOME_SCREEN || this.activeCategoryType === Constants.CategoryType.PINNED_APPS)
+            this._clearActorsFromBox(this.applicationsBox);
+        else
+            this._clearActorsFromBox();
 
         for(let i = 0;i < this.favoritesArray.length; i++){
             this.applicationsBox.add_actor(this.favoritesArray[i].actor);	
@@ -589,9 +608,10 @@ var BaseLayout = class {
         }
     }
 
-    _clearActorsFromBox(box) {
+    _clearActorsFromBox(box){
         if(!box){
             box = this.applicationsBox;
+            this.activeCategoryType = -1;
         }
         this.activeMenuItem = null;
         let actors = box.get_children();
@@ -606,11 +626,6 @@ var BaseLayout = class {
     displayCategoryAppList(appList){
         this._clearActorsFromBox();
         this._displayAppList(appList);
-        if(this.viewProgramsButton){
-            this.backButton.actor.show();
-            this.viewProgramsButton.actor.hide();
-            this.currentMenu = Constants.CURRENT_MENU.CATEGORY_APPLIST;
-        }
     }
 
     _displayAppList(apps) {    
@@ -697,10 +712,6 @@ var BaseLayout = class {
         });
         this._clearActorsFromBox();
         this._displayAppList(appList);
-        if(this.viewProgramsButton){
-            this.backButton.actor.show();
-            this.viewProgramsButton.actor.hide();  
-        }
     }
 
     _onSearchBoxKeyPress(searchBox, event) {
@@ -725,9 +736,6 @@ var BaseLayout = class {
     }
 
     _onSearchBoxChanged(searchBox, searchString) {        
-        if(this.currentMenu != Constants.CURRENT_MENU.SEARCH_RESULTS){              
-            this.currentMenu = Constants.CURRENT_MENU.SEARCH_RESULTS;        
-        }
         if(searchBox.isEmpty()){  
             this.newSearch.setTerms(['']); 
             this.setDefaultMenuView();                     	          	
@@ -739,11 +747,6 @@ var BaseLayout = class {
             this.newSearch.highlightDefault(true);
             this.newSearch.actor.show();         
             this.newSearch.setTerms([searchString]); 
-
-            if(this.viewProgramsButton){
-                this.backButton.actor.show();
-                this.viewProgramsButton.actor.hide();   
-            }  
         }            	
     }
 
@@ -771,14 +774,6 @@ var BaseLayout = class {
             }
         }
     }
-
-    setCurrentMenu(menu){
-        this.currentMenu = menu;
-    }
-
-    getCurrentMenu(){
-        return this.currentMenu;
-    } 
 
     _onMainBoxKeyPress(mainBox, event) {
         if (event.has_control_modifier()) {

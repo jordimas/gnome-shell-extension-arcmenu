@@ -35,19 +35,23 @@ var SearchType = {
     GRID_VIEW: 1
 }
 
-var CURRENT_MENU = {
+var CategoryType = {
     FAVORITES: 0,
-    CATEGORIES: 1,
-    CATEGORY_APPLIST: 2,
-    SEARCH_RESULTS: 3
+    FREQUENT_APPS: 1,
+    ALL_PROGRAMS: 2,
+    PINNED_APPS: 3,
+    HOME_SCREEN: 4,
+    SEARCH_RESULTS: 5,
+    CATEGORIES_LIST: 6,
+    CATEGORY_APP_LIST: 7
 };
 
-var CategoryType = {
-  FREQUENT_APPS: 0,
-    FAVORITES: 1,
-    ALL_PROGRAMS: 2,
-    HOME_SCREEN: 3
-};
+var CATEGORIES = [
+    {Category: CategoryType.FAVORITES, Name: _("Favorites"), Icon: 'emblem-favorite-symbolic'},
+    {Category: CategoryType.FREQUENT_APPS, Name: _("Frequent Apps"), Icon: 'user-bookmarks-symbolic'},
+    {Category: CategoryType.ALL_PROGRAMS, Name: _("All Programs"), Icon: 'view-grid-symbolic'},
+    {Category: CategoryType.PINNED_APPS, Name: _("Pinned Apps"), Icon: Me.path + '/media/icons/arc-menu-symbolic.svg'}
+]
 
 var ARC_MENU_PLACEMENT = {
     PANEL: 0,

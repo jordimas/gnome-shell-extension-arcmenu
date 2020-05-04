@@ -268,8 +268,8 @@ var AppSearchResult = class  ArcMenu_AppSearchResult {
                 this.menuItem.actor.add_child(this.label);
             }
         }
-        
-        this.menuItem.connect('activate', this.activate.bind(this)); 
+        if(this.menuItem instanceof MW.SearchResultItem)
+            this.menuItem.connect('activate', this.activate.bind(this)); 
         this.menuItem.label = this.label;
         this.menuItem.description = this._app ? this._app.get_description() : this.metaInfo['description'];
     }
