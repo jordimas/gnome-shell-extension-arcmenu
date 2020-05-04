@@ -13,7 +13,7 @@ Arc Menu is a Gnome shell extension designed to replace the standard menu found 
 
 ### Volunteers needed!
 
-This extension could be even better with your help! Any items in the issue tracker labelled **Help Needed** or **Good First Issue** are open for contribution and help. For more info, see the [Contributing Feature List](https://gitlab.com/LinxGem33/Arc-Menu/issues/54) for more details on current issues or features which need your help.
+This extension could be even better with your help! Any items in the issue tracker labelled **Help Needed** or **Good First Issue** are open for contribution. For more info, see the [Contributing Feature List](https://gitlab.com/LinxGem33/Arc-Menu/issues/54) for more details on current issues or features which need your help.
 
 ![image](/uploads/85b3cf3baea40163ffc5c115b7d7306e/image.png)  ![image](/uploads/d5b2fb82db8d2955923d327caef8e4aa/image.png)
 
@@ -159,6 +159,14 @@ Hi, I’m Andrew. My role on the project is to design, create, and implement fea
 
 -----
 
+**Disclaimer..**
+
+*" Translations are not provided by the ArcMenu team members and may contain incorrect or inaccurate translations. The ArcMenu team relies on user contributions for translations. Therefore if you wish to correct or modify a translation that you feel is inaccurate please send a Merge Request with a brief description with the reason for any corrections. "*
+
+Kind regards - **ArcMenu Team**
+
+-----
+
 #### Please refer to the Wiki section for a [Translation Guide](https://gitlab.com/LinxGem33/Arc-Menu/wikis/Translation-Guide)
 
 - **Current translated languages and translators..**
@@ -169,12 +177,16 @@ Hi, I’m Andrew. My role on the project is to design, create, and implement fea
 
 -----
 
- **- @[AlexWayfer](https://gitlab.com/AlexWayfer) - Russian** | **- @[gkkulik](https://gitlab.com/gkkulik) - Silesian** | **- @[vikaig](https://gitlab.com/vikaig) - Ukrainian** | **- @[jordim](https://gitlab.com/jordim) - Catalan** | **- @[libreajans](https://gitlab.com/libreajans) - Turkish** | **- @[Vombato](https://gitlab.com/Vombato) - Italian** |
+ **- @[AlexWayfer](https://gitlab.com/AlexWayfer) - Russian** | **- @[gkkulik](https://gitlab.com/gkkulik) - Silesian** | **- @[vikaig](https://gitlab.com/vikaig) - Ukrainian** | **- @[jordim](https://gitlab.com/jordim) - Catalan** | **- @[libreajans](https://gitlab.com/libreajans) - Turkish** |
  
 -----
 
- **- @[MorganAntonsson](https://gitlab.com/MorganAntonsson) - Swedish** | **- @[jiri.doubravsky](https://gitlab.com/jiri.doubravsky) - czech** | **- @[juanlucer](https://gitlab.com/juanlucer) - Spanish** | **- @[plesry](https://gitlab.com/plesry) - Chinese (Taiwan)** | **- @[rimasx](https://gitlab.com/rimasx) - Estonian** |
+ **- @[MorganAntonsson](https://gitlab.com/MorganAntonsson) - Swedish** | **- @[jiri.doubravsky](https://gitlab.com/jiri.doubravsky) - czech** | **- @[juanlucer](https://gitlab.com/juanlucer) - Spanish** | **- @[plesry](https://gitlab.com/plesry) - Chinese (Taiwan)** |
 
 -----
 
-**- @[skygmin](https://gitlab.com/skygmin) - Simplified Chinese** | **- @[vinno97](https://gitlab.com/vinno97) - Dutch** | **- @[artnay](https://gitlab.com/artnay) - Finnish**
+ **- @[Vombato](https://gitlab.com/Vombato) - Italian** | **- @[skygmin](https://gitlab.com/skygmin) - Simplified Chinese** | **- @[vinno97](https://gitlab.com/vinno97) - Dutch** | **- @[artnay](https://gitlab.com/artnay) - Finnish** |  **- @[rimasx](https://gitlab.com/rimasx) - Estonian** |
+ 
+-----
+
+ **- @[stevendobay](https://gitlab.com/stevendobay) - Hungarian** |
