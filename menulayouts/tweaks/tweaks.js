@@ -687,7 +687,10 @@ var TweaksDialog = GObject.registerClass(
                 xalign: 0,
                 hexpand: true
             });
-            let defaultLeftBoxCombo = new Gtk.ComboBoxText({ halign: Gtk.Align.END });
+            let defaultLeftBoxCombo = new Gtk.ComboBoxText({ 
+                halign: Gtk.Align.END,
+                tooltip_text: _("Choose the default menu view for Arc Menu") 
+            });
             defaultLeftBoxCombo.append_text(_("Pinned Apps"));
             defaultLeftBoxCombo.append_text(_("Categories List"));
             if(this._settings.get_boolean('enable-pinned-apps'))
