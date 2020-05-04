@@ -502,7 +502,6 @@ var TweaksDialog = GObject.registerClass(
                     margin_bottom: 0,
                     vexpand: false,
                     hexpand: false,
-                    margin_right: 15,
                     column_spacing: 2
                 });
 

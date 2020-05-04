@@ -42,7 +42,7 @@ var Notebook = GObject.registerClass(class ArcMenu_Notebook extends Gtk.Notebook
     }
 });
 
-var NotebookPage =GObject.registerClass(class ArcMenu_NotebookPage extends Gtk.Box {
+var NotebookPage = GObject.registerClass(class ArcMenu_NotebookPage extends Gtk.Box {
     _init(title) {
         super._init({
             orientation: Gtk.Orientation.VERTICAL,
