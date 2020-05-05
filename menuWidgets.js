@@ -724,8 +724,7 @@ var SessionButton = class ArcMenu_SessionButton{
             fallback_icon_name : icon_name,
             icon_size: iconSize
         });
-
-        this.actor.child = this._icon;
+        this.actor.add_actor(this._icon);
         this.actor.connect('clicked', this._onClick.bind(this));
     }
 

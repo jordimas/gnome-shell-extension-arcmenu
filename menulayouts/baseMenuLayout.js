@@ -451,6 +451,8 @@ var BaseLayout = class {
             }   
             if(addStyle) 
                 placeMenuItem.actor.add_style_class_name('arc-menu-action');
+            if(this.layout == Constants.MENU_LAYOUT.Mint)
+                placeMenuItem.actor.style = 'min-height: 22px;';
             placeMenuItem.actor.x_expand = false;
             placeMenuItem.actor.y_expand = false;
             placeMenuItem.actor.y_align = Clutter.ActorAlign.CENTER;

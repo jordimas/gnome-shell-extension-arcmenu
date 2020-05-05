@@ -42,6 +42,8 @@ var createMenu = class extends BaseMenuLayout.BaseLayout{
         });
     }
     createLayout(){
+        this.actionsBoxStyle = "background-color:rgba(186, 196,201, 0.1); border-color:rgba(186, 196,201, 0.2); border-width: 1px; border-radius: 5px;"
+                                  +"margin: 0px 0px; spacing: 8px; padding: 10px 0px;";
         //Stores the Pinned Icons on the left side
         this.actionsScrollBox = new St.ScrollView({
             x_expand: false,
@@ -52,7 +54,7 @@ var createMenu = class extends BaseMenuLayout.BaseLayout{
             overlay_scrollbars: true,
             style_class: 'vfade'
         });   
-        this.actionsScrollBox.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC);
+        this.actionsScrollBox.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.EXTERNAL);
         this.actionsBox = new St.BoxLayout({ 
             vertical: true
         });
@@ -60,7 +62,7 @@ var createMenu = class extends BaseMenuLayout.BaseLayout{
         this.actionsScrollBox.clip_to_allocation = true;
         
         this.actionsScrollBox.style = "width:62px; margin: 10px 20px 0 20px;";
-        this.actionsBox.style = "background-color:rgba(186, 196,201, 0.1) ;border-color:rgba(186, 196,201, 0.2) ; border-width: 1px; border-radius: 5px;margin: 0px 0px; spacing: 5px; padding: 5px 0px;";
+        this.actionsBox.style = this.actionsBoxStyle;
         //check if custom arc menu is enabled
         if( this._settings.get_boolean('enable-custom-arc-menu'))
             this.actionsBox.add_style_class_name('arc-menu');
@@ -190,14 +192,7 @@ var createMenu = class extends BaseMenuLayout.BaseLayout{
     }
 
     loadPinnedShortcuts(){
-        this.actionsScrollBox.remove_actor(this.actionsBox);
         this.actionsBox.destroy_all_children();
-        this.actionsBox.destroy();
-        this.actionsBox = new St.BoxLayout({ 
-            vertical: true
-        });
-        this.actionsBox.style = "background-color:rgba(186, 196,201, 0.1) ;border-color:rgba(186, 196,201, 0.2) ; border-width: 1px; border-radius: 5px;margin: 0px 0px; spacing: 5px; padding: 5px 0px;";
-        this.actionsScrollBox.add_actor(this.actionsBox);
 
         super.loadPinnedApps(this._settings.get_strv('mint-pinned-app-list'), this._settings.get_int('mint-separator-index'));
     }
