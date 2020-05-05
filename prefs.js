@@ -4723,7 +4723,6 @@ var ShortcutsPage = GObject.registerClass(
         this._settings = settings;
         let notebook = new PW.Notebook();
         notebook.show_border = false;
-        this.margin_bottom = 0;
 
         let defautlDirectoriesPage = new DefaultDirectoriesPage(this._settings);
         defautlDirectoriesPage.margin = 0;

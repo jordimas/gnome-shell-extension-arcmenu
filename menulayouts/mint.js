@@ -48,7 +48,7 @@ var createMenu = class extends BaseMenuLayout.BaseLayout{
             y_expand: false,
             x_fill: true,
             y_fill: false,
-            y_align: Clutter.ActorAlign.CENTER,
+            y_align: Clutter.ActorAlign.START,
             overlay_scrollbars: true,
             style_class: 'vfade'
         });   
@@ -59,7 +59,7 @@ var createMenu = class extends BaseMenuLayout.BaseLayout{
         this.actionsScrollBox.add_actor( this.actionsBox);
         this.actionsScrollBox.clip_to_allocation = true;
         
-        this.actionsScrollBox.style = "width:62px; margin: 0px 20px 0 20px;";
+        this.actionsScrollBox.style = "width:62px; margin: 10px 20px 0 20px;";
         this.actionsBox.style = "background-color:rgba(186, 196,201, 0.1) ;border-color:rgba(186, 196,201, 0.2) ; border-width: 1px; border-radius: 5px;margin: 0px 0px; spacing: 5px; padding: 5px 0px;";
         //check if custom arc menu is enabled
         if( this._settings.get_boolean('enable-custom-arc-menu'))
@@ -77,7 +77,7 @@ var createMenu = class extends BaseMenuLayout.BaseLayout{
         this.mainBox.add(this.rightMenuBox);
 
         this.searchBox = new MW.SearchBox(this);
-        this.searchBox.actor.style ="margin: 0px 10px 10px 10px; padding-top: 0.0em; padding-bottom: 0.5em;padding-left: 0.4em;padding-right: 0.4em;";
+        this.searchBox.actor.style = "margin: 10px 20px 10px 0px; padding-top: 0.0em; padding-bottom: 0.5em;padding-left: 0.0em;padding-right: 0.0em;";
         this._searchBoxChangedId = this.searchBox.connect('changed', this._onSearchBoxChanged.bind(this));
         this._searchBoxKeyPressId = this.searchBox.connect('key-press-event', this._onSearchBoxKeyPress.bind(this));
         this._searchBoxKeyFocusInId = this.searchBox.connect('key-focus-in', this._onSearchBoxKeyFocusIn.bind(this));
