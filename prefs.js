@@ -1778,23 +1778,96 @@ var MenuButtonCustomizationWindow = GObject.registerClass(
             menuButtonIconCombo.connect('changed', (widget) => {
                 resetButton.set_sensitive(true); 
                 this._settings.set_enum('menu-button-icon', widget.get_active());
-                if(widget.get_active()==Constants.MENU_BUTTON_ICON.Custom) {
-                    if(menuButtonIconFrame.count == 1){
-                        menuButtonIconFrame.add(fileChooserRow);
-                        menuButtonIconFrame.show();
-                    }
+                if(widget.get_active() == Constants.MENU_BUTTON_ICON.Custom) {
+                    if(menuButtonIconFrame.count == 2)
+                        menuButtonIconFrame.remove(menuButtonIconFrame.get_index(1));
 
+                    menuButtonIconFrame.add(fileChooserRow);
+                    menuButtonIconFrame.show();
+    
                     let iconFilepath = this._settings.get_string('custom-menu-button-icon');
                     if (iconFilepath) {
                         fileChooserButton.set_filename(iconFilepath);
                     }   
                 }
+                else if(widget.get_active() == Constants.MENU_BUTTON_ICON.Distro_Icon) {
+                    if(menuButtonIconFrame.count == 2)
+                        menuButtonIconFrame.remove(menuButtonIconFrame.get_index(1));
+                    
+                    menuButtonIconFrame.add(distroIconsRow);
+                    menuButtonIconFrame.show();
+
+                    fileChooserButton.set_filename("None");
+                }
                 else{
                     if(menuButtonIconFrame.count == 2)
-                    menuButtonIconFrame.remove(fileChooserRow);
+                        menuButtonIconFrame.remove(menuButtonIconFrame.get_index(1));
                     fileChooserButton.set_filename("None");
                 }
             });
+            let distroIconsRow = new PW.FrameBoxRow();
+            let distroIconsLabel = new Gtk.Label({
+                label: _('Distro Icons'),
+                use_markup: true,
+                xalign: 0,
+                hexpand: true
+            });
+            distroIconsRow.add(distroIconsLabel);
+
+            let distroStore = new Gtk.ListStore();
+            distroStore.set_column_types([GdkPixbuf.Pixbuf, GObject.TYPE_STRING]);
+            let distroIconCombo = new Gtk.ComboBox({
+                model: distroStore,
+                width_request: 225
+            });
+            
+            Constants.DISTRO_ICONS.forEach((icon)=>{
+                let pixbuf = getIconPixbuf(Me.path + icon.path);
+                distroStore.set(distroStore.append(),[0,1], [pixbuf, _(icon.name)]);
+            });
+
+            let distroRenderer = new Gtk.CellRendererPixbuf({xpad:10});
+            distroIconCombo.pack_start(distroRenderer, false);
+            distroIconCombo.add_attribute(distroRenderer, "pixbuf", 0);
+            distroRenderer = new Gtk.CellRendererText();
+            distroIconCombo.pack_start(distroRenderer, true);
+            distroIconCombo.add_attribute(distroRenderer, "text", 1);
+
+            distroIconCombo.set_active(this._settings.get_enum('distro-icon'));
+            distroIconCombo.connect('changed', (widget) => {
+                resetButton.set_sensitive(true); 
+                this._settings.set_enum('distro-icon', widget.get_active());
+
+                store.clear();
+                this.createIconList(store);
+                menuButtonIconCombo.model = store;
+                menuButtonIconCombo.show();
+                menuButtonIconCombo.set_active(Constants.MENU_BUTTON_ICON.Distro_Icon);
+            });
+            distroIconsRow.add(distroIconCombo);
+            let pixbuf = GdkPixbuf.Pixbuf.new_from_file_at_size(Me.path + '/media/misc/info-circle.svg', 20, 20);
+            let infoImage = new Gtk.Image({ pixbuf: pixbuf });
+            let distroInfoButton = new Gtk.Button({
+                image: infoImage,
+                halign: Gtk.Align.END,
+                valign: Gtk.Align.END
+            });
+            distroInfoButton.connect('clicked', ()=> {
+                let dialog = new Gtk.MessageDialog({
+                    text: "<b>" + _("Legal disclaimer for brand icons and trademarks...") + "</b>",
+                    use_markup: true,
+                    secondary_text: Constants.DistroIconsDisclaimer,
+                    secondary_use_markup: true,
+                    buttons: Gtk.ButtonsType.OK,
+                    message_type: Gtk.MessageType.OTHER,
+                    transient_for: this,
+                    modal: true
+                });
+                dialog.connect ('response', ()=> dialog.destroy());
+                dialog.show();
+            });
+            distroIconsRow.add(distroInfoButton);
+
             let fileChooserRow = new PW.FrameBoxRow();
             let fileChooserLabel = new Gtk.Label({
                 label: _('Browse for a custom icon'),
@@ -1826,6 +1899,9 @@ var MenuButtonCustomizationWindow = GObject.registerClass(
             menuButtonIconFrame.add(menuButtonIconRow);
             if(menuButtonIconCombo.get_active()==Constants.MENU_BUTTON_ICON.Custom){
                 menuButtonIconFrame.add(fileChooserRow);
+            }
+            if(menuButtonIconCombo.get_active() == Constants.MENU_BUTTON_ICON.Distro_Icon){
+                menuButtonIconFrame.add(distroIconsRow);
             }
             vbox.add(menuButtonIconFrame);
 
@@ -1913,8 +1989,8 @@ var MenuButtonCustomizationWindow = GObject.registerClass(
                 this._settings.reset('reload-theme');
                 this._settings.set_boolean('reload-theme', true);
             });
-            let pixbuf = GdkPixbuf.Pixbuf.new_from_file_at_size(Me.path + '/media/misc/info-circle.svg', 20, 20);
-            let infoImage = new Gtk.Image({ pixbuf: pixbuf });
+            pixbuf = GdkPixbuf.Pixbuf.new_from_file_at_size(Me.path + '/media/misc/info-circle.svg', 20, 20);
+            infoImage = new Gtk.Image({ pixbuf: pixbuf });
             let menuButtonColorInfoButton = new Gtk.Button({
                 image: infoImage,
                 halign: Gtk.Align.END,
@@ -2007,6 +2083,7 @@ var MenuButtonCustomizationWindow = GObject.registerClass(
             resetButton.set_halign(Gtk.Align.START);
             vbox.add(resetButton);
         }
+
         checkIfResetButtonSensitive(){
            if(  this._settings.get_string('menu-button-active-color') != 'rgb(214,214,214)' ||
                 this._settings.get_string('menu-button-color') != 'rgb(240,240,240)' ||
@@ -2020,6 +2097,7 @@ var MenuButtonCustomizationWindow = GObject.registerClass(
             else
                 return false;
         }
+
         createIconList(store){
             let pixbuf;
 
@@ -2032,6 +2110,9 @@ var MenuButtonCustomizationWindow = GObject.registerClass(
             else
                 pixbuf = null;
             store.set(store.append(),[0,1], [pixbuf, _("System Icon")]);
+
+            pixbuf = getIconPixbuf(Me.path + Constants.DISTRO_ICONS[this._settings.get_enum('distro-icon')].path);
+            store.set(store.append(),[0,1], [pixbuf, _("Distro Icons")]);
 
             pixbuf = getIconPixbuf(this._settings.get_string('custom-menu-button-icon'));
             store.set(store.append(),[0,1], [pixbuf, _("Custom Icon")]);
