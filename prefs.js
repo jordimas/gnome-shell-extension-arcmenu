@@ -1762,7 +1762,8 @@ var MenuButtonCustomizationWindow = GObject.registerClass(
             store.set_column_types([GdkPixbuf.Pixbuf, GObject.TYPE_STRING]);
             let menuButtonIconCombo = new Gtk.ComboBox({
                 model: store,
-                width_request: 225
+                width_request: 225,
+                wrap_width: 2
             });
             
             this.createIconList(store);
