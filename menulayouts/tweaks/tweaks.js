@@ -325,8 +325,7 @@ var TweaksDialog = GObject.registerClass(
             let pinnedAppsSeparatorLabel = new Gtk.Label({
                 label: _("Separator Position Index"),
                 use_markup: true,
-                xalign: 0,
-                hexpand: true
+                xalign: 0
             });
             let pinnedAppsSeparatorScale = new Gtk.HScale({
                 adjustment: new Gtk.Adjustment({
@@ -339,8 +338,30 @@ var TweaksDialog = GObject.registerClass(
             pinnedAppsSeparatorScale.connect('value-changed', (widget) => {
                 this._settings.set_int('ubuntu-dash-separator-index', widget.get_value());
             }); 
+            let pixbuf = GdkPixbuf.Pixbuf.new_from_file_at_size(Me.path + '/media/misc/info-circle.svg', 20, 20);
+
+            let infoImage = new Gtk.Image({ pixbuf: pixbuf });
+            let infoButton = new Gtk.Button({
+                image: infoImage,
+                halign: Gtk.Align.END,
+                valign: Gtk.Align.END
+            });
+            infoButton.connect('clicked', ()=> {
+                let dialog = new Gtk.MessageDialog({
+                    text: _('Adjust the position of the separator in the button panel'),
+                    use_markup: true,
+                    buttons: Gtk.ButtonsType.OK,
+                    message_type: Gtk.MessageType.OTHER,
+                    transient_for: this.get_toplevel(),
+                    modal: true
+                });
+                dialog.connect ('response', ()=> dialog.destroy());
+                dialog.show();
+            });
+
             pinnedAppsSeparatorRow.add(pinnedAppsSeparatorLabel);
             pinnedAppsSeparatorRow.add(pinnedAppsSeparatorScale);
+            pinnedAppsSeparatorRow.add(infoButton);
             pinnedAppsSeparatorFrame.add(pinnedAppsSeparatorRow);
             buttonsPage.add(pinnedAppsSeparatorFrame);
             
@@ -446,8 +467,7 @@ var TweaksDialog = GObject.registerClass(
             let pinnedAppsSeparatorLabel = new Gtk.Label({
                 label: _("Separator Position Index"),
                 use_markup: true,
-                xalign: 0,
-                hexpand: true
+                xalign: 0
             });
             let pinnedAppsSeparatorScale = new Gtk.HScale({
                 adjustment: new Gtk.Adjustment({
@@ -460,8 +480,31 @@ var TweaksDialog = GObject.registerClass(
             pinnedAppsSeparatorScale.connect('value-changed', (widget) => {
                 this._settings.set_int('mint-separator-index', widget.get_value());
             }); 
+
+
+            let pixbuf = GdkPixbuf.Pixbuf.new_from_file_at_size(Me.path + '/media/misc/info-circle.svg', 20, 20);
+            let infoImage = new Gtk.Image({ pixbuf: pixbuf });
+            let infoButton = new Gtk.Button({
+                image: infoImage,
+                halign: Gtk.Align.END,
+                valign: Gtk.Align.END
+            });
+            infoButton.connect('clicked', ()=> {
+                let dialog = new Gtk.MessageDialog({
+                    text: _('Adjust the position of the separator in the button panel'),
+                    use_markup: true,
+                    buttons: Gtk.ButtonsType.OK,
+                    message_type: Gtk.MessageType.OTHER,
+                    transient_for: this.get_toplevel(),
+                    modal: true
+                });
+                dialog.connect ('response', ()=> dialog.destroy());
+                dialog.show();
+            });
+
             pinnedAppsSeparatorRow.add(pinnedAppsSeparatorLabel);
             pinnedAppsSeparatorRow.add(pinnedAppsSeparatorScale);
+            pinnedAppsSeparatorRow.add(infoButton);
             pinnedAppsSeparatorFrame.add(pinnedAppsSeparatorRow);
             vbox.add(pinnedAppsSeparatorFrame);
             
@@ -509,7 +552,8 @@ var TweaksDialog = GObject.registerClass(
                 //and delete pinned apps
                 let addPinnedAppsButton = new PW.IconButton({
                     circular: false,
-                    icon_name: 'list-add-symbolic'
+                    icon_name: 'text-editor-symbolic',
+                    tooltip_text: _("Change")
                 });
                 addPinnedAppsButton.connect('clicked', ()=> {
                     let dialog = new Prefs.AddAppsToPinnedListWindow(this._settings, this, Constants.DIALOG_TYPE.Mint_Pinned_Apps);
@@ -534,15 +578,18 @@ var TweaksDialog = GObject.registerClass(
 
                 let editButton = new PW.IconButton({
                     circular: false,
-                    icon_name: 'emblem-system-symbolic'
+                    icon_name: 'emblem-system-symbolic',
+                    tooltip_text: _("Modify")
                 });
                 let upButton = new PW.IconButton({
                     circular: false,
-                    icon_name: 'go-up-symbolic'
+                    icon_name: 'go-up-symbolic',
+                    tooltip_text: _('Move Up')
                 });
                 let downButton = new PW.IconButton({
                     circular: false,
-                    icon_name: 'go-down-symbolic'
+                    icon_name: 'go-down-symbolic',
+                    tooltip_text: _('Move Down')
                 });
                 editButton.connect('clicked', ()=> {
                     let appArray = [frameRow._name,frameRow._icon,frameRow._cmd];
