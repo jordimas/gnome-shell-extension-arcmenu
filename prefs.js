@@ -2840,6 +2840,8 @@ var AppearanceGeneralPage = GObject.registerClass(
             subMenusSwitch.set_active(this.subMenus);
             vertSeparatorSwitch.set_active(this.verticalSeparator);
             largeIconsSwitch.set_active(this.largeIcons);
+            color = new Gdk.RGBA();
+            color.parse(this.separatorColor);
             colorChooser.set_rgba(color);   
    
             this.saveButton.set_sensitive(true);
