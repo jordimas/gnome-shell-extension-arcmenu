@@ -63,6 +63,7 @@ var AppRightClickMenu = class ArcMenu_AppRightClickMenu extends PopupMenu.PopupM
         this._app = app;
         this.layout = this._settings.get_enum('menu-layout');
         this._boxPointer.setSourceAlignment(.20);
+        this._boxPointer._border.queue_repaint();
         
         this.discreteGpuAvailable = false;
         Gio.DBus.system.watch_name(SWITCHEROO_BUS_NAME,
@@ -78,6 +79,7 @@ var AppRightClickMenu = class ArcMenu_AppRightClickMenu extends PopupMenu.PopupM
     centerBoxPointerPosition(){
         this._boxPointer.setSourceAlignment(.50);
         this._arrowAlignment = .5;
+        this._boxPointer._border.queue_repaint();
     }
 
     set isPinnedApp(isPinnedApp){
@@ -115,7 +117,6 @@ var AppRightClickMenu = class ArcMenu_AppRightClickMenu extends PopupMenu.PopupM
         if(addStyle){
             this.actor.style_class = 'arc-right-click-boxpointer';
             this.actor.add_style_class_name('arc-right-click');
-            this.actor.set_name('rightClickMenu');
         }
         else{
             this.actor.style_class = 'popup-menu-boxpointer';
@@ -382,7 +383,8 @@ var ArcMenuPopupBaseMenuItem = GObject.registerClass(
         if(params.reactive)
             this.actor.connect('notify::active',()=> this.setActive(this.actor.active));
         if(params.hover)   
-            this.actor.connect('notify::hover',this._onHover.bind(this));
+            this.actor.connect('notify::hover', this._onHover.bind(this));
+        this.actor.connect('destroy', this._onDestroy.bind(this));
     }
     setShouldShow(){
         //If a saved shortcut link is a desktop app, check if currently installed.
@@ -473,6 +475,12 @@ var ArcMenuPopupBaseMenuItem = GObject.registerClass(
             }
             return GLib.SOURCE_REMOVE;
         });
+    }
+    _onDestroy(){
+        if(this.rightClickMenu){
+            Main.uiGroup.remove_actor(this.rightClickMenu.actor);
+            this.rightClickMenu.destroy();
+        }    
     }
 });
 
@@ -850,13 +858,11 @@ var MintButton = class ArcMenu_MintButton extends SessionButton {
   	    if(event.get_button()==3){
             if(this.rightClickMenu == undefined){
                 this.rightClickMenu = new AppRightClickMenu(this.actor, this._app, this._button);
-                this.rightClickMenu.centerBoxPointerPosition();
+                if(this.layout == Constants.MENU_LAYOUT.UbuntuDash)
+                    this.rightClickMenu.centerBoxPointerPosition();
                 this._button.appMenuManager.addMenu(this.rightClickMenu);
                 this.rightClickMenu.actor.hide();
                 Main.uiGroup.add_actor(this.rightClickMenu.actor);
-                this.actor.connect('destroy', ()=>{
-                    this.rightClickMenu.destroy();
-                });
             }
             this.tooltip.hide();
             if(!this.rightClickMenu.isOpen)
@@ -1180,9 +1186,6 @@ var ShortcutMenuItem = GObject.registerClass(class ArcMenu_ShortcutMenuItem exte
             this._button.appMenuManager.addMenu(this.rightClickMenu);
             this.rightClickMenu.actor.hide();
             Main.uiGroup.add_actor(this.rightClickMenu.actor);
-            this.actor.connect('destroy', ()=>{
-                this.rightClickMenu.destroy();
-            });
         }
         if(this.rightClickMenu != undefined){
             if(this.tooltip!=undefined)
@@ -1433,9 +1436,6 @@ var FavoritesMenuItem = GObject.registerClass({
             this._button.appMenuManager.addMenu(this.rightClickMenu);
             this.rightClickMenu.actor.hide();
             Main.uiGroup.add_actor(this.rightClickMenu.actor);
-            this.actor.connect('destroy', ()=>{
-                this.rightClickMenu.destroy();
-            });
         }
         if(this.tooltip!=undefined)
             this.tooltip.hide();
@@ -1626,9 +1626,6 @@ var ApplicationMenuItem = GObject.registerClass(class ArcMenu_ApplicationMenuIte
             this._button.appMenuManager.addMenu(this.rightClickMenu);
             this.rightClickMenu.actor.hide();
             Main.uiGroup.add_actor(this.rightClickMenu.actor);
-            this.actor.connect('destroy', ()=>{
-                this.rightClickMenu.destroy();
-            });
         }
         if(this.tooltip!=undefined)
             this.tooltip.hide();
@@ -1688,9 +1685,6 @@ var SearchResultItem = GObject.registerClass(class ArcMenu_SearchResultItem exte
             this._button.appMenuManager.addMenu(this.rightClickMenu);
             this.rightClickMenu.actor.hide();
             Main.uiGroup.add_actor(this.rightClickMenu.actor);
-            this.actor.connect('destroy', ()=>{
-                this.rightClickMenu.destroy();
-            });
         }
         if(this.rightClickMenu != undefined){
             if(this.tooltip!=undefined)
