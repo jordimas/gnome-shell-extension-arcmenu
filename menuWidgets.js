@@ -850,8 +850,7 @@ var MintButton = class ArcMenu_MintButton extends SessionButton {
   	    if(event.get_button()==3){
             if(this.rightClickMenu == undefined){
                 this.rightClickMenu = new AppRightClickMenu(this.actor, this._app, this._button);
-                if(this.layout == Constants.MENU_LAYOUT.UbuntuDash)
-                    this.rightClickMenu.centerBoxPointerPosition();
+                this.rightClickMenu.centerBoxPointerPosition();
                 this._button.appMenuManager.addMenu(this.rightClickMenu);
                 this.rightClickMenu.actor.hide();
                 Main.uiGroup.add_actor(this.rightClickMenu.actor);
