@@ -4283,18 +4283,19 @@ var DefaultDirectoriesPage = GObject.registerClass(
 
 
         let buttonRow = new PW.FrameBoxRow();
-        let resetButton = new Gtk.Button({
+        this.resetButton = new Gtk.Button({
             label: _("Restore Defaults"),
             tooltip_text: _("Restore the default Directory Shortcuts")
         });
 
-        resetButton.set_sensitive(this.getSensitive());
+        this.resetButton.set_sensitive(this.getSensitive());
 
-        resetButton.connect('clicked', ()=> {
+        this.resetButton.connect('clicked', ()=> {
             this.savePinnedAppsButton.set_sensitive(true);
             softwareShortcutsFrame.remove_all_children();
             this._loadPinnedApps(this._settings.get_default_value('directory-shortcuts-list').deep_unpack(), softwareShortcutsFrame);
             softwareShortcutsFrame.show();
+            this.resetButton.set_sensitive(false);
         });
 
         //last row - save settings
@@ -4311,11 +4312,11 @@ var DefaultDirectoriesPage = GObject.registerClass(
             }
             this._settings.set_value('directory-shortcuts-list', new GLib.Variant('aas', array));
             this.savePinnedAppsButton.set_sensitive(false);
-            resetButton.set_sensitive(this.getSensitive());
+            this.resetButton.set_sensitive(this.getSensitive());
         }); 
         this.savePinnedAppsButton.set_halign(Gtk.Align.END);
         this.savePinnedAppsButton.set_sensitive(false);
-        buttonRow.add(resetButton);
+        buttonRow.add(this.resetButton);
         buttonRow.add(this.savePinnedAppsButton);
         this.add(buttonRow);
     }
@@ -4405,6 +4406,7 @@ var DefaultDirectoriesPage = GObject.registerClass(
                             applicationIcon.gicon = Gio.icon_new_for_string(frameRow._icon);
                             dialog.destroy();
                             softwareShortcutsFrame.show();
+                            this.resetButton.set_sensitive(true);
                             this.savePinnedAppsButton.set_sensitive(true);
                         }
                         else
@@ -4422,6 +4424,7 @@ var DefaultDirectoriesPage = GObject.registerClass(
                     softwareShortcutsFrame.insert(frameRow,index-1);
                 }
                 softwareShortcutsFrame.show();
+                this.resetButton.set_sensitive(true);
                 this.savePinnedAppsButton.set_sensitive(true);
             });
 
@@ -4434,6 +4437,7 @@ var DefaultDirectoriesPage = GObject.registerClass(
                     softwareShortcutsFrame.insert(frameRow,index+1);
                 }
                 softwareShortcutsFrame.show();
+                this.resetButton.set_sensitive(true);
                 this.savePinnedAppsButton.set_sensitive(true);
             });
 
@@ -4441,6 +4445,7 @@ var DefaultDirectoriesPage = GObject.registerClass(
                 //remove frameRow
                 softwareShortcutsFrame.remove(frameRow);
                 softwareShortcutsFrame.show();
+                this.resetButton.set_sensitive(true);
                 this.savePinnedAppsButton.set_sensitive(true);
             });
             //add everything to frame
@@ -4549,18 +4554,19 @@ var ApplicationShortcutsPage = GObject.registerClass(
         this.add(addCustomAppFrame);
 
         let buttonRow = new PW.FrameBoxRow();
-        let resetButton = new Gtk.Button({
+        this.resetButton = new Gtk.Button({
             label: _("Restore Defaults"),
             tooltip_text: _("Restore the default Application Shortcuts")
         });   
 
-        resetButton.set_sensitive(this.getSensitive());
+        this.resetButton.set_sensitive(this.getSensitive());
 
-        resetButton.connect('clicked', ()=> {
+        this.resetButton.connect('clicked', ()=> {
             this.savePinnedAppsButton.set_sensitive(true);
             softwareShortcutsFrame.remove_all_children();
             this._loadPinnedApps(this._settings.get_default_value('application-shortcuts-list').deep_unpack(), softwareShortcutsFrame);
             softwareShortcutsFrame.show();
+            this.resetButton.set_sensitive(false);
         });
 
         //last row - save settings
@@ -4577,11 +4583,11 @@ var ApplicationShortcutsPage = GObject.registerClass(
             }
             this._settings.set_value('application-shortcuts-list', new GLib.Variant('aas', array));
             this.savePinnedAppsButton.set_sensitive(false);
-            resetButton.set_sensitive(this.getSensitive());
+            this.resetButton.set_sensitive(this.getSensitive());
         }); 
         this.savePinnedAppsButton.set_halign(Gtk.Align.END);
         this.savePinnedAppsButton.set_sensitive(false);
-        buttonRow.add(resetButton);
+        buttonRow.add(this.resetButton);
         buttonRow.add(this.savePinnedAppsButton);
         this.add(buttonRow);
     }
@@ -4665,6 +4671,7 @@ var ApplicationShortcutsPage = GObject.registerClass(
                         applicationIcon.gicon = Gio.icon_new_for_string(frameRow._icon);
                         dialog.destroy();
                         softwareShortcutsFrame.show();
+                        this.resetButton.set_sensitive(true);
                         this.savePinnedAppsButton.set_sensitive(true);
                     }
                     else
@@ -4680,6 +4687,7 @@ var ApplicationShortcutsPage = GObject.registerClass(
                     softwareShortcutsFrame.insert(frameRow,index-1);
                 }
                 softwareShortcutsFrame.show();
+                this.resetButton.set_sensitive(true);
                 this.savePinnedAppsButton.set_sensitive(true);
             });
 
@@ -4692,6 +4700,7 @@ var ApplicationShortcutsPage = GObject.registerClass(
                     softwareShortcutsFrame.insert(frameRow,index+1);
                 }
                 softwareShortcutsFrame.show();
+                this.resetButton.set_sensitive(true);
                 this.savePinnedAppsButton.set_sensitive(true);
             });
 
@@ -4699,6 +4708,7 @@ var ApplicationShortcutsPage = GObject.registerClass(
                 //remove frameRow
                 softwareShortcutsFrame.remove(frameRow);
                 softwareShortcutsFrame.show();
+                this.resetButton.set_sensitive(true);
                 this.savePinnedAppsButton.set_sensitive(true);
             });
             //add everything to frame
