@@ -1876,7 +1876,6 @@ var SimpleMenuItem = GObject.registerClass(class ArcMenu_SimpleMenuItem extends 
         Main.uiGroup.add_actor(this.subMenu.actor);  
         this.section = new PopupMenu.PopupMenuSection();
         this.subMenu.addMenuItem(this.section);  
-        this.updateStyle();
         this.mainBox = new St.BoxLayout({
             vertical: false
         });    
@@ -1928,7 +1927,7 @@ var SimpleMenuItem = GObject.registerClass(class ArcMenu_SimpleMenuItem extends 
                 case Clutter.KEY_Right:
                     if(!this.subMenu.isOpen){
                         let navigateFocus = true;
-                        this.activate(event, navigateFocus);
+                        this.showMenu(event, navigateFocus);
                         this.subMenu.actor.navigate_focus(null, St.DirectionType.TAB_FORWARD, false);
                         return Clutter.EVENT_STOP;
                     }
@@ -1939,6 +1938,7 @@ var SimpleMenuItem = GObject.registerClass(class ArcMenu_SimpleMenuItem extends 
                     return Clutter.EVENT_PROPAGATE;
             }
         });
+        this.updateStyle();
     }
 
     setRecentlyInstalledIndicator(shouldShow){
@@ -1971,17 +1971,17 @@ var SimpleMenuItem = GObject.registerClass(class ArcMenu_SimpleMenuItem extends 
         let addStyle = this._settings.get_boolean('enable-custom-arc-menu');
        
         this.subMenu.actor.hide();
-            if(addStyle){
-                this.subMenu.actor.style_class = 'arc-menu-boxpointer';
-                this.subMenu.actor.add_style_class_name('arc-menu');
-            }
-            else
-            {       
-                this.subMenu.actor.style_class = 'popup-menu-boxpointer';
-                this.subMenu.actor.add_style_class_name('popup-menu');
-            }
+        if(addStyle){
+            this.subMenu.actor.style_class = 'arc-menu-boxpointer';
+            this.subMenu.actor.add_style_class_name('arc-menu');
+        }
+        else
+        {       
+            this.subMenu.actor.style_class = 'popup-menu-boxpointer';
+            this.subMenu.actor.add_style_class_name('popup-menu');
+        }
     }
-    activate(event, navigateFocus = true) {
+    showMenu(event, navigateFocus = true) {
         this._button.activeCategory = this._name;
         if(this._category == Constants.CategoryType.PINNED_APPS)
             this._button.displayFavorites();
@@ -1995,7 +1995,7 @@ var SimpleMenuItem = GObject.registerClass(class ArcMenu_SimpleMenuItem extends 
     _onHover(event) {
         if (this.actor.hover) {
             let navigateFocus = false;
-            this.activate(event, navigateFocus);
+            this.showMenu(event, navigateFocus);
         }
     }
     setFakeActive(active, params) {

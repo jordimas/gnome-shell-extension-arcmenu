@@ -176,7 +176,19 @@ var MENU_ICONS = [
     { name: _("Lins"), path: '/media/icons/lins-symbolic.svg'},
     { name: _("Diamond Square"), path: '/media/icons/diamond-square-symbolic.svg'},
     { name: _("Octo Maze"), path: '/media/icons/octo-maze-symbolic.svg'},
-    { name: _("Search"), path: '/media/icons/search-symbolic.svg'}
+    { name: _("Search"), path: '/media/icons/search-symbolic.svg'},
+    { name: _("3d"), path: '/media/icons/3d-symbolic.svg'},
+    { name: _("Alien"), path: '/media/icons/alien-symbolic.svg'},
+    { name: _("Cloud"), path: '/media/icons/cloud-symbolic.svg'},
+    { name: _("Dragon"), path: '/media/icons/dragon-symbolic.svg'},
+    { name: _("Fly"), path: '/media/icons/fly-symbolic.svg'},
+    { name: _("Pacman"), path: '/media/icons/pacman-symbolic.svg'},
+    { name: _("Peaks"), path: '/media/icons/peaks-symbolic.svg'},
+    { name: _("Pie"), path: '/media/icons/pie-symbolic.svg'},
+    { name: _("Pointer"), path: '/media/icons/pointer-symbolic.svg'},
+    { name: _("Toxic"), path: '/media/icons/toxic-symbolic.svg'},
+    { name: _("Tree"), path: '/media/icons/tree-symbolic.svg'},
+    { name: _("Zegon"), path: '/media/icons/zegon-symbolic.svg'}
 ]
 
 var DISTRO_ICONS = [

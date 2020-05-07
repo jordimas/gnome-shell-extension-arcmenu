@@ -64,6 +64,18 @@
         <value value="15" nick="Diamond_Square"/>
         <value value="16" nick="Octo_Maze"/>
         <value value="17" nick="Search"/>
+        <value value="18" nick="3d"/>
+        <value value="19" nick="Alien"/>
+        <value value="20" nick="Cloud"/>
+        <value value="21" nick="Dragon"/>
+        <value value="22" nick="Fly"/>
+        <value value="23" nick="Pacman"/>
+        <value value="24" nick="Peaks"/>
+        <value value="25" nick="Pie"/>
+        <value value="26" nick="Pointer"/>
+        <value value="27" nick="Toxic"/>
+        <value value="28" nick="Tree"/>
+        <value value="29" nick="Zegon"/>
     </enum>
     <enum id='org.gnome.shell.extensions.arc-menu.distro-icons'>
         <value value="0" nick="Debian"/>
