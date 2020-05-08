@@ -338,14 +338,8 @@ var TweaksDialog = GObject.registerClass(
             pinnedAppsSeparatorScale.connect('value-changed', (widget) => {
                 this._settings.set_int('ubuntu-dash-separator-index', widget.get_value());
             }); 
-            let pixbuf = GdkPixbuf.Pixbuf.new_from_file_at_size(Me.path + '/media/misc/info-circle.svg', 20, 20);
-
-            let infoImage = new Gtk.Image({ pixbuf: pixbuf });
-            let infoButton = new Gtk.Button({
-                image: infoImage,
-                halign: Gtk.Align.END,
-                valign: Gtk.Align.END
-            });
+            
+            let infoButton = new PW.InfoButton();
             infoButton.connect('clicked', ()=> {
                 let dialog = new Gtk.MessageDialog({
                     text: _('Adjust the position of the separator in the button panel'),
@@ -364,8 +358,6 @@ var TweaksDialog = GObject.registerClass(
             pinnedAppsSeparatorRow.add(infoButton);
             pinnedAppsSeparatorFrame.add(pinnedAppsSeparatorRow);
             buttonsPage.add(pinnedAppsSeparatorFrame);
-            
-            
         }
         _loadRavenTweaks(vbox){
             let notebook = new PW.Notebook();
@@ -481,13 +473,7 @@ var TweaksDialog = GObject.registerClass(
                 this._settings.set_int('mint-separator-index', widget.get_value());
             }); 
 
-            let pixbuf = GdkPixbuf.Pixbuf.new_from_file_at_size(Me.path + '/media/misc/info-circle.svg', 20, 20);
-            let infoImage = new Gtk.Image({ pixbuf: pixbuf });
-            let infoButton = new Gtk.Button({
-                image: infoImage,
-                halign: Gtk.Align.END,
-                valign: Gtk.Align.END
-            });
+            let infoButton = new PW.InfoButton();
             infoButton.connect('clicked', ()=> {
                 let dialog = new Gtk.MessageDialog({
                     text: _('Adjust the position of the separator in the button panel'),

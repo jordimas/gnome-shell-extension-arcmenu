@@ -1846,13 +1846,8 @@ var MenuButtonCustomizationWindow = GObject.registerClass(
                 menuButtonIconCombo.set_active(Constants.MENU_BUTTON_ICON.Distro_Icon);
             });
             distroIconsRow.add(distroIconCombo);
-            let pixbuf = GdkPixbuf.Pixbuf.new_from_file_at_size(Me.path + '/media/misc/info-circle.svg', 20, 20);
-            let infoImage = new Gtk.Image({ pixbuf: pixbuf });
-            let distroInfoButton = new Gtk.Button({
-                image: infoImage,
-                halign: Gtk.Align.END,
-                valign: Gtk.Align.END
-            });
+ 
+            let distroInfoButton = new PW.InfoButton();
             distroInfoButton.connect('clicked', ()=> {
                 let dialog = new Gtk.MessageDialog({
                     text: "<b>" + _("Legal disclaimer for brand icons and trademarks...") + "</b>",
@@ -1990,13 +1985,7 @@ var MenuButtonCustomizationWindow = GObject.registerClass(
                 this._settings.reset('reload-theme');
                 this._settings.set_boolean('reload-theme', true);
             });
-            pixbuf = GdkPixbuf.Pixbuf.new_from_file_at_size(Me.path + '/media/misc/info-circle.svg', 20, 20);
-            infoImage = new Gtk.Image({ pixbuf: pixbuf });
-            let menuButtonColorInfoButton = new Gtk.Button({
-                image: infoImage,
-                halign: Gtk.Align.END,
-                valign: Gtk.Align.END
-            });
+            let menuButtonColorInfoButton = new PW.InfoButton();
             menuButtonColorInfoButton.connect('clicked', ()=> {
                 let dialog = new Gtk.MessageDialog({
                     text: "<b>" + _("Change the color of the Arc Menu Icon") + '</b>\n\n' + _('Icon color options will only work with files ending with "-symbolic.svg"'),
@@ -2030,13 +2019,8 @@ var MenuButtonCustomizationWindow = GObject.registerClass(
                 this._settings.reset('reload-theme');
                 this._settings.set_boolean('reload-theme', true);
             });
-            pixbuf = GdkPixbuf.Pixbuf.new_from_file_at_size(Me.path + '/media/misc/info-circle.svg', 20, 20);
-            infoImage = new Gtk.Image({ pixbuf: pixbuf });
-            let menuButtonActiveColorInfoButton = new Gtk.Button({
-                image: infoImage,
-                halign: Gtk.Align.END,
-                valign: Gtk.Align.END
-            });
+
+            let menuButtonActiveColorInfoButton = new PW.InfoButton();
             menuButtonActiveColorInfoButton.connect('clicked', ()=> {
                 let dialog = new Gtk.MessageDialog({
                     text: "<b>" + _("Change the active/hover color of the Arc Menu Icon") + '</b>\n\n' + _('Icon color options will only work with files ending with "-symbolic.svg"'),
@@ -3040,13 +3024,8 @@ var AppearanceFineTunePage = GObject.registerClass(
             this.saveButton.set_sensitive(true);
             this.resetButton.set_sensitive(true);
         });
-        let pixbuf = GdkPixbuf.Pixbuf.new_from_file_at_size(Me.path + '/media/misc/info-circle.svg', 20, 20);
-        let infoImage = new Gtk.Image({ pixbuf: pixbuf });
-        let gapAdjustmentInfoButton = new Gtk.Button({
-            image: infoImage,
-            halign: Gtk.Align.END,
-            valign: Gtk.Align.END
-        });
+
+        let gapAdjustmentInfoButton = new PW.InfoButton();
         gapAdjustmentInfoButton.connect('clicked', ()=> {
             let dialog = new Gtk.MessageDialog({
                 text: "<b>" + _("Offset Arc Menu by 1px") + '</b>\n\n' + _('Useful if you notice a 1px gap or overlap between Arc Menu and the panel'),
@@ -4730,11 +4709,7 @@ var SessionButtonsPage = GObject.registerClass(
         this._settings = settings;
         //SUSPEND BUTTON
         let sessionButtonsFrame = new PW.FrameBox();
-        let sessionButtonsScrollWindow = new Gtk.ScrolledWindow();
-        sessionButtonsScrollWindow.set_policy(Gtk.PolicyType.AUTOMATIC, Gtk.PolicyType.AUTOMATIC);
-        sessionButtonsScrollWindow.set_max_content_height(300);
-        sessionButtonsScrollWindow.set_min_content_height(300);
-        sessionButtonsScrollWindow.add(sessionButtonsFrame);
+        this.add(sessionButtonsFrame);
         let suspendRow = new PW.FrameBoxRow();
         let suspendLabel = new Gtk.Label({
             label: _("Suspend"),
@@ -4807,7 +4782,6 @@ var SessionButtonsPage = GObject.registerClass(
         sessionButtonsFrame.add(logOffRow);
         sessionButtonsFrame.add(lockRow);
         sessionButtonsFrame.add(powerRow);
-        this.add(sessionButtonsScrollWindow);
     }
 });
 var ShortcutsPage = GObject.registerClass(
@@ -4897,13 +4871,8 @@ var MiscPage = GObject.registerClass(
                 xalign: 0,
                 hexpand: true
             });
-            let pixbuf = GdkPixbuf.Pixbuf.new_from_file_at_size(Me.path + '/media/misc/info-circle.svg', 20, 20);
-            let infoImage = new Gtk.Image({ pixbuf: pixbuf });
-            let settingsImportInfoButton = new Gtk.Button({
-                image: infoImage,
-                halign: Gtk.Align.END,
-                valign: Gtk.Align.END
-            });
+            
+            let settingsImportInfoButton = new PW.InfoButton();
             settingsImportInfoButton.connect('clicked', ()=> {
                 let dialog = new Gtk.MessageDialog({
                     text: "<b>" + _("Import/Export ALL Arc Menu Settings") + '</b>\n\n' + _('Importing settings from file may replace ALL saved settings.\nThis includes all saved pinned apps.'),
@@ -4997,7 +4966,7 @@ var MiscPage = GObject.registerClass(
             });
             let imgPath = Me.path + Constants.COLOR_PRESET.Path;
             let [imageWidth, imageHeight] = Constants.COLOR_PRESET.Size;
-            pixbuf = GdkPixbuf.Pixbuf.new_from_file_at_size(imgPath, imageWidth, imageHeight);
+            let pixbuf = GdkPixbuf.Pixbuf.new_from_file_at_size(imgPath, imageWidth, imageHeight);
             let colorPresetImage = new Gtk.Image({ pixbuf: pixbuf });
             let colorPresetBox = new Gtk.VBox({
                 margin_top: 5,
@@ -5006,13 +4975,7 @@ var MiscPage = GObject.registerClass(
             });
             colorPresetBox.add(colorPresetImage);
             
-            pixbuf = GdkPixbuf.Pixbuf.new_from_file_at_size(Me.path + '/media/misc/info-circle.svg', 20, 20);
-            infoImage = new Gtk.Image({ pixbuf: pixbuf });
-            let colorThemesImportInfoButton = new Gtk.Button({
-                image: infoImage,
-                halign: Gtk.Align.END,
-                valign: Gtk.Align.END
-            });
+            let colorThemesImportInfoButton = new PW.InfoButton();
             colorThemesImportInfoButton.connect('clicked', ()=> {
                 let dialog = new Gtk.MessageDialog({
                     text: "<b>" + _("Import/Export Color Theme Presets") + '</b>\n\n' + _('Imported theme presets are located on the Appearance Tab\nin Override Arc Menu Theme'),
