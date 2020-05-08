@@ -141,22 +141,9 @@ var MENU_BUTTON_ICON = {
     Arc_Menu: 0,
     System: 1,
     Distro_Icon: 2,
-    Custom: 3,
-    Arc_Menu_Alt: 4,
-    Arc_Menu_Original: 5,
-    Curved_A: 6,
-    Start_Box: 7,
-    Focus: 8,
-    Triple_Dash:9,
-    Whirl: 10,
-    Whirl_Circle: 11,
-    Sums: 12,
-    Arrow: 13,
-    Lins: 14,    
-    Diamond_Square: 15,
-    Octo_Maze: 16,
-    Search: 17
+    Custom: 3
 };
+
 var ARC_MENU_ICON = { 
     name: _("Arc Menu"), 
     path: '/media/icons/arc-menu-symbolic.svg'
