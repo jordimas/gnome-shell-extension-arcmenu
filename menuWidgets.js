@@ -82,6 +82,15 @@ var AppRightClickMenu = class ArcMenu_AppRightClickMenu extends PopupMenu.PopupM
         this._boxPointer._border.queue_repaint();
     }
 
+    rightBoxPointerPosition(){
+        this._arrowSide = St.Side.RIGHT;
+        this._boxPointer._arrowSide = St.Side.RIGHT;
+        this._boxPointer._userArrowSide = St.Side.RIGHT;
+        this._boxPointer.setSourceAlignment(.50);
+        this._arrowAlignment = .5;
+        this._boxPointer._border.queue_repaint();
+    }
+
     set isPinnedApp(isPinnedApp){
         this._isPinnedApp = isPinnedApp;
     }
@@ -860,6 +869,8 @@ var MintButton = class ArcMenu_MintButton extends SessionButton {
                 this.rightClickMenu = new AppRightClickMenu(this.actor, this._app, this._button);
                 if(this.layout == Constants.MENU_LAYOUT.UbuntuDash)
                     this.rightClickMenu.centerBoxPointerPosition();
+                if(this.layout == Constants.MENU_LAYOUT.Mint)
+                    this.rightClickMenu.rightBoxPointerPosition();
                 this._button.appMenuManager.addMenu(this.rightClickMenu);
                 this.rightClickMenu.actor.hide();
                 Main.uiGroup.add_actor(this.rightClickMenu.actor);
