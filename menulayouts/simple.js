@@ -116,7 +116,7 @@ var createMenu =  class extends BaseMenuLayout.BaseLayout{
     }
 
     _clearActorsFromBox(box) {
-        super._clearActorsFromBox(this.mainBox);
+        
     }
 
     displayCategoryAppList(appList, categoryMenuItem){

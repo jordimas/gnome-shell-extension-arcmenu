@@ -140,22 +140,10 @@ var MENU_APPEARANCE = {
 var MENU_BUTTON_ICON = { 
     Arc_Menu: 0,
     System: 1,
-    Custom: 2,
-    Arc_Menu_Alt: 3,
-    Arc_Menu_Original: 4,
-    Curved_A: 5,
-    Start_Box: 6,
-    Focus: 7,
-    Triple_Dash:8,
-    Whirl: 9,
-    Whirl_Circle: 10,
-    Sums: 11,
-    Arrow: 12,
-    Lins: 13,    
-    Diamond_Square: 14,
-    Octo_Maze: 15,
-    Search: 16
+    Distro_Icon: 2,
+    Custom: 3
 };
+
 var ARC_MENU_ICON = { 
     name: _("Arc Menu"), 
     path: '/media/icons/arc-menu-symbolic.svg'
@@ -175,7 +163,28 @@ var MENU_ICONS = [
     { name: _("Lins"), path: '/media/icons/lins-symbolic.svg'},
     { name: _("Diamond Square"), path: '/media/icons/diamond-square-symbolic.svg'},
     { name: _("Octo Maze"), path: '/media/icons/octo-maze-symbolic.svg'},
-    { name: _("Search"), path: '/media/icons/search-symbolic.svg'}
+    { name: _("Search"), path: '/media/icons/search-symbolic.svg'},
+    { name: _("3d"), path: '/media/icons/3d-symbolic.svg'},
+    { name: _("Alien"), path: '/media/icons/alien-symbolic.svg'},
+    { name: _("Cloud"), path: '/media/icons/cloud-symbolic.svg'},
+    { name: _("Dragon"), path: '/media/icons/dragon-symbolic.svg'},
+    { name: _("Fly"), path: '/media/icons/fly-symbolic.svg'},
+    { name: _("Pacman"), path: '/media/icons/pacman-symbolic.svg'},
+    { name: _("Peaks"), path: '/media/icons/peaks-symbolic.svg'},
+    { name: _("Pie"), path: '/media/icons/pie-symbolic.svg'},
+    { name: _("Pointer"), path: '/media/icons/pointer-symbolic.svg'},
+    { name: _("Toxic"), path: '/media/icons/toxic-symbolic.svg'},
+    { name: _("Tree"), path: '/media/icons/tree-symbolic.svg'},
+    { name: _("Zegon"), path: '/media/icons/zegon-symbolic.svg'}
+]
+
+var DISTRO_ICONS = [
+    { name: _("Debian"), path: '/media/icons/distros/debian-logo-symbolic.svg'},
+    { name: _("Fedora"), path: '/media/icons/distros/fedora-logo-symbolic.svg'},
+    { name: _("Manjaro"), path: '/media/icons/distros/manjaro-logo-symbolic.svg'},
+    { name: _("Pop!_OS"), path: '/media/icons/distros/pop-os-logo-symbolic.svg'},
+    { name: _("Ubuntu"), path: '/media/icons/distros/ubuntu-logo-symbolic.svg'},
+    { name: _("Arch Linux"), path: '/media/icons/distros/arch-logo-symbolic.svg'},
 ]
 
 var MENU_LAYOUT = {
@@ -281,6 +290,14 @@ var GITLAB_ICON = {
     Path: '/media/misc/gitlab-icon.svg',
     Size: [30, 30]
 };
+
+var DistroIconsDisclaimer = '<i>"All brand icons are trademarks of their respective owners. The use of these trademarks does not indicate endorsement of the trademark holder by Arc Menu project, nor vice versa. Please do not use brand logos for any purpose except to represent the company, product, or service to which they refer."</i>'+
+                                '\n\n•   <b>UBUNTU©</b> - Ubuntu name and Ubuntu logo are trademarks of Canonical© Ltd.'+
+                                '\n\n•   <b>FEDORA©</b> - Fedora and the Infinity design logo are trademarks of Red Hat, Inc.'+
+                                '\n\n•   <b>DEBIAN©</b> - is a registered trademark owned by Software in the Public Interest, Inc. Debian trademark is a registered United States trademark of Software in the Public Interest, Inc., managed by the Debian project.'+
+                                '\n\n•   <b>MANJARO©</b> - logo and name are trademarks of Manjaro GmbH &amp; Co. KG'+
+                                '\n\n•   <b>POP_OS!©</b> - logo and name are trademarks of system 76© Inc.'+
+                                '\n\n•   <b>ARCH LINUX©</b> - The stylized Arch Linux logo is a recognized trademark of Arch Linux, copyright 2002-2017 Judd Vinet and Aaron Griffin.';
 
 var CREDITS = '\n<b>Credits:</b>'+
 		'\n\nCurrent Active Developers'+

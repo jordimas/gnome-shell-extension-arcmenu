@@ -85,6 +85,20 @@ var IconButton = GObject.registerClass(class ArcMenu_IconButton extends Gtk.Butt
     }
 });
 
+var InfoButton = GObject.registerClass(class ArcMenu_InfoButton extends Gtk.Button{
+    _init(params) {
+        super._init();
+        this.halign = Gtk.Align.END;
+        this.valign = Gtk.Align.END;
+        let infoImage = new Gtk.Image({ pixbuf: GdkPixbuf.Pixbuf.new_from_file_at_size(Me.path + '/media/misc/info-circle.svg', 20, 20) });
+        this.image = infoImage;
+        if(params && params.tooltip_text){
+            this.set_tooltip_text(params.tooltip_text);
+        }
+    }
+
+});
+
 var DialogWindow = GObject.registerClass(class ArcMenu_DialogWindow extends Gtk.Dialog {
     _init(title, parent) {
         super._init({
@@ -234,12 +248,8 @@ var LayoutTile = GObject.registerClass(class ArcMenu_LayoutTile extends Gtk.Box{
         });
         this._hbox.add(this.layoutButton);
 
-        pixbuf = GdkPixbuf.Pixbuf.new_from_file_at_size(Me.path + '/media/misc/info-circle.svg', 20, 20);
-        let infoImage = new Gtk.Image({ pixbuf: pixbuf });
-        this.infoButton = new Gtk.Button({
-            image: infoImage,
-            halign: Gtk.Align.END,
-            valign: Gtk.Align.END,
+       
+        this.infoButton = new InfoButton({
             tooltip_text: _(this.name) + " " + _("Information")
         });
         this.add(this._hbox);

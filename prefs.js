@@ -1762,7 +1762,8 @@ var MenuButtonCustomizationWindow = GObject.registerClass(
             store.set_column_types([GdkPixbuf.Pixbuf, GObject.TYPE_STRING]);
             let menuButtonIconCombo = new Gtk.ComboBox({
                 model: store,
-                width_request: 225
+                width_request: 225,
+                wrap_width: 2
             });
             
             this.createIconList(store);
@@ -1778,23 +1779,91 @@ var MenuButtonCustomizationWindow = GObject.registerClass(
             menuButtonIconCombo.connect('changed', (widget) => {
                 resetButton.set_sensitive(true); 
                 this._settings.set_enum('menu-button-icon', widget.get_active());
-                if(widget.get_active()==Constants.MENU_BUTTON_ICON.Custom) {
-                    if(menuButtonIconFrame.count == 1){
-                        menuButtonIconFrame.add(fileChooserRow);
-                        menuButtonIconFrame.show();
-                    }
+                if(widget.get_active() == Constants.MENU_BUTTON_ICON.Custom) {
+                    if(menuButtonIconFrame.count == 2)
+                        menuButtonIconFrame.remove(menuButtonIconFrame.get_index(1));
 
+                    menuButtonIconFrame.add(fileChooserRow);
+                    menuButtonIconFrame.show();
+    
                     let iconFilepath = this._settings.get_string('custom-menu-button-icon');
                     if (iconFilepath) {
                         fileChooserButton.set_filename(iconFilepath);
                     }   
                 }
+                else if(widget.get_active() == Constants.MENU_BUTTON_ICON.Distro_Icon) {
+                    if(menuButtonIconFrame.count == 2)
+                        menuButtonIconFrame.remove(menuButtonIconFrame.get_index(1));
+                    
+                    menuButtonIconFrame.add(distroIconsRow);
+                    menuButtonIconFrame.show();
+
+                    fileChooserButton.set_filename("None");
+                }
                 else{
                     if(menuButtonIconFrame.count == 2)
-                    menuButtonIconFrame.remove(fileChooserRow);
+                        menuButtonIconFrame.remove(menuButtonIconFrame.get_index(1));
                     fileChooserButton.set_filename("None");
                 }
             });
+            let distroIconsRow = new PW.FrameBoxRow();
+            let distroIconsLabel = new Gtk.Label({
+                label: _('Distro Icons'),
+                use_markup: true,
+                xalign: 0,
+                hexpand: true
+            });
+            distroIconsRow.add(distroIconsLabel);
+
+            let distroStore = new Gtk.ListStore();
+            distroStore.set_column_types([GdkPixbuf.Pixbuf, GObject.TYPE_STRING]);
+            let distroIconCombo = new Gtk.ComboBox({
+                model: distroStore,
+                width_request: 225
+            });
+            
+            Constants.DISTRO_ICONS.forEach((icon)=>{
+                let pixbuf = getIconPixbuf(Me.path + icon.path);
+                distroStore.set(distroStore.append(),[0,1], [pixbuf, _(icon.name)]);
+            });
+
+            let distroRenderer = new Gtk.CellRendererPixbuf({xpad:10});
+            distroIconCombo.pack_start(distroRenderer, false);
+            distroIconCombo.add_attribute(distroRenderer, "pixbuf", 0);
+            distroRenderer = new Gtk.CellRendererText();
+            distroIconCombo.pack_start(distroRenderer, true);
+            distroIconCombo.add_attribute(distroRenderer, "text", 1);
+
+            distroIconCombo.set_active(this._settings.get_enum('distro-icon'));
+            distroIconCombo.connect('changed', (widget) => {
+                resetButton.set_sensitive(true); 
+                this._settings.set_enum('distro-icon', widget.get_active());
+
+                store.clear();
+                this.createIconList(store);
+                menuButtonIconCombo.model = store;
+                menuButtonIconCombo.show();
+                menuButtonIconCombo.set_active(Constants.MENU_BUTTON_ICON.Distro_Icon);
+            });
+            distroIconsRow.add(distroIconCombo);
+ 
+            let distroInfoButton = new PW.InfoButton();
+            distroInfoButton.connect('clicked', ()=> {
+                let dialog = new Gtk.MessageDialog({
+                    text: "<b>" + _("Legal disclaimer for brand icons and trademarks...") + "</b>",
+                    use_markup: true,
+                    secondary_text: Constants.DistroIconsDisclaimer,
+                    secondary_use_markup: true,
+                    buttons: Gtk.ButtonsType.OK,
+                    message_type: Gtk.MessageType.OTHER,
+                    transient_for: this,
+                    modal: true
+                });
+                dialog.connect ('response', ()=> dialog.destroy());
+                dialog.show();
+            });
+            distroIconsRow.add(distroInfoButton);
+
             let fileChooserRow = new PW.FrameBoxRow();
             let fileChooserLabel = new Gtk.Label({
                 label: _('Browse for a custom icon'),
@@ -1826,6 +1895,9 @@ var MenuButtonCustomizationWindow = GObject.registerClass(
             menuButtonIconFrame.add(menuButtonIconRow);
             if(menuButtonIconCombo.get_active()==Constants.MENU_BUTTON_ICON.Custom){
                 menuButtonIconFrame.add(fileChooserRow);
+            }
+            if(menuButtonIconCombo.get_active() == Constants.MENU_BUTTON_ICON.Distro_Icon){
+                menuButtonIconFrame.add(distroIconsRow);
             }
             vbox.add(menuButtonIconFrame);
 
@@ -1913,13 +1985,7 @@ var MenuButtonCustomizationWindow = GObject.registerClass(
                 this._settings.reset('reload-theme');
                 this._settings.set_boolean('reload-theme', true);
             });
-            let pixbuf = GdkPixbuf.Pixbuf.new_from_file_at_size(Me.path + '/media/misc/info-circle.svg', 20, 20);
-            let infoImage = new Gtk.Image({ pixbuf: pixbuf });
-            let menuButtonColorInfoButton = new Gtk.Button({
-                image: infoImage,
-                halign: Gtk.Align.END,
-                valign: Gtk.Align.END
-            });
+            let menuButtonColorInfoButton = new PW.InfoButton();
             menuButtonColorInfoButton.connect('clicked', ()=> {
                 let dialog = new Gtk.MessageDialog({
                     text: "<b>" + _("Change the color of the Arc Menu Icon") + '</b>\n\n' + _('Icon color options will only work with files ending with "-symbolic.svg"'),
@@ -1953,13 +2019,8 @@ var MenuButtonCustomizationWindow = GObject.registerClass(
                 this._settings.reset('reload-theme');
                 this._settings.set_boolean('reload-theme', true);
             });
-            pixbuf = GdkPixbuf.Pixbuf.new_from_file_at_size(Me.path + '/media/misc/info-circle.svg', 20, 20);
-            infoImage = new Gtk.Image({ pixbuf: pixbuf });
-            let menuButtonActiveColorInfoButton = new Gtk.Button({
-                image: infoImage,
-                halign: Gtk.Align.END,
-                valign: Gtk.Align.END
-            });
+
+            let menuButtonActiveColorInfoButton = new PW.InfoButton();
             menuButtonActiveColorInfoButton.connect('clicked', ()=> {
                 let dialog = new Gtk.MessageDialog({
                     text: "<b>" + _("Change the active/hover color of the Arc Menu Icon") + '</b>\n\n' + _('Icon color options will only work with files ending with "-symbolic.svg"'),
@@ -2007,6 +2068,7 @@ var MenuButtonCustomizationWindow = GObject.registerClass(
             resetButton.set_halign(Gtk.Align.START);
             vbox.add(resetButton);
         }
+
         checkIfResetButtonSensitive(){
            if(  this._settings.get_string('menu-button-active-color') != 'rgb(214,214,214)' ||
                 this._settings.get_string('menu-button-color') != 'rgb(240,240,240)' ||
@@ -2020,6 +2082,7 @@ var MenuButtonCustomizationWindow = GObject.registerClass(
             else
                 return false;
         }
+
         createIconList(store){
             let pixbuf;
 
@@ -2032,6 +2095,9 @@ var MenuButtonCustomizationWindow = GObject.registerClass(
             else
                 pixbuf = null;
             store.set(store.append(),[0,1], [pixbuf, _("System Icon")]);
+
+            pixbuf = getIconPixbuf(Me.path + Constants.DISTRO_ICONS[this._settings.get_enum('distro-icon')].path);
+            store.set(store.append(),[0,1], [pixbuf, _("Distro Icons")]);
 
             pixbuf = getIconPixbuf(this._settings.get_string('custom-menu-button-icon'));
             store.set(store.append(),[0,1], [pixbuf, _("Custom Icon")]);
@@ -2758,6 +2824,8 @@ var AppearanceGeneralPage = GObject.registerClass(
             subMenusSwitch.set_active(this.subMenus);
             vertSeparatorSwitch.set_active(this.verticalSeparator);
             largeIconsSwitch.set_active(this.largeIcons);
+            color = new Gdk.RGBA();
+            color.parse(this.separatorColor);
             colorChooser.set_rgba(color);   
    
             this.saveButton.set_sensitive(true);
@@ -2956,13 +3024,8 @@ var AppearanceFineTunePage = GObject.registerClass(
             this.saveButton.set_sensitive(true);
             this.resetButton.set_sensitive(true);
         });
-        let pixbuf = GdkPixbuf.Pixbuf.new_from_file_at_size(Me.path + '/media/misc/info-circle.svg', 20, 20);
-        let infoImage = new Gtk.Image({ pixbuf: pixbuf });
-        let gapAdjustmentInfoButton = new Gtk.Button({
-            image: infoImage,
-            halign: Gtk.Align.END,
-            valign: Gtk.Align.END
-        });
+
+        let gapAdjustmentInfoButton = new PW.InfoButton();
         gapAdjustmentInfoButton.connect('clicked', ()=> {
             let dialog = new Gtk.MessageDialog({
                 text: "<b>" + _("Offset Arc Menu by 1px") + '</b>\n\n' + _('Useful if you notice a 1px gap or overlap between Arc Menu and the panel'),
@@ -4199,18 +4262,19 @@ var DefaultDirectoriesPage = GObject.registerClass(
 
 
         let buttonRow = new PW.FrameBoxRow();
-        let resetButton = new Gtk.Button({
+        this.resetButton = new Gtk.Button({
             label: _("Restore Defaults"),
             tooltip_text: _("Restore the default Directory Shortcuts")
         });
 
-        resetButton.set_sensitive(this.getSensitive());
+        this.resetButton.set_sensitive(this.getSensitive());
 
-        resetButton.connect('clicked', ()=> {
+        this.resetButton.connect('clicked', ()=> {
             this.savePinnedAppsButton.set_sensitive(true);
             softwareShortcutsFrame.remove_all_children();
             this._loadPinnedApps(this._settings.get_default_value('directory-shortcuts-list').deep_unpack(), softwareShortcutsFrame);
             softwareShortcutsFrame.show();
+            this.resetButton.set_sensitive(false);
         });
 
         //last row - save settings
@@ -4227,11 +4291,11 @@ var DefaultDirectoriesPage = GObject.registerClass(
             }
             this._settings.set_value('directory-shortcuts-list', new GLib.Variant('aas', array));
             this.savePinnedAppsButton.set_sensitive(false);
-            resetButton.set_sensitive(this.getSensitive());
+            this.resetButton.set_sensitive(this.getSensitive());
         }); 
         this.savePinnedAppsButton.set_halign(Gtk.Align.END);
         this.savePinnedAppsButton.set_sensitive(false);
-        buttonRow.add(resetButton);
+        buttonRow.add(this.resetButton);
         buttonRow.add(this.savePinnedAppsButton);
         this.add(buttonRow);
     }
@@ -4321,6 +4385,7 @@ var DefaultDirectoriesPage = GObject.registerClass(
                             applicationIcon.gicon = Gio.icon_new_for_string(frameRow._icon);
                             dialog.destroy();
                             softwareShortcutsFrame.show();
+                            this.resetButton.set_sensitive(true);
                             this.savePinnedAppsButton.set_sensitive(true);
                         }
                         else
@@ -4338,6 +4403,7 @@ var DefaultDirectoriesPage = GObject.registerClass(
                     softwareShortcutsFrame.insert(frameRow,index-1);
                 }
                 softwareShortcutsFrame.show();
+                this.resetButton.set_sensitive(true);
                 this.savePinnedAppsButton.set_sensitive(true);
             });
 
@@ -4350,6 +4416,7 @@ var DefaultDirectoriesPage = GObject.registerClass(
                     softwareShortcutsFrame.insert(frameRow,index+1);
                 }
                 softwareShortcutsFrame.show();
+                this.resetButton.set_sensitive(true);
                 this.savePinnedAppsButton.set_sensitive(true);
             });
 
@@ -4357,6 +4424,7 @@ var DefaultDirectoriesPage = GObject.registerClass(
                 //remove frameRow
                 softwareShortcutsFrame.remove(frameRow);
                 softwareShortcutsFrame.show();
+                this.resetButton.set_sensitive(true);
                 this.savePinnedAppsButton.set_sensitive(true);
             });
             //add everything to frame
@@ -4465,18 +4533,19 @@ var ApplicationShortcutsPage = GObject.registerClass(
         this.add(addCustomAppFrame);
 
         let buttonRow = new PW.FrameBoxRow();
-        let resetButton = new Gtk.Button({
+        this.resetButton = new Gtk.Button({
             label: _("Restore Defaults"),
             tooltip_text: _("Restore the default Application Shortcuts")
         });   
 
-        resetButton.set_sensitive(this.getSensitive());
+        this.resetButton.set_sensitive(this.getSensitive());
 
-        resetButton.connect('clicked', ()=> {
+        this.resetButton.connect('clicked', ()=> {
             this.savePinnedAppsButton.set_sensitive(true);
             softwareShortcutsFrame.remove_all_children();
             this._loadPinnedApps(this._settings.get_default_value('application-shortcuts-list').deep_unpack(), softwareShortcutsFrame);
             softwareShortcutsFrame.show();
+            this.resetButton.set_sensitive(false);
         });
 
         //last row - save settings
@@ -4493,11 +4562,11 @@ var ApplicationShortcutsPage = GObject.registerClass(
             }
             this._settings.set_value('application-shortcuts-list', new GLib.Variant('aas', array));
             this.savePinnedAppsButton.set_sensitive(false);
-            resetButton.set_sensitive(this.getSensitive());
+            this.resetButton.set_sensitive(this.getSensitive());
         }); 
         this.savePinnedAppsButton.set_halign(Gtk.Align.END);
         this.savePinnedAppsButton.set_sensitive(false);
-        buttonRow.add(resetButton);
+        buttonRow.add(this.resetButton);
         buttonRow.add(this.savePinnedAppsButton);
         this.add(buttonRow);
     }
@@ -4581,6 +4650,7 @@ var ApplicationShortcutsPage = GObject.registerClass(
                         applicationIcon.gicon = Gio.icon_new_for_string(frameRow._icon);
                         dialog.destroy();
                         softwareShortcutsFrame.show();
+                        this.resetButton.set_sensitive(true);
                         this.savePinnedAppsButton.set_sensitive(true);
                     }
                     else
@@ -4596,6 +4666,7 @@ var ApplicationShortcutsPage = GObject.registerClass(
                     softwareShortcutsFrame.insert(frameRow,index-1);
                 }
                 softwareShortcutsFrame.show();
+                this.resetButton.set_sensitive(true);
                 this.savePinnedAppsButton.set_sensitive(true);
             });
 
@@ -4608,6 +4679,7 @@ var ApplicationShortcutsPage = GObject.registerClass(
                     softwareShortcutsFrame.insert(frameRow,index+1);
                 }
                 softwareShortcutsFrame.show();
+                this.resetButton.set_sensitive(true);
                 this.savePinnedAppsButton.set_sensitive(true);
             });
 
@@ -4615,6 +4687,7 @@ var ApplicationShortcutsPage = GObject.registerClass(
                 //remove frameRow
                 softwareShortcutsFrame.remove(frameRow);
                 softwareShortcutsFrame.show();
+                this.resetButton.set_sensitive(true);
                 this.savePinnedAppsButton.set_sensitive(true);
             });
             //add everything to frame
@@ -4636,11 +4709,7 @@ var SessionButtonsPage = GObject.registerClass(
         this._settings = settings;
         //SUSPEND BUTTON
         let sessionButtonsFrame = new PW.FrameBox();
-        let sessionButtonsScrollWindow = new Gtk.ScrolledWindow();
-        sessionButtonsScrollWindow.set_policy(Gtk.PolicyType.AUTOMATIC, Gtk.PolicyType.AUTOMATIC);
-        sessionButtonsScrollWindow.set_max_content_height(300);
-        sessionButtonsScrollWindow.set_min_content_height(300);
-        sessionButtonsScrollWindow.add(sessionButtonsFrame);
+        this.add(sessionButtonsFrame);
         let suspendRow = new PW.FrameBoxRow();
         let suspendLabel = new Gtk.Label({
             label: _("Suspend"),
@@ -4713,7 +4782,6 @@ var SessionButtonsPage = GObject.registerClass(
         sessionButtonsFrame.add(logOffRow);
         sessionButtonsFrame.add(lockRow);
         sessionButtonsFrame.add(powerRow);
-        this.add(sessionButtonsScrollWindow);
     }
 });
 var ShortcutsPage = GObject.registerClass(
@@ -4723,7 +4791,6 @@ var ShortcutsPage = GObject.registerClass(
         this._settings = settings;
         let notebook = new PW.Notebook();
         notebook.show_border = false;
-        this.margin_bottom = 0;
 
         let defautlDirectoriesPage = new DefaultDirectoriesPage(this._settings);
         defautlDirectoriesPage.margin = 0;
@@ -4804,13 +4871,8 @@ var MiscPage = GObject.registerClass(
                 xalign: 0,
                 hexpand: true
             });
-            let pixbuf = GdkPixbuf.Pixbuf.new_from_file_at_size(Me.path + '/media/misc/info-circle.svg', 20, 20);
-            let infoImage = new Gtk.Image({ pixbuf: pixbuf });
-            let settingsImportInfoButton = new Gtk.Button({
-                image: infoImage,
-                halign: Gtk.Align.END,
-                valign: Gtk.Align.END
-            });
+            
+            let settingsImportInfoButton = new PW.InfoButton();
             settingsImportInfoButton.connect('clicked', ()=> {
                 let dialog = new Gtk.MessageDialog({
                     text: "<b>" + _("Import/Export ALL Arc Menu Settings") + '</b>\n\n' + _('Importing settings from file may replace ALL saved settings.\nThis includes all saved pinned apps.'),
@@ -4904,7 +4966,7 @@ var MiscPage = GObject.registerClass(
             });
             let imgPath = Me.path + Constants.COLOR_PRESET.Path;
             let [imageWidth, imageHeight] = Constants.COLOR_PRESET.Size;
-            pixbuf = GdkPixbuf.Pixbuf.new_from_file_at_size(imgPath, imageWidth, imageHeight);
+            let pixbuf = GdkPixbuf.Pixbuf.new_from_file_at_size(imgPath, imageWidth, imageHeight);
             let colorPresetImage = new Gtk.Image({ pixbuf: pixbuf });
             let colorPresetBox = new Gtk.VBox({
                 margin_top: 5,
@@ -4913,13 +4975,7 @@ var MiscPage = GObject.registerClass(
             });
             colorPresetBox.add(colorPresetImage);
             
-            pixbuf = GdkPixbuf.Pixbuf.new_from_file_at_size(Me.path + '/media/misc/info-circle.svg', 20, 20);
-            infoImage = new Gtk.Image({ pixbuf: pixbuf });
-            let colorThemesImportInfoButton = new Gtk.Button({
-                image: infoImage,
-                halign: Gtk.Align.END,
-                valign: Gtk.Align.END
-            });
+            let colorThemesImportInfoButton = new PW.InfoButton();
             colorThemesImportInfoButton.connect('clicked', ()=> {
                 let dialog = new Gtk.MessageDialog({
                     text: "<b>" + _("Import/Export Color Theme Presets") + '</b>\n\n' + _('Imported theme presets are located on the Appearance Tab\nin Override Arc Menu Theme'),

@@ -87,6 +87,7 @@ var MenuSettingsController = class {
             this._settings.connect('changed::menu-button-appearance', this._setButtonAppearance.bind(this)),
             this._settings.connect('changed::custom-menu-button-text', this._setButtonText.bind(this)),
             this._settings.connect('changed::menu-button-icon', this._setButtonIcon.bind(this)),
+            this._settings.connect('changed::distro-icon', this._setButtonIcon.bind(this)),
             this._settings.connect('changed::custom-menu-button-icon', this._setButtonIcon.bind(this)),
             this._settings.connect('changed::custom-menu-button-icon-size', this._setButtonIconSize.bind(this)),
             this._settings.connect('changed::button-icon-padding', this._setButtonIconPadding.bind(this)),
@@ -415,8 +416,15 @@ var MenuSettingsController = class {
                 stIcon.set_gicon(Gio.icon_new_for_string(path));
             } 
         }
+        else if(iconEnum == Constants.MENU_BUTTON_ICON.Distro_Icon){
+            iconEnum = this._settings.get_enum('distro-icon');
+            path = Me.path + Constants.DISTRO_ICONS[iconEnum].path;
+            if (GLib.file_test(path, GLib.FileTest.EXISTS)) {
+                stIcon.set_gicon(Gio.icon_new_for_string(path));
+            } 
+        }
         else{
-            path = Me.path + Constants.MENU_ICONS[iconEnum - 3].path;
+            path = Me.path + Constants.MENU_ICONS[iconEnum - 4].path;
             if (GLib.file_test(path, GLib.FileTest.EXISTS)) {
                 stIcon.set_gicon(Gio.icon_new_for_string(path));
             } 

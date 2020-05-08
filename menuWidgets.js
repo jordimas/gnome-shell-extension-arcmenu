@@ -63,6 +63,7 @@ var AppRightClickMenu = class ArcMenu_AppRightClickMenu extends PopupMenu.PopupM
         this._app = app;
         this.layout = this._settings.get_enum('menu-layout');
         this._boxPointer.setSourceAlignment(.20);
+        this._boxPointer._border.queue_repaint();
         
         this.discreteGpuAvailable = false;
         Gio.DBus.system.watch_name(SWITCHEROO_BUS_NAME,
@@ -78,6 +79,16 @@ var AppRightClickMenu = class ArcMenu_AppRightClickMenu extends PopupMenu.PopupM
     centerBoxPointerPosition(){
         this._boxPointer.setSourceAlignment(.50);
         this._arrowAlignment = .5;
+        this._boxPointer._border.queue_repaint();
+    }
+
+    rightBoxPointerPosition(){
+        this._arrowSide = St.Side.RIGHT;
+        this._boxPointer._arrowSide = St.Side.RIGHT;
+        this._boxPointer._userArrowSide = St.Side.RIGHT;
+        this._boxPointer.setSourceAlignment(.50);
+        this._arrowAlignment = .5;
+        this._boxPointer._border.queue_repaint();
     }
 
     set isPinnedApp(isPinnedApp){
@@ -115,7 +126,6 @@ var AppRightClickMenu = class ArcMenu_AppRightClickMenu extends PopupMenu.PopupM
         if(addStyle){
             this.actor.style_class = 'arc-right-click-boxpointer';
             this.actor.add_style_class_name('arc-right-click');
-            this.actor.set_name('rightClickMenu');
         }
         else{
             this.actor.style_class = 'popup-menu-boxpointer';
@@ -382,7 +392,8 @@ var ArcMenuPopupBaseMenuItem = GObject.registerClass(
         if(params.reactive)
             this.actor.connect('notify::active',()=> this.setActive(this.actor.active));
         if(params.hover)   
-            this.actor.connect('notify::hover',this._onHover.bind(this));
+            this.actor.connect('notify::hover', this._onHover.bind(this));
+        this.actor.connect('destroy', this._onDestroy.bind(this));
     }
     setShouldShow(){
         //If a saved shortcut link is a desktop app, check if currently installed.
@@ -473,6 +484,12 @@ var ArcMenuPopupBaseMenuItem = GObject.registerClass(
             }
             return GLib.SOURCE_REMOVE;
         });
+    }
+    _onDestroy(){
+        if(this.rightClickMenu){
+            Main.uiGroup.remove_actor(this.rightClickMenu.actor);
+            this.rightClickMenu.destroy();
+        }    
     }
 });
 
@@ -724,8 +741,7 @@ var SessionButton = class ArcMenu_SessionButton{
             fallback_icon_name : icon_name,
             icon_size: iconSize
         });
-
-        this.actor.child = this._icon;
+        this.actor.add_actor(this._icon);
         this.actor.connect('clicked', this._onClick.bind(this));
     }
 
@@ -853,12 +869,11 @@ var MintButton = class ArcMenu_MintButton extends SessionButton {
                 this.rightClickMenu = new AppRightClickMenu(this.actor, this._app, this._button);
                 if(this.layout == Constants.MENU_LAYOUT.UbuntuDash)
                     this.rightClickMenu.centerBoxPointerPosition();
+                if(this.layout == Constants.MENU_LAYOUT.Mint)
+                    this.rightClickMenu.rightBoxPointerPosition();
                 this._button.appMenuManager.addMenu(this.rightClickMenu);
                 this.rightClickMenu.actor.hide();
                 Main.uiGroup.add_actor(this.rightClickMenu.actor);
-                this.actor.connect('destroy', ()=>{
-                    this.rightClickMenu.destroy();
-                });
             }
             this.tooltip.hide();
             if(!this.rightClickMenu.isOpen)
@@ -1182,9 +1197,6 @@ var ShortcutMenuItem = GObject.registerClass(class ArcMenu_ShortcutMenuItem exte
             this._button.appMenuManager.addMenu(this.rightClickMenu);
             this.rightClickMenu.actor.hide();
             Main.uiGroup.add_actor(this.rightClickMenu.actor);
-            this.actor.connect('destroy', ()=>{
-                this.rightClickMenu.destroy();
-            });
         }
         if(this.rightClickMenu != undefined){
             if(this.tooltip!=undefined)
@@ -1435,9 +1447,6 @@ var FavoritesMenuItem = GObject.registerClass({
             this._button.appMenuManager.addMenu(this.rightClickMenu);
             this.rightClickMenu.actor.hide();
             Main.uiGroup.add_actor(this.rightClickMenu.actor);
-            this.actor.connect('destroy', ()=>{
-                this.rightClickMenu.destroy();
-            });
         }
         if(this.tooltip!=undefined)
             this.tooltip.hide();
@@ -1628,9 +1637,6 @@ var ApplicationMenuItem = GObject.registerClass(class ArcMenu_ApplicationMenuIte
             this._button.appMenuManager.addMenu(this.rightClickMenu);
             this.rightClickMenu.actor.hide();
             Main.uiGroup.add_actor(this.rightClickMenu.actor);
-            this.actor.connect('destroy', ()=>{
-                this.rightClickMenu.destroy();
-            });
         }
         if(this.tooltip!=undefined)
             this.tooltip.hide();
@@ -1690,9 +1696,6 @@ var SearchResultItem = GObject.registerClass(class ArcMenu_SearchResultItem exte
             this._button.appMenuManager.addMenu(this.rightClickMenu);
             this.rightClickMenu.actor.hide();
             Main.uiGroup.add_actor(this.rightClickMenu.actor);
-            this.actor.connect('destroy', ()=>{
-                this.rightClickMenu.destroy();
-            });
         }
         if(this.rightClickMenu != undefined){
             if(this.tooltip!=undefined)
@@ -1884,7 +1887,6 @@ var SimpleMenuItem = GObject.registerClass(class ArcMenu_SimpleMenuItem extends 
         Main.uiGroup.add_actor(this.subMenu.actor);  
         this.section = new PopupMenu.PopupMenuSection();
         this.subMenu.addMenuItem(this.section);  
-        this.updateStyle();
         this.mainBox = new St.BoxLayout({
             vertical: false
         });    
@@ -1936,7 +1938,7 @@ var SimpleMenuItem = GObject.registerClass(class ArcMenu_SimpleMenuItem extends 
                 case Clutter.KEY_Right:
                     if(!this.subMenu.isOpen){
                         let navigateFocus = true;
-                        this.activate(event, navigateFocus);
+                        this.showMenu(event, navigateFocus);
                         this.subMenu.actor.navigate_focus(null, St.DirectionType.TAB_FORWARD, false);
                         return Clutter.EVENT_STOP;
                     }
@@ -1947,6 +1949,7 @@ var SimpleMenuItem = GObject.registerClass(class ArcMenu_SimpleMenuItem extends 
                     return Clutter.EVENT_PROPAGATE;
             }
         });
+        this.updateStyle();
     }
 
     setRecentlyInstalledIndicator(shouldShow){
@@ -1979,17 +1982,17 @@ var SimpleMenuItem = GObject.registerClass(class ArcMenu_SimpleMenuItem extends 
         let addStyle = this._settings.get_boolean('enable-custom-arc-menu');
        
         this.subMenu.actor.hide();
-            if(addStyle){
-                this.subMenu.actor.style_class = 'arc-menu-boxpointer';
-                this.subMenu.actor.add_style_class_name('arc-menu');
-            }
-            else
-            {       
-                this.subMenu.actor.style_class = 'popup-menu-boxpointer';
-                this.subMenu.actor.add_style_class_name('popup-menu');
-            }
+        if(addStyle){
+            this.subMenu.actor.style_class = 'arc-menu-boxpointer';
+            this.subMenu.actor.add_style_class_name('arc-menu');
+        }
+        else
+        {       
+            this.subMenu.actor.style_class = 'popup-menu-boxpointer';
+            this.subMenu.actor.add_style_class_name('popup-menu');
+        }
     }
-    activate(event, navigateFocus = true) {
+    showMenu(event, navigateFocus = true) {
         this._button.activeCategory = this._name;
         if(this._category == Constants.CategoryType.PINNED_APPS)
             this._button.displayFavorites();
@@ -2003,7 +2006,7 @@ var SimpleMenuItem = GObject.registerClass(class ArcMenu_SimpleMenuItem extends 
     _onHover(event) {
         if (this.actor.hover) {
             let navigateFocus = false;
-            this.activate(event, navigateFocus);
+            this.showMenu(event, navigateFocus);
         }
     }
     setFakeActive(active, params) {
@@ -2641,8 +2644,15 @@ var DashMenuButtonWidget = class ArcMenu_DashMenuButtonWidget{
                 this._icon.set_gicon(Gio.icon_new_for_string(path));
             } 
         }
+        else if(iconEnum == Constants.MENU_BUTTON_ICON.Distro_Icon){
+            iconEnum = this._settings.get_enum('distro-icon');
+            path = Me.path + Constants.DISTRO_ICONS[iconEnum].path;
+            if (GLib.file_test(path, GLib.FileTest.EXISTS)) {
+                this._icon.set_gicon(Gio.icon_new_for_string(path));
+            } 
+        }
         else{
-            path = Me.path + Constants.MENU_ICONS[iconEnum - 3].path;
+            path = Me.path + Constants.MENU_ICONS[iconEnum - 4].path;
             if (GLib.file_test(path, GLib.FileTest.EXISTS)) {
                 this._icon.set_gicon(Gio.icon_new_for_string(path));
             } 
