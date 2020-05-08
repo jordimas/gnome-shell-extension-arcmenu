@@ -1763,7 +1763,7 @@ var MenuButtonCustomizationWindow = GObject.registerClass(
             let menuButtonIconCombo = new Gtk.ComboBox({
                 model: store,
                 width_request: 225,
-                wrap_width: 3
+                wrap_width: 2
             });
             
             this.createIconList(store);

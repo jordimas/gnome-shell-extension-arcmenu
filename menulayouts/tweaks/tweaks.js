@@ -481,7 +481,6 @@ var TweaksDialog = GObject.registerClass(
                 this._settings.set_int('mint-separator-index', widget.get_value());
             }); 
 
-
             let pixbuf = GdkPixbuf.Pixbuf.new_from_file_at_size(Me.path + '/media/misc/info-circle.svg', 20, 20);
             let infoImage = new Gtk.Image({ pixbuf: pixbuf });
             let infoButton = new Gtk.Button({
