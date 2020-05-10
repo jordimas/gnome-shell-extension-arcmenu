@@ -196,6 +196,7 @@ var MenuSettingsController = class {
             this._settings.reset('reload-theme');
             Utils.createStylesheet(this._settings);
             Main.loadTheme();
+            this._updateStyle();
         }
     }
 
