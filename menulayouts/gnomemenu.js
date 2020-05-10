@@ -113,7 +113,8 @@ var createMenu = class extends BaseMenuLayout.BaseLayout{
 
     setDefaultMenuView(){
         super.setDefaultMenuView();
-        this.categoryDirectories.values().next().value.activate();
+        this.categoryDirectories.values().next().value.displayAppList();
+        this.activeMenuItem = this.categoryDirectories.values().next().value;
     }
 
     reload() {
