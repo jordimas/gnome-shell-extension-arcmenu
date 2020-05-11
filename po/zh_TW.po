@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-04-14 13:57-0400\n"
-"PO-Revision-Date: 2020-04-24 15:19+0800\n"
+"POT-Creation-Date: 2020-05-08 14:13-0400\n"
+"PO-Revision-Date: 2020-05-11 16:00+0800\n"
 "Last-Translator: Pin-Hsien Lee <pspeter9931@gmail.com>\n"
 "Language-Team: \n"
 "Language: zh_TW\n"
@@ -28,7 +28,8 @@ msgstr "啟動「%s」失敗"
 msgid "Failed to mount volume for “%s”"
 msgstr "掛載卷冊「%s」失敗"
 
-#: placeDisplay.js:213 placeDisplay.js:237 menulayouts/baseMenuLayout.js:336
+#: placeDisplay.js:213 placeDisplay.js:237 menulayouts/baseMenuLayout.js:346
+#: menulayouts/ubuntudash.js:257
 msgid "Computer"
 msgstr "電腦"
 
@@ -37,20 +38,21 @@ msgstr "電腦"
 msgid "Ejecting drive “%s” failed:"
 msgstr "退出裝置「%s」失敗："
 
-#: placeDisplay.js:428 menulayouts/baseMenuLayout.js:336
-#: menulayouts/baseMenuLayout.js:343 menulayouts/baseMenuLayout.js:400
+#: placeDisplay.js:428 menulayouts/baseMenuLayout.js:346
+#: menulayouts/baseMenuLayout.js:353 menulayouts/baseMenuLayout.js:410
 #: menulayouts/ubuntudash.js:230
 msgid "Home"
 msgstr "家目錄"
 
-#: prefs.js:42 prefs.js:853 menulayouts/tweaks/tweaks.js:657
-#: menulayouts/ubuntudash.js:48 menulayouts/ubuntudash.js:318
-#: menulayouts/raven.js:47 menulayouts/raven.js:210 menuWidgets.js:824
-#: menuWidgets.js:1789
+#: prefs.js:42 constants.js:53 menulayouts/tweaks/tweaks.js:725
+#: menulayouts/ubuntudash.js:48 menulayouts/ubuntudash.js:330
+#: menulayouts/raven.js:47 menulayouts/raven.js:210 menuWidgets.js:794
+#: menuWidgets.js:832 menuWidgets.js:1731 menuWidgets.js:1790
+#: menuWidgets.js:1845 menuWidgets.js:2035
 msgid "Pinned Apps"
 msgstr "釘選應用"
 
-#: prefs.js:60 prefs.js:4215
+#: prefs.js:60 prefs.js:4466
 msgid "Add More Apps"
 msgstr "新增更多應用"
 
@@ -58,7 +60,7 @@ msgstr "新增更多應用"
 msgid "Browse a list of all applications to add to your Pinned Apps list."
 msgstr "以清單瀏覧全部應用程式，並加入您的「釘選應用」清單。"
 
-#: prefs.js:101 prefs.js:3986 prefs.js:4254
+#: prefs.js:101 prefs.js:4233 prefs.js:4505
 msgid "Add Custom Shortcut"
 msgstr "新增自定義捷徑"
 
@@ -66,128 +68,130 @@ msgstr "新增自定義捷徑"
 msgid "Create a custom shortcut to add to your Pinned Apps list."
 msgstr "建立自定義捷徑並加入您的「釘選應用」清單。"
 
-#: prefs.js:133 prefs.js:704 prefs.js:4034 prefs.js:4301
-#: menulayouts/tweaks/tweaks.js:266 menulayouts/tweaks/tweaks.js:387
+#: prefs.js:133 prefs.js:703 prefs.js:4282 prefs.js:4553
+#: menulayouts/tweaks/tweaks.js:300 menulayouts/tweaks/tweaks.js:434
 msgid "Save"
 msgstr "儲存"
 
-#: prefs.js:199 prefs.js:4107 prefs.js:4371
+#: prefs.js:198 prefs.js:4354 prefs.js:4622 menulayouts/tweaks/tweaks.js:567
 msgid "Modify"
 msgstr "更改"
 
-#: prefs.js:204 prefs.js:4114 prefs.js:4376
+#: prefs.js:203 prefs.js:3206 prefs.js:4361 prefs.js:4627
+#: menulayouts/tweaks/tweaks.js:572
 msgid "Move Up"
 msgstr "上移"
 
-#: prefs.js:209 prefs.js:4119 prefs.js:4381
+#: prefs.js:208 prefs.js:3211 prefs.js:4366 prefs.js:4632
+#: menulayouts/tweaks/tweaks.js:577
 msgid "Move Down"
 msgstr "下移"
 
-#: prefs.js:214 prefs.js:4124 prefs.js:4386
+#: prefs.js:213 prefs.js:4371 prefs.js:4637
 msgid "Delete"
 msgstr "刪除"
 
-#: prefs.js:283
+#: prefs.js:282
 msgid "Add to your Pinned Apps"
 msgstr "新增至您的釘選應用"
 
-#: prefs.js:285
+#: prefs.js:284
 msgid "Change Selected Pinned App"
 msgstr "更改選擇的釘選應用"
 
-#: prefs.js:287
+#: prefs.js:286
 msgid "Select Application Shortcuts"
 msgstr "設定應用程式捷徑"
 
-#: prefs.js:289
+#: prefs.js:288
 msgid "Select Directory Shortcuts"
 msgstr "設定目錄捷徑"
 
-#: prefs.js:308 prefs.js:704
+#: prefs.js:307 prefs.js:703
 msgid "Add"
 msgstr "新增"
 
-#: prefs.js:385 prefs.js:544 menuButtonDash.js:559 menulayouts/redmond.js:173
+#: prefs.js:384 prefs.js:543 menuButtonDash.js:558 menulayouts/redmond.js:173
 #: menulayouts/arcmenu.js:179 menulayouts/ubuntudash.js:192
-#: menulayouts/raven.js:174 menuButtonPanel.js:613 menuWidgets.js:914
-#: menuWidgets.js:1376
+#: menulayouts/raven.js:174 menuButtonPanel.js:613 menuWidgets.js:920
+#: menuWidgets.js:1368
 msgid "Arc Menu Settings"
 msgstr "Arc Menu 設定"
 
-#: prefs.js:386 prefs.js:1387
+#: prefs.js:385 prefs.js:1354
 msgid "Run Command..."
 msgstr "執行指令..."
 
-#: prefs.js:435
+#: prefs.js:434
 msgid "Default Apps"
 msgstr "預設應用"
 
-#: prefs.js:439 prefs.js:514
+#: prefs.js:438 prefs.js:513
 msgid "System Apps"
 msgstr "系統應用"
 
-#: prefs.js:510
+#: prefs.js:509
 msgid "Presets"
 msgstr "預設集"
 
-#: prefs.js:626 prefs.js:628
+#: prefs.js:625 prefs.js:627
 msgid "Edit Pinned App"
 msgstr "編輯釘選應用"
 
-#: prefs.js:626 prefs.js:628 prefs.js:630 prefs.js:632
+#: prefs.js:625 prefs.js:627 prefs.js:629 prefs.js:631
 msgid "Add a Custom Shortcut"
 msgstr "新增自定義捷徑"
 
-#: prefs.js:630
+#: prefs.js:629
 msgid "Edit Shortcut"
 msgstr "編輯捷徑"
 
-#: prefs.js:632
+#: prefs.js:631
 msgid "Edit Custom Shortcut"
 msgstr "編輯自定義捷徑"
 
-#: prefs.js:640
+#: prefs.js:639
 msgid "Shortcut Name:"
 msgstr "捷徑名稱："
 
-#: prefs.js:655
+#: prefs.js:654
 msgid "Icon:"
 msgstr "圖示："
 
-#: prefs.js:668 prefs.js:1789
+#: prefs.js:667 prefs.js:1757
 msgid "Please select an image icon"
 msgstr "請選擇一個圖示"
 
-#: prefs.js:688
+#: prefs.js:687
 msgid "Terminal Command:"
 msgstr "終端機指令："
 
-#: prefs.js:695
+#: prefs.js:694
 msgid "Shortcut Path:"
 msgstr "捷徑路徑："
 
-#: prefs.js:743 prefs.js:2602 menulayouts/tweaks/tweaks.js:198
-#: menulayouts/tweaks/tweaks.js:318
+#: prefs.js:742 prefs.js:2600 menulayouts/tweaks/tweaks.js:232
+#: menulayouts/tweaks/tweaks.js:365
 msgid "General"
 msgstr "基本"
 
-#: prefs.js:757 prefs.js:765
+#: prefs.js:756 prefs.js:764
 msgid "Disable Recently Installed Apps Indicator"
 msgstr "停用最近安裝應用指示"
 
-#: prefs.js:780
+#: prefs.js:779
 msgid "Disable Tooltips"
 msgstr "停用工具提示"
 
-#: prefs.js:788
+#: prefs.js:787
 msgid "Disable all tooltips in Arc Menu"
 msgstr "停用所有 Arc Menu 工具提示"
 
-#: prefs.js:803 prefs.js:1333
+#: prefs.js:802 prefs.js:1300
 msgid "Modify Activities Hot Corner"
 msgstr "更改活動區熱角"
 
-#: prefs.js:812
+#: prefs.js:811
 msgid "Modify the action of the Activities Hot Corner"
 msgstr "更改活動區熱角的動作"
 
@@ -195,461 +199,458 @@ msgstr "更改活動區熱角的動作"
 msgid "Override the default behavoir of the Activities Hot Corner"
 msgstr "覆蓋活動區熱角的預設行為"
 
-#: prefs.js:844 menulayouts/tweaks/tweaks.js:651
-msgid "Arc Menu Default View"
-msgstr "Arc Menu 預設檢視"
-
-#: prefs.js:851
-msgid "Choose the default menu view for Arc Menu"
-msgstr "選擇 Arc Menu 的預設選單檢視"
-
-#: prefs.js:854 menulayouts/tweaks/tweaks.js:658
-msgid "Categories List"
-msgstr "類別清單"
-
-#: prefs.js:873
+#: prefs.js:842
 msgid "Hotkey activation"
 msgstr "熱鍵啟動於"
 
-#: prefs.js:880
+#: prefs.js:849
 msgid "Choose a method for the hotkey activation"
 msgstr "選擇熱鍵啟動的方式"
 
-#: prefs.js:882
+#: prefs.js:851
 msgid "Key Release"
 msgstr "放開按鍵"
 
-#: prefs.js:883
+#: prefs.js:852
 msgid "Key Press"
 msgstr "壓下按鍵"
 
-#: prefs.js:902
+#: prefs.js:871
 msgid "Arc Menu Hotkey"
 msgstr "Arc Menu 熱鍵"
 
-#: prefs.js:911
+#: prefs.js:880
 msgid "Left Super Key"
 msgstr "左 Super 鍵"
 
-#: prefs.js:915
+#: prefs.js:884
 msgid "Set Arc Menu hotkey to Left Super Key"
 msgstr "將 Arc Menu 熱鍵設定為「左 Super 鍵」"
 
-#: prefs.js:918
+#: prefs.js:887
 msgid "Right Super Key"
 msgstr "右 Super 鍵"
 
-#: prefs.js:923
+#: prefs.js:892
 msgid "Set Arc Menu hotkey to Right Super Key"
 msgstr "將 Arc Menu 熱鍵設定為「右 Super 鍵」"
 
-#: prefs.js:926
+#: prefs.js:895
 msgid "Custom Hotkey"
 msgstr "自定義熱鍵"
 
-#: prefs.js:931
+#: prefs.js:900
 msgid "Set a custom hotkey for Arc Menu"
 msgstr "為 Arc Menu 設定自定義熱鍵"
 
-#: prefs.js:934
+#: prefs.js:903
 msgid "None"
 msgstr "無"
 
-#: prefs.js:939
+#: prefs.js:908
 msgid "Clear Arc Menu hotkey, use GNOME default"
 msgstr "清除 Arc Menu 熱鍵，使用 GNOME 預設值"
 
-#: prefs.js:1001
+#: prefs.js:970
 msgid "Current Hotkey"
 msgstr "目前熱鍵"
 
-#: prefs.js:1010
+#: prefs.js:979
 msgid "Current custom hotkey"
 msgstr "目前自定義熱鍵"
 
-#: prefs.js:1015
+#: prefs.js:984
 msgid "Modify Hotkey"
 msgstr "更改熱鍵"
 
-#: prefs.js:1018
+#: prefs.js:987
 msgid "Create your own hotkey combination for Arc Menu"
 msgstr "為 Arc Menu 建立您專屬的熱鍵組合"
 
-#: prefs.js:1060
+#: prefs.js:1027
 msgid "Display Arc Menu On"
 msgstr "顯示 Arc Menu 於"
 
-#: prefs.js:1067
+#: prefs.js:1034
 msgid "Choose where to place Arc Menu"
 msgstr "選擇 Arc Menu 的擺放位置"
 
-#: prefs.js:1071
+#: prefs.js:1038
 msgid "Dash to Dock"
 msgstr "Dash to Dock"
 
-#: prefs.js:1075
+#: prefs.js:1042
 msgid "Ubuntu Dock"
 msgstr "Ubuntu Dock"
 
-#: prefs.js:1078
+#: prefs.js:1045
 msgid "Main Panel"
 msgstr "主面板"
 
-#: prefs.js:1079
+#: prefs.js:1046
 msgid "Dash to Panel"
 msgstr "Dash to Panel"
 
-#: prefs.js:1133
+#: prefs.js:1100
 msgid "Disable Activities Button"
 msgstr "停用活動區按鈕"
 
-#: prefs.js:1134
+#: prefs.js:1101
 msgid "Dash to Dock extension not running!"
 msgstr "Dash to Dock 擴充尚未運行！"
 
-#: prefs.js:1134
+#: prefs.js:1101
 msgid "Enable Dash to Dock for this feature to work."
 msgstr "啟用 Dash to Dock 來開啟此功能。"
 
-#: prefs.js:1142
+#: prefs.js:1109
 msgid "Disable Activities Button in panel"
 msgstr "停用面板的活動區按鈕"
 
-#: prefs.js:1172
+#: prefs.js:1139
 msgid "Dash to Panel currently enabled!"
 msgstr "Dash to Panel 目前已啟用！"
 
-#: prefs.js:1172
+#: prefs.js:1139
 msgid "Disable Dash to Panel for this feature to work."
 msgstr "停用 Dash to Panel 來開啟此功能。"
 
-#: prefs.js:1173
+#: prefs.js:1140
 msgid "Dash to Panel extension not running!"
 msgstr "Dash to Panel 擴充尚未運行！"
 
-#: prefs.js:1173
+#: prefs.js:1140
 msgid "Enable Dash to Panel for this feature to work."
 msgstr "啟用 Dash to Panel 來開啟此功能。"
 
-#: prefs.js:1192
+#: prefs.js:1159
 msgid "Position in Dash to Panel"
 msgstr "於 Dash to Panel 的位置"
 
-#: prefs.js:1192
+#: prefs.js:1159
 msgid "Position in Main Panel"
 msgstr "於主面板的位置"
 
-#: prefs.js:1199
+#: prefs.js:1166
 msgid "Left"
 msgstr "左"
 
-#: prefs.js:1200
+#: prefs.js:1167
 msgid "Position Arc Menu on the Left side of Dash to Panel"
 msgstr "將 Arc Menu 擺放於 Dash to Panel 的左側"
 
-#: prefs.js:1201
+#: prefs.js:1168
 msgid "Position Arc Menu on the Left side of the Main Panel"
 msgstr "將 Arc Menu 擺放於主面板的左側"
 
-#: prefs.js:1204
+#: prefs.js:1171
 msgid "Center"
 msgstr "中"
 
-#: prefs.js:1206
+#: prefs.js:1173
 msgid "Position Arc Menu in the Center of Dash to Panel"
 msgstr "將 Arc Menu 擺放於 Dash to Panel 的中間"
 
-#: prefs.js:1207
+#: prefs.js:1174
 msgid "Position Arc Menu in the Center of the Main Panel"
 msgstr "將 Arc Menu 擺放於主面板的中間"
 
-#: prefs.js:1210
+#: prefs.js:1177
 msgid "Right"
 msgstr "右"
 
-#: prefs.js:1212
+#: prefs.js:1179
 msgid "Position Arc Menu on the Right side of Dash to Panel"
 msgstr "將 Arc Menu 擺放於 Dash to Panel 的右側"
 
-#: prefs.js:1213
+#: prefs.js:1180
 msgid "Position Arc Menu on the Right side of the Main Panel"
 msgstr "將 Arc Menu 擺放於主面板的右側"
 
-#: prefs.js:1254
+#: prefs.js:1221
 msgid "Menu Alignment to Button"
 msgstr "選單向按鈕對齊"
 
-#: prefs.js:1265
+#: prefs.js:1232
 msgid "Adjust Arc Menu's menu alignment relative to Arc Menu's icon"
 msgstr "調整 Arc Menu 選單對齊於 Arc Menu 圖示"
 
-#: prefs.js:1278 prefs.js:1286
+#: prefs.js:1245 prefs.js:1253
 msgid "Display Arc Menu on all monitors"
 msgstr "在所有顯示器上顯示 Arc Menu"
 
-#: prefs.js:1342
+#: prefs.js:1309
 msgid "Activities Hot Corner Action"
 msgstr "活動區熱角動作"
 
-#: prefs.js:1349
+#: prefs.js:1316
 msgid "Choose the action of the Activities Hot Corner"
 msgstr "選擇活動區熱角的動作"
 
-#: prefs.js:1351
+#: prefs.js:1318
 msgid "GNOME Default"
 msgstr "GNOME 預設值"
 
-#: prefs.js:1352
+#: prefs.js:1319
 msgid "Disabled"
 msgstr "停用"
 
-#: prefs.js:1353
+#: prefs.js:1320
 msgid "Toggle Arc Menu"
 msgstr "切換 Arc Menu"
 
-#: prefs.js:1354
+#: prefs.js:1321
 msgid "Custom"
 msgstr "自定義"
 
-#: prefs.js:1360
+#: prefs.js:1327
 msgid "Custom Activities Hot Corner Action"
 msgstr "自定義活動區熱角的動作"
 
-#: prefs.js:1360
+#: prefs.js:1327
 msgid "Choose from a list of preset commands or use your own terminal command"
 msgstr "從預設指令清單中選擇，或是使用您自定義的終端機指令"
 
-#: prefs.js:1370
+#: prefs.js:1337
 msgid "Preset commands"
 msgstr "預設指令"
 
-#: prefs.js:1376
+#: prefs.js:1343
 msgid "Choose from a list of preset Activities Hot Corner commands"
 msgstr "從預設的活動區熱角指令清單中選擇"
 
-#: prefs.js:1380
+#: prefs.js:1347
 msgid "Show all Applications"
 msgstr "顯示所有應用程式"
 
-#: prefs.js:1381
+#: prefs.js:1348
 msgid "GNOME Terminal"
 msgstr "GNOME 終端機"
 
-#: prefs.js:1382
+#: prefs.js:1349
 msgid "GNOME System Monitor"
 msgstr "GNOME 系統監控"
 
-#: prefs.js:1383
+#: prefs.js:1350
 msgid "GNOME Calculator"
 msgstr "GNOME 計算機"
 
-#: prefs.js:1384
+#: prefs.js:1351
 msgid "GNOME gedit"
 msgstr "GNOME 文字編輯器"
 
-#: prefs.js:1385
+#: prefs.js:1352
 msgid "GNOME Screenshot"
 msgstr "GNOME 螢幕擷圖"
 
-#: prefs.js:1386
+#: prefs.js:1353
 msgid "GNOME Weather"
 msgstr "GNOME 天氣"
 
-#: prefs.js:1419
+#: prefs.js:1386
 msgid "Terminal Command"
 msgstr "終端機指令"
 
-#: prefs.js:1425
+#: prefs.js:1392
 msgid "Set a custom terminal command to launch on active hot corner"
 msgstr "設定自定義終端機指令，當觸發熱角時執行"
 
-#: prefs.js:1445 prefs.js:1627 prefs.js:2528 prefs.js:2998 prefs.js:3218
-#: prefs.js:3840
+#: prefs.js:1412 prefs.js:1594 prefs.js:2534 prefs.js:2836 prefs.js:3077
+#: prefs.js:3142 prefs.js:3449 prefs.js:4108
 msgid "Apply"
 msgstr "套用"
 
-#: prefs.js:1447
+#: prefs.js:1414
 msgid "Apply changes and set new hot corner action"
 msgstr "套用變更，並設定新的熱角動作"
 
-#: prefs.js:1510
+#: prefs.js:1477
 msgid "Set Custom Hotkey"
 msgstr "設定自定義熱鍵"
 
-#: prefs.js:1519
+#: prefs.js:1486
 msgid "Press a key"
 msgstr "請按下任意鍵"
 
-#: prefs.js:1544
+#: prefs.js:1511
 msgid "Modifiers"
 msgstr "修飾鍵"
 
-#: prefs.js:1549
+#: prefs.js:1516
 msgid "Ctrl"
 msgstr "Ctrl"
 
-#: prefs.js:1554
+#: prefs.js:1521
 msgid "Super"
 msgstr "Super"
 
-#: prefs.js:1558
+#: prefs.js:1525
 msgid "Shift"
 msgstr "Shift"
 
-#: prefs.js:1562
+#: prefs.js:1529
 msgid "Alt"
 msgstr "Alt"
 
-#: prefs.js:1671 prefs.js:2078
+#: prefs.js:1638 prefs.js:2137
 msgid "Arc Menu Icon Settings"
 msgstr "Arc Menu 圖示設定"
 
-#: prefs.js:1679
+#: prefs.js:1647
 msgid "Arc Menu Icon Appearance"
 msgstr "Arc Menu 圖示外觀"
 
-#: prefs.js:1685
+#: prefs.js:1653
 msgid "Icon"
 msgstr "圖示"
 
-#: prefs.js:1686
+#: prefs.js:1654
 msgid "Text"
 msgstr "文字"
 
-#: prefs.js:1687
+#: prefs.js:1655
 msgid "Icon and Text"
 msgstr "圖示加文字"
 
-#: prefs.js:1688
+#: prefs.js:1656
 msgid "Text and Icon"
 msgstr "文字加圖示"
 
-#: prefs.js:1689
+#: prefs.js:1657
 msgid "Hidden"
 msgstr "隠藏"
 
-#: prefs.js:1714
+#: prefs.js:1682
 msgid "Arc Menu Icon Text"
 msgstr "Arc Menu 圖示文字"
 
-#: prefs.js:1736
+#: prefs.js:1704
 msgid "Restore Activities Button"
 msgstr "還原活動區按鈕"
 
-#: prefs.js:1744
+#: prefs.js:1712
 msgid "Restore Activities Button in panel"
 msgstr "還原面板的活動區按鈕"
 
-#: prefs.js:1759
+#: prefs.js:1727
 msgid "Arrow beside Arc Menu Icon"
 msgstr "Arc Menu 圖示旁箭頭"
 
-#: prefs.js:1779
+#: prefs.js:1747
 msgid "Arc Menu Icon"
 msgstr "Arc Menu 圖示"
 
-#: prefs.js:1835
+#: prefs.js:1811 prefs.js:2100
+msgid "Distro Icons"
+msgstr "發行版圖示"
+
+#: prefs.js:1853
+msgid "Legal disclaimer for brand icons and trademarks..."
+msgstr "對品牌圖示與商標的法律免責聲明..."
+
+#: prefs.js:1869
 msgid "Browse for a custom icon"
 msgstr "瀏覧自定義圖示"
 
-#: prefs.js:1873
+#: prefs.js:1909
 msgid "Icon Size"
 msgstr "圖示大小"
 
-#: prefs.js:1905
+#: prefs.js:1941
 msgid "Icon Padding"
 msgstr "圖示內邊距"
 
-#: prefs.js:1937
+#: prefs.js:1973
 msgid "Icon Color"
 msgstr "圖示顏色"
 
-#: prefs.js:1958
-msgid "Active Icon Color"
-msgstr "圖示觸發時顏色"
+#: prefs.js:1991
+msgid "Change the color of the Arc Menu Icon"
+msgstr "更改 Arc Menu 圖示的顏色"
 
-#: prefs.js:1978
+#: prefs.js:1991 prefs.js:2026
 msgid ""
 "Icon color options will only work with files ending with \"-symbolic.svg\""
 msgstr "圖示顏色選項將只作用於以 \"-symbolic.svg\" 結尾的檔案"
 
-#: prefs.js:1991 prefs.js:2960 prefs.js:3795
-msgid "Reset"
-msgstr "重設"
+#: prefs.js:2008
+msgid "Active Icon Color"
+msgstr "圖示觸發時顏色"
 
-#: prefs.js:2042
+#: prefs.js:2026
+msgid "Change the active/hover color of the Arc Menu Icon"
+msgstr "更改 Arc Menu 圖示於觸發/懸停時的顏色"
+
+#: prefs.js:2044 prefs.js:2809 prefs.js:3050 prefs.js:3126 prefs.js:4059
+#: prefs.js:4266 prefs.js:4537
+msgid "Restore Defaults"
+msgstr "還原預設值"
+
+#: prefs.js:2097
 msgid "System Icon"
 msgstr "系統圖示"
 
-#: prefs.js:2045
+#: prefs.js:2103
 msgid "Custom Icon"
 msgstr "自定義圖示"
 
-#: prefs.js:2058
+#: prefs.js:2116
 msgid "Appearance"
 msgstr "外觀"
 
-#: prefs.js:2086
+#: prefs.js:2145
 msgid "Customize Arc Menu's Icon"
 msgstr "自定義 Arc Menu 圖示"
 
-#: prefs.js:2106 prefs.js:2595
+#: prefs.js:2165 prefs.js:2576
 msgid "Customize Arc Menu Appearance"
 msgstr "自定義 Arc Menu 外觀"
 
-#: prefs.js:2114
+#: prefs.js:2173
 msgid "Customize various elements of Arc Menu"
 msgstr "自定義 Arc Menu 的各種元素"
 
-#: prefs.js:2162 prefs.js:3402
+#: prefs.js:2190 prefs.js:3595
 msgid "Override Arc Menu Theme"
 msgstr "覆蓋 Arc Menu 主題"
 
-#: prefs.js:2170
+#: prefs.js:2198
 msgid "Create and manage your own custom themes for Arc Menu"
 msgstr "建立並管理您自定義的 Arc Menu 主題"
 
-#: prefs.js:2208
+#: prefs.js:2238
 msgid "Override the shell theme for Arc Menu only"
 msgstr "只覆蓋 Arc Menu 的 shell 主題"
 
-#: prefs.js:2226
+#: prefs.js:2256
 msgid "Current Color Theme"
 msgstr "目前色彩主題"
 
-#: prefs.js:2251
-msgid "Menu Layout"
-msgstr "選單布局"
-
-#: prefs.js:2259
-msgid "Choose from a variety of menu layouts"
-msgstr "從各種選單布局中選擇"
-
-#: prefs.js:2270 prefs.js:2298 prefs.js:2303 prefs.js:2338 prefs.js:2350
-#: menulayouts/redmond.js:173 menulayouts/arcmenu.js:179
-#: menulayouts/ubuntudash.js:192 menulayouts/raven.js:174
-msgid "Tweaks"
-msgstr "調校"
-
-#: prefs.js:2280
-msgid "Enable the selection of different menu layouts"
-msgstr "啟用不同選單布局的選項"
-
-#: prefs.js:2316
-msgid "Current Layout"
-msgstr "目前布局"
-
-#: prefs.js:2347
-msgid "Tweaks for the current menu layout"
-msgstr "調校目前選單布局"
-
-#: prefs.js:2429
+#: prefs.js:2281 prefs.js:2435
 msgid "Menu Layouts"
 msgstr "選單布局"
 
-#: prefs.js:2605
-msgid "Fine Tune"
-msgstr "微調"
+#: prefs.js:2291
+msgid "Browse Layouts"
+msgstr "瀏覽布局"
+
+#: prefs.js:2297
+msgid "Choose from a variety of menu layouts"
+msgstr "從各種選單布局中選擇"
+
+#: prefs.js:2309 prefs.js:2344 prefs.js:2356 menulayouts/redmond.js:173
+#: menulayouts/arcmenu.js:179 menulayouts/ubuntudash.js:192
+#: menulayouts/raven.js:174
+msgid "Tweaks"
+msgstr "調校"
+
+#: prefs.js:2323
+msgid "Current Layout"
+msgstr "目前布局"
+
+#: prefs.js:2353
+msgid "Tweaks for the current menu layout"
+msgstr "調校目前選單布局"
 
 #: prefs.js:2630
 msgid "Menu Height"
@@ -659,302 +660,319 @@ msgstr "選單高度"
 msgid "Adjust the menu height"
 msgstr "調整選單高度"
 
-#: prefs.js:2644 prefs.js:2672 prefs.js:2698 prefs.js:2725 prefs.js:2747
-#: prefs.js:2771 prefs.js:2819
+#: prefs.js:2644 prefs.js:2671 prefs.js:2696 prefs.js:2723 prefs.js:2745
+#: prefs.js:2769 prefs.js:2894
 msgid "Certain menu layouts only"
 msgstr "只適用於部分選單布局"
 
-#: prefs.js:2664
+#: prefs.js:2663
 msgid "Left-Panel Width"
 msgstr "左側面板寛度"
 
-#: prefs.js:2672
+#: prefs.js:2671
 msgid "Adjust the left-panel width"
 msgstr "調整左側面板寛度"
 
-#: prefs.js:2690
+#: prefs.js:2688
 msgid "Right-Panel Width"
 msgstr "右側面板寛度"
 
-#: prefs.js:2698
+#: prefs.js:2696
 msgid "Adjust the right-panel width"
 msgstr "調整右側面板寛度"
 
-#: prefs.js:2717
+#: prefs.js:2715
 msgid "Large Application Icons"
 msgstr "大型應用程式圖示"
 
-#: prefs.js:2725
+#: prefs.js:2723
 msgid "Enable large application icons"
 msgstr "啟用大型應用程式圖示"
 
-#: prefs.js:2739
+#: prefs.js:2737
 msgid "Category Sub Menus"
 msgstr "類別子選單"
 
-#: prefs.js:2747
+#: prefs.js:2745
 msgid "Show nested menus in categories"
 msgstr "顯示分類子選單"
 
-#: prefs.js:2763 prefs.js:3751
+#: prefs.js:2761 prefs.js:4015
 msgid "Enable Vertical Separator"
 msgstr "啟用垂直分隔線"
 
-#: prefs.js:2771
+#: prefs.js:2769
 msgid "Enable a Vertical Separator"
 msgstr "啟用一組垂直分隔線"
 
-#: prefs.js:2785 prefs.js:3772
+#: prefs.js:2783 prefs.js:4036
 msgid "Separator Color"
 msgstr "分隔線顏色"
 
-#: prefs.js:2793
+#: prefs.js:2791
 msgid "Change the color of all separators"
 msgstr "更改所有分隔線的顏色"
 
-#: prefs.js:2811
+#: prefs.js:2810 prefs.js:3051 prefs.js:3127
+msgid "Restore the default Extra Categories"
+msgstr "還原預設的「其他類別」"
+
+#: prefs.js:2874
+msgid "Fine Tune"
+msgstr "微調"
+
+#: prefs.js:2886
 msgid "Disable Category Arrows"
 msgstr "停用分類箭頭"
 
-#: prefs.js:2819
+#: prefs.js:2894
 msgid "Disable the arrow on category menu items"
 msgstr "停用分類選單項目的箭頭"
 
-#: prefs.js:2835
+#: prefs.js:2910
 msgid "Disable Searchbox Border"
 msgstr "停用搜尋欄邊框"
 
-#: prefs.js:2843
+#: prefs.js:2918
 msgid "Disable the border on the searchbox"
 msgstr "停用搜尋欄上的邊框"
 
-#: prefs.js:2859 menulayouts/tweaks/tweaks.js:237
+#: prefs.js:2934 menulayouts/tweaks/tweaks.js:271
 msgid "Disable Menu Arrow"
 msgstr "停用選單箭頭"
 
-#: prefs.js:2867 menulayouts/tweaks/tweaks.js:245
+#: prefs.js:2942 menulayouts/tweaks/tweaks.js:279
 msgid "Disable current theme menu arrow pointer"
 msgstr "停用目前主題中選單的箭頭指標"
 
-#: prefs.js:2883
+#: prefs.js:2958
 msgid "Category Indicator Color"
 msgstr "類別指示的顏色"
 
-#: prefs.js:2891
+#: prefs.js:2966
 msgid ""
 "Change the color of the 'recently installed application' category indicator"
 msgstr "更改「最近安裝應用程式」類別指示的顏色"
 
-#: prefs.js:2907
+#: prefs.js:2982
 msgid "Application Indicator Label Color"
 msgstr "應用程式指示標籤的顏色"
 
-#: prefs.js:2915
+#: prefs.js:2990
 msgid ""
 "Change the background color of the 'recently installed application' "
 "indicator label"
 msgstr "更改「最近安裝應用程式」指示標籤的背景顏色"
 
-#: prefs.js:2933
+#: prefs.js:3008
 msgid "Gap Adjustment"
 msgstr "缺口調整"
 
-#: prefs.js:2943
-msgid ""
-"Offset menu placement by 1px\n"
-"Useful if a gap or overlap is visible"
-msgstr ""
-"將選單定位點移動 1px\n"
-"在缺口/重疊可見的情況下適用"
+#: prefs.js:3018 prefs.js:3031
+msgid "Offset Arc Menu by 1px"
+msgstr "將 Arc Menu 位移 1px"
 
-#: prefs.js:3040
+#: prefs.js:3018 prefs.js:3031
+msgid ""
+"Useful if you notice a 1px gap or overlap between Arc Menu and the panel"
+msgstr "若 Arc Menu 和面板間出現 1px 的缺口或交疊時，可使用此項"
+
+#: prefs.js:3115 menuWidgets.js:942
+msgid "Categories"
+msgstr "類別"
+
+#: prefs.js:3216
+msgid "Enable/Disble"
+msgstr "啟用/停用"
+
+#: prefs.js:3271
 msgid "Color Theme Name"
 msgstr "色彩主題名稱"
 
-#: prefs.js:3047
+#: prefs.js:3278
 msgid "Name:"
 msgstr "名稱："
 
-#: prefs.js:3072
+#: prefs.js:3303
 msgid "Save Theme"
 msgstr "儲存主題"
 
-#: prefs.js:3097
+#: prefs.js:3328
 msgid "Select Themes to Import"
 msgstr "選擇要匯入的主題"
 
-#: prefs.js:3097
+#: prefs.js:3328
 msgid "Select Themes to Export"
 msgstr "選擇要匯出的主題"
 
-#: prefs.js:3115
+#: prefs.js:3346
 msgid "Import"
 msgstr "匯入"
 
-#: prefs.js:3115
+#: prefs.js:3346
 msgid "Export"
 msgstr "匯出"
 
-#: prefs.js:3146
+#: prefs.js:3377
 msgid "Select All"
 msgstr "選擇全部"
 
-#: prefs.js:3203 prefs.js:3509
+#: prefs.js:3434 prefs.js:3707
 msgid "Manage Presets"
 msgstr "管理預設集"
 
-#: prefs.js:3229
-msgid "Browse Presets..."
-msgstr "瀏覽預設集..."
-
-#: prefs.js:3415
+#: prefs.js:3608
 msgid "Color Theme Presets"
 msgstr "色彩主題預設集"
 
-#: prefs.js:3425
+#: prefs.js:3618
 msgid "Save as Preset"
 msgstr "儲存為預設集"
 
-#: prefs.js:3538
+#: prefs.js:3733
+msgid "Browse Presets"
+msgstr "瀏覽預設集"
+
+#: prefs.js:3781
 msgid "Menu Background Color"
 msgstr "選單背景顏色"
 
-#: prefs.js:3560
+#: prefs.js:3803
 msgid "Menu Foreground Color"
 msgstr "選單前景顏色"
 
-#: prefs.js:3580
+#: prefs.js:3823
 msgid "Font Size"
 msgstr "字型大小"
 
-#: prefs.js:3606
+#: prefs.js:3849
 msgid "Border Color"
 msgstr "邊框顏色"
 
-#: prefs.js:3627
+#: prefs.js:3870
 msgid "Border Size"
 msgstr "邊框大小"
 
-#: prefs.js:3653
-msgid "Highlighted Item Color"
-msgstr "標亮項目顏色"
+#: prefs.js:3896
+msgid "Active Item Background Color"
+msgstr "觸發物件背景顏色"
 
-#: prefs.js:3674
+#: prefs.js:3917
+msgid "Active Item Foreground Color"
+msgstr "觸發物件前景顏色"
+
+#: prefs.js:3938
 msgid "Corner Radius"
 msgstr "邊角半徑"
 
-#: prefs.js:3700
+#: prefs.js:3964
 msgid "Menu Arrow Size"
 msgstr "選單箭頭大小"
 
-#: prefs.js:3726
+#: prefs.js:3990
 msgid "Menu Displacement"
 msgstr "選單位移"
 
-#: prefs.js:3906 prefs.js:4545
-msgid "Configure Shortcuts"
-msgstr "設定捷徑"
-
-#: prefs.js:3927
+#: prefs.js:4174
 msgid "Directories"
 msgstr "目錄"
 
-#: prefs.js:3947
+#: prefs.js:4194
 msgid "Add Default User Directories"
 msgstr "新增預設使用者目錄"
 
-#: prefs.js:3955
+#: prefs.js:4202
 msgid ""
 "Browse a list of all default User Directories to add to your Directories "
 "Shortcuts"
 msgstr "以清單瀏覧所有預設的使用者目錄，並加入您的「目錄捷徑」"
 
-#: prefs.js:3994
+#: prefs.js:4241
 msgid "Create a custom shortcut to add to your Directories Shortcuts"
 msgstr "建立自定義捷徑並加入您的「目錄捷徑」"
 
-#: prefs.js:4019 prefs.js:4286
-msgid "Restore Defaults"
-msgstr "還原預設值"
-
-#: prefs.js:4020
+#: prefs.js:4267
 msgid "Restore the default Directory Shortcuts"
 msgstr "還原預設目錄捷徑"
 
-#: prefs.js:4195 menuWidgets.js:2423
+#: prefs.js:4446 menuWidgets.js:2444
 msgid "Applications"
 msgstr "應用程式"
 
-#: prefs.js:4223
+#: prefs.js:4474
 msgid "Browse a list of all applications to add to your Application Shortcuts"
 msgstr "以清單瀏覧全部應用程式，並加入您的「應用程式捷徑」"
 
-#: prefs.js:4262
+#: prefs.js:4513
 msgid "Create a custom shortcut to add to your Application Shortcuts"
 msgstr "建立自定義捷徑並加入您的「應用程式捷徑」"
 
-#: prefs.js:4287
+#: prefs.js:4538
 msgid "Restore the default Application Shortcuts"
 msgstr "還原預設應用程式捷徑"
 
-#: prefs.js:4453
+#: prefs.js:4708
 msgid "Session Buttons"
 msgstr "工作階段按鈕"
 
-#: prefs.js:4464 menuWidgets.js:1029
+#: prefs.js:4715 menuWidgets.js:1035
 msgid "Suspend"
 msgstr "暫停"
 
-#: prefs.js:4481 menulayouts/ubuntudash.js:250 menulayouts/mint.js:230
-#: menuWidgets.js:1044
+#: prefs.js:4732 menulayouts/ubuntudash.js:262 menulayouts/mint.js:243
+#: menuWidgets.js:1050
 msgid "Lock"
 msgstr "鎖定"
 
-#: prefs.js:4498 menulayouts/ubuntudash.js:249 menulayouts/mint.js:229
-#: menuWidgets.js:1017
+#: prefs.js:4749 menulayouts/ubuntudash.js:261 menulayouts/mint.js:242
+#: menuWidgets.js:1023
 msgid "Log Out"
 msgstr "登出"
 
-#: prefs.js:4515 menulayouts/ubuntudash.js:251 menulayouts/mint.js:231
-#: menuWidgets.js:1007
+#: prefs.js:4766 menulayouts/ubuntudash.js:263 menulayouts/mint.js:244
+#: menuWidgets.js:1013
 msgid "Power Off"
 msgstr "關機"
 
-#: prefs.js:4540 menulayouts/tweaks/tweaks.js:205
-#: menulayouts/tweaks/tweaks.js:325 menulayouts/ubuntudash.js:412
-#: menulayouts/raven.js:295
+#: prefs.js:4790 menulayouts/tweaks/tweaks.js:239
+#: menulayouts/tweaks/tweaks.js:372 menulayouts/ubuntudash.js:433
+#: menulayouts/raven.js:304
 msgid "Shortcuts"
 msgstr "捷徑"
 
-#: prefs.js:4550 prefs.js:4555
-msgid "Add, Remove, or Modify Arc Menu shortcuts"
-msgstr "新增、移除或更改 Arc Menu 捷徑"
+#: prefs.js:4803
+msgid "Extras"
+msgstr "其他"
 
-#: prefs.js:4585
+#: prefs.js:4817
 msgid "External Devices"
 msgstr "外部裝置"
 
-#: prefs.js:4591
+#: prefs.js:4823
 msgid "Show all connected external devices in Arc Menu"
 msgstr "於 Arc Menu 顯示所有連接的外部裝置"
 
-#: prefs.js:4607
+#: prefs.js:4839
 msgid "Bookmarks"
 msgstr "書籤"
 
-#: prefs.js:4613
+#: prefs.js:4845
 msgid "Show all Nautilus bookmarks in Arc Menu"
 msgstr "於 Arc Menu 顯示所有檔案管理員的書籤"
 
-#: prefs.js:4631
+#: prefs.js:4863
 msgid "Misc"
 msgstr "其他"
 
-#: prefs.js:4637
+#: prefs.js:4869
 msgid "Export and Import Arc Menu Settings"
 msgstr "匯出及匯入 Arc Menu 設定"
 
-#: prefs.js:4644
+#: prefs.js:4878
+msgid "Import/Export ALL Arc Menu Settings"
+msgstr "匯入/匯出 所有的 Arc Menu 設定"
+
+#: prefs.js:4878
 msgid ""
 "Importing settings from file may replace ALL saved settings.\n"
 "This includes all saved pinned apps."
@@ -962,35 +980,39 @@ msgstr ""
 "從檔案匯入設定後，全部的 儲存設定都會被替換；\n"
 "包含所有儲存的釘選應用。"
 
-#: prefs.js:4653
+#: prefs.js:4891
 msgid "Import from File"
 msgstr "從檔案匯入"
 
-#: prefs.js:4656
+#: prefs.js:4894
 msgid "Import Arc Menu settings from a file"
 msgstr "從檔案匯入 Arc Menu 設定"
 
-#: prefs.js:4660
+#: prefs.js:4898
 msgid "Import settings"
 msgstr "匯入設定"
 
-#: prefs.js:4689
+#: prefs.js:4927
 msgid "Export to File"
 msgstr "匯出至檔案"
 
-#: prefs.js:4692
+#: prefs.js:4930
 msgid "Export and save all your Arc Menu settings to a file"
 msgstr "儲存您所有的 Arc Menu 設定，並匯出成檔案"
 
-#: prefs.js:4697
+#: prefs.js:4935
 msgid "Export settings"
 msgstr "匯出設定"
 
-#: prefs.js:4724
+#: prefs.js:4962
 msgid "Color Theme Presets - Export/Import"
 msgstr "色彩主題預設集 - 匯出/匯入"
 
-#: prefs.js:4743
+#: prefs.js:4981
+msgid "Import/Export Color Theme Presets"
+msgstr "匯入/匯出色彩主題預設集"
+
+#: prefs.js:4981
 msgid ""
 "Imported theme presets are located on the Appearance Tab\n"
 "in Override Arc Menu Theme"
@@ -998,282 +1020,375 @@ msgstr ""
 "已匯入的主題預設集位於「外觀」分頁\n"
 "->「覆蓋 Arc Menu 主題」底下"
 
-#: prefs.js:4754 prefs.js:4761
+#: prefs.js:4994 prefs.js:5001
 msgid "Import Theme Preset"
 msgstr "匯入主題預設集"
 
-#: prefs.js:4757
+#: prefs.js:4997
 msgid "Import Arc Menu Theme Presets from a file"
 msgstr "從檔案匯入 Arc Menu 主題預設集"
 
-#: prefs.js:4797 prefs.js:4809
+#: prefs.js:5037 prefs.js:5049
 msgid "Export Theme Preset"
 msgstr "匯出主題預設集"
 
-#: prefs.js:4800
+#: prefs.js:5040
 msgid "Export and save your Arc Menu Theme Presets to a file"
 msgstr "儲存您的 Arc Menu 主題預設集，並匯出成檔案"
 
-#: prefs.js:4874
+#: prefs.js:5114
 msgid "About"
 msgstr "關於"
 
-#: prefs.js:4905 constants.js:156 constants.js:197 menuWidgets.js:2506
+#: prefs.js:5150 constants.js:148 constants.js:210 menuWidgets.js:2527
 msgid "Arc Menu"
 msgstr "Arc Menu"
 
-#: prefs.js:4910
+#: prefs.js:5155
 msgid "Version: "
 msgstr "版本： "
 
-#: prefs.js:4914
+#: prefs.js:5159
+msgid "Commit: "
+msgstr "提交號： "
+
+#: prefs.js:5163
 msgid "A Dynamic, Traditional, Modern Menu for GNOME"
 msgstr "靈活、傳統與現代兼具的 GNOME 選單"
 
-#: prefs.js:4937
+#: prefs.js:5186
 msgid "GitLab Page"
 msgstr "GitLab 頁面"
 
-#: prefs.js:4962
+#: prefs.js:5211
 msgid "User Manual"
 msgstr "使用者手冊"
 
-#: prefs.js:5071
+#: prefs.js:5323
 msgid "Error - Invalid Shortcut"
 msgstr "錯誤 - 無效捷徑"
 
-#: prefs.js:5072
+#: prefs.js:5324
 msgid "Invalid Shortcut"
 msgstr "無效捷徑"
 
-#: constants.js:161
+#: constants.js:50 menuWidgets.js:790 menuWidgets.js:930 menuWidgets.js:1727
+#: menuWidgets.js:1841 menuWidgets.js:2031
+msgid "Favorites"
+msgstr "喜好"
+
+#: constants.js:51 menuWidgets.js:777 menuWidgets.js:1715 menuWidgets.js:1829
+#: menuWidgets.js:2019
+msgid "Frequent Apps"
+msgstr "常用程式"
+
+#: constants.js:52 menulayouts/ubuntudash.js:50 menulayouts/ubuntudash.js:335
+#: menulayouts/raven.js:49 menulayouts/raven.js:215 menuWidgets.js:786
+#: menuWidgets.js:1125 menuWidgets.js:1723 menuWidgets.js:1837
+#: menuWidgets.js:2027
+msgid "All Programs"
+msgstr "所有程式"
+
+#: constants.js:153
 msgid "Arc Menu Alt"
 msgstr "Arc Menu Alt"
 
-#: constants.js:162
+#: constants.js:154
 msgid "Arc Menu Original"
 msgstr "Arc Menu Original"
 
-#: constants.js:163
+#: constants.js:155
 msgid "Curved A"
 msgstr "Curved A"
 
-#: constants.js:164
+#: constants.js:156
 msgid "Start Box"
 msgstr "Start Box"
 
-#: constants.js:165
+#: constants.js:157
 msgid "Focus"
 msgstr "Focus"
 
-#: constants.js:166
+#: constants.js:158
 msgid "Triple Dash"
 msgstr "Triple Dash"
 
-#: constants.js:167
+#: constants.js:159
 msgid "Whirl"
 msgstr "Whirl"
 
-#: constants.js:168
+#: constants.js:160
 msgid "Whirl Circle"
 msgstr "Whirl Circle"
 
-#: constants.js:169
+#: constants.js:161
 msgid "Sums"
 msgstr "Sums"
 
-#: constants.js:170
+#: constants.js:162
 msgid "Arrow"
 msgstr "Arrow"
 
-#: constants.js:171
+#: constants.js:163
 msgid "Lins"
 msgstr "Lins"
 
-#: constants.js:172
+#: constants.js:164
 msgid "Diamond Square"
 msgstr "Diamond Square"
 
-#: constants.js:173
+#: constants.js:165
 msgid "Octo Maze"
 msgstr "Octo Maze"
 
-#: constants.js:174
+#: constants.js:166
 msgid "Search"
 msgstr "搜尋"
 
-#: constants.js:198
+#: constants.js:167
+msgid "3d"
+msgstr "3d"
+
+#: constants.js:168
+msgid "Alien"
+msgstr "Alien"
+
+#: constants.js:169
+msgid "Cloud"
+msgstr "Cloud"
+
+#: constants.js:170
+msgid "Dragon"
+msgstr "Dragon"
+
+#: constants.js:171
+msgid "Fly"
+msgstr "Fly"
+
+#: constants.js:172
+msgid "Pacman"
+msgstr "Pacman"
+
+#: constants.js:173
+msgid "Peaks"
+msgstr "Peaks"
+
+#: constants.js:174
+msgid "Pie"
+msgstr "Pie"
+
+#: constants.js:175
+msgid "Pointer"
+msgstr "Pointer"
+
+#: constants.js:176
+msgid "Toxic"
+msgstr "Toxic"
+
+#: constants.js:177
+msgid "Tree"
+msgstr "Tree"
+
+#: constants.js:178
+msgid "Zegon"
+msgstr "Zegon"
+
+#: constants.js:182
+msgid "Debian"
+msgstr "Debian"
+
+#: constants.js:183
+msgid "Fedora"
+msgstr "Fedora"
+
+#: constants.js:184
+msgid "Manjaro"
+msgstr "Manjaro"
+
+#: constants.js:185
+msgid "Pop!_OS"
+msgstr "Pop!_OS"
+
+#: constants.js:186
+msgid "Ubuntu"
+msgstr "Ubuntu"
+
+#: constants.js:187
+msgid "Arch Linux"
+msgstr "Arch Linux"
+
+#: constants.js:211
 msgid "Brisk Menu Style"
 msgstr "Brisk Menu 樣式"
 
-#: constants.js:199
+#: constants.js:212
 msgid "Whisker Menu Style"
 msgstr "Whisker Menu 樣式"
 
-#: constants.js:200
+#: constants.js:213
 msgid "GNOME Menu Style"
 msgstr "GNOME Menu 樣式"
 
-#: constants.js:201
+#: constants.js:214
 msgid "Mint Menu Style"
 msgstr "Mint Menu 樣式"
 
-#: constants.js:202
+#: constants.js:215
 msgid "Budgie Style"
 msgstr "Budgie 樣式"
 
-#: constants.js:205
+#: constants.js:218
 msgid "Windows 10 Style"
 msgstr "Windows 10 樣式"
 
-#: constants.js:206
+#: constants.js:219
 msgid "Ubuntu Dash Style"
 msgstr "Ubuntu Dask 樣式"
 
-#: constants.js:207
+#: constants.js:220
 msgid "Redmond Menu Style"
 msgstr "Redmond Menu 樣式"
 
-#: constants.js:210
+#: constants.js:223
 msgid "Elementary Menu Style"
 msgstr "Elementary Menu 樣式"
 
-#: constants.js:211
+#: constants.js:224
 msgid "Chromebook Style"
 msgstr "Chromebook 樣式"
 
-#: constants.js:214
+#: constants.js:227
 msgid "KRunner Style"
 msgstr "KRunner 樣式"
 
-#: constants.js:215
+#: constants.js:228
 msgid "GNOME Dash Style"
 msgstr "GNOME Dash 樣式"
 
-#: constants.js:218
+#: constants.js:231
 msgid "Simple Menu Style"
 msgstr "Simple Menu 樣式"
 
-#: constants.js:219
+#: constants.js:232
 msgid "Simple Menu 2 Style"
 msgstr "Simple Menu 2 樣式"
 
-#: constants.js:222
+#: constants.js:235
 msgid "Raven Menu Style"
 msgstr "Raven Menu 樣式"
 
-#: constants.js:229
+#: constants.js:242
 msgid "Traditional Layouts"
 msgstr "傳統布局"
 
-#: constants.js:230
+#: constants.js:243
 msgid ""
 "Traditional layouts use a familiar style and have a traditional user "
 "experience."
 msgstr "傳統布局以熟悉的樣式提供經典的使用者體驗。"
 
-#: constants.js:231
+#: constants.js:244
 msgid "Modern Layouts"
 msgstr "現代布局"
 
-#: constants.js:232
+#: constants.js:245
 msgid ""
 "Modern layouts use a style and UX based approach with a focus on design and "
 "functionality."
 msgstr "現代布局專注於設計與功能性，在樣式與使用者體驗上更進一步。"
 
-#: constants.js:233
+#: constants.js:246
 msgid "Touch Layouts"
 msgstr "觸控布局"
 
-#: constants.js:234
+#: constants.js:247
 msgid ""
 "Touch layouts contain large menu elements that are well suited for touch "
 "based devices."
 msgstr "觸控布局放大了選單元素，適合觸控式裝置使用。"
 
-#: constants.js:235
+#: constants.js:248
 msgid "Simple Layouts"
 msgstr "簡易布局"
 
-#: constants.js:236
+#: constants.js:249
 msgid ""
 "Simple layouts are designed for mouse based devices and contain simplistic "
 "menu elements."
 msgstr "簡易布局適合帶有滑鼠的裝置，包含簡約的選單元素。"
 
-#: constants.js:237
+#: constants.js:250
 msgid "Launcher Layouts"
 msgstr "啟動器布局"
 
-#: constants.js:238
+#: constants.js:251
 msgid ""
 "Launcher layouts are well suited for keyboard driven devices and provide the "
 "user with quick and simple menu elements."
 msgstr "啟動器布局適用於以鍵盤為主的裝置，為使用者提供快速簡潔的選單元素。"
 
-#: constants.js:239
+#: constants.js:252
 msgid "Alternative Layouts"
 msgstr "替代布局"
 
-#: constants.js:240
+#: constants.js:253
 msgid ""
 "Alternative layouts have an unconventional style that provide a unique user "
 "experience."
 msgstr "替代布局顛覆了樣式傳統，提供獨特的使用者體驗。"
 
-#: menuButtonDash.js:568 menuButtonPanel.js:622
+#: menuButtonDash.js:567 menuButtonPanel.js:622
 msgid "Arc Menu GitLab Page"
 msgstr "Arc Menu：GitLab 首頁"
 
-#: menuButtonDash.js:573 menuButtonPanel.js:627
+#: menuButtonDash.js:572 menuButtonPanel.js:627
 msgid "Arc Menu User Manual"
 msgstr "Arc Menu：使用手冊"
 
-#: menuButtonDash.js:585
+#: menuButtonDash.js:584
 msgid "Dash to Dock Settings"
 msgstr "Dash to Dock 設定"
 
-#: menuButtonDash.js:589
+#: menuButtonDash.js:588
 msgid "Ubuntu Dock Settings"
 msgstr "Ubuntu Dock 設定"
 
-#: searchGrid.js:730 search.js:720
+#: search.js:857
 msgid "Searching..."
 msgstr "搜尋中..."
 
-#: searchGrid.js:732 search.js:722
+#: search.js:859
 msgid "No results."
 msgstr "没有結果。"
 
-#: searchGrid.js:864 search.js:820
+#: search.js:1030
 #, javascript-format
 msgid "%d more"
 msgid_plural "%d more"
 msgstr[0] "還有 %d 個"
 
 #: menulayouts/redmond.js:173 menulayouts/arcmenu.js:179
-#: menulayouts/brisk.js:123 menulayouts/ubuntudash.js:192
-#: menulayouts/ubuntudash.js:247 menulayouts/mint.js:227
+#: menulayouts/brisk.js:122 menulayouts/ubuntudash.js:192
+#: menulayouts/ubuntudash.js:255 menulayouts/mint.js:237
 #: menulayouts/raven.js:174
 msgid "Software"
 msgstr "軟體"
 
 #: menulayouts/redmond.js:173 menulayouts/arcmenu.js:179
-#: menulayouts/brisk.js:127 menulayouts/ubuntudash.js:192
-#: menulayouts/windows.js:202 menulayouts/mint.js:216 menulayouts/raven.js:174
-#: menuWidgets.js:904
+#: menulayouts/brisk.js:126 menulayouts/ubuntudash.js:192
+#: menulayouts/windows.js:204 menulayouts/mint.js:219 menulayouts/raven.js:174
+#: menuWidgets.js:910
 msgid "Settings"
 msgstr "設定"
 
 #: menulayouts/redmond.js:173 menulayouts/arcmenu.js:179
-#: menulayouts/ubuntudash.js:192 menulayouts/mint.js:215
-#: menulayouts/raven.js:174 menuWidgets.js:1379
+#: menulayouts/ubuntudash.js:192 menulayouts/mint.js:218
+#: menulayouts/raven.js:174 menuWidgets.js:1371
 msgid "Terminal"
 msgstr "終端機"
 
 #: menulayouts/redmond.js:173 menulayouts/arcmenu.js:179
-#: menulayouts/ubuntudash.js:192 menulayouts/raven.js:174 menuWidgets.js:559
+#: menulayouts/ubuntudash.js:192 menulayouts/raven.js:174 menuWidgets.js:558
 msgid "Activities Overview"
 msgstr "活動概覽"
 
@@ -1305,103 +1420,122 @@ msgstr "方形"
 msgid "Disable User Avatar"
 msgstr "停用使用者頭像"
 
-#: menulayouts/tweaks/tweaks.js:160
-msgid "KRunner Position"
-msgstr "KRunner 位置"
-
-#: menulayouts/tweaks/tweaks.js:165 menulayouts/tweaks/tweaks.js:586
-#: menulayouts/tweaks/tweaks.js:683
-msgid "Top"
-msgstr "頂部"
-
-#: menulayouts/tweaks/tweaks.js:166
-msgid "Centered"
-msgstr "置中"
-
-#: menulayouts/tweaks/tweaks.js:177 menulayouts/tweaks/tweaks.js:354
-msgid "Show Extra Large Icons with App Descriptions"
-msgstr "放大圖示並一同顯示應用描述"
-
-#: menulayouts/tweaks/tweaks.js:208
-msgid "Buttons"
-msgstr "按鈕"
-
-#: menulayouts/tweaks/tweaks.js:216 menulayouts/tweaks/tweaks.js:333
-msgid "Default Screen"
-msgstr "預設頁面"
-
-#: menulayouts/tweaks/tweaks.js:221 menulayouts/tweaks/tweaks.js:338
-#: menuWidgets.js:779 menuWidgets.js:1722 menuWidgets.js:1829
-#: menuWidgets.js:2011
-msgid "Home Screen"
-msgstr "起始頁"
-
-#: menulayouts/tweaks/tweaks.js:222 menulayouts/tweaks/tweaks.js:339
-msgid "All Applications"
-msgstr "所有應用程式"
-
-#: menulayouts/tweaks/tweaks.js:292 menulayouts/tweaks/tweaks.js:413
-msgid "Separator Position Index"
-msgstr "分隔線位置索引"
-
-#: menulayouts/tweaks/tweaks.js:579 menulayouts/tweaks/tweaks.js:676
+#: menulayouts/tweaks/tweaks.js:157 menulayouts/tweaks/tweaks.js:644
+#: menulayouts/tweaks/tweaks.js:744
 msgid "Searchbar Location"
 msgstr "搜尋欄位置"
 
-#: menulayouts/tweaks/tweaks.js:585 menulayouts/tweaks/tweaks.js:682
+#: menulayouts/tweaks/tweaks.js:163 menulayouts/tweaks/tweaks.js:650
+#: menulayouts/tweaks/tweaks.js:750
 msgid "Bottom"
 msgstr "底部"
 
-#: menulayouts/tweaks/tweaks.js:598 menulayouts/tweaks/tweaks.js:695
+#: menulayouts/tweaks/tweaks.js:164 menulayouts/tweaks/tweaks.js:199
+#: menulayouts/tweaks/tweaks.js:651 menulayouts/tweaks/tweaks.js:751
+msgid "Top"
+msgstr "頂部"
+
+#: menulayouts/tweaks/tweaks.js:175
+msgid "Enable Activities Overview Shortcut"
+msgstr "啟用活動概覽捷徑"
+
+#: menulayouts/tweaks/tweaks.js:194
+msgid "KRunner Position"
+msgstr "KRunner 位置"
+
+#: menulayouts/tweaks/tweaks.js:200
+msgid "Centered"
+msgstr "置中"
+
+#: menulayouts/tweaks/tweaks.js:211 menulayouts/tweaks/tweaks.js:401
+msgid "Show Extra Large Icons with App Descriptions"
+msgstr "放大圖示並一同顯示應用描述"
+
+#: menulayouts/tweaks/tweaks.js:242
+msgid "Buttons"
+msgstr "按鈕"
+
+#: menulayouts/tweaks/tweaks.js:250 menulayouts/tweaks/tweaks.js:380
+msgid "Default Screen"
+msgstr "預設頁面"
+
+#: menulayouts/tweaks/tweaks.js:255 menulayouts/tweaks/tweaks.js:385
+#: menuWidgets.js:781 menuWidgets.js:1719 menuWidgets.js:1833
+#: menuWidgets.js:2023
+msgid "Home Screen"
+msgstr "起始頁"
+
+#: menulayouts/tweaks/tweaks.js:256 menulayouts/tweaks/tweaks.js:386
+msgid "All Applications"
+msgstr "所有應用程式"
+
+#: menulayouts/tweaks/tweaks.js:326 menulayouts/tweaks/tweaks.js:460
+msgid "Separator Position Index"
+msgstr "分隔線位置索引"
+
+#: menulayouts/tweaks/tweaks.js:345 menulayouts/tweaks/tweaks.js:479
+msgid "Adjust the position of the separator in the button panel"
+msgstr "調整分割線於按鈕面板內的位置"
+
+#: menulayouts/tweaks/tweaks.js:541
+msgid "Change"
+msgstr "更改"
+
+#: menulayouts/tweaks/tweaks.js:663 menulayouts/tweaks/tweaks.js:763
 msgid "Flip Horizontally"
 msgstr "水平翻轉"
 
-#: menulayouts/tweaks/tweaks.js:637
+#: menulayouts/tweaks/tweaks.js:702
 msgid "Nothing Yet!"
 msgstr "沒有任何東西！"
 
-#: menulayouts/tweaks/tweaks.js:728
+#: menulayouts/tweaks/tweaks.js:716
+msgid "Arc Menu Default View"
+msgstr "Arc Menu 預設檢視"
+
+#: menulayouts/tweaks/tweaks.js:723
+msgid "Choose the default menu view for Arc Menu"
+msgstr "選擇 Arc Menu 的預設選單檢視"
+
+#: menulayouts/tweaks/tweaks.js:726
+msgid "Categories List"
+msgstr "類別清單"
+
+#: menulayouts/tweaks/tweaks.js:796
 msgid "Enable Weather Widget"
 msgstr "啟用天氣小工具"
 
-#: menulayouts/tweaks/tweaks.js:746
+#: menulayouts/tweaks/tweaks.js:814
 msgid "Enable Clock Widget"
 msgstr "啟用時鐘小工具"
 
-#: menulayouts/baseMenuLayout.js:336 menulayouts/ubuntudash.js:231
-#: menulayouts/windows.js:68 menulayouts/windows.js:197
+#: menulayouts/baseMenuLayout.js:346 menulayouts/ubuntudash.js:231
+#: menulayouts/windows.js:68 menulayouts/windows.js:199 menulayouts/mint.js:239
 msgid "Documents"
 msgstr "文件"
 
-#: menulayouts/baseMenuLayout.js:336 menulayouts/ubuntudash.js:232
+#: menulayouts/baseMenuLayout.js:346 menulayouts/ubuntudash.js:232
 msgid "Downloads"
 msgstr "下載"
 
-#: menulayouts/baseMenuLayout.js:336
+#: menulayouts/baseMenuLayout.js:346
 msgid "Music"
 msgstr "音樂"
 
-#: menulayouts/baseMenuLayout.js:336
+#: menulayouts/baseMenuLayout.js:346
 msgid "Pictures"
 msgstr "圖片"
 
-#: menulayouts/baseMenuLayout.js:336
+#: menulayouts/baseMenuLayout.js:346
 msgid "Videos"
 msgstr "影片"
 
-#: menulayouts/baseMenuLayout.js:336 menulayouts/baseMenuLayout.js:351
-#: menulayouts/baseMenuLayout.js:409
+#: menulayouts/baseMenuLayout.js:346 menulayouts/baseMenuLayout.js:361
+#: menulayouts/baseMenuLayout.js:419
 msgid "Network"
 msgstr "網路"
 
-#: menulayouts/ubuntudash.js:50 menulayouts/ubuntudash.js:323
-#: menulayouts/raven.js:49 menulayouts/raven.js:215 menuWidgets.js:783
-#: menuWidgets.js:1131 menuWidgets.js:1726 menuWidgets.js:1833
-#: menuWidgets.js:2015
-msgid "All Programs"
-msgstr "所有程式"
-
-#: menulayouts/ubuntudash.js:248 menulayouts/mint.js:228
+#: menulayouts/ubuntudash.js:260 menulayouts/mint.js:241
 msgid "Files"
 msgstr "檔案"
 
@@ -1409,120 +1543,106 @@ msgstr "檔案"
 msgid "Dash to Panel Settings"
 msgstr "Dash to Panel 設定"
 
-#: prefsWidgets.js:205
+#: prefsWidgets.js:226
 msgid "Included Layouts"
 msgstr "包含布局"
 
-#: prefsWidgets.js:226
+#: prefsWidgets.js:247
 msgid "Browse all"
 msgstr "瀏覽全部"
 
-#: prefsWidgets.js:235
+#: prefsWidgets.js:253
 msgid "Information"
 msgstr "資訊"
 
-#: menuWidgets.js:130
+#: menuWidgets.js:127
 msgid "Open Folder Location"
 msgstr "開啟資料夾位置"
 
-#: menuWidgets.js:146
+#: menuWidgets.js:143
 msgid "Current Windows:"
 msgstr "目前視窗："
 
-#: menuWidgets.js:164
+#: menuWidgets.js:161
 msgid "New Window"
 msgstr "新視窗"
 
-#: menuWidgets.js:174
+#: menuWidgets.js:171
 msgid "Launch using Dedicated Graphics Card"
 msgstr "以專用顯示卡啟動"
 
-#: menuWidgets.js:201
+#: menuWidgets.js:198
 msgid "Delete Desktop Shortcut"
 msgstr "刪除桌面捷徑"
 
-#: menuWidgets.js:209
+#: menuWidgets.js:206
 msgid "Create Desktop Shortcut"
 msgstr "建立桌面捷徑"
 
-#: menuWidgets.js:223
+#: menuWidgets.js:220
 msgid "Remove from Favorites"
 msgstr "自喜好中移除"
 
-#: menuWidgets.js:229
+#: menuWidgets.js:226
 msgid "Add to Favorites"
 msgstr "新增至喜好"
 
-#: menuWidgets.js:247 menuWidgets.js:299
+#: menuWidgets.js:243 menuWidgets.js:292
 msgid "Unpin from Arc Menu"
 msgstr "自 Arc Menu 中取消釘選"
 
-#: menuWidgets.js:261
+#: menuWidgets.js:257
 msgid "Pin to Arc Menu"
 msgstr "釘選至 Arc Menu"
 
-#: menuWidgets.js:275
+#: menuWidgets.js:270
 msgid "Show Details"
 msgstr "顯示詳細資訊"
 
-#: menuWidgets.js:775 menuWidgets.js:1718 menuWidgets.js:1825
-#: menuWidgets.js:2007
-msgid "Frequent Apps"
-msgstr "常用程式"
-
-#: menuWidgets.js:787 menuWidgets.js:924 menuWidgets.js:1730
-#: menuWidgets.js:1837 menuWidgets.js:2019
-msgid "Favorites"
-msgstr "喜好"
-
-#: menuWidgets.js:936
-msgid "Categories"
-msgstr "類別"
-
-#: menuWidgets.js:948
+#: menuWidgets.js:954
 msgid "Users"
 msgstr "使用者"
 
-#: menuWidgets.js:1072
+#: menuWidgets.js:1078
 msgid "Back"
 msgstr "後退"
 
-#: menuWidgets.js:1567
+#: menuWidgets.js:1570
 msgid "New"
 msgstr "新增"
 
-#: menuWidgets.js:2248
+#: menuWidgets.js:2269
 msgid "Type to search…"
 msgstr "輸入以搜尋…"
 
-#: menuWidgets.js:2489
+#: menuWidgets.js:2510
 msgid "Show Applications"
 msgstr "顯示應用程式"
 
-#: menuWidgets.js:2719
+#: menuWidgets.js:2748
 msgid "Add world clocks…"
 msgstr "新增世界時鐘…"
 
-#: menuWidgets.js:2720
+#: menuWidgets.js:2749
 msgid "World Clocks"
 msgstr "世界時鐘"
 
-#: menuWidgets.js:2829
+#: menuWidgets.js:2858
 msgid "Weather"
 msgstr "天氣"
 
-#: menuWidgets.js:2947
+#: menuWidgets.js:2978
 msgid "Select a location…"
 msgstr "選擇位置…"
 
-#: menuWidgets.js:2960
+#: menuWidgets.js:2991
 msgid "Loading…"
 msgstr "載入中…"
 
-#: menuWidgets.js:2970
+#: menuWidgets.js:3001
 msgid "Go online for weather information"
 msgstr "連網以取得天氣資訊"
 
-#: menuWidgets.js:2972
+#: menuWidgets.js:3003
 msgid "Weather information is currently unavailable"
 msgstr "目前無法取得天氣資訊"
