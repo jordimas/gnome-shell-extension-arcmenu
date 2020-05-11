@@ -813,20 +813,24 @@ var BaseLayout = class {
                         let appsScrollBoxAdj = this.applicationsScrollBox.get_vscroll_bar().get_adjustment();
                         appsScrollBoxAdj.set_value(0);
                         return Clutter.EVENT_PROPAGATE;
-                    }         
-                    else{
-                        return Clutter.EVENT_PROPAGATE;
-                    } 
+                    }  
+                    else if(this.newSearch.actor.get_parent() && !this.newSearch._highlightDefault){
+                        this.newSearch.highlightDefault(true);
+                        this.newSearch._defaultResult.actor.grab_key_focus();
+                        let appsScrollBoxAdj = this.applicationsScrollBox.get_vscroll_bar().get_adjustment();
+                        appsScrollBoxAdj.set_value(0);
+                        return Clutter.EVENT_STOP;
+                    }              
                 }
-                else if(this.activeMenuItem!=null && !this.activeMenuItem.actor.has_key_focus()){
+                else if(this.activeMenuItem !== null && !this.activeMenuItem.actor.has_key_focus()){
                     this.activeMenuItem.actor.grab_key_focus();
                     return Clutter.EVENT_STOP;
                 }
-                else if(this.activeMenuItem!=null){
+                else if(this.activeMenuItem !== null){
                     this.activeMenuItem.actor.grab_key_focus();
                     return Clutter.EVENT_PROPAGATE;
-                }                
-                else if(this.firstItem){
+                }
+                else if(this.firstItem && this.layoutProperties.Search && this.searchBox.hasKeyFocus()){
                     this.firstItem.actor.grab_key_focus();
                     let appsScrollBoxAdj = this.applicationsScrollBox.get_vscroll_bar().get_adjustment();
                     appsScrollBoxAdj.set_value(0);

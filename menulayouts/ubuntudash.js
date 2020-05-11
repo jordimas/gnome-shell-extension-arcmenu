@@ -448,6 +448,10 @@ var createMenu = class extends BaseMenuLayout.BaseLayout{
         appsScrollBoxAdj.set_value(0);
         if(!this.applicationsBox.contains(this.grid))
             this.applicationsBox.add(this.grid);
+        this.activeMenuItem = this.firstItem;
+        if(this.leftClickMenu.isOpen){
+            this.activeMenuItem.actor.grab_key_focus();
+        }
     }
    
     destroy(isReload){
