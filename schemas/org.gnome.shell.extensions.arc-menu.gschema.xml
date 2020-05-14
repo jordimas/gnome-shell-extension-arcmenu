@@ -84,6 +84,7 @@
         <value value="3" nick="PopOs"/>
         <value value="4" nick="Ubuntu"/>
         <value value="5" nick="ArchLinux"/>
+        <value value="6" nick="OpenSUSE"/>
     </enum>
     <enum id='org.gnome.shell.extensions.arc-menu.runner-position'>
         <value value="0" nick="Top"/>
