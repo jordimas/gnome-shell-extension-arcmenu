@@ -185,6 +185,7 @@ var DISTRO_ICONS = [
     { name: _("Pop!_OS"), path: '/media/icons/distros/pop-os-logo-symbolic.svg'},
     { name: _("Ubuntu"), path: '/media/icons/distros/ubuntu-logo-symbolic.svg'},
     { name: _("Arch Linux"), path: '/media/icons/distros/arch-logo-symbolic.svg'},
+    { name: _("OpenSUSE"), path: '/media/icons/distros/opensuse-logo-symbolic.svg'},
 ]
 
 var MENU_LAYOUT = {
@@ -297,7 +298,8 @@ var DistroIconsDisclaimer = '<i>"All brand icons are trademarks of their respect
                                 '\n\n•   <b>DEBIAN©</b> - is a registered trademark owned by Software in the Public Interest, Inc. Debian trademark is a registered United States trademark of Software in the Public Interest, Inc., managed by the Debian project.'+
                                 '\n\n•   <b>MANJARO©</b> - logo and name are trademarks of Manjaro GmbH &amp; Co. KG'+
                                 '\n\n•   <b>POP_OS!©</b> - logo and name are trademarks of system 76© Inc.'+
-                                '\n\n•   <b>ARCH LINUX©</b> - The stylized Arch Linux logo is a recognized trademark of Arch Linux, copyright 2002-2017 Judd Vinet and Aaron Griffin.';
+                                '\n\n•   <b>ARCH LINUX©</b> - The stylized Arch Linux logo is a recognized trademark of Arch Linux, copyright 2002-2017 Judd Vinet and Aaron Griffin.'+
+                                '\n\n•   <b>openSUSE©</b> - logo and name 2001–2020 SUSE LLC, © 2005–2020 openSUSE Contributors &amp; others.';
 
 var CREDITS = '\n<b>Credits:</b>'+
 		'\n\nCurrent Active Developers'+

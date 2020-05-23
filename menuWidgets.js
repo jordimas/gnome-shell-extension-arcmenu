@@ -1795,7 +1795,7 @@ var CategoryMenuItem = GObject.registerClass(class ArcMenu_CategoryMenuItem exte
         }
     }
 
-    activate(event) {
+    displayAppList(){
         this._button.activeCategory = this._name;
         if(this._category == Constants.CategoryType.HOME_SCREEN){
             this._button.activeCategory = _("Pinned Apps");
@@ -1805,17 +1805,20 @@ var CategoryMenuItem = GObject.registerClass(class ArcMenu_CategoryMenuItem exte
             this._button.displayFavorites();
         }
         else
-            this._button.displayCategoryAppList(this.appList);       
+            this._button.displayCategoryAppList(this.appList);  
+        this._button.activeCategoryType = this._category; 
+    }
+
+    activate(event) {
+        this.displayAppList();
         if(Utils.isTwoPanedLayout(this._layout))
-            this._button.setActiveCategory(this, true);
-        this._button.activeCategoryType = this._category;    
+            this._button.setActiveCategory(this, true); 
     }
 
     _onHover() {
         if (this.actor.hover){
-            if(Utils.isTwoPanedLayout(this._layout) && this._settings.get_boolean('activate-on-hover')){
+            if(Utils.isTwoPanedLayout(this._layout) && this._settings.get_boolean('activate-on-hover'))
                 this.activate();
-            } 
         }  
         super._onHover(); 
     }

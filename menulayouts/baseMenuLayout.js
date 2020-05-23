@@ -745,10 +745,12 @@ var BaseLayout = class {
         }            
         else{         
             this._clearActorsFromBox(); 
+            let appsScrollBoxAdj = this.applicationsScrollBox.get_vscroll_bar().get_adjustment();
+            appsScrollBoxAdj.set_value(0);
             this.applicationsBox.add(this.newSearch.actor); 
-            this.newSearch.highlightDefault(true);
             this.newSearch.actor.show();         
             this.newSearch.setTerms([searchString]); 
+            this.newSearch.highlightDefault(true);
         }            	
     }
 
@@ -805,27 +807,33 @@ var BaseLayout = class {
             case Clutter.KEY_Left:
             case Clutter.KEY_Right:       
                 if(this.layoutProperties.Search && this.searchBox.hasKeyFocus() && this.newSearch._defaultResult){
-                    if(this.newSearch.actor.get_parent()){
+                    if(this.newSearch.actor.get_parent() && this.newSearch._highlightDefault){
+                        this.newSearch.highlightDefault(false);
+                        this.newSearch._defaultResult.actor.grab_key_focus();
+                        let appsScrollBoxAdj = this.applicationsScrollBox.get_vscroll_bar().get_adjustment();
+                        appsScrollBoxAdj.set_value(0);
+                        return Clutter.EVENT_PROPAGATE;
+                    }  
+                    else if(this.newSearch.actor.get_parent() && !this.newSearch._highlightDefault){
+                        this.newSearch.highlightDefault(true);
                         this.newSearch._defaultResult.actor.grab_key_focus();
                         let appsScrollBoxAdj = this.applicationsScrollBox.get_vscroll_bar().get_adjustment();
                         appsScrollBoxAdj.set_value(0);
                         return Clutter.EVENT_STOP;
-                    }                   
-                    else{
-                        return Clutter.EVENT_PROPAGATE;
-                    } 
+                    }              
                 }
-                else if(this.activeMenuItem!=null && !this.activeMenuItem.actor.has_key_focus()){
+                else if(this.activeMenuItem !== null && !this.activeMenuItem.actor.has_key_focus()){
                     this.activeMenuItem.actor.grab_key_focus();
                     return Clutter.EVENT_STOP;
                 }
-                else if(this.activeMenuItem!=null){
+                else if(this.activeMenuItem !== null){
                     this.activeMenuItem.actor.grab_key_focus();
                     return Clutter.EVENT_PROPAGATE;
                 }
-                else if(this.firstItem){
+                else if(this.firstItem && this.layoutProperties.Search && this.searchBox.hasKeyFocus()){
                     this.firstItem.actor.grab_key_focus();
-                    this.firstItem = null;
+                    let appsScrollBoxAdj = this.applicationsScrollBox.get_vscroll_bar().get_adjustment();
+                    appsScrollBoxAdj.set_value(0);
                     return Clutter.EVENT_STOP;
                 }
                 else{
