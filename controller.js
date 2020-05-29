@@ -125,7 +125,7 @@ var MenuSettingsController = class {
             this._settings.connect('changed::mint-separator-index',this._updateButtonFavorites.bind(this)),
             this._settings.connect('changed::ubuntu-dash-pinned-app-list',this._updateButtonFavorites.bind(this)),
             this._settings.connect('changed::ubuntu-dash-separator-index',this._updateButtonFavorites.bind(this)),
-            this._settings.connect('changed::enable-pinned-apps',this._reload.bind(this)),
+            this._settings.connect('changed::default-menu-view',this._reload.bind(this)),
             this._settings.connect('changed::enable-ubuntu-homescreen',this._setDefaultMenuView.bind(this)),
             this._settings.connect('changed::menu-layout', this._updateMenuLayout.bind(this)),
             this._settings.connect('changed::enable-large-icons', this.updateIcons.bind(this)),

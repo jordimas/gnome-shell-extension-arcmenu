@@ -235,14 +235,16 @@ var createMenu = class extends BaseMenuLayout.BaseLayout{
         this.categoryDirectories = new Map();
 
         let extraCategories = this._settings.get_value("extra-categories").deep_unpack();
+        let defaultMenuView = this._settings.get_enum('default-menu-view');
 
         for(let i = 0; i < extraCategories.length; i++){
             let categoryEnum = extraCategories[i][0];
             let shouldShow = extraCategories[i][1];
-            //If ArcMenu layout set to "Pinned Apps" default view 
-            //and Extra Categories "Pinned Apps" is enabled
-            //do not display "Pinned Apps" as an extra category
-            if(categoryEnum == Constants.CategoryType.PINNED_APPS && shouldShow && this._settings.get_boolean('enable-pinned-apps'))
+            //If ArcMenu layout set to "Pinned Apps" default view and Extra Categories "Pinned Apps" is enabled,
+            //do not display "Pinned Apps" as an extra category -- Same for "Frequent Apps"
+            if(categoryEnum == Constants.CategoryType.PINNED_APPS && shouldShow && defaultMenuView === Constants.DefaultMenuView.PINNED_APPS)
+                shouldShow = false;
+            if(categoryEnum == Constants.CategoryType.FREQUENT_APPS && shouldShow && defaultMenuView === Constants.DefaultMenuView.FREQUENT_APPS)
                 shouldShow = false;
             if(shouldShow){
                 let categoryMenuItem = new MW.CategoryMenuItem(this, categoryEnum);
@@ -255,11 +257,16 @@ var createMenu = class extends BaseMenuLayout.BaseLayout{
 
     displayFavorites(){
         this.activeCategoryType = Constants.CategoryType.PINNED_APPS;
-        if(!this._settings.get_boolean('enable-pinned-apps')){
+        let defaultMenuView = this._settings.get_enum('default-menu-view');
+        if(defaultMenuView === Constants.DefaultMenuView.PINNED_APPS){
+            this.viewProgramsButton.actor.show();
+            this.backButton.actor.hide();
+        }
+        else if (defaultMenuView === Constants.DefaultMenuView.CATEGORIES_LIST){
             this.viewProgramsButton.actor.hide();
             this.backButton.actor.show();
         }
-        else{
+        else if (defaultMenuView === Constants.DefaultMenuView.FREQUENT_APPS){
             this.viewProgramsButton.actor.show();
             this.backButton.actor.hide();
         }
@@ -274,7 +281,8 @@ var createMenu = class extends BaseMenuLayout.BaseLayout{
 
     displayCategories(){
         this.activeCategoryType = Constants.CategoryType.CATEGORIES_LIST;
-        if(this._settings.get_boolean('enable-pinned-apps')){
+        let defaultMenuView = this._settings.get_enum('default-menu-view');
+        if(defaultMenuView === Constants.DefaultMenuView.PINNED_APPS || defaultMenuView === Constants.DefaultMenuView.FREQUENT_APPS){
             this.viewProgramsButton.actor.hide();
             this.backButton.actor.show();
         }
@@ -288,12 +296,15 @@ var createMenu = class extends BaseMenuLayout.BaseLayout{
 
     setDefaultMenuView(){
         super.setDefaultMenuView();
-        if(this._settings.get_boolean('enable-pinned-apps')){
+        let defaultMenuView = this._settings.get_enum('default-menu-view');
+        global.log(defaultMenuView);
+        if(defaultMenuView === Constants.DefaultMenuView.PINNED_APPS)
             this.displayFavorites();
-        }	
-        else{
+        else if(defaultMenuView === Constants.DefaultMenuView.CATEGORIES_LIST)
             this.displayCategories();
-        }
+        else if(defaultMenuView === Constants.DefaultMenuView.FREQUENT_APPS)
+            this.displayFrequentApps();
+        
         this.backButton.actor.hide();
         this.viewProgramsButton.actor.show();
     }
@@ -303,6 +314,36 @@ var createMenu = class extends BaseMenuLayout.BaseLayout{
         this.backButton.actor.show();
         this.viewProgramsButton.actor.hide();
         this.activeCategoryType = Constants.CategoryType.CATEGORY_APP_LIST; 
+    }
+
+    displayFrequentApps(){
+        this._clearActorsFromBox();
+        this.viewProgramsButton.actor.show();
+        this.backButton.actor.hide();
+        let mostUsed = Shell.AppUsage.get_default().get_most_used();
+        let appList = [];
+        for (let i = 0; i < mostUsed.length; i++) {
+            if (mostUsed[i] && mostUsed[i].get_app_info().should_show()){
+                let item = new MW.ApplicationMenuItem(this, mostUsed[i]);
+                item.forceLargeIcon();
+                appList.push(item);
+            }
+        }
+        let activeMenuItemSet = false;
+        for (let i = 0; i < appList.length; i++) {
+            let item = appList[i];
+            if(item.actor.get_parent())
+                item.actor.get_parent().remove_actor(item.actor);
+            if (!item.actor.get_parent()) 
+                this.applicationsBox.add_actor(item.actor);
+            if(!activeMenuItemSet){
+                activeMenuItemSet = true;  
+                this.activeMenuItem = item;
+                if(this.leftClickMenu.isOpen){
+                    this.mainBox.grab_key_focus();
+                }
+            }    
+        }
     }
 
     _onSearchBoxChanged(searchBox, searchString){  

@@ -841,8 +841,11 @@ var CategoryMenuButton = class ArcMenu_CategoryMenuButton extends SessionButton 
             this._button.activeCategory = _("Pinned Apps");
             this._button.displayFavorites();
         }
-        else if(this._category == Constants.CategoryType.PINNED_APPS){
+        else if(this._category == Constants.CategoryType.PINNED_APPS)
             this._button.displayFavorites();
+        else if(this._category == Constants.CategoryType.FREQUENT_APPS){
+            this._button.setFrequentAppsList(this);
+            this._button.displayCategoryAppList(this.appList);  
         }
         else
             this._button.displayCategoryAppList(this.appList);       
@@ -1093,17 +1096,21 @@ var BackMenuItem = GObject.registerClass(class ArcMenu_BackMenuItem extends ArcM
         this.actor.add_child(backLabel);
     }
     activate(event) {
+        let defaultMenuView = this._settings.get_enum('default-menu-view');
         if(this._layout === Constants.MENU_LAYOUT.Default){
             if(this._button.activeCategoryType === Constants.CategoryType.SEARCH_RESULTS || this._button.activeCategoryType === Constants.CategoryType.ALL_PROGRAMS){ 
                 this._button.resetSearch();
-                if(this._settings.get_boolean('enable-pinned-apps'))
+                if(defaultMenuView === Constants.DefaultMenuView.PINNED_APPS)
                     this._button.displayFavorites();
-                else 
+                else if(defaultMenuView === Constants.DefaultMenuView.CATEGORIES_LIST)
                     this._button.displayCategories();
+                else if(defaultMenuView === Constants.DefaultMenuView.FREQUENT_APPS)
+                    this._button.displayFrequentApps();
             }
-            else if(this._button.activeCategoryType === Constants.CategoryType.CATEGORIES_LIST && this._settings.get_boolean('enable-pinned-apps')){ 
+            else if(this._button.activeCategoryType === Constants.CategoryType.CATEGORIES_LIST && defaultMenuView === Constants.DefaultMenuView.PINNED_APPS)
                 this._button.displayFavorites();
-            }
+            else if(this._button.activeCategoryType === Constants.CategoryType.CATEGORIES_LIST && defaultMenuView === Constants.DefaultMenuView.FREQUENT_APPS)
+                this._button.displayFrequentApps();
             else
                 this._button.displayCategories();
         }
@@ -1140,14 +1147,15 @@ var ViewAllPrograms = GObject.registerClass(class ArcMenu_ViewAllPrograms extend
         this.actor.add_child(backLabel);
     }
     activate(event) {
-      this._button._clearActorsFromBox();
-      if(this._settings.get_boolean('enable-pinned-apps'))
-          this._button.displayCategories();
-      else{ 
-       	  this._button.displayAllApps();
-          this._button.activeCategoryType = Constants.CategoryType.ALL_PROGRAMS;
-      }
-      super.activate(event);
+        this._button._clearActorsFromBox();
+        let defaultMenuView = this._settings.get_enum('default-menu-view');
+        if(defaultMenuView === Constants.DefaultMenuView.PINNED_APPS || defaultMenuView === Constants.DefaultMenuView.FREQUENT_APPS)
+            this._button.displayCategories();
+        else{ 
+            this._button.displayAllApps();
+            this._button.activeCategoryType = Constants.CategoryType.ALL_PROGRAMS;
+        }
+        super.activate(event);
     }
 });
 
@@ -1677,6 +1685,10 @@ var ApplicationMenuItem = GObject.registerClass(class ArcMenu_ApplicationMenuIte
             this._iconBin.set_child(icon);
         }
     }
+    forceLargeIcon(){
+        let icon = this._app.create_icon_texture(MEDIUM_ICON_SIZE);
+        this._iconBin.set_child(icon);
+    }
 });
 var SearchResultItem = GObject.registerClass(class ArcMenu_SearchResultItem extends ArcMenuPopupBaseMenuItem{
     _init(button, app, path) {
@@ -1801,8 +1813,11 @@ var CategoryMenuItem = GObject.registerClass(class ArcMenu_CategoryMenuItem exte
             this._button.activeCategory = _("Pinned Apps");
             this._button.displayFavorites();
         }
-        else if(this._category == Constants.CategoryType.PINNED_APPS){
+        else if(this._category == Constants.CategoryType.PINNED_APPS)
             this._button.displayFavorites();
+        else if(this._category == Constants.CategoryType.FREQUENT_APPS){
+            this._button.setFrequentAppsList(this);
+            this._button.displayCategoryAppList(this.appList);  
         }
         else
             this._button.displayCategoryAppList(this.appList);  
@@ -1999,6 +2014,10 @@ var SimpleMenuItem = GObject.registerClass(class ArcMenu_SimpleMenuItem extends 
         this._button.activeCategory = this._name;
         if(this._category == Constants.CategoryType.PINNED_APPS)
             this._button.displayFavorites();
+        else if(this._category == Constants.CategoryType.FREQUENT_APPS){
+            this._button.setFrequentAppsList(this);
+            this._button.displayCategoryAppList(this.appList);  
+        }
         else
             this._button.displayCategoryAppList(this.appList, this);       
         this._button.activeCategoryType = this._category;
@@ -2180,6 +2199,10 @@ var CategorySubMenuItem = GObject.registerClass(class ArcMenu_CategorySubMenuIte
                 this._button.activeCategory = this._name;
                 if(this._category == Constants.CategoryType.PINNED_APPS)
                     this._button.displayFavorites();
+                else if(this._category == Constants.CategoryType.FREQUENT_APPS){
+                    this._button.setFrequentAppsList(this);
+                    this._button.displayCategoryAppList(this.appList, this);  
+                }
                 else
                     this._button.displayCategoryAppList(this.appList, this);
                 this._button.activeCategoryType = this._category;

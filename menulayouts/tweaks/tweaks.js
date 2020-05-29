@@ -724,15 +724,10 @@ var TweaksDialog = GObject.registerClass(
             });
             defaultLeftBoxCombo.append_text(_("Pinned Apps"));
             defaultLeftBoxCombo.append_text(_("Categories List"));
-            if(this._settings.get_boolean('enable-pinned-apps'))
-                defaultLeftBoxCombo.set_active(0);
-            else 
-                defaultLeftBoxCombo.set_active(1);
+            defaultLeftBoxCombo.append_text(_("Frequent Apps"));
+            defaultLeftBoxCombo.set_active(this._settings.get_enum('default-menu-view'));
             defaultLeftBoxCombo.connect('changed', (widget) => {
-                if(widget.get_active()==0)
-                    this._settings.set_boolean('enable-pinned-apps',true);
-                if(widget.get_active()==1)
-                    this._settings.set_boolean('enable-pinned-apps',false);
+                this._settings.set_enum('default-menu-view', widget.get_active());
             });
 
             defaultLeftBoxRow.add(defaultLeftBoxLabel);

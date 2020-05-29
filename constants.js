@@ -46,6 +46,12 @@ var CategoryType = {
     CATEGORY_APP_LIST: 7
 };
 
+var DefaultMenuView = {
+    PINNED_APPS: 0,
+    CATEGORIES_LIST: 1,
+    FREQUENT_APPS: 2
+}
+
 var CATEGORIES = [
     {Category: CategoryType.FAVORITES, Name: _("Favorites"), Icon: 'emblem-favorite-symbolic'},
     {Category: CategoryType.FREQUENT_APPS, Name: _("Frequent Apps"), Icon: 'user-bookmarks-symbolic'},
