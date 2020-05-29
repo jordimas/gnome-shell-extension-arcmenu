@@ -1113,10 +1113,9 @@ var GeneralPage = GObject.registerClass(
                 this._settings.set_boolean('disable-activities-button', widget.get_active());
             });
 
-            let warningPath = Me.path + Constants.WARNING_ICON.Path;
-            let [width, height] = Constants.WARNING_ICON.Size;
-            let pixbuf = GdkPixbuf.Pixbuf.new_from_file_at_size(warningPath, width, height);
-            let warningImage = new Gtk.Image({ pixbuf: pixbuf });
+            let warningImage = new Gtk.Image({ 
+                gicon: Gio.icon_new_for_string(Me.path + Constants.WARNING_ICON.Path)
+            });
             let warningImageBox = new Gtk.VBox({
                 margin_top: 0,
                 margin_bottom: 0,
@@ -1142,7 +1141,9 @@ var GeneralPage = GObject.registerClass(
                 xalign: 0,
                 hexpand: true
             });    
-            let panelWarningImage = new Gtk.Image({ pixbuf: pixbuf });
+            let panelWarningImage = new Gtk.Image({ 
+                gicon: Gio.icon_new_for_string(Me.path + Constants.WARNING_ICON.Path) 
+            });
             let panelWarningImageBox = new Gtk.VBox({
                 margin_top: 0,
                 margin_bottom: 0,
@@ -2187,7 +2188,7 @@ var AppearancePage = GObject.registerClass(
             let overrideArcMenuFrame = new PW.FrameBox();
             let overrideArcMenuRow = new PW.FrameBoxRow();
             let overrideArcMenuLabel = new Gtk.Label({
-                label: _("Override Arc Menu Theme"),
+                label: _("Override Menu Theme"),
                 use_markup: true,
                 xalign: 0,
                 hexpand: true
@@ -2283,9 +2284,9 @@ var AppearancePage = GObject.registerClass(
                 xalign: 0,
                 hexpand: true
             });
-            let pixbuf = GdkPixbuf.Pixbuf.new_from_file_at_size(Me.path + "/media/misc/browse-layouts-symbolic.svg", 18, 14);
+
             let image = new Gtk.Image({
-                pixbuf: pixbuf
+                gicon: Gio.icon_new_for_string(Me.path + "/media/misc/browse-layouts-symbolic.svg")
             });
             let layoutButton = new Gtk.Button({
                 label: _("Browse Layouts") + " ",
@@ -3725,9 +3726,8 @@ var OverrideArcMenuThemeWindow = GObject.registerClass(
                         dialog.destroy();
                 }); 
             });
-            let pixbuf = GdkPixbuf.Pixbuf.new_from_file_at_size(Me.path + "/media/misc/browse-presets-symbolic.svg", 18, 14);
             let image = new Gtk.Image({
-                pixbuf: pixbuf
+                gicon: Gio.icon_new_for_string(Me.path + "/media/misc/browse-presets-symbolic.svg")
             });
             let addButton = new Gtk.Button({
                 label: _("Browse Presets") + " ",
@@ -5317,9 +5317,7 @@ function buildPrefsWidget() {
 
 function checkIfValidShortcut(frameRow, label, icon){
     if(frameRow._cmd.endsWith(".desktop") && !Gio.DesktopAppInfo.new(frameRow._cmd)){
-        let warningPath = Me.path + Constants.WARNING_ICON.Path;
-        let pixbuf = GdkPixbuf.Pixbuf.new_from_file_at_size(warningPath, 22, 22);
-        icon.gicon = pixbuf;
+        icon.gicon = Gio.icon_new_for_string(Me.path + Constants.WARNING_ICON.Path);
         frameRow.tooltip_text = _("Error - Invalid Shortcut");
         label.label = "<b><i>" + _("Invalid Shortcut") + "</i></b> "+ _(label.label);
     } 

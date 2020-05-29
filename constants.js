@@ -275,7 +275,7 @@ var COLOR_PRESET = {
 };
 
 var WARNING_ICON = {
-    Path: '/media/misc/warning.svg',
+    Path: '/media/misc/warning-symbolic.svg',
     Size: [30, 30] 
 };
 
@@ -284,7 +284,7 @@ var HAMBURGER = {
 };
 
 var KEYBOARD_LOGO = {
-    Path: '/media/misc/keyboard.svg',
+    Path: '/media/misc/keyboard-symbolic.svg',
     Size: [256, 72] 
 };
 
