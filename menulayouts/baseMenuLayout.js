@@ -610,6 +610,15 @@ var BaseLayout = class {
         }
     }
 
+    setFrequentAppsList(categoryMenuItem){
+        categoryMenuItem.appList = [];
+        let mostUsed = Shell.AppUsage.get_default().get_most_used();
+        for (let i = 0; i < mostUsed.length; i++) {
+            if (mostUsed[i] && mostUsed[i].get_app_info().should_show())
+                categoryMenuItem.appList.push(mostUsed[i]);
+        }
+    }
+
     _clearActorsFromBox(box){
         if(!box){
             box = this.applicationsBox;

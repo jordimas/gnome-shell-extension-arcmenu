@@ -86,6 +86,11 @@
         <value value="5" nick="ArchLinux"/>
         <value value="6" nick="OpenSUSE"/>
     </enum>
+    <enum id='org.gnome.shell.extensions.arc-menu.default-menu-view'>
+        <value value="0" nick="Pinned_Apps"/>
+        <value value="1" nick="Categories_List"/>
+        <value value="2" nick="Frequent_Apps"/>
+    </enum>
     <enum id='org.gnome.shell.extensions.arc-menu.runner-position'>
         <value value="0" nick="Top"/>
         <value value="1" nick="Centered"/>
@@ -176,10 +181,10 @@
       <summary>disable tooltips</summary>
       <description>disable tooltips.</description>
     </key>
-    <key type="b" name="enable-pinned-apps">
-      <default>true</default>
-      <summary>Enable Pinned Apps</summary>
-      <description>Enable Pinned Apps.</description>
+    <key enum="org.gnome.shell.extensions.arc-menu.default-menu-view" name="default-menu-view">
+      <default>'Pinned_Apps'</default>
+      <summary>Set ArcMenu Layout Default View</summary>
+      <description>Set ArcMenu Layout Default View.</description>
     </key>
     <key type="b" name="enable-ubuntu-homescreen">
       <default>true</default>

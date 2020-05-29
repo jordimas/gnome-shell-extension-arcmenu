@@ -575,7 +575,7 @@ var ApplicationsMenu = class ArcMenu_ApplicationsMenu extends PopupMenu.PopupMen
     }
 
     _onOpenEvent(){
-        this._button.menu.actor._muteInput = false;
+        this._button.leftClickMenu.actor._muteInput = false;
         if(this._button.MenuLayout && this._button.MenuLayout.needsReload){
             this._button.MenuLayout.reload();
             this._button.MenuLayout.needsReload = false;
