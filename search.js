@@ -69,16 +69,16 @@ var ListSearchResult = class ArcMenu_ListSearchResult {
         });
 
         if(this.searchType == Constants.SearchType.GRID_VIEW){
-            let ICON_SIZE = 32;
+            let iconSize = 32;
             if(this.layout !== Constants.MENU_LAYOUT.Elementary && this.layout !== Constants.MENU_LAYOUT.UbuntuDash)
-                ICON_SIZE = 24;
+                iconSize = 24;
             this.menuItem.actor.style = "border-radius:4px;";
             // An icon for, or thumbnail of, content
-            let icon = this.metaInfo['createIcon'](ICON_SIZE);
+            let icon = this.metaInfo['createIcon'](iconSize);
             if (icon)
                 this.menuItem.actor.add_child(icon); 
             else
-                this.menuItem.actor.style = (ICON_SIZE == 32) ?  "border-radius:4px; padding: 12px 0px;":  "border-radius:4px; padding: 9px 0px;";
+                this.menuItem.actor.style = (iconSize == 32) ?  "border-radius:4px; padding: 12px 0px;":  "border-radius:4px; padding: 9px 0px;";
 
             if(this._settings.get_boolean('krunner-show-details') && this.layout == Constants.MENU_LAYOUT.Raven){
                 this.menuItem.actor.style = "height:40px";
@@ -184,7 +184,7 @@ var AppSearchResult = class  ArcMenu_AppSearchResult {
         this.layout = this._settings.get_enum('menu-layout');
         this._resultsView = resultsView;
         this._app = appSys.lookup_app(this.metaInfo['id']);
-
+        let iconSize;
         this.label = new St.Label({
             text: this.metaInfo['name'],
             y_expand: gridView ? false : true,
@@ -203,15 +203,15 @@ var AppSearchResult = class  ArcMenu_AppSearchResult {
                 this.menuItem.actor.vertical = true;
                 if(this.layout == Constants.MENU_LAYOUT.Elementary || this.layout == Constants.MENU_LAYOUT.UbuntuDash){
                     this.menuItem.actor.style ='border-radius:4px; padding: 5px; spacing: 0px; width:95px; height:95px;';
-                    ICON_SIZE = 52;
+                    iconSize = 52;
                 }
                 else {
                     this.menuItem.actor.style ='border-radius:4px; padding: 5px; spacing: 0px; width:80px;height:80px;';
-                    ICON_SIZE = 36;
+                    iconSize = 36;
                 } 
-                this.icon = this.metaInfo['createIcon'](ICON_SIZE);         
+                this.icon = this.metaInfo['createIcon'](iconSize);         
                 if(this.icon){
-                    this.icon.icon_size = ICON_SIZE;
+                    this.icon.icon_size = iconSize;
                     this.icon.y_align = Clutter.ActorAlign.CENTER;
                     this.icon.x_align = Clutter.ActorAlign.CENTER;
                     this.menuItem.actor.add_child(this.icon);   
@@ -222,6 +222,7 @@ var AppSearchResult = class  ArcMenu_AppSearchResult {
                     else 
                         this.menuItem.actor.style = "border-radius:4px; padding: 20px 0px;";
                 } 
+                this.menuItem.actor.add_child(this.label);
             }
         }
         if(!gridView){
