@@ -90,9 +90,10 @@ var ListSearchResult = class ArcMenu_ListSearchResult {
                 if(icon) 
                     icon.icon_size = 32;
                 
-                let text = this.metaInfo['description'] ? this.metaInfo['description'] : '';
-                if(text == '')
-                    text = this._app.get_description() ? this._app.get_description() : '';
+                let text = this.metaInfo['description'] ? this.metaInfo['description'] : null;
+                if(!text && this._app)
+                    text = this._app.get_description() ? this._app.get_description() : null;
+
                 this.label.y_expand = true;
                 let descriptionLabel = new St.Label({ 
                     text: text,
@@ -100,11 +101,14 @@ var ListSearchResult = class ArcMenu_ListSearchResult {
                     x_expand: true,
                     y_align: Clutter.ActorAlign.CENTER 
                 });
-    
-                descriptionBox.add(this.label);                           
-                descriptionBox.add(descriptionLabel);
-    
-                this.menuItem.actor.add_child(descriptionBox);
+                if(text){
+                    descriptionBox.add(this.label);
+                    descriptionBox.add(descriptionLabel);
+                    this.menuItem.actor.add_child(descriptionBox);
+                }
+                else{
+                    this.menuItem.actor.add_child(this.label);
+                }
             }
             else if(this.layout == Constants.MENU_LAYOUT.Raven){
                 this.menuItem.actor.style = null;
@@ -129,20 +133,23 @@ var ListSearchResult = class ArcMenu_ListSearchResult {
                     this.menuItem.actor.add_child(icon);   
                 }
                 
-                let text = this.metaInfo['description'] ? this.metaInfo['description'] : '';
-                if(text == '')
-                    text = this._app.get_description() ? this._app.get_description() : '';
-                
+                let text = this.metaInfo['description'] ? this.metaInfo['description'] : null;
+                if(!text && this._app)
+                    text = this._app.get_description() ? this._app.get_description() : null;
+
                 let descriptionLabel = new St.Label({ 
                     text: text,
                     x_align: Clutter.ActorAlign.START,
                     x_expand: true
                 });
-    
-                descriptionBox.add(this.label);                           
-                descriptionBox.add(descriptionLabel);
-    
-                this.menuItem.actor.add_child(descriptionBox);
+                if(text){
+                    descriptionBox.add(this.label);
+                    descriptionBox.add(descriptionLabel);
+                    this.menuItem.actor.add_child(descriptionBox);
+                }
+                else{
+                    this.menuItem.actor.add_child(this.label);
+                }
             }
             else{
                 this.menuItem.actor.style = null;
@@ -240,19 +247,23 @@ var AppSearchResult = class  ArcMenu_AppSearchResult {
                     this.menuItem.actor.add_child(this.icon);   
                 }      
     
-                let text = this.metaInfo['description'] ? this.metaInfo['description'] : '';
-                if(text == '')
-                    text = this._app.get_description() ? this._app.get_description() : '';
+                let text = this.metaInfo['description'] ? this.metaInfo['description'] : null;
+                if(!text && this._app)
+                    text = this._app.get_description() ? this._app.get_description() : null;
     
                 let descriptionLabel = new St.Label({ 
                     text: text,
                     x_align: Clutter.ActorAlign.START,
                     x_expand: true
                 });
-    
-                descriptionBox.add(this.label);
-                descriptionBox.add(descriptionLabel);
-                this.menuItem.actor.add_child(descriptionBox);
+                if(text){
+                    descriptionBox.add(this.label);
+                    descriptionBox.add(descriptionLabel);
+                    this.menuItem.actor.add_child(descriptionBox);
+                }
+                else{
+                    this.menuItem.actor.add_child(this.label);
+                }
             }
             else{
                 this.menuItem.actor.style = null;
