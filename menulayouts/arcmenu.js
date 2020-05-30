@@ -297,7 +297,6 @@ var createMenu = class extends BaseMenuLayout.BaseLayout{
     setDefaultMenuView(){
         super.setDefaultMenuView();
         let defaultMenuView = this._settings.get_enum('default-menu-view');
-        global.log(defaultMenuView);
         if(defaultMenuView === Constants.DefaultMenuView.PINNED_APPS)
             this.displayFavorites();
         else if(defaultMenuView === Constants.DefaultMenuView.CATEGORIES_LIST)
