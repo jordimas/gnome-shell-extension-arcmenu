@@ -59,6 +59,8 @@ function getMenuLayout(button, layout){
             return new MenuLayout.chromebook.createMenu(button);
         case Constants.MENU_LAYOUT.Raven:
             return new MenuLayout.raven.createMenu(button);
+        case Constants.MENU_LAYOUT.Neat:
+            return new MenuLayout.neat.createMenu(button);
     }
 }
 

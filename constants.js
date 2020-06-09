@@ -210,7 +210,8 @@ var MENU_LAYOUT = {
     Windows: 12,
     Runner: 13,
     Chromebook: 14,
-    Raven: 15
+    Raven: 15,
+    Neat: 16
 };
 
 var TRADITIONAL_MENU_STYLE = [   
@@ -219,7 +220,8 @@ var TRADITIONAL_MENU_STYLE = [
     { thumbnail: '/media/layouts/whisker-menu.svg', name: _('Whisker Menu Style'), layout: MENU_LAYOUT.Whisker},
     { thumbnail: '/media/layouts/gnome-menu.svg', name: _('GNOME Menu Style'), layout: MENU_LAYOUT.GnomeMenu},
     { thumbnail: '/media/layouts/mint-menu.svg', name: _('Mint Menu Style'), layout: MENU_LAYOUT.Mint},
-    { thumbnail: '/media/layouts/budgie-menu.svg', name: _('Budgie Style'), layout: MENU_LAYOUT.Budgie}];
+    { thumbnail: '/media/layouts/budgie-menu.svg', name: _('Budgie Style'), layout: MENU_LAYOUT.Budgie},
+    { thumbnail: '/media/layouts/neat-menu.svg', name: _('Neat Menu Style'), layout: MENU_LAYOUT.Neat}];
 
 var MODERN_MENU_STYLE = [   
     { thumbnail: '/media/layouts/windows-10.svg', name: _('Windows 10 Style'), layout: MENU_LAYOUT.Windows},
