@@ -55,8 +55,6 @@ var createMenu = class extends BaseMenuLayout.BaseLayout{
         this.user = new MW.UserMenuItem(this, userAvatarSize);
         this.user.actor.x_expand = true;
         this.user.actor.x_align = Clutter.ActorAlign.FILL;
-        this.user.actor.y_expand = true;
-        this.user.actor.y_align = Clutter.ActorAlign.FILL;
         this.actionsBox.add(this.user.actor);
         
         let settingsButton = new MW.SettingsButton(this);
@@ -102,9 +100,7 @@ var createMenu = class extends BaseMenuLayout.BaseLayout{
         });
 
         this.applicationsBox = new St.BoxLayout({
-            vertical: true,
-            y_expand: true,
-            y_align: Clutter.ActorAlign.FILL
+            vertical: true
         });
         this.applicationsScrollBox = this._createScrollBox({
             x_fill: true,
@@ -124,7 +120,7 @@ var createMenu = class extends BaseMenuLayout.BaseLayout{
         this.leftBox = new St.BoxLayout({
             x_expand: true,
             y_expand: true,
-            y_align: Clutter.ActorAlign.START,
+            y_align: Clutter.ActorAlign.FILL,
             vertical: true,
             style_class: 'left-box'
         });
@@ -136,7 +132,7 @@ var createMenu = class extends BaseMenuLayout.BaseLayout{
 
         this.categoriesScrollBox = this._createScrollBox({
             x_expand: true, 
-            y_expand: false,
+            y_expand: true,
             x_fill: true,
             y_fill: false,
             y_align: Clutter.ActorAlign.START,
