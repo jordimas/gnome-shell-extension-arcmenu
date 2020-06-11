@@ -450,7 +450,7 @@ var ArcMenuPopupBaseMenuItem = GObject.registerClass(
         if(event.get_button() == 1 && !this._button._blockActivateEvent && this.pressed){
             this.activate(event); 
         }
-  	    if(event.get_button() == 3 && this.pressed){
+        if(event.get_button() == 3 && this.pressed){
             if(this.popupContextMenu)
                 this.popupContextMenu();
         }
@@ -867,7 +867,7 @@ var MintButton = class ArcMenu_MintButton extends SessionButton {
         this.disableMenuToggle();
     }
     _onButtonReleaseEvent(actor, event) {
-  	    if(event.get_button()==3){
+        if(event.get_button()==3){
             if(this.rightClickMenu == undefined){
                 this.rightClickMenu = new AppRightClickMenu(this.actor, this._app, this._button);
                 if(this.layout == Constants.MENU_LAYOUT.UbuntuDash)
@@ -882,7 +882,7 @@ var MintButton = class ArcMenu_MintButton extends SessionButton {
             if(!this.rightClickMenu.isOpen)
                 this.rightClickMenu.redisplay();
             this.rightClickMenu.toggle();
-	    }   
+      }   
     }
     activate() {
         if(this._app){
@@ -925,6 +925,42 @@ var SettingsButton = class ArcMenu_SettingsButton extends SessionButton {
     }
     activate() {
         Util.spawnCommandLine('gnome-control-center');
+    }
+};
+
+// Menu Button shortcut item class
+var ShortcutButtonItem = class ArcMenu_ShortcutButtonItem extends SessionButton {
+    constructor(button, name, icon, command) {
+        super(button, _(name), icon);
+        this._command = command;
+        this.shouldShow = true;
+        //Check for default commands--------
+        if(this._command == "ArcMenu_Software"){
+            if(GLib.find_program_in_path('gnome-software'))
+                this._command = 'org.gnome.Software.desktop';
+            else if(GLib.find_program_in_path('pamac-manager'))
+                this._command = 'pamac-manager.desktop';
+            else if(GLib.find_program_in_path('io.elementary.appcenter'))
+                this._command = 'io.elementary.appcenter.desktop';
+            else if(GLib.find_program_in_path('snap-store'))
+                this._command = 'snap-store_ubuntu-software.desktop';
+            else
+                this._command = 'ArcMenu_unfound.desktop'
+        }
+        this._app = Shell.AppSystem.get_default().lookup_app(this._command);
+        if(this._command.endsWith(".desktop") && !Shell.AppSystem.get_default().lookup_app(this._command)){
+            this.shouldShow = false;
+        } 
+    }
+    activate() {
+        if(this._command == "ArcMenu_ActivitiesOverview")
+            Main.overview.show();
+        else if(this._command == "ArcMenu_RunCommand")
+            Main.openRunDialog();
+        else if(this._app)
+            this._app.open_new_window(-1);
+        else
+            Util.spawnCommandLine(this._command);
     }
 };
 
@@ -1113,6 +1149,9 @@ var BackMenuItem = GObject.registerClass(class ArcMenu_BackMenuItem extends ArcM
                 this._button.displayFrequentApps();
             else
                 this._button.displayCategories();
+        }
+        else if(this._layout === Constants.MENU_LAYOUT.Neat){
+          this._button.displayCategories();
         }
         else{
             if(this._button.favoritesMenu) 
@@ -1505,36 +1544,36 @@ var FavoritesMenuItem = GObject.registerClass({
     _onDragMotion(dragEvent) {
         this.newIndex = Math.floor((this._draggable._dragY - this.posY) / (this.rowHeight));
         
-    	if(this.newIndex > this._parentBox.get_children().length -1)
+      if(this.newIndex > this._parentBox.get_children().length -1)
             this.newIndex = this._parentBox.get_children().length -1;
         if(this.newIndex < 0)
-            this.newIndex = 0;	
-    	if(this._parentBox.get_child_at_index(this.newIndex) != this._emptyDropTarget)
+            this.newIndex = 0;  
+      if(this._parentBox.get_child_at_index(this.newIndex) != this._emptyDropTarget)
             this._parentBox.set_child_at_index(this._emptyDropTarget, this.newIndex);
-	    
-	    return DND.DragMotionResult.CONTINUE;
+      
+      return DND.DragMotionResult.CONTINUE;
     }
     _onDragCancelled() {
         Main.overview.cancelledItemDrag(this);
     }
     _onDragEnd() {    
- 	    this._parentBox.remove_child(this._emptyDropTarget); 
+       this._parentBox.remove_child(this._emptyDropTarget); 
         let index = this.newIndex;
         if(index > this.startIndex)
-        	index--;
+          index--;
         if(index > this._parentBox.get_children().length -1)
-        	index = this._parentBox.get_children().length -1;
+          index = this._parentBox.get_children().length -1;
         if(index < 0)
-            index = 0;	
-        if(index != this.startIndex){	
-            this._parentBox.set_child_at_index(this.actor,index);    	
+            index = 0;  
+        if(index != this.startIndex){  
+            this._parentBox.set_child_at_index(this.actor,index);      
             let temp = this._button.favoritesArray[this.startIndex];
             this._button.favoritesArray.splice(this.startIndex,1);
             this._button.favoritesArray.splice(index,0,temp);
         }
         Main.overview.endItemDrag(this);
         DND.removeDragMonitor(this._dragMonitor);   
-        this.emit('saveSettings');	  
+        this.emit('saveSettings');    
     }
     getDragActor() {
         let addStyle = this._settings.get_boolean('enable-custom-arc-menu');
