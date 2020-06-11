@@ -55,7 +55,7 @@ var createMenu = class extends BaseMenuLayout.BaseLayout{
             y_align: Clutter.ActorAlign.FILL,
             vertical: true
         });
-        if(this._settings.get_enum('searchbar-location-redmond') === Constants.SearchbarLocation.TOP)
+        if(this._settings.get_enum('searchbar-default-top-location') === Constants.SearchbarLocation.TOP)
             this.subMainBox.add(this.searchBox.actor);
         
         this.applicationsBox = new St.BoxLayout({
@@ -88,7 +88,7 @@ var createMenu = class extends BaseMenuLayout.BaseLayout{
         this.applicationsScrollBox.add_actor(this.applicationsBox);
 
         this.subMainBox.add(this.applicationsScrollBox);
-        if(this._settings.get_enum('searchbar-location-redmond') === Constants.SearchbarLocation.BOTTOM){
+        if(this._settings.get_enum('searchbar-default-top-location') === Constants.SearchbarLocation.BOTTOM){
             this.searchBox.actor.style = "padding-top: 0.75em; padding-bottom: 0.25em; padding-left: 1em; padding-right: 0.25em; margin-right: .5em;";
             this.subMainBox.add(this.searchBox.actor);
         }

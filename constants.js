@@ -43,13 +43,19 @@ var CategoryType = {
     HOME_SCREEN: 4,
     SEARCH_RESULTS: 5,
     CATEGORIES_LIST: 6,
-    CATEGORY_APP_LIST: 7
+    CATEGORY_APP_LIST: 7,
+    ALL_PROGRAMS_BUTTON: 8,
 };
 
 var DefaultMenuView = {
     PINNED_APPS: 0,
     CATEGORIES_LIST: 1,
     FREQUENT_APPS: 2
+}
+
+var DefaultMenuViewTognee = {
+    CATEGORIES_LIST: 0,
+    ALL_PROGRAMS: 1
 }
 
 var CATEGORIES = [
@@ -211,7 +217,7 @@ var MENU_LAYOUT = {
     Runner: 13,
     Chromebook: 14,
     Raven: 15,
-    Neat: 16
+    Tognee : 16
 };
 
 var TRADITIONAL_MENU_STYLE = [   
@@ -220,12 +226,12 @@ var TRADITIONAL_MENU_STYLE = [
     { thumbnail: '/media/layouts/whisker-menu.svg', name: _('Whisker Menu Style'), layout: MENU_LAYOUT.Whisker},
     { thumbnail: '/media/layouts/gnome-menu.svg', name: _('GNOME Menu Style'), layout: MENU_LAYOUT.GnomeMenu},
     { thumbnail: '/media/layouts/mint-menu.svg', name: _('Mint Menu Style'), layout: MENU_LAYOUT.Mint},
-    { thumbnail: '/media/layouts/budgie-menu.svg', name: _('Budgie Style'), layout: MENU_LAYOUT.Budgie},
-    { thumbnail: '/media/layouts/neat-menu.svg', name: _('Neat Menu Style'), layout: MENU_LAYOUT.Neat}];
+    { thumbnail: '/media/layouts/budgie-menu.svg', name: _('Budgie Style'), layout: MENU_LAYOUT.Budgie}];
 
 var MODERN_MENU_STYLE = [   
     { thumbnail: '/media/layouts/windows-10.svg', name: _('Windows 10 Style'), layout: MENU_LAYOUT.Windows},
     { thumbnail: '/media/layouts/ubuntu-dash-menu.svg', name: _('Ubuntu Dash Style'), layout: MENU_LAYOUT.UbuntuDash},
+    { thumbnail: '/media/layouts/tognee-menu.svg', name: _('tognee Menu'), layout: MENU_LAYOUT.Tognee},
     { thumbnail: '/media/layouts/redmond-style-menu.svg', name: _('Redmond Menu Style'), layout: MENU_LAYOUT.Redmond}];
 
 var TOUCH_MENU_STYLE = [   

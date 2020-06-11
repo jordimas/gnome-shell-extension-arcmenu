@@ -79,12 +79,16 @@ var createMenu = class extends BaseMenuLayout.BaseLayout{
         this.mainBox.add(this.rightMenuBox);
 
         this.searchBox = new MW.SearchBox(this);
-        this.searchBox.actor.style = "margin: 10px 20px 10px 0px; padding-top: 0.0em; padding-bottom: 0.5em;padding-left: 0.0em;padding-right: 0.0em;";
         this._searchBoxChangedId = this.searchBox.connect('changed', this._onSearchBoxChanged.bind(this));
         this._searchBoxKeyPressId = this.searchBox.connect('key-press-event', this._onSearchBoxKeyPress.bind(this));
         this._searchBoxKeyFocusInId = this.searchBox.connect('key-focus-in', this._onSearchBoxKeyFocusIn.bind(this));
-        this.rightMenuBox.add(this.searchBox.actor);
-
+        if(this._settings.get_enum('searchbar-default-top-location') === Constants.SearchbarLocation.TOP){
+            this.searchBox.actor.style = "margin: 10px 20px 10px 0px; padding-top: 0.0em; padding-bottom: 0.5em;padding-left: 0.0em;padding-right: 0.0em;";
+            this.rightMenuBox.add(this.searchBox.actor);
+        }
+        else
+            this.rightMenuBox.style = "margin-top: 10px;";
+        
         //Sub Main Box -- stores left and right box
         this.subMainBox= new St.BoxLayout({
             vertical: false,
@@ -130,9 +134,10 @@ var createMenu = class extends BaseMenuLayout.BaseLayout{
             style_class: 'left-box'
         });
 
-        this.subMainBox.add(this.leftBox);
+        let horizonalFlip = this._settings.get_boolean("enable-horizontal-flip");
+        this.subMainBox.add(horizonalFlip ? this.rightBox : this.leftBox);  
         this.subMainBox.add(this._createVerticalSeparator());
-        this.subMainBox.add(this.rightBox);
+        this.subMainBox.add(horizonalFlip ? this.leftBox : this.rightBox);
 
         this.categoriesScrollBox = this._createScrollBox({
             x_expand: true, 
@@ -148,7 +153,10 @@ var createMenu = class extends BaseMenuLayout.BaseLayout{
         this.categoriesBox = new St.BoxLayout({ vertical: true });
         this.categoriesScrollBox.add_actor( this.categoriesBox);  
         this.categoriesScrollBox.clip_to_allocation = true;
-
+        if(this._settings.get_enum('searchbar-default-top-location') === Constants.SearchbarLocation.BOTTOM){
+            this.searchBox.actor.style = "margin: 10px 10px 0px 10px; padding-left: 0.4em;padding-right: 0.4em;";
+            this.rightMenuBox.add(this.searchBox.actor);
+        }
         this.loadFavorites();
         this.loadPinnedShortcuts();
         this.loadCategories();

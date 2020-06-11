@@ -84,9 +84,11 @@ var createMenu = class extends BaseMenuLayout.BaseLayout{
             vertical: true,
             style_class: 'left-box'
         });
-        this.subMainBox.add(this.leftBox);
+        
+        let horizonalFlip = this._settings.get_boolean("enable-horizontal-flip");
+        this.subMainBox.add(horizonalFlip ? this.rightBox : this.leftBox);  
         this.subMainBox.add(this._createVerticalSeparator());
-        this.subMainBox.add(this.rightBox);
+        this.subMainBox.add(horizonalFlip ? this.leftBox : this.rightBox);
 
         this.categoriesScrollBox = this._createScrollBox({
             x_expand: true,
@@ -143,7 +145,7 @@ var createMenu = class extends BaseMenuLayout.BaseLayout{
         super.loadCategories();
 
         for(let categoryMenuItem of this.categoryDirectories.values()){
-            categoryMenuItem.actor.style = "padding-top: 10px; padding-bottom: 10px;";
+            categoryMenuItem.actor.style = "padding-top: 8px; padding-bottom: 8px;";
             categoryMenuItem.actor.remove_actor(categoryMenuItem._icon);
         }
     }
