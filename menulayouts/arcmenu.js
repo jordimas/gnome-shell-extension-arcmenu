@@ -47,7 +47,7 @@ var createMenu = class extends BaseMenuLayout.BaseLayout{
         this._searchBoxChangedId = this.searchBox.connect('changed', this._onSearchBoxChanged.bind(this));
         this._searchBoxKeyPressId = this.searchBox.connect('key-press-event', this._onSearchBoxKeyPress.bind(this));
         this._searchBoxKeyFocusInId = this.searchBox.connect('key-focus-in', this._onSearchBoxKeyFocusIn.bind(this));
-        if(this._settings.get_enum('searchbar-location') === Constants.SearchbarLocation.TOP){
+        if(this._settings.get_enum('searchbar-default-bottom-location') === Constants.SearchbarLocation.TOP){
             this.searchBox.actor.style = "margin: 0px 10px 5px 10px; padding-top: 0.0em; padding-bottom: 0.5em;padding-left: 0.4em;padding-right: 0.4em;";
             this.mainBox.add(this.searchBox.actor);
         }
@@ -91,7 +91,7 @@ var createMenu = class extends BaseMenuLayout.BaseLayout{
         
         this.viewProgramsButton = new MW.ViewAllPrograms(this);
         this.leftBox.add(this.viewProgramsButton.actor);
-        if(this._settings.get_enum('searchbar-location') === Constants.SearchbarLocation.BOTTOM){
+        if(this._settings.get_enum('searchbar-default-bottom-location') === Constants.SearchbarLocation.BOTTOM){
             this.searchBox.actor.style = "padding-top: 0.75em; padding-bottom: 0.25em; padding-left: 1em; padding-right: 0.25em; margin-right: .5em;";
             this.leftBox.add(this.searchBox.actor);
         }
@@ -308,8 +308,8 @@ var createMenu = class extends BaseMenuLayout.BaseLayout{
         this.viewProgramsButton.actor.show();
     }
 
-    displayCategoryAppList(appList){
-        super.displayCategoryAppList(appList);
+    displayCategoryAppList(appList, category){
+        super.displayCategoryAppList(appList, category);
         this.backButton.actor.show();
         this.viewProgramsButton.actor.hide();
         this.activeCategoryType = Constants.CategoryType.CATEGORY_APP_LIST; 

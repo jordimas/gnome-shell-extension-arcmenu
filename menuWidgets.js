@@ -853,14 +853,31 @@ var CategoryMenuButton = class ArcMenu_CategoryMenuButton extends SessionButton 
     }
 }
 // Settings Button
-var MintButton = class ArcMenu_MintButton extends SessionButton {
+var ShortcutButtonItem = class ArcMenu_ShortcutButtonItem extends SessionButton {
     constructor(button, name, icon, command) {
         super(button, name, icon);
         this._command = command;
         this._button = button;
         this._settings = this._button._settings;
+        this.shouldShow = true;
         this.layout = this._settings.get_enum('menu-layout');
+        //Check for default commands--------
+        if(this._command == "ArcMenu_Software"){
+            if(GLib.find_program_in_path('gnome-software'))
+                this._command = 'org.gnome.Software.desktop';
+            else if(GLib.find_program_in_path('pamac-manager'))
+                this._command = 'pamac-manager.desktop';
+            else if(GLib.find_program_in_path('io.elementary.appcenter'))
+                this._command = 'io.elementary.appcenter.desktop';
+            else if(GLib.find_program_in_path('snap-store'))
+                this._command = 'snap-store_ubuntu-software.desktop';
+            else
+                this._command = 'ArcMenu_unfound.desktop'
+        }
         this._app = Shell.AppSystem.get_default().lookup_app(this._command);
+        if(this._command.endsWith(".desktop") && !Shell.AppSystem.get_default().lookup_app(this._command)){
+            this.shouldShow = false;
+        } 
         if(this._app){
             this.actor.connect("button-release-event", this._onButtonReleaseEvent.bind(this));
         }
@@ -872,7 +889,7 @@ var MintButton = class ArcMenu_MintButton extends SessionButton {
                 this.rightClickMenu = new AppRightClickMenu(this.actor, this._app, this._button);
                 if(this.layout == Constants.MENU_LAYOUT.UbuntuDash)
                     this.rightClickMenu.centerBoxPointerPosition();
-                if(this.layout == Constants.MENU_LAYOUT.Mint)
+                if(this.layout == Constants.MENU_LAYOUT.Mint || this.layout == Constants.MENU_LAYOUT.Tognee)
                     this.rightClickMenu.rightBoxPointerPosition();
                 this._button.appMenuManager.addMenu(this.rightClickMenu);
                 this.rightClickMenu.actor.hide();
@@ -882,7 +899,7 @@ var MintButton = class ArcMenu_MintButton extends SessionButton {
             if(!this.rightClickMenu.isOpen)
                 this.rightClickMenu.redisplay();
             this.rightClickMenu.toggle();
-      }   
+        }
     }
     activate() {
         if(this._app){
@@ -911,6 +928,14 @@ var MintButton = class ArcMenu_MintButton extends SessionButton {
                 }
             });
         }
+        else if(this._command === "ArcMenu_ActivitiesOverview"){
+            this._button.leftClickMenu.toggle();
+            Main.overview.show();
+        }
+        else if(this._command === "ArcMenu_RunCommand"){
+            this._button.leftClickMenu.toggle();
+            Main.openRunDialog();
+        } 
         else{
             this._button.leftClickMenu.toggle();
             Util.spawnCommandLine(this._command);
@@ -925,42 +950,6 @@ var SettingsButton = class ArcMenu_SettingsButton extends SessionButton {
     }
     activate() {
         Util.spawnCommandLine('gnome-control-center');
-    }
-};
-
-// Menu Button shortcut item class
-var ShortcutButtonItem = class ArcMenu_ShortcutButtonItem extends SessionButton {
-    constructor(button, name, icon, command) {
-        super(button, _(name), icon);
-        this._command = command;
-        this.shouldShow = true;
-        //Check for default commands--------
-        if(this._command == "ArcMenu_Software"){
-            if(GLib.find_program_in_path('gnome-software'))
-                this._command = 'org.gnome.Software.desktop';
-            else if(GLib.find_program_in_path('pamac-manager'))
-                this._command = 'pamac-manager.desktop';
-            else if(GLib.find_program_in_path('io.elementary.appcenter'))
-                this._command = 'io.elementary.appcenter.desktop';
-            else if(GLib.find_program_in_path('snap-store'))
-                this._command = 'snap-store_ubuntu-software.desktop';
-            else
-                this._command = 'ArcMenu_unfound.desktop'
-        }
-        this._app = Shell.AppSystem.get_default().lookup_app(this._command);
-        if(this._command.endsWith(".desktop") && !Shell.AppSystem.get_default().lookup_app(this._command)){
-            this.shouldShow = false;
-        } 
-    }
-    activate() {
-        if(this._command == "ArcMenu_ActivitiesOverview")
-            Main.overview.show();
-        else if(this._command == "ArcMenu_RunCommand")
-            Main.openRunDialog();
-        else if(this._app)
-            this._app.open_new_window(-1);
-        else
-            Util.spawnCommandLine(this._command);
     }
 };
 
@@ -1134,7 +1123,7 @@ var BackMenuItem = GObject.registerClass(class ArcMenu_BackMenuItem extends ArcM
     activate(event) {
         let defaultMenuView = this._settings.get_enum('default-menu-view');
         if(this._layout === Constants.MENU_LAYOUT.Default){
-            if(this._button.activeCategoryType === Constants.CategoryType.SEARCH_RESULTS || this._button.activeCategoryType === Constants.CategoryType.ALL_PROGRAMS){ 
+            if(this._button.activeCategoryType === Constants.CategoryType.SEARCH_RESULTS || this._button.activeCategoryType === Constants.CategoryType.ALL_PROGRAMS_BUTTON){ 
                 this._button.resetSearch();
                 if(defaultMenuView === Constants.DefaultMenuView.PINNED_APPS)
                     this._button.displayFavorites();
@@ -1150,8 +1139,8 @@ var BackMenuItem = GObject.registerClass(class ArcMenu_BackMenuItem extends ArcM
             else
                 this._button.displayCategories();
         }
-        else if(this._layout === Constants.MENU_LAYOUT.Neat){
-          this._button.displayCategories();
+        else if(this._layout === Constants.MENU_LAYOUT.Tognee){
+            this._button.displayCategories();
         }
         else{
             if(this._button.favoritesMenu) 
@@ -1192,7 +1181,7 @@ var ViewAllPrograms = GObject.registerClass(class ArcMenu_ViewAllPrograms extend
             this._button.displayCategories();
         else{ 
             this._button.displayAllApps();
-            this._button.activeCategoryType = Constants.CategoryType.ALL_PROGRAMS;
+            this._button.activeCategoryType = Constants.CategoryType.ALL_PROGRAMS_BUTTON;
         }
         super.activate(event);
     }
@@ -1306,14 +1295,14 @@ var UserMenuItem = GObject.registerClass(class ArcMenu_UserMenuItem extends ArcM
         this._userAvatarSize = userAvatarSize ? userAvatarSize : USER_AVATAR_SIZE;
 
         this.iconBin.style = "width: "+this._userAvatarSize +"px; height: "+this._userAvatarSize +"px;";
-        this.actor.add_child(this.iconBin);
+        this.actor.add_actor(this.iconBin);
         this._userLabel = new St.Label({
             text: GLib.get_real_name(),
             x_expand: true,
             x_align: Clutter.ActorAlign.FILL,
             y_align: Clutter.ActorAlign.CENTER
         });
-        this.actor.add_child(this._userLabel);
+        this.actor.add_actor(this._userLabel);
         this._userLoadedId = this._user.connect('notify::is-loaded', this._onUserChanged.bind(this));
         this._userChangedId = this._user.connect('changed', this._onUserChanged.bind(this));
         this.actor.connect('destroy', this._onDestroy.bind(this));
@@ -1544,36 +1533,36 @@ var FavoritesMenuItem = GObject.registerClass({
     _onDragMotion(dragEvent) {
         this.newIndex = Math.floor((this._draggable._dragY - this.posY) / (this.rowHeight));
         
-      if(this.newIndex > this._parentBox.get_children().length -1)
+        if(this.newIndex > this._parentBox.get_children().length -1)
             this.newIndex = this._parentBox.get_children().length -1;
         if(this.newIndex < 0)
             this.newIndex = 0;  
-      if(this._parentBox.get_child_at_index(this.newIndex) != this._emptyDropTarget)
+        if(this._parentBox.get_child_at_index(this.newIndex) != this._emptyDropTarget)
             this._parentBox.set_child_at_index(this._emptyDropTarget, this.newIndex);
       
-      return DND.DragMotionResult.CONTINUE;
+        return DND.DragMotionResult.CONTINUE;
     }
     _onDragCancelled() {
         Main.overview.cancelledItemDrag(this);
     }
     _onDragEnd() {    
-       this._parentBox.remove_child(this._emptyDropTarget); 
+        this._parentBox.remove_child(this._emptyDropTarget);
         let index = this.newIndex;
         if(index > this.startIndex)
-          index--;
+            index--;
         if(index > this._parentBox.get_children().length -1)
-          index = this._parentBox.get_children().length -1;
+            index = this._parentBox.get_children().length -1;
         if(index < 0)
-            index = 0;  
-        if(index != this.startIndex){  
-            this._parentBox.set_child_at_index(this.actor,index);      
+            index = 0;
+        if(index != this.startIndex){
+            this._parentBox.set_child_at_index(this.actor,index);
             let temp = this._button.favoritesArray[this.startIndex];
             this._button.favoritesArray.splice(this.startIndex,1);
             this._button.favoritesArray.splice(index,0,temp);
         }
         Main.overview.endItemDrag(this);
-        DND.removeDragMonitor(this._dragMonitor);   
-        this.emit('saveSettings');    
+        DND.removeDragMonitor(this._dragMonitor);
+        this.emit('saveSettings');
     }
     getDragActor() {
         let addStyle = this._settings.get_boolean('enable-custom-arc-menu');
@@ -1858,6 +1847,8 @@ var CategoryMenuItem = GObject.registerClass(class ArcMenu_CategoryMenuItem exte
             this._button.setFrequentAppsList(this);
             this._button.displayCategoryAppList(this.appList);  
         }
+        else if(this._category == Constants.CategoryType.ALL_PROGRAMS)
+            this._button.displayCategoryAppList(this.appList, this._category);  
         else
             this._button.displayCategoryAppList(this.appList);  
         this._button.activeCategoryType = this._category; 
@@ -2055,8 +2046,10 @@ var SimpleMenuItem = GObject.registerClass(class ArcMenu_SimpleMenuItem extends 
             this._button.displayFavorites();
         else if(this._category == Constants.CategoryType.FREQUENT_APPS){
             this._button.setFrequentAppsList(this);
-            this._button.displayCategoryAppList(this.appList);  
+            this._button.displayCategoryAppList(this.appList, this);  
         }
+        else if(this._category == Constants.CategoryType.ALL_PROGRAMS)
+            this._button.displayCategoryAppList(this.appList, this, this._category);  
         else
             this._button.displayCategoryAppList(this.appList, this);       
         this._button.activeCategoryType = this._category;
@@ -2242,6 +2235,8 @@ var CategorySubMenuItem = GObject.registerClass(class ArcMenu_CategorySubMenuIte
                     this._button.setFrequentAppsList(this);
                     this._button.displayCategoryAppList(this.appList, this);  
                 }
+                else if(this._category == Constants.CategoryType.ALL_PROGRAMS)
+                    this._button.displayCategoryAppList(this.appList, this, this._category);  
                 else
                     this._button.displayCategoryAppList(this.appList, this);
                 this._button.activeCategoryType = this._category;

@@ -767,7 +767,6 @@ var GeneralPage = GObject.registerClass(
             recentAppsSwitch.connect('notify::active', (widget) => {
                 this._settings.set_boolean('disable-recently-installed-apps', widget.get_active());
             });
-
             recentAppsRow.add(recentAppsLabel);
             recentAppsRow.add(recentAppsSwitch);
             recentAppsFrame.add(recentAppsRow);
@@ -2880,6 +2879,7 @@ var AppearanceFineTunePage = GObject.registerClass(
         this.disableCategoryArrow = this._settings.get_boolean('disable-category-arrows');
         this.removeMenuArrow = this._settings.get_boolean('remove-menu-arrow');
         this.disableSearchStyle = this._settings.get_boolean('disable-searchbox-border');
+        this.alphabetizeAllPrograms = this._settings.get_boolean('alphabetize-all-programs')
 
         let disableCategoryArrowFrame = new PW.FrameBox();
         let disableCategoryArrowRow = new PW.FrameBoxRow();
@@ -2953,6 +2953,26 @@ var AppearanceFineTunePage = GObject.registerClass(
         tweakStyleFrame.add(tweakStyleRow);
         this.add(tweakStyleFrame);
         
+        let alphabetizeAllProgramsFrame = new PW.FrameBox();
+        let alphabetizeAllProgramsRow = new PW.FrameBoxRow();
+        let alphabetizeAllProgramsLabel = new Gtk.Label({
+            label: _("Alphabetize 'All Programs'"),
+            use_markup: true,
+            xalign: 0,
+            hexpand: true
+        });
+        let alphabetizeAllProgramsSwitch = new Gtk.Switch({ halign: Gtk.Align.END });
+        alphabetizeAllProgramsSwitch.set_active(this._settings.get_boolean('alphabetize-all-programs'));
+        alphabetizeAllProgramsSwitch.connect('notify::active', (widget) => {
+            this.alphabetizeAllPrograms = widget.get_active();
+            this.saveButton.set_sensitive(true);
+            this.resetButton.set_sensitive(true);
+        });
+        alphabetizeAllProgramsRow.add(alphabetizeAllProgramsLabel);
+        alphabetizeAllProgramsRow.add(alphabetizeAllProgramsSwitch);
+        alphabetizeAllProgramsFrame.add(alphabetizeAllProgramsRow);
+        this.add(alphabetizeAllProgramsFrame);
+
         let appIndicatorColorFrame = new PW.FrameBox();
         let appIndicatorColorRow = new PW.FrameBoxRow();
         let appIndicatorColorLabel = new Gtk.Label({
@@ -3059,7 +3079,9 @@ var AppearanceFineTunePage = GObject.registerClass(
             this.disableCategoryArrow = this._settings.get_default_value('disable-category-arrows').unpack();
             this.removeMenuArrow = this._settings.get_default_value('remove-menu-arrow').unpack();
             this.disableSearchStyle = this._settings.get_default_value('disable-searchbox-border').unpack();
+            this.alphabetizeAllPrograms = this._settings.get_default_value('alphabetize-all-programs').unpack();
 
+            alphabetizeAllProgramsSwitch.set_active(this.alphabetizeAllPrograms);
             gapAdjustmentScale.set_value(this.gapAdjustment);
             disableCategoryArrowSwitch.set_active(this.disableCategoryArrow);
             searchStyleSwitch.set_active(this.disableSearchStyle); 
@@ -3085,7 +3107,7 @@ var AppearanceFineTunePage = GObject.registerClass(
             this._settings.set_boolean('disable-category-arrows', this.disableCategoryArrow);
             this._settings.set_boolean('remove-menu-arrow', this.removeMenuArrow);
             this._settings.set_boolean('disable-searchbox-border', this.disableSearchStyle);
-
+            this._settings.set_boolean('alphabetize-all-programs', this.alphabetizeAllPrograms);
             this._settings.reset('reload-theme');
             this._settings.set_boolean('reload-theme', true);
             this.saveButton.set_sensitive(false);
@@ -3106,7 +3128,8 @@ var AppearanceFineTunePage = GObject.registerClass(
             this.gapAdjustment !== this._settings.get_default_value('gap-adjustment').unpack() ||
             this.disableCategoryArrow !== this._settings.get_default_value('disable-category-arrows').unpack() ||
             this.removeMenuArrow !== this._settings.get_default_value('remove-menu-arrow').unpack() ||
-            this.disableSearchStyle !== this._settings.get_default_value('disable-searchbox-border').unpack()) ? true : false;
+            this.disableSearchStyle !== this._settings.get_default_value('disable-searchbox-border').unpack()||
+            this.alphabetizeAllPrograms !== this._settings.get_default_value('alphabetize-all-programs').unpack()) ? true : false;
     }
 });
 
@@ -5079,8 +5102,33 @@ var MiscPage = GObject.registerClass(
             importColorPresetFrame.add(importColorPresetRow);   
             importColorPresetFrame.add(importColorPresetButtonsRow);
 
+            let clearRecentAppsFrame = new PW.FrameBox();
+            let clearRecentAppsRow = new PW.FrameBoxRow();
+            let clearRecentAppsLabel = new Gtk.Label({
+                label: _('Clear all Applications Marked "New"'),
+                use_markup: true,
+                xalign: 0,
+                hexpand: true
+            });
+
+            let clearRecentAppsButton = new Gtk.Button({ 
+                halign: Gtk.Align.END,
+                label: _("Clear All"),
+                tooltip_text: _('Clear all Applications Marked "New"') 
+            });
+            let sensitive = this._settings.get_strv('recently-installed-apps').length > 0;
+            clearRecentAppsButton.set_sensitive(sensitive);
+            clearRecentAppsButton.connect('clicked', (widget) => {
+                clearRecentAppsButton.set_sensitive(false);
+                this._settings.reset('recently-installed-apps');
+            });
+            clearRecentAppsRow.add(clearRecentAppsLabel);
+            clearRecentAppsRow.add(clearRecentAppsButton);
+            clearRecentAppsFrame.add(clearRecentAppsRow);
+
             this.add(importFrame);
             this.add(importColorPresetFrame);
+            this.add(clearRecentAppsFrame);
         }
         _showFileChooser(title, params, acceptBtn, acceptHandler) {
             let dialog = new Gtk.FileChooserDialog(mergeObjects({ title: title, transient_for: this.get_toplevel() }, params));

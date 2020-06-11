@@ -422,7 +422,7 @@ var BaseLayout = class {
             }
             else if(pinnedApps[i+2] == "ArcMenu_Suspend" || pinnedApps[i+2] == "ArcMenu_LogOut" || pinnedApps[i+2] == "ArcMenu_PowerOff"
                     || pinnedApps[i+2] == "ArcMenu_Lock" || app){
-                placeMenuItem = new MW.MintButton(this, pinnedApps[i], pinnedApps[i+1], pinnedApps[i+2]);
+                placeMenuItem = new MW.ShortcutButtonItem(this, pinnedApps[i], pinnedApps[i+1], pinnedApps[i+2]);
             }
             else if(pinnedApps[i+2].startsWith("ArcMenu_")){
                 let path = pinnedApps[i+2].replace("ArcMenu_",'');
@@ -634,15 +634,37 @@ var BaseLayout = class {
         }
     }
 
-    displayCategoryAppList(appList){
+    displayCategoryAppList(appList, category){
         this._clearActorsFromBox();
-        this._displayAppList(appList);
+        this._displayAppList(appList, category);
     }
 
-    _displayAppList(apps) {    
-        let activeMenuItemSet = false;    
+    _displayAppList(apps, displayAllApps){    
+        let activeMenuItemSet = false;
+        let currentCharacter;
+        let needsNewSeparator = false; 
+        let listByCharacter = this._settings.get_boolean("alphabetize-all-programs");
         for (let i = 0; i < apps.length; i++) {
             let app = apps[i];
+            if(listByCharacter && displayAllApps){
+                if(currentCharacter !== app.get_name().charAt(0).toLowerCase()){
+                    currentCharacter = app.get_name().charAt(0).toLowerCase();
+                    needsNewSeparator = true;
+                }
+                else{
+                    needsNewSeparator = false;
+                }
+                if(needsNewSeparator){
+                    let characterLabel = new PopupMenu.PopupMenuItem(currentCharacter.toUpperCase(), {
+                        hover: false,
+                        can_focus: false
+                    });  
+                    characterLabel.actor.add_style_pseudo_class = () => { return false;};
+                    characterLabel.actor.add(this._createHorizontalSeparator(Constants.SEPARATOR_STYLE.LONG));
+                    characterLabel.label.style = 'font-weight: bold;';
+                    this.applicationsBox.add_actor(characterLabel.actor)
+                }
+            }
             let item = this.applicationsMap.get(app);
             if (!item) {
                 item = new MW.ApplicationMenuItem(this, app);
@@ -713,7 +735,7 @@ var BaseLayout = class {
         }
     }
 
-    displayAllApps(){
+    displayAllApps(isGridLayout = false){
         let appList = [];
         this.applicationsMap.forEach((value,key,map) => {
             appList.push(key);
@@ -722,7 +744,8 @@ var BaseLayout = class {
             return a.get_name().toLowerCase() > b.get_name().toLowerCase();
         });
         this._clearActorsFromBox();
-        this._displayAppList(appList);
+        let displayAllApps = !isGridLayout;
+        this._displayAppList(appList, displayAllApps);
     }
 
     _onSearchBoxKeyPress(searchBox, event) {

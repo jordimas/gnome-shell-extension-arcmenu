@@ -334,7 +334,8 @@ var createMenu = class extends BaseMenuLayout.BaseLayout{
         else{
             this.activeCategory = _("All Programs");
             this.activeCategoryType = Constants.CategoryType.ALL_PROGRAMS;
-            this.displayAllApps();   
+            let isGridLayout = true;
+            this.displayAllApps(isGridLayout);
         }
     }
 
@@ -415,6 +416,11 @@ var createMenu = class extends BaseMenuLayout.BaseLayout{
         if(!this.subMainBox.contains(this.widgetBox))
             this.subMainBox.add(this.widgetBox);
         this.subMainBox.add(this.actionsContainerBox);     
+    }
+
+    displayCategoryAppList(appList){
+        this._clearActorsFromBox();
+        this._displayAppList(appList);
     }
 
     _clearActorsFromBox(box) {

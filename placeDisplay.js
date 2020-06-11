@@ -87,12 +87,6 @@ var PlaceMenuItem = GObject.registerClass(class ArcMenu_PlaceMenuItem2 extends M
     }
 });
 
-var PlaceButtonItem = class ArcMenu_PlaceButtonItem2 extends MW.SessionButton {
-    constructor(button, info) {
-        super(button, _(info.name), info.icon.get_names()[0], info.icon ? info.icon : null);
-    }
-};
-
 var PlaceInfo = class ArcMenu_PlaceInfo2 {
     constructor() {
         this._init.apply(this, arguments);
