@@ -386,13 +386,16 @@ var ArcMenuPopupBaseMenuItem = GObject.registerClass(
             hover: true
         });
         super._init();
-
         this.shouldShow = true;
 
         if(params.reactive)
             this.actor.connect('notify::active',()=> this.setActive(this.actor.active));
         if(params.hover)   
             this.actor.connect('notify::hover', this._onHover.bind(this));
+        this.actor.connect('key-focus-in', ()=> {
+            if(!this.actor.hover)
+                this._button._keyFocusIn(this);
+        });
         this.actor.connect('destroy', this._onDestroy.bind(this));
     }
     setShouldShow(){
@@ -2108,14 +2111,6 @@ var CategorySubMenuItem = GObject.registerClass(class ArcMenu_CategorySubMenuIte
 
         this.label.text = this.name;
         this.icon.icon_size = MEDIUM_ICON_SIZE;
-
-        this.menu.actor.connect('key-press-event',(actor,event)=>{
-            let key = event.get_key_symbol();
-            if(key == Clutter.KEY_Up)
-                this._button.scrollToItem(this._button.activeMenuItem, this.menu.actor, Constants.DIRECTION.UP);
-            else if(key == Clutter.KEY_Down)
-                this._button.scrollToItem(this._button.activeMenuItem, this.menu.actor, Constants.DIRECTION.DOWN);
-        }) ; 
 
         let panAction = new Clutter.PanAction({ interpolate: false });
         panAction.connect('pan', (action) => {

@@ -35,6 +35,7 @@ const MenuLayouts = Me.imports.menulayouts;
 const MW = Me.imports.menuWidgets;
 const PlaceDisplay = Me.imports.placeDisplay;
 const PopupMenu = imports.ui.popupMenu;
+const Util =  imports.misc.util;
 const Utils =  Me.imports.utils;
 
 //This class handles the core functionality of all the menu layouts.
@@ -51,6 +52,7 @@ var BaseLayout = class {
         this.layoutProperties = layoutProperties;
         this._session = new GnomeSession.SessionManager();
         this.isRunning = true;
+        this._focusChild = null;
         this.shouldLoadFavorites = true;
 
         if(this.layoutProperties.Search){
@@ -974,17 +976,17 @@ var BaseLayout = class {
         panAction.connect('gesture-end', (action) => this.onPanEnd(action, scrollBox));
         scrollBox.add_action(panAction);
 
-        scrollBox.connect('key-press-event', (actor, event) => {
-            let key = event.get_key_symbol();
-            if(key == Clutter.KEY_Up)
-                this.scrollToItem(this.activeMenuItem, scrollBox, Constants.DIRECTION.UP);
-            else if(key == Clutter.KEY_Down)
-                this.scrollToItem(this.activeMenuItem, scrollBox, Constants.DIRECTION.DOWN);
-        }) ;         
         scrollBox.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC);
         scrollBox.clip_to_allocation = true;
 
         return scrollBox;
+    }
+
+    _keyFocusIn(actor) {
+        if (this._focusChild == actor)
+            return;
+        this._focusChild = actor;
+        Utils.ensureActorVisibleInScrollView(this._focusChild);
     }
 
     onPan(action, scrollbox) {

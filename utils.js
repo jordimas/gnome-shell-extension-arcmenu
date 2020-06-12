@@ -70,6 +70,39 @@ function isTwoPanedLayout(layout){
                     || layout == Constants.MENU_LAYOUT.Mint || layout==Constants.MENU_LAYOUT.Budgie);
 }
 
+function ensureActorVisibleInScrollView(actor) {
+    let box = actor.get_allocation_box();
+    let y1 = box.y1, y2 = box.y2;
+
+    let parent = actor.get_parent();
+    while (!(parent instanceof imports.gi.St.ScrollView)) {
+        if (!parent)
+            return;
+
+        box = parent.get_allocation_box();
+        y1 += box.y1;
+        y2 += box.y1;
+        parent = parent.get_parent();
+    }
+
+    let adjustment = parent.vscroll.adjustment;
+    let [value, lower_, upper, stepIncrement_, pageIncrement_, pageSize] = adjustment.get_values();
+
+    let offset = 0;
+    let vfade = parent.get_effect("fade");
+    if (vfade)
+        offset = vfade.vfade_offset;
+
+    if (y1 < value + offset)
+        value = Math.max(0, y1 - offset);
+    else if (y2 > value + pageSize - offset)
+        value = Math.min(upper, y2 + offset - pageSize);
+    else
+        return;
+    
+    adjustment.set_value(value);  
+}
+
 function getArraysEqual(a, b) {
     if(a instanceof Array && b instanceof Array){
         if (a.length !== b.length)
