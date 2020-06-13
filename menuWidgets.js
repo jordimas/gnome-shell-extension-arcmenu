@@ -392,11 +392,13 @@ var ArcMenuPopupBaseMenuItem = GObject.registerClass(
             this.actor.connect('notify::active',()=> this.setActive(this.actor.active));
         if(params.hover)   
             this.actor.connect('notify::hover', this._onHover.bind(this));
-        this.actor.connect('key-focus-in', ()=> {
-            if(!this.actor.hover)
-                this._button._keyFocusIn(this);
-        });
         this.actor.connect('destroy', this._onDestroy.bind(this));
+    }
+    vfunc_key_focus_in() {
+        super.vfunc_key_focus_in();
+        if(!this.actor.hover)
+            this._button._keyFocusIn(this.actor);
+        this.active = true;
     }
     setShouldShow(){
         //If a saved shortcut link is a desktop app, check if currently installed.

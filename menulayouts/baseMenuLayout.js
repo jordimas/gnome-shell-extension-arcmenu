@@ -35,7 +35,6 @@ const MenuLayouts = Me.imports.menulayouts;
 const MW = Me.imports.menuWidgets;
 const PlaceDisplay = Me.imports.placeDisplay;
 const PopupMenu = imports.ui.popupMenu;
-const Util =  imports.misc.util;
 const Utils =  Me.imports.utils;
 
 //This class handles the core functionality of all the menu layouts.
@@ -986,7 +985,7 @@ var BaseLayout = class {
         if (this._focusChild == actor)
             return;
         this._focusChild = actor;
-        Utils.ensureActorVisibleInScrollView(this._focusChild);
+        Utils.ensureActorVisibleInScrollView(actor);
     }
 
     onPan(action, scrollbox) {
