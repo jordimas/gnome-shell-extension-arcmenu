@@ -98,7 +98,8 @@ var createMenu = class extends BaseMenuLayout.BaseLayout{
 
         this.applicationsBox = new St.BoxLayout({
             x_align: Clutter.ActorAlign.FILL,
-            vertical: true
+            vertical: true,
+            style: "padding-bottom: 10px;"
         });
 
         let layout = new Clutter.GridLayout({ 
