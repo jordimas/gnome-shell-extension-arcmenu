@@ -378,6 +378,19 @@ var AppRightClickMenu = class ArcMenu_AppRightClickMenu extends PopupMenu.PopupM
     }
 };
 
+var ScrollView = GObject.registerClass(
+    class ArcMenu_ScrollView extends St.ScrollView{
+    _init(params){
+        super._init(params);
+    }
+
+    vfunc_allocate(a, b){
+        let fade = this.get_effect("fade");
+        fade.set_shader_source(Utils.ScrollViewShader);
+        super.vfunc_allocate(a, b);   
+    }
+});
+
 var ArcMenuPopupBaseMenuItem = GObject.registerClass(
     class ArcMenu_PopupBaseMenuItem extends PopupMenu.PopupBaseMenuItem{
     _init(params){

@@ -964,7 +964,7 @@ var BaseLayout = class {
     }
 
     _createScrollBox(params){
-        let scrollBox = new St.ScrollView(params);      
+        let scrollBox = new MW.ScrollView(params);
 
         let panAction = new Clutter.PanAction({ interpolate: false });
         panAction.connect('pan', (action) => {
