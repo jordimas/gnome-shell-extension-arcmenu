@@ -386,7 +386,8 @@ var ScrollView = GObject.registerClass(
 
     vfunc_allocate(a, b){
         let fade = this.get_effect("fade");
-        fade.set_shader_source(Utils.ScrollViewShader);
+        if(fade)
+            fade.set_shader_source(Utils.ScrollViewShader);
         super.vfunc_allocate(a, b);   
     }
 });
