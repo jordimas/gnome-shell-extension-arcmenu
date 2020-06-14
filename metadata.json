@@ -5,7 +5,7 @@
 "gettext-domain": "arc-menu",
 "name": "Arc Menu",
 "description": "A Dynamic, Traditional, Modern Menu for GNOME",
-"version": 46.3,
+"version": 46.4,
 "shell-version": [ "3.36" ],
 "url": "https://gitlab.com/arcmenu-team/Arc-Menu"
 }

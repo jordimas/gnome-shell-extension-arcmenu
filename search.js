@@ -535,7 +535,7 @@ var AppSearchResults = class ArcMenu_AppSearchResults extends SearchResultsBase 
         });
 
         if(gridView){
-            this._grid.style = "padding: 10px; spacing:10px;";   
+            this._grid.style = "padding: 0px 10px 10px 10px; spacing:10px;";   
             this._resultDisplayBin.x_align = Clutter.ActorAlign.CENTER;
         }
             
@@ -597,6 +597,8 @@ var SearchResults = class ArcMenu_SearchResults {
         if(gridView){
             if(this.layout == Constants.MENU_LAYOUT.Elementary || this.layout == Constants.MENU_LAYOUT.UbuntuDash)
                 MAX_APPS_SEARCH_RESULTS_ROWS = 6;
+            else if(this.layout == Constants.MENU_LAYOUT.Windows)
+                MAX_APPS_SEARCH_RESULTS_ROWS = 5;
             else 
                 MAX_APPS_SEARCH_RESULTS_ROWS = 4; 
         }

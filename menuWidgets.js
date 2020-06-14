@@ -378,6 +378,20 @@ var AppRightClickMenu = class ArcMenu_AppRightClickMenu extends PopupMenu.PopupM
     }
 };
 
+var ScrollView = GObject.registerClass(
+    class ArcMenu_ScrollView extends St.ScrollView{
+    _init(params){
+        super._init(params);
+    }
+
+    vfunc_allocate(a, b){
+        let fade = this.get_effect("fade");
+        if(fade)
+            fade.set_shader_source(Utils.ScrollViewShader);
+        super.vfunc_allocate(a, b);   
+    }
+});
+
 var ArcMenuPopupBaseMenuItem = GObject.registerClass(
     class ArcMenu_PopupBaseMenuItem extends PopupMenu.PopupBaseMenuItem{
     _init(params){
@@ -386,7 +400,6 @@ var ArcMenuPopupBaseMenuItem = GObject.registerClass(
             hover: true
         });
         super._init();
-
         this.shouldShow = true;
 
         if(params.reactive)
@@ -394,6 +407,12 @@ var ArcMenuPopupBaseMenuItem = GObject.registerClass(
         if(params.hover)   
             this.actor.connect('notify::hover', this._onHover.bind(this));
         this.actor.connect('destroy', this._onDestroy.bind(this));
+    }
+    vfunc_key_focus_in() {
+        super.vfunc_key_focus_in();
+        if(!this.actor.hover)
+            this._button._keyFocusIn(this.actor);
+        this.active = true;
     }
     setShouldShow(){
         //If a saved shortcut link is a desktop app, check if currently installed.
@@ -2108,14 +2127,6 @@ var CategorySubMenuItem = GObject.registerClass(class ArcMenu_CategorySubMenuIte
 
         this.label.text = this.name;
         this.icon.icon_size = MEDIUM_ICON_SIZE;
-
-        this.menu.actor.connect('key-press-event',(actor,event)=>{
-            let key = event.get_key_symbol();
-            if(key == Clutter.KEY_Up)
-                this._button.scrollToItem(this._button.activeMenuItem, this.menu.actor, Constants.DIRECTION.UP);
-            else if(key == Clutter.KEY_Down)
-                this._button.scrollToItem(this._button.activeMenuItem, this.menu.actor, Constants.DIRECTION.DOWN);
-        }) ; 
 
         let panAction = new Clutter.PanAction({ interpolate: false });
         panAction.connect('pan', (action) => {

@@ -148,15 +148,15 @@ var createMenu = class extends BaseMenuLayout.BaseLayout{
             for (let i = 0; i < apps.length; i++) {
                 let app = apps[i];
                 if(listByCharacter && displayAllApps){
-                    if(currentCharacter !== app.get_name().charAt(0)){
-                        currentCharacter = app.get_name().charAt(0);
+                    if(currentCharacter !== app.get_name().charAt(0).toLowerCase()){
+                        currentCharacter = app.get_name().charAt(0).toLowerCase();
                         needsNewSeparator = true;
                     }
                     else{
                         needsNewSeparator = false;
                     }
                     if(needsNewSeparator){
-                        let characterLabel = new PopupMenu.PopupMenuItem(currentCharacter, {
+                        let characterLabel = new PopupMenu.PopupMenuItem(currentCharacter.toUpperCase(), {
                             hover: false,
                             can_focus: false
                         });  

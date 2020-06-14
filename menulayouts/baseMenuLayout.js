@@ -51,6 +51,7 @@ var BaseLayout = class {
         this.layoutProperties = layoutProperties;
         this._session = new GnomeSession.SessionManager();
         this.isRunning = true;
+        this._focusChild = null;
         this.shouldLoadFavorites = true;
 
         if(this.layoutProperties.Search){
@@ -963,7 +964,7 @@ var BaseLayout = class {
     }
 
     _createScrollBox(params){
-        let scrollBox = new St.ScrollView(params);      
+        let scrollBox = new MW.ScrollView(params);
 
         let panAction = new Clutter.PanAction({ interpolate: false });
         panAction.connect('pan', (action) => {
@@ -974,17 +975,17 @@ var BaseLayout = class {
         panAction.connect('gesture-end', (action) => this.onPanEnd(action, scrollBox));
         scrollBox.add_action(panAction);
 
-        scrollBox.connect('key-press-event', (actor, event) => {
-            let key = event.get_key_symbol();
-            if(key == Clutter.KEY_Up)
-                this.scrollToItem(this.activeMenuItem, scrollBox, Constants.DIRECTION.UP);
-            else if(key == Clutter.KEY_Down)
-                this.scrollToItem(this.activeMenuItem, scrollBox, Constants.DIRECTION.DOWN);
-        }) ;         
         scrollBox.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC);
         scrollBox.clip_to_allocation = true;
 
         return scrollBox;
+    }
+
+    _keyFocusIn(actor) {
+        if (this._focusChild == actor)
+            return;
+        this._focusChild = actor;
+        Utils.ensureActorVisibleInScrollView(actor);
     }
 
     onPan(action, scrollbox) {

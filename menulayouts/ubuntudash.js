@@ -93,7 +93,8 @@ var createMenu = class extends BaseMenuLayout.BaseLayout{
         this.topBox.add(this.categoriesTopBox);
 
         this.applicationsBox = new St.BoxLayout({
-            vertical: true
+            vertical: true,
+            style: "padding-bottom: 10px;"
         });
 
         let layout = new Clutter.GridLayout({ 

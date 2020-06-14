@@ -720,14 +720,14 @@ var TweaksDialog = GObject.registerClass(
             let searchBarBottomDefault = true;
             let defaultLeftBoxRow = new PW.FrameBoxRow();
             let defaultLeftBoxLabel = new Gtk.Label({
-                label: _("Tognee Layout Default View"),
+                label: _("Default Screen"),
                 use_markup: true,
                 xalign: 0,
                 hexpand: true
             });
             let defaultLeftBoxCombo = new Gtk.ComboBoxText({ 
                 halign: Gtk.Align.END,
-                tooltip_text: _("Choose the default menu view for Tognee Layout") 
+                tooltip_text: _("Choose the default screen for tognee Layout") 
             });
             defaultLeftBoxCombo.append_text(_("Categories List"));
             defaultLeftBoxCombo.append_text(_("All Programs"));
@@ -750,14 +750,14 @@ var TweaksDialog = GObject.registerClass(
             let arcMenuTweaksFrame = new PW.FrameBox();
             let defaultLeftBoxRow = new PW.FrameBoxRow();
             let defaultLeftBoxLabel = new Gtk.Label({
-                label: _("Arc Menu Default View"),
+                label: _("Default Screen"),
                 use_markup: true,
                 xalign: 0,
                 hexpand: true
             });
             let defaultLeftBoxCombo = new Gtk.ComboBoxText({ 
                 halign: Gtk.Align.END,
-                tooltip_text: _("Choose the default menu view for Arc Menu") 
+                tooltip_text: _("Choose the default screen for Arc Menu") 
             });
             defaultLeftBoxCombo.append_text(_("Pinned Apps"));
             defaultLeftBoxCombo.append_text(_("Categories List"));
