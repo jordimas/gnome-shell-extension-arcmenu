@@ -121,7 +121,7 @@ var createMenu = class extends BaseMenuLayout.BaseLayout{
             y_fill: false,
             y_align: Clutter.ActorAlign.START,
             overlay_scrollbars: true,
-            style_class: 'vfade'
+            style_class: 'small-vfade'
         });     
 
         this.shortcutsScrollBox.add_actor(this.shortcutsBox);

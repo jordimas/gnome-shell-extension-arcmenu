@@ -301,7 +301,9 @@ function createStylesheet(settings){
 
         +".arc-menu-icon{\ncolor: "+menuButtonColor+";\n}\n"
         +"\n.arc-menu-icon:hover,\n.arc-menu-icon:active{\ncolor: "+menuButtonActiveColor+";\n}\n"
-        
+
+        +"StScrollView .small-vfade{ -st-vfade-offset: 44px;}"
+
         +".arc-menu-button{ -st-icon-style: symbolic; min-height:0px; border-radius: 26px; padding: 13px;}"
 
         +".arc-menu-action{background-color:transparent;\ncolor:"+  menuForegroundColor+";\n border: 0;}\n"

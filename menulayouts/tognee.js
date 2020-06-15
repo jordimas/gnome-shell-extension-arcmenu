@@ -78,7 +78,7 @@ var createMenu = class extends BaseMenuLayout.BaseLayout{
             x_expand: true,
             y_expand: true,
             y_align: Clutter.ActorAlign.START,
-            style_class: 'apps-menu vfade left-scroll-area',
+            style_class: 'apps-menu small-vfade left-scroll-area',
             overlay_scrollbars: true,
             reactive:true
         });
@@ -134,7 +134,7 @@ var createMenu = class extends BaseMenuLayout.BaseLayout{
             y_expand: true,
             y_align: Clutter.ActorAlign.FILL,
             overlay_scrollbars: true,
-            style_class: 'vfade'
+            style_class: 'small-vfade'
         });    
         this.shortcutsScrollBox.set_policy(Gtk.PolicyType.EXTERNAL, Gtk.PolicyType.EXTERNAL);
         this.shortcutsScrollBox.add_actor(this.shortcutsBox);

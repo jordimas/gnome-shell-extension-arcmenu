@@ -107,7 +107,7 @@ var createMenu = class extends BaseMenuLayout.BaseLayout{
             y_fill: false,
             y_align: Clutter.ActorAlign.START,
             overlay_scrollbars: true,
-            style_class: 'vfade'
+            style_class: 'small-vfade'
         }); 
         let rightPanelWidth = this._settings.get_int('right-panel-width');
         rightPanelWidth += 45;
@@ -136,7 +136,7 @@ var createMenu = class extends BaseMenuLayout.BaseLayout{
             x_fill: true,
             y_fill: false,
             y_align: Clutter.ActorAlign.START,
-            style_class: 'apps-menu vfade left-scroll-area',
+            style_class: 'apps-menu small-vfade left-scroll-area',
             overlay_scrollbars: true
         });
 

@@ -172,7 +172,7 @@ var createMenu = class extends BaseMenuLayout.BaseLayout{
             x_fill: true,
             y_fill: false,
             y_align: Clutter.ActorAlign.START,
-            style_class: 'vfade',
+            style_class: 'small-vfade',
             overlay_scrollbars: true,
             reactive:true
         });   

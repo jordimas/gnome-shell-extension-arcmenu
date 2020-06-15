@@ -384,11 +384,11 @@ var ScrollView = GObject.registerClass(
         super._init(params);
     }
 
-    vfunc_allocate(a, b){
+    vfunc_style_changed(){
+        super.vfunc_style_changed();
         let fade = this.get_effect("fade");
         if(fade)
             fade.set_shader_source(Utils.ScrollViewShader);
-        super.vfunc_allocate(a, b);   
     }
 });
 
@@ -1966,7 +1966,7 @@ var SimpleMenuItem = GObject.registerClass(class ArcMenu_SimpleMenuItem extends 
             x_fill: true,
             y_fill: false,
             y_align: Clutter.ActorAlign.START,
-            style_class: 'apps-menu vfade left-scroll-area',
+            style_class: 'apps-menu small-vfade left-scroll-area',
             overlay_scrollbars: true
         });           
         this._button.subMenuManager.addMenu(this.subMenu);
@@ -2140,7 +2140,7 @@ var CategorySubMenuItem = GObject.registerClass(class ArcMenu_CategorySubMenuIte
         this._updateIcons();
         this.menu.actor.style = 'max-height: 250px;';
         this.menu.actor.overlay_scrollbars = true;
-        this.menu.actor.style_class = 'vfade popup-sub-menu';
+        this.menu.actor.style_class = 'small-vfade popup-sub-menu';
         let scrollbar = this.menu.actor.get_vscroll_bar();
         scrollbar.style="padding-right:15px;";
         this.menu._needsScrollbar = this._needsScrollbar.bind(this);
