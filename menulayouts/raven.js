@@ -33,6 +33,10 @@ const PopupMenu = imports.ui.popupMenu;
 const Utils =  Me.imports.utils;
 const _ = Gettext.gettext;
 
+const COLUMN_SPACING = 10;
+const ROW_SPACING = 10;
+const COLUMN_COUNT = 4;
+
 var createMenu = class extends BaseMenuLayout.BaseLayout{
     constructor(mainButton) {
         super(mainButton, {
@@ -104,8 +108,8 @@ var createMenu = class extends BaseMenuLayout.BaseLayout{
 
         let layout = new Clutter.GridLayout({ 
             orientation: Clutter.Orientation.VERTICAL,
-            column_spacing: 10,
-            row_spacing: 10 
+            column_spacing: COLUMN_SPACING,
+            row_spacing: ROW_SPACING 
         });
         this.grid = new St.Widget({ 
             x_expand: true,
@@ -159,8 +163,8 @@ var createMenu = class extends BaseMenuLayout.BaseLayout{
 
         layout = new Clutter.GridLayout({ 
             orientation: Clutter.Orientation.VERTICAL,
-            column_spacing: 10,
-            row_spacing: 10 
+            column_spacing: COLUMN_SPACING,
+            row_spacing: ROW_SPACING
         });
         this.shortcutsGrid = new St.Widget({ 
             x_expand: true,
@@ -307,7 +311,7 @@ var createMenu = class extends BaseMenuLayout.BaseLayout{
     _displayAppList(apps, isFavoriteMenuItem = false, differentGrid = null){  
         let grid = differentGrid ? differentGrid : this.grid;  
         grid.remove_all_children();
-        super._displayAppGridList(apps, 4, isFavoriteMenuItem, differentGrid);
+        super._displayAppGridList(apps, COLUMN_COUNT, isFavoriteMenuItem, differentGrid);
         let favsLabel = new PopupMenu.PopupMenuItem(differentGrid ? _("Shortcuts") : _(this.activeCategory), {
             hover: false,
             can_focus: false

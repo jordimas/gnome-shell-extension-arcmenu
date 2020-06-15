@@ -529,13 +529,19 @@ var AppSearchResults = class ArcMenu_AppSearchResults extends SearchResultsBase 
         this._button = resultsView._button;
         this.searchType = this._button.layoutProperties.SearchType;
         let gridView = this.searchType == Constants.SearchType.GRID_VIEW;
+        this.layout = this._button._settings.get_enum('menu-layout');
 
         this._grid = new St.BoxLayout({
             vertical: gridView ? false : true 
         });
 
         if(gridView){
-            this._grid.style = "padding: 0px 10px 10px 10px; spacing:10px;";   
+            let spacing;
+            if(this.layout == Constants.MENU_LAYOUT.Elementary || this.layout == Constants.MENU_LAYOUT.UbuntuDash)
+                spacing = 15;
+            else 
+                spacing = 10;
+            this._grid.style = "padding: 0px 10px 10px 10px; spacing: " + spacing + "px;";   
             this._resultDisplayBin.x_align = Clutter.ActorAlign.CENTER;
         }
             

@@ -33,6 +33,10 @@ const PopupMenu = imports.ui.popupMenu;
 const Utils =  Me.imports.utils;
 const _ = Gettext.gettext;
 
+const COLUMN_SPACING = 10;
+const ROW_SPACING = 10;
+const COLUMN_COUNT = 4;
+
 var createMenu = class extends BaseMenuLayout.BaseLayout{
     constructor(mainButton) {
         super(mainButton,{
@@ -64,8 +68,8 @@ var createMenu = class extends BaseMenuLayout.BaseLayout{
 
         let layout = new Clutter.GridLayout({ 
             orientation: Clutter.Orientation.VERTICAL,
-            column_spacing: 10,
-            row_spacing: 10 
+            column_spacing: COLUMN_SPACING,
+            row_spacing: ROW_SPACING 
         });
         this.grid = new St.Widget({ 
             x_expand: true,
@@ -121,7 +125,7 @@ var createMenu = class extends BaseMenuLayout.BaseLayout{
             y_fill: false,
             y_align: Clutter.ActorAlign.START,
             overlay_scrollbars: true,
-            style_class: 'vfade'
+            style_class: 'small-vfade'
         });     
 
         this.shortcutsScrollBox.add_actor(this.shortcutsBox);
@@ -243,7 +247,7 @@ var createMenu = class extends BaseMenuLayout.BaseLayout{
     }
     
     _displayAppList(apps) {
-        super._displayAppGridList(apps, 4);
+        super._displayAppGridList(apps, COLUMN_COUNT);
     }
 
     _displayAppIcons(){
