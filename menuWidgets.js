@@ -317,7 +317,7 @@ var AppRightClickMenu = class ArcMenu_AppRightClickMenu extends PopupMenu.PopupM
     _appendSeparator() {
         let separator = new PopupMenu.PopupSeparatorMenuItem();
         separator.actor.style_class='app-right-click-sep';
-        separator._separator.style_class='';
+        separator._separator.style_class = null;
         this.addMenuItem(separator);
     }
 
@@ -597,20 +597,38 @@ var ActivitiesMenuItem = GObject.registerClass(class ArcMenu_ActivitiesMenuItem 
 });
 
 var Tooltip = class ArcMenu_Tooltip{
-    constructor(menu, sourceActor, text) {
+    constructor(menu, sourceActor, title, description) {
         this._button = menu._button;
         this._settings = this._button._settings;
         this.sourceActor = sourceActor;
-        
+        let titleLabel, descriptionLabel;
         this.flipY = false;
-        this.actor = new St.Label({
-            name: 'tooltip-menu-item',
+        this.actor = new St.BoxLayout({ 
+            vertical: true,
             style_class: 'dash-label',
-            text: text ? _(text) : "",
-            opacity: 0,
-            y_align: .5
+            name: 'tooltip-menu-item',
+            opacity: 0
         });
+      
+        if(title){
+            titleLabel = new St.Label({
+                text: title,
+                style: description ? "font-weight: bold;" : null,
+                y_align: Clutter.ActorAlign.CENTER
+            });
+            this.actor.add_actor(titleLabel);
+        }
+
+        if(description){
+            descriptionLabel = new St.Label({
+                text: description,
+                y_align: Clutter.ActorAlign.CENTER
+            });
+            this.actor.add_actor(descriptionLabel);
+        }
+
         global.stage.add_actor(this.actor);
+
         this.actor.connect('destroy',()=>{
             if(this.destroyID){
                 this.sourceActor.disconnect(this.destroyID);
