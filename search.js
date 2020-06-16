@@ -193,7 +193,7 @@ var AppSearchResult = class  ArcMenu_AppSearchResult {
         this._app = appSys.lookup_app(this.metaInfo['id']);
         let iconSize;
         this.label = new St.Label({
-            text: this.metaInfo['name'],
+            text: this._app ? this._app.get_name() : this.metaInfo['name'],
             y_expand: gridView ? false : true,
             x_expand: true,
             y_align: gridView ? Clutter.ActorAlign.END : Clutter.ActorAlign.CENTER, 
@@ -282,7 +282,8 @@ var AppSearchResult = class  ArcMenu_AppSearchResult {
         }
         if(this.menuItem instanceof MW.SearchResultItem)
             this.menuItem.connect('activate', this.activate.bind(this)); 
-        this.menuItem.label = this.label;
+        if(!(this.menuItem instanceof MW.ApplicationMenuItem))
+            this.menuItem.label = this.label;
         this.menuItem.description = this._app ? this._app.get_description() : this.metaInfo['description'];
     }
 

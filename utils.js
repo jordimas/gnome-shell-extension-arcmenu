@@ -168,21 +168,21 @@ function getArraysEqual(a, b) {
         return a === b;
 }
 
-function createTooltip(button, widget, label, description){
-    let lbl = label.clutter_text;
+function createTooltip(button, widget, titleLabel, description){
+    let lbl = titleLabel.clutter_text;
     lbl.get_allocation_box();
     let isEllipsized = lbl.get_layout().is_ellipsized();
     if(isEllipsized || description){
-        let tooltipText = "";
-        if(isEllipsized && description)
-            tooltipText = label.text.replace(/\n/g, " ") + "\n" + description;
+        let titleText, descriptionText;
+        if(isEllipsized && description){
+            titleText = titleLabel.text.replace(/\n/g, " ");
+            descriptionText = description;
+        }
         else if(isEllipsized && !description)
-            tooltipText = label.text.replace(/\n/g, " ");
+            titleText = titleLabel.text.replace(/\n/g, " ");
         else if(!isEllipsized && description)
-            tooltipText = description;
-        else if(!isEllipsized && !description)
-            tooltipText = '';
-        widget.tooltip = new Me.imports.menuWidgets.Tooltip(button, widget.actor, tooltipText);
+            descriptionText = description;
+        widget.tooltip = new Me.imports.menuWidgets.Tooltip(button, widget.actor, titleText, descriptionText);
         widget.tooltip._onHover();
     } 
 }
@@ -298,7 +298,7 @@ function createStylesheet(settings){
         +" color:"+  menuForegroundColor+";\n background-color:" +  menuColor + ";\n}\n"
         +".arc-search-entry:focus { \nborder-color:"+separatorColor+";border-width: 1px; box-shadow: inset 0 0 0 1px "+lighten_rgb(separatorColor, 0.05)+";}\n"
         +".arc-search-entry StLabel.hint-text { color: "+lighten_rgb( menuForegroundColor,0, 0.3)+";}"
-
+        
         +".arc-menu-icon{\ncolor: "+menuButtonColor+";\n}\n"
         +"\n.arc-menu-icon:hover,\n.arc-menu-icon:active{\ncolor: "+menuButtonActiveColor+";\n}\n"
 

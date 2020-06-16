@@ -317,7 +317,7 @@ var AppRightClickMenu = class ArcMenu_AppRightClickMenu extends PopupMenu.PopupM
     _appendSeparator() {
         let separator = new PopupMenu.PopupSeparatorMenuItem();
         separator.actor.style_class='app-right-click-sep';
-        separator._separator.style_class='';
+        separator._separator.style_class = null;
         this.addMenuItem(separator);
     }
 
@@ -382,8 +382,44 @@ var ScrollView = GObject.registerClass(
     class ArcMenu_ScrollView extends St.ScrollView{
     _init(params){
         super._init(params);
+        this.mouse_scroll = false;
     }
 
+    vfunc_scroll_event(event){
+        let newValue, callback, adjustment;
+        switch (event.direction){
+            case Clutter.SCROLL_SMOOTH:
+                callback = ()=> {
+                    let delta_x, delta_y;
+                    [delta_x, delta_y] = event.get_scroll_delta();
+                    this.hscroll.adjustment.adjust_for_scroll_event(delta_x);
+                    this.vscroll.adjustment.adjust_for_scroll_event(delta_y);
+                };
+                break;
+            case Clutter.ScrollDirection.DOWN:
+            case Clutter.ScrollDirection.RIGHT:
+                adjustment = event.direction === Clutter.ScrollDirection.DOWN ? this.vscroll.adjustment : this.hscroll.adjustment;
+                callback = ()=> {
+                    newValue = adjustment.value + adjustment.page_size / 6;
+                    adjustment.set_value(newValue);
+                };
+                break;
+            case Clutter.ScrollDirection.UP:
+            case Clutter.ScrollDirection.LEFT:
+                adjustment = event.direction === Clutter.ScrollDirection.UP ? this.vscroll.adjustment : this.hscroll.adjustment;
+                callback = ()=> {
+                    newValue = adjustment.value - adjustment.page_size / 6;
+                    adjustment.set_value(newValue);
+                };
+                break;
+            default:
+                break;
+        }
+        if(callback)
+            Main.initializeDeferredWork(this, callback);
+        return Clutter.EVENT_PROPAGATE;
+    }
+    
     vfunc_style_changed(){
         super.vfunc_style_changed();
         let fade = this.get_effect("fade");
@@ -597,20 +633,38 @@ var ActivitiesMenuItem = GObject.registerClass(class ArcMenu_ActivitiesMenuItem 
 });
 
 var Tooltip = class ArcMenu_Tooltip{
-    constructor(menu, sourceActor, text) {
+    constructor(menu, sourceActor, title, description) {
         this._button = menu._button;
         this._settings = this._button._settings;
         this.sourceActor = sourceActor;
-        
+        let titleLabel, descriptionLabel;
         this.flipY = false;
-        this.actor = new St.Label({
-            name: 'tooltip-menu-item',
+        this.actor = new St.BoxLayout({ 
+            vertical: true,
             style_class: 'dash-label',
-            text: text ? _(text) : "",
-            opacity: 0,
-            y_align: .5
+            name: 'tooltip-menu-item',
+            opacity: 0
         });
+      
+        if(title){
+            titleLabel = new St.Label({
+                text: title,
+                style: description ? "font-weight: bold;" : null,
+                y_align: Clutter.ActorAlign.CENTER
+            });
+            this.actor.add_actor(titleLabel);
+        }
+
+        if(description){
+            descriptionLabel = new St.Label({
+                text: description,
+                y_align: Clutter.ActorAlign.CENTER
+            });
+            this.actor.add_actor(descriptionLabel);
+        }
+
         global.stage.add_actor(this.actor);
+
         this.actor.connect('destroy',()=>{
             if(this.destroyID){
                 this.sourceActor.disconnect(this.destroyID);
@@ -640,34 +694,36 @@ var Tooltip = class ArcMenu_Tooltip{
     }
 
     _onHover() {
-        if (this.sourceActor.hover) {
-            if(this._button.tooltipShowing){
-                this.show();
-            }
-            else{
-                this._button.tooltipShowingID = GLib.timeout_add(0, 750, () => {
+        if(this._useTooltips){
+            if (this.sourceActor.hover) {
+                if(this._button.tooltipShowing){
                     this.show();
-                    this._button.tooltipShowing = true;
+                }
+                else{
+                    this._button.tooltipShowingID = GLib.timeout_add(0, 750, () => {
+                        this.show();
+                        this._button.tooltipShowing = true;
+                        this._button.tooltipShowingID = null;
+                        return GLib.SOURCE_REMOVE;
+                    });
+                }
+                if (this._button.tooltipHidingID) {
+                    GLib.source_remove(this._button.tooltipHidingID);
+                    this._button.tooltipHidingID = null;
+                }
+            }
+            else {
+                this.hide();
+                if (this._button.tooltipShowingID) {
+                    GLib.source_remove(this._button.tooltipShowingID);
                     this._button.tooltipShowingID = null;
+                }
+                this._button.tooltipHidingID = GLib.timeout_add(0, 750, () => {
+                    this._button.tooltipShowing = false;
+                    this._button.tooltipHidingID = null;
                     return GLib.SOURCE_REMOVE;
                 });
             }
-            if (this._button.tooltipHidingID) {
-                GLib.source_remove(this._button.tooltipHidingID);
-                this._button.tooltipHidingID = null;
-            }
-        } 
-        else {
-            this.hide();
-            if (this._button.tooltipShowingID) {
-                GLib.source_remove(this._button.tooltipShowingID);
-                this._button.tooltipShowingID = null;
-            }
-            this._button.tooltipHidingID = GLib.timeout_add(0, 750, () => {
-                this._button.tooltipShowing = false;
-                this._button.tooltipHidingID = null;
-                return GLib.SOURCE_REMOVE;
-            });          
         }
     }
 
