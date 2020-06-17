@@ -187,7 +187,22 @@ var MENU_ICONS = [
     { name: _("Pointer"), path: '/media/icons/pointer-symbolic.svg'},
     { name: _("Toxic"), path: '/media/icons/toxic-symbolic.svg'},
     { name: _("Tree"), path: '/media/icons/tree-symbolic.svg'},
-    { name: _("Zegon"), path: '/media/icons/zegon-symbolic.svg'}
+    { name: _("Zegon"), path: '/media/icons/zegon-symbolic.svg'},
+    { name: _("Apps"), path: '/media/icons/apps-symbolic.svg'},
+    { name: _("Bug"), path: '/media/icons/bug-symbolic.svg'},
+    { name: _("Cita"), path: '/media/icons/cita-symbolic.svg'},
+    { name: _("Dragonheart"), path: '/media/icons/dragonheart-symbolic.svg'},
+    { name: _("Eclipse"), path: '/media/icons/eclipse-symbolic.svg'},
+    { name: _("Football"), path: '/media/icons/football-symbolic.svg'},
+    { name: _("Heddy"), path: '/media/icons/heddy-symbolic.svg'},
+    { name: _("Helmet"), path: '/media/icons/helmet-symbolic.svg'},
+    { name: _("Palette"), path: '/media/icons/palette-symbolic.svg'},
+    { name: _("Peeks"), path: '/media/icons/peeks-symbolic.svg'},
+    { name: _("Record"), path: '/media/icons/record-symbolic.svg'},
+    { name: _("Saucer"), path: '/media/icons/saucer-symbolic.svg'},
+    { name: _("Step"), path: '/media/icons/step-symbolic.svg'},
+    { name: _("Vancer"), path: '/media/icons/vancer-symbolic.svg'},
+    { name: _("Vibe"), path: '/media/icons/vibe-symbolic.svg'}
 ]
 
 var DISTRO_ICONS = [

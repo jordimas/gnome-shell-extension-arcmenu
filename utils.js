@@ -122,6 +122,19 @@ void main ()
     }
 }`;
 
+function createXpmImage(color1, color2, color3, color4){
+    let width = 30;
+    let height = 22;
+    let colors = 5;
+    let xpm = [width + " " + height + " " + colors + " " + 1, "1 c " + rgbStringToHex(color1), "2 c " + rgbStringToHex(color2), 
+                "3 c " + rgbStringToHex(color3), "4 c " + rgbStringToHex(color4), "x c #AAAAAA"];
+    xpm.push("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
+    for(let i = 0; i < height - 2; i++)
+        xpm.push("x1111111222222233333334444444x");
+    xpm.push("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
+    return xpm;
+}
+
 function ensureActorVisibleInScrollView(actor) {
     let box = actor.get_allocation_box();
     let y1 = box.y1, y2 = box.y2;
@@ -199,22 +212,35 @@ function getStylesheet(){
     return stylesheet;
 }
 
-function lighten_rgb(colorString, percent, modifyAlpha){ // implemented from https://stackoverflow.com/a/141943
-	if(colorString.includes('rgba'))
+function rgbStringToHex(colorString) {
+    let [r, g, b, a_] = parseRgbString(colorString)
+    return "#" + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
+}
+
+function parseRgbString(colorString){
+    if(colorString.includes('rgba'))
 		colorString = colorString.replace('rgba(','');
 	if(colorString.includes('rgb'))
 		colorString = colorString.replace('rgb(','');
 	colorString = colorString.replace(')','');
     let rgbaColor = colorString.split(",");
 
-    let r = parseFloat(rgbaColor[0]) + 255 * percent;
-    let g = parseFloat(rgbaColor[1]) + 255 * percent;
-    let b = parseFloat(rgbaColor[2]) + 255 * percent;
+    let r = parseFloat(rgbaColor[0]);
+    let g = parseFloat(rgbaColor[1]);
+    let b = parseFloat(rgbaColor[2]);
 	let a;
 	if(rgbaColor[3] != undefined)
 		a = parseFloat(rgbaColor[3]); 
 	else
         a = 1;
+    return [r, g, b, a];
+}
+
+function lighten_rgb(colorString, percent, modifyAlpha){ // implemented from https://stackoverflow.com/a/141943
+	let [r, g, b, a] = parseRgbString(colorString);
+    r = r + 255 * percent;
+    g = g + 255 * percent;
+    b = b + 255 * percent;
     if(modifyAlpha)
         a = a * (1 - modifyAlpha);
 	let m = Math.max(r, g, b);
