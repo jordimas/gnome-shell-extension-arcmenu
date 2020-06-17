@@ -236,37 +236,14 @@ function parseRgbString(colorString){
     return [r, g, b, a];
 }
 
-function lighten_rgb(colorString, percent, modifyAlpha){ // implemented from https://stackoverflow.com/a/141943
+function lighten_rgb(colorString, percent, modifyAlpha){ //implemented from https://stackoverflow.com/a/141943
 	let [r, g, b, a] = parseRgbString(colorString);
-    r = r + 255 * percent;
-    g = g + 255 * percent;
-    b = b + 255 * percent;
+    r =  Math.min(255, r + 255 * percent);
+    g = Math.min(255, g + 255 * percent);
+    b = Math.min(255, b + 255 * percent);
     if(modifyAlpha)
         a = a * (1 - modifyAlpha);
-	let m = Math.max(r, g, b);
-	let threshold = 255.9999;
-	r = Math.round(r);
-	g = Math.round(g);
-    b = Math.round(b);
-    if(r < 0) r = 0;
-    if(g < 0) g = 0;
-    if(b < 0) b =0;
-	if(m <= threshold){
-		return "rgba("+r+","+g+","+b+","+a+")";
-	}
-	let total = r + g + b;
-	if(total >= 3 * threshold){
-		return "rgba(255,255,255,"+a+")";
-	}
-	let x = (3 * threshold - total) / (3 * m - total);
-	let gray = threshold - x * m;
-	r = gray + x * r;
-	g = gray + x * g;
-	b = gray + x * b;
-	r = Math.round(r);
-	g = Math.round(g);
-	b = Math.round(b);
-	return "rgba("+r+","+g+","+b+","+a+")";
+    return "rgba("+r+","+g+","+b+","+a+")";
 }
 
 function createStylesheet(settings){
