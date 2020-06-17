@@ -1768,7 +1768,7 @@ var MenuButtonCustomizationWindow = GObject.registerClass(
             
             this.createIconList(store);
 
-            let renderer = new Gtk.CellRendererPixbuf({xpad: 5});
+            let renderer = new Gtk.CellRendererPixbuf({xpad:10});
             menuButtonIconCombo.pack_start(renderer, false);
             menuButtonIconCombo.add_attribute(renderer, "pixbuf", 0);
             renderer = new Gtk.CellRendererText();
@@ -2223,14 +2223,10 @@ var AppearancePage = GObject.registerClass(
                         this._settings.set_boolean('reload-theme', true);
                         this.presetName = dialog.presetName;
                         currentPresetTextLabel.label = dialog.presetName;
-                        let xpm = Utils.createXpmImage(dialog.menuColor, dialog.menuForegroundColor, dialog.highlightColor, dialog.highlightForegroundColor);
-                        currentPresetPreview.pixbuf = GdkPixbuf.Pixbuf.new_from_xpm_data(xpm);
                         dialog.destroy();
                     }
                     else{
                         this.checkIfPresetMatch();
-                        let xpm = Utils.createXpmImage(this.currentSettingsArray[0],this.currentSettingsArray[1], this.currentSettingsArray[3], this.currentSettingsArray[4]);
-                        currentPresetPreview.pixbuf = GdkPixbuf.Pixbuf.new_from_xpm_data(xpm);
                         currentPresetTextLabel.label = this.presetName;
                         dialog.destroy();
                     }   
@@ -2262,24 +2258,14 @@ var AppearancePage = GObject.registerClass(
                 xalign: 0,
                 hexpand: true
             });
-            let currentPresetBox = new Gtk.Box();
             let currentPresetTextLabel = new Gtk.Label({
                 label: this.presetName,
-                margin_left: 5,
                 use_markup: true,
-                halign: Gtk.Align.END,
+                xalign: 1,
                 hexpand: false
             });
-            let xpm = Utils.createXpmImage(this.currentSettingsArray[0],this.currentSettingsArray[1], this.currentSettingsArray[3], this.currentSettingsArray[4]);
-            let currentPresetPreview = new Gtk.Image({
-                pixbuf: GdkPixbuf.Pixbuf.new_from_xpm_data(xpm),
-                hexpand: false,
-                halign: Gtk.Align.END,
-            });
-            currentPresetBox.add(currentPresetPreview);
-            currentPresetBox.add(currentPresetTextLabel);
             presetTextRow.add(presetTextLabel);
-            presetTextRow.add(currentPresetBox);
+            presetTextRow.add(currentPresetTextLabel);
             overrideArcMenuRow.add(overrideArcMenuLabel);
             overrideArcMenuRow.add(overrideArcMenuButton);
             overrideArcMenuRow.add(overrideArcMenuSwitch);
@@ -2408,14 +2394,14 @@ var AppearancePage = GObject.registerClass(
         this.cornerRadius = this._settings.get_int('menu-corner-radius');
         this.menuMargin = this._settings.get_int('menu-margin');
         this.menuArrowSize = this._settings.get_int('menu-arrow-size');
-        this.currentSettingsArray = [this.menuColor, this.menuForegroundColor, this.borderColor, this.highlightColor, this.highlightForegroundColor, this.separatorColor, 
+        let currentSettingsArray = [this.menuColor, this.menuForegroundColor, this.borderColor, this.highlightColor, this.highlightForegroundColor, this.separatorColor, 
                                     this.fontSize.toString(), this.borderSize.toString(), this.cornerRadius.toString(), this.menuArrowSize.toString(), 
                                     this.menuMargin.toString(), this.verticalSeparator.toString()];
         let all_color_themes = this._settings.get_value('color-themes').deep_unpack();
         for(let i = 0;i < all_color_themes.length;i++){
             this.isEqual=true;
-            for(let l = 0; l<this.currentSettingsArray.length;l++){
-                if(this.currentSettingsArray[l] !=  all_color_themes[i][l+1]){
+            for(let l = 0; l<currentSettingsArray.length;l++){
+                if(currentSettingsArray[l] !=  all_color_themes[i][l+1]){
                     this.isEqual=false;
                     break; //If not equal then break out of inner loop
                 }
@@ -3426,25 +3412,15 @@ var ExportColorThemeDialogWindow = GObject.registerClass(
             for(let i = 0; i< this.color_themes.length; i++) {
                 let theme = this.color_themes[i];
                 let frameRow = new PW.FrameBoxRow();
-                let themeBox = new Gtk.Box();
-
                 let frameLabel = new Gtk.Label({
                     use_markup: false,
                     xalign: 0,
                     hexpand: true
                 });
+    
                 frameLabel.label = theme[0];
     
-                let xpm = Utils.createXpmImage(theme[1], theme[2], theme[4], theme[5]);
-                let presetPreview = new Gtk.Image({
-                    pixbuf: GdkPixbuf.Pixbuf.new_from_xpm_data(xpm),
-                    hexpand: false,
-                    margin_right: 5
-                });
-
-                themeBox.add(presetPreview);
-                themeBox.add(frameLabel);
-                frameRow.add(themeBox);
+                frameRow.add(frameLabel);
     
                 let checkButton = new Gtk.CheckButton({
                     margin_right: 20
@@ -3514,25 +3490,15 @@ var ManageColorThemeDialogWindow = GObject.registerClass(
             for(let i = 0; i< this.color_themes.length; i++) {
                 let theme = this.color_themes[i];
                 let frameRow = new PW.FrameBoxRow();
-                let themeBox = new Gtk.Box();
-
                 let frameLabel = new Gtk.Label({
                     use_markup: false,
                     xalign: 0,
                     hexpand: true
                 });
+    
                 frameLabel.label = theme[0];
-
-                let xpm = Utils.createXpmImage(theme[1], theme[2], theme[4], theme[5]);
-                let presetPreview = new Gtk.Image({
-                    pixbuf: GdkPixbuf.Pixbuf.new_from_xpm_data(xpm),
-                    hexpand: false,
-                    margin_right: 5
-                });
-
-                themeBox.add(presetPreview);
-                themeBox.add(frameLabel);
-                frameRow.add(themeBox);
+    
+                frameRow.add(frameLabel);
     
                 let buttonBox = new Gtk.Grid({
                     margin_top:0,
@@ -3566,9 +3532,8 @@ var ManageColorThemeDialogWindow = GObject.registerClass(
                         if(dialog.get_response()) {
                             let index = frameRow.get_index();
                             let array = [dialog.themeName, theme[1], theme[2], theme[3], theme[4], theme[5], 
-                                        theme[6], theme[7], theme[8], theme[9], theme[10], theme[11], theme[12]];
+                                        theme[6], theme[7], theme[8], theme[9], theme[10], theme[11]];
                             this.color_themes.splice(index,1,array);
-                            theme = array;
                             frameLabel.label = dialog.themeName;
                             dialog.destroy();
                         }
@@ -3655,20 +3620,7 @@ var OverrideArcMenuThemeWindow = GObject.registerClass(
             this.resize(450,250);
             this.shouldDeselect = true; 
         }
-        createIconList(store){
-            this.color_themes = this._settings.get_value('color-themes').deep_unpack();
-            for(let i= 0; i<this.color_themes.length; i++){
-                let text = this.color_themes[i][0];
-                let color1 = this.color_themes[i][1];
-                let color2 = this.color_themes[i][2];
-                let color3 = this.color_themes[i][4];
-                let color4 = this.color_themes[i][5];
-                let xpm = Utils.createXpmImage(color1, color2, color3, color4);
-                let pixbuf = GdkPixbuf.Pixbuf.new_from_xpm_data(xpm);
 
-                store.set(store.append(),[0,1], [pixbuf, _(text)]);
-            }
-        }
         _createLayout(vbox) {         
             //OVERRIDE ARC MENUS THEME-----------------------------
             //OVERRIDE OPTIONS--------------------------------
@@ -3681,22 +3633,11 @@ var OverrideArcMenuThemeWindow = GObject.registerClass(
                 xalign:0,
                 hexpand: true,
             });   
-            let store = new Gtk.ListStore();
-            store.set_column_types([GdkPixbuf.Pixbuf, GObject.TYPE_STRING]);
-            this.colorPresetCombo = new Gtk.ComboBox({
-                model: store,
-                wrap_width: 1
-            });
-            
-            this.createIconList(store);
-
-            let renderer = new Gtk.CellRendererPixbuf({xpad: 5});
-            this.colorPresetCombo.pack_start(renderer, false);
-            this.colorPresetCombo.add_attribute(renderer, "pixbuf", 0);
-            renderer = new Gtk.CellRendererText();
-            this.colorPresetCombo.pack_start(renderer, true);
-            this.colorPresetCombo.add_attribute(renderer, "text", 1);
-            
+            this.colorPresetCombo = new Gtk.ComboBoxText({ halign: Gtk.Align.END });
+            this.color_themes = this._settings.get_value('color-themes').deep_unpack();
+            for(let i= 0; i<this.color_themes.length; i++){
+                this.colorPresetCombo.append_text(_(this.color_themes[i][0]));
+            }
             this.saveButton = new Gtk.Button({
                 label: _("Save as Preset"),
                 hexpand: true,
@@ -3776,10 +3717,7 @@ var OverrideArcMenuThemeWindow = GObject.registerClass(
                                         this.menuMargin.toString(), this.verticalSeparator.toString()];
                         this.color_themes.push(array);
                         this._settings.set_value('color-themes',new GLib.Variant('aas',this.color_themes));
-                        store.clear();
-                        this.createIconList(store);
-                        this.colorPresetCombo.model = store;
-                        this.colorPresetCombo.show();
+                        this.colorPresetCombo.append_text(_(array[0]));
                         this.checkIfPresetMatch();
                         dialog.destroy();
                     }
@@ -3799,11 +3737,11 @@ var OverrideArcMenuThemeWindow = GObject.registerClass(
                     if(dialog.get_response()){
                         this.color_themes = dialog.color_themes;
                         this._settings.set_value('color-themes',new GLib.Variant('aas',dialog.color_themes));
-                        store.clear();
-                        this.createIconList(store);
-                        this.colorPresetCombo.model = store;
-                        this.colorPresetCombo.show();
-
+                        this.colorPresetCombo.remove_all();
+                        
+                        for(let i= 0; i<this.color_themes.length; i++){
+                            this.colorPresetCombo.append_text(_(this.color_themes[i][0]));
+                        }
                         this.checkIfPresetMatch();
                         dialog.destroy();
                     }
@@ -3842,12 +3780,11 @@ var OverrideArcMenuThemeWindow = GObject.registerClass(
                         for(let i = 0; i < selectedThemes.length; i++){
                             this.color_themes.push(selectedThemes[i]);
                         }
+                        for(let i= 0; i < dialog.selectedThemes.length; i++){
+                            this.colorPresetCombo.append_text(_(dialog.selectedThemes[i][0]));
+                        }
                         this._settings.set_value('color-themes',new GLib.Variant('aas',this.color_themes));
-                        store.clear();
-                        this.createIconList(store);
-                        this.colorPresetCombo.model = store;
-                        this.colorPresetCombo.show();
-                        this.checkIfPresetMatch();
+                
                         dialog.destroy();
                     }
                     else

@@ -77,21 +77,6 @@
         <value value="27" nick="Toxic"/>
         <value value="28" nick="Tree"/>
         <value value="29" nick="Zegon"/>
-        <value value="30" nick="Apps"/>
-        <value value="31" nick="Bug"/>
-        <value value="32" nick="Cita"/>
-        <value value="33" nick="Dragonheart"/>
-        <value value="34" nick="Eclipse"/>
-        <value value="35" nick="Football"/>
-        <value value="36" nick="Heddy"/>
-        <value value="37" nick="Helmet"/>
-        <value value="38" nick="Palette"/>
-        <value value="39" nick="Peeks"/>
-        <value value="40" nick="Record"/>
-        <value value="41" nick="Saucer"/>
-        <value value="42" nick="Step"/>
-        <value value="43" nick="Vancer"/>
-        <value value="44" nick="Vibe"/>
     </enum>
     <enum id='org.gnome.shell.extensions.arc-menu.distro-icons'>
         <value value="0" nick="Debian"/>
