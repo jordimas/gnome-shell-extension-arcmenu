@@ -123,15 +123,15 @@ void main ()
 }`;
 
 function createXpmImage(color1, color2, color3, color4){
-    let width = 30;
-    let height = 22;
+    let width = 42;
+    let height = 14;
     let colors = 5;
     let xpm = [width + " " + height + " " + colors + " " + 1, "1 c " + rgbStringToHex(color1), "2 c " + rgbStringToHex(color2), 
                 "3 c " + rgbStringToHex(color3), "4 c " + rgbStringToHex(color4), "x c #AAAAAA"];
-    xpm.push("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
+    xpm.push("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
     for(let i = 0; i < height - 2; i++)
-        xpm.push("x1111111222222233333334444444x");
-    xpm.push("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
+        xpm.push("x1111111111222222222233333333334444444444x");
+    xpm.push("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
     return xpm;
 }
 
