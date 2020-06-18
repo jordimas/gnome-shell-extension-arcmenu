@@ -668,17 +668,23 @@ var Tooltip = class ArcMenu_Tooltip{
         this.actor.connect('destroy',()=>{
             if(this.destroyID){
                 this.sourceActor.disconnect(this.destroyID);
-                this.destroyID=null
+                this.destroyID = null;
             }
+            if(this.activeID){
+                this.sourceActor.disconnect(this.activeID);
+                this.activeID = null;
+            }
+            
             if(this.hoverID){
                 this.sourceActor.disconnect(this.hoverID);
-                this.hoverID=null
+                this.hoverID = null;
             }
             if(this.toggleID){
                 this._settings.disconnect(this.toggleID);
-                this.toggleID=null
+                this.toggleID = null;
             }
         })
+        this.activeID = this.sourceActor.connect('notify::active', ()=> this.setActive(this.sourceActor.active));
         this.destroyID = this.sourceActor.connect('destroy',this.destroy.bind(this));
         this.hoverID = this.sourceActor.connect('notify::hover', this._onHover.bind(this));
         this._useTooltips = ! this._settings.get_boolean('disable-tooltips');
@@ -687,6 +693,11 @@ var Tooltip = class ArcMenu_Tooltip{
 
     set isButton(isButton){
         this._isButton = isButton;
+    }
+
+    setActive(active){
+        if(!active)
+            this.hide();
     }
 
     disableTooltips() {

@@ -787,31 +787,6 @@ var BaseLayout = class {
         }            	
     }
 
-    scrollToItem(button, scrollView, direction) {
-        if(button!=null){
-            let appsScrollBoxAdj = scrollView.get_vscroll_bar().get_adjustment();
-            let catsScrollBoxAlloc = scrollView.get_allocation_box();
-            let boxHeight = catsScrollBoxAlloc.y2 - catsScrollBoxAlloc.y1;
-            let[v, l, upper] = appsScrollBoxAdj.get_values();
-            let currentScrollValue = appsScrollBoxAdj.get_value();
-            let box = button.actor.get_allocation_box();
-            let buttonHeight = box.y1 - box.y2;
-    
-            if(direction == Constants.DIRECTION.DOWN && currentScrollValue == 0){
-                currentScrollValue=.01;
-                appsScrollBoxAdj.set_value(currentScrollValue);
-            }
-            else if(direction == Constants.DIRECTION.UP && (currentScrollValue + boxHeight) == upper){
-                currentScrollValue-=0.01;
-                appsScrollBoxAdj.set_value(currentScrollValue);
-            }
-            else{
-                direction == Constants.DIRECTION.UP ? buttonHeight = buttonHeight : buttonHeight = - buttonHeight;
-                appsScrollBoxAdj.set_value(currentScrollValue + buttonHeight);
-            }
-        }
-    }
-
     _onMainBoxKeyPress(mainBox, event) {
         if (event.has_control_modifier()) {
             if(this.searchBox)
@@ -964,8 +939,7 @@ var BaseLayout = class {
     }
 
     _createScrollBox(params){
-        let scrollBox = new MW.ScrollView(params);
-
+        let scrollBox = new MW.ScrollView(params);           
         let panAction = new Clutter.PanAction({ interpolate: false });
         panAction.connect('pan', (action) => {
             this._blockActivateEvent = true;
@@ -991,14 +965,14 @@ var BaseLayout = class {
     onPan(action, scrollbox) {
         let [dist_, dx_, dy] = action.get_motion_delta(0);
         let adjustment = scrollbox.get_vscroll_bar().get_adjustment();
-        adjustment.value -= (dy / scrollbox.height) * adjustment.page_size;
+        adjustment.value -=  dy;
         return false;
     }
     
     onPanEnd(action, scrollbox) {
         let velocity = -action.get_velocity(0)[2];
-        let endPanValue = scrollbox.get_vscroll_bar().get_adjustment().value + velocity;
         let adjustment = scrollbox.get_vscroll_bar().get_adjustment();
+        let endPanValue = adjustment.value + velocity * 2;
         adjustment.value = endPanValue;
     }
 

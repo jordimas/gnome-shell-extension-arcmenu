@@ -122,6 +122,19 @@ void main ()
     }
 }`;
 
+function createXpmImage(color1, color2, color3, color4){
+    let width = 42;
+    let height = 14;
+    let colors = 5;
+    let xpm = [width + " " + height + " " + colors + " " + 1, "1 c " + rgbStringToHex(color1), "2 c " + rgbStringToHex(color2), 
+                "3 c " + rgbStringToHex(color3), "4 c " + rgbStringToHex(color4), "x c #AAAAAA"];
+    xpm.push("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
+    for(let i = 0; i < height - 2; i++)
+        xpm.push("x1111111111222222222233333333334444444444x");
+    xpm.push("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
+    return xpm;
+}
+
 function ensureActorVisibleInScrollView(actor) {
     let box = actor.get_allocation_box();
     let y1 = box.y1, y2 = box.y2;
@@ -199,48 +212,38 @@ function getStylesheet(){
     return stylesheet;
 }
 
-function lighten_rgb(colorString, percent, modifyAlpha){ // implemented from https://stackoverflow.com/a/141943
-	if(colorString.includes('rgba'))
+function rgbStringToHex(colorString) {
+    let [r, g, b, a_] = parseRgbString(colorString)
+    return "#" + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
+}
+
+function parseRgbString(colorString){
+    if(colorString.includes('rgba'))
 		colorString = colorString.replace('rgba(','');
 	if(colorString.includes('rgb'))
 		colorString = colorString.replace('rgb(','');
 	colorString = colorString.replace(')','');
     let rgbaColor = colorString.split(",");
 
-    let r = parseFloat(rgbaColor[0]) + 255 * percent;
-    let g = parseFloat(rgbaColor[1]) + 255 * percent;
-    let b = parseFloat(rgbaColor[2]) + 255 * percent;
+    let r = parseFloat(rgbaColor[0]);
+    let g = parseFloat(rgbaColor[1]);
+    let b = parseFloat(rgbaColor[2]);
 	let a;
 	if(rgbaColor[3] != undefined)
 		a = parseFloat(rgbaColor[3]); 
 	else
         a = 1;
+    return [r, g, b, a];
+}
+
+function lighten_rgb(colorString, percent, modifyAlpha){ //implemented from https://stackoverflow.com/a/141943
+	let [r, g, b, a] = parseRgbString(colorString);
+    r =  Math.min(255, r + 255 * percent);
+    g = Math.min(255, g + 255 * percent);
+    b = Math.min(255, b + 255 * percent);
     if(modifyAlpha)
         a = a * (1 - modifyAlpha);
-	let m = Math.max(r, g, b);
-	let threshold = 255.9999;
-	r = Math.round(r);
-	g = Math.round(g);
-    b = Math.round(b);
-    if(r < 0) r = 0;
-    if(g < 0) g = 0;
-    if(b < 0) b =0;
-	if(m <= threshold){
-		return "rgba("+r+","+g+","+b+","+a+")";
-	}
-	let total = r + g + b;
-	if(total >= 3 * threshold){
-		return "rgba(255,255,255,"+a+")";
-	}
-	let x = (3 * threshold - total) / (3 * m - total);
-	let gray = threshold - x * m;
-	r = gray + x * r;
-	g = gray + x * g;
-	b = gray + x * b;
-	r = Math.round(r);
-	g = Math.round(g);
-	b = Math.round(b);
-	return "rgba("+r+","+g+","+b+","+a+")";
+    return "rgba("+r+","+g+","+b+","+a+")";
 }
 
 function createStylesheet(settings){
