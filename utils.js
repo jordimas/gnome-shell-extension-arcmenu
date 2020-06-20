@@ -64,6 +64,24 @@ function getMenuLayout(button, layout){
     }
 }
 
+function findSoftwareManager(){
+    let software = null;
+
+    if(GLib.find_program_in_path('gnome-software'))
+        software = 'org.gnome.Software.desktop';
+    else if(GLib.find_program_in_path('pamac-manager'))
+        software = 'pamac-manager.desktop';
+    else if(GLib.find_program_in_path('io.elementary.appcenter'))
+        software = 'io.elementary.appcenter.desktop';
+    else if(GLib.find_program_in_path('snap-store')){
+        software = 'snap-store_ubuntu-software.desktop'
+        if(!imports.gi.Shell.AppSystem.get_default().lookup_app(software))
+            software = 'snap-store_snap-store.desktop';
+    }
+    
+    return software;
+}
+
 //Menu Layouts that have two panes with categories on left and apps on right
 function isTwoPanedLayout(layout){
     return (layout == Constants.MENU_LAYOUT.Brisk || layout == Constants.MENU_LAYOUT.Whisker || layout == Constants.MENU_LAYOUT.GnomeMenu

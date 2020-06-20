@@ -23,7 +23,7 @@
 
 const Me = imports.misc.extensionUtils.getCurrentExtension();
 
-const {Clutter, GLib, Gtk, St} = imports.gi;
+const {Clutter, GLib, Gtk, Shell, St} = imports.gi;
 const BaseMenuLayout = Me.imports.menulayouts.baseMenuLayout;
 const Constants = Me.imports.constants;
 const Gettext = imports.gettext.domain(Me.metadata['gettext-domain']);
@@ -235,32 +235,12 @@ var createMenu = class extends BaseMenuLayout.BaseLayout{
         pinnedApps.push(_("Home"), "ArcMenu_Home", "ArcMenu_Home");
         pinnedApps.push(_("Documents"), "ArcMenu_Documents", "ArcMenu_Documents");
         pinnedApps.push(_("Downloads"), "ArcMenu_Downloads", "ArcMenu_Downloads");
-        let software = '';
-        let icon = '';
-        if(GLib.find_program_in_path('gnome-software')){
-            software = 'org.gnome.Software';
-            icon = 'org.gnome.Software';
-        }
-        else if(GLib.find_program_in_path('pamac-manager')){
-            software = 'pamac-manager';
-            icon = 'org.gnome.Software';
-        }
-        else if(GLib.find_program_in_path('io.elementary.appcenter')){
-            software = 'io.elementary.appcenter';
-            icon = 'pop-shop';
-        }
-        else if(GLib.find_program_in_path('snap-store')){
-            software = 'snap-store_ubuntu-software';
-            icon = 'org.gnome.Software';
-        }
-        else{
-            software = null;
-        }
+
+        let software = Utils.findSoftwareManager();
         if(software)
-            pinnedApps.push(_("Software"), icon, software+".desktop");
-        else{
+            pinnedApps.push(_("Software"), 'system-software-install-symbolic', software);
+        else
             pinnedApps.push(_("Computer"), "ArcMenu_Computer", "ArcMenu_Computer");
-        }
         
         pinnedApps.push(_("Files"), "system-file-manager", "org.gnome.Nautilus.desktop");
         pinnedApps.push(_("Log Out"), "application-exit-symbolic", "ArcMenu_LogOut");
