@@ -58,6 +58,9 @@ var DefaultMenuViewTognee = {
     ALL_PROGRAMS: 1
 }
 
+var SoftwareManagerIDs = ['org.gnome.Software.desktop', 'pamac-manager.desktop', 'io.elementary.appcenter.desktop',
+                            'snap-store_ubuntu-software.desktop', 'snap-store_snap-store.desktop'];
+
 var CATEGORIES = [
     {Category: CategoryType.FAVORITES, Name: _("Favorites"), Icon: 'emblem-favorite-symbolic'},
     {Category: CategoryType.FREQUENT_APPS, Name: _("Frequent Apps"), Icon: 'user-bookmarks-symbolic'},
