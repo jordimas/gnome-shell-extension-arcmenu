@@ -226,27 +226,13 @@ var createMenu = class extends BaseMenuLayout.BaseLayout{
         }
         pinnedApps.push(_("Terminal"), "utilities-terminal", "org.gnome.Terminal.desktop");
         pinnedApps.push(_("Settings"), "emblem-system-symbolic", "gnome-control-center.desktop");
-        let software = '';
-        if(GLib.find_program_in_path('gnome-software')){
-            software = 'org.gnome.Software.desktop';
-        }
-        else if(GLib.find_program_in_path('pamac-manager')){
-            software = 'pamac-manager.desktop';
-        }
-        else if(GLib.find_program_in_path('io.elementary.appcenter')){
-            software = 'io.elementary.appcenter.desktop';
-        }
-        else if(GLib.find_program_in_path('snap-store')){
-            software = 'snap-store_ubuntu-software.desktop';
-        }
-        else{
-            software = null;
-        }
+
+        let software = Utils.findSoftwareManager();
         if(software)
             pinnedApps.push(_("Software"), 'system-software-install-symbolic', software);
-        else{
+        else
             pinnedApps.push(_("Documents"), "ArcMenu_Documents", "ArcMenu_Documents");
-        }
+        
         pinnedApps.push(_("Files"), "system-file-manager", "org.gnome.Nautilus.desktop");
         pinnedApps.push(_("Log Out"), "application-exit-symbolic", "ArcMenu_LogOut");
         pinnedApps.push(_("Lock"), "changes-prevent-symbolic", "ArcMenu_Lock");

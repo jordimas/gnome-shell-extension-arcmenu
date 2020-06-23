@@ -64,6 +64,20 @@ function getMenuLayout(button, layout){
     }
 }
 
+function findSoftwareManager(){
+    let softwareManager = null;
+    let appSys = imports.gi.Shell.AppSystem.get_default();
+
+    for(let softwareManagerID of Constants.SoftwareManagerIDs){
+        if(appSys.lookup_app(softwareManagerID)){
+            softwareManager = softwareManagerID;
+            break;
+        }
+    }
+
+    return softwareManager;
+}
+
 //Menu Layouts that have two panes with categories on left and apps on right
 function isTwoPanedLayout(layout){
     return (layout == Constants.MENU_LAYOUT.Brisk || layout == Constants.MENU_LAYOUT.Whisker || layout == Constants.MENU_LAYOUT.GnomeMenu
