@@ -641,8 +641,7 @@ var Tooltip = class ArcMenu_Tooltip{
         this.flipY = false;
         this.actor = new St.BoxLayout({ 
             vertical: true,
-            style_class: 'dash-label',
-            name: 'tooltip-menu-item',
+            style_class: 'dash-label tooltip-menu-item',
             opacity: 0
         });
       

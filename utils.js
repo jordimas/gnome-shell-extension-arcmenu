@@ -250,11 +250,17 @@ function parseRgbString(colorString){
     return [r, g, b, a];
 }
 
-function lighten_rgb(colorString, percent, modifyAlpha){ //implemented from https://stackoverflow.com/a/141943
+function lighten_rgb(colorString, percent, modifyAlpha){
 	let [r, g, b, a] = parseRgbString(colorString);
-    r =  Math.min(255, r + 255 * percent);
+    r = Math.min(255, r + 255 * percent);
     g = Math.min(255, g + 255 * percent);
     b = Math.min(255, b + 255 * percent);
+    if(r + g + b >= 255 * 3){
+        [r, g, b, a] = parseRgbString(colorString);
+        r = r * (1 - percent);
+        g = g * (1 - percent);
+        b = b * (1 - percent);
+    }
     if(modifyAlpha)
         a = a * (1 - modifyAlpha);
     return "rgba("+r+","+g+","+b+","+a+")";
@@ -294,15 +300,16 @@ function createStylesheet(settings){
     let menuButtonColor = settings.get_string('menu-button-color');
     let menuButtonActiveColor =  settings.get_string('menu-button-active-color');
     let gapAdjustment = settings.get_int('gap-adjustment');
-    let tooltipForegroundColor = customArcMenu ? "\n color:"+  menuForegroundColor+";\n" : "";
-    let tooltipBackgroundColor = customArcMenu ? "\n background-color:"+lighten_rgb(menuColor,0.05)+";\n" : "";
     let indicatorColor = settings.get_string('indicator-color');
     let indicatorTextBackgroundColor = settings.get_string('indicator-text-color');
-        
-    let tooltipStyle = customArcMenu ?   
-        ("#tooltip-menu-item{border-color:"+  borderColor+ ";\n border: 1px;\nfont-size:"+fontSize+"pt;\n padding: 2px 5px;\n min-height: 0px;"
-        + tooltipForegroundColor + tooltipBackgroundColor+"\nmax-width:550px;\n}") 
-        : ("#tooltip-menu-item{\n padding: 2px 5px;\nmax-width:550px;\n min-height: 0px;\n}");
+    let tooltipStyle = '';
+
+    if(customArcMenu){
+        tooltipStyle = ".tooltip-menu-item{\nbox-shadow:0 0 0 1px "+ lighten_rgb(menuColor, 0.1) +"; font-size:"+fontSize+"pt;\n padding: 2px 5px;\n min-height: 0px;"
+                        + "color:" + menuForegroundColor+ ";\n background-color:" + lighten_rgb(menuColor, 0.05) + ";\nmax-width:550px;\n}"; 
+    }
+    else
+        tooltipStyle = ".tooltip-menu-item{\n padding: 2px 5px;\nmax-width:550px;\n min-height: 0px;\n}";
     
     let stylesheetCSS = "#arc-search{width: "+  leftPanelWidth+"px;} \n.arc-menu-status-text{\ncolor:"+ menuForegroundColor +";\nfont-size:" + fontSize+"pt;\n}\n "                                                     
         +".search-statustext {font-size:11pt;}\n "    
@@ -343,8 +350,7 @@ function createStylesheet(settings){
         +"-arrow-border-color:"+  borderColor+ ";\n"
         +"-arrow-border-width:"+  borderSize+"px;\n"
         +"-arrow-base:"+  menuMargin+"px;\n"
-        +"-arrow-rise:"+  menuArrowSize+"px;\n"
-        +"-arrow-box-shadow: 0 1px 3px black;\n }"
+        +"-arrow-rise:"+  menuArrowSize+"px;\n}"
         +"\n.arc-menu .popup-menu-content\n {\nmargin: 0;\nbackground-color: transparent;\nborder-radius: 0px;\nbox-shadow: 0;\n}\n"
         
         +"\n.arc-menu-sep {\nheight: 1px;\nmargin: 5px 20px;\nbackground-color: transparent;"
@@ -361,16 +367,15 @@ function createStylesheet(settings){
         +".arc-right-click .popup-menu-item:disabled {color: rgba(238, 238, 236, 0.5); }\n"
         +".arc-right-click .popup-menu-item:insensitive {color:" +  lighten_rgb(menuForegroundColor, -0.30) + "; }\n"
         +".arc-right-click-boxpointer{ \n-arrow-border-radius:"+  cornerRadius+"px;\n"
-        +"-arrow-background-color:" +  lighten_rgb( menuColor,0.05) + ";\n"
-        +"-arrow-border-color:"+  borderColor+ ";\n"
-        +"-arrow-border-width:"+  "1px;\n"
+        +"-arrow-background-color:" + lighten_rgb(menuColor, 0.05) + ";\n"
+        +"-arrow-border-color:" + lighten_rgb(menuColor, 0.1) + ";\n"
+        +"-arrow-border-width: 1px;\n"
         +"-arrow-base:"+  menuMargin+"px;\n"
-        +"-arrow-rise:"+  menuArrowSize+"px;\n"
-        +"-arrow-box-shadow: 0 1px 3px black;\n }"
+        +"-arrow-rise:"+  menuArrowSize+"px;\n}"
         +"\n.arc-right-click .popup-menu-content\n {\nmargin: 0;\nbackground-color: transparent;\nborder-radius: 0px;\nbox-shadow: 0;\n}\n"
         
         +"\n.app-right-click-sep {\nheight: 1px;\nmargin: 2px 35px;\nbackground-color: transparent;"
-        +"\nborder-color:"+  lighten_rgb(separatorColor,0.05) +";\nborder-bottom-width: 1px;\nborder-bottom-style: solid; \n}";
+        +"\nborder-color:"+  lighten_rgb(separatorColor, 0.05) +";\nborder-bottom-width: 1px;\nborder-bottom-style: solid; \n}";
     
     let stylesheet = getStylesheet();
     stylesheet.replace_contents(stylesheetCSS, null, false, Gio.FileCreateFlags.REPLACE_DESTINATION, null);
