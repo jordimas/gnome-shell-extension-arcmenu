@@ -51,56 +51,6 @@
         <value value="1" nick="System_Icon"/>
         <value value="2" nick="Distro_Icon"/>
         <value value="3" nick="Custom_Icon"/>
-        <value value="4" nick="Arc_Menu_Alt"/>
-        <value value="5" nick="Arc_Menu_Original"/>
-        <value value="6" nick="Curved_A"/>
-        <value value="7" nick="Start_Box"/>
-        <value value="8" nick="Focus"/>
-        <value value="9" nick="Triple_Dash"/>
-        <value value="10" nick="Whirl"/>
-        <value value="11" nick="Whirl_Circle"/>
-        <value value="12" nick="Sums"/>
-        <value value="13" nick="Arrow"/>
-        <value value="14" nick="Lins"/>
-        <value value="15" nick="Diamond_Square"/>
-        <value value="16" nick="Octo_Maze"/>
-        <value value="17" nick="Search"/>
-        <value value="18" nick="3d"/>
-        <value value="19" nick="Alien"/>
-        <value value="20" nick="Cloud"/>
-        <value value="21" nick="Dragon"/>
-        <value value="22" nick="Fly"/>
-        <value value="23" nick="Pacman"/>
-        <value value="24" nick="Peaks"/>
-        <value value="25" nick="Pie"/>
-        <value value="26" nick="Pointer"/>
-        <value value="27" nick="Toxic"/>
-        <value value="28" nick="Tree"/>
-        <value value="29" nick="Zegon"/>
-        <value value="30" nick="Apps"/>
-        <value value="31" nick="Bug"/>
-        <value value="32" nick="Cita"/>
-        <value value="33" nick="Dragonheart"/>
-        <value value="34" nick="Eclipse"/>
-        <value value="35" nick="Football"/>
-        <value value="36" nick="Heddy"/>
-        <value value="37" nick="Helmet"/>
-        <value value="38" nick="Palette"/>
-        <value value="39" nick="Peeks"/>
-        <value value="40" nick="Record"/>
-        <value value="41" nick="Saucer"/>
-        <value value="42" nick="Step"/>
-        <value value="43" nick="Vancer"/>
-        <value value="44" nick="Vibe"/>
-    </enum>
-    <enum id='org.gnome.shell.extensions.arc-menu.distro-icons'>
-        <value value="0" nick="Debian"/>
-        <value value="1" nick="Fedora"/>
-        <value value="2" nick="Manjaro"/>
-        <value value="3" nick="PopOs"/>
-        <value value="4" nick="Ubuntu"/>
-        <value value="5" nick="ArchLinux"/>
-        <value value="6" nick="OpenSUSE"/>
     </enum>
     <enum id='org.gnome.shell.extensions.arc-menu.default-menu-view'>
         <value value="0" nick="Pinned_Apps"/>
@@ -481,8 +431,13 @@
       <summary>Icon of the menu button.</summary>
       <description>Icon of the menu button.</description>
     </key>
-    <key name="distro-icon" enum="org.gnome.shell.extensions.arc-menu.distro-icons">
-      <default>'Debian'</default>
+    <key name="arc-menu-icon" type="i">
+      <default>0</default>
+      <summary>Icon of the menu button.</summary>
+      <description>Icon of the menu button.</description>
+    </key>
+    <key name="distro-icon" type="i">
+      <default>0</default>
       <summary>Icon of the menu button.</summary>
       <description>Icon of the menu button.</description>
     </key>

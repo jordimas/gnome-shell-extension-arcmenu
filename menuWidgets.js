@@ -2752,31 +2752,26 @@ var DashMenuButtonWidget = class ArcMenu_DashMenuButtonWidget{
         let iconEnum = this._settings.get_enum('menu-button-icon');
 
         if(iconEnum == Constants.MENU_BUTTON_ICON.Custom){
-            if (GLib.file_test(path, GLib.FileTest.EXISTS)) {
+            this._icon.set_icon_name('start-here-symbolic');
+            if (path && GLib.file_test(path, GLib.FileTest.IS_REGULAR))
                 this._icon.set_gicon(Gio.icon_new_for_string(path));
+            else{
+                global.log("ArcMenu - Custom Menu Icon Error! Set to System Default.")
             }
         }
-        else if(iconEnum == Constants.MENU_BUTTON_ICON.System){
+        else if(iconEnum == Constants.MENU_BUTTON_ICON.System)
             this._icon.set_icon_name('start-here-symbolic');
-        }
-        else if(iconEnum == Constants.MENU_BUTTON_ICON.Arc_Menu){
-            path = Me.path + Constants.ARC_MENU_ICON.path;
-            if (GLib.file_test(path, GLib.FileTest.EXISTS)) {
-                this._icon.set_gicon(Gio.icon_new_for_string(path));
-            } 
-        }
         else if(iconEnum == Constants.MENU_BUTTON_ICON.Distro_Icon){
-            iconEnum = this._settings.get_enum('distro-icon');
+            iconEnum = this._settings.get_int('distro-icon');
             path = Me.path + Constants.DISTRO_ICONS[iconEnum].path;
-            if (GLib.file_test(path, GLib.FileTest.EXISTS)) {
+            if (GLib.file_test(path, GLib.FileTest.IS_REGULAR))
                 this._icon.set_gicon(Gio.icon_new_for_string(path));
-            } 
         }
         else{
-            path = Me.path + Constants.MENU_ICONS[iconEnum - 4].path;
-            if (GLib.file_test(path, GLib.FileTest.EXISTS)) {
+            iconEnum = this._settings.get_int('arc-menu-icon');
+            path = Me.path + Constants.MENU_ICONS[iconEnum].path;
+            if (GLib.file_test(path, GLib.FileTest.IS_REGULAR))
                 this._icon.set_gicon(Gio.icon_new_for_string(path));
-            } 
         }
         return this._icon;
     }
