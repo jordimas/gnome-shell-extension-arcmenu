@@ -2029,7 +2029,7 @@ var ArcMenuIconsDialogWindow = GObject.registerClass(
             customIconFlowBox.homogeneous = false;
             customIconFlowBox.connect('selected-children-changed', ()=> {
                 applyButton.set_sensitive(true);
-                this.customIconPath = fileChooserButton.get_filename();
+                this.customIconPath = fileChooserButton.get_filename() ? fileChooserButton.get_filename() : '';
                 this.selectedIconCategory = Constants.MENU_BUTTON_ICON.Custom;
             });
             customIconBox.add(customIconFlowBox);
