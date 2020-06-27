@@ -201,7 +201,16 @@ var MENU_ICONS = [
     { path: '/media/icons/saucer-symbolic.svg'},
     { path: '/media/icons/step-symbolic.svg'},
     { path: '/media/icons/vancer-symbolic.svg'},
-    { path: '/media/icons/vibe-symbolic.svg'}
+    { path: '/media/icons/dimond-win-symbolic.svg'},
+    { path: '/media/icons/dolphin-symbolic.svg'},
+    { path: '/media/icons/dota-symbolic.svg'},
+    { path: '/media/icons/football2-symbolic.svg'},
+    { path: '/media/icons/loveheart-symbolic.svg'},
+    { path: '/media/icons/pyrimid-symbolic.svg'},
+    { path: '/media/icons/rewind-symbolic.svg'},
+    { path: '/media/icons/snap-symbolic.svg'},
+    { path: '/media/icons/time-symbolic.svg'},
+    { path: '/media/icons/transform-symbolic.svg'},
 ]
 
 var DISTRO_ICONS = [
