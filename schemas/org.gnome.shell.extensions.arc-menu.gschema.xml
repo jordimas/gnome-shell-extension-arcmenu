@@ -48,9 +48,8 @@
     </enum>
     <enum id='org.gnome.shell.extensions.arc-menu.menu-button-icon'>
         <value value="0" nick="Arc_Menu_Icon"/>
-        <value value="1" nick="System_Icon"/>
-        <value value="2" nick="Distro_Icon"/>
-        <value value="3" nick="Custom_Icon"/>
+        <value value="1" nick="Distro_Icon"/>
+        <value value="2" nick="Custom_Icon"/>
     </enum>
     <enum id='org.gnome.shell.extensions.arc-menu.default-menu-view'>
         <value value="0" nick="Pinned_Apps"/>

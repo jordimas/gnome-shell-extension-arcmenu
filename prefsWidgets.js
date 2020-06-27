@@ -212,7 +212,8 @@ var IconGrid = GObject.registerClass(class ArcMenu_IconGrid extends Gtk.FlowBox{
             hexpand: false,
             valign: Gtk.Align.START,
             halign: Gtk.Align.CENTER,
-            homogeneous: true
+            homogeneous: true,
+            selection_mode: Gtk.SelectionMode.SINGLE
         });
     }
 });

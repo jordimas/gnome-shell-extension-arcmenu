@@ -163,6 +163,7 @@ var MENU_ICONS = [
     { path: '/media/icons/arc-menu-symbolic.svg'},
     { path: '/media/icons/arc-menu-alt-symbolic.svg'},
     { path: '/media/icons/arc-menu-old-symbolic.svg'},
+    { path: 'start-here-symbolic'},
     { path: '/media/icons/curved-a-symbolic.svg'},
     { path: '/media/icons/start-box-symbolic.svg'},
     { path: '/media/icons/focus-symbolic.svg'},
