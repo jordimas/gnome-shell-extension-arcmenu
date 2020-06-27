@@ -45,7 +45,14 @@ const ClocksProxy = Gio.DBusProxy.makeProxyWrapper(ClocksIntegrationIface);
 const SWITCHEROO_BUS_NAME = 'net.hadess.SwitcherooControl';
 const SWITCHEROO_OBJECT_PATH = '/net/hadess/SwitcherooControl';
 
-const SwitcherooProxyInterface = loadInterfaceXML('net.hadess.SwitcherooControl');
+const SwitcherooProxyInterface = '<node> \
+<interface name="net.hadess.SwitcherooControl"> \
+  <property name="HasDualGpu" type="b" access="read"/> \
+  <property name="NumGPUs" type="u" access="read"/> \
+  <property name="GPUs" type="aa{sv}" access="read"/> \
+</interface> \
+</node>';
+
 const SwitcherooProxy = Gio.DBusProxy.makeProxyWrapper(SwitcherooProxyInterface);
 
 // Menu Size variables
@@ -2013,8 +2020,6 @@ var SimpleMenuItem = GObject.registerClass(class ArcMenu_SimpleMenuItem extends 
         this.applicationsScrollBox = this._button._createScrollBox({
             x_expand: true, 
             y_expand: true,
-            x_fill: true,
-            y_fill: false,
             y_align: Clutter.ActorAlign.START,
             style_class: 'apps-menu small-vfade left-scroll-area',
             overlay_scrollbars: true

@@ -303,9 +303,7 @@ var SearchResultsBase = class ArcMenu_SearchResultsBase{
             vertical: true 
         });
 
-        this._resultDisplayBin = new St.Bin({ 
-            x_fill: true,
-            y_fill: true,
+        this._resultDisplayBin = new St.Bin({
             x_expand: true,
             y_expand: true
         });

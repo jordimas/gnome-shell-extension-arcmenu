@@ -73,8 +73,6 @@ var createMenu = class extends BaseMenuLayout.BaseLayout{
 
         //Applications Box - Contains Favorites, Categories or programs
         this.applicationsScrollBox = this._createScrollBox({
-            x_fill: true,
-            y_fill: false,
             x_expand: true,
             y_expand: true,
             y_align: Clutter.ActorAlign.START,
@@ -128,10 +126,9 @@ var createMenu = class extends BaseMenuLayout.BaseLayout{
         });
 
         this.shortcutsScrollBox = this._createScrollBox({
-            x_fill: false,
-            y_fill: true,
             x_expand: false,
             y_expand: true,
+            x_align: Clutter.ActorAlign.START,
             y_align: Clutter.ActorAlign.FILL,
             overlay_scrollbars: true,
             style_class: 'small-vfade'
@@ -164,9 +161,7 @@ var createMenu = class extends BaseMenuLayout.BaseLayout{
             x_expand: true,
             y_expand: false,
             y_align: Clutter.ActorAlign.END,
-            x_align: Clutter.ActorAlign.CENTER,
-            x_fill: false,
-            y_fill: false
+            x_align: Clutter.ActorAlign.CENTER
         });
         this.actionsScrollBox.set_policy(Gtk.PolicyType.EXTERNAL, Gtk.PolicyType.EXTERNAL);
         this.actionsScrollBox.clip_to_allocation = true;
