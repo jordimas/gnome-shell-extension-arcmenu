@@ -201,6 +201,7 @@ var MENU_ICONS = [
     { path: '/media/icons/saucer-symbolic.svg'},
     { path: '/media/icons/step-symbolic.svg'},
     { path: '/media/icons/vancer-symbolic.svg'},
+    { path: '/media/icons/vibe-symbolic.svg'},
     { path: '/media/icons/dimond-win-symbolic.svg'},
     { path: '/media/icons/dolphin-symbolic.svg'},
     { path: '/media/icons/dota-symbolic.svg'},
