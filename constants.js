@@ -154,9 +154,8 @@ var MENU_APPEARANCE = {
 
 var MENU_BUTTON_ICON = { 
     Arc_Menu: 0,
-    System: 1,
-    Distro_Icon: 2,
-    Custom: 3
+    Distro_Icon: 1,
+    Custom: 2
 };
 
 var MENU_ICONS = [

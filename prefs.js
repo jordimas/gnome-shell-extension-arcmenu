@@ -1751,7 +1751,7 @@ var MenuButtonCustomizationWindow = GObject.registerClass(
             });
             
             let image = new Gtk.Image({
-                gicon: Gio.icon_new_for_string(Me.path + "/media/misc/browse-layouts-symbolic.svg")
+                gicon: Gio.icon_new_for_string(Me.path + "/media/misc/icon-preview-symbolic.svg")
             });
             let menuButtonIconButton = new Gtk.Button({
                 label: _("Browse Icons") + " ",
