@@ -2791,8 +2791,7 @@ var WorldClocksSection = GObject.registerClass(class ArcMenu_WorldClocksSection 
         super._init({
             style_class: 'world-clocks-button',
             can_focus: true,
-            x_expand: true,
-            x_fill: true
+            x_expand: true
         });
         this._clock = new imports.gi.GnomeDesktop.WallClock();
         this._clockNotifyId = 0;
@@ -2970,8 +2969,7 @@ var WeatherSection = GObject.registerClass(class ArcMenu_WeatherSection extends 
         super._init({
             style_class: 'weather-button',
             can_focus: true,
-            x_expand: true,
-            x_fill: true
+            x_expand: true
         });
         this._weatherClient = new imports.misc.weather.WeatherClient();
 

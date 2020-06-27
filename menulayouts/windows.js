@@ -59,14 +59,12 @@ var createMenu = class extends BaseMenuLayout.BaseLayout{
         this.favoritesButton = new MW.FavoritesButton(this);
         this.favoritesButton.actor.y_expand = true;
         this.favoritesButton.actor.y_align= Clutter.ActorAlign.START;
-        this.actionsBox.add(this.favoritesButton.actor, {
-            margin:5
-        });
+        this.favoritesButton.actor.margin = 5;
+        this.actionsBox.add(this.favoritesButton.actor);
         let userButton = new MW.CurrentUserButton(this);
         userButton.actor.expand = false;
-        this.actionsBox.add(userButton.actor, {
-            margin:5
-        });
+        userButton.actor.margin = 5;
+        this.actionsBox.add(userButton.actor);
         let path = GLib.get_user_special_dir(imports.gi.GLib.UserDirectory.DIRECTORY_DOCUMENTS);
         if (path != null){
             let placeInfo = new MW.PlaceInfo(Gio.File.new_for_path(path), _("Documents"));
@@ -75,14 +73,12 @@ var createMenu = class extends BaseMenuLayout.BaseLayout{
         }
         let settingsButton = new MW.SettingsButton(this);
         settingsButton.actor.expand = false;
-        this.actionsBox.add(settingsButton.actor, {
-            margin:5
-        });
+        settingsButton.actor.margin = 5;
+        this.actionsBox.add(settingsButton.actor);
         let powerButton = new MW.PowerButton(this);
         powerButton.actor.expand = false;
-        this.actionsBox.add(powerButton.actor, {
-            margin:5
-        });
+        powerButton.actor.margin = 5;
+        this.actionsBox.add(powerButton.actor);
 
         this.subMainBox = new St.BoxLayout({
             x_expand: true,
