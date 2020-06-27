@@ -116,8 +116,7 @@ var createMenu = class extends BaseMenuLayout.BaseLayout{
         this.applicationsScrollBox = this._createScrollBox({
             x_expand: true,
             y_expand: true,
-            x_fill: false,
-            y_fill: false,
+            x_align: Clutter.ActorAlign.FILL,
             y_align: Clutter.ActorAlign.START,
             overlay_scrollbars: true,
             style_class: 'vfade'
@@ -270,8 +269,6 @@ var createMenu = class extends BaseMenuLayout.BaseLayout{
         this.categoriesScrollBox = this._createScrollBox({
             x_expand: true, 
             y_expand: true,
-            x_fill: true,
-            y_fill: false,
             y_align: Clutter.ActorAlign.START,
             style_class: 'small-vfade',
             overlay_scrollbars: true,

@@ -202,6 +202,22 @@ var TileGrid = GObject.registerClass(class ArcMenu_TileGrid extends Gtk.FlowBox{
     }
 });
 
+var IconGrid = GObject.registerClass(class ArcMenu_IconGrid extends Gtk.FlowBox{
+    _init() {
+        super._init({
+            max_children_per_line: 7,
+            row_spacing: 10,
+            column_spacing: 10,
+            vexpand: true,
+            hexpand: false,
+            valign: Gtk.Align.START,
+            halign: Gtk.Align.CENTER,
+            homogeneous: true,
+            selection_mode: Gtk.SelectionMode.SINGLE
+        });
+    }
+});
+
 var Tile = GObject.registerClass(class ArcMenu_Tile extends Gtk.Button{
     _init(name, file, width, height, layout) {
         super._init();

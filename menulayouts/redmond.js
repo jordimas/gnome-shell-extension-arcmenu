@@ -81,8 +81,7 @@ var createMenu = class extends BaseMenuLayout.BaseLayout{
         this.applicationsScrollBox = this._createScrollBox({
             x_expand: true,
             y_expand: true,
-            x_fill:false,
-            y_fill: false,
+            x_align: Clutter.ActorAlign.START,
             y_align: Clutter.ActorAlign.START,
             overlay_scrollbars: true,
             style_class: 'vfade'
@@ -121,8 +120,6 @@ var createMenu = class extends BaseMenuLayout.BaseLayout{
         });
 
         this.shortcutsScrollBox = this._createScrollBox({
-            x_fill: true,
-            y_fill: false,
             y_align: Clutter.ActorAlign.START,
             overlay_scrollbars: true,
             style_class: 'small-vfade'
@@ -187,8 +184,6 @@ var createMenu = class extends BaseMenuLayout.BaseLayout{
             y_expand: true,
             y_align: Clutter.ActorAlign.END,
             x_align: Clutter.ActorAlign.CENTER,
-            x_fill: true,
-            y_fill: true
         });
         this.actionsScrollBox.set_policy(Gtk.PolicyType.EXTERNAL, Gtk.PolicyType.NEVER);
         this.actionsScrollBox.clip_to_allocation = true;

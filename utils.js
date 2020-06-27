@@ -250,11 +250,20 @@ function parseRgbString(colorString){
     return [r, g, b, a];
 }
 
-function lighten_rgb(colorString, percent, modifyAlpha){ //implemented from https://stackoverflow.com/a/141943
+function lighten_rgb(colorString, percent, modifyAlpha){
 	let [r, g, b, a] = parseRgbString(colorString);
-    r =  Math.min(255, r + 255 * percent);
+    r = Math.min(255, r + 255 * percent);
     g = Math.min(255, g + 255 * percent);
     b = Math.min(255, b + 255 * percent);
+    if(r + g + b >= 255 * 3){
+        [r, g, b, a] = parseRgbString(colorString);
+        r = r * (1 - percent);
+        g = g * (1 - percent);
+        b = b * (1 - percent);
+    }
+    r = Math.round(r);
+    g = Math.round(g);
+    b = Math.round(b);
     if(modifyAlpha)
         a = a * (1 - modifyAlpha);
     return "rgba("+r+","+g+","+b+","+a+")";
@@ -294,83 +303,91 @@ function createStylesheet(settings){
     let menuButtonColor = settings.get_string('menu-button-color');
     let menuButtonActiveColor =  settings.get_string('menu-button-active-color');
     let gapAdjustment = settings.get_int('gap-adjustment');
-    let tooltipForegroundColor = customArcMenu ? "\n color:"+  menuForegroundColor+";\n" : "";
-    let tooltipBackgroundColor = customArcMenu ? "\n background-color:"+lighten_rgb(menuColor,0.05)+";\n" : "";
     let indicatorColor = settings.get_string('indicator-color');
     let indicatorTextBackgroundColor = settings.get_string('indicator-text-color');
-        
-    let tooltipStyle = customArcMenu ?   
-        ("#tooltip-menu-item{border-color:"+  borderColor+ ";\n border: 1px;\nfont-size:"+fontSize+"pt;\n padding: 2px 5px;\n min-height: 0px;"
-        + tooltipForegroundColor + tooltipBackgroundColor+"\nmax-width:550px;\n}") 
-        : ("#tooltip-menu-item{\n padding: 2px 5px;\nmax-width:550px;\n min-height: 0px;\n}");
+    let tooltipStyle = '';
+
+    if(customArcMenu){
+        tooltipStyle = ".tooltip-menu-item{\nbox-shadow:0 0 0 1px " + lighten_rgb(menuColor, 0.1) + ";\nfont-size:" + fontSize + "pt;\npadding: 2px 5px;\nmin-height: 0px;"
+                        + "\ncolor:" + menuForegroundColor+ ";\nbackground-color:" + lighten_rgb(menuColor, 0.05) + ";\nmax-width:550px;\n}\n\n"; 
+    }
+    else
+        tooltipStyle = ".tooltip-menu-item{\npadding: 2px 5px;\nmax-width:550px;\nmin-height: 0px;\n}\n\n";
     
-    let stylesheetCSS = "#arc-search{width: "+  leftPanelWidth+"px;} \n.arc-menu-status-text{\ncolor:"+ menuForegroundColor +";\nfont-size:" + fontSize+"pt;\n}\n "                                                     
-        +".search-statustext {font-size:11pt;}\n "    
-        +".left-scroll-area{ \nwidth:"+  leftPanelWidth+"px;\n}\n"   
-        +".left-scroll-area-small{ \nwidth:"+  leftPanelWidthSmall+"px;\n}\n"  
-    	+".arc-empty-dash-drop-target{\nwidth: "+  leftPanelWidth+"px; \nheight: 2px; \nbackground-color:"+  separatorColor+"; \npadding: 0 0; \nmargin:0;\n}\n"     
-        +".left-box{\nwidth:"+  leftPanelWidth+"px;\n}" + "\n.vert-sep{\nwidth:11px;\n}\n"
-        +".default-search-entry{\nmax-width: 17.667em;\n}\n"
-        +".arc-search-entry{\nmax-width: 17.667em;\nfont-size:" + fontSize+"pt;\n border-color:"+ separatorColor+"; border-width: 1px;\n"
-        +" color:"+  menuForegroundColor+";\n background-color:" +  menuColor + ";\n}\n"
-        +".arc-search-entry:focus { \nborder-color:"+separatorColor+";border-width: 1px; box-shadow: inset 0 0 0 1px "+lighten_rgb(separatorColor, 0.05)+";}\n"
-        +".arc-search-entry StLabel.hint-text { color: "+lighten_rgb( menuForegroundColor,0, 0.3)+";}"
+    let stylesheetCSS = "#arc-search{\nwidth: " + leftPanelWidth + "px;\n}\n\n"
+        +".arc-menu-status-text{\ncolor:" + menuForegroundColor + ";\nfont-size:" + fontSize + "pt;\n}\n\n"                                                     
+        +".search-statustext{\nfont-size:11pt;\n}\n\n"    
+        +".left-scroll-area{\nwidth:" + leftPanelWidth + "px;\n}\n\n"   
+        +".left-scroll-area-small{\nwidth:" + leftPanelWidthSmall + "px;\n}\n\n"  
+    	+".arc-empty-dash-drop-target{\nwidth: " + leftPanelWidth + "px; \nheight: 2px; \nbackground-color:" + separatorColor + "; \npadding: 0 0; \nmargin:0;\n}\n\n"     
+        +".left-box{\nwidth:" + leftPanelWidth + "px;\n}\n\n"
+        +".vert-sep{\nwidth:11px;\n}\n\n"
+        +".default-search-entry{\nmax-width: 17.667em;\n}\n\n"
+        +".arc-search-entry{\nmax-width: 17.667em;\nfont-size:" + fontSize + "pt;\nborder-color:" + separatorColor + ";\nborder-width: 1px;\n"
+                            +"color:" + menuForegroundColor + ";\nbackground-color:" +  menuColor + ";\n}\n\n"
+        +".arc-search-entry:focus{\nborder-color:" + separatorColor + ";\nborder-width: 1px;\nbox-shadow: inset 0 0 0 1px " + lighten_rgb(separatorColor, 0.05) + ";\n}\n\n"
+        +".arc-search-entry StLabel.hint-text{\ncolor: " + lighten_rgb(menuForegroundColor, 0, 0.3) + ";\n}\n\n"
         
-        +".arc-menu-icon{\ncolor: "+menuButtonColor+";\n}\n"
-        +"\n.arc-menu-icon:hover,\n.arc-menu-icon:active{\ncolor: "+menuButtonActiveColor+";\n}\n"
+        +".arc-menu-icon{\ncolor: " + menuButtonColor + ";\n}\n\n"
+        +".arc-menu-icon:hover, .arc-menu-icon:active{\ncolor: " + menuButtonActiveColor + ";\n}\n\n"
 
-        +"StScrollView .small-vfade{ -st-vfade-offset: 44px;}"
+        +"StScrollView .small-vfade{\n-st-vfade-offset: 44px;\n}\n\n"
 
-        +".arc-menu-button{ -st-icon-style: symbolic; min-height:0px; border-radius: 26px; padding: 13px;}"
+        +".arc-menu-button{\n-st-icon-style: symbolic;\nmin-height:0px;\nborder-radius: 26px;\npadding: 13px;\n}\n\n"
 
-        +".arc-menu-action{background-color:transparent;\ncolor:"+  menuForegroundColor+";\n border: 0;}\n"
-        +".arc-menu-action:hover, .arc-menu-action:focus {\ncolor:"+ highlightForegroundColor+";\n background-color:"+  highlightColor+";\n}\n"
+        +".arc-menu-action{\nbackground-color:transparent;\ncolor:" + menuForegroundColor + ";\nborder: 0;\n}\n\n"
+        +".arc-menu-action:hover, .arc-menu-action:focus{\ncolor:" + highlightForegroundColor + ";\nbackground-color:" + highlightColor + ";\n}\n\n"
 
-        +".arc-menu-menu-item-indicator{color: " + indicatorColor + ";}\n"
-        +".arc-menu-menu-item-text-indicator{background-color: " + indicatorTextBackgroundColor + ";}\n"
+        +".arc-menu-menu-item-indicator{\ncolor: " + indicatorColor + ";\n}\n\n"
+        +".arc-menu-menu-item-text-indicator{\nbackground-color: " + indicatorTextBackgroundColor + ";\n}\n\n"
 
         +tooltipStyle
 
-        +".arc-menu{\n-boxpointer-gap: "+gapAdjustment+"px;\nmin-width: 15em;\ncolor: #D3DAE3;\nborder-image: none;\nbox-shadow: none;\nfont-size:" + fontSize+"pt;\n}\n"
-        +".arc-menu .popup-sub-menu {\npadding-bottom: 1px;\nbackground-color: "+lighten_rgb( menuColor,0.04)+";\n}\n"
-        +".arc-menu .popup-menu-content {padding: 1em 0em;}\n .arc-menu .popup-menu-item {\nspacing: 12px; \nborder: 0;\ncolor:"+  menuForegroundColor+";\n }\n" 
-        +".arc-menu .popup-menu-item:ltr {padding: .4em 1.75em .4em 0em; }\n.arc-menu .popup-menu-item:rtl {padding: .4em 0em .4em 1.75em;}\n"
-        +".arc-menu .popup-menu-item:checked {\nbackground-color:"+lighten_rgb( menuColor,0.04)+";\n box-shadow: 0;\nfont-weight: bold;\n border-color: "+lighten_rgb( menuColor,0.15)+";\n border-top-width:1px;\n}\n"
-        +".arc-menu .popup-menu-item.selected, .arc-menu .popup-menu-item:active{\nbackground-color:"+  highlightColor+"; \ncolor: "+ highlightForegroundColor+";\n }\n" 
-        +".arc-menu .popup-menu-item:disabled {color: rgba(238, 238, 236, 0.5); }\n"
-        +".arc-menu-boxpointer{ \n-arrow-border-radius:"+  cornerRadius+"px;\n"
-        +"-arrow-background-color:" +  menuColor + ";\n"
-        +"-arrow-border-color:"+  borderColor+ ";\n"
-        +"-arrow-border-width:"+  borderSize+"px;\n"
-        +"-arrow-base:"+  menuMargin+"px;\n"
-        +"-arrow-rise:"+  menuArrowSize+"px;\n"
-        +"-arrow-box-shadow: 0 1px 3px black;\n }"
-        +"\n.arc-menu .popup-menu-content\n {\nmargin: 0;\nbackground-color: transparent;\nborder-radius: 0px;\nbox-shadow: 0;\n}\n"
+        +".arc-menu{\n-boxpointer-gap: " + gapAdjustment + "px;\nmin-width: 15em;\ncolor: #D3DAE3;\nborder-image: none;\n"
+                        +"box-shadow: none;\nfont-size:" + fontSize + "pt;\n}\n\n"
+        +".arc-menu .popup-sub-menu{\npadding-bottom: 1px;\nbackground-color: " + lighten_rgb(menuColor, 0.04) + ";\n}\n\n"
+        +".arc-menu .popup-menu-content{\npadding: 1em 0em;\n}\n\n"
+        +".arc-menu .popup-menu-item{\nspacing: 12px; \nborder: 0;\ncolor:" + menuForegroundColor + ";\n}\n\n"
+        +".arc-menu .popup-menu-item:ltr{\npadding: .4em 1.75em .4em 0em;\n}\n\n.arc-menu .popup-menu-item:rtl\n{\npadding: .4em 0em .4em 1.75em;\n}\n\n"
+        +".arc-menu .popup-menu-item:checked{\nbackground-color:" + lighten_rgb(menuColor, 0.04) + ";\nbox-shadow: 0;\nfont-weight: bold;\n"
+                                                +"\nborder-color: " + lighten_rgb(menuColor,0.15) + ";\nborder-top-width:1px;\n}\n\n"
+        +".arc-menu .popup-menu-item.selected, .arc-menu .popup-menu-item:active{\n"
+                                +"background-color:" + highlightColor + "; \ncolor: " + highlightForegroundColor + ";\n}\n\n" 
+        +".arc-menu .popup-menu-item:disabled{\ncolor: rgba(238, 238, 236, 0.5);\n}\n\n"
+        +".arc-menu-boxpointer{ \n-arrow-border-radius:" + cornerRadius + "px;\n"
+                                +"-arrow-background-color:" + menuColor + ";\n"
+                                +"-arrow-border-color:" + borderColor + ";\n"
+                                +"-arrow-border-width:" + borderSize + "px;\n"
+                                +"-arrow-base:" + menuMargin + "px;\n"
+                                +"-arrow-rise:" + menuArrowSize + "px;\n}\n\n"
+        +".arc-menu .popup-menu-content{\nmargin: 0;\nbackground-color: transparent;\nborder-radius: 0px;\nbox-shadow: 0;\n}\n\n"
         
-        +"\n.arc-menu-sep {\nheight: 1px;\nmargin: 5px 20px;\nbackground-color: transparent;"
-        +"\nborder-color:"+  separatorColor+";\n border-bottom-width: 1px;\nborder-bottom-style: solid;\n }"
+        +".arc-menu-sep{\nheight: 1px;\nmargin: 5px 20px;\nbackground-color: transparent;\nborder-bottom-style: solid;"
+                            +"\nborder-color:" + separatorColor + ";\nborder-bottom-width: 1px;\n}\n\n"
 
-        +".menu-user-avatar {\n background-size: contain; \n border: none;\n border-radius: "+avatarRadius+"px;\n }"
-        +".arc-right-click{\nmax-width:350px;\nmin-width: 15em;\ncolor: #D3DAE3;\nborder-image: none;\nfont-size:" + fontSize+"pt;\nmargin:2px;\npadding:2px;"
-        +"\nspacing:2px;\nbox-shadow: 1px 1px 4px rgb(53, 52, 52);\n}\n"
-        +".arc-right-click .popup-sub-menu {\npadding-bottom: 1px;\nbackground-color: #3a393b;\nbox-shadow: inset 0 -1px 0px #323233;\n }\n"
-        +".arc-right-click .popup-menu-content {padding: 2px;}\n .arc-right-click .popup-menu-item {\nspacing: 12px; \nborder: 0;\ncolor:"+  menuForegroundColor+";\n }\n" 
-        +".arc-right-click .popup-menu-item:ltr {padding: .4em 1.75em .4em 0em; }\n.arc-right-click .popup-menu-item:rtl {padding: .4em 0em .4em 1.75em;}\n"
-        +".arc-right-click .popup-menu-item:checked {\nbackground-color: #3a393b;\n box-shadow: inset 0 1px 0px #323233;\nfont-weight: bold;\n }\n"
-        +".arc-right-click .popup-menu-item.selected, .arc-right-click .popup-menu-item:active{\nbackground-color:"+  highlightColor+"; \ncolor: "+ highlightForegroundColor +";\n }\n" 
-        +".arc-right-click .popup-menu-item:disabled {color: rgba(238, 238, 236, 0.5); }\n"
-        +".arc-right-click .popup-menu-item:insensitive {color:" +  lighten_rgb(menuForegroundColor, -0.30) + "; }\n"
-        +".arc-right-click-boxpointer{ \n-arrow-border-radius:"+  cornerRadius+"px;\n"
-        +"-arrow-background-color:" +  lighten_rgb( menuColor,0.05) + ";\n"
-        +"-arrow-border-color:"+  borderColor+ ";\n"
-        +"-arrow-border-width:"+  "1px;\n"
-        +"-arrow-base:"+  menuMargin+"px;\n"
-        +"-arrow-rise:"+  menuArrowSize+"px;\n"
-        +"-arrow-box-shadow: 0 1px 3px black;\n }"
-        +"\n.arc-right-click .popup-menu-content\n {\nmargin: 0;\nbackground-color: transparent;\nborder-radius: 0px;\nbox-shadow: 0;\n}\n"
+        +".menu-user-avatar{\nbackground-size: contain;\nborder: none;\nborder-radius: " + avatarRadius + "px;\n}\n\n"
+
+        +".arc-right-click{\nmax-width:350px;\nmin-width: 15em;\ncolor: #D3DAE3;\nborder-image: none;\nfont-size:" + fontSize + "pt;\nmargin:2px;\npadding:2px;"
+                            +"\nspacing:2px;\nbox-shadow: 1px 1px 4px rgb(53, 52, 52);\n}\n\n"
+        +".arc-right-click .popup-sub-menu{\npadding-bottom: 1px;\nbackground-color: #3a393b;\nbox-shadow: inset 0 -1px 0px #323233;\n}\n\n"
+        +".arc-right-click .popup-menu-content{\npadding: 2px;\n}\n\n"
+        +".arc-right-click .popup-menu-item{\nspacing: 12px; \nborder: 0;\ncolor:" + menuForegroundColor + ";\n}\n\n" 
+        +".arc-right-click .popup-menu-item:ltr{\npadding: .4em 1.75em .4em 0em;\n}\n\n.arc-right-click .popup-menu-item:rtl{\npadding: .4em 0em .4em 1.75em;\n}\n\n"
+        +".arc-right-click .popup-menu-item:checked{\nbackground-color: #3a393b;\nbox-shadow: inset 0 1px 0px #323233;\nfont-weight: bold;\n}\n\n"
+        +".arc-right-click .popup-menu-item.selected, .arc-right-click .popup-menu-item:active{"
+                                +"\nbackground-color:" + highlightColor + "; \ncolor: " + highlightForegroundColor + ";\n}\n\n" 
+        +".arc-right-click .popup-menu-item:disabled{\ncolor: rgba(238, 238, 236, 0.5);\n}\n\n"
+        +".arc-right-click .popup-menu-item:insensitive{\ncolor:" + lighten_rgb(menuForegroundColor, -0.30) + ";\n}\n\n"
+        +".arc-right-click-boxpointer{ \n-arrow-border-radius:" + cornerRadius + "px;\n"
+                                        +"-arrow-background-color:" + lighten_rgb(menuColor, 0.05) + ";\n"
+                                        +"-arrow-border-color:" + lighten_rgb(menuColor, 0.1) + ";\n"
+                                        +"-arrow-border-width: 1px;\n"
+                                        +"-arrow-base:" + menuMargin + "px;\n"
+                                        +"-arrow-rise:" + menuArrowSize + "px;\n}\n\n"
+        +".arc-right-click .popup-menu-content{\nmargin: 0;\nbackground-color: transparent;\nborder-radius: 0px;\nbox-shadow: 0;\n}\n\n"
         
-        +"\n.app-right-click-sep {\nheight: 1px;\nmargin: 2px 35px;\nbackground-color: transparent;"
-        +"\nborder-color:"+  lighten_rgb(separatorColor,0.05) +";\nborder-bottom-width: 1px;\nborder-bottom-style: solid; \n}";
+        +".app-right-click-sep {\nheight: 1px;\nmargin: 2px 35px;\nbackground-color: transparent;\nborder-bottom-style: solid;"
+                                    +"\nborder-color:" + separatorColor + ";\nborder-bottom-width: 1px;\n}\n";
     
     let stylesheet = getStylesheet();
     stylesheet.replace_contents(stylesheetCSS, null, false, Gio.FileCreateFlags.REPLACE_DESTINATION, null);
