@@ -519,18 +519,19 @@ var ArcMenuPopupBaseMenuItem = GObject.registerClass(
         return Clutter.EVENT_STOP;
     }
     vfunc_touch_event(event){
-        if (event.type() == Clutter.EventType.TOUCH_END && !this._button._blockActivateEvent && this.pressed) {
+        if(event.type == Clutter.EventType.TOUCH_END && !this._button._blockActivateEvent && this.pressed){
             this.remove_style_pseudo_class('active');
-            this.activate(event);
+            this.activate(Clutter.get_current_event());
             this.pressed = false;
             return Clutter.EVENT_STOP;
-        } else if (event.type() == Clutter.EventType.TOUCH_BEGIN && !this._button.appMenuManager.activeMenu) {
+        }
+        else if(event.type == Clutter.EventType.TOUCH_BEGIN && !this._button.appMenuManager.activeMenu){
             this.pressed = true;
             this._button._blockActivateEvent = false;
             this.contextMenuTimeOut();
             this.add_style_pseudo_class('active');
         }
-        else if(event.type() == Clutter.EventType.TOUCH_BEGIN && this._button.appMenuManager.activeMenu){
+        else if(event.type == Clutter.EventType.TOUCH_BEGIN && this._button.appMenuManager.activeMenu){
             this.pressed = false;
             this._button._blockActivateEvent = false;
             this._button.appMenuManager.activeMenu.toggle();
