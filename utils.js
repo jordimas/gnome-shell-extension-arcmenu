@@ -381,7 +381,7 @@ function createStylesheet(settings){
         +".arc-right-click-boxpointer{ \n-arrow-border-radius:" + cornerRadius + "px;\n"
                                         +"-arrow-background-color:" + lighten_rgb(menuColor, 0.05) + ";\n"
                                         +"-arrow-border-color:" + lighten_rgb(menuColor, 0.1) + ";\n"
-                                        +"-arrow-border-width:" + borderSize + "px;\n"
+                                        +"-arrow-border-width:" + (borderSize > 1 ? borderSize : 1) + "px;\n"
                                         +"-arrow-base:" + menuMargin + "px;\n"
                                         +"-arrow-rise:" + menuArrowSize + "px;\n}\n\n"
         +".arc-right-click .popup-menu-content{\nmargin: 0;\nbackground-color: transparent;\nborder-radius: 0px;\nbox-shadow: 0;\n}\n\n"
