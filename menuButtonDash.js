@@ -401,8 +401,10 @@ var ApplicationsButton = GObject.registerClass(class ArcMenu_DashApplicationsBut
             GLib.source_remove(this.tooltipHidingID);
             this.tooltipHidingID = null;
         }
-        this.MenuLayout.destroy();
-        this.MenuLayout = null;
+        if(this.MenuLayout){
+            this.MenuLayout.destroy();
+            this.MenuLayout = null;
+        }
         this.leftClickMenu.removeAll();
         this.updateMenuLayoutID = GLib.timeout_add(0, 100, () => {
             this.createMenuLayout();

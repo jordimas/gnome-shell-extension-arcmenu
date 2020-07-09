@@ -38,7 +38,7 @@ function getMenuLayout(button, layout){
         case Constants.MENU_LAYOUT.Mint:
             return new MenuLayout.mint.createMenu(button); 
         case Constants.MENU_LAYOUT.GnomeDash:
-            return new MenuLayout.gnomedash.createMenu(button); 
+            return null;
         case Constants.MENU_LAYOUT.Elementary:
             return new MenuLayout.elementary.createMenu(button); 
         case Constants.MENU_LAYOUT.Redmond:
@@ -367,8 +367,8 @@ function createStylesheet(settings){
 
         +".menu-user-avatar{\nbackground-size: contain;\nborder: none;\nborder-radius: " + avatarRadius + "px;\n}\n\n"
 
-        +".arc-right-click{\nmax-width:350px;\nmin-width: 15em;\ncolor: #D3DAE3;\nborder-image: none;\nfont-size:" + fontSize + "pt;\nmargin:2px;\npadding:2px;"
-                            +"\nspacing:2px;\nbox-shadow: 1px 1px 4px rgb(53, 52, 52);\n}\n\n"
+        +".arc-right-click{\nmax-width:350px;\nmin-width: 15em;\ncolor: #D3DAE3;\nborder-image: none;\nfont-size:" + fontSize + "pt;\nmargin:0px;\npadding:0px;"
+                            +"box-shadow: none;\nspacing:0px;\n}\n\n"
         +".arc-right-click .popup-sub-menu{\npadding-bottom: 1px;\nbackground-color: #3a393b;\nbox-shadow: inset 0 -1px 0px #323233;\n}\n\n"
         +".arc-right-click .popup-menu-content{\npadding: 2px;\n}\n\n"
         +".arc-right-click .popup-menu-item{\nspacing: 12px; \nborder: 0;\ncolor:" + menuForegroundColor + ";\n}\n\n" 
@@ -381,7 +381,7 @@ function createStylesheet(settings){
         +".arc-right-click-boxpointer{ \n-arrow-border-radius:" + cornerRadius + "px;\n"
                                         +"-arrow-background-color:" + lighten_rgb(menuColor, 0.05) + ";\n"
                                         +"-arrow-border-color:" + lighten_rgb(menuColor, 0.1) + ";\n"
-                                        +"-arrow-border-width: 1px;\n"
+                                        +"-arrow-border-width:" + borderSize + "px;\n"
                                         +"-arrow-base:" + menuMargin + "px;\n"
                                         +"-arrow-rise:" + menuArrowSize + "px;\n}\n\n"
         +".arc-right-click .popup-menu-content{\nmargin: 0;\nbackground-color: transparent;\nborder-radius: 0px;\nbox-shadow: 0;\n}\n\n"
