@@ -324,7 +324,7 @@ function createStylesheet(settings){
         +".vert-sep{\nwidth:11px;\n}\n\n"
         +".default-search-entry{\nmax-width: 17.667em;\n}\n\n"
         +".arc-search-entry{\nmax-width: 17.667em;\nfont-size:" + fontSize + "pt;\nborder-color:" + separatorColor + ";\nborder-width: 1px;\n"
-                            +"color:" + menuForegroundColor + ";\nbackground-color:" +  menuColor + ";\n}\n\n"
+                            +"color:" + menuForegroundColor + ";\nbackground-color:" + menuColor + ";\n}\n\n"
         +".arc-search-entry:focus{\nborder-color:" + separatorColor + ";\nborder-width: 1px;\nbox-shadow: inset 0 0 0 1px " + lighten_rgb(separatorColor, 0.05) + ";\n}\n\n"
         +".arc-search-entry StLabel.hint-text{\ncolor: " + lighten_rgb(menuForegroundColor, 0, 0.3) + ";\n}\n\n"
         
@@ -335,9 +335,12 @@ function createStylesheet(settings){
 
         +".arc-menu-button{\n-st-icon-style: symbolic;\nmin-height:0px;\nborder-radius: 26px;\npadding: 13px;\n}\n\n"
 
-        +".arc-menu-action{\nbackground-color:transparent;\ncolor:" + menuForegroundColor + ";\nborder: 0;\n}\n\n"
-        +".arc-menu-action:hover, .arc-menu-action:focus{\ncolor:" + highlightForegroundColor + ";\nbackground-color:" + highlightColor + ";\n}\n\n"
-
+        +".arc-menu-action{\nmargin: 1px;\nbackground-color: transparent;\nbox-shadow: none;\ncolor:" + menuForegroundColor + ";\nborder-width: 1px;\n"
+                            +"border-color: transparent;\n}\n\n"
+        +".arc-menu-action:hover, .arc-menu-action:focus{\ncolor:" + highlightForegroundColor + ";\nbackground-color:" + highlightColor + ";\nborder-width: 1px;\n"
+                                +"box-shadow: 0 1px 1px 0 " + lighten_rgb(menuColor, -0.1) + ";\nborder-color:" + lighten_rgb(menuColor, -0.05) + ";\n}\n\n"
+        +".arc-menu-action:active{\nbox-shadow: none;\ncolor:" + highlightForegroundColor + ";\nbackground-color:" + lighten_rgb(highlightColor, -0.1) + ";\nborder-width: 1px;\n"
+                                +"border-color:" + lighten_rgb(menuColor, -0.1) + ";\n}\n\n"
         +".arc-menu-menu-item-indicator{\ncolor: " + indicatorColor + ";\n}\n\n"
         +".arc-menu-menu-item-text-indicator{\nbackground-color: " + indicatorTextBackgroundColor + ";\n}\n\n"
 
@@ -370,12 +373,12 @@ function createStylesheet(settings){
         +".arc-right-click{\nmax-width:350px;\nmin-width: 15em;\ncolor: #D3DAE3;\nborder-image: none;\nfont-size:" + fontSize + "pt;\nmargin:0px;\npadding:0px;"
                             +"box-shadow: none;\nspacing:0px;\n}\n\n"
         +".arc-right-click .popup-sub-menu{\npadding-bottom: 1px;\nbackground-color: #3a393b;\nbox-shadow: inset 0 -1px 0px #323233;\n}\n\n"
-        +".arc-right-click .popup-menu-content{\npadding: 2px;\n}\n\n"
+        +".arc-right-click .popup-menu-content{\npadding: 3px 0px;\n}\n\n"
         +".arc-right-click .popup-menu-item{\nspacing: 12px; \nborder: 0;\ncolor:" + menuForegroundColor + ";\n}\n\n" 
         +".arc-right-click .popup-menu-item:ltr{\npadding: .4em 1.75em .4em 0em;\n}\n\n.arc-right-click .popup-menu-item:rtl{\npadding: .4em 0em .4em 1.75em;\n}\n\n"
         +".arc-right-click .popup-menu-item:checked{\nbackground-color: #3a393b;\nbox-shadow: inset 0 1px 0px #323233;\nfont-weight: bold;\n}\n\n"
         +".arc-right-click .popup-menu-item.selected, .arc-right-click .popup-menu-item:active{"
-                                +"\nbackground-color:" + highlightColor + "; \ncolor: " + highlightForegroundColor + ";\n}\n\n" 
+                                +"\nbackground-color:" + lighten_rgb(highlightColor, 0.05) + "; \ncolor: " + highlightForegroundColor + ";\n}\n\n" 
         +".arc-right-click .popup-menu-item:disabled{\ncolor: rgba(238, 238, 236, 0.5);\n}\n\n"
         +".arc-right-click .popup-menu-item:insensitive{\ncolor:" + lighten_rgb(menuForegroundColor, -0.30) + ";\n}\n\n"
         +".arc-right-click-boxpointer{ \n-arrow-border-radius:" + cornerRadius + "px;\n"
@@ -386,7 +389,7 @@ function createStylesheet(settings){
                                         +"-arrow-rise:" + menuArrowSize + "px;\n}\n\n"
         +".arc-right-click .popup-menu-content{\nmargin: 0;\nbackground-color: transparent;\nborder-radius: 0px;\nbox-shadow: 0;\n}\n\n"
         
-        +".app-right-click-sep {\nheight: 1px;\nmargin: 2px 35px;\nbackground-color: transparent;\nborder-bottom-style: solid;"
+        +".app-right-click-sep {\nheight: 1px;\nmargin: 2px 35px 3px 35px;\nbackground-color: transparent;\nborder-bottom-style: solid;"
                                     +"\nborder-color:" + separatorColor + ";\nborder-bottom-width: 1px;\n}\n";
     
     let stylesheet = getStylesheet();
