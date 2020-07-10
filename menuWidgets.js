@@ -1052,7 +1052,7 @@ var ArcMenuSettingsButton = class ArcMenu_ArcMenuSettingsButton extends SessionB
         this.tooltip.flipY = true;
     }
     activate() {
-        Util.spawnCommandLine('gnome-extensions prefs arc-menu@linxgem33.com');
+        Util.spawnCommandLine(Constants.ArcMenu_SettingsCommand);
     }
 };
 //'Windows' layout favorites hamburger button

@@ -558,7 +558,7 @@ var RightClickMenu = class ArcMenu_RightClickDashMenu extends PopupMenu.PopupMen
         this.actor.hide();
         let item = new PopupMenu.PopupMenuItem(_("Arc Menu Settings"));
         item.connect('activate', ()=>{
-            Util.spawnCommandLine('gnome-extensions prefs arc-menu@linxgem33.com');
+            Util.spawnCommandLine(Constants.ArcMenu_SettingsCommand);
         });
         this.addMenuItem(item);        
         item = new PopupMenu.PopupSeparatorMenuItem();     

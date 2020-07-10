@@ -421,7 +421,7 @@ var BaseLayout = class {
                 placeInfo.icon = placeInfo.icon.to_string();
                 placeMenuItem = new MW.PlaceButtonItem(this, placeInfo);    
             }
-            else if(pinnedApps[i+2] == "ArcMenu_Suspend" || pinnedApps[i+2] == "ArcMenu_LogOut" || pinnedApps[i+2] == "ArcMenu_PowerOff"
+            else if(pinnedApps[i+2] == Constants.ArcMenu_SettingsCommand ||pinnedApps[i+2] == "ArcMenu_Suspend" || pinnedApps[i+2] == "ArcMenu_LogOut" || pinnedApps[i+2] == "ArcMenu_PowerOff"
                     || pinnedApps[i+2] == "ArcMenu_Lock" || app){
                 placeMenuItem = new MW.ShortcutButtonItem(this, pinnedApps[i], pinnedApps[i+1], pinnedApps[i+2]);
             }

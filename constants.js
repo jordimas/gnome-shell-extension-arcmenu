@@ -295,6 +295,8 @@ var MENU_STYLES = {
 
 var ARCMENU_MANUAL_URL = "https://gitlab.com/LinxGem33/Neon/-/raw/master/arc-menu-manual/arcmenu-user-manual.pdf"
 
+var ArcMenu_SettingsCommand = 'gnome-extensions prefs arc-menu@linxgem33.com';
+
 //Path to some files
 var ARC_MENU_LOGO = {
     Path: '/media/icons/arc-menu-logo.svg',

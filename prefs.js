@@ -292,6 +292,55 @@ var AddAppsToPinnedListWindow = GObject.registerClass(
 
         _createLayout(vbox) {
             //create a scrolledwindow for list of all apps
+            let searchBar = new Gtk.SearchEntry({
+                placeholder_text: _("Type to search…")
+            });
+            searchBar.connect('search-changed', ()=> {
+                this._loadCategories();
+                let applist = Gio.app_info_get_all();
+
+                let pattern = searchBar.text;
+                let searchResults = [];
+                let res = [];
+                for (let i in applist) {
+                    let app = applist[i];
+                    let match;
+  
+                    match = app.get_name().toLowerCase() + " ";
+                    let info = Gio.DesktopAppInfo.new(app.get_id());
+                
+                    if (info.get_display_name()) 
+                        match += info.get_display_name().toLowerCase() + " ";
+                    if (info.get_executable()) 
+                        match += info.get_executable().toLowerCase() + " ";
+                    if (info.get_keywords()) 
+                        match += info.get_keywords().toString().toLowerCase() + " ";
+                    if (app.get_description()) 
+                        match += app.get_description().toLowerCase();
+                    
+
+                    let index = match.indexOf(pattern);
+                    if (index != -1) {
+                        searchResults.push([index, app]);
+                    }
+                }
+                let arcMenuSettings = _("Arc Menu Settings").toLowerCase();
+                let index = arcMenuSettings.indexOf(pattern);
+                let showArcMenuSettings = false;
+                if (index != -1) {
+                    showArcMenuSettings = true;
+                }
+                // Sort results by relevance score
+                searchResults.sort(function(a,b) {
+                    return a[0] > b[0];
+                });
+                res = searchResults.map(function(value,index) { return value[1]; });
+                this.appsFrame.remove_all_children();
+                this._loadCategories(res, showArcMenuSettings);
+                this.appsFrame.show();
+
+            });
+            
             let pinnedAppsScrollWindow = new Gtk.ScrolledWindow();
             pinnedAppsScrollWindow.set_policy(Gtk.PolicyType.AUTOMATIC, Gtk.PolicyType.AUTOMATIC);
             pinnedAppsScrollWindow.set_max_content_height(300);
@@ -323,6 +372,8 @@ var AddAppsToPinnedListWindow = GObject.registerClass(
             if(this._dialogType == Constants.DIALOG_TYPE.Default){
                 this._loadCategories();
                 vbox.add(addAppsButton);
+                vbox.add(searchBar);
+                vbox.reorder_child(searchBar, 0);
             }
             else if(this._dialogType == Constants.DIALOG_TYPE.Directories_Shortcuts){
                 let defaultApplicationShortcuts = this._settings.get_default_value('directory-shortcuts-list').deep_unpack();
@@ -370,10 +421,7 @@ var AddAppsToPinnedListWindow = GObject.registerClass(
                         }
                     });
                     frameRow.add(checkButton);
-                    
-                    
                     this.appsFrame.add(frameRow);
-                    
                 }
                 vbox.add(addAppsButton);
             }
@@ -381,7 +429,7 @@ var AddAppsToPinnedListWindow = GObject.registerClass(
                 this._loadCategories();
                 let defaultApplicationShortcutsFrame = new PW.FrameBox();
                 let defaultApplicationShortcuts = this._settings.get_default_value('application-shortcuts-list').deep_unpack();
-                defaultApplicationShortcuts.push([_("Arc Menu Settings"), Me.path + '/media/icons/arc-menu-symbolic.svg', "gnome-extensions prefs arc-menu@linxgem33.com"]);
+                defaultApplicationShortcuts.push([_("Arc Menu Settings"), Me.path + '/media/icons/arc-menu-symbolic.svg', Constants.ArcMenu_SettingsCommand]);
                 defaultApplicationShortcuts.push([_("Run Command..."), "system-run-symbolic", "ArcMenu_RunCommand"]);
                 for(let i = 0;i < defaultApplicationShortcuts.length; i++) {
                     let frameRow = new PW.FrameBoxRow();
@@ -438,6 +486,8 @@ var AddAppsToPinnedListWindow = GObject.registerClass(
                 let systemAppsPage = new PW.NotebookPage(_("System Apps"));
                 notebook.append_page(systemAppsPage);
                 systemAppsPage.add(pinnedAppsScrollWindow);
+                systemAppsPage.add(searchBar);
+                systemAppsPage.reorder_child(searchBar, 0);
 
                 vbox.add(notebook);
                 vbox.add(addAppsButton);
@@ -513,6 +563,8 @@ var AddAppsToPinnedListWindow = GObject.registerClass(
                 let systemAppsPage = new PW.NotebookPage(_("System Apps"));
                 notebook.append_page(systemAppsPage);
                 systemAppsPage.add(pinnedAppsScrollWindow);
+                systemAppsPage.add(searchBar);
+                systemAppsPage.reorder_child(searchBar, 0);
 
                 vbox.add(notebook);
             }
@@ -525,26 +577,31 @@ var AddAppsToPinnedListWindow = GObject.registerClass(
         get_response() {
             return this.addResponse;
         }
-        _loadCategories() {
+        _loadCategories(searchResults, showArcMenuSettings) {
             //get all apps, store in list
-            let allApps = Gio.app_info_get_all();
+            let allApps = searchResults ? searchResults : Gio.app_info_get_all();
 
             //sort apps by name alphabetically
-            allApps.sort((a, x) => {
+            allApps.sort((a, b) => {
               let _a = a.get_display_name();
-              let _b = x.get_display_name();
+              let _b = b.get_display_name();
               return GLib.strcmp0(_a, _b);
             });
-            let iter = this._dialogType == Constants.DIALOG_TYPE.Default ? -1 : 0;
+            let iter = -1;
+            if(searchResults)
+                iter = 0;
+            if(showArcMenuSettings)
+                iter = -1;    
             for(let i = iter; i < allApps.length; i++) {
                 if(i == -1 ? true : allApps[i].should_show()) {
                     let frameRow = new PW.FrameBoxRow();
                     if(i == -1){
                         frameRow._name = _("Arc Menu Settings");
                         frameRow._icon = Me.path + '/media/icons/arc-menu-symbolic.svg';
-                        frameRow._cmd = "gnome-extensions prefs arc-menu@linxgem33.com";
+                        frameRow._cmd = Constants.ArcMenu_SettingsCommand;
                     }
                     else{
+                        frameRow._app = allApps[i];
                         frameRow._name = allApps[i].get_display_name();
                         if(allApps[i].get_icon())
                             frameRow._icon = allApps[i].get_icon().to_string(); //stores icon as string
