@@ -222,6 +222,11 @@ var DISTRO_ICONS = [
     { path: '/media/icons/distros/ubuntu-logo-symbolic.svg'},
     { path: '/media/icons/distros/arch-logo-symbolic.svg'},
     { path: '/media/icons/distros/opensuse-logo-symbolic.svg'},
+    { path: '/media/icons/distros/raspbian-logo-symbolic.svg'},
+    { path: '/media/icons/distros/kali-linux-logo-symbolic.svg'},
+    { path: '/media/icons/distros/pureos-logo-symbolic.svg'},
+    { path: '/media/icons/distros/solus-logo-symbolic.svg'},
+    { path: '/media/icons/distros/budgie-logo-symbolic.svg'},
 ]
 
 var MENU_LAYOUT = {
@@ -294,6 +299,8 @@ var MENU_STYLES = {
 };
 
 var ARCMENU_MANUAL_URL = "https://gitlab.com/LinxGem33/Neon/-/raw/master/arc-menu-manual/arcmenu-user-manual.pdf"
+
+var ArcMenu_SettingsCommand = 'gnome-extensions prefs arc-menu@linxgem33.com';
 
 //Path to some files
 var ARC_MENU_LOGO = {

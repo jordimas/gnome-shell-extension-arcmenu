@@ -401,8 +401,10 @@ var ApplicationsButton = GObject.registerClass(class ArcMenu_DashApplicationsBut
             GLib.source_remove(this.tooltipHidingID);
             this.tooltipHidingID = null;
         }
-        this.MenuLayout.destroy();
-        this.MenuLayout = null;
+        if(this.MenuLayout){
+            this.MenuLayout.destroy();
+            this.MenuLayout = null;
+        }
         this.leftClickMenu.removeAll();
         this.updateMenuLayoutID = GLib.timeout_add(0, 100, () => {
             this.createMenuLayout();
@@ -556,7 +558,7 @@ var RightClickMenu = class ArcMenu_RightClickDashMenu extends PopupMenu.PopupMen
         this.actor.hide();
         let item = new PopupMenu.PopupMenuItem(_("Arc Menu Settings"));
         item.connect('activate', ()=>{
-            Util.spawnCommandLine('gnome-extensions prefs arc-menu@linxgem33.com');
+            Util.spawnCommandLine(Constants.ArcMenu_SettingsCommand);
         });
         this.addMenuItem(item);        
         item = new PopupMenu.PopupSeparatorMenuItem();     

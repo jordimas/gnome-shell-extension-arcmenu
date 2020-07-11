@@ -836,6 +836,13 @@ var SessionButton = class ArcMenu_SessionButton{
         });
         this.actor.add_actor(this._icon);
         this.actor.connect('clicked', this._onClick.bind(this));
+        this.actor.connect('key-focus-in', this._onKeyFocusIn.bind(this));
+    }
+    
+    _onKeyFocusIn(){
+        if(!this.actor.hover)
+            this._button._keyFocusIn(this.actor);
+        this.active = true;
     }
 
     disableMenuToggle(){
@@ -1045,7 +1052,7 @@ var ArcMenuSettingsButton = class ArcMenu_ArcMenuSettingsButton extends SessionB
         this.tooltip.flipY = true;
     }
     activate() {
-        Util.spawnCommandLine('gnome-extensions prefs arc-menu@linxgem33.com');
+        Util.spawnCommandLine(Constants.ArcMenu_SettingsCommand);
     }
 };
 //'Windows' layout favorites hamburger button

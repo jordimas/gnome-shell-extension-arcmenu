@@ -241,14 +241,14 @@ var ApplicationsButton = GObject.registerClass(class ArcMenu_ApplicationsButton 
         this.rightClickMenu._boxPointer._arrowSide = side;
         this.rightClickMenu._boxPointer._userArrowSide = side;
         this.rightClickMenu._boxPointer.setSourceAlignment(arrowAlignment);
-        this.rightClickMenu._arrowAlignment = arrowAlignment
+        this.rightClickMenu._arrowAlignment = arrowAlignment;
         this.rightClickMenu._boxPointer._border.queue_repaint();
 
         this.leftClickMenu._arrowSide = side;
         this.leftClickMenu._boxPointer._arrowSide = side;
         this.leftClickMenu._boxPointer._userArrowSide = side;
         this.leftClickMenu._boxPointer.setSourceAlignment(arrowAlignment);
-        this.leftClickMenu._arrowAlignment = arrowAlignment
+        this.leftClickMenu._arrowAlignment = arrowAlignment;
         this.leftClickMenu._boxPointer._border.queue_repaint();
         
         if(setAlignment)
@@ -446,8 +446,10 @@ var ApplicationsButton = GObject.registerClass(class ArcMenu_ApplicationsButton 
             GLib.source_remove(this.tooltipHidingID);
             this.tooltipHidingID = null;
         }    
-        this.MenuLayout.destroy();
-        this.MenuLayout = null;
+        if(this.MenuLayout){
+            this.MenuLayout.destroy();
+            this.MenuLayout = null;
+        }
         this.leftClickMenu.removeAll();
         this.updateMenuLayoutID = GLib.timeout_add(0, 100, () => {
             this.createMenuLayout();
@@ -549,7 +551,7 @@ var ApplicationsMenu = class ArcMenu_ApplicationsMenu extends PopupMenu.PopupMen
     constructor(sourceActor, arrowAlignment, arrowSide, button, settings) {
         super(sourceActor, arrowAlignment, arrowSide);
         this._settings = settings;
-        this._button = button;  
+        this._button = button;
         Main.uiGroup.add_actor(this.actor);
         this.actor.hide();
         this._menuCloseID = this.connect('menu-closed', () => this._onCloseEvent());
@@ -612,7 +614,7 @@ var RightClickMenu = class ArcMenu_RightClickMenu extends PopupMenu.PopupMenu {
 
         let item = new PopupMenu.PopupMenuItem(_("Arc Menu Settings"));
         item.connect('activate', ()=>{
-            Util.spawnCommandLine('gnome-extensions prefs arc-menu@linxgem33.com');
+            Util.spawnCommandLine(Constants.ArcMenu_SettingsCommand);
         });
         this.addMenuItem(item);       
 
