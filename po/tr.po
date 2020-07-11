@@ -581,7 +581,7 @@ msgstr "Arc Menüsü Simgesinin rengini değiştir"
 #: prefs.js:1867 prefs.js:1902
 msgid ""
 "Icon color options will only work with files ending with \"-symbolic.svg\""
-msgstr "Simge renk seçenekleri yalnızca \ "-symbolic.svg\" ile biten dosyalarla çalışır"
+msgstr "Simge renk seçenekleri yalnızca \"-symbolic.svg\" ile biten dosyalarla çalışır"
 
 #: prefs.js:1884
 msgid "Active Icon Color"
