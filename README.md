@@ -140,6 +140,11 @@ All ArcMenu's Image assets including wiki images, Icons and application Image as
 * This extension also uses adapted code from Dash to Panel's Utils.js.
 * This extension also uses some code from the gnome-shell-extensions package for external file sources adapted to be used for ArcMenu.
 
+<details>
+<summary><b>Current Active Developers</b></summary>
+
+<p>
+
 -----
 
 ### Current Active Developers
@@ -156,6 +161,14 @@ Hi I'm LinxGem33 aka Andy and the founder of Arc menu, my role on the project is
 
 Hi, I’m Andrew. My role on the project is to design, create, and implement features for the ArcMenu extension. I’m also involved in the code review process and front-end work, as well as improving the UX of ArcMenu. I also work on performance improvements and bug fixes, and provide help to our users with any issues related to ArcMenu.
 
+</p>
+</details>
+
+<details>
+<summary><b>Top Project Contributors</b></summary>
+
+<p>
+
 -----
 
 ### Top Project Contributors
@@ -164,9 +177,25 @@ Hi, I’m Andrew. My role on the project is to design, create, and implement fea
 
 #### @[charlesg99](https://github.com/charlesg99) - **Project Contributor** - Developer 
 
+</p>
+</details>
+
+<details>
+<summary><b>Technical Advisors</b></summary>
+
+<p>
+
 -----
 
 ### Technical Advisors
+
+</p>
+</details>
+
+<details>
+<summary><b>Thanks to the following people for contributing via pull requests</b></summary>
+
+<p>
 
 -----
 
@@ -186,17 +215,28 @@ Hi, I’m Andrew. My role on the project is to design, create, and implement fea
 
 **@[JasonLG1979](https://github.com/JasonLG1979)**  | **@[lexruee](https://github.com/lexruee/Arc-Menu)**
 
+</p>
+</details>
+
 -----
 
 ### Translations
 
 -----
 
+<details>
+<summary><b>Disclaimer..</b></summary>
+
+<p>
+
 **Disclaimer..**
 
 *" Translations are not provided by the ArcMenu team members and may contain incorrect or inaccurate translations. The ArcMenu team relies on user contributions for translations. Therefore if you wish to correct or modify a translation that you feel is inaccurate please send a Merge Request with a brief description with the reason for any corrections. "*
 
 Kind regards - **ArcMenu Team**
+
+</p>
+</details>
 
 -----
 
