@@ -5275,9 +5275,45 @@ var MiscPage = GObject.registerClass(
             clearRecentAppsRow.add(clearRecentAppsButton);
             clearRecentAppsFrame.add(clearRecentAppsRow);
 
+            let resetSettingsFrame = new PW.FrameBox();
+            let resetSettingsRow = new PW.FrameBoxRow();
+            let resetSettingsLabel = new Gtk.Label({
+                label: _('Reset all Settings to Default'),
+                use_markup: true,
+                xalign: 0,
+                hexpand: true
+            });
+
+            let resetSettingsButton = new Gtk.Button({ 
+                halign: Gtk.Align.END,
+                label: _("Restore Defaults"),
+                tooltip_text: _('Reset all Arc Menu Settings to Default') 
+            });
+            resetSettingsButton.connect('clicked', (widget) => {
+                let dialog = new Gtk.MessageDialog({
+                    text: "<b>" + _("Restore Default Settings?") + '</b>\n' + _("All Arc Menu settings will be reset to the default value."),
+                    use_markup: true,
+                    buttons: Gtk.ButtonsType.YES_NO,
+                    message_type: Gtk.MessageType.WARNING,
+                    transient_for: this.get_toplevel(),
+                    modal: true
+                });
+                dialog.connect('response', (widget, response) => {
+                    if(response == Gtk.ResponseType.YES)
+                        GLib.spawn_command_line_sync('dconf reset -f /org/gnome/shell/extensions/arc-menu/');
+                    dialog.destroy();
+                });
+                dialog.show();
+                
+            });
+            resetSettingsRow.add(resetSettingsLabel);
+            resetSettingsRow.add(resetSettingsButton);
+            resetSettingsFrame.add(resetSettingsRow);
+
             this.add(importFrame);
             this.add(importColorPresetFrame);
             this.add(clearRecentAppsFrame);
+            this.add(resetSettingsFrame);
         }
         _showFileChooser(title, params, acceptBtn, acceptHandler) {
             let dialog = new Gtk.FileChooserDialog(mergeObjects({ title: title, transient_for: this.get_toplevel() }, params));

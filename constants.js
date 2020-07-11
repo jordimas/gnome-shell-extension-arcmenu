@@ -222,6 +222,11 @@ var DISTRO_ICONS = [
     { path: '/media/icons/distros/ubuntu-logo-symbolic.svg'},
     { path: '/media/icons/distros/arch-logo-symbolic.svg'},
     { path: '/media/icons/distros/opensuse-logo-symbolic.svg'},
+    { path: '/media/icons/distros/raspbian-logo-symbolic.svg'},
+    { path: '/media/icons/distros/kali-linux-logo-symbolic.svg'},
+    { path: '/media/icons/distros/pureos-logo-symbolic.svg'},
+    { path: '/media/icons/distros/solus-logo-symbolic.svg'},
+    { path: '/media/icons/distros/budgie-logo-symbolic.svg'},
 ]
 
 var MENU_LAYOUT = {
