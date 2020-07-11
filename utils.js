@@ -338,9 +338,9 @@ function createStylesheet(settings){
         +".arc-menu-action{\nmargin: 1px;\nbackground-color: transparent;\nbox-shadow: none;\ncolor:" + menuForegroundColor + ";\nborder-width: 1px;\n"
                             +"border-color: transparent;\n}\n\n"
         +".arc-menu-action:hover, .arc-menu-action:focus{\ncolor:" + highlightForegroundColor + ";\nbackground-color:" + highlightColor + ";\nborder-width: 1px;\n"
-                                +"box-shadow: 0 1px 1px 0 " + lighten_rgb(menuColor, -0.1) + ";\nborder-color:" + lighten_rgb(menuColor, -0.05) + ";\n}\n\n"
+                                +"box-shadow: 0 1px 1px 0 " + lighten_rgb(menuColor, -0.05) + ";\nborder-color:" + lighten_rgb(menuColor, -0.05) + ";\n}\n\n"
         +".arc-menu-action:active{\nbox-shadow: none;\ncolor:" + highlightForegroundColor + ";\nbackground-color:" + lighten_rgb(highlightColor, -0.15) + ";\nborder-width: 1px;\n"
-                                +"border-color:" + lighten_rgb(menuColor, 0.1) + ";\n}\n\n"
+                                +"border-color:" + lighten_rgb(menuColor, -0.1) + ";\n}\n\n"
         +".arc-menu-menu-item-indicator{\ncolor: " + indicatorColor + ";\n}\n\n"
         +".arc-menu-menu-item-text-indicator{\nbackground-color: " + indicatorTextBackgroundColor + ";\n}\n\n"
 
