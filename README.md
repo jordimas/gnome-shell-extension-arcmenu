@@ -30,7 +30,7 @@ This extension could be even better with your help! Any items in the issue track
 
 ![image](/uploads/85b3cf3baea40163ffc5c115b7d7306e/image.png)  ![image](/uploads/d5b2fb82db8d2955923d327caef8e4aa/image.png)
 
-* For more information about contributing and code requirements please visit the [How to Contribute)](https://gitlab.com/arcmenu-team/Arc-Menu/-/wikis/How-to-Contribute) wiki section.
+* For more information about contributing and code requirements please visit the [How to Contribute](https://gitlab.com/arcmenu-team/Arc-Menu/-/wikis/How-to-Contribute) wiki section.
 
 </p>
 </details>
@@ -112,7 +112,7 @@ If you have any issues with regard to Arc menu and your unsure of a certain feat
 Please refer to the Arc menu [Wiki Guide](https://gitlab.com/LinxGem33/Arc-Menu/wikis/Introduction) 
 
 
-**Click on the link to: View the [ArcMenu User Manual](https://gitlab.com/LinxGem33/Neon/-/raw/master/arc-menu-manual/arcmenu-user-manual.pdf) Online from the wiki page.**
+**Click on the link to: View the [ArcMenu User Manual](https://gitlab.com/LinxGem33/Neon/-/raw/master/arc-menu-manual/arcmenu-user-manual.pdf) Online.**
 
 - **To Download the ArcMenu user manual: Please click on the PDF Icon below.**
 
