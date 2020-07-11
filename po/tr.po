@@ -24,385 +24,8 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 2.0.6\n"
 
-#: search.js:725 searchGrid.js:750
-msgid "Searching..."
-msgstr "Aranıyor..."
-
-#: search.js:727 searchGrid.js:752
-msgid "No results."
-msgstr "Sonuç bulunamadı."
-
-#: search.js:833 searchGrid.js:893
-#, javascript-format
-msgid "%d more"
-msgid_plural "%d more"
-msgstr[0] "%d daha"
-msgstr[1] "%d daha"
-
-#: menulayouts/raven.js:182 menulayouts/mint.js:504 menulayouts/brisk.js:197
-#: menulayouts/arcmenu.js:246 menulayouts/redmond.js:237
-#: menulayouts/ubuntudash.js:291 menulayouts/ubuntudash.js:315
-msgid "Software"
-msgstr "Yazılım"
-
-#: menulayouts/raven.js:182 menulayouts/mint.js:489 menulayouts/brisk.js:205
-#: menulayouts/arcmenu.js:246 menulayouts/redmond.js:237
-#: menulayouts/windows.js:287 menulayouts/ubuntudash.js:315 menuWidgets.js:799
-msgid "Settings"
-msgstr "Ayarlar"
-
-#: menulayouts/raven.js:182 menulayouts/arcmenu.js:246
-#: menulayouts/redmond.js:237 menulayouts/ubuntudash.js:315 prefs.js:2203
-#: prefs.js:2232 prefs.js:2237 prefs.js:2271 prefs.js:2283
-msgid "Tweaks"
-msgstr "İnce Ayarlar"
-
-#: menulayouts/raven.js:182 menulayouts/mint.js:488 menulayouts/arcmenu.js:246
-#: menulayouts/redmond.js:237 menulayouts/ubuntudash.js:315 menuWidgets.js:1365
-#: menuWidgets.js:1576
-msgid "Terminal"
-msgstr "Uç Birim"
-
-#: menulayouts/raven.js:182 menulayouts/arcmenu.js:246
-#: menulayouts/redmond.js:237 menulayouts/ubuntudash.js:315 menuWidgets.js:462
-msgid "Activities Overview"
-msgstr "Etkinlikler Genel Görünümü"
-
-#: menulayouts/raven.js:182 menulayouts/arcmenu.js:246
-#: menulayouts/redmond.js:237 menulayouts/ubuntudash.js:315 menuWidgets.js:812
-#: menuWidgets.js:1361 menuWidgets.js:1572 menuButtonPanel.js:615
-#: menuButtonDash.js:578 prefs.js:376 prefs.js:537
-msgid "Arc Menu Settings"
-msgstr "Arc Menü Ayarları"
-
-#: menulayouts/raven.js:190 menulayouts/tweaks/tweaks.js:188
-#: menulayouts/tweaks/tweaks.js:306 menulayouts/ubuntudash.js:323 prefs.js:4258
-msgid "Shortcuts"
-msgstr "Kısayollar"
-
-#: menulayouts/raven.js:390 menulayouts/tweaks/tweaks.js:598
-#: menulayouts/ubuntudash.js:575 prefs.js:41 prefs.js:826
-msgid "Pinned Apps"
-msgstr "Sabitlenmiş Uygulamalar"
-
-#: menulayouts/raven.js:427 menulayouts/ubuntudash.js:612 menuWidgets.js:701
-#: menuWidgets.js:2027 menuWidgets.js:2173 menuWidgets.js:2385
-msgid "Frequent Apps"
-msgstr "Sık Kullanılan Uygulamalar"
-
-#: menulayouts/raven.js:534 menulayouts/ubuntudash.js:720 menuWidgets.js:697
-#: menuWidgets.js:1058 menuWidgets.js:2024 menuWidgets.js:2170
-#: menuWidgets.js:2382
-msgid "All Programs"
-msgstr "Tüm Uygulamalar"
-
-#: menulayouts/mint.js:420 menulayouts/arcmenu.js:514
-#: menulayouts/arcmenu.js:521 menulayouts/redmond.js:419
-#: menulayouts/redmond.js:426 menulayouts/ubuntudash.js:227
-#: menulayouts/ubuntudash.js:274 placeDisplay.js:459
-msgid "Home"
-msgstr "Ev"
-
-#: menulayouts/mint.js:428 menulayouts/arcmenu.js:514
-#: menulayouts/arcmenu.js:529 menulayouts/redmond.js:419
-#: menulayouts/redmond.js:434 menulayouts/ubuntudash.js:235
-msgid "Network"
-msgstr "Ağ"
-
-#: menulayouts/mint.js:505 menulayouts/ubuntudash.js:292
-msgid "Files"
-msgstr "Dosyalar"
-
-#: menulayouts/mint.js:506 menulayouts/ubuntudash.js:293 menuWidgets.js:932
-#: prefs.js:4216
-msgid "Log Out"
-msgstr "Oturumu Kapat"
-
-#: menulayouts/mint.js:507 menulayouts/ubuntudash.js:294 menuWidgets.js:964
-#: prefs.js:4199
-msgid "Lock"
-msgstr "Kilitle"
-
-#: menulayouts/mint.js:508 menulayouts/ubuntudash.js:295 menuWidgets.js:920
-#: prefs.js:4233
-msgid "Power Off"
-msgstr "Bilgisayarı Kapat"
-
-#: menulayouts/tweaks/tweaks.js:86
-msgid "Category Activation"
-msgstr "Kategori Etkinleştirme"
-
-#: menulayouts/tweaks/tweaks.js:92
-msgid "Mouse Click"
-msgstr "Fare Tıklaması"
-
-#: menulayouts/tweaks/tweaks.js:93
-msgid "Mouse Hover"
-msgstr "Fare Üzerinde"
-
-#: menulayouts/tweaks/tweaks.js:112
-msgid "Avatar Icon Shape"
-msgstr "Avatar Simge Şekli"
-
-#: menulayouts/tweaks/tweaks.js:117
-msgid "Circular"
-msgstr "Yuvarlak"
-
-#: menulayouts/tweaks/tweaks.js:118
-msgid "Square"
-msgstr "Kare"
-
-#: menulayouts/tweaks/tweaks.js:143
-msgid "KRunner Position"
-msgstr "KRunner Konumu"
-
-#: menulayouts/tweaks/tweaks.js:148
-msgid "Top"
-msgstr "En Üst"
-
-#: menulayouts/tweaks/tweaks.js:149
-msgid "Centered"
-msgstr "Ortalanmış"
-
-#: menulayouts/tweaks/tweaks.js:160 menulayouts/tweaks/tweaks.js:335
-msgid "Show Extra Large Icons with App Descriptions"
-msgstr "Uygulama Açıklamalarıyla Ekstra Büyük Simgeler Göster"
-
-#: menulayouts/tweaks/tweaks.js:181 menulayouts/tweaks/tweaks.js:299
-#: prefs.js:738
-msgid "General"
-msgstr "Genel"
-
-#: menulayouts/tweaks/tweaks.js:191
-msgid "Buttons"
-msgstr "Düğmeler"
-
-#: menulayouts/tweaks/tweaks.js:199 menulayouts/tweaks/tweaks.js:314
-msgid "Default Screen"
-msgstr "Öntanımlı Ekran"
-
-#: menulayouts/tweaks/tweaks.js:204 menulayouts/tweaks/tweaks.js:319
-#: menuWidgets.js:693 menuWidgets.js:2021
-msgid "Home Screen"
-msgstr "Ev Ekranı"
-
-#: menulayouts/tweaks/tweaks.js:205 menulayouts/tweaks/tweaks.js:320
-msgid "All Applications"
-msgstr "Tüm Uygulamalar"
-
-#: menulayouts/tweaks/tweaks.js:220 prefs.js:2547
-msgid "Disable Menu Arrow"
-msgstr "Menü Okunu Devre Dışı Bırak"
-
-#: menulayouts/tweaks/tweaks.js:228 prefs.js:2555
-msgid "Disable current theme menu arrow pointer"
-msgstr "Geçerli tema menü ok işaretçisini devre dışı bırak"
-
-#: menulayouts/tweaks/tweaks.js:247 menulayouts/tweaks/tweaks.js:365
-#: prefs.js:132 prefs.js:696 prefs.js:3769 prefs.js:4027
-msgid "Save"
-msgstr "Kaydet"
-
-#: menulayouts/tweaks/tweaks.js:273 menulayouts/tweaks/tweaks.js:391
-msgid "Separator Position Index"
-msgstr "Ayırıcı Konum İndeksi"
-
-#: menulayouts/tweaks/tweaks.js:578
-msgid "Nothing Yet!"
-msgstr "Henüz Yok!"
-
-#: menulayouts/tweaks/tweaks.js:592 prefs.js:817
-msgid "Arc Menu Default View"
-msgstr "Arc Menü Öntanımlı Görünüm"
-
-#: menulayouts/tweaks/tweaks.js:599 prefs.js:827
-msgid "Categories List"
-msgstr "Katagori Listesi"
-
-#: menulayouts/arcmenu.js:514 menulayouts/redmond.js:419
-#: menulayouts/windows.js:115 menulayouts/windows.js:282
-#: menulayouts/ubuntudash.js:275
-msgid "Documents"
-msgstr "Belgeler"
-
-#: menulayouts/arcmenu.js:514 menulayouts/redmond.js:419
-#: menulayouts/ubuntudash.js:276
-msgid "Downloads"
-msgstr "İndirilenler"
-
-#: menulayouts/arcmenu.js:514 menulayouts/redmond.js:419
-msgid "Music"
-msgstr "Müzik"
-
-#: menulayouts/arcmenu.js:514 menulayouts/redmond.js:419
-msgid "Pictures"
-msgstr "Resimler"
-
-#: menulayouts/arcmenu.js:514 menulayouts/redmond.js:419
-msgid "Videos"
-msgstr "Videolar"
-
-#: menulayouts/arcmenu.js:514 menulayouts/redmond.js:419 placeDisplay.js:244
-#: placeDisplay.js:268
-msgid "Computer"
-msgstr "Bilgisayar"
-
-#: menuWidgets.js:130
-msgid "Open Folder Location"
-msgstr "Dizin Konumunu Aç"
-
-#: menuWidgets.js:146
-msgid "Current Windows:"
-msgstr "Geçerli Pencereler:"
-
-#: menuWidgets.js:165
-msgid "New Window"
-msgstr "Yeni Pencere"
-
-#: menuWidgets.js:175
-msgid "Launch using Dedicated Graphics Card"
-msgstr "Adanmış Ekran Kartıyla Başlat"
-
-#: menuWidgets.js:206
-msgid "Delete Desktop Shortcut"
-msgstr "Masaüstü Kısayolunu Sil"
-
-#: menuWidgets.js:214
-msgid "Create Desktop Shortcut"
-msgstr "Masaüstü Kısayolu Oluştur"
-
-#: menuWidgets.js:228
-msgid "Remove from Favorites"
-msgstr "Favorilerden Kaldır"
-
-#: menuWidgets.js:234
-msgid "Add to Favorites"
-msgstr "Favorilere Ekle"
-
-#: menuWidgets.js:252 menuWidgets.js:303
-msgid "Unpin from Arc Menu"
-msgstr "Arc Menüden kaldır"
-
-#: menuWidgets.js:266
-msgid "Pin to Arc Menu"
-msgstr "Arc Menüye Sabitle"
-
-#: menuWidgets.js:279
-msgid "Show Details"
-msgstr "Ayrıntıları Göster"
-
-#: menuWidgets.js:697 menuWidgets.js:825 menuWidgets.js:2024
-#: menuWidgets.js:2170 menuWidgets.js:2382
-msgid "Favorites"
-msgstr "Sık kullanılanlar"
-
-#: menuWidgets.js:840
-msgid "Categories"
-msgstr "Kategoriler"
-
-#: menuWidgets.js:855
-msgid "Users"
-msgstr "Kullanıcılar"
-
-#: menuWidgets.js:947 prefs.js:4182
-msgid "Suspend"
-msgstr "Beklemeye Al"
-
-#: menuWidgets.js:990
-msgid "Back"
-msgstr "Geri"
-
-#: menuWidgets.js:2667
-msgid "Type to search…"
-msgstr "Aramak için yazın…"
-
-#: menuWidgets.js:2837 prefs.js:3923
-msgid "Applications"
-msgstr "Uygulamalar"
-
-#: menuWidgets.js:2903
-msgid "Show Applications"
-msgstr "Uygulamaları Göster"
-
-#: menuWidgets.js:2920 constants.js:157 prefs.js:4629
-msgid "Arc Menu"
-msgstr "Arc Menü"
-
-#: constants.js:162
-msgid "Arc Menu Alt"
-msgstr "Arc Menü Alt"
-
-#: constants.js:163
-msgid "Arc Menu Original"
-msgstr "Arc Menü Özgün"
-
-#: constants.js:164
-msgid "Curved A"
-msgstr "Eğri A"
-
-#: constants.js:165
-msgid "Start Box"
-msgstr "Başlangıç Kutusu"
-
-#: constants.js:166
-msgid "Focus"
-msgstr "Odak"
-
-#: constants.js:167
-msgid "Triple Dash"
-msgstr "Üç Nokta"
-
-#: constants.js:168
-msgid "Whirl"
-msgstr "Sarmal"
-
-#: constants.js:169
-msgid "Whirl Circle"
-msgstr "Sarmal Daire"
-
-#: constants.js:170
-msgid "Sums"
-msgstr "Toplam"
-
-#: constants.js:171
-msgid "Arrow"
-msgstr "Ok"
-
-#: constants.js:172
-msgid "Lins"
-msgstr "Hatlar"
-
-#: constants.js:173
-msgid "Diamond Square"
-msgstr "Baklava Kare"
-
-#: constants.js:174
-msgid "Octo Maze"
-msgstr "Octo Labirenti"
-
-#: constants.js:175
-msgid "Search"
-msgstr "Arama"
-
-#: menuButtonPanel.js:624 menuButtonDash.js:587
-msgid "Arc Menu on GitLab"
-msgstr "Arc Menü GitLab Sayfası"
-
-#: menuButtonPanel.js:629 menuButtonDash.js:592
-msgid "About Arc Menu"
-msgstr "Arc Menü Hakkında"
-
-#: menuButtonPanel.js:637
-msgid "Dash to Panel Settings"
-msgstr "Dash to Panel Ayarları"
-
-#: menuButtonDash.js:600
-msgid "Dash to Dock Settings"
-msgstr "Dash to Dock Ayarları"
-
-#: placeDisplay.js:145
+#: placeDisplay.js:114
 #, javascript-format
 msgid "Failed to launch “%s”"
 msgstr "“%s” başlatılamadı"
@@ -412,147 +35,185 @@ msgstr "“%s” başlatılamadı"
 msgid "Failed to mount volume for “%s”"
 msgstr "“%s” bölümü bağlanamadı"
 
-#: placeDisplay.js:333
+#: placeDisplay.js:213 placeDisplay.js:237 menulayouts/tognee.js:235
+#: menulayouts/baseMenuLayout.js:347 menulayouts/ubuntudash.js:242
+msgid "Computer"
+msgstr "Bilgisayar"
+
+#: placeDisplay.js:302
 #, javascript-format
 msgid "Ejecting drive “%s” failed:"
 msgstr "“%s” sürücüsü çıkartılamadı:"
 
-#: prefs.js:59 prefs.js:3943
+#: placeDisplay.js:428 menulayouts/tognee.js:235 menulayouts/tognee.js:242
+#: menulayouts/baseMenuLayout.js:347 menulayouts/baseMenuLayout.js:354
+#: menulayouts/baseMenuLayout.js:411 menulayouts/ubuntudash.js:234
+msgid "Giriş"
+msgstr ""
+
+#: prefs.js:42 constants.js:68 menulayouts/tweaks/tweaks.js:762
+#: menulayouts/ubuntudash.js:52 menulayouts/ubuntudash.js:312
+#: menulayouts/raven.js:51 menulayouts/raven.js:214 menuWidgets.js:895
+#: menuWidgets.js:933 menuWidgets.js:1858 menuWidgets.js:1917
+#: menuWidgets.js:1980 menuWidgets.js:2174
+msgid "Pinned Apps"
+msgstr "Sabitlenmiş Uygulamalar"
+
+#: prefs.js:60 prefs.js:4581
 msgid "Add More Apps"
 msgstr "Daha Fazla Uygulama Ekle"
 
-#: prefs.js:67
+#: prefs.js:68
 msgid "Browse a list of all applications to add to your Pinned Apps list."
 msgstr ""
 "Sabitlenmiş Uygulamalar listenize eklemek için tüm uygulamalar listesine göz "
 "atın."
 
-#: prefs.js:100 prefs.js:3723 prefs.js:3982
+#: prefs.js:101 prefs.js:4348 prefs.js:4620
 msgid "Add Custom Shortcut"
 msgstr "Özel Kısayol Ekle"
 
-#: prefs.js:108
+#: prefs.js:109
 msgid "Create a custom shortcut to add to your Pinned Apps list."
 msgstr ""
 "Sabitlenmiş Uygulamalar listenize eklemek için özel bir kısayol oluşturun."
 
-#: prefs.js:191 prefs.js:3835 prefs.js:4089
+#: prefs.js:133 prefs.js:703 prefs.js:4397 prefs.js:4668
+#: menulayouts/tweaks/tweaks.js:339 menulayouts/tweaks/tweaks.js:473
+msgid "Save"
+msgstr "Kaydet"
+
+#: prefs.js:198 prefs.js:4469 prefs.js:4737 menulayouts/tweaks/tweaks.js:604
 msgid "Modify"
 msgstr "Değiştir"
 
-#: prefs.js:196 prefs.js:3842 prefs.js:4094
+#: prefs.js:203 prefs.js:3273 prefs.js:4476 prefs.js:4742
+#: menulayouts/tweaks/tweaks.js:609
 msgid "Move Up"
 msgstr "Yukarı Taşı"
 
-#: prefs.js:201 prefs.js:3847 prefs.js:4099
+#: prefs.js:208 prefs.js:3278 prefs.js:4481 prefs.js:4747
+#: menulayouts/tweaks/tweaks.js:614
 msgid "Move Down"
 msgstr "Aşagı Taşı"
 
-#: prefs.js:206 prefs.js:3852 prefs.js:4104
+#: prefs.js:213 prefs.js:4486 prefs.js:4752
 msgid "Delete"
 msgstr "Sil"
 
-#: prefs.js:275
+#: prefs.js:282
 msgid "Add to your Pinned Apps"
 msgstr "Sabitlenmiş Uygulamalarına Ekle"
 
-#: prefs.js:277
+#: prefs.js:284
 msgid "Change Selected Pinned App"
 msgstr "Seçili Sabitlenmiş Uygulamaları Değiştir"
 
-#: prefs.js:279
+#: prefs.js:286
 msgid "Select Application Shortcuts"
 msgstr "Uygulama Kısayollarını Seç"
 
-#: prefs.js:281
+#: prefs.js:288
 msgid "Select Directory Shortcuts"
 msgstr "Dizin Kısayollarını Seç"
 
-#: prefs.js:300 prefs.js:696
+#: prefs.js:307 prefs.js:703
 msgid "Add"
 msgstr "Ekle"
 
-#: prefs.js:377 prefs.js:1349
+#: prefs.js:384 prefs.js:543 menuButtonDash.js:557 menulayouts/tognee.js:149
+#: menulayouts/redmond.js:174 menulayouts/arcmenu.js:175
+#: menulayouts/ubuntudash.js:196 menulayouts/raven.js:178
+#: menuButtonPanel.js:613 menuWidgets.js:1043 menuWidgets.js:1491
+msgid "Arc Menu Settings"
+msgstr "Arc Menü Ayarları"
+
+#: prefs.js:385 prefs.js:1354
 msgid "Run Command..."
 msgstr "Komut Çalıştır..."
 
-#: prefs.js:428
+#: prefs.js:434
 msgid "Default Apps"
 msgstr "Öntanımlı Uygulamalar"
 
-#: prefs.js:432 prefs.js:507
+#: prefs.js:438 prefs.js:513
 msgid "System Apps"
 msgstr "Sistem Uygulamaları"
 
-#: prefs.js:503
+#: prefs.js:509
 msgid "Presets"
 msgstr "Önayarlar"
 
-#: prefs.js:619 prefs.js:621
+#: prefs.js:625 prefs.js:627
 msgid "Edit Pinned App"
 msgstr "Sabitlenmiş Uygulamaları Düzenle"
 
-#: prefs.js:619 prefs.js:621 prefs.js:623 prefs.js:625
+#: prefs.js:625 prefs.js:627 prefs.js:629 prefs.js:631
 msgid "Add a Custom Shortcut"
 msgstr "Özel Kısayol Ekle"
 
-#: prefs.js:623
+#: prefs.js:629
 msgid "Edit Shortcut"
 msgstr "Kısayolu Düzenle"
 
-#: prefs.js:625
+#: prefs.js:631
 msgid "Edit Custom Shortcut"
 msgstr "Özel Kısayolu Düzenle"
 
-#: prefs.js:633
+#: prefs.js:639
 msgid "Shortcut Name:"
 msgstr "Kısayol Adı:"
 
-#: prefs.js:648
+#: prefs.js:654
 msgid "Icon:"
 msgstr "Simge:"
 
-#: prefs.js:661 prefs.js:1725
+#: prefs.js:667
 msgid "Please select an image icon"
 msgstr "Lütfen simge seçin"
 
-#: prefs.js:680
+#: prefs.js:687
 msgid "Terminal Command:"
 msgstr "Uç Birim Komutu:"
 
-#: prefs.js:687
+#: prefs.js:694
 msgid "Shortcut Path:"
 msgstr "Kısayol Yolu:"
 
-#: prefs.js:753
+#: prefs.js:742 prefs.js:2643 menulayouts/tweaks/tweaks.js:271
+#: menulayouts/tweaks/tweaks.js:404
+msgid "General"
+msgstr "Genel"
+
+#: prefs.js:756 prefs.js:764
+msgid "Disable Recently Installed Apps Indicator"
+msgstr "Son Yüklenen Uygulamalar Göstergesini Devre Dışı Bırak"
+
+#: prefs.js:778
 msgid "Disable Tooltips"
 msgstr "Araç İpuçlarını Devre Dışı Bırak"
 
-#: prefs.js:761
+#: prefs.js:786
 msgid "Disable all tooltips in Arc Menu"
 msgstr "Tüm araç ipuçlarını Arc Menü'de devre dışı bırak"
 
-#: prefs.js:776 prefs.js:1295
+#: prefs.js:801 prefs.js:1300
 msgid "Modify Activities Hot Corner"
 msgstr "Etkinlikler Etkin Köşeyi Değiştir"
 
-#: prefs.js:785
+#: prefs.js:810
 msgid "Modify the action of the Activities Hot Corner"
 msgstr "Etkinlikler Etkin Köşe eylemini değiştir"
 
-#: prefs.js:796
+#: prefs.js:822
 msgid "Override the default behavoir of the Activities Hot Corner"
 msgstr "Etkinlikler Etkin Köşe davranışının üzerine yaz"
 
-#: prefs.js:824
-msgid "Choose the default menu view for Arc Menu"
-msgstr "Arc Menü'nün öntanımlı menü görünümünü seç"
-
-#: prefs.js:846
+#: prefs.js:841
 msgid "Hotkey activation"
 msgstr "Kısayol etkinleştirmek"
 
-#: prefs.js:853
+#: prefs.js:848
 msgid "Choose a method for the hotkey activation"
 msgstr "Kısayol etkinleştirmek için bir yöntem seçin"
 
@@ -576,53 +237,61 @@ msgstr "Sol Süper Tuşu"
 msgid "Set Arc Menu hotkey to Left Super Key"
 msgstr "Ark Menü kısayol tuşunu Sol Süper Tuş olarak ayarla"
 
-#: prefs.js:891
+#: prefs.js:886
 msgid "Right Super Key"
 msgstr "Sağ Süper Tuşu"
 
-#: prefs.js:896
+#: prefs.js:891
 msgid "Set Arc Menu hotkey to Right Super Key"
 msgstr "Ark Menü kısayol tuşunu Sağ Süper Tuş olarak ayarla"
 
-#: prefs.js:899
+#: prefs.js:894
 msgid "Custom Hotkey"
 msgstr "Özel Kısayol"
 
-#: prefs.js:904
+#: prefs.js:899
 msgid "Set a custom hotkey for Arc Menu"
 msgstr "Arc Menü için özel kısayol ayarla"
 
-#: prefs.js:907
+#: prefs.js:902
 msgid "None"
 msgstr "Yok"
 
-#: prefs.js:912
+#: prefs.js:907
 msgid "Clear Arc Menu hotkey, use GNOME default"
 msgstr "Arc Menü kısayollarını temizle, GNOME öntanımlı kısayolları kullan"
 
-#: prefs.js:974
+#: prefs.js:969
 msgid "Current Hotkey"
 msgstr "Geçerli Kısayol"
 
-#: prefs.js:983
+#: prefs.js:978
 msgid "Current custom hotkey"
 msgstr "Geçerli özel kısayol"
 
-#: prefs.js:988
+#: prefs.js:983
 msgid "Modify Hotkey"
 msgstr "Kısayol Değiştir"
 
-#: prefs.js:991
+#: prefs.js:986
 msgid "Create your own hotkey combination for Arc Menu"
 msgstr "Arc Menu için kendi kısayol tuşu birleşiminizi oluşturun"
 
-#: prefs.js:1032
+#: prefs.js:1026
 msgid "Display Arc Menu On"
 msgstr "Arc Menü'yü Üstünde Göster"
 
-#: prefs.js:1039
+#: prefs.js:1033
 msgid "Choose where to place Arc Menu"
 msgstr "Arc Menü'nün nerede konumlanacağını seç"
+
+#: prefs.js:1037
+msgid "Dash to Dock"
+msgstr "Dash to Dock"
+
+#: prefs.js:1041
+msgid "Ubuntu Dock"
+msgstr "Ubuntu Dock"
 
 #: prefs.js:1044
 msgid "Main Panel"
@@ -632,11 +301,7 @@ msgstr "Ana Panel"
 msgid "Dash to Panel"
 msgstr "Dash to Panel"
 
-#: prefs.js:1046
-msgid "Dash to Dock"
-msgstr "Dash to Dock"
-
-#: prefs.js:1097
+#: prefs.js:1099
 msgid "Disable Activities Button"
 msgstr "Etkinlikler Düğmesini Devre Dışı Bırak"
 
@@ -721,15 +386,11 @@ msgstr "Menü Alta Hizalanmış"
 msgid "Adjust Arc Menu's menu alignment relative to Arc Menu's icon"
 msgstr "Arc Menü menü hizalamasını Arc Menü simgesine göre ayarla"
 
-#: prefs.js:1242
-msgid "Display on all monitors when using Dash to Panel"
-msgstr "Dash To Panel kullanırken tüm ekranlarda göster"
+#: prefs.js:1245 prefs.js:1253
+msgid "Display Arc Menu on all monitors"
+msgstr "Arc Menüsünü tüm ekranlarda görüntüle"
 
-#: prefs.js:1250
-msgid "Display Arc Menu on all monitors when using Dash to Panel"
-msgstr "Dash To Panel kullanırken Arc Menü'yü tüm ekranlarda göster"
-
-#: prefs.js:1304
+#: prefs.js:1309
 msgid "Activities Hot Corner Action"
 msgstr "Etkinlikler Etkin Köşe Eylemi"
 
@@ -808,8 +469,8 @@ msgstr "Uç Birim Komutu"
 msgid "Set a custom terminal command to launch on active hot corner"
 msgstr "Etkin etkin köşede başlatmak için özel bir uçbirim komutu ayarla"
 
-#: prefs.js:1407 prefs.js:1589 prefs.js:2376 prefs.js:2774 prefs.js:2993
-#: prefs.js:3577
+#: prefs.js:1412 prefs.js:1594 prefs.js:2577 prefs.js:2879 prefs.js:3143
+#: prefs.js:3209 prefs.js:3527 prefs.js:4223
 msgid "Apply"
 msgstr "Uygula"
 
@@ -845,7 +506,7 @@ msgstr "Shift"
 msgid "Alt"
 msgstr "Alt"
 
-#: prefs.js:1633 prefs.js:2014
+#: prefs.js:1638 prefs.js:2166
 msgid "Arc Menu Icon Settings"
 msgstr "Arc Menü Simge Ayarları"
 
@@ -869,11 +530,23 @@ msgstr "Simge ve Metin"
 msgid "Text and Icon"
 msgstr "Metin ve Simge"
 
-#: prefs.js:1671
+#: prefs.js:1657
+msgid "Hidden"
+msgstr "Gizli"
+
+#: prefs.js:1682
 msgid "Arc Menu Icon Text"
 msgstr "Arc Menü Simge Metni"
 
-#: prefs.js:1695
+#: prefs.js:1704
+msgid "Restore Activities Button"
+msgstr "Etkinlikleri Geri Yükle Düğmesi"
+
+#: prefs.js:1712
+msgid "Restore Activities Button in panel"
+msgstr "Paneldeki Etkinlikleri Geri Yükle Düğmesi"
+
+#: prefs.js:1727
 msgid "Arrow beside Arc Menu Icon"
 msgstr "Arc menü süğmesi yanındaki ok"
 
@@ -881,11 +554,15 @@ msgstr "Arc menü süğmesi yanındaki ok"
 msgid "Arc Menu Icon"
 msgstr "Arc Menü Simgesi"
 
-#: prefs.js:1771
-msgid "Browse for a custom icon"
-msgstr "Özel simge için göz atın"
+#: prefs.js:1757
+msgid "Browse Icons"
+msgstr "Simgelere Göz At"
 
-#: prefs.js:1809
+#: prefs.js:1763
+msgid "Choose from a variety of icons"
+msgstr "Çeşitli simgeler arasından seçim yapın"
+
+#: prefs.js:1785
 msgid "Icon Size"
 msgstr "Simge Boyutu"
 
@@ -898,186 +575,247 @@ msgid "Icon Color"
 msgstr "Simge Rengi"
 
 #: prefs.js:1894
+msgid "Change the color of the Arc Menu Icon"
+msgstr "Arc Menüsü Simgesinin rengini değiştir"
+
+#: prefs.js:1867 prefs.js:1902
+msgid ""
+"Icon color options will only work with files ending with \"-symbolic.svg\""
+msgstr "Simge renk seçenekleri yalnızca \ "-symbolic.svg\" ile biten dosyalarla çalışır"
+
+#: prefs.js:1884
 msgid "Active Icon Color"
 msgstr "Simge Rengini Etkinleştir"
 
-#: prefs.js:1914
-msgid ""
-"Icon color options will only work with files ending with \"-symbolic.svg\""
-msgstr ""
-"Simge renk seçenekleri yalnızca \"-symbolic.svg\" ile biten dosyalarla "
-"çalışır"
+#: prefs.js:1902
+msgid "Change the active/hover color of the Arc Menu Icon"
+msgstr "Ark Menüsü Simgesini, fareyle üzerine gelme rengini değiştir"
 
-#: prefs.js:1927 prefs.js:2744 prefs.js:3532
-msgid "Reset"
-msgstr "Sıfırla"
+#: prefs.js:1920 prefs.js:2852 prefs.js:3114 prefs.js:3193 prefs.js:4174
+#: prefs.js:4381 prefs.js:4652
+msgid "Restore Defaults"
+msgstr "Varsayılana Dön"
 
-#: prefs.js:1978
-msgid "System Icon"
-msgstr "Sistem Simgesi"
+#: prefs.js:1972 prefs.js:2077
+msgid "Arc Menu Icons"
+msgstr "Arc Menü Simgeleri"
 
-#: prefs.js:1981
+#: prefs.js:2047
+msgid "Browse for a Custom Icon"
+msgstr "Özel Simge Arayın"
+
+#: prefs.js:2056
+msgid "Select an Icon"
+msgstr "Bir simge seç"
+
+#: prefs.js:2078
+msgid "Distro Icons"
+msgstr "Dağıtım Simgeleri"
+
+#: prefs.js:2079
 msgid "Custom Icon"
 msgstr "Özel Simge"
 
-#: prefs.js:1994
+#: prefs.js:2115
+msgid "Legal disclaimer for Distro Icons..."
+msgstr "Dağıtım Simgeleri için yasal sorumluluk reddi ..."
+
+#: prefs.js:2145
 msgid "Appearance"
 msgstr "Görünüm"
 
-#: prefs.js:2022
+#: prefs.js:2174
 msgid "Customize Arc Menu's Icon"
 msgstr "Arc Menü Simgesini kişiselleştir"
 
-#: prefs.js:2042 prefs.js:2440
+#: prefs.js:2194 prefs.js:2619
 msgid "Customize Arc Menu Appearance"
 msgstr "Arc Menü görünümünü kişiselleştir"
 
-#: prefs.js:2050
+#: prefs.js:2202
 msgid "Customize various elements of Arc Menu"
 msgstr "Arc Menü'nün çeşitli öğelerini özelleştirin"
 
-#: prefs.js:2095 prefs.js:3139
-msgid "Override Arc Menu Theme"
-msgstr "Arc Menü Temasının Üzerine Yaz"
+#: prefs.js:2219 prefs.js:3683
+msgid "Override Menu Theme"
+msgstr "Menü Temasını Geçersiz Kıl"
 
-#: prefs.js:2103
+#: prefs.js:2227
 msgid "Create and manage your own custom themes for Arc Menu"
 msgstr "Arc Menu için kendi özel temalarınızı oluşturun ve yönetin"
 
-#: prefs.js:2141
-msgid "Override the shell theme for Arc Menu only"
+#: prefs.js:2271
+msgid "Override the Arc Menu extension theme"
 msgstr "Kabuk temasını yalnızca Arc Menü için geçersiz kıl"
 
-#: prefs.js:2159
+#: prefs.js:2289
 msgid "Current Color Theme"
 msgstr "Geçerli Renk Teması"
 
-#: prefs.js:2184
-msgid "Menu Layout"
+#: prefs.js:2324 prefs.js:2478
+msgid "Menu Layouts"
 msgstr "Menü Düzeni"
 
-#: prefs.js:2192
+#: prefs.js:2334
+msgid "Browse Layouts"
+msgstr "Düzenlere Göz At"
+
+#: prefs.js:2340
 msgid "Choose from a variety of menu layouts"
 msgstr "Menü düzenleri arasından seçim yapın"
 
-#: prefs.js:2213
-msgid "Enable the selection of different menu layouts"
-msgstr "Farklı menü düzenleri seçimini etkinleştirin"
+#: prefs.js:2352 prefs.js:2387 prefs.js:2399 menulayouts/tognee.js:149
+#: menulayouts/redmond.js:174 menulayouts/arcmenu.js:175
+#: menulayouts/ubuntudash.js:196 menulayouts/raven.js:178
+msgid "Tweaks"
+msgstr "Düzenlemeler"
 
-#: prefs.js:2250
+#: prefs.js:2366
 msgid "Current Layout"
 msgstr "Geçerli Düzen"
 
-#: prefs.js:2280
+#: prefs.js:2396
 msgid "Tweaks for the current menu layout"
 msgstr "Geçerli menü düzeni için ince ayarlar"
 
-#: prefs.js:2343
-msgid "Menu style chooser"
-msgstr "Menü stil seçici"
-
-#: prefs.js:2352
-msgid "Arc Menu Layout"
-msgstr "Arc Menü Düzeni"
-
-#: prefs.js:2448
-msgid "General Settings"
-msgstr "Genel Ayarlar"
-
-#: prefs.js:2462
+#: prefs.js:2673
 msgid "Menu Height"
 msgstr "Menü Yüksekliği"
 
-#: prefs.js:2476
+#: prefs.js:2687
 msgid "Adjust the menu height"
 msgstr "Menü yüksekliğini ayarla"
 
-#: prefs.js:2476 prefs.js:2504 prefs.js:2530 prefs.js:2590 prefs.js:2612
-#: prefs.js:2634 prefs.js:2667
+#: prefs.js:2687 prefs.js:2714 prefs.js:2739 prefs.js:2766 prefs.js:2788
+#: prefs.js:2812 prefs.js:2938
 msgid "Certain menu layouts only"
 msgstr "Yalnızca belirli menü düzenleri"
 
-#: prefs.js:2496
+#: prefs.js:2706
 msgid "Left-Panel Width"
 msgstr "Sol Panel Genişliği"
 
-#: prefs.js:2504
+#: prefs.js:2714
 msgid "Adjust the left-panel width"
 msgstr "Sol panel genişliğini ayarla"
 
-#: prefs.js:2522
+#: prefs.js:2731
 msgid "Right-Panel Width"
 msgstr "Sağ Panel Genişliği"
 
-#: prefs.js:2530
+#: prefs.js:2739
 msgid "Adjust the right-panel width"
 msgstr "Sağ panel genişliğini ayarla"
 
-#: prefs.js:2572
-msgid "Miscellaneous"
-msgstr "Çeşitli"
-
-#: prefs.js:2582
+#: prefs.js:2758
 msgid "Large Application Icons"
 msgstr "Büyük Uygulama Simgeleri"
 
-#: prefs.js:2590
+#: prefs.js:2766
 msgid "Enable large application icons"
 msgstr "Büyük uygulama simgilerini etkinleştir"
 
-#: prefs.js:2604
+#: prefs.js:2780
 msgid "Category Sub Menus"
 msgstr "Kategori Alt Menüleri"
 
-#: prefs.js:2612
+#: prefs.js:2788
 msgid "Show nested menus in categories"
 msgstr "İç içe menüleri kategorilerde göster"
 
-#: prefs.js:2626
-msgid "Disable Category Arrows"
-msgstr "Kategori Oklarını Devre Dışı Bırak"
-
-#: prefs.js:2634
-msgid "Disable the arrow on category menu items"
-msgstr "Kategori menü ögelerinde oku devre dışı bırak"
-
-#: prefs.js:2650
-msgid "Separator Settings"
-msgstr "Ayırıcı Ayarları"
-
-#: prefs.js:2659 prefs.js:3488
+#: prefs.js:2804 prefs.js:4130
 msgid "Enable Vertical Separator"
 msgstr "Dikey Ayırıcıyı Etkinleştir"
 
-#: prefs.js:2667
+#: prefs.js:2812
 msgid "Enable a Vertical Separator"
 msgstr "Dikey Ayırıcıyı Etkinleştir"
 
-#: prefs.js:2682 prefs.js:3509
+#: prefs.js:2826 prefs.js:4151
 msgid "Separator Color"
 msgstr "Ayırıcı Rengi"
 
-#: prefs.js:2690
+#: prefs.js:2834
 msgid "Change the color of all separators"
 msgstr "Tüm ayırıcıların rengini değiştir"
 
-#: prefs.js:2710
+#: prefs.js:2853 prefs.js:3115 prefs.js:3194
+msgid "Restore the default Extra Categories"
+msgstr "Varsayılan Ekstra Kategorileri Geri Yükleme"
+
+#: prefs.js:2917
 msgid "Fine Tune"
 msgstr "İnce Ayar"
 
-#: prefs.js:2718
+#: prefs.js:2930
+msgid "Disable Category Arrows"
+msgstr "Kategori Oklarını Devre Dışı Bırak"
+
+#: prefs.js:2938
+msgid "Disable the arrow on category menu items"
+msgstr "Kategori menüsü öğelerindeki oku devre dışı bırakma"
+
+#: prefs.js:2954
+msgid "Disable Searchbox Border"
+msgstr "Arama Kutusu Kenarlığını Devre Dışı Bırak"
+
+#: prefs.js:2962
+msgid "Disable the border on the searchbox"
+msgstr "Arama kutusundaki kenarlığı devre dışı bırak"
+
+#: prefs.js:2978 menulayouts/tweaks/tweaks.js:310
+msgid "Disable Menu Arrow"
+msgstr "Menü Okunu Devre Dışı Bırak"
+
+#: prefs.js:2986 menulayouts/tweaks/tweaks.js:318
+msgid "Disable current theme menu arrow pointer"
+msgstr "Geçerli tema menüsü ok işaretçisini devre dışı bırak"
+
+#: prefs.js:3002
+msgid "Alphabetize 'All Programs'"
+msgstr "'Tüm Programlar'ı alfabetikleştir"
+
+#: prefs.js:3022
+msgid "Category Indicator Color"
+msgstr "Kategori Gösterge Rengi"
+
+#: prefs.js:3030
+msgid ""
+"Change the color of the 'recently installed application' category indicator"
+msgstr "'Son yüklenen uygulama' kategori göstergesinin rengini değiştirme"
+
+#: prefs.js:3046
+msgid "Application Indicator Label Color"
+msgstr "Uygulama Göstergesi Etiket Rengi"
+
+#: prefs.js:3054
+msgid ""
+"Change the background color of the 'recently installed application' "
+"indicator label"
+msgstr "'Son yüklenen uygulama' gösterge etiketinin arka plan rengini değiştir"
+
+#: prefs.js:3072
 msgid "Gap Adjustment"
 msgstr "Boşluk Ayarlama"
 
-#: prefs.js:2728
-msgid ""
-"Offset menu placement by 1px\n"
-"Useful if a gap or overlap is visible"
-msgstr ""
-"Menü yerleşimini 1 piksel kaydır\n"
-"Boşluk veya çakışma görünüyorsa kullanışlıdır"
+#: prefs.js:3082 prefs.js:3095
+msgid "Offset Arc Menu by 1px"
+msgstr "Ofset Arc Menü 1px"
 
-#: prefs.js:2815
+#: prefs.js:3082 prefs.js:3095
+msgid ""
+"Useful if you notice a 1px gap or overlap between Arc Menu and the panel"
+msgstr "Arc Menu ile panel arasında 1 piksellik bir boşluk veya çakışma fark ederseniz faydalıdır"
+
+#: prefs.js:3182 menuWidgets.js:1065
+msgid "Categories"
+msgstr "Kategoriler"
+
+#: prefs.js:3283
+msgid "Enable/Disble"
+msgstr "Aktif/Pasif"
+
+#: prefs.js:3338
 msgid "Color Theme Name"
 msgstr "Renk Teması Adı"
 
@@ -1105,13 +843,13 @@ msgstr "İçe Aktar"
 msgid "Export"
 msgstr "Dışa Aktar"
 
-#: prefs.js:2921
+#: prefs.js:3444
 msgid "Select All"
 msgstr "Tümünü Seç"
 
-#: prefs.js:2978
-msgid "Manage Themes"
-msgstr "Temaları Yönet"
+#: prefs.js:3512 prefs.js:3822
+msgid "Manage Presets"
+msgstr "Önayarları Yönet"
 
 #: prefs.js:3152
 msgid "Color Theme Presets"
@@ -1122,8 +860,8 @@ msgid "Save as Preset"
 msgstr "Önayar Olarak Kaydet"
 
 #: prefs.js:3246
-msgid "Manage Presets"
-msgstr "Önayarları Yönet"
+msgid "Browse Presets"
+msgstr "Önayarları Gözat"
 
 #: prefs.js:3275
 msgid "Menu Background Color"
@@ -1133,43 +871,43 @@ msgstr "Menü Arkaplan Rengi"
 msgid "Menu Foreground Color"
 msgstr "Menü Önplan Rengi"
 
-#: prefs.js:3317
+#: prefs.js:3938
 msgid "Font Size"
 msgstr "Yazı Tipi Boyutu"
 
-#: prefs.js:3343
+#: prefs.js:3964
 msgid "Border Color"
 msgstr "Çerçeve Rengi"
 
-#: prefs.js:3364
+#: prefs.js:3985
 msgid "Border Size"
 msgstr "Çerçeve Boyutu"
 
-#: prefs.js:3390
-msgid "Highlighted Item Color"
-msgstr "Vurgulanmış Nesne Rengi"
+#: prefs.js:4011
+msgid "Active Item Background Color"
+msgstr "Etkin Öğe Arka Plan Rengi"
 
-#: prefs.js:3411
+#: prefs.js:4032
+msgid "Active Item Foreground Color"
+msgstr "Etkin Öğe Ön Plan Rengi"
+
+#: prefs.js:4053
 msgid "Corner Radius"
 msgstr "Köşe Çapı"
 
-#: prefs.js:3437
+#: prefs.js:4079
 msgid "Menu Arrow Size"
 msgstr "Menü Ok Boyutu"
 
-#: prefs.js:3463
+#: prefs.js:4105
 msgid "Menu Displacement"
 msgstr "Menü Kaydırımı"
 
-#: prefs.js:3643 prefs.js:4263
-msgid "Configure Shortcuts"
-msgstr "Kısayolları Yapılandır"
-
-#: prefs.js:3664
+#: prefs.js:4289
 msgid "Directories"
 msgstr "Dizinler"
 
-#: prefs.js:3684
+#: prefs.js:4309
 msgid "Add Default User Directories"
 msgstr "Öntanımlı Kullanıcı Dizinlerini Ekle"
 
@@ -1181,64 +919,93 @@ msgstr ""
 "Dizin Kısayollarınıza eklemek için tüm öntanımlı Kullanıcı Dizinlerinin "
 "listesine göz atın"
 
-#: prefs.js:3731
+#: prefs.js:4356
 msgid "Create a custom shortcut to add to your Directories Shortcuts"
 msgstr "Dizinler Kısayollarınıza eklemek için özel bir kısayol oluşturun"
 
-#: prefs.js:3756 prefs.js:4014
-msgid "Restore Defaults"
-msgstr "Öntanımlıları Geri Yükle"
-
-#: prefs.js:3757
+#: prefs.js:4382
 msgid "Restore the default Directory Shortcuts"
 msgstr "Öntanımlı Dizin Kısayollarını geri yükle"
 
-#: prefs.js:3951
+#: prefs.js:4561 menuWidgets.js:2581
+msgid "Applications"
+msgstr "Uygulamalar"
+
+#: prefs.js:4589
 msgid "Browse a list of all applications to add to your Application Shortcuts"
 msgstr ""
 "Uygulama Kısayollarınıza eklemek için tüm uygulamalar listesine göz atın"
 
-#: prefs.js:3990
+#: prefs.js:4628
 msgid "Create a custom shortcut to add to your Application Shortcuts"
 msgstr "Uygulama Kısayollarınıza eklemek için özel bir kısayol oluşturun"
 
-#: prefs.js:4015
+#: prefs.js:4653
 msgid "Restore the default Application Shortcuts"
 msgstr "Öntanımlı Uygulama Kısayollarını geri yükle"
 
-#: prefs.js:4171
+#: prefs.js:4823
 msgid "Session Buttons"
 msgstr "Oturum Düğmeleri"
 
-#: prefs.js:4268 prefs.js:4273
-msgid "Add, Remove, or Modify Arc Menu shortcuts"
-msgstr "Arc Menü kısayollarını ekle, kaldır veya düzenle"
+#: prefs.js:4830 menuWidgets.js:1158
+msgid "Suspend"
+msgstr "Beklemeye Al"
 
-#: prefs.js:4303
+#: prefs.js:4847 menulayouts/ubuntudash.js:246 menulayouts/mint.js:232
+#: menuWidgets.js:1173
+msgid "Lock"
+msgstr "Kilitle"
+
+#: prefs.js:4864 menulayouts/ubuntudash.js:245 menulayouts/mint.js:231
+#: menuWidgets.js:1146
+msgid "Log Out"
+msgstr "Çıkış"
+
+#: prefs.js:4881 menulayouts/ubuntudash.js:247 menulayouts/mint.js:233
+#: menuWidgets.js:1136
+msgid "Power Off"
+msgstr "Kapat"
+
+#: prefs.js:4905 menulayouts/tweaks/tweaks.js:278
+#: menulayouts/tweaks/tweaks.js:411 menulayouts/ubuntudash.js:421
+#: menulayouts/raven.js:314
+msgid "Shortcuts"
+msgstr "Kısayollar"
+
+#: prefs.js:4918
+msgid "Extras"
+msgstr "Ekstralar"
+
+#: prefs.js:4932
 msgid "External Devices"
 msgstr "Harici Aygıtlar"
 
-#: prefs.js:4309
+#: prefs.js:4938
 msgid "Show all connected external devices in Arc Menu"
 msgstr "Bağlı tüm harici aygıtları Arc Menü'de göster"
 
-#: prefs.js:4325
+#: prefs.js:4954
 msgid "Bookmarks"
 msgstr "Yer İmleri"
 
-#: prefs.js:4331
+#: prefs.js:4960
 msgid "Show all Nautilus bookmarks in Arc Menu"
 msgstr "Tüm Nautilus (dosyalar) yer imlerini Arc Menü'de Göster"
 
-#: prefs.js:4349
+#: prefs.js:4978
 msgid "Misc"
 msgstr "Çeşitli"
 
-#: prefs.js:4355
+#: prefs.js:4984
 msgid "Export and Import Arc Menu Settings"
 msgstr "Arc Menü Ayarlarını İçe veya Dışa Aktar"
 
-#: prefs.js:4362
+#: prefs.js:4993
+msgid "Import/Export ALL Arc Menu Settings"
+msgstr "TÜM Arc Menüsü Ayarlarını İçe/Dışa Aktar"
+
+#: prefs.js:4993
 msgid ""
 "Importing settings from file may replace ALL saved settings.\n"
 "This includes all saved pinned apps."
@@ -1246,74 +1013,554 @@ msgstr ""
 "Ayarları dosyadan içe aktarmak TÜM kayıtlı ayarlarınızı değiştirebilir.\n"
 "Buna tüm kayıtlı sık kullanılanlara eklenmiş uygulamalar da dahildir."
 
-#: prefs.js:4371
+#: prefs.js:5006
 msgid "Import from File"
 msgstr "Dosyadan İçe Aktar"
 
-#: prefs.js:4374
+#: prefs.js:5009
 msgid "Import Arc Menu settings from a file"
 msgstr "Arc Menü ayarlarını bir dosyadan içe aktar"
 
-#: prefs.js:4378
+#: prefs.js:5013
 msgid "Import settings"
 msgstr "İçe aktarma ayarları"
 
-#: prefs.js:4407
+#: prefs.js:5042
 msgid "Export to File"
 msgstr "Dosyaya Dışa Aktar"
 
-#: prefs.js:4410
+#: prefs.js:5045
 msgid "Export and save all your Arc Menu settings to a file"
 msgstr "Tüm Arc Menü ayarlarınızı bir dosyaya dışa aktarın ve kaydedin"
 
-#: prefs.js:4415
+#: prefs.js:5050
 msgid "Export settings"
 msgstr "Ayarları dışa aktar"
 
-#: prefs.js:4446
+#: prefs.js:5077
 msgid "Color Theme Presets - Export/Import"
 msgstr "Renk Teması Önayarları - Dışa Aktar/İçe Aktar"
 
-#: prefs.js:4465
+#: prefs.js:5096
+msgid "Import/Export Color Theme Presets"
+msgstr "Renk Teması Hazır Ayarlarını İçe/Dışa Aktar"
+
+#: prefs.js:5096
 msgid ""
 "Imported theme presets are located on the Appearance Tab\n"
-"in Override Arc Menu Theme"
+"in Override Menu Theme"
 msgstr ""
 "İçe aktarılan tema önayarları Arc Menü'yü geçersiz kıl'ın \n"
 "Görünüm Sekmesinde bulunur"
 
-#: prefs.js:4476 prefs.js:4483
+#: prefs.js:5109 prefs.js:5116
 msgid "Import Theme Preset"
 msgstr "Tema Önayarlarını İçe Aktar"
 
-#: prefs.js:4479
+#: prefs.js:5112
 msgid "Import Arc Menu Theme Presets from a file"
 msgstr "Arc Menü Tema Önayarlarını bir dosyadan içe aktar"
 
-#: prefs.js:4520 prefs.js:4532
+#: prefs.js:5152 prefs.js:5164
 msgid "Export Theme Preset"
 msgstr "Tema Önayarlarını Dışa Aktar"
 
-#: prefs.js:4523
+#: prefs.js:5155
 msgid "Export and save your Arc Menu Theme Presets to a file"
 msgstr "Arc Menü Tema Önyarlarınızı dışa aktarın ve bir dosyaya kaydedin"
 
-#: prefs.js:4597
+#: prefs.js:5200 prefs.js:5209
+msgid "Clear all Applications Marked \"New\""
+msgstr "\"Yeni\" olarak işaretlenmiş tüm Uygulamaları temizle"
+
+#: prefs.js:5208
+msgid "Clear All"
+msgstr "Tümünü Temizle"
+
+#: prefs.js:5254
 msgid "About"
 msgstr "Hakkında"
 
-#: prefs.js:4603
-msgid "Development"
-msgstr "Geliştirme"
+#: prefs.js:5290 constants.js:238 menuWidgets.js:2664
+msgid "Arc Menu"
+msgstr "Arc Menü"
 
-#: prefs.js:4634
+#: prefs.js:5295
 msgid "Version: "
 msgstr "Sürüm: "
 
-#: prefs.js:4638
-msgid "A Traditional Application Menu for GNOME"
-msgstr "GNOME İçin Geleneksel Uygulama Menüsü"
+#: prefs.js:5299
+msgid "Commit: "
+msgstr "Teslim Et:"
 
-#: prefs.js:4642
+#: prefs.js:5303
+msgid "A Dynamic, Traditional, Modern Menu for GNOME"
+msgstr "GNOME için Dinamik, Geleneksel, Modern Menü"
+
+#: prefs.js:5326
 msgid "GitLab Page"
-msgstr "GitLab Sayfası"
+msgstr ""
+
+#: prefs.js:5351
+msgid "User Manual"
+msgstr "Kullanıcı Klavuzu"
+
+#: prefs.js:5461
+msgid "Error - Invalid Shortcut"
+msgstr "Hata - Geçersiz Kısayol"
+
+#: prefs.js:5462
+msgid "Invalid Shortcut"
+msgstr "Geçersiz Kısayol"
+
+#: constants.js:65 menuWidgets.js:891 menuWidgets.js:1053 menuWidgets.js:1854
+#: menuWidgets.js:1976 menuWidgets.js:2170
+msgid "Favorites"
+msgstr "Favriler"
+
+#: constants.js:66 menulayouts/tweaks/tweaks.js:764 menuWidgets.js:878
+#: menuWidgets.js:1842 menuWidgets.js:1964 menuWidgets.js:2158
+msgid "Frequent Apps"
+msgstr "Sık Kullanılanlar"
+
+#: constants.js:67 menulayouts/tweaks/tweaks.js:295
+#: menulayouts/tweaks/tweaks.js:425 menulayouts/tweaks/tweaks.js:733
+#: menulayouts/ubuntudash.js:54 menulayouts/ubuntudash.js:317
+#: menulayouts/raven.js:53 menulayouts/raven.js:219 menuWidgets.js:887
+#: menuWidgets.js:1255 menuWidgets.js:1850 menuWidgets.js:1972
+#: menuWidgets.js:2166
+msgid "All Programs"
+msgstr "Tüm Programlar"
+
+#: constants.js:239
+msgid "Brisk Menu Style"
+msgstr "Brisk Menü Stili"
+
+#: constants.js:240
+msgid "Whisker Menu Style"
+msgstr "Whisker Menü Stili"
+
+#: constants.js:241
+msgid "GNOME Menu Style"
+msgstr "GNOME Menü Stili"
+
+#: constants.js:242
+msgid "Mint Menu Style"
+msgstr "Mint Menü Stili"
+
+#: constants.js:243
+msgid "Budgie Style"
+msgstr "Budgie Stili"
+
+#: constants.js:246
+msgid "Windows 10 Style"
+msgstr "Windows 10 Stili"
+
+#: constants.js:247
+msgid "Ubuntu Dash Style"
+msgstr "Ubuntu Dash Stili"
+
+#: constants.js:248
+msgid "tognee Menu"
+msgstr "Tognee Menü"
+
+#: constants.js:249
+msgid "Redmond Menu Style"
+msgstr "Redmond Menü Stili"
+
+#: constants.js:252
+msgid "Elementary Menu Style"
+msgstr "Elementary Menü Stili"
+
+#: constants.js:253
+msgid "Chromebook Style"
+msgstr "Chromebook Stili"
+
+#: constants.js:256
+msgid "KRunner Style"
+msgstr "KRunner Stili"
+
+#: constants.js:257
+msgid "GNOME Dash Style"
+msgstr "GNOME Dash Stili"
+
+#: constants.js:260
+msgid "Simple Menu Style"
+msgstr "Basit Menü Stili"
+
+#: constants.js:261
+msgid "Simple Menu 2 Style"
+msgstr "Basit Menü Stili 2"
+
+#: constants.js:264
+msgid "Raven Menu Style"
+msgstr "Raven Menü Stili"
+
+#: constants.js:271
+msgid "Traditional Layouts"
+msgstr "Geleneksel Düzenler"
+
+#: constants.js:272
+msgid ""
+"Traditional layouts use a familiar style and have a traditional user "
+"experience."
+msgstr "Geleneksel düzenler tanıdık bir stil kullanır ve geleneksel bir kullanıcı deneyimine sahiptir."
+
+#: constants.js:273
+msgid "Modern Layouts"
+msgstr "Modern Düzenler"
+
+#: constants.js:274
+msgid ""
+"Modern layouts use a style and UX based approach with a focus on design and "
+"functionality."
+msgstr "Modern düzenler, tasarım ve işlevsellik odaklı bir stil ve UX tabanlı bir yaklaşım kullanır."
+
+#: constants.js:275
+msgid "Touch Layouts"
+msgstr "Dokunmatik Düzenler"
+
+#: constants.js:276
+msgid ""
+"Touch layouts contain large menu elements that are well suited for touch "
+"based devices."
+msgstr "Dokunmatik düzenler, dokunmaya dayalı cihazlar için çok uygun büyük menü öğeleri içerir."
+
+#: constants.js:277
+msgid "Simple Layouts"
+msgstr "Basit Düzenler"
+
+#: constants.js:278
+msgid ""
+"Simple layouts are designed for mouse based devices and contain simplistic "
+"menu elements."
+msgstr "Basit düzenler fare tabanlı cihazlar için tasarlanmıştır ve basit menü öğeleri içerir."
+
+#: constants.js:279
+msgid "Launcher Layouts"
+msgstr "Başlatıcı Düzenleri"
+
+#: constants.js:280
+msgid ""
+"Launcher layouts are well suited for keyboard driven devices and provide the "
+"user with quick and simple menu elements."
+msgstr "Başlatıcı düzenleri klavye ile çalışan cihazlar için çok uygundur ve kullanıcıya hızlı ve basit menü öğeleri sunar."
+
+#: constants.js:281
+msgid "Alternative Layouts"
+msgstr "Alternatif Düzenler"
+
+#: constants.js:282
+msgid ""
+"Alternative layouts have an unconventional style that provide a unique user "
+"experience."
+msgstr "Alternatif düzenler, benzersiz bir kullanıcı deneyimi sağlayan alışılmadık bir stile sahiptir."
+
+#: menuButtonDash.js:566 menuButtonPanel.js:623
+msgid "Arc Menu GitLab Page"
+msgstr "Arc Menu GitLab Sayfası"
+
+#: menuButtonDash.js:571 menuButtonPanel.js:629
+msgid "Arc Menu User Manual"
+msgstr "Arc Menüsü Kullanım Kılavuzu"
+
+#: menuButtonDash.js:583
+msgid "Dash to Dock Settings"
+msgstr "Dash to Dock Ayarları"
+
+#: menuButtonDash.js:587
+msgid "Ubuntu Dock Settings"
+msgstr "Ubuntu Dock Ayarları"
+
+#: search.js:874
+msgid "Searching..."
+msgstr "Aranıyor..."
+
+#: search.js:876
+msgid "No results."
+msgstr "Sonuç yok."
+
+#: search.js:1047
+#, javascript-format
+msgid "%d more"
+msgid_plural "%d more"
+msgstr[0] "%d daha"
+msgstr[1] "%d daha"
+
+#: menulayouts/tognee.js:149 menulayouts/redmond.js:174
+#: menulayouts/arcmenu.js:175 menulayouts/brisk.js:121
+#: menulayouts/ubuntudash.js:196 menulayouts/ubuntudash.js:240
+#: menulayouts/mint.js:226 menulayouts/raven.js:178
+msgid "Software"
+msgstr "Yazılım"
+
+#: menulayouts/tognee.js:149 menulayouts/redmond.js:174
+#: menulayouts/arcmenu.js:175 menulayouts/brisk.js:125
+#: menulayouts/ubuntudash.js:196 menulayouts/windows.js:201
+#: menulayouts/mint.js:222 menulayouts/raven.js:178 menuWidgets.js:1033
+msgid "Settings"
+msgstr "Ayarlar"
+
+#: menulayouts/tognee.js:149 menulayouts/redmond.js:174
+#: menulayouts/arcmenu.js:175 menulayouts/ubuntudash.js:196
+#: menulayouts/mint.js:221 menulayouts/raven.js:178 menuWidgets.js:1494
+msgid "Terminal"
+msgstr "Uçbirim"
+
+#: menulayouts/tognee.js:149 menulayouts/redmond.js:174
+#: menulayouts/arcmenu.js:175 menulayouts/ubuntudash.js:196
+#: menulayouts/raven.js:178 menuWidgets.js:629
+msgid "Activities Overview"
+msgstr "Faaliyetlere Genel Bakış"
+
+#: menulayouts/tognee.js:235 menulayouts/baseMenuLayout.js:347
+#: menulayouts/ubuntudash.js:235 menulayouts/windows.js:70
+#: menulayouts/windows.js:196 menulayouts/mint.js:228
+msgid "Documents"
+msgstr "Belgeler"
+
+#: menulayouts/tognee.js:235 menulayouts/baseMenuLayout.js:347
+#: menulayouts/ubuntudash.js:236
+msgid "Downloads"
+msgstr "İndirilenler"
+
+#: menulayouts/tognee.js:235 menulayouts/baseMenuLayout.js:347
+msgid "Music"
+msgstr "Müzik"
+
+#: menulayouts/tognee.js:235 menulayouts/baseMenuLayout.js:347
+msgid "Pictures"
+msgstr "Resimler"
+
+#: menulayouts/tognee.js:235 menulayouts/baseMenuLayout.js:347
+msgid "Videos"
+msgstr "Videolar"
+
+#: menulayouts/tognee.js:235 menulayouts/tognee.js:251
+#: menulayouts/baseMenuLayout.js:347 menulayouts/baseMenuLayout.js:362
+#: menulayouts/baseMenuLayout.js:420
+msgid "Network"
+msgstr "Ağ"
+
+#: menulayouts/tweaks/tweaks.js:91
+msgid "Category Activation"
+msgstr "Kategori Etkinleştirme"
+
+#: menulayouts/tweaks/tweaks.js:97
+msgid "Mouse Click"
+msgstr "Fare Tıklaması"
+
+#: menulayouts/tweaks/tweaks.js:98
+msgid "Mouse Hover"
+msgstr "Fareyle Üzerine Gelme"
+
+#: menulayouts/tweaks/tweaks.js:117
+msgid "Avatar Icon Shape"
+msgstr "Avatar Simge Şekli"
+
+#: menulayouts/tweaks/tweaks.js:122
+msgid "Circular"
+msgstr "Dairesel"
+
+#: menulayouts/tweaks/tweaks.js:123
+msgid "Square"
+msgstr "Kare"
+
+#: menulayouts/tweaks/tweaks.js:139
+msgid "Searchbar Location"
+msgstr "Arama Çubuğu Konumu"
+
+#: menulayouts/tweaks/tweaks.js:145
+msgid "Bottom"
+msgstr "Alt"
+
+#: menulayouts/tweaks/tweaks.js:146 menulayouts/tweaks/tweaks.js:238
+msgid "Top"
+msgstr "Üst"
+
+#: menulayouts/tweaks/tweaks.js:159
+msgid "Flip Layout Horizontally"
+msgstr "Düzeni Yatay Çevir"
+
+#: menulayouts/tweaks/tweaks.js:176
+msgid "Disable User Avatar"
+msgstr "Kullanıcı Avatarını Devre Dışı Bırak"
+
+#: menulayouts/tweaks/tweaks.js:214
+msgid "Enable Activities Overview Shortcut"
+msgstr "Etkinliklere Genel Bakış Kısayolunu Etkinleştir"
+
+#: menulayouts/tweaks/tweaks.js:233
+msgid "KRunner Position"
+msgstr "KRunner Konumu"
+
+#: menulayouts/tweaks/tweaks.js:239
+msgid "Centered"
+msgstr "Ortalanmış"
+
+#: menulayouts/tweaks/tweaks.js:250 menulayouts/tweaks/tweaks.js:440
+msgid "Show Extra Large Icons with App Descriptions"
+msgstr "Uygulama Açıklamalarıyla Ekstra Büyük Simgeleri Göster"
+
+#: menulayouts/tweaks/tweaks.js:281
+msgid "Buttons"
+msgstr "Butonlar"
+
+#: menulayouts/tweaks/tweaks.js:289 menulayouts/tweaks/tweaks.js:419
+#: menulayouts/tweaks/tweaks.js:723 menulayouts/tweaks/tweaks.js:753
+msgid "Default Screen"
+msgstr "Varsayılan Ekran"
+
+#: menulayouts/tweaks/tweaks.js:294 menulayouts/tweaks/tweaks.js:424
+#: menuWidgets.js:882 menuWidgets.js:1846 menuWidgets.js:1968
+#: menuWidgets.js:2162
+msgid "Home Screen"
+msgstr "Giriş Ekranı"
+
+#: menulayouts/tweaks/tweaks.js:365 menulayouts/tweaks/tweaks.js:499
+msgid "Separator Position Index"
+msgstr "Ayırıcı Konum Dizini"
+
+#: menulayouts/tweaks/tweaks.js:384 menulayouts/tweaks/tweaks.js:518
+msgid "Adjust the position of the separator in the button panel"
+msgstr "Ayırıcının düğme panelindeki konumunu ayarlayın"
+
+#: menulayouts/tweaks/tweaks.js:578
+msgid "Change"
+msgstr "Değiştir"
+
+#: menulayouts/tweaks/tweaks.js:709
+msgid "Nothing Yet!"
+msgstr "Henüz değil!"
+
+#: menulayouts/tweaks/tweaks.js:730
+msgid "Choose the default screen for tognee Layout"
+msgstr "Geçiş Düzeni için varsayılan ekranı seçin"
+
+#: menulayouts/tweaks/tweaks.js:732 menulayouts/tweaks/tweaks.js:763
+msgid "Categories List"
+msgstr "Kategoriler Listesi"
+
+#: menulayouts/tweaks/tweaks.js:760
+msgid "Choose the default screen for Arc Menu"
+msgstr "Arc Menüsü için varsayılan ekranı seçin"
+
+#: menulayouts/tweaks/tweaks.js:796
+msgid "Enable Weather Widget"
+msgstr "Hava Durumu Pencere Öğesini Etkinleştir"
+
+#: menulayouts/tweaks/tweaks.js:814
+msgid "Enable Clock Widget"
+msgstr "Saat Widget'ını Etkinleştir"
+
+#: menulayouts/ubuntudash.js:244 menulayouts/mint.js:230
+msgid "Files"
+msgstr "Dosyalar"
+
+#: menuButtonPanel.js:644
+msgid "Dash to Panel Settings"
+msgstr "Dash to Panel Ayarları"
+
+#: prefsWidgets.js:243
+msgid "Included Layouts"
+msgstr "Dahil Edilen Düzenler"
+
+#: prefsWidgets.js:264
+msgid "Browse all"
+msgstr "Tümüne göz at"
+
+#: prefsWidgets.js:270
+msgid "Information"
+msgstr "Bilgi"
+
+#: menuWidgets.js:143
+msgid "Open Folder Location"
+msgstr "Klasör Konumunu Aç"
+
+#: menuWidgets.js:159
+msgid "Current Windows:"
+msgstr "Aktif Pencereler"
+
+#: menuWidgets.js:177
+msgid "New Window"
+msgstr "Yeni Pencere"
+
+#: menuWidgets.js:187
+msgid "Launch using Dedicated Graphics Card"
+msgstr "Özel Grafik Kartı kullanarak başlatma"
+
+#: menuWidgets.js:214
+msgid "Delete Desktop Shortcut"
+msgstr "Masaüstü Kısayolunu Sil"
+
+#: menuWidgets.js:222
+msgid "Create Desktop Shortcut"
+msgstr "Masaüstü kısayolu oluşturun"
+
+#: menuWidgets.js:236
+msgid "Remove from Favorites"
+msgstr "Favorilerden çıkar"
+
+#: menuWidgets.js:242
+msgid "Add to Favorites"
+msgstr "Favorilere Ekle"
+
+#: menuWidgets.js:259 menuWidgets.js:308
+msgid "Unpin from Arc Menu"
+msgstr "Menuden sabitlemeyi kaldır"
+
+#: menuWidgets.js:273
+msgid "Pin to Arc Menu"
+msgstr "Menüsüye Sabitle"
+
+#: menuWidgets.js:286
+msgid "Show Details"
+msgstr "Ayrılntıları Göster"
+
+#: menuWidgets.js:1077
+msgid "Users"
+msgstr "Kullanıcılar"
+
+#: menuWidgets.js:1201
+msgid "Back"
+msgstr "Geri"
+
+#: menuWidgets.js:1693
+msgid "New"
+msgstr "Yeni"
+
+#: menuWidgets.js:2406
+msgid "Type to search…"
+msgstr "Aramak için yazın…"
+
+#: menuWidgets.js:2647
+msgid "Show Applications"
+msgstr "Uygulamaları Göster"
+
+#: menuWidgets.js:2879
+msgid "Add world clocks…"
+msgstr "Dünya saatleri ekle…"
+
+#: menuWidgets.js:2880
+msgid "World Clocks"
+msgstr "Dünya Saatleri"
+
+#: menuWidgets.js:2988
+msgid "Weather"
+msgstr "Hava Durumu"
+
+#: menuWidgets.js:3108
+msgid "Select a location…"
+msgstr "Bir konum seçin…"
+
+#: menuWidgets.js:3121
+msgid "Loading…"
+msgstr "Yükleniyor..."
+
+#: menuWidgets.js:3131
+msgid "Go online for weather information"
+msgstr "Hava durumu bilgileri için çevrimiçi olun"
+
+#: menuWidgets.js:3133
+msgid "Weather information is currently unavailable"
+msgstr "Hava durumu bilgileri şu anda kullanılamıyor"
