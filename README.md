@@ -129,9 +129,15 @@ All ArcMenu's Image assets including wiki images, Icons and application Image as
 
 ### Credits
 
+ArcMenu is developed and maintained by @AndrewZaech and @LinxGem33 (Andy C)
 
-Additional credits: This extension also leverages the work from [Giovanni Campagna ](https://git.gnome.org//browse/gnome-shell-extensions) gnome Application Menu used in [Gnome 3](https://www.gnome.org/) to allow the menu to be embedded in the Gnome main panel This extension also leverages some of the work from Zorin OS.
-This extension also leverages some code from the gnome-shell adapted to be used for ArcMenu and also uses adapted code from Dash to Panel's Utils.js to allow the ArcMenu to be used for different Gnome-shell versions.
+
+**Additional credits:** 
+
+* This extension also leverages the work from [Giovanni Campagna ](https://git.gnome.org//browse/gnome-shell-extensions) gnome Application Menu used in [Gnome 3](https://www.gnome.org/) to allow the menu to be embedded in the Gnome main panel.
+* This extension also leverages some of the design elements for the default menu layout (ArcMenu) from Zorin OS.
+* This extension also uses some code from the gnome-shell adapted to be used for ArcMenu.
+* This extension also uses adapted code from Dash to Panel's Utils.js.
 
 -----
 
