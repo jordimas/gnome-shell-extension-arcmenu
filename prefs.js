@@ -2170,7 +2170,7 @@ var ArcMenuIconsDialogWindow = GObject.registerClass(
             distroInfoButton.connect('clicked', ()=> {
                 let dialog = new DistroIconsDisclaimerWindow(this._settings, this);
                 dialog.connect ('response', ()=> dialog.destroy());
-                dialog.show_all();
+                dialog.show();
             });
             vbox.add(distroInfoButton);
         }
@@ -2192,6 +2192,7 @@ var DistroIconsDisclaimerWindow = GObject.registerClass(
             super._init({
                 text: "<b>" + _("Legal disclaimer for Distro Icons...") + "</b>",
                 use_markup: true,
+                message_type: Gtk.MessageType.OTHER,
                 transient_for: parent.get_toplevel(),
                 modal: true,
                 buttons: Gtk.ButtonsType.OK
@@ -2206,14 +2207,15 @@ var DistroIconsDisclaimerWindow = GObject.registerClass(
     
             this._createLayout(vbox);
             this.get_content_area().add(vbox);
+            vbox.show_all();
         }
 
         _createLayout(vbox) {         
             let scrollWindow = new Gtk.ScrolledWindow({
                 min_content_width: 500,
                 max_content_width: 500,
-                min_content_height: 500,
-                max_content_height: 500,
+                min_content_height: 400,
+                max_content_height: 400,
                 hexpand: false,
                 halign: Gtk.Align.START,
             });
