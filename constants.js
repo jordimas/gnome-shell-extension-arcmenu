@@ -175,6 +175,7 @@ var MENU_ICONS = [
     { path: '/media/icons/diamond-square-symbolic.svg'},
     { path: '/media/icons/octo-maze-symbolic.svg'},
     { path: '/media/icons/search-symbolic.svg'},
+    { path: '/media/icons/transform-symbolic.svg'},
     { path: '/media/icons/3d-symbolic.svg'},
     { path: '/media/icons/alien-symbolic.svg'},
     { path: '/media/icons/cloud-symbolic.svg'},
