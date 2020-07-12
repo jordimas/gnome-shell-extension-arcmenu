@@ -46,7 +46,7 @@ This extension could be even better with your help! Any items in the issue track
 
 -----
 
-Arc Menu integrated with [Dash-to-Panel](https://extensions.gnome.org/extension/1160/dash-to-panel/)
+#### Arc Menu integrated with [Dash-to-Panel](https://extensions.gnome.org/extension/1160/dash-to-panel/)
 
 -----
 
