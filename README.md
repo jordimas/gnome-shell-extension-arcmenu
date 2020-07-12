@@ -350,7 +350,7 @@ Kind regards - **ArcMenu Team**
 
 -----
 
- **- @[AlexWayfer](https://gitlab.com/AlexWayfer) - Russian** | **- @[gkkulik](https://gitlab.com/gkkulik) - Silesian** | **- @[vikaig](https://gitlab.com/vikaig) - Ukrainian** | **- @[jordim](https://gitlab.com/jordim) - Catalan** | **- @[libreajans](https://gitlab.com/libreajans) - Turkish** |
+ **- @[AlexWayfer](https://gitlab.com/AlexWayfer) - Russian** | **- @[gkkulik](https://gitlab.com/gkkulik) - Silesian** | **- @[vikaig](https://gitlab.com/vikaig) - Ukrainian** | **- @[jordim](https://gitlab.com/jordim) - Catalan** | **- @[aylinux](https://gitlab.com/aylinux) - Turkish** |
  
 -----
 
