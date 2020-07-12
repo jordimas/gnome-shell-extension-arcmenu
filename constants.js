@@ -211,7 +211,21 @@ var MENU_ICONS = [
     { path: '/media/icons/rewind-symbolic.svg'},
     { path: '/media/icons/snap-symbolic.svg'},
     { path: '/media/icons/time-symbolic.svg'},
-    { path: '/media/icons/transform-symbolic.svg'},
+    { path: '/media/icons/3D-symbolic.svg'},
+    { path: '/media/icons/a-symbolic.svg'},
+    { path: '/media/icons/app-launcher-symbolic.svg'},
+    { path: '/media/icons/bat-symbolic.svg'},
+    { path: '/media/icons/dra-symbolic.svg'},
+    { path: '/media/icons/equal-symbolic.svg'},
+    { path: '/media/icons/gnacs-symbolic.svg'},
+    { path: '/media/icons/groove-symbolic.svg'},
+    { path: '/media/icons/kaaet-symbolic.svg'},
+    { path: '/media/icons/launcher-symbolic.svg'},
+    { path: '/media/icons/pac-symbolic.svg'},
+    { path: '/media/icons/robots-symbolic.svg'},
+    { path: '/media/icons/sheild-symbolic.svg'},
+    { path: '/media/icons/somnia-symbolic.svg'},
+    { path: '/media/icons/utool-symbolic.svg'},
 ]
 
 var DISTRO_ICONS = [
