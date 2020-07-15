@@ -221,7 +221,7 @@ All ArcMenu's Image assets including wiki images, Icons and application Image as
 
 * **PUREOS** - name and logo is developed by members of the Purism community
 
-* **RASPBERRY PI** - ![copyright2.svg](/uploads/c5f15274ae7fffddf1f2e3dcda5971d8/copyright2.svg) Logo and name is part of Raspberry Pi Foundation
+* **RASPBERRY PI** ![copyright2.svg](/uploads/c5f15274ae7fffddf1f2e3dcda5971d8/copyright2.svg) - Logo and name is part of Raspberry Pi Foundation
 UK Registered Charity 1129409
 
 </p>
