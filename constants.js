@@ -175,6 +175,7 @@ var MENU_ICONS = [
     { path: '/media/icons/diamond-square-symbolic.svg'},
     { path: '/media/icons/octo-maze-symbolic.svg'},
     { path: '/media/icons/search-symbolic.svg'},
+    { path: '/media/icons/transform-symbolic.svg'},
     { path: '/media/icons/3d-symbolic.svg'},
     { path: '/media/icons/alien-symbolic.svg'},
     { path: '/media/icons/cloud-symbolic.svg'},
@@ -211,7 +212,21 @@ var MENU_ICONS = [
     { path: '/media/icons/rewind-symbolic.svg'},
     { path: '/media/icons/snap-symbolic.svg'},
     { path: '/media/icons/time-symbolic.svg'},
-    { path: '/media/icons/transform-symbolic.svg'},
+    { path: '/media/icons/3D-symbolic.svg'},
+    { path: '/media/icons/a-symbolic.svg'},
+    { path: '/media/icons/app-launcher-symbolic.svg'},
+    { path: '/media/icons/bat-symbolic.svg'},
+    { path: '/media/icons/dra-symbolic.svg'},
+    { path: '/media/icons/equal-symbolic.svg'},
+    { path: '/media/icons/gnacs-symbolic.svg'},
+    { path: '/media/icons/groove-symbolic.svg'},
+    { path: '/media/icons/kaaet-symbolic.svg'},
+    { path: '/media/icons/launcher-symbolic.svg'},
+    { path: '/media/icons/pac-symbolic.svg'},
+    { path: '/media/icons/robots-symbolic.svg'},
+    { path: '/media/icons/sheild-symbolic.svg'},
+    { path: '/media/icons/somnia-symbolic.svg'},
+    { path: '/media/icons/utool-symbolic.svg'},
 ]
 
 var DISTRO_ICONS = [
@@ -344,7 +359,11 @@ var DistroIconsDisclaimer = '<i>"All brand icons are trademarks of their respect
                                 '\n\n•   <b>MANJARO©</b> - logo and name are trademarks of Manjaro GmbH &amp; Co. KG'+
                                 '\n\n•   <b>POP_OS!©</b> - logo and name are trademarks of system 76© Inc.'+
                                 '\n\n•   <b>ARCH LINUX©</b> - The stylized Arch Linux logo is a recognized trademark of Arch Linux, copyright 2002-2017 Judd Vinet and Aaron Griffin.'+
-                                '\n\n•   <b>openSUSE©</b> - logo and name 2001–2020 SUSE LLC, © 2005–2020 openSUSE Contributors &amp; others.';
+                                '\n\n•   <b>openSUSE©</b> - logo and name 2001–2020 SUSE LLC, © 2005–2020 openSUSE Contributors &amp; others.'+
+                                '\n\n•   <b>Raspberry Pi</b> - logo and name are part of Raspberry Pi Foundation UK Registered Charity 1129409'+
+                                '\n\n•   <b>Kali Linux</b> - logo and name are part of © OffSec Services Limited 2020'+
+                                '\n\n•   <b>PureOS</b> - logo and name are developed by members of the Purism community'+
+                                '\n\n•   <b>Solus</b> -  logo and name are copyright © 2014-2018 by Solus Project';
 
 var CREDITS = '\n<b>Credits:</b>'+
 		'\n\nCurrent Active Developers'+
