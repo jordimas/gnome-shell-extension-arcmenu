@@ -393,5 +393,14 @@ function createStylesheet(settings){
                                     +"\nborder-color:" + separatorColor + ";\nborder-bottom-width: 1px;\n}\n";
     
     let stylesheet = getStylesheet();
-    stylesheet.replace_contents(stylesheetCSS, null, false, Gio.FileCreateFlags.REPLACE_DESTINATION, null);
+    if(stylesheet){
+        try{
+            stylesheet.replace_contents(stylesheetCSS, null, false, Gio.FileCreateFlags.REPLACE_DESTINATION, null);
+        }
+        catch(e){
+            global.log("Arc-Menu - Error updating stylesheet! " + e.message);
+        }
+    }
+    else
+        global.log("Arc-Menu - Error getting stylesheet!");
 }

@@ -359,7 +359,11 @@ var DistroIconsDisclaimer = '<i>"All brand icons are trademarks of their respect
                                 '\n\n•   <b>MANJARO©</b> - logo and name are trademarks of Manjaro GmbH &amp; Co. KG'+
                                 '\n\n•   <b>POP_OS!©</b> - logo and name are trademarks of system 76© Inc.'+
                                 '\n\n•   <b>ARCH LINUX©</b> - The stylized Arch Linux logo is a recognized trademark of Arch Linux, copyright 2002-2017 Judd Vinet and Aaron Griffin.'+
-                                '\n\n•   <b>openSUSE©</b> - logo and name 2001–2020 SUSE LLC, © 2005–2020 openSUSE Contributors &amp; others.';
+                                '\n\n•   <b>openSUSE©</b> - logo and name 2001–2020 SUSE LLC, © 2005–2020 openSUSE Contributors &amp; others.'+
+                                '\n\n•   <b>Raspberry Pi</b> - logo and name are part of Raspberry Pi Foundation UK Registered Charity 1129409'+
+                                '\n\n•   <b>Kali Linux</b> - logo and name are part of © OffSec Services Limited 2020'+
+                                '\n\n•   <b>PureOS</b> - logo and name are developed by members of the Purism community'+
+                                '\n\n•   <b>Solus</b> -  logo and name are copyright © 2014-2018 by Solus Project';
 
 var CREDITS = '\n<b>Credits:</b>'+
 		'\n\nCurrent Active Developers'+

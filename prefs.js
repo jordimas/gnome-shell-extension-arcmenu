@@ -3121,6 +3121,17 @@ var AppearanceFineTunePage = GObject.registerClass(
         this.add(alphabetizeAllProgramsFrame);
 
         let appIndicatorColorFrame = new PW.FrameBox();
+        let recentlyInstalledInfoRow = new PW.FrameBoxRow();
+        let recentlyInstalledInfoLabel = new Gtk.Label({
+            label: _('Recently Installed Application Indicators'),
+            use_markup: true,
+            xalign: 0,
+            hexpand: true,
+            selectable: false,
+            sensitive: false
+        });
+        recentlyInstalledInfoRow.add(recentlyInstalledInfoLabel);
+        appIndicatorColorFrame.add(recentlyInstalledInfoRow);
         let appIndicatorColorRow = new PW.FrameBoxRow();
         let appIndicatorColorLabel = new Gtk.Label({
             label: _('Category Indicator Color'),
