@@ -215,6 +215,15 @@ All ArcMenu's Image assets including wiki images, Icons and application Image as
 
 * **ARCH LINUX ![copyright2.svg](/uploads/c5f15274ae7fffddf1f2e3dcda5971d8/copyright2.svg)** - The stylized Arch Linux logo are recognised trademarks of Arch Linux, copyright 2002-2017 Judd Vinet and Aaron Griffin
 
+* **SOLUS** - name and logo is Copyright ![copyright2.svg](/uploads/c5f15274ae7fffddf1f2e3dcda5971d8/copyright2.svg) 2014-2018 by Solus Project
+
+* **KALI LINUX** - logo and name is part of ![copyright2.svg](/uploads/c5f15274ae7fffddf1f2e3dcda5971d8/copyright2.svg) OffSec Services Limited 2020
+
+* **PUREOS** - name and logo is developed by members of the Purism community
+
+* **RASPBERRY PI** - ![copyright2.svg](/uploads/c5f15274ae7fffddf1f2e3dcda5971d8/copyright2.svg) Logo and name is part of Raspberry Pi Foundation
+UK Registered Charity 1129409
+
 </p>
 </details>
 
