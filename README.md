@@ -5,44 +5,20 @@
 ![](https://gitlab.com/LinxGem33/Neon/raw/master/arcmenu-browser.png)
 
 -----
+
 ### Introduction
 
-<details>
-<summary><b>ArcMenu Information</b></summary>
-
-<p>
-
 Arc Menu is a Gnome shell extension designed to replace the standard menu found in Gnome 3 this application menu extension has  some added benefits over the standard menu found in Gnome 3, these include the long awaited search functionality as well as quick access to files on your system and also the current logged in user along with quick access to the software centre and system settings and other features which can be accessed from the settings menu.
-
-</p>
-</details>
 
 -----
 
 ### Volunteers needed!
-
-<details>
-<summary><b>Contributing Information</b></summary>
-
-<p>
 
 This extension could be even better with your help! Any items in the issue tracker labelled **Help Needed** or **Good First Issue** are open for contribution. For more info, see the [Contributing Feature List](https://gitlab.com/LinxGem33/Arc-Menu/issues/54) for more details on current issues or features which need your help.
 
 ![image](/uploads/85b3cf3baea40163ffc5c115b7d7306e/image.png)  ![image](/uploads/d5b2fb82db8d2955923d327caef8e4aa/image.png)
 
 * For more information about contributing and code requirements please visit the [How to Contribute](https://gitlab.com/arcmenu-team/Arc-Menu/-/wikis/How-to-Contribute) wiki section.
-
-</p>
-</details>
-
------
-
-#### Arc Menu integration
-
-<details>
-<summary><b>Screenshots and Links</b></summary>
-
-<p>
 
 -----
 
@@ -60,17 +36,9 @@ This extension could be even better with your help! Any items in the issue track
 
 ![](https://gitlab.com/LinxGem33/Neon/-/raw/master/dash-to-dock-inter-screen.png)
 
-</p>
-</details>
-
 -----
 
 ### Installation
-
-<details>
-<summary><b>Installation Information</b></summary>
-
-<p>
 
 #### To install the most recent official release: Visit ArcMenu on the [Official GNOME Extensions](https://extensions.gnome.org/extension/1228/arc-menu/) website.
 
@@ -80,35 +48,17 @@ This extension could be even better with your help! Any items in the issue track
        <a href="https://extensions.gnome.org/extension/1228/arc-menu/" >
     <img src="https://gitlab.com/LinxGem33/Neon/raw/master/artwork/get-it-ego.png" width="240" style="margin-left: 4px"/>
     </a>
-</p>
-
-</p>
-</details>
 
 -----
 
 ### Dependencies
 
-<details>
-<summary><b>Dependencies Information</b></summary>
-
-<p>
-
 __Please note:__ For Arc-Menu to work properly, your GNOME Desktop must have the
 following [dependencies installed](https://gitlab.com/LinxGem33/Arc-Menu/wikis/Arc-Menu-Dependencies).
-
-</p>
-</details>
 
 -----
 
 ### Wiki Guide
-
-
-<details>
-<summary><b>Wiki guide & User manual</b></summary>
-
-<p>
 
 
 If you have any issues with regard to Arc menu and your unsure of a certain feature or just want to know more about Arc menu, then the Arc menu wiki guide is a good place to start.
@@ -128,17 +78,9 @@ Please refer to the Arc menu [Wiki Guide](https://gitlab.com/LinxGem33/Arc-Menu/
     </a>
 </p>
 
-</p>
-</details>
-
 -----
 
 ### Bugs
-
-<details>
-<summary><b>Reporting bugs</b></summary>
-
-<p>
 
 Bugs should be reported [here](https://gitlab.com/LinxGem33/Arc-Menu/issues) on the GitLab issues page.
 
@@ -149,17 +91,9 @@ Please refer to the Wiki section for a guide on: [Reporting Bugs](https://gitlab
 Please note that without any information about your system, the Arc Menu Team can only speculate what the problem is.
 So, please provide us information about your GNU/Linux distribution and the GNOME Shell version. Otherwise, we are not able to try and solve your problem.
 
-</p>
-</details>
-
 -----
 
 ### Conduct
-
-<details>
-<summary><b>Basic rules of conduct</b></summary>
-
-<p>
 
 There are basic rules of conduct that should be followed at all times by everyone participating in the discussions.  While this is generally a relaxed environment, please remember the following:
 
@@ -170,18 +104,10 @@ There are basic rules of conduct that should be followed at all times by everyon
 
 **Remember**: Just because the issue you reported was reported here does not mean that it is an issue with Arc menu. As well, should your issue not be resolved immediately, it does not mean that a resolution is not being researched or tested. Patience is always appreciated.
 
-</p>
-</details>
-
 -----
 
 [![GNU GPL Image](https://www.gnu.org/graphics/slickgnu.tiny.png)](http://www.gnu.org/licenses/old-licenses/lgpl-2.0.html)  
 ### License & Terms ![](https://gitlab.com/LinxGem33/IP-Finder/raw/master/screens/Copyleft-16.png)
-
-<details>
-<summary><b>License & Terms Information</b></summary>
-
-<p>
 
 Arc Menu is available under the terms of the GPL-2.0 license See [`COPYING`](https://gitlab.com/LinxGem33/Arc-Menu/blob/master/COPYING) for details.
 
@@ -190,9 +116,6 @@ Arc-Menu is Free Software: You can use, study share and improve it at your will.
 All ArcMenu's Image assets including wiki images, Icons and application Image assets are created by [LinxGem33](https://gitlab.com/LinxGem33) and licensed under; [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/)
 
 [Exceptions]() Trademarked icons (logo) (name) please see `Legal disclaimer for brand icons and trademarks` below regarding Distro icons section for more details.
-
-</p>
-</details>
 
 <details>
 <summary><b>Legal disclaimer for brand icons and trademarks..</b></summary>
