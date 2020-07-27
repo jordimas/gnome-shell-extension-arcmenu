@@ -165,9 +165,9 @@ UK Registered Charity 1129409
 
 * This extension leverages the work from [Giovanni Campagna ](https://git.gnome.org//browse/gnome-shell-extensions) gnome Application Menu to allow the menu to be embedded in the Gnome main panel.
 * This extension also leverages some of the design elements for the default menu layout (ArcMenu) from Zorin OS.
-* This extension also uses some code from the gnome-shell adapted to be used for ArcMenu.
+* This extension also uses some code from gnome-shell adapted to be used for ArcMenu.
 * This extension also uses adapted code from Dash to Panel's Utils.js.
-* This extension also uses some code from the gnome-shell-extensions package for external file sources adapted to be used for ArcMenu.
+* This extension also uses some code from gnome-shell-extensions package for use with external file sources adapted to be used for ArcMenu.
 
 </p>
 </details>
