@@ -237,7 +237,7 @@ Hi, I’m Andrew. My role on the project is to design, create, and implement fea
 
 -----
 
-**@[fishears](https://github.com/fishears/Arc-Menu)** | **@[JasonLG1979](https://github.com/JasonLG1979)** | **@[itmitica](https://github.com/itmitica)** | **@[vikaig](https://gitlab.com/vikaig)** | **- @[MagneFire](https://gitlab.com/MagneFire)**
+**@[fishears](https://github.com/fishears/Arc-Menu)** | **@[JasonLG1979](https://github.com/JasonLG1979)** | **@[itmitica](https://github.com/itmitica)** | **@[vikaig](https://gitlab.com/vikaig)** | **- @[MagneFire](https://gitlab.com/MagneFire)** | **@[hlechner](https://gitlab.com/hlechner)**
 
 -----
 
