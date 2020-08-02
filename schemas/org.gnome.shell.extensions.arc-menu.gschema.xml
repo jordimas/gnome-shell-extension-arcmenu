@@ -461,9 +461,14 @@
       <description>Color for for the menu button icon.</description>
     </key>
     <key type="s" name="menu-button-active-color">
-      <default>'rgb(214,214,214)'</default>
+      <default>'rgb(240,240,240)'</default>
       <summary>Active color for for the menu button icon</summary>
       <description>Active for color for the menu button icon.</description>
+    </key>
+    <key type="s" name="menu-button-hover-color">
+      <default>'rgb(214,214,214)'</default>
+      <summary>Hover color for for the menu button icon</summary>
+      <description>Hover color for the menu button icon.</description>
     </key>
     <key name="extra-categories" type="a(ib)">
       <default>[(0, true), (1, true), (2, false), (3, false)]</default>

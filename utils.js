@@ -302,6 +302,7 @@ function createStylesheet(settings){
     let avatarRadius = avatarStyle == 0 ? 999 : 0;
     let menuButtonColor = settings.get_string('menu-button-color');
     let menuButtonActiveColor =  settings.get_string('menu-button-active-color');
+    let menuButtonHoverColor =  settings.get_string('menu-button-hover-color');
     let gapAdjustment = settings.get_int('gap-adjustment');
     let indicatorColor = settings.get_string('indicator-color');
     let indicatorTextBackgroundColor = settings.get_string('indicator-text-color');
@@ -329,7 +330,8 @@ function createStylesheet(settings){
         +".arc-search-entry StLabel.hint-text{\ncolor: " + lighten_rgb(menuForegroundColor, 0, 0.3) + ";\n}\n\n"
         
         +".arc-menu-icon{\ncolor: " + menuButtonColor + ";\n}\n\n"
-        +".arc-menu-icon:hover, .arc-menu-icon:active{\ncolor: " + menuButtonActiveColor + ";\n}\n\n"
+        +".panel-button:hover .arc-menu-icon{\ncolor: " + menuButtonHoverColor + ";\n}\n\n"
+        +".arc-menu-icon:active{\ncolor: " + menuButtonActiveColor + ";\n}\n\n"
 
         +"StScrollView .small-vfade{\n-st-vfade-offset: 44px;\n}\n\n"
 

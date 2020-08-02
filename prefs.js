@@ -1692,6 +1692,7 @@ var MenuButtonCustomizationWindow = GObject.registerClass(
             this._settings = settings;
             this.menuButtonColor = this._settings.get_string('menu-button-color');
             this.menuButtonActiveColor = this._settings.get_string('menu-button-active-color');
+            this.menuButtonHoverColor = this._settings.get_string('menu-button-hover-color');
             super._init(_('Arc Menu Icon Settings'), parent);
             this.resize(500,500);
         }
@@ -1970,6 +1971,41 @@ var MenuButtonCustomizationWindow = GObject.registerClass(
             menuButtonActiveColorRow.add(menuButtonActiveColorChooser);
             menuButtonActiveColorRow.add(menuButtonActiveColorInfoButton);
             menuButtonIconColorFrame.add(menuButtonActiveColorRow);
+
+            let menuButtonHoverColorRow = new PW.FrameBoxRow();
+            let menuButtonHoverColorLabel = new Gtk.Label({
+                label: _('Hover Icon Color'),
+                xalign:0,
+                hexpand: true,
+             });
+            let menuButtonHoverColorChooser = new Gtk.ColorButton({use_alpha:false});
+            color.parse(this.menuButtonHoverColor);
+            menuButtonHoverColorChooser.set_rgba(color);
+            menuButtonHoverColorChooser.connect('color-set', ()=>{
+                resetButton.set_sensitive(true);
+                this.menuButtonHoverColor = menuButtonHoverColorChooser.get_rgba().to_string();
+                this._settings.set_string('menu-button-hover-color',this.menuButtonHoverColor);
+                this._settings.reset('reload-theme');
+                this._settings.set_boolean('reload-theme', true);
+            });
+
+            let menuButtonHoverColorInfoButton = new PW.InfoButton();
+            menuButtonHoverColorInfoButton.connect('clicked', ()=> {
+                let dialog = new Gtk.MessageDialog({
+                    text: "<b>" + _("Change the active/hover color of the Arc Menu Icon") + '</b>\n\n' + _('Icon color options will only work with files ending with "-symbolic.svg"'),
+                    use_markup: true,
+                    buttons: Gtk.ButtonsType.OK,
+                    message_type: Gtk.MessageType.OTHER,
+                    transient_for: this,
+                    modal: true
+                });
+                dialog.connect ('response', ()=> dialog.destroy());
+                dialog.show();
+            });
+            menuButtonHoverColorRow.add(menuButtonHoverColorLabel);
+            menuButtonHoverColorRow.add(menuButtonHoverColorChooser);
+            menuButtonHoverColorRow.add(menuButtonHoverColorInfoButton);
+            menuButtonIconColorFrame.add(menuButtonHoverColorRow);
             vbox.add(menuButtonIconColorFrame);
 
             // Button Row -------------------------------------------------------
