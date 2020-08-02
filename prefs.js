@@ -1692,6 +1692,7 @@ var MenuButtonCustomizationWindow = GObject.registerClass(
             this._settings = settings;
             this.menuButtonColor = this._settings.get_string('menu-button-color');
             this.menuButtonActiveColor = this._settings.get_string('menu-button-active-color');
+            this.menuButtonHoverColor = this._settings.get_string('menu-button-hover-color');
             super._init(_('Arc Menu Icon Settings'), parent);
             this.resize(500,500);
         }
@@ -1956,7 +1957,7 @@ var MenuButtonCustomizationWindow = GObject.registerClass(
             let menuButtonActiveColorInfoButton = new PW.InfoButton();
             menuButtonActiveColorInfoButton.connect('clicked', ()=> {
                 let dialog = new Gtk.MessageDialog({
-                    text: "<b>" + _("Change the active/hover color of the Arc Menu Icon") + '</b>\n\n' + _('Icon color options will only work with files ending with "-symbolic.svg"'),
+                    text: "<b>" + _("Change the active color of the Arc Menu Icon") + '</b>\n\n' + _('Icon color options will only work with files ending with "-symbolic.svg"'),
                     use_markup: true,
                     buttons: Gtk.ButtonsType.OK,
                     message_type: Gtk.MessageType.OTHER,
@@ -1970,6 +1971,41 @@ var MenuButtonCustomizationWindow = GObject.registerClass(
             menuButtonActiveColorRow.add(menuButtonActiveColorChooser);
             menuButtonActiveColorRow.add(menuButtonActiveColorInfoButton);
             menuButtonIconColorFrame.add(menuButtonActiveColorRow);
+
+            let menuButtonHoverColorRow = new PW.FrameBoxRow();
+            let menuButtonHoverColorLabel = new Gtk.Label({
+                label: _('Hover Icon Color'),
+                xalign:0,
+                hexpand: true,
+             });
+            let menuButtonHoverColorChooser = new Gtk.ColorButton({use_alpha:false});
+            color.parse(this.menuButtonHoverColor);
+            menuButtonHoverColorChooser.set_rgba(color);
+            menuButtonHoverColorChooser.connect('color-set', ()=>{
+                resetButton.set_sensitive(true);
+                this.menuButtonHoverColor = menuButtonHoverColorChooser.get_rgba().to_string();
+                this._settings.set_string('menu-button-hover-color',this.menuButtonHoverColor);
+                this._settings.reset('reload-theme');
+                this._settings.set_boolean('reload-theme', true);
+            });
+
+            let menuButtonHoverColorInfoButton = new PW.InfoButton();
+            menuButtonHoverColorInfoButton.connect('clicked', ()=> {
+                let dialog = new Gtk.MessageDialog({
+                    text: "<b>" + _("Change the hover color of the Arc Menu Icon") + '</b>\n\n' + _('Icon color options will only work with files ending with "-symbolic.svg"'),
+                    use_markup: true,
+                    buttons: Gtk.ButtonsType.OK,
+                    message_type: Gtk.MessageType.OTHER,
+                    transient_for: this,
+                    modal: true
+                });
+                dialog.connect ('response', ()=> dialog.destroy());
+                dialog.show();
+            });
+            menuButtonHoverColorRow.add(menuButtonHoverColorLabel);
+            menuButtonHoverColorRow.add(menuButtonHoverColorChooser);
+            menuButtonHoverColorRow.add(menuButtonHoverColorInfoButton);
+            menuButtonIconColorFrame.add(menuButtonHoverColorRow);
             vbox.add(menuButtonIconColorFrame);
 
             // Button Row -------------------------------------------------------
@@ -1979,21 +2015,23 @@ var MenuButtonCustomizationWindow = GObject.registerClass(
                 hexpand: false
             });   
             resetButton.set_sensitive(this.checkIfResetButtonSensitive());
-            resetButton.connect('clicked', ()=> {
+           resetButton.connect('clicked', ()=> {
                 menuButtonAppearanceCombo.set_active(0);
                 menuButtonCustomTextEntry.set_text('Applications');
                 paddingScale.set_value(0);
                 menuButtonIconSizeScale.set_value(20);
                 color.parse('rgb(240,240,240)');
                 menuButtonColorChooser.set_rgba(color);
-                color.parse('rgb(214,214,214)');
                 menuButtonActiveColorChooser.set_rgba(color);
+                color.parse('rgb(214,214,214)');
+                menuButtonHoverColorChooser.set_rgba(color);
                 enableArrowIconSwitch.set_active(false);
                 this._settings.reset('menu-button-icon');
                 this._settings.reset('arc-menu-icon');
                 this._settings.reset('distro-icon');
                 this._settings.reset('custom-menu-button-icon');
                 this._settings.reset('menu-button-active-color');
+                this._settings.reset('menu-button-hover-color');
                 this._settings.reset('menu-button-color');
                 this._settings.reset('reload-theme');
                 this._settings.set_boolean('reload-theme', true);
@@ -2005,7 +2043,8 @@ var MenuButtonCustomizationWindow = GObject.registerClass(
         }
 
         checkIfResetButtonSensitive(){
-           if(  this._settings.get_string('menu-button-active-color') != 'rgb(214,214,214)' ||
+           if(  this._settings.get_string('menu-button-hover-color') != 'rgb(214,214,214)' ||
+                this._settings.get_string('menu-button-active-color') != 'rgb(240,240,240)' ||
                 this._settings.get_string('menu-button-color') != 'rgb(240,240,240)' ||
                 this._settings.get_double('custom-menu-button-icon-size') != 20 ||
                 this._settings.get_int('button-icon-padding') != 0 ||
