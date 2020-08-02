@@ -1957,7 +1957,7 @@ var MenuButtonCustomizationWindow = GObject.registerClass(
             let menuButtonActiveColorInfoButton = new PW.InfoButton();
             menuButtonActiveColorInfoButton.connect('clicked', ()=> {
                 let dialog = new Gtk.MessageDialog({
-                    text: "<b>" + _("Change the active/hover color of the Arc Menu Icon") + '</b>\n\n' + _('Icon color options will only work with files ending with "-symbolic.svg"'),
+                    text: "<b>" + _("Change the active color of the Arc Menu Icon") + '</b>\n\n' + _('Icon color options will only work with files ending with "-symbolic.svg"'),
                     use_markup: true,
                     buttons: Gtk.ButtonsType.OK,
                     message_type: Gtk.MessageType.OTHER,
@@ -1992,7 +1992,7 @@ var MenuButtonCustomizationWindow = GObject.registerClass(
             let menuButtonHoverColorInfoButton = new PW.InfoButton();
             menuButtonHoverColorInfoButton.connect('clicked', ()=> {
                 let dialog = new Gtk.MessageDialog({
-                    text: "<b>" + _("Change the active/hover color of the Arc Menu Icon") + '</b>\n\n' + _('Icon color options will only work with files ending with "-symbolic.svg"'),
+                    text: "<b>" + _("Change the hover color of the Arc Menu Icon") + '</b>\n\n' + _('Icon color options will only work with files ending with "-symbolic.svg"'),
                     use_markup: true,
                     buttons: Gtk.ButtonsType.OK,
                     message_type: Gtk.MessageType.OTHER,
