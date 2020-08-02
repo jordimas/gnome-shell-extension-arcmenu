@@ -2043,7 +2043,8 @@ var MenuButtonCustomizationWindow = GObject.registerClass(
         }
 
         checkIfResetButtonSensitive(){
-           if(  this._settings.get_string('menu-button-active-color') != 'rgb(214,214,214)' ||
+           if(  this._settings.get_string('menu-button-hover-color') != 'rgb(214,214,214)' ||
+                this._settings.get_string('menu-button-active-color') != 'rgb(240,240,240)' ||
                 this._settings.get_string('menu-button-color') != 'rgb(240,240,240)' ||
                 this._settings.get_double('custom-menu-button-icon-size') != 20 ||
                 this._settings.get_int('button-icon-padding') != 0 ||
