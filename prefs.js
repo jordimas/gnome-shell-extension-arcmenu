@@ -2015,21 +2015,23 @@ var MenuButtonCustomizationWindow = GObject.registerClass(
                 hexpand: false
             });   
             resetButton.set_sensitive(this.checkIfResetButtonSensitive());
-            resetButton.connect('clicked', ()=> {
+           resetButton.connect('clicked', ()=> {
                 menuButtonAppearanceCombo.set_active(0);
                 menuButtonCustomTextEntry.set_text('Applications');
                 paddingScale.set_value(0);
                 menuButtonIconSizeScale.set_value(20);
                 color.parse('rgb(240,240,240)');
                 menuButtonColorChooser.set_rgba(color);
-                color.parse('rgb(214,214,214)');
                 menuButtonActiveColorChooser.set_rgba(color);
+                color.parse('rgb(214,214,214)');
+                menuButtonHoverColorChooser.set_rgba(color);
                 enableArrowIconSwitch.set_active(false);
                 this._settings.reset('menu-button-icon');
                 this._settings.reset('arc-menu-icon');
                 this._settings.reset('distro-icon');
                 this._settings.reset('custom-menu-button-icon');
                 this._settings.reset('menu-button-active-color');
+                this._settings.reset('menu-button-hover-color');
                 this._settings.reset('menu-button-color');
                 this._settings.reset('reload-theme');
                 this._settings.set_boolean('reload-theme', true);
