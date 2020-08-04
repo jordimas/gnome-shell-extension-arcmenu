@@ -42,19 +42,22 @@ const Hostname1Iface = '<node> \
 const Hostname1 = Gio.DBusProxy.makeProxyWrapper(Hostname1Iface);
 
 var PlaceMenuItem = GObject.registerClass(class ArcMenu_PlaceMenuItem2 extends MW.ArcMenuPopupBaseMenuItem{
-    _init(info,button) {
-        super._init();
+    _init(info, menuLayout) {
+        super._init(menuLayout);
         this._info = info;
-        this._button = button;
+        this._menuLayout = menuLayout;
         this._icon = new St.Icon({
             gicon: info.icon,
             icon_size: 16
         });
-        this.actor.add_child(this._icon);
-        if(info.name.length>=20)
-            info.name = info.name.slice(0,20) + "...";
-        this.label = new St.Label({ text: info.name, x_expand: true});
-        this.actor.add_child(this.label);
+        this.box.add_child(this._icon);
+        this.label = new St.Label({ text: info.name, 
+                                    x_expand: true,
+                                    y_expand: true,
+                                    x_align: Clutter.ActorAlign.FILL,
+                                    y_align: Clutter.ActorAlign.CENTER });
+        
+        this.box.add_child(this.label);
 
         if (info.isRemovable()) {
             this._ejectIcon = new St.Icon({
@@ -63,7 +66,7 @@ var PlaceMenuItem = GObject.registerClass(class ArcMenu_PlaceMenuItem2 extends M
             });
             this._ejectButton = new St.Button({ child: this._ejectIcon });
             this._ejectButton.connect('clicked', info.eject.bind(info));
-            this.actor.add_child(this._ejectButton);
+            this.box.add_child(this._ejectButton);
         }
 
         this._changedId = info.connect('changed',
@@ -78,7 +81,7 @@ var PlaceMenuItem = GObject.registerClass(class ArcMenu_PlaceMenuItem2 extends M
    
     activate(event) {
         this._info.launch(event.get_time());
-        this._button.leftClickMenu.toggle();
+        this._menuLayout.arcMenu.toggle();
         super.activate(event);
     }
     _propertiesChanged(info) {
