@@ -70,7 +70,7 @@ var TweaksDialog = GObject.registerClass(
                 this._loadRedmondMenuTweaks(vbox)
             else if(menuLayout == Constants.MENU_LAYOUT.UbuntuDash)
                 this._loadUbuntuDashTweaks(vbox);
-            else if(menuLayout == Constants.MENU_LAYOUT.Raven)
+            else if(menuLayout == Constants.MENU_LAYOUT.Raven || menuLayout == Constants.MENU_LAYOUT.Dashboard)
                 this._loadRavenTweaks(vbox);
             else if(menuLayout == Constants.MENU_LAYOUT.Budgie)
                 this._loadBudgieMenuTweaks(vbox);
@@ -452,7 +452,8 @@ var TweaksDialog = GObject.registerClass(
             showMoreDetailsRow.add(showMoreDetailsLabel);
             showMoreDetailsRow.add(showMoreDetailsSwitch);
             showMoreDetailsFrame.add(showMoreDetailsRow);
-            generalPage.add(showMoreDetailsFrame);
+            if(this._settings.get_enum('menu-layout') === Constants.MENU_LAYOUT.Raven)
+                generalPage.add(showMoreDetailsFrame);
 
             let widgetFrame =  this._createWidgetsRows(Constants.MENU_LAYOUT.Raven);
             generalPage.add(widgetFrame);
@@ -538,9 +539,12 @@ var TweaksDialog = GObject.registerClass(
                 frameRow._name = array[i];
                 frameRow._icon = Prefs.getIconPath([array[i], array[i+1], array[i+2]]);
                 frameRow._cmd = array[i+2];
-                
+                let iconString;
+                if(frameRow._icon === "" && Gio.DesktopAppInfo.new(frameRow._cmd)){
+                    iconString = Gio.DesktopAppInfo.new(frameRow._cmd).get_icon().to_string();
+                }
                 let arcMenuImage = new Gtk.Image( {
-                    gicon: Gio.icon_new_for_string(frameRow._icon),
+                    gicon: Gio.icon_new_for_string(iconString ? iconString : frameRow._icon),
                     pixel_size: 22
                 });
                 
@@ -588,7 +592,11 @@ var TweaksDialog = GObject.registerClass(
                             frameRow._icon = newPinnedApps[1];
                             frameRow._cmd = newPinnedApps[2];
                             frameLabel.label = _(frameRow._name);
-                            arcMenuImage.gicon = Gio.icon_new_for_string(frameRow._icon);
+                            let iconString;
+                            if(frameRow._icon === "" && Gio.DesktopAppInfo.new(frameRow._cmd)){
+                                iconString = Gio.DesktopAppInfo.new(frameRow._cmd).get_icon().to_string();
+                            }
+                            arcMenuImage.gicon = Gio.icon_new_for_string(iconString ? iconString : frameRow._icon);
                             dialog.destroy();
                             frame.show();
                             savePinnedAppsButton.set_sensitive(true);
@@ -624,7 +632,11 @@ var TweaksDialog = GObject.registerClass(
                             frameRow._icon = newPinnedApps[1];
                             frameRow._cmd = newPinnedApps[2];
                             frameLabel.label = _(frameRow._name);
-                            arcMenuImage.gicon = Gio.icon_new_for_string(frameRow._icon);
+                            let iconString;
+                            if(frameRow._icon === "" && Gio.DesktopAppInfo.new(frameRow._cmd)){
+                                iconString = Gio.DesktopAppInfo.new(frameRow._cmd).get_icon().to_string();
+                            }
+                            arcMenuImage.gicon = Gio.icon_new_for_string(iconString ? iconString : frameRow._icon);
                             dialog.destroy();
                             frame.show();
                             savePinnedAppsButton.set_sensitive(true);

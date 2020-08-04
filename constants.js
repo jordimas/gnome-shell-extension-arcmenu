@@ -68,10 +68,10 @@ var CATEGORIES = [
     {Category: CategoryType.PINNED_APPS, Name: _("Pinned Apps"), Icon: Me.path + '/media/icons/arc-menu-symbolic.svg'}
 ]
 
-var ARC_MENU_PLACEMENT = {
+var ArcMenuPlacement = {
     PANEL: 0,
     DTP: 1,
-    DTD: 2
+    DASH: 2
 };
 
 var EXTENSION = {
@@ -112,10 +112,11 @@ var HOT_KEY = { // See: org.gnome.shell.extensions.arc-menu.menu-hotkey
     Undefined: 0,
     Super_L: 1,
     Super_R: 2,
+    Custom: 3,
     // Inverse mapping
     0: EMPTY_STRING,  // Note: an empty string is evaluated to false
     1: SUPER_L,
-    2: SUPER_R
+    2: SUPER_R,
 };
 
 var HOT_CORNERS_ACTION = {
@@ -242,6 +243,10 @@ var DISTRO_ICONS = [
     { path: '/media/icons/distros/pureos-logo-symbolic.svg'},
     { path: '/media/icons/distros/solus-logo-symbolic.svg'},
     { path: '/media/icons/distros/budgie-logo-symbolic.svg'},
+    { path: '/media/icons/distros/gentoo-logo-symbolic.svg'},
+    { path: '/media/icons/distros/mx-logo-symbolic.svg'},
+    { path: '/media/icons/distros/redhat-logo-symbolic.svg'},
+    { path: '/media/icons/distros/voyager-logo-symbolic.svg'},
 ]
 
 var MENU_LAYOUT = {
@@ -261,7 +266,8 @@ var MENU_LAYOUT = {
     Runner: 13,
     Chromebook: 14,
     Raven: 15,
-    Tognee : 16
+    Tognee: 16,
+    Dashboard: 17
 };
 
 var TRADITIONAL_MENU_STYLE = [   
@@ -284,6 +290,7 @@ var TOUCH_MENU_STYLE = [
 
 var LAUNCHER_MENU_STYLE = [   
     { thumbnail: '/media/layouts/krunner-menu.svg', name: _('KRunner Style'), layout: MENU_LAYOUT.Runner},
+    { thumbnail: '/media/layouts/dashboard.svg', name: _('Dashboard'), layout: MENU_LAYOUT.Dashboard},
     { thumbnail: '/media/layouts/gnome-dash-menu.svg', name: _('GNOME Dash Style'), layout: MENU_LAYOUT.GnomeDash}];
 
 var SIMPLE_MENU_STYLE = [   

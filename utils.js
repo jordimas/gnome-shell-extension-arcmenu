@@ -61,6 +61,8 @@ function getMenuLayout(button, layout){
             return new MenuLayout.raven.createMenu(button);
         case Constants.MENU_LAYOUT.Tognee:
             return new MenuLayout.tognee.createMenu(button);
+        case Constants.MENU_LAYOUT.Dashboard:
+            return new MenuLayout.dashboard.createMenu(button);
     }
 }
 
@@ -214,6 +216,34 @@ function createTooltip(button, widget, titleLabel, description){
     } 
 }
 
+function getDashToPanelPosition(settings, index){
+    var positions = null;
+    var side;
+
+    try{
+        positions = JSON.parse(settings.get_string('panel-positions'))
+    } catch(e){
+        log('Error parsing Dash to Panel positions: ' + e.message);
+    }
+    
+    if(!positions)
+        side = settings.get_string('panel-position');
+    else{
+        side = positions[index];
+    }
+
+    if (side === 'TOP') 
+        return imports.gi.St.Side.TOP;
+    else if (side === 'RIGHT') 
+        return imports.gi.St.Side.RIGHT;
+    else if (side === 'BOTTOM')
+        return imports.gi.St.Side.BOTTOM;
+    else if (side === 'LEFT')
+        return imports.gi.St.Side.LEFT;
+    else
+        return imports.gi.St.Side.TOP;
+}
+
 function getStylesheet(){
     let stylesheet = Gio.File.new_for_path(GLib.get_home_dir() + "/.local/share/arc-menu/stylesheet.css");
 
@@ -250,23 +280,35 @@ function parseRgbString(colorString){
     return [r, g, b, a];
 }
 
-function lighten_rgb(colorString, percent, modifyAlpha){
-	let [r, g, b, a] = parseRgbString(colorString);
-    r = Math.min(255, r + 255 * percent);
-    g = Math.min(255, g + 255 * percent);
-    b = Math.min(255, b + 255 * percent);
-    if(r + g + b >= 255 * 3){
-        [r, g, b, a] = parseRgbString(colorString);
-        r = r * (1 - percent);
-        g = g * (1 - percent);
-        b = b * (1 - percent);
+function modifyColorLuminance(colorString, luminanceFactor, modifyAlpha){
+    let Clutter = imports.gi.Clutter;
+    let color = Clutter.color_from_string(colorString)[1];
+    let [hue, lum, sat] = color.to_hls();
+    let modifiedLum = lum;
+
+    if(luminanceFactor >= 0)
+        modifiedLum += luminanceFactor;
+    else
+        modifiedLum -= Math.abs(luminanceFactor);
+
+    //Reverse the darken/lighten effect if luminance out of range
+    if(modifiedLum >= 1 || modifiedLum < 0){
+        modifiedLum = lum;
+        if(luminanceFactor < 0)
+            modifiedLum += Math.abs(luminanceFactor);
+        else
+            modifiedLum -= luminanceFactor; 
     }
-    r = Math.round(r);
-    g = Math.round(g);
-    b = Math.round(b);
-    if(modifyAlpha)
-        a = a * (1 - modifyAlpha);
-    return "rgba("+r+","+g+","+b+","+a+")";
+   
+    let alpha = Math.round((color.alpha / 255) * 100) / 100;
+    if(modifyAlpha){
+        alpha = Math.round((color.alpha / 255) * 100) / 100;
+        alpha = alpha * (1 - modifyAlpha);
+    }
+
+    let modifiedColor = Clutter.color_from_hls(hue, modifiedLum, sat);
+
+    return "rgba("+modifiedColor.red+","+modifiedColor.green+","+modifiedColor.blue+","+alpha+")";
 }
 
 function createStylesheet(settings){
@@ -277,14 +319,14 @@ function createStylesheet(settings){
     let changesMade = false;
     for(let i = 0; i < all_color_themes.length; i++){
         if(all_color_themes[i].length === 12){
-            all_color_themes[i].splice(5, 0, lighten_rgb(all_color_themes[i][2], 0.15));
+            all_color_themes[i].splice(5, 0, modifyColorLuminance(all_color_themes[i][2], 0.15));
             changesMade = true;
         }
     }
     if(changesMade)
         settings.set_value('color-themes',new GLib.Variant('aas', all_color_themes));
 
-    let customArcMenu = settings.get_boolean('enable-custom-arc-menu');
+    let customarcMenu = settings.get_boolean('enable-custom-arc-menu');
     let separatorColor = settings.get_string('separator-color');
     let menuColor = settings.get_string('menu-color');
     let menuForegroundColor = settings.get_string('menu-foreground-color');
@@ -301,16 +343,18 @@ function createStylesheet(settings){
     let avatarStyle =  settings.get_enum('avatar-style');
     let avatarRadius = avatarStyle == 0 ? 999 : 0;
     let menuButtonColor = settings.get_string('menu-button-color');
-    let menuButtonActiveColor =  settings.get_string('menu-button-active-color');
-    let menuButtonHoverColor =  settings.get_string('menu-button-hover-color');
+    let menuButtonHoverColor = settings.get_string('menu-button-hover-color');
+    let menuButtonActiveColor = settings.get_string('menu-button-active-color');
+    let menuButtonHoverBackgroundcolor = settings.get_string('menu-button-hover-backgroundcolor');
+    let menuButtonActiveBackgroundcolor = settings.get_string('menu-button-active-backgroundcolor');
     let gapAdjustment = settings.get_int('gap-adjustment');
     let indicatorColor = settings.get_string('indicator-color');
     let indicatorTextBackgroundColor = settings.get_string('indicator-text-color');
     let tooltipStyle = '';
 
-    if(customArcMenu){
-        tooltipStyle = ".tooltip-menu-item{\nbox-shadow:0 0 0 1px " + lighten_rgb(menuColor, 0.1) + ";\nfont-size:" + fontSize + "pt;\npadding: 2px 5px;\nmin-height: 0px;"
-                        + "\ncolor:" + menuForegroundColor+ ";\nbackground-color:" + lighten_rgb(menuColor, 0.05) + ";\nmax-width:550px;\n}\n\n"; 
+    if(customarcMenu){
+        tooltipStyle = ".tooltip-menu-item{\nbox-shadow:0 0 0 1px " + modifyColorLuminance(menuColor, 0.10) + ";\nfont-size:" + fontSize + "pt;\npadding: 2px 5px;\nmin-height: 0px;"
+                        + "\ncolor:" + menuForegroundColor+ ";\nbackground-color:" + modifyColorLuminance(menuColor, 0.05) + ";\nmax-width:550px;\n}\n\n"; 
     }
     else
         tooltipStyle = ".tooltip-menu-item{\npadding: 2px 5px;\nmax-width:550px;\nmin-height: 0px;\n}\n\n";
@@ -326,12 +370,15 @@ function createStylesheet(settings){
         +".default-search-entry{\nmax-width: 17.667em;\n}\n\n"
         +".arc-search-entry{\nmax-width: 17.667em;\nfont-size:" + fontSize + "pt;\nborder-color:" + separatorColor + ";\nborder-width: 1px;\n"
                             +"color:" + menuForegroundColor + ";\nbackground-color:" + menuColor + ";\n}\n\n"
-        +".arc-search-entry:focus{\nborder-color:" + separatorColor + ";\nborder-width: 1px;\nbox-shadow: inset 0 0 0 1px " + lighten_rgb(separatorColor, 0.05) + ";\n}\n\n"
-        +".arc-search-entry StLabel.hint-text{\ncolor: " + lighten_rgb(menuForegroundColor, 0, 0.3) + ";\n}\n\n"
+        +".arc-search-entry:focus{\nborder-color:" + separatorColor + ";\nborder-width: 1px;\nbox-shadow: inset 0 0 0 1px " + modifyColorLuminance(separatorColor, 0.05) + ";\n}\n\n"
+        +".arc-search-entry StLabel.hint-text{\ncolor: " + modifyColorLuminance(menuForegroundColor, 0, 0.3) + ";\n}\n\n"
         
         +".arc-menu-icon{\ncolor: " + menuButtonColor + ";\n}\n\n"
-        +".panel-button:hover .arc-menu-icon{\ncolor: " + menuButtonHoverColor + ";\n}\n\n"
-        +".arc-menu-icon:active{\ncolor: " + menuButtonActiveColor + ";\n}\n\n"
+        +".arc-menu-panel-menu:hover{\nbackground-color: " + menuButtonHoverBackgroundcolor + ";\n}\n\n"
+        +".arc-menu-panel-menu:hover .arc-menu-icon, .arc-menu-panel-menu:hover .arc-menu-text"
+                +", .arc-menu-panel-menu:hover .arc-menu-arrow{\ncolor: " + menuButtonHoverColor + ";\n}\n\n"
+        +".arc-menu-icon:active, .arc-menu-text:active, .arc-menu-arrow:active{\ncolor: " + menuButtonActiveColor + ";\n}\n\n"
+        +".arc-menu-panel-menu:active{\nbackground-color: " + menuButtonActiveBackgroundcolor + ";\nbox-shadow: none;\n}\n\n"
 
         +"StScrollView .small-vfade{\n-st-vfade-offset: 44px;\n}\n\n"
 
@@ -340,22 +387,27 @@ function createStylesheet(settings){
         +".arc-menu-action{\nmargin: 1px;\nbackground-color: transparent;\nbox-shadow: none;\ncolor:" + menuForegroundColor + ";\nborder-width: 1px;\n"
                             +"border-color: transparent;\n}\n\n"
         +".arc-menu-action:hover, .arc-menu-action:focus{\ncolor:" + highlightForegroundColor + ";\nbackground-color:" + highlightColor + ";\nborder-width: 1px;\n"
-                                +"box-shadow: 0 1px 1px 0 " + lighten_rgb(menuColor, -0.05) + ";\nborder-color:" + lighten_rgb(menuColor, -0.05) + ";\n}\n\n"
-        +".arc-menu-action:active{\nbox-shadow: none;\ncolor:" + highlightForegroundColor + ";\nbackground-color:" + lighten_rgb(highlightColor, -0.15) + ";\nborder-width: 1px;\n"
-                                +"border-color:" + lighten_rgb(menuColor, -0.1) + ";\n}\n\n"
+                                +"box-shadow: 0 1px 1px 0 " + modifyColorLuminance(menuColor, -0.05) + ";\nborder-color:" + modifyColorLuminance(menuColor, -0.05) + ";\n}\n\n"
+        +".arc-menu-action:active{\nbox-shadow: none;\ncolor:" + highlightForegroundColor + ";\nbackground-color:" + modifyColorLuminance(highlightColor, -0.15) + ";\nborder-width: 1px;\n"
+                                +"border-color:" + modifyColorLuminance(menuColor, -0.1) + ";\n}\n\n"
         +".arc-menu-menu-item-indicator{\ncolor: " + indicatorColor + ";\n}\n\n"
         +".arc-menu-menu-item-text-indicator{\nbackground-color: " + indicatorTextBackgroundColor + ";\n}\n\n"
 
         +tooltipStyle
 
+        +".arc-menu-dashboard .app-well-app .overview-icon{\ncolor: " + menuForegroundColor + ";\n}\n\n"
+        +".arc-menu-dashboard .app-well-app:focus .overview-icon{\ncolor: " + highlightForegroundColor + ";\nbackground-color:" + highlightColor + ";\n}\n\n"
+        +".arc-menu-dashboard .app-well-app:hover .overview-icon{\ncolor: " + highlightForegroundColor + ";\nbackground-color:" + highlightColor + ";\n}\n\n"
+        +".arc-menu-dashboard .search-statustext{\ncolor: " + menuForegroundColor + ";\n}\n\n"
+
         +".arc-menu{\n-boxpointer-gap: " + gapAdjustment + "px;\nmin-width: 15em;\ncolor: #D3DAE3;\nborder-image: none;\n"
                         +"box-shadow: none;\nfont-size:" + fontSize + "pt;\n}\n\n"
-        +".arc-menu .popup-sub-menu{\npadding-bottom: 1px;\nbackground-color: " + lighten_rgb(menuColor, 0.04) + ";\n}\n\n"
+        +".arc-menu .popup-sub-menu{\npadding-bottom: 1px;\nbackground-color: " + modifyColorLuminance(menuColor, 0.04) + ";\n}\n\n"
         +".arc-menu .popup-menu-content{\npadding: 1em 0em;\n}\n\n"
         +".arc-menu .popup-menu-item{\nspacing: 12px; \nborder: 0;\ncolor:" + menuForegroundColor + ";\n}\n\n"
         +".arc-menu .popup-menu-item:ltr{\npadding: .4em 1.75em .4em 0em;\n}\n\n.arc-menu .popup-menu-item:rtl\n{\npadding: .4em 0em .4em 1.75em;\n}\n\n"
-        +".arc-menu .popup-menu-item:checked{\nbackground-color:" + lighten_rgb(menuColor, 0.04) + ";\nbox-shadow: 0;\nfont-weight: bold;\n"
-                                                +"\nborder-color: " + lighten_rgb(menuColor,0.15) + ";\nborder-top-width:1px;\n}\n\n"
+        +".arc-menu .popup-menu-item:checked{\nbackground-color:" + modifyColorLuminance(menuColor, 0.04) + ";\nbox-shadow: 0;\nfont-weight: bold;\n"
+                                                +"\nborder-color: " + modifyColorLuminance(menuColor,0.15) + ";\nborder-top-width:1px;\n}\n\n"
         +".arc-menu .popup-menu-item.selected, .arc-menu .popup-menu-item:active{\n"
                                 +"background-color:" + highlightColor + "; \ncolor: " + highlightForegroundColor + ";\n}\n\n" 
         +".arc-menu .popup-menu-item:disabled{\ncolor: rgba(238, 238, 236, 0.5);\n}\n\n"
@@ -380,12 +432,12 @@ function createStylesheet(settings){
         +".arc-right-click .popup-menu-item:ltr{\npadding: .4em 1.75em .4em 0em;\n}\n\n.arc-right-click .popup-menu-item:rtl{\npadding: .4em 0em .4em 1.75em;\n}\n\n"
         +".arc-right-click .popup-menu-item:checked{\nbackground-color: #3a393b;\nbox-shadow: inset 0 1px 0px #323233;\nfont-weight: bold;\n}\n\n"
         +".arc-right-click .popup-menu-item.selected, .arc-right-click .popup-menu-item:active{"
-                                +"\nbackground-color:" + lighten_rgb(highlightColor, 0.05) + "; \ncolor: " + highlightForegroundColor + ";\n}\n\n" 
+                                +"\nbackground-color:" + modifyColorLuminance(highlightColor, 0.05) + "; \ncolor: " + highlightForegroundColor + ";\n}\n\n" 
         +".arc-right-click .popup-menu-item:disabled{\ncolor: rgba(238, 238, 236, 0.5);\n}\n\n"
-        +".arc-right-click .popup-menu-item:insensitive{\ncolor:" + lighten_rgb(menuForegroundColor, -0.30) + ";\n}\n\n"
+        +".arc-right-click .popup-menu-item:insensitive{\ncolor:" + modifyColorLuminance(menuForegroundColor, 0.15) + ";\n}\n\n"
         +".arc-right-click-boxpointer{ \n-arrow-border-radius:" + cornerRadius + "px;\n"
-                                        +"-arrow-background-color:" + lighten_rgb(menuColor, 0.05) + ";\n"
-                                        +"-arrow-border-color:" + lighten_rgb(menuColor, 0.1) + ";\n"
+                                        +"-arrow-background-color:" + modifyColorLuminance(menuColor, 0.05) + ";\n"
+                                        +"-arrow-border-color:" + modifyColorLuminance(menuColor, 0.10) + ";\n"
                                         +"-arrow-border-width:" + (borderSize > 1 ? borderSize : 1) + "px;\n"
                                         +"-arrow-base:" + menuMargin + "px;\n"
                                         +"-arrow-rise:" + menuArrowSize + "px;\n}\n\n"
