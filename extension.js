@@ -215,10 +215,10 @@ function _enableButtons() {
         if(panel){ 
             if(panel._allDocks.length){  
                 let iterLength = multiMonitor ? panel._allDocks.length : 1;
-                for(var i = 0; i < iterLength; i++){      
-                    if(!panel._allDocks[i].dash.arcMenuEnabled){
-                        let settingsController = new Controller.MenuSettingsController(settings, settingsControllers, panel, i == 0 ? true : false, Constants.ArcMenuPlacement.DASH);
-                        settingsController.enableButtonInDash(i);
+                for(var index = 0; index < iterLength; index++){      
+                    if(!panel._allDocks[index].dash.arcMenuEnabled){
+                        let settingsController = new Controller.MenuSettingsController(settings, settingsControllers, panel, index, Constants.ArcMenuPlacement.DASH);
+                        settingsController.enableButtonInDash(index);
     
                         settingsController.bindSettingsChanges();
                         settingsControllers.push(settingsController); 
@@ -230,8 +230,8 @@ function _enableButtons() {
     else{
         let panelArray = global.dashToPanel ? global.dashToPanel.panels.map(pw => pw.panel || pw) : [Main.panel];
         let iterLength = multiMonitor ? panelArray.length : 1;
-        for(var i = 0; i < iterLength; i++){
-            let panel = panelArray[i];
+        for(var index = 0; index < iterLength; index++){
+            let panel = panelArray[index];
 
             if(global.dashToPanel) this.set_DtD_DtP_State(Constants.EXTENSION.DTP, true);
 
@@ -239,8 +239,8 @@ function _enableButtons() {
     
             if (panel.statusArea['arc-menu'])
                 continue;
-            else if (settingsControllers[i])
-                _disableButton(settingsControllers[i], 1); 
+            else if (settingsControllers[index])
+                _disableButton(settingsControllers[index], 1); 
     
             // Create a Menu Controller that is responsible for controlling
             // and managing the menu as well as the menu button.
