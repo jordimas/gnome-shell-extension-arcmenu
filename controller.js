@@ -532,7 +532,6 @@ var MenuSettingsController = class {
         this._addMenuButtonToMainPanel();
     }
     reEstablishDash(){
-        this._menuButton.dashIndex = this.dashIndex;
         let container = this.panel._allDocks[this.dashIndex].dash._container;
         this.panel._allDocks[this.dashIndex].dash.arcMenuEnabled = true;
         this.oldShowAppsIcon = this.panel._allDocks[this.dashIndex].dash._showAppsIcon;
