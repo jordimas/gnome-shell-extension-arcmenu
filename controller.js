@@ -32,7 +32,7 @@ const Utils = Me.imports.utils;
 const _ = Gettext.gettext;
 
 var MenuSettingsController = class {
-    constructor(settings, settingsControllers, panel, isMainPanel, arcMenuPlacement) {
+    constructor(settings, settingsControllers, panel, panelIndex, arcMenuPlacement) {
         this._settings = settings;
         this.panel = panel;
         this.arcMenuPlacement = arcMenuPlacement;
@@ -44,14 +44,15 @@ var MenuSettingsController = class {
             return GLib.SOURCE_REMOVE;
         });
         this.currentMonitorIndex = 0;
-        this.isMainPanel = isMainPanel;
-    
+
         if(this.arcMenuPlacement == Constants.ArcMenuPlacement.PANEL){
+            this.isMainPanel = panelIndex;
             this._menuButton = new MenuButton.MenuButton(settings, this.arcMenuPlacement, panel);
             this._activitiesButton = this.panel.statusArea.activities;
         }
         else if(this.arcMenuPlacement == Constants.ArcMenuPlacement.DASH){
-            this._menuButton = new MenuButton.MenuButton(settings, this.arcMenuPlacement, panel);
+            this.isMainPanel = panelIndex == 0 ? true : false;
+            this._menuButton = new MenuButton.MenuButton(settings, this.arcMenuPlacement, panel, panelIndex);
             this.menuButtonAdjustedActor = this._menuButton.container;
             this._configureActivitiesButton();
         }
@@ -530,7 +531,8 @@ var MenuSettingsController = class {
         this._removeActivitiesButtonFromMainPanel(); // disable the activities button
         this._addMenuButtonToMainPanel();
     }
-    reEstablishDash(index){  
+    reEstablishDash(){
+        this._menuButton.dashIndex = this.dashIndex;
         let container = this.panel._allDocks[this.dashIndex].dash._container;
         this.panel._allDocks[this.dashIndex].dash.arcMenuEnabled = true;
         this.oldShowAppsIcon = this.panel._allDocks[this.dashIndex].dash._showAppsIcon;
@@ -575,7 +577,7 @@ var MenuSettingsController = class {
     // Enable the menu button
     enableButtonInDash(index) {
         this.dashIndex = index;
-        this.reEstablishDash(this.dashIndex);       
+        this.reEstablishDash();       
     }
 
     // Disable the menu button
