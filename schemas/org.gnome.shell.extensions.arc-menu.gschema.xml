@@ -486,11 +486,6 @@
       <summary>Active background color for the menu button icon</summary>
       <description>Active background color for the menu button icon.</description>
     </key>
-    <key type="s" name="menu-button-hover-color">
-      <default>'rgb(214,214,214)'</default>
-      <summary>Hover color for for the menu button icon</summary>
-      <description>Hover color for the menu button icon.</description>
-    </key>
     <key name="extra-categories" type="a(ib)">
       <default>[(0, true), (1, true), (2, false), (3, false)]</default>
       <summary>List of recently installed apps</summary>
