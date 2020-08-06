@@ -186,6 +186,85 @@ var FrameBoxRow = GObject.registerClass(class ArcMenu_FrameBoxRow extends Gtk.Li
     }
 });
 
+var StackListBox = GObject.registerClass(class ArcMenu_StackListBox extends Gtk.ListBox{
+    _init(widget, params){
+        super._init(params);
+        this.valign = Gtk.Align.FILL;
+        this.vexpand = true;
+        this.hexpand = false;
+        this.stack = widget.stack;
+        this.leftPanelStack = widget.leftPanelStack
+        this.subHeaderLabel = widget.subHeaderLabel;
+        this.headerLabel = widget.headerLabel;
+        this.connect("row-selected", (self, row) => {
+            let listRow = row.get_children()[0];
+            let stackName = listRow.stackName;
+            let translateableName = listRow.translateableName;
+            this.stack.set_visible_child_name(stackName);
+            this.subHeaderLabel.label = "<b>" +_(translateableName) +"</b>";
+            if(listRow.nextPage){
+                widget.leftHeaderBox.remove(widget.searchButton);
+                widget.leftHeaderBox.add(widget.backButton);
+                this.leftPanelStack.set_visible_child_name(listRow.nextPage);
+                this.leftPanelStack.get_child_by_name(listRow.nextPage).listBox.selectFirstRow();
+                let listBox = this.leftPanelStack.get_child_by_name(listRow.nextPage).listBox;
+                let extraName = listBox.getSelectedRow().translateableName;
+                this.subHeaderLabel.label = "<b>" +_(extraName) + "</b>";
+                this.headerLabel.label = "<b>" +_(translateableName) + "</b>";
+            }
+        });
+        this.scrollWindow =  new Gtk.ScrolledWindow({
+            valign: Gtk.Align.FILL,
+            vexpand: true
+        });
+        this.scrollWindow.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC);
+        this.scrollWindow.add_with_viewport(this);
+        this.scrollWindow.listBox = this;
+    }
+
+    getRowAtIndex(index){
+        return this.get_row_at_index(index).get_children()[0];
+    }
+
+    getSelectedRow(){
+        return this.get_selected_row().get_children()[0];
+    }
+
+    selectFirstRow(){
+        this.select_row(this.get_row_at_index(0));
+    }
+
+    addRow(name, translateableName, iconName, nextPage){
+        let row = new Gtk.Grid({margin: 12, column_spacing: 10});
+        row.stackName = name;
+        row.translateableName = translateableName;
+        
+        let iconPath = Me.path + iconName;
+        let image = new Gtk.Image({ 
+            gicon: Gio.icon_new_for_string(iconPath)
+        });
+
+        let label = new Gtk.Label({
+            label: translateableName,
+            halign: Gtk.Align.START,
+        });
+        row.add(image);
+        row.add(label);
+
+        if(nextPage){
+            row.nextPage = nextPage;
+            let image2 = new Gtk.Image({ 
+                gicon: Gio.icon_new_for_string('go-next-symbolic'),
+                halign: Gtk.Align.END,
+                hexpand: true
+            });
+            row.add(image2);
+        }
+
+        this.add(row);
+    }
+});
+
 var TileGrid = GObject.registerClass(class ArcMenu_TileGrid extends Gtk.FlowBox{
     _init(maxColumns) {
         super._init({
