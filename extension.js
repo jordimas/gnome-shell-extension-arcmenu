@@ -46,7 +46,10 @@ function init(metadata) {
 
 // Enable the extension
 function enable() {
-
+    if(imports.gi.Meta.is_wayland_compositor())
+        Me.metadata.isWayland = true;
+    else
+        Me.metadata.isWayland = false;
     let stylesheet = Utils.getStylesheet();
         
     let theme = St.ThemeContext.get_for_stage(global.stage).get_theme();

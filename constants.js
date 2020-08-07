@@ -301,21 +301,21 @@ var ALTERNATIVE_MENU_STYLE = [
     { thumbnail: '/media/layouts/raven-menu.svg', name: _('Raven Menu Style'), layout: MENU_LAYOUT.Raven}];
 
 var MENU_STYLES = {
-    ThumbnailHeight: 175,
-    ThumbnailWidth: 175,
+    ThumbnailHeight: 150,
+    ThumbnailWidth: 150,
     MaxColumns: 6,
     Styles: [ 
-        { thumbnail: '/media/layouts/categories/traditional-symbolic.svg', name: _('Traditional Layouts'), layoutStyle: TRADITIONAL_MENU_STYLE, 
+        { thumbnail: '/media/layouts/categories/traditional-symbolic.svg', name: _('Traditional'), layoutStyle: TRADITIONAL_MENU_STYLE, 
                 description: _("Traditional layouts use a familiar style and have a traditional user experience.")},
-        { thumbnail: '/media/layouts/categories/modern-symbolic.svg', name: _('Modern Layouts'), layoutStyle: MODERN_MENU_STYLE, 
+        { thumbnail: '/media/layouts/categories/modern-symbolic.svg', name: _('Modern'), layoutStyle: MODERN_MENU_STYLE, 
                 description: _("Modern layouts use a style and UX based approach with a focus on design and functionality.")},
-        { thumbnail: '/media/layouts/categories/touch-symbolic.svg', name: _('Touch Layouts'), layoutStyle: TOUCH_MENU_STYLE, 
+        { thumbnail: '/media/layouts/categories/touch-symbolic.svg', name: _('Touch'), layoutStyle: TOUCH_MENU_STYLE, 
                 description: _("Touch layouts contain large menu elements that are well suited for touch based devices.")},
-        { thumbnail: '/media/layouts/categories/simple-symbolic.svg', name: _('Simple Layouts'), layoutStyle: SIMPLE_MENU_STYLE, 
+        { thumbnail: '/media/layouts/categories/simple-symbolic.svg', name: _('Simple'), layoutStyle: SIMPLE_MENU_STYLE, 
                 description: _("Simple layouts are designed for mouse based devices and contain simplistic menu elements.")},
-        { thumbnail: '/media/layouts/categories/launcher-symbolic.svg', name: _('Launcher Layouts'), layoutStyle: LAUNCHER_MENU_STYLE, 
+        { thumbnail: '/media/layouts/categories/launcher-symbolic.svg', name: _('Launcher'), layoutStyle: LAUNCHER_MENU_STYLE, 
                 description: _("Launcher layouts are well suited for keyboard driven devices and provide the user with quick and simple menu elements.")},
-        { thumbnail: '/media/layouts/categories/alternative-symbolic.svg', name: _('Alternative Layouts'), layoutStyle: ALTERNATIVE_MENU_STYLE, 
+        { thumbnail: '/media/layouts/categories/alternative-symbolic.svg', name: _('Alternative'), layoutStyle: ALTERNATIVE_MENU_STYLE, 
                 description: _("Alternative layouts have an unconventional style that provide a unique user experience.")}
     ]
 };
