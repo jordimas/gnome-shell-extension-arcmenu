@@ -350,7 +350,7 @@ var TweaksDialog = GObject.registerClass(
             pinnedAppsScrollWindow.add_with_viewport(pinnedAppsFrame);
 
             let pinnedAppsHeaderLabel = new Gtk.Label({
-                label: "<b>" + _("Ubuntu Menu Buttons") + "</b>",
+                label: "<b>" + _("Ubuntu Dash Buttons") + "</b>",
                 use_markup: true,
                 xalign: 0
             });
