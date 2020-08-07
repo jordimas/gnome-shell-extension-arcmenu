@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   inkscape:version="1.0 (4035a4fb49, 2020-05-01)"
+   sodipodi:docname="pinned-apps-symbolic.svg"
+   id="svg7"
+   version="1.1"
+   viewBox="0 0 24 24"
+   height="24"
+   width="24">
+  <metadata
+     id="metadata11">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <sodipodi:namedview
+     inkscape:current-layer="svg7"
+     inkscape:window-maximized="1"
+     inkscape:window-y="40"
+     inkscape:window-x="0"
+     inkscape:cy="27.848342"
+     inkscape:cx="-58.254198"
+     inkscape:zoom="5.4358834"
+     showgrid="false"
+     id="namedview9"
+     inkscape:window-height="898"
+     inkscape:window-width="1920"
+     inkscape:pageshadow="2"
+     inkscape:pageopacity="0"
+     guidetolerance="10"
+     gridtolerance="10"
+     objecttolerance="10"
+     borderopacity="1"
+     bordercolor="#666666"
+     pagecolor="#ffffff" />
+  <defs
+     id="defs3">
+    <style
+       type="text/css"
+       id="current-color-scheme">
+   .ColorScheme-Text { color:#444444; } .ColorScheme-Highlight { color:#4285f4; }
+  </style>
+  </defs>
+  <path
+     id="path5"
+     d="m 7.2658262,0.95359415 c -0.874244,0 -1.5780582,0.70381385 -1.5780582,1.57805795 V 7.2658262 H 2.5316521 c -0.8742441,0 -1.5780579,0.703814 -1.5780579,1.578058 V 21.468348 c 0,0.874244 0.7038138,1.578058 1.5780579,1.578058 H 21.468348 c 0.874244,0 1.578058,-0.703814 1.578058,-1.578058 V 8.8438842 c 0,-0.874244 -0.703814,-1.578058 -1.578058,-1.578058 H 18.312232 V 2.5316521 c 0,-0.8742441 -0.703814,-1.57805795 -1.578058,-1.57805795 z M 8.8438842,4.1097101 H 15.156116 V 7.2658262 H 8.8438842 Z"
+     class="ColorScheme-Text"
+     style="fill:currentColor;stroke-width:1.57806" />
+</svg>
