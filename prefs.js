@@ -5943,7 +5943,7 @@ class ArcMenu_ArcMenuPreferencesWidget extends Gtk.Box{
             });
 
             this.arcIcon = new Gtk.Image({
-                gicon: Gio.icon_new_for_string(Me.path + "/media/icons/arc-menu-logo.svg"),
+                gicon: Gio.icon_new_for_string(Me.path + Constants.ARC_MENU_LOGO.Path),
                 pixel_size: 35,
                 visible: true,
             });
@@ -6029,13 +6029,13 @@ class ArcMenu_ArcMenuPreferencesWidget extends Gtk.Box{
         
 
         let appearanceListBox = new PW.StackListBox(this, {width_request: 215});
-        appearanceListBox.addRow("AppearanceGeneral", _("General"), Me.path + '/media/misc/configure-symbolic.svg');
+        appearanceListBox.addRow("AppearanceGeneral", _("General"), Me.path + '/media/icons/settings_icons/menu-settings-general-symbolic.svg');
         appearanceListBox.add(createSeparator());
-        appearanceListBox.addRow("Pinned Apps", _("Pinned Apps"), Me.path + '/media/misc/pinned-apps-symbolic.svg');
-        appearanceListBox.addRow("ShortcutsDirectories", _("Shortcuts"), Me.path + '/media/misc/shortcuts-symbolic.svg', 'Shortcuts');
-        appearanceListBox.addRow("AppearanceCategories", _("Categories"), 'edit-clear-all-symbolic');
+        appearanceListBox.addRow("Pinned Apps", _("Pinned Apps"), Me.path + '/media/icons/settings_icons/pinned-apps-symbolic.svg');
+        appearanceListBox.addRow("ShortcutsDirectories", _("Shortcuts"), Me.path + '/media/icons/settings_icons/shortcuts-symbolic.svg', 'Shortcuts');
+        appearanceListBox.addRow("AppearanceCategories", _("Categories"), Me.path + '/media/icons/settings_icons/categories-symbolic.svg');
         appearanceListBox.add(createSeparator());
-        appearanceListBox.addRow("AppearanceFineTune", _("Fine-Tune"), 'edit-clear-all-symbolic');
+        appearanceListBox.addRow("AppearanceFineTune", _("Fine-Tune"), Me.path + '/media/icons/settings_icons/fine-tune-symbolic.svg');
         
         let appearanceListBoxWindow = appearanceListBox.scrollWindow;       
         
@@ -6055,13 +6055,13 @@ class ArcMenu_ArcMenuPreferencesWidget extends Gtk.Box{
 
         listBox.addRow("General", _("General"), Me.path + '/media/misc/homescreen-symbolic.svg');
         listBox.add(createSeparator());
-        listBox.addRow("AppearanceMenuLayout", _("Menu Layout"), Me.path + '/media/misc/arcmenu-layouts-symbolic.svg');
-        listBox.addRow("AppearanceMenuTheme", _("Menu Theme"), Me.path + '/media/misc/arcmenu-themer-symbolic.svg');
-        listBox.addRow("AppearanceGeneral", _("Menu Settings"), Me.path + '/media/misc/homescreen-symbolic.svg', "Appearance");
+        listBox.addRow("AppearanceMenuLayout", _("Menu Layout"), Me.path + '/media/icons/settings_icons/menu-layouts-symbolic.svg');
+        listBox.addRow("AppearanceMenuTheme", _("Menu Theme"), Me.path + '/media/icons/settings_icons/menu-theme-symbolic.svg');
+        listBox.addRow("AppearanceGeneral", _("Menu Settings"), Me.path + '/media/icons/settings_icons/menu-settings-symbolic.svg', "Appearance");
         listBox.add(createSeparator());
-        listBox.addRow("AppearanceMenuButton", _("Button Appearance"), Me.path + 'edit-clear-all-symbolic');
+        listBox.addRow("AppearanceMenuButton", _("Button Appearance"),  Me.path + '/media/icons/settings_icons/button-appearance-symbolic.svg');
         listBox.add(createSeparator());
-        listBox.addRow("Misc", _("Misc"), Me.path + '/media/misc/misc-symbolic.svg');
+        listBox.addRow("Misc", _("Misc"), Me.path + '/media/icons/settings_icons/misc-symbolic.svg');
         listBox.addRow("About", _("About"), Me.path + '/media/misc/info-circle-symbolic.svg');
 
         this.leftPaneBox.add(this.leftPanelStack);
