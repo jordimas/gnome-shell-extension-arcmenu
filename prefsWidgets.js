@@ -168,6 +168,8 @@ var FrameBox = GObject.registerClass(class ArcMenu_FrameBox extends Gtk.Frame {
 var FrameBoxRow = GObject.registerClass(class ArcMenu_FrameBoxRow extends Gtk.ListBoxRow {
     _init(params) {
         super._init(params);
+        this.selectable = false;
+        this.activatable = false;
         this._grid = new Gtk.Grid({
             margin: 5,
             column_spacing: 20,
@@ -203,7 +205,7 @@ var StackListBox = GObject.registerClass(class ArcMenu_StackListBox extends Gtk.
             this.stack.set_visible_child_name(stackName);
             this.subHeaderLabel.label = "<b>" +_(translateableName) +"</b>";
             if(listRow.nextPage){
-                widget.leftHeaderBox.remove(widget.searchButton);
+                widget.leftHeaderBox.remove(widget.arcIcon);
                 widget.leftHeaderBox.add(widget.backButton);
                 this.leftPanelStack.set_visible_child_name(listRow.nextPage);
                 this.leftPanelStack.get_child_by_name(listRow.nextPage).listBox.selectFirstRow();
@@ -269,8 +271,8 @@ var TileGrid = GObject.registerClass(class ArcMenu_TileGrid extends Gtk.FlowBox{
         super._init({
             row_spacing: 5,
             column_spacing: 5,
-            vexpand: false,
-            hexpand: false,
+            vexpand: true,
+            hexpand: true,
             valign: Gtk.Align.CENTER,
             halign: Gtk.Align.CENTER,
             max_children_per_line: maxColumns,
@@ -357,8 +359,14 @@ var LayoutTile = GObject.registerClass(class ArcMenu_LayoutTile extends FrameBox
             use_markup: true,
             wrap: true,
         })
+        let iconImage = new Gtk.Image({
+            gicon: Gio.icon_new_for_string('go-next-symbolic'),
+        })
         this.layoutButton = new Gtk.Button({
             label: _(this.name),
+            image: iconImage,
+            always_show_image: true,
+            image_position: Gtk.PositionType.RIGHT,
             halign: Gtk.Align.END,
             valign: Gtk.Align.CENTER,
             hexpand: true,
