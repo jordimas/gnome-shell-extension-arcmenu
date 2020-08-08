@@ -5640,10 +5640,11 @@ var AboutPage = GObject.registerClass(
     
             this.mainBox = new Gtk.Box({
                     orientation: Gtk.Orientation.VERTICAL,
-                    margin: 24,
-                    spacing: 20,
-                    vexpand: false,
-                    valign: Gtk.Align.START
+                    margin_left: 24,
+                    margin_right: 24,
+                    spacing: 0,
+                    vexpand: true,
+                    valign: Gtk.Align.FILL
             });
     
             this.add_with_viewport(this.mainBox);
@@ -5790,8 +5791,6 @@ var AboutPage = GObject.registerClass(
                 
             // Create the info box
             let arcMenuInfoBox = new Gtk.VBox({
-                margin_top: 0,
-                margin_bottom: 5,
                 expand: false
             });
             let arcMenuLabel = new Gtk.Label({
@@ -5803,11 +5802,10 @@ var AboutPage = GObject.registerClass(
             
             let projectDescriptionLabel = new Gtk.Label({
                 label: _('A Dynamic, Traditional, Modern Menu for GNOME'),
-                expand: false
+                expand: false,
+                margin_bottom: 10
             });
             let linksBox = new Gtk.HBox({
-                margin_top: 15,
-                margin_bottom: 5,
                 expand: false,
                 halign: Gtk.Align.CENTER
             });
@@ -5862,42 +5860,87 @@ var AboutPage = GObject.registerClass(
             linksBox.add(gitLabBox);
             linksBox.add(manualBox);
             
-            this.creditsScrollWindow = new Gtk.ScrolledWindow();
+            this.creditsScrollWindow = new Gtk.ScrolledWindow({
+                margin_top: 10,
+                margin_bottom: 10
+            });
             this.creditsScrollWindow.set_policy(Gtk.PolicyType.AUTOMATIC, Gtk.PolicyType.AUTOMATIC);
             this.creditsScrollWindow.set_max_content_height(200);
             this.creditsScrollWindow.set_min_content_height(200);
-            this.creditsFrame = new Gtk.Frame();
-            this.creditsFrame.set_shadow_type(Gtk.ShadowType.NONE);
+            this.creditsFrame = new PW.Notebook();
+            let developersPage = new PW.NotebookPage(_("Developers"));
+            this.creditsFrame.append_page(developersPage);
+            let translatorsPage = new PW.NotebookPage(_("Translators"));
+            this.creditsFrame.append_page(translatorsPage);
+            let contributorsPage = new PW.NotebookPage(_("Contributors"));
+            this.creditsFrame.append_page(contributorsPage );
+            let artworkPage = new PW.NotebookPage(_("Artwork"));
+            this.creditsFrame.append_page(artworkPage);
+            let documentationPage = new PW.NotebookPage(_("Documentation"));
+            this.creditsFrame.append_page(documentationPage);
             this.creditsScrollWindow.add_with_viewport(this.creditsFrame);
   	        let creditsLabel = new Gtk.Label({
-		        label: _(Constants.CREDITS),
+		        label: _(Constants.DEVELOPERS),
 		        use_markup: true,
-		        justify: Gtk.Justification.CENTER,
+		        halign: Gtk.Align.START,
 		        expand: false
             });
-            this.creditsFrame.add(creditsLabel);
+            developersPage.add(creditsLabel);
+            creditsLabel = new Gtk.Label({
+		        label: _(Constants.TRANSLATORS),
+		        use_markup: true,
+		        halign: Gtk.Align.START,
+		        expand: false
+            });
+            translatorsPage.add(creditsLabel);
+            creditsLabel = new Gtk.Label({
+		        label: _(Constants.CONTRIBUTORS),
+		        use_markup: true,
+		        halign: Gtk.Align.START,
+		        expand: false
+            });
+            contributorsPage.add(creditsLabel);
+            creditsLabel = new Gtk.Label({
+		        label: _(Constants.ARTWORK),
+		        use_markup: true,
+		        halign: Gtk.Align.START,
+		        expand: false
+            });
+            artworkPage.add(creditsLabel);
+            creditsLabel = new Gtk.Label({
+		        label: _(Constants.DOCUMENTATION),
+		        use_markup: true,
+		        halign: Gtk.Align.START,
+		        expand: false
+            });
+            documentationPage.add(creditsLabel);
+
             
             arcMenuImageBox.add(arcMenuLabel);
 
             arcMenuImageBox.add(projectDescriptionLabel);
             arcMenuInfoBox.add(linksBox);
-            arcMenuInfoBox.add(this.creditsScrollWindow);
 
             // Create the GNU software box
             let gnuSofwareLabel = new Gtk.Label({
                 label: _(Constants.GNU_SOFTWARE),
                 use_markup: true,
-                justify: Gtk.Justification.CENTER,
-                expand: true
+                justify: Gtk.Justification.CENTER
             });
             let gnuSofwareLabelBox = new Gtk.Box({
-                orientation: Gtk.Orientation.VERTICAL
+                orientation: Gtk.Orientation.VERTICAL,
+                valign: Gtk.Align.END,
+                vexpand: true,
+                margin_top: 10,
+                margin_bottom: 5
             });
             gnuSofwareLabelBox.add(gnuSofwareLabel);
 
             this.mainBox.add(arcMenuImageBox);
-            this.mainBox.add(extensionInfoFrame);
             this.mainBox.add(arcMenuInfoBox);
+            this.mainBox.add(extensionInfoFrame);
+
+            this.mainBox.add(this.creditsScrollWindow)
             this.mainBox.add(gnuSofwareLabelBox);
         }
 });
@@ -5922,43 +5965,23 @@ class ArcMenu_ArcMenuPreferencesWidget extends Gtk.Box{
             width_request: 850,
             height_request: 650
         });
+
         this.connect("realize", ()=> {
             let window = this.get_toplevel();
-
-            let seperator = Gtk.Separator.new(Gtk.Orientation.VERTICAL);
-            seperator.visible = true;
-            
-            let rightHeaderBox = new Gtk.Box({
-                hexpand: true,
-                vexpand: true,
-                halign: Gtk.Align.FILL,
-                valign: Gtk.Align.FILL,
-                visible: true,
-            });
+            window.set_title(_("Arc Menu Settings"));
 
             this.leftHeaderBox = new Gtk.Box({
-                width_request: this.listBoxScrollWindow.get_allocation().width - 12,
-                hexpand: false,
+                hexpand: true,
                 visible: true
             });
-
             this.arcIcon = new Gtk.Image({
                 gicon: Gio.icon_new_for_string(Me.path + Constants.ARC_MENU_LOGO.Path),
                 pixel_size: 35,
                 visible: true,
             });
-            
             this.leftHeaderBox.add(this.arcIcon);
             
-            this.leftHeaderBox.set_center_widget(this.headerLabel);           
-            
             window.get_titlebar().pack_start(this.leftHeaderBox);
-            window.get_titlebar().pack_start(seperator); 
-
-            rightHeaderBox.add(this.subHeaderLabel);
-            rightHeaderBox.set_center_widget(this.subHeaderLabel);
-           
-            window.get_titlebar().set_custom_title(rightHeaderBox);
         });
         
         this._settings = Convenience.getSettings(Me.metadata['settings-schema']);
@@ -5979,34 +6002,17 @@ class ArcMenu_ArcMenuPreferencesWidget extends Gtk.Box{
         this.backButton.connect("clicked", () => {
             if(this.leftPanelStack.get_visible_child() === this.leftPanelStack.get_child_by_name('Shortcuts')){
                 this.leftPanelStack.set_visible_child_name("Appearance");
-                this.headerLabel.label = "<b>" + _("Appearance") + "</b>";
                 this.leftPanelStack.get_child_by_name('Appearance').listBox.selectFirstRow();
             }
             else{
                 this.leftPanelStack.set_visible_child_name("Main");
-                this.headerLabel.label = "<b>" + _("Arc Menu") + "</b>";
                 this.leftPanelStack.get_child_by_name('Main').listBox.selectFirstRow();
                 this.leftHeaderBox.remove(this.backButton);
                 this.leftHeaderBox.add(this.arcIcon);
             }
         });
-        this.headerLabel = new Gtk.Label({
-            label: "<b>" +_("Arc Menu") +"</b>",
-            use_markup: true,
-            visible: true,
-            halign: Gtk.Align.CENTER,
-            hexpand: true,
-        });
-        this.subHeaderLabel = new Gtk.Label({
-            label: "<b>" +_("General") +"</b>",
-            use_markup: true,
-            visible: true,
-            hexpand: true,
-            margin_left: 120
-        });
 
         let generalPage = new GeneralPage(this._settings);
-        //let shortcutsPage = new ShortcutsPage(this._settings);
         let pinnedAppsPage = new PinnedAppsPage(this._settings);
         let miscPage = new MiscPage(this._settings);
         let aboutPage = new AboutPage(this._settings);
@@ -6017,7 +6023,6 @@ class ArcMenu_ArcMenuPreferencesWidget extends Gtk.Box{
         });
         let stackScrollWindow = new Gtk.ScrolledWindow();
         stackScrollWindow.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC);
-        //stackScrollWindow.add_with_viewport(this.stack);
 
         this.leftPanelStack = new Gtk.Stack({
             hhomogeneous: true,
@@ -6107,16 +6112,11 @@ class ArcMenu_ArcMenuPreferencesWidget extends Gtk.Box{
         this.stack.add_named(new CategoriesPage(this._settings), "AppearanceCategories");
         this.stack.add_named(new OverrideMenuTheme(this._settings), "AppearanceMenuTheme");
         this.stack.add_named(new MenuLayoutBox(this._settings), "AppearanceMenuLayout");
-        
-        
         this.stack.add_named(new AppearanceFineTunePage(this._settings), "AppearanceFineTune");
         this.stack.add_named(new DefaultDirectoriesPage(this._settings), "ShortcutsDirectories");
         this.stack.add_named(new ApplicationShortcutsPage(this._settings), "ShortcutsApplications"); 
         this.stack.add_named(new SessionButtonsPage(this._settings), "ShortcutsSessionButtons"); 
         this.stack.add_named(new ExtraShortcutsBox(this._settings), "ShortcutsExtras"); 
-        
-        
-    
         this.stack.add_named(pinnedAppsPage, "Pinned Apps");
         this.stack.add_named(miscPage, "Misc");
         this.stack.add_named(aboutPage, "About");

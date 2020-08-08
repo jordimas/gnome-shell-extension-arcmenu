@@ -370,24 +370,21 @@ var DistroIconsDisclaimer = '<i>"All brand icons are trademarks of their respect
                                 '\n\n•   <b>Raspberry Pi</b> - logo and name are part of Raspberry Pi Foundation UK Registered Charity 1129409'+
                                 '\n\n•   <b>Kali Linux</b> - logo and name are part of © OffSec Services Limited 2020'+
                                 '\n\n•   <b>PureOS</b> - logo and name are developed by members of the Purism community'+
-                                '\n\n•   <b>Solus</b> -  logo and name are copyright © 2014-2018 by Solus Project';
+                                '\n\n•   <b>Solus</b> - logo and name are copyright © 2014-2018 by Solus Project'+
+                                '\n\n•   <b>Gentoo Authors©</b> - 2001–2020 Gentoo is a trademark of the Gentoo Foundation, Inc.'+
+                                '\n\n•   <b>Voyager© Linux</b> - name and logo'+
+                                '\n\n•   <b>MXLinux©</b> - 2020 - Linux - is the registered trademark of Linus Torvalds in the U.S. and other countries.'+
+                                '\n\n•   <b>Red Hat, Inc.©</b> - Copyright 2020 name and logo';
 
-var CREDITS = '\n<b>Credits:</b>'+
-		'\n\nCurrent Active Developers'+
-		'\n <a href="https://gitlab.com/LinxGem33">@LinxGem33</a>  (Founder/Maintainer/Graphic Designer)'+
-		'\n<a href="https://gitlab.com/AndrewZaech">@AndrewZaech</a>  (Lead JavaScript/UX Developer)'+
-		'\n\nPast Developers'+
-		'\n <a href="https://github.com/lexruee">@lexruee</a>  (Developer)'+
-		'\n\n\n<b>A Special Thanks To:</b>'+
-		'\n\nTranslators'+
-		'\n<a href="https://gitlab.com/arcmenu-team/Arc-Menu#please-refer-to-the-wiki-section-for-a-translation-guide">Full List</a>'+
-		'\nPlease See Details'+
-		'\n\nOther'+
-		'\n<a href="https://gitlab.com/tingvarsson">@Thomas Ingvarsson</a>  (Contributor)'+
-		'\n<a href="https://github.com/charlesg99">@charlesg99</a>  (Contributor)'+
-		'\n<a href="https://github.com/JasonLG1979">@JasonLG1979</a>  (Contributor)'+
-		'\n<a href="https://github.com/fishears/Arc-Menu">@fishears</a>  (Contributor)'+
-        '\n';
+var DEVELOPERS = '<b>Andrew Zaech</b> <a href="https://gitlab.com/AndrewZaech">@AndrewZaech</a>\nLead Project Developer - UX/Backend Developer\t' +
+                '\n\n<b>LinxGem33</b> aka <b>Andy C</b> <a href="https://gitlab.com/LinxGem33">@LinxGem33</a>\nFounder - Maintainer - Digital Art Designer';
+var TRANSLATORS = '<b>Thank you to all translators!</b>\n<a href="https://gitlab.com/arcmenu-team/Arc-Menu#please-refer-to-the-wiki-section-for-a-translation-guide">Full List of Translators</a>';
+var CONTRIBUTORS = '<b>Thank you to the following Top Contributors:</b>\n<a href="https://gitlab.com/arcmenu-team/Arc-Menu#top-project-contributors">Top Contributors</a>' +
+                    '\n\n<b>A thank you to those who submited Pull Requests</b>\n<a href="https://gitlab.com/arcmenu-team/Arc-Menu#pull-requests">Pull Request Contributors</a>';
+var ARTWORK = '<b>LinxGem33</b> aka <b>Andy C</b>\nWiki Screens, Icons, Wire-Frames, Arc Menu Assets' +
+                '\n\n<b>Andrew Zaech</b>\nIcons, Wire-Frames';
+var DOCUMENTATION = '<b>LinxGem33</b> aka <b>Andy C</b>\nMaintainer - Contributor' +
+                    '\n\n<b>Andrew Zaech</b>\nContributor';
         
 var GNU_SOFTWARE = '<span size="small">' +
     'This program comes with absolutely no warranty.\n' +
