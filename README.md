@@ -147,16 +147,16 @@ All ArcMenu's Image assets including wiki images, Icons and application Image as
 * **RASPBERRY PI** ![copyright2.svg](/uploads/c5f15274ae7fffddf1f2e3dcda5971d8/copyright2.svg) - Logo and name is part of Raspberry Pi Foundation
 UK Registered Charity 1129409
 
-* **![copyright2.svg](/uploads/c5f15274ae7fffddf1f2e3dcda5971d8/copyright2.svg) 2001–2020 Gentoo Authors**
+* **Gentoo Authors![copyright2.svg](/uploads/c5f15274ae7fffddf1f2e3dcda5971d8/copyright2.svg) 2001–2020**
 Gentoo is a trademark of the Gentoo Foundation, Inc.
 
 * **Voyager ![copyright2.svg](/uploads/c5f15274ae7fffddf1f2e3dcda5971d8/copyright2.svg) Linux**
 (name) and (logo)
 
-* **![copyright2.svg](/uploads/c5f15274ae7fffddf1f2e3dcda5971d8/copyright2.svg) 2020 MXLinux**
+* **MXLinux![copyright2.svg](/uploads/c5f15274ae7fffddf1f2e3dcda5971d8/copyright2.svg) 2020**
 Linux - is the registered trademark of Linus Torvalds in the U.S. and other countries.
 
-* Copyright **![copyright2.svg](/uploads/c5f15274ae7fffddf1f2e3dcda5971d8/copyright2.svg)2020 Red Hat, Inc.** 
+* **Red Hat, Inc.![copyright2.svg](/uploads/c5f15274ae7fffddf1f2e3dcda5971d8/copyright2.svg)Copyright 2020** 
 (name) and (logo)
 
 </p>
