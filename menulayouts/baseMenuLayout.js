@@ -912,7 +912,10 @@ var BaseLayout = class {
             this.isRunning = false;
         }
        
-        this.mainBox.destroy_all_children();
+        this.mainBox.get_children().forEach((child) => {
+            if(child)
+                child.destroy();
+        });
     }
 
     _createScrollBox(params){

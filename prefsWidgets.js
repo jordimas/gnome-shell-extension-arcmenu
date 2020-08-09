@@ -194,17 +194,19 @@ var StackListBox = GObject.registerClass(class ArcMenu_StackListBox extends Gtk.
         this.valign = Gtk.Align.FILL;
         this.vexpand = true;
         this.hexpand = false;
-        this.stack = widget.stack;
-        this.leftPanelStack = widget.leftPanelStack
+        this.settingsFrameStack = widget.settingsFrameStack;
+        this.settingsListStack = widget.settingsListStack
         this.connect("row-selected", (self, row) => {
-            let listRow = row.get_children()[0];
-            let stackName = listRow.stackName;
-            this.stack.set_visible_child_name(stackName);
-            if(listRow.nextPage){
-                widget.leftHeaderBox.remove(widget.arcIcon);
-                widget.leftHeaderBox.add(widget.backButton);
-                this.leftPanelStack.set_visible_child_name(listRow.nextPage);
-                this.leftPanelStack.get_child_by_name(listRow.nextPage).listBox.selectFirstRow();
+            if(row){
+                let listRow = row.get_children()[0];
+                let stackName = listRow.stackName;
+                this.settingsFrameStack.set_visible_child_name(stackName);
+                if(listRow.nextPage){
+                    widget.leftHeaderBox.remove(widget.arcIcon);
+                    widget.leftHeaderBox.add(widget.backButton);
+                    this.settingsListStack.set_visible_child_name(listRow.nextPage);
+                    this.settingsListStack.get_child_by_name(listRow.nextPage).listBox.selectFirstRow();
+                }
             }
         });
         this.scrollWindow =  new Gtk.ScrolledWindow({

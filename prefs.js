@@ -36,8 +36,8 @@ const SCHEMA_PATH = '/org/gnome/shell/extensions/arc-menu/';
 const GSET = 'gnome-shell-extension-tool';
 
 //Pinned Apps Page
-var PinnedAppsPage = GObject.registerClass(
-    class ArcMenu_PinnedAppsPage extends PW.NotebookPage {
+var MenuSettingsPinnedAppsPage = GObject.registerClass(
+    class ArcMenu_MenuSettingsPinnedAppsPage extends PW.NotebookPage {
         _init(settings) {
             super._init(_('Pinned Apps'));
             this._settings = settings;
@@ -1660,6 +1660,7 @@ var CustomHotkeyDialogWindow = GObject.registerClass(
             vbox.add(applyButton);    
         }
 });
+
 function getIconPixbuf(filePath){
     if (GLib.file_test(filePath, GLib.FileTest.EXISTS)) 
         return GdkPixbuf.Pixbuf.new_from_file_at_size(filePath, 25, 25);
@@ -1667,9 +1668,8 @@ function getIconPixbuf(filePath){
         return null;
 }
 
-//DialogWindow for Menu Icon Customization
-var MenuButtonCustomizationWindow = GObject.registerClass(
-    class ArcMenu_MenuButtonCustomizationWindow extends Gtk.ScrolledWindow {
+var ButtonAppearancePage = GObject.registerClass(
+    class ArcMenu_ButtonAppearancePage extends Gtk.ScrolledWindow {
         _init(settings) {
             super._init();
             this.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC);
@@ -2343,8 +2343,8 @@ var DistroIconsDisclaimerWindow = GObject.registerClass(
         }
 });
 
-var MenuLayoutBox = GObject.registerClass(
-    class ArcMenu_MenuLayoutBox extends Gtk.Box {
+var MenuLayoutPage = GObject.registerClass(
+    class ArcMenu_MenuLayoutPage extends Gtk.Box {
         _init(settings) {
             super._init({
                 orientation: Gtk.Orientation.VERTICAL,
@@ -2451,7 +2451,7 @@ var MenuLayoutBox = GObject.registerClass(
             Constants.MENU_STYLES.Styles.forEach((style) => {
                 let tile = layoutsBox.createTile(style.name, Me.path + style.thumbnail, style);
                 let menuLayoutsBox = new MenuLayoutsDialog(this._settings, this, tile, style.name);
-                menuLayoutsBox.connect('response', (dialog, response) => { 
+                menuLayoutsBox.connect('menu-layout-response', (dialog, response) => { 
                     if(response === -10) {
                         this._settings.set_enum('menu-layout', dialog.index);
                         this._settings.reset('reload-theme');
@@ -2473,7 +2473,6 @@ var MenuLayoutBox = GObject.registerClass(
                 
             });
             this.mainBox.add(layoutsBox);
-            //this.stack.add_named(new AppearanceGeneralPage(this._settings), "AppearanceGeneral");
             this.add(this.stack);         
     }
 
@@ -2499,8 +2498,8 @@ var MenuLayoutBox = GObject.registerClass(
         
 });
 
-var OverrideMenuTheme = GObject.registerClass(
-    class ArcMenu_OverrideMenuTheme extends Gtk.ScrolledWindow {
+var MenuThemePage = GObject.registerClass(
+    class ArcMenu_MenuThemePage extends Gtk.ScrolledWindow {
         _init(settings) {
             super._init();
             this.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC);
@@ -2566,24 +2565,20 @@ var OverrideMenuTheme = GObject.registerClass(
             });
 
             this.menuThemeCustomizationBox = new OverrideArcMenuThemeWindow(this._settings, this.mainBox);
-            this.menuThemeCustomizationBox.connect('response', (dialog, response) => {
-                if(response == -10) {
-                    this._settings.set_int('menu-height', dialog.heightValue);
-                    this._settings.set_int('right-panel-width', dialog.rightPanelWidth);
-                    this._settings.set_string('separator-color',dialog.separatorColor);
-                    this._settings.set_boolean('vert-separator',dialog.verticalSeparator);
-                    this._settings.set_boolean('enable-custom-arc-menu', dialog.customArcMenu); 
-                    this._settings.set_string('menu-color',dialog.menuColor);
-                    this._settings.set_string('menu-foreground-color',dialog.menuForegroundColor);
-                    this._settings.set_string('border-color',dialog.borderColor);
-                    this._settings.set_string('highlight-color',dialog.highlightColor );
+            this.menuThemeCustomizationBox.connect('menu-theme-response', (dialog, response) => {
+                if(response === -10) {
+                    this._settings.set_string('separator-color', dialog.separatorColor);
+                    this._settings.set_boolean('vert-separator', dialog.verticalSeparator);
+                    this._settings.set_string('menu-color', dialog.menuColor);
+                    this._settings.set_string('menu-foreground-color', dialog.menuForegroundColor);
+                    this._settings.set_string('border-color', dialog.borderColor);
+                    this._settings.set_string('highlight-color', dialog.highlightColor );
                     this._settings.set_string('highlight-foreground-color', dialog.highlightForegroundColor);
-                    this._settings.set_int('menu-font-size',dialog.fontSize);
-                    this._settings.set_int('menu-border-size',dialog.borderSize);
-                    this._settings.set_int('menu-corner-radius',dialog.cornerRadius);
-                    this._settings.set_int('menu-margin',dialog.menuMargin);
-                    this._settings.set_int('menu-arrow-size',dialog.menuArrowSize);
-                    this._settings.set_int('menu-width', dialog.menuWidth);
+                    this._settings.set_int('menu-font-size', dialog.fontSize);
+                    this._settings.set_int('menu-border-size', dialog.borderSize);
+                    this._settings.set_int('menu-corner-radius', dialog.cornerRadius);
+                    this._settings.set_int('menu-margin', dialog.menuMargin);
+                    this._settings.set_int('menu-arrow-size', dialog.menuArrowSize);
                     this._settings.reset('reload-theme');
                     this._settings.set_boolean('reload-theme', true);
                     this.presetName = dialog.presetName;
@@ -2637,11 +2632,8 @@ var OverrideMenuTheme = GObject.registerClass(
         }
 });
 //Dialog Window for Arc Menu Customization    
-var MenuLayoutsWindow = GObject.registerClass({
-    Signals: {
-        'response': { param_types: [GObject.TYPE_INT] },
-    },
-},  class ArcMenu_MenuLayoutsWindow extends Gtk.Box {
+var MenuLayoutsWindow = GObject.registerClass(
+    class ArcMenu_MenuLayoutsWindow extends Gtk.Box {
         _init(settings, stack) {
             super._init({
                 orientation: Gtk.Orientation.VERTICAL,
@@ -2685,7 +2677,7 @@ var MenuLayoutsWindow = GObject.registerClass({
 //Dialog Window for Arc Menu Customization    
 var MenuLayoutsDialog = GObject.registerClass({
     Signals: {
-        'response': { param_types: [GObject.TYPE_INT] },
+        'menu-layout-response': { param_types: [GObject.TYPE_INT] },
     },
 },  class ArcMenu_MenuLayoutsDialog extends Gtk.Box {
         _init(settings, parent, tile, title) {
@@ -2750,7 +2742,7 @@ var MenuLayoutsDialog = GObject.registerClass({
                 this.index = selectedBox[0].get_child().layout;
                 this._tileGrid.unselect_all();
                 applyButton.set_sensitive(false);
-                this.emit('response',-10);
+                this.emit('menu-layout-response', -10);
             });
             let iconImage = new Gtk.Image({
                 gicon: Gio.icon_new_for_string('go-previous-symbolic'),
@@ -2762,7 +2754,7 @@ var MenuLayoutsDialog = GObject.registerClass({
                 halign: Gtk.Align.START
             });
             backButton.connect('clicked', ()=> {
-                this.emit('response', -20);
+                this.emit('menu-layout-response', -20);
             });
             buttonBox.add(backButton);
             buttonBox.add(applyButton)
@@ -2785,34 +2777,8 @@ var MenuLayoutsDialog = GObject.registerClass({
         }
 });
 
-//Dialog Window for Arc Menu Customization    
-var ArcMenuCustomizationWindow = GObject.registerClass(
-    class ArcMenu_ArcMenuCustomizationWindow extends PW.DialogWindow {
-        _init(settings, parent) {
-            this._settings = settings;
-            super._init(_('Customize Arc Menu Appearance'), parent);
-            this.resize(550,400);
-        }
-
-        _createLayout(vbox) {
-            let notebook = new PW.Notebook();
-
-            let generalPage = new AppearanceGeneralPage(this._settings);
-            notebook.append_page(generalPage);
-
-            let categoryPage = new CategoriesPage(this._settings);
-            notebook.append_page(categoryPage);
-
-            let fineTunePage = new AppearanceFineTunePage(this._settings);
-            notebook.append_page(fineTunePage);
-    
-            vbox.add(notebook);
-        }
-});
-
-
-var AppearanceGeneralPage = GObject.registerClass(
-    class ArcMenu_AppearanceGeneralPage extends Gtk.ScrolledWindow {
+var MenuSettingsGeneralPage = GObject.registerClass(
+    class ArcMenu_MenuSettingsGeneralPage extends Gtk.ScrolledWindow {
     _init(settings) {
         super._init();
         this.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC);
@@ -3180,8 +3146,8 @@ var AppearanceGeneralPage = GObject.registerClass(
     }
 });
 
-var AppearanceFineTunePage = GObject.registerClass(
-    class ArcMenu_AppearanceFineTunePage extends Gtk.ScrolledWindow {
+var MenuSettingsFineTunePage = GObject.registerClass(
+    class ArcMenu_MenuSettingsFineTunePage extends Gtk.ScrolledWindow {
     _init(settings) {
         super._init();
         this.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC);
@@ -3505,8 +3471,8 @@ var AppearanceFineTunePage = GObject.registerClass(
     }
 });
 
-var CategoriesPage = GObject.registerClass(
-    class ArcMenu_CategoriesPage extends Gtk.ScrolledWindow {
+var MenuSettingsCategoriesPage = GObject.registerClass(
+    class ArcMenu_MenuSettingsCategoriesPage extends Gtk.ScrolledWindow {
     _init(settings) {
         super._init();
         this.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC);
@@ -3998,7 +3964,7 @@ var ManageColorThemeDialogWindow = GObject.registerClass(
 //Dialog Window for Arc Menu Customization    
 var OverrideArcMenuThemeWindow = GObject.registerClass({
     Signals: {
-        'response': { param_types: [GObject.TYPE_INT] },
+        'menu-theme-response': { param_types: [GObject.TYPE_INT] },
     },
 },
     class ArcMenu_OverrideArcMenuThemeWindow extends Gtk.Box {
@@ -4587,7 +4553,7 @@ var OverrideArcMenuThemeWindow = GObject.registerClass({
             });
             applyButton.connect('clicked', ()=> {
                 applyButton.set_sensitive(false); 
-               this.emit('response', -10);
+                this.emit('menu-theme-response', -10);
             });
             applyButton.set_halign(Gtk.Align.END);
             applyButton.set_sensitive(false);
@@ -4645,8 +4611,8 @@ var OverrideArcMenuThemeWindow = GObject.registerClass({
         }
 });
 
-var DefaultDirectoriesPage = GObject.registerClass(
-    class ArcMenu_DefaultDirectoriesPage extends Gtk.ScrolledWindow {
+var MenuSettingsShortcutDirectoriesPage = GObject.registerClass(
+    class ArcMenu_MenuSettingsShortcutDirectoriesPage extends Gtk.ScrolledWindow {
     _init(settings) {
         super._init();
         this.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC);
@@ -4928,8 +4894,8 @@ var DefaultDirectoriesPage = GObject.registerClass(
         }
     }
 });
-var ApplicationShortcutsPage = GObject.registerClass(
-    class ArcMenu_ApplicationShortcutsPage extends Gtk.ScrolledWindow {
+var MenuSettingsShortcutApplicationsPage = GObject.registerClass(
+    class ArcMenu_MenuSettingsShortcutApplicationsPage extends Gtk.ScrolledWindow {
     _init(settings) {
         super._init();
         this.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC);
@@ -5209,8 +5175,8 @@ var ApplicationShortcutsPage = GObject.registerClass(
         }
     }
 });
-var SessionButtonsPage = GObject.registerClass(
-    class ArcMenu_SessionButtonsPage extends Gtk.ScrolledWindow {
+var MenuSettingsShortcutSessionButtonsPage = GObject.registerClass(
+    class ArcMenu_MenuSettingsShortcutSessionButtonsPage extends Gtk.ScrolledWindow {
     _init(settings) {
         super._init();
         this.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC);
@@ -5303,8 +5269,8 @@ var SessionButtonsPage = GObject.registerClass(
     }
 });
 
-var ExtraShortcutsBox = GObject.registerClass(
-    class ArcMenu_ExtraShortcutsBox extends Gtk.ScrolledWindow {
+var MenuSettingsShortcutExtrasPage = GObject.registerClass(
+    class ArcMenu_MenuSettingsShortcutExtrasPage extends Gtk.ScrolledWindow {
     _init(settings) {
         super._init();
         this.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC);
@@ -5979,97 +5945,81 @@ class ArcMenu_ArcMenuPreferencesWidget extends Gtk.Box{
                 pixel_size: 35,
                 visible: true,
             });
-            this.leftHeaderBox.add(this.arcIcon);
+            this.leftHeaderBox.add(this.arcIcon);     
             
             window.get_titlebar().pack_start(this.leftHeaderBox);
         });
         
         this._settings = Convenience.getSettings(Me.metadata['settings-schema']);
         
-        //let notebook = new PW.Notebook();
-        /*notebook.connect('switch-page', (notebook, tab, index)=>{
-            if(index==3){
-                pinnedAppsPage.frame._listBox.foreach ((element) => pinnedAppsPage.frame.remove(element));
-                pinnedAppsPage._loadPinnedApps(this._settings.get_strv('pinned-app-list'));
-                pinnedAppsPage.frame.show();
-            }
-        });*/
-
         this.backButton = new Gtk.Button({
             image: new Gtk.Image({icon_name: 'go-previous-symbolic'}),
             visible: true
         });
         this.backButton.connect("clicked", () => {
-            if(this.leftPanelStack.get_visible_child() === this.leftPanelStack.get_child_by_name('Shortcuts')){
-                this.leftPanelStack.set_visible_child_name("Appearance");
-                this.leftPanelStack.get_child_by_name('Appearance').listBox.selectFirstRow();
+            if(this.settingsListStack.get_visible_child() === this.settingsListStack.get_child_by_name('MenuSettingsShortcuts')){
+                this.settingsListStack.set_visible_child_name("MenuSettings");
+                this.settingsListStack.get_child_by_name('MenuSettings').listBox.selectFirstRow();
             }
             else{
-                this.leftPanelStack.set_visible_child_name("Main");
-                this.leftPanelStack.get_child_by_name('Main').listBox.selectFirstRow();
+                this.settingsListStack.set_visible_child_name("Main");
+                this.settingsListStack.get_child_by_name('Main').listBox.selectFirstRow();
                 this.leftHeaderBox.remove(this.backButton);
                 this.leftHeaderBox.add(this.arcIcon);
             }
         });
 
-        let generalPage = new GeneralPage(this._settings);
-        let pinnedAppsPage = new PinnedAppsPage(this._settings);
-        let miscPage = new MiscPage(this._settings);
-        let aboutPage = new AboutPage(this._settings);
-
-        this.stack = new Gtk.Stack({
+        //stack that shows the main settings frames
+        this.settingsFrameStack = new Gtk.Stack({
             hhomogeneous: true,
             transition_type: Gtk.StackTransitionType.CROSSFADE
         });
-        let stackScrollWindow = new Gtk.ScrolledWindow();
-        stackScrollWindow.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC);
 
-        this.leftPanelStack = new Gtk.Stack({
+        //stack that shows the setting categories list on the left panel
+        this.settingsListStack = new Gtk.Stack({
             hhomogeneous: true,
             transition_type: Gtk.StackTransitionType.SLIDE_LEFT_RIGHT
         });
-        this.leftPaneBox = new Gtk.Box({
+
+        this.leftPanelBox = new Gtk.Box({
             orientation: Gtk.Orientation.VERTICAL
         });
-        
+        this.leftPanelBox.add(this.settingsListStack);
 
-        let appearanceListBox = new PW.StackListBox(this, {width_request: 215});
-        appearanceListBox.addRow("AppearanceGeneral", _("General"), Me.path + '/media/icons/settings_icons/menu-settings-general-symbolic.svg');
-        appearanceListBox.add(createSeparator());
-        appearanceListBox.addRow("Pinned Apps", _("Pinned Apps"), Me.path + '/media/icons/settings_icons/pinned-apps-symbolic.svg');
-        appearanceListBox.addRow("ShortcutsDirectories", _("Shortcuts"), Me.path + '/media/icons/settings_icons/shortcuts-symbolic.svg', 'Shortcuts');
-        appearanceListBox.addRow("AppearanceCategories", _("Categories"), Me.path + '/media/icons/settings_icons/categories-symbolic.svg');
-        appearanceListBox.add(createSeparator());
-        appearanceListBox.addRow("AppearanceFineTune", _("Fine-Tune"), Me.path + '/media/icons/settings_icons/fine-tune-symbolic.svg');
-        
-        let appearanceListBoxWindow = appearanceListBox.scrollWindow;       
-        
-        let shortcutsListBox = new PW.StackListBox(this, {width_request: 215});
-        shortcutsListBox.addRow("ShortcutsDirectories", _("Directories"), 'folder-documents-symbolic');
-        shortcutsListBox.addRow("ShortcutsApplications", _("Applications"), 'preferences-desktop-apps-symbolic');
-        shortcutsListBox.addRow("ShortcutsSessionButtons", _("Session Buttons"), 'gnome-power-manager-symbolic');
-        shortcutsListBox.addRow("ShortcutsExtras", _("Extra Shortcuts"), 'user-bookmarks-symbolic');
-        let shortcutsListBoxWindow = shortcutsListBox.scrollWindow;   
+        let mainStackListBox = new PW.StackListBox(this, {width_request: 215});
+        let mainStackBox = mainStackListBox.scrollWindow;
+        mainStackListBox.addRow("General", _("General"), Me.path + '/media/misc/homescreen-symbolic.svg');
+        mainStackListBox.add(createSeparator());
+        mainStackListBox.addRow("MenuLayout", _("Menu Layout"), Me.path + '/media/icons/settings_icons/menu-layouts-symbolic.svg');
+        mainStackListBox.addRow("MenuTheme", _("Menu Theme"), Me.path + '/media/icons/settings_icons/menu-theme-symbolic.svg');
+        mainStackListBox.addRow("MenuSettingsGeneral", _("Menu Settings"), Me.path + '/media/icons/settings_icons/menu-settings-symbolic.svg', "MenuSettings");
+        mainStackListBox.add(createSeparator());
+        mainStackListBox.addRow("ButtonAppearance", _("Button Appearance"),  Me.path + '/media/icons/arc-menu-symbolic.svg');
+        mainStackListBox.add(createSeparator());
+        mainStackListBox.addRow("Misc", _("Misc"), Me.path + '/media/icons/settings_icons/misc-symbolic.svg');
+        mainStackListBox.addRow("About", _("About"), Me.path + '/media/misc/info-circle-symbolic.svg');
 
-        let listBox = new PW.StackListBox(this, {width_request: 215});
-        this.listBoxScrollWindow = listBox.scrollWindow;
+        let menuSettingsStackListBox = new PW.StackListBox(this, {width_request: 215});
+        let menuSettingsListBox = menuSettingsStackListBox.scrollWindow;
+        menuSettingsStackListBox.addRow("MenuSettingsGeneral", _("General"), Me.path + '/media/icons/settings_icons/menu-settings-general-symbolic.svg');
+        menuSettingsStackListBox.add(createSeparator());
+        menuSettingsStackListBox.addRow("MenuSettingsPinnedApps", _("Pinned Apps"), Me.path + '/media/icons/settings_icons/pinned-apps-symbolic.svg');
+        menuSettingsStackListBox.addRow("MenuSettingsShortcutDirectories", _("Shortcuts"), Me.path + '/media/icons/settings_icons/shortcuts-symbolic.svg', 'MenuSettingsShortcuts');
+        menuSettingsStackListBox.addRow("MenuSettingsCategories", _("Categories"), Me.path + '/media/icons/settings_icons/categories-symbolic.svg');
+        menuSettingsStackListBox.add(createSeparator());
+        menuSettingsStackListBox.addRow("MenuSettingsFineTune", _("Fine-Tune"), Me.path + '/media/icons/settings_icons/fine-tune-symbolic.svg');
+ 
+        let menuSettingsShortcutsStackListBox = new PW.StackListBox(this, {width_request: 215});
+        let menuSettingsShortcutsListBox = menuSettingsShortcutsStackListBox.scrollWindow;
+        menuSettingsShortcutsStackListBox.addRow("MenuSettingsShortcutDirectories", _("Directories"), 'folder-documents-symbolic');
+        menuSettingsShortcutsStackListBox.addRow("MenuSettingsShortcutApplications", _("Applications"), 'preferences-desktop-apps-symbolic');
+        menuSettingsShortcutsStackListBox.addRow("MenuSettingsShortcutSessionButtons", _("Session Buttons"), 'gnome-power-manager-symbolic');
+        menuSettingsShortcutsStackListBox.addRow("MenuSettingsShortcutExtras", _("Extra Shortcuts"), 'user-bookmarks-symbolic');
+ 
+        this.settingsListStack.add_named(mainStackBox, "Main");
+        this.settingsListStack.add_named(menuSettingsListBox, "MenuSettings");
+        this.settingsListStack.add_named(menuSettingsShortcutsListBox, "MenuSettingsShortcuts");
 
-        this.leftPanelStack.add_named(this.listBoxScrollWindow, "Main");
-        this.leftPanelStack.add_named(appearanceListBoxWindow, "Appearance");
-        this.leftPanelStack.add_named(shortcutsListBoxWindow, "Shortcuts");
-
-        listBox.addRow("General", _("General"), Me.path + '/media/misc/homescreen-symbolic.svg');
-        listBox.add(createSeparator());
-        listBox.addRow("AppearanceMenuLayout", _("Menu Layout"), Me.path + '/media/icons/settings_icons/menu-layouts-symbolic.svg');
-        listBox.addRow("AppearanceMenuTheme", _("Menu Theme"), Me.path + '/media/icons/settings_icons/menu-theme-symbolic.svg');
-        listBox.addRow("AppearanceGeneral", _("Menu Settings"), Me.path + '/media/icons/settings_icons/menu-settings-symbolic.svg', "Appearance");
-        listBox.add(createSeparator());
-        listBox.addRow("AppearanceMenuButton", _("Button Appearance"),  Me.path + '/media/icons/settings_icons/button-appearance-symbolic.svg');
-        listBox.add(createSeparator());
-        listBox.addRow("Misc", _("Misc"), Me.path + '/media/icons/settings_icons/misc-symbolic.svg');
-        listBox.addRow("About", _("About"), Me.path + '/media/misc/info-circle-symbolic.svg');
-
-        this.leftPaneBox.add(this.leftPanelStack);
         let resetButtonRow = new Gtk.ListBox({
             valign: Gtk.Align.END,
         });
@@ -6091,8 +6041,13 @@ class ArcMenu_ArcMenuPreferencesWidget extends Gtk.Box{
                 modal: true
             });
             dialog.connect('response', (widget, response) => {
-                if(response == Gtk.ResponseType.YES)
+                if(response == Gtk.ResponseType.YES){
                     GLib.spawn_command_line_sync('dconf reset -f /org/gnome/shell/extensions/arc-menu/');
+                    this.settingsFrameStack.foreach((child) => {
+                        this.settingsFrameStack.remove(child);
+                    });
+                    this.populateSettingsFrameStack();
+                }
                 dialog.destroy();
             });
             dialog.show();
@@ -6100,26 +6055,54 @@ class ArcMenu_ArcMenuPreferencesWidget extends Gtk.Box{
         resetButtonRow.add(resetSettingsButton);
         resetSettingsButton.get_parent().set_activatable(false);
         resetSettingsButton.get_parent().set_selectable(false);
-        this.leftPaneBox.add(resetButtonRow);
 
-        this.add(this.leftPaneBox);
+        this.leftPanelBox.add(resetButtonRow);
+        this.add(this.leftPanelBox);
         this.add(Gtk.Separator.new(Gtk.Orientation.VERTICAL));
-        this.add(this.stack);
+        this.add(this.settingsFrameStack);
 
-        this.stack.add_named(generalPage, "General");
-        this.stack.add_named(new MenuButtonCustomizationWindow(this._settings), "AppearanceMenuButton");
-        this.stack.add_named(new AppearanceGeneralPage(this._settings), "AppearanceGeneral");
-        this.stack.add_named(new CategoriesPage(this._settings), "AppearanceCategories");
-        this.stack.add_named(new OverrideMenuTheme(this._settings), "AppearanceMenuTheme");
-        this.stack.add_named(new MenuLayoutBox(this._settings), "AppearanceMenuLayout");
-        this.stack.add_named(new AppearanceFineTunePage(this._settings), "AppearanceFineTune");
-        this.stack.add_named(new DefaultDirectoriesPage(this._settings), "ShortcutsDirectories");
-        this.stack.add_named(new ApplicationShortcutsPage(this._settings), "ShortcutsApplications"); 
-        this.stack.add_named(new SessionButtonsPage(this._settings), "ShortcutsSessionButtons"); 
-        this.stack.add_named(new ExtraShortcutsBox(this._settings), "ShortcutsExtras"); 
-        this.stack.add_named(pinnedAppsPage, "Pinned Apps");
-        this.stack.add_named(miscPage, "Misc");
-        this.stack.add_named(aboutPage, "About");
+        this.populateSettingsFrameStack();
+    }
+    
+    populateSettingsFrameStack(){
+        this.settingsFrameStack.add_named(new GeneralPage(this._settings), "General");
+        this.settingsFrameStack.add_named(new MenuLayoutPage(this._settings), "MenuLayout");
+        this.settingsFrameStack.add_named(new MenuThemePage(this._settings), "MenuTheme");
+
+        this.settingsFrameStack.add_named(new MenuSettingsGeneralPage(this._settings), "MenuSettingsGeneral");
+        this.settingsFrameStack.add_named(new MenuSettingsPinnedAppsPage(this._settings), "MenuSettingsPinnedApps");
+
+        let menuSettingsPinnedAppsPage = this.settingsFrameStack.get_child_by_name("MenuSettingsPinnedApps");
+
+        if(this.pinnedAppsChangedID){
+            this._settings.disconnect(this.pinnedAppsChangedID);
+            this.pinnedAppsChangedID = null;
+        }
+        this.pinnedAppsChangedID = this._settings.connect("changed::pinned-app-list", () =>{
+            menuSettingsPinnedAppsPage.frame._listBox.foreach ((element) => menuSettingsPinnedAppsPage.frame.remove(element));
+            menuSettingsPinnedAppsPage._loadPinnedApps(this._settings.get_strv('pinned-app-list'));
+            menuSettingsPinnedAppsPage.frame.show();
+        });
+
+        this.settingsFrameStack.add_named(new MenuSettingsShortcutDirectoriesPage(this._settings), "MenuSettingsShortcutDirectories");
+        this.settingsFrameStack.add_named(new MenuSettingsShortcutApplicationsPage(this._settings), "MenuSettingsShortcutApplications"); 
+        this.settingsFrameStack.add_named(new MenuSettingsShortcutSessionButtonsPage(this._settings), "MenuSettingsShortcutSessionButtons"); 
+        this.settingsFrameStack.add_named(new MenuSettingsShortcutExtrasPage(this._settings), "MenuSettingsShortcutExtras"); 
+
+        this.settingsFrameStack.add_named(new MenuSettingsCategoriesPage(this._settings), "MenuSettingsCategories");
+        this.settingsFrameStack.add_named(new MenuSettingsFineTunePage(this._settings), "MenuSettingsFineTune");
+
+        this.settingsFrameStack.add_named(new ButtonAppearancePage(this._settings), "ButtonAppearance");
+
+        this.settingsFrameStack.add_named(new MiscPage(this._settings), "Misc");
+        this.settingsFrameStack.add_named(new AboutPage(this._settings), "About");
+        this.show_all();
+        this.settingsListStack.set_visible_child_name("Main");
+        this.settingsListStack.get_child_by_name('Main').listBox.selectFirstRow();
+        if(this.backButton.get_parent()){
+            this.leftHeaderBox.remove(this.backButton);
+            this.leftHeaderBox.add(this.arcIcon);
+        }
     }
 });
 
