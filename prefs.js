@@ -5631,12 +5631,15 @@ var AboutPage = GObject.registerClass(
 
             // Create GUI elements
             // Create the image box
-            let logoPath = Me.path + Constants.ARC_MENU_LOGO.Path;
+            let logoPath = Me.path + '/media/icons/settings_icons/arcmenu-settings-logo.svg';
             let [imageWidth, imageHeight] = Constants.ARC_MENU_LOGO.Size;
-            let pixbuf = GdkPixbuf.Pixbuf.new_from_file_at_size(logoPath, imageWidth, imageHeight);
-            let arcMenuImage = new Gtk.Image({ pixbuf: pixbuf });
+            let pixbuf = GdkPixbuf.Pixbuf.new_from_file_at_size(logoPath, 100, 100);
+            let arcMenuImage = new Gtk.Image({ 
+                pixbuf: pixbuf,
+                margin_bottom: 5 
+            });
             let arcMenuImageBox = new Gtk.VBox({
-                margin_top: 0,
+                margin_top: 10,
                 margin_bottom: 0,
                 expand: false
             });
@@ -5771,28 +5774,24 @@ var AboutPage = GObject.registerClass(
                 expand: false,
                 margin_bottom: 10
             });
-            let linksBox = new Gtk.HBox({
+            let linksBox = new Gtk.Box({
                 expand: false,
-                halign: Gtk.Align.CENTER
+                valign: Gtk.Align.START,
+                halign: Gtk.Align.CENTER,
+                margin: 0,
+                spacing: 0,
             });
-            let manualBox = new Gtk.VBox({
-                margin_top: 0,
-                margin_bottom: 0,
+            let manualBox = new Gtk.Box({
+                margin: 0,
                 expand: false,
-                halign: Gtk.Align.CENTER
+                halign: Gtk.Align.CENTER,
+                spacing: 0,
             });
-            let gitLabBox = new Gtk.VBox({
-                margin_top: 0,
-                margin_bottom: 0,
-                expand: false,
-                halign: Gtk.Align.CENTER
-            });
-
-            let projectLinkButton = new Gtk.LinkButton({
-                label: _('GitLab Page'),
-                uri: projectUrl,
-                expand: false,
-                halign: Gtk.Align.CENTER
+            let gitLabBox = new Gtk.Box({
+                margin: 0,
+                vexpand: false,
+                halign: Gtk.Align.CENTER,
+                spacing: 0,
             });
 
             let imagePath = Me.path + Constants.ARC_MENU_MANUAL_ICON.Path;
@@ -5803,6 +5802,14 @@ var AboutPage = GObject.registerClass(
                 expand: false,
                 halign: Gtk.Align.CENTER 
             });
+            let projectManualLinkButton = new Gtk.LinkButton({
+                label: _('User Manual'),
+                image: manualImage,
+                always_show_image: true,
+                uri: Constants.ARCMENU_MANUAL_URL,
+                expand: false,
+                halign: Gtk.Align.CENTER
+            });
 
             imagePath = Me.path + Constants.GITLAB_ICON.Path;
             [imageWidth, imageHeight] = Constants.GITLAB_ICON.Size;
@@ -5812,23 +5819,24 @@ var AboutPage = GObject.registerClass(
                 expand: false,
                 halign: Gtk.Align.CENTER 
             });
-
-            let projectManualLinkButton = new Gtk.LinkButton({
-                label: _('User Manual'),
-                uri: Constants.ARCMENU_MANUAL_URL,
-                expand: false,
+            let projectLinkButton = new Gtk.LinkButton({
+                label: _('GitLab Page'),
+                image: gitlabImage,
+                always_show_image: true,
+                uri: projectUrl,
+                vexpand: false,
+                valign: Gtk.Align.START,
                 halign: Gtk.Align.CENTER
             });
-            gitLabBox.add(gitlabImage);
+            
             gitLabBox.add(projectLinkButton);
-            manualBox.add(manualImage);
             manualBox.add(projectManualLinkButton);
             linksBox.add(gitLabBox);
             linksBox.add(manualBox);
             
             this.creditsScrollWindow = new Gtk.ScrolledWindow({
                 margin_top: 10,
-                margin_bottom: 10
+                margin_bottom: 0
             });
             this.creditsScrollWindow.set_policy(Gtk.PolicyType.AUTOMATIC, Gtk.PolicyType.AUTOMATIC);
             this.creditsScrollWindow.set_max_content_height(200);
@@ -5880,10 +5888,7 @@ var AboutPage = GObject.registerClass(
 		        expand: false
             });
             documentationPage.add(creditsLabel);
-
-            
             arcMenuImageBox.add(arcMenuLabel);
-
             arcMenuImageBox.add(projectDescriptionLabel);
             arcMenuInfoBox.add(linksBox);
 
@@ -5897,8 +5902,8 @@ var AboutPage = GObject.registerClass(
                 orientation: Gtk.Orientation.VERTICAL,
                 valign: Gtk.Align.END,
                 vexpand: true,
-                margin_top: 10,
-                margin_bottom: 5
+                margin_top: 5,
+                margin_bottom: 10
             });
             gnuSofwareLabelBox.add(gnuSofwareLabel);
 
@@ -5941,7 +5946,7 @@ class ArcMenu_ArcMenuPreferencesWidget extends Gtk.Box{
                 visible: true
             });
             this.arcIcon = new Gtk.Image({
-                gicon: Gio.icon_new_for_string(Me.path + Constants.ARC_MENU_LOGO.Path),
+                gicon: Gio.icon_new_for_string(Me.path + '/media/icons/settings_icons/arcmenu-settings-logo.svg'),
                 pixel_size: 35,
                 visible: true,
             });
@@ -6001,7 +6006,7 @@ class ArcMenu_ArcMenuPreferencesWidget extends Gtk.Box{
 
         let menuSettingsStackListBox = new PW.StackListBox(this, {width_request: 215});
         let menuSettingsListBox = menuSettingsStackListBox.scrollWindow;
-        menuSettingsStackListBox.addRow("MenuSettingsGeneral", _("General"), Me.path + '/media/icons/settings_icons/menu-settings-general-symbolic.svg');
+        menuSettingsStackListBox.addRow("MenuSettingsGeneral", _("Menu Settings"), Me.path + '/media/icons/settings_icons/menu-settings-symbolic.svg');
         menuSettingsStackListBox.add(createSeparator());
         menuSettingsStackListBox.addRow("MenuSettingsPinnedApps", _("Pinned Apps"), Me.path + '/media/icons/settings_icons/pinned-apps-symbolic.svg');
         menuSettingsStackListBox.addRow("MenuSettingsShortcutDirectories", _("Shortcuts"), Me.path + '/media/icons/settings_icons/shortcuts-symbolic.svg', 'MenuSettingsShortcuts');
@@ -6063,7 +6068,7 @@ class ArcMenu_ArcMenuPreferencesWidget extends Gtk.Box{
 
         this.populateSettingsFrameStack();
     }
-    
+
     populateSettingsFrameStack(){
         this.settingsFrameStack.add_named(new GeneralPage(this._settings), "General");
         this.settingsFrameStack.add_named(new MenuLayoutPage(this._settings), "MenuLayout");
