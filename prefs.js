@@ -5947,7 +5947,7 @@ class ArcMenu_ArcMenuPreferencesWidget extends Gtk.Box{
             });
             this.arcIcon = new Gtk.Image({
                 gicon: Gio.icon_new_for_string(Me.path + '/media/icons/settings_icons/arcmenu-settings-logo.svg'),
-                pixel_size: 35,
+                pixel_size: 30,
                 visible: true,
             });
             this.leftHeaderBox.add(this.arcIcon);     
