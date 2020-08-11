@@ -65,7 +65,7 @@ var CATEGORIES = [
     {Category: CategoryType.FAVORITES, Name: _("Favorites"), Icon: 'emblem-favorite-symbolic'},
     {Category: CategoryType.FREQUENT_APPS, Name: _("Frequent Apps"), Icon: 'user-bookmarks-symbolic'},
     {Category: CategoryType.ALL_PROGRAMS, Name: _("All Programs"), Icon: 'view-grid-symbolic'},
-    {Category: CategoryType.PINNED_APPS, Name: _("Pinned Apps"), Icon: Me.path + '/media/icons/arc-menu-symbolic.svg'}
+    {Category: CategoryType.PINNED_APPS, Name: _("Pinned Apps"), Icon: Me.path + '/media/icons/menu_icons/arc-menu-symbolic.svg'}
 ]
 
 var ArcMenuPlacement = {
@@ -160,93 +160,93 @@ var MENU_BUTTON_ICON = {
 };
 
 var MENU_ICONS = [
-    { path: '/media/icons/arc-menu-symbolic.svg'},
-    { path: '/media/icons/arc-menu-alt-symbolic.svg'},
-    { path: '/media/icons/arc-menu-old-symbolic.svg'},
+    { path: '/media/icons/menu_icons/arc-menu-symbolic.svg'},
+    { path: '/media/icons/menu_icons/arc-menu-alt-symbolic.svg'},
+    { path: '/media/icons/menu_icons/arc-menu-old-symbolic.svg'},
     { path: 'start-here-symbolic'},
-    { path: '/media/icons/curved-a-symbolic.svg'},
-    { path: '/media/icons/start-box-symbolic.svg'},
-    { path: '/media/icons/focus-symbolic.svg'},
-    { path: '/media/icons/triple-dash-symbolic.svg'},
-    { path: '/media/icons/whirl-symbolic.svg'},
-    { path: '/media/icons/whirl-circle-symbolic.svg'},
-    { path: '/media/icons/sums-symbolic.svg'},
-    { path: '/media/icons/arrow-symbolic.svg'},
-    { path: '/media/icons/lins-symbolic.svg'},
-    { path: '/media/icons/diamond-square-symbolic.svg'},
-    { path: '/media/icons/octo-maze-symbolic.svg'},
-    { path: '/media/icons/search-symbolic.svg'},
-    { path: '/media/icons/transform-symbolic.svg'},
-    { path: '/media/icons/3d-symbolic.svg'},
-    { path: '/media/icons/alien-symbolic.svg'},
-    { path: '/media/icons/cloud-symbolic.svg'},
-    { path: '/media/icons/dragon-symbolic.svg'},
-    { path: '/media/icons/fly-symbolic.svg'},
-    { path: '/media/icons/pacman-symbolic.svg'},
-    { path: '/media/icons/peaks-symbolic.svg'},
-    { path: '/media/icons/pie-symbolic.svg'},
-    { path: '/media/icons/pointer-symbolic.svg'},
-    { path: '/media/icons/toxic-symbolic.svg'},
-    { path: '/media/icons/tree-symbolic.svg'},
-    { path: '/media/icons/zegon-symbolic.svg'},
-    { path: '/media/icons/apps-symbolic.svg'},
-    { path: '/media/icons/bug-symbolic.svg'},
-    { path: '/media/icons/cita-symbolic.svg'},
-    { path: '/media/icons/dragonheart-symbolic.svg'},
-    { path: '/media/icons/eclipse-symbolic.svg'},
-    { path: '/media/icons/football-symbolic.svg'},
-    { path: '/media/icons/heddy-symbolic.svg'},
-    { path: '/media/icons/helmet-symbolic.svg'},
-    { path: '/media/icons/palette-symbolic.svg'},
-    { path: '/media/icons/peeks-symbolic.svg'},
-    { path: '/media/icons/record-symbolic.svg'},
-    { path: '/media/icons/saucer-symbolic.svg'},
-    { path: '/media/icons/step-symbolic.svg'},
-    { path: '/media/icons/vancer-symbolic.svg'},
-    { path: '/media/icons/vibe-symbolic.svg'},
-    { path: '/media/icons/dimond-win-symbolic.svg'},
-    { path: '/media/icons/dolphin-symbolic.svg'},
-    { path: '/media/icons/dota-symbolic.svg'},
-    { path: '/media/icons/football2-symbolic.svg'},
-    { path: '/media/icons/loveheart-symbolic.svg'},
-    { path: '/media/icons/pyrimid-symbolic.svg'},
-    { path: '/media/icons/rewind-symbolic.svg'},
-    { path: '/media/icons/snap-symbolic.svg'},
-    { path: '/media/icons/time-symbolic.svg'},
-    { path: '/media/icons/3D-symbolic.svg'},
-    { path: '/media/icons/a-symbolic.svg'},
-    { path: '/media/icons/app-launcher-symbolic.svg'},
-    { path: '/media/icons/bat-symbolic.svg'},
-    { path: '/media/icons/dra-symbolic.svg'},
-    { path: '/media/icons/equal-symbolic.svg'},
-    { path: '/media/icons/gnacs-symbolic.svg'},
-    { path: '/media/icons/groove-symbolic.svg'},
-    { path: '/media/icons/kaaet-symbolic.svg'},
-    { path: '/media/icons/launcher-symbolic.svg'},
-    { path: '/media/icons/pac-symbolic.svg'},
-    { path: '/media/icons/robots-symbolic.svg'},
-    { path: '/media/icons/sheild-symbolic.svg'},
-    { path: '/media/icons/somnia-symbolic.svg'},
-    { path: '/media/icons/utool-symbolic.svg'},
+    { path: '/media/icons/menu_icons/curved-a-symbolic.svg'},
+    { path: '/media/icons/menu_icons/start-box-symbolic.svg'},
+    { path: '/media/icons/menu_icons/focus-symbolic.svg'},
+    { path: '/media/icons/menu_icons/triple-dash-symbolic.svg'},
+    { path: '/media/icons/menu_icons/whirl-symbolic.svg'},
+    { path: '/media/icons/menu_icons/whirl-circle-symbolic.svg'},
+    { path: '/media/icons/menu_icons/sums-symbolic.svg'},
+    { path: '/media/icons/menu_icons/arrow-symbolic.svg'},
+    { path: '/media/icons/menu_icons/lins-symbolic.svg'},
+    { path: '/media/icons/menu_icons/diamond-square-symbolic.svg'},
+    { path: '/media/icons/menu_icons/octo-maze-symbolic.svg'},
+    { path: '/media/icons/menu_icons/search-symbolic.svg'},
+    { path: '/media/icons/menu_icons/transform-symbolic.svg'},
+    { path: '/media/icons/menu_icons/3d-symbolic.svg'},
+    { path: '/media/icons/menu_icons/alien-symbolic.svg'},
+    { path: '/media/icons/menu_icons/cloud-symbolic.svg'},
+    { path: '/media/icons/menu_icons/dragon-symbolic.svg'},
+    { path: '/media/icons/menu_icons/fly-symbolic.svg'},
+    { path: '/media/icons/menu_icons/pacman-symbolic.svg'},
+    { path: '/media/icons/menu_icons/peaks-symbolic.svg'},
+    { path: '/media/icons/menu_icons/pie-symbolic.svg'},
+    { path: '/media/icons/menu_icons/pointer-symbolic.svg'},
+    { path: '/media/icons/menu_icons/toxic-symbolic.svg'},
+    { path: '/media/icons/menu_icons/tree-symbolic.svg'},
+    { path: '/media/icons/menu_icons/zegon-symbolic.svg'},
+    { path: '/media/icons/menu_icons/apps-symbolic.svg'},
+    { path: '/media/icons/menu_icons/bug-symbolic.svg'},
+    { path: '/media/icons/menu_icons/cita-symbolic.svg'},
+    { path: '/media/icons/menu_icons/dragonheart-symbolic.svg'},
+    { path: '/media/icons/menu_icons/eclipse-symbolic.svg'},
+    { path: '/media/icons/menu_icons/football-symbolic.svg'},
+    { path: '/media/icons/menu_icons/heddy-symbolic.svg'},
+    { path: '/media/icons/menu_icons/helmet-symbolic.svg'},
+    { path: '/media/icons/menu_icons/palette-symbolic.svg'},
+    { path: '/media/icons/menu_icons/peeks-symbolic.svg'},
+    { path: '/media/icons/menu_icons/record-symbolic.svg'},
+    { path: '/media/icons/menu_icons/saucer-symbolic.svg'},
+    { path: '/media/icons/menu_icons/step-symbolic.svg'},
+    { path: '/media/icons/menu_icons/vancer-symbolic.svg'},
+    { path: '/media/icons/menu_icons/vibe-symbolic.svg'},
+    { path: '/media/icons/menu_icons/dimond-win-symbolic.svg'},
+    { path: '/media/icons/menu_icons/dolphin-symbolic.svg'},
+    { path: '/media/icons/menu_icons/dota-symbolic.svg'},
+    { path: '/media/icons/menu_icons/football2-symbolic.svg'},
+    { path: '/media/icons/menu_icons/loveheart-symbolic.svg'},
+    { path: '/media/icons/menu_icons/pyrimid-symbolic.svg'},
+    { path: '/media/icons/menu_icons/rewind-symbolic.svg'},
+    { path: '/media/icons/menu_icons/snap-symbolic.svg'},
+    { path: '/media/icons/menu_icons/time-symbolic.svg'},
+    { path: '/media/icons/menu_icons/3D-symbolic.svg'},
+    { path: '/media/icons/menu_icons/a-symbolic.svg'},
+    { path: '/media/icons/menu_icons/app-launcher-symbolic.svg'},
+    { path: '/media/icons/menu_icons/bat-symbolic.svg'},
+    { path: '/media/icons/menu_icons/dra-symbolic.svg'},
+    { path: '/media/icons/menu_icons/equal-symbolic.svg'},
+    { path: '/media/icons/menu_icons/gnacs-symbolic.svg'},
+    { path: '/media/icons/menu_icons/groove-symbolic.svg'},
+    { path: '/media/icons/menu_icons/kaaet-symbolic.svg'},
+    { path: '/media/icons/menu_icons/launcher-symbolic.svg'},
+    { path: '/media/icons/menu_icons/pac-symbolic.svg'},
+    { path: '/media/icons/menu_icons/robots-symbolic.svg'},
+    { path: '/media/icons/menu_icons/sheild-symbolic.svg'},
+    { path: '/media/icons/menu_icons/somnia-symbolic.svg'},
+    { path: '/media/icons/menu_icons/utool-symbolic.svg'},
 ]
 
 var DISTRO_ICONS = [
-    { path: '/media/icons/distros/debian-logo-symbolic.svg'},
-    { path: '/media/icons/distros/fedora-logo-symbolic.svg'},
-    { path: '/media/icons/distros/manjaro-logo-symbolic.svg'},
-    { path: '/media/icons/distros/pop-os-logo-symbolic.svg'},
-    { path: '/media/icons/distros/ubuntu-logo-symbolic.svg'},
-    { path: '/media/icons/distros/arch-logo-symbolic.svg'},
-    { path: '/media/icons/distros/opensuse-logo-symbolic.svg'},
-    { path: '/media/icons/distros/raspbian-logo-symbolic.svg'},
-    { path: '/media/icons/distros/kali-linux-logo-symbolic.svg'},
-    { path: '/media/icons/distros/pureos-logo-symbolic.svg'},
-    { path: '/media/icons/distros/solus-logo-symbolic.svg'},
-    { path: '/media/icons/distros/budgie-logo-symbolic.svg'},
-    { path: '/media/icons/distros/gentoo-logo-symbolic.svg'},
-    { path: '/media/icons/distros/mx-logo-symbolic.svg'},
-    { path: '/media/icons/distros/redhat-logo-symbolic.svg'},
-    { path: '/media/icons/distros/voyager-logo-symbolic.svg'},
+    { path: '/media/icons/menu_icons_distros/debian-logo-symbolic.svg'},
+    { path: '/media/icons/menu_icons_distros/fedora-logo-symbolic.svg'},
+    { path: '/media/icons/menu_icons_distros/manjaro-logo-symbolic.svg'},
+    { path: '/media/icons/menu_icons_distros/pop-os-logo-symbolic.svg'},
+    { path: '/media/icons/menu_icons_distros/ubuntu-logo-symbolic.svg'},
+    { path: '/media/icons/menu_icons_distros/arch-logo-symbolic.svg'},
+    { path: '/media/icons/menu_icons_distros/opensuse-logo-symbolic.svg'},
+    { path: '/media/icons/menu_icons_distros/raspbian-logo-symbolic.svg'},
+    { path: '/media/icons/menu_icons_distros/kali-linux-logo-symbolic.svg'},
+    { path: '/media/icons/menu_icons_distros/pureos-logo-symbolic.svg'},
+    { path: '/media/icons/menu_icons_distros/solus-logo-symbolic.svg'},
+    { path: '/media/icons/menu_icons_distros/budgie-logo-symbolic.svg'},
+    { path: '/media/icons/menu_icons_distros/gentoo-logo-symbolic.svg'},
+    { path: '/media/icons/menu_icons_distros/mx-logo-symbolic.svg'},
+    { path: '/media/icons/menu_icons_distros/redhat-logo-symbolic.svg'},
+    { path: '/media/icons/menu_icons_distros/voyager-logo-symbolic.svg'},
 ]
 
 var MENU_LAYOUT = {
@@ -301,21 +301,21 @@ var ALTERNATIVE_MENU_STYLE = [
     { thumbnail: '/media/layouts/raven-menu.svg', name: _('Raven Menu Style'), layout: MENU_LAYOUT.Raven}];
 
 var MENU_STYLES = {
-    ThumbnailHeight: 175,
-    ThumbnailWidth: 175,
+    ThumbnailHeight: 150,
+    ThumbnailWidth: 150,
     MaxColumns: 6,
     Styles: [ 
-        { thumbnail: '/media/layouts/categories/traditional-symbolic.svg', name: _('Traditional Layouts'), layoutStyle: TRADITIONAL_MENU_STYLE, 
+        { thumbnail: '/media/layouts/categories/traditional-symbolic.svg', name: _('Traditional'), layoutStyle: TRADITIONAL_MENU_STYLE, 
                 description: _("Traditional layouts use a familiar style and have a traditional user experience.")},
-        { thumbnail: '/media/layouts/categories/modern-symbolic.svg', name: _('Modern Layouts'), layoutStyle: MODERN_MENU_STYLE, 
+        { thumbnail: '/media/layouts/categories/modern-symbolic.svg', name: _('Modern'), layoutStyle: MODERN_MENU_STYLE, 
                 description: _("Modern layouts use a style and UX based approach with a focus on design and functionality.")},
-        { thumbnail: '/media/layouts/categories/touch-symbolic.svg', name: _('Touch Layouts'), layoutStyle: TOUCH_MENU_STYLE, 
+        { thumbnail: '/media/layouts/categories/touch-symbolic.svg', name: _('Touch'), layoutStyle: TOUCH_MENU_STYLE, 
                 description: _("Touch layouts contain large menu elements that are well suited for touch based devices.")},
-        { thumbnail: '/media/layouts/categories/simple-symbolic.svg', name: _('Simple Layouts'), layoutStyle: SIMPLE_MENU_STYLE, 
+        { thumbnail: '/media/layouts/categories/simple-symbolic.svg', name: _('Simple'), layoutStyle: SIMPLE_MENU_STYLE, 
                 description: _("Simple layouts are designed for mouse based devices and contain simplistic menu elements.")},
-        { thumbnail: '/media/layouts/categories/launcher-symbolic.svg', name: _('Launcher Layouts'), layoutStyle: LAUNCHER_MENU_STYLE, 
+        { thumbnail: '/media/layouts/categories/launcher-symbolic.svg', name: _('Launcher'), layoutStyle: LAUNCHER_MENU_STYLE, 
                 description: _("Launcher layouts are well suited for keyboard driven devices and provide the user with quick and simple menu elements.")},
-        { thumbnail: '/media/layouts/categories/alternative-symbolic.svg', name: _('Alternative Layouts'), layoutStyle: ALTERNATIVE_MENU_STYLE, 
+        { thumbnail: '/media/layouts/categories/alternative-symbolic.svg', name: _('Alternative'), layoutStyle: ALTERNATIVE_MENU_STYLE, 
                 description: _("Alternative layouts have an unconventional style that provide a unique user experience.")}
     ]
 };
@@ -351,12 +351,12 @@ var KEYBOARD_LOGO = {
 
 var ARC_MENU_MANUAL_ICON = {
     Path: '/media/misc/arcmenu-manual-icon.svg',
-    Size: [30, 30]
+    Size: [20, 20]
 };
 
 var GITLAB_ICON = {
     Path: '/media/misc/gitlab-icon.svg',
-    Size: [30, 30]
+    Size: [20, 20]
 };
 
 var DistroIconsDisclaimer = '<i>"All brand icons are trademarks of their respective owners. The use of these trademarks does not indicate endorsement of the trademark holder by Arc Menu project, nor vice versa. Please do not use brand logos for any purpose except to represent the company, product, or service to which they refer."</i>'+
@@ -370,24 +370,21 @@ var DistroIconsDisclaimer = '<i>"All brand icons are trademarks of their respect
                                 '\n\n•   <b>Raspberry Pi</b> - logo and name are part of Raspberry Pi Foundation UK Registered Charity 1129409'+
                                 '\n\n•   <b>Kali Linux</b> - logo and name are part of © OffSec Services Limited 2020'+
                                 '\n\n•   <b>PureOS</b> - logo and name are developed by members of the Purism community'+
-                                '\n\n•   <b>Solus</b> -  logo and name are copyright © 2014-2018 by Solus Project';
+                                '\n\n•   <b>Solus</b> - logo and name are copyright © 2014-2018 by Solus Project'+
+                                '\n\n•   <b>Gentoo Authors©</b> - 2001–2020 Gentoo is a trademark of the Gentoo Foundation, Inc.'+
+                                '\n\n•   <b>Voyager© Linux</b> - name and logo'+
+                                '\n\n•   <b>MXLinux©</b> - 2020 - Linux - is the registered trademark of Linus Torvalds in the U.S. and other countries.'+
+                                '\n\n•   <b>Red Hat, Inc.©</b> - Copyright 2020 name and logo';
 
-var CREDITS = '\n<b>Credits:</b>'+
-		'\n\nCurrent Active Developers'+
-		'\n <a href="https://gitlab.com/LinxGem33">@LinxGem33</a>  (Founder/Maintainer/Graphic Designer)'+
-		'\n<a href="https://gitlab.com/AndrewZaech">@AndrewZaech</a>  (Lead JavaScript/UX Developer)'+
-		'\n\nPast Developers'+
-		'\n <a href="https://github.com/lexruee">@lexruee</a>  (Developer)'+
-		'\n\n\n<b>A Special Thanks To:</b>'+
-		'\n\nTranslators'+
-		'\n<a href="https://gitlab.com/arcmenu-team/Arc-Menu#please-refer-to-the-wiki-section-for-a-translation-guide">Full List</a>'+
-		'\nPlease See Details'+
-		'\n\nOther'+
-		'\n<a href="https://gitlab.com/tingvarsson">@Thomas Ingvarsson</a>  (Contributor)'+
-		'\n<a href="https://github.com/charlesg99">@charlesg99</a>  (Contributor)'+
-		'\n<a href="https://github.com/JasonLG1979">@JasonLG1979</a>  (Contributor)'+
-		'\n<a href="https://github.com/fishears/Arc-Menu">@fishears</a>  (Contributor)'+
-        '\n';
+var DEVELOPERS = '<b>Andrew Zaech</b> <a href="https://gitlab.com/AndrewZaech">@AndrewZaech</a>\nLead Project Developer - UX/Backend Developer\t' +
+                '\n\n<b>LinxGem33</b> aka <b>Andy C</b> <a href="https://gitlab.com/LinxGem33">@LinxGem33</a>\nFounder - Maintainer - Digital Art Designer';
+var TRANSLATORS = '<b>Thank you to all translators!</b>\n<a href="https://gitlab.com/arcmenu-team/Arc-Menu#please-refer-to-the-wiki-section-for-a-translation-guide">Full List of Translators</a>';
+var CONTRIBUTORS = '<b>Thank you to the following Top Contributors:</b>\n<a href="https://gitlab.com/arcmenu-team/Arc-Menu#top-project-contributors">Top Contributors</a>' +
+                    '\n\n<b>A thank you to those who submited Pull Requests</b>\n<a href="https://gitlab.com/arcmenu-team/Arc-Menu#pull-requests">Pull Request Contributors</a>';
+var ARTWORK = '<b>LinxGem33</b> aka <b>Andy C</b>\nWiki Screens, Icons, Wire-Frames, Arc Menu Assets' +
+                '\n\n<b>Andrew Zaech</b>\nIcons, Wire-Frames';
+var DOCUMENTATION = '<b>LinxGem33</b> aka <b>Andy C</b>\nMaintainer - Contributor' +
+                    '\n\n<b>Andrew Zaech</b>\nContributor';
         
 var GNU_SOFTWARE = '<span size="small">' +
     'This program comes with absolutely no warranty.\n' +

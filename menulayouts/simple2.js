@@ -91,8 +91,7 @@ var createMenu = class extends BaseMenuLayout.BaseLayout{
         this._clearActorsFromBox();
         let isActiveMenuItemSet = false;
         for(let categoryMenuItem of this.categoryDirectories.values()){
-            this.mainBox.add_actor(categoryMenuItem.actor);	
-            this.mainBox.add_actor(categoryMenuItem.menu.actor);
+            this.arcMenu.addMenuItem(categoryMenuItem);
             if(!isActiveMenuItemSet){
                 isActiveMenuItemSet = true;
                 this.activeMenuItem = categoryMenuItem;

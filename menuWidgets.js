@@ -1210,6 +1210,8 @@ var ShortcutButtonItem = GObject.registerClass(class ArcMenu_ShortcutButtonItem 
             Main.overview.show();
         else if(this._command === "ArcMenu_RunCommand")
             Main.openRunDialog();
+        else if(this._command === "ArcMenu_ShowAllApplications")
+            Main.overview.viewSelector._toggleAppsPage();
         else
             Util.spawnCommandLine(this._command);   
     }
@@ -1537,6 +1539,8 @@ var ShortcutMenuItem = GObject.registerClass(class ArcMenu_ShortcutMenuItem exte
             Main.overview.show();
         else if(this._command == "ArcMenu_RunCommand")
             Main.openRunDialog();
+        else if(this._command === "ArcMenu_ShowAllApplications")
+            Main.overview.viewSelector._toggleAppsPage();
         else if(this._app)
             this._app.open_new_window(-1);
         else
@@ -1873,6 +1877,8 @@ var FavoritesMenuItem = GObject.registerClass({
     activate(event) {
         if(this._app)
             this._app.open_new_window(-1);
+        else if(this._command === "ArcMenu_ShowAllApplications")
+            Main.overview.viewSelector._toggleAppsPage();
         else
             Util.spawnCommandLine(this._command);
 

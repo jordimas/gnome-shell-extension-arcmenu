@@ -271,13 +271,6 @@ var TweaksDialog = GObject.registerClass(
             let generalPage = new PW.NotebookPage(_("General"));
             notebook.append_page(generalPage);
 
-            let pinnedAppsPage = new Prefs.PinnedAppsPage(this._settings);
-            notebook.append_page(pinnedAppsPage);
-
-            let applicationShortcutsPage = new Prefs.ApplicationShortcutsPage(this._settings);
-            applicationShortcutsPage._title.label = "<b>" + _("Shortcuts") + "</b>";
-            notebook.append_page(applicationShortcutsPage);
-
             let buttonsPage = new PW.NotebookPage(_("Buttons"));
             notebook.append_page(buttonsPage);
    
@@ -355,14 +348,27 @@ var TweaksDialog = GObject.registerClass(
             //function to load all pinned apps
             this._loadPinnedApps(this._settings.get_strv('ubuntu-dash-pinned-app-list'), pinnedAppsFrame, savePinnedAppsButton);
             pinnedAppsScrollWindow.add_with_viewport(pinnedAppsFrame);
-            buttonsPage.add(pinnedAppsScrollWindow);
 
+            let pinnedAppsHeaderLabel = new Gtk.Label({
+                label: "<b>" + _("Ubuntu Dash Buttons") + "</b>",
+                use_markup: true,
+                xalign: 0
+            });
+            buttonsPage.add(pinnedAppsHeaderLabel);
+            buttonsPage.add(pinnedAppsScrollWindow);
             buttonsPage.add(savePinnedAppsButton);
+
+            let pinnedAppsSeparatorHeaderLabel = new Gtk.Label({
+                label: "<b>" + _("Button Separator Position") + "</b>",
+                use_markup: true,
+                xalign: 0
+            });
+            buttonsPage.add(pinnedAppsSeparatorHeaderLabel);
 
             let pinnedAppsSeparatorFrame = new PW.FrameBox();
             let pinnedAppsSeparatorRow = new PW.FrameBoxRow();
             let pinnedAppsSeparatorLabel = new Gtk.Label({
-                label: _("Separator Position Index"),
+                label: _("Separator Position"),
                 use_markup: true,
                 xalign: 0
             });
@@ -399,20 +405,6 @@ var TweaksDialog = GObject.registerClass(
             buttonsPage.add(pinnedAppsSeparatorFrame);
         }
         _loadRavenTweaks(vbox){
-            let notebook = new PW.Notebook();
-
-            let generalPage = new PW.NotebookPage(_("General"));
-            notebook.append_page(generalPage);
-
-            let pinnedAppsPage = new Prefs.PinnedAppsPage(this._settings);
-            notebook.append_page(pinnedAppsPage);
-
-            let applicationShortcutsPage = new Prefs.ApplicationShortcutsPage(this._settings);
-            applicationShortcutsPage._title.label = "<b>" + _("Shortcuts") + "</b>";
-            notebook.append_page(applicationShortcutsPage);
-   
-            vbox.add(notebook);
-
             let generalTweaksFrame = new PW.FrameBox();
             let homeScreenRow = new PW.FrameBoxRow();
             let homeScreenLabel = new Gtk.Label({
@@ -432,7 +424,7 @@ var TweaksDialog = GObject.registerClass(
             homeScreenRow.add(homeScreenLabel);
             homeScreenRow.add(homeScreenCombo);
             generalTweaksFrame.add(homeScreenRow);
-            generalPage.add(generalTweaksFrame);
+            vbox.add(generalTweaksFrame);
 
             let showMoreDetailsFrame = new PW.FrameBox();
             let showMoreDetailsRow = new PW.FrameBoxRow();
@@ -453,10 +445,10 @@ var TweaksDialog = GObject.registerClass(
             showMoreDetailsRow.add(showMoreDetailsSwitch);
             showMoreDetailsFrame.add(showMoreDetailsRow);
             if(this._settings.get_enum('menu-layout') === Constants.MENU_LAYOUT.Raven)
-                generalPage.add(showMoreDetailsFrame);
+                vbox.add(showMoreDetailsFrame);
 
             let widgetFrame =  this._createWidgetsRows(Constants.MENU_LAYOUT.Raven);
-            generalPage.add(widgetFrame);
+            vbox.add(widgetFrame);
         }
         _loadMintMenuTweaks(vbox){
             let mintMenuTweaksFrame = new PW.FrameBox();
@@ -464,6 +456,13 @@ var TweaksDialog = GObject.registerClass(
             mintMenuTweaksFrame.add(this._createSearchBarLocationRow());
             mintMenuTweaksFrame.add(this._createFlipHorizontalRow());
             vbox.add(mintMenuTweaksFrame);
+
+            let pinnedAppsHeaderLabel = new Gtk.Label({
+                label: "<b>" + _("Mint Menu Shortcuts") + "</b>",
+                use_markup: true,
+                xalign: 0
+            });
+            vbox.add(pinnedAppsHeaderLabel);
 
             let pinnedAppsFrame = new PW.FrameBox();
             let pinnedAppsScrollWindow = new Gtk.ScrolledWindow();
@@ -494,10 +493,17 @@ var TweaksDialog = GObject.registerClass(
 
             vbox.add(savePinnedAppsButton);
 
+            let pinnedAppsSeparatorHeaderLabel = new Gtk.Label({
+                label: "<b>" + _("Shortcut Separator Position") + "</b>",
+                use_markup: true,
+                xalign: 0
+            });
+            vbox.add(pinnedAppsSeparatorHeaderLabel);
+
             let pinnedAppsSeparatorFrame = new PW.FrameBox();
             let pinnedAppsSeparatorRow = new PW.FrameBoxRow();
             let pinnedAppsSeparatorLabel = new Gtk.Label({
-                label: _("Separator Position Index"),
+                label: _("Separator Position"),
                 use_markup: true,
                 xalign: 0
             });
@@ -697,16 +703,9 @@ var TweaksDialog = GObject.registerClass(
             vbox.add(redmondMenuTweaksFrame);
         }
         _loadWindowsMenuTweaks(vbox){
-            let notebook = new PW.Notebook();
-
-            let pinnedAppsPage = new Prefs.PinnedAppsPage(this._settings);
-            notebook.append_page(pinnedAppsPage);
-
             let windowsMenuTweaksFrame = new PW.FrameBox();
             windowsMenuTweaksFrame.add(this._createAvatarShapeRow());
-
             vbox.add(windowsMenuTweaksFrame);
-            vbox.add(notebook);
         }
         _loadGnomeMenuTweaks(vbox){
             let gnomeMenuTweaksFrame = new PW.FrameBox();
