@@ -913,7 +913,7 @@ var BaseLayout = class {
         }
        
         this.mainBox.get_children().forEach((child) => {
-            if(child)
+            if(child && child !== undefined && child !== null)
                 child.destroy();
         });
     }
