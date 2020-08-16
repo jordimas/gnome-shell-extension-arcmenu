@@ -2445,7 +2445,6 @@ var MenuLayoutPage = GObject.registerClass(
                 transition_type: Gtk.StackTransitionType.SLIDE_LEFT_RIGHT
             });
 
-            
             let layoutsBox = new MenuLayoutsWindow(this._settings, this.stack);
             this.stack.add_named(this.scrollBox, "LayoutsBox");
             Constants.MENU_STYLES.Styles.forEach((style) => {
@@ -2460,6 +2459,7 @@ var MenuLayoutPage = GObject.registerClass(
                         tweaksLabel.label = currentLayoutBoxLabel.label +" " + _("Tweaks");
                         currentLayoutImage.gicon = Gio.icon_new_for_string(Me.path + this.getMenuLayoutThumbnailPath(dialog.index));
                         this.stack.set_visible_child_name("LayoutsBox");
+                        this.scrollBox.vadjustment.set_value(this.scrollBox.vadjustment.get_lower());
                     }
                     if(response === -20){
                         this.stack.set_visible_child_name("LayoutsBox");
@@ -2651,12 +2651,12 @@ var MenuLayoutsWindow = GObject.registerClass(
             };
             this._tileGrid = new PW.TileGrid(this._params.maxColumns);
             
-            this.halign = Gtk.Align.FILL;
+            this._tileGrid.hexpand = true;
+            this._tileGrid.halign = Gtk.Align.FILL;
             this._createLayout(this);
         }
 
         _createLayout(vbox) {         
-
             //Add each menu layout to frame
             this.add(this._tileGrid);
             this._tileGrid.set_selection_mode(Gtk.SelectionMode.NONE);

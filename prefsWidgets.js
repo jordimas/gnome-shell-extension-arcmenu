@@ -317,7 +317,6 @@ var Tile = GObject.registerClass(class ArcMenu_Tile extends Gtk.Button{
 var LayoutTile = GObject.registerClass(class ArcMenu_LayoutTile extends FrameBox{
     _init(name, file, width, height, layout) {
         super._init();
-        this.hexpand = false;
         this.name = name;
         this.layout = layout.layoutStyle;
         this.info = "<b>"+ _(this.name) + "</b>\n\n" + _(layout.description) + "\n\n" + _("Included Layouts") + ":";
@@ -326,7 +325,6 @@ var LayoutTile = GObject.registerClass(class ArcMenu_LayoutTile extends FrameBox
             selectable: false,
             activatable: false
         });
-        this.box._grid.hexpand = false;
         this.box._grid.row_spacing = 10;
 
         this.layoutList = "";
@@ -351,7 +349,10 @@ var LayoutTile = GObject.registerClass(class ArcMenu_LayoutTile extends FrameBox
         let descriptoinLabel = new Gtk.Label({
             label: _(layout.description),
             use_markup: true,
+            hexpand: true,
+            halign: Gtk.Align.START,
             wrap: true,
+            xalign: 0
         })
         let iconImage = new Gtk.Image({
             gicon: Gio.icon_new_for_string('go-next-symbolic'),

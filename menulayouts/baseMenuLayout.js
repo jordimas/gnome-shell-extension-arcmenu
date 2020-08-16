@@ -813,7 +813,7 @@ var BaseLayout = class {
                 if(this.layoutProperties.Search && this.searchBox.hasKeyFocus() && this.newSearch._defaultResult && this.newSearch.actor.get_parent()){
                     this.newSearch.highlightDefault(!this.newSearch._highlightDefault);
                     this.newSearch._defaultResult.actor.grab_key_focus();
-                    return Clutter.EVENT_STOP;       
+                    return actor.navigate_focus(global.stage.key_focus, direction, false);      
                 }
                 else if(global.stage.key_focus === this.mainBox || (this.layoutProperties.Search && global.stage.key_focus === this.searchBox.actor)){
                     this.activeMenuItem.actor.grab_key_focus();
