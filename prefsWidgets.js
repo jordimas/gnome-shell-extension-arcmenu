@@ -202,7 +202,6 @@ var StackListBox = GObject.registerClass(class ArcMenu_StackListBox extends Gtk.
                 let stackName = listRow.stackName;
                 this.settingsFrameStack.set_visible_child_name(stackName);
                 if(listRow.nextPage){
-                    widget.leftHeaderBox.remove(widget.arcIcon);
                     widget.leftHeaderBox.add(widget.backButton);
                     this.settingsListStack.set_visible_child_name(listRow.nextPage);
                     this.settingsListStack.get_child_by_name(listRow.nextPage).listBox.selectFirstRow();

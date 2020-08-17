@@ -5631,7 +5631,7 @@ var AboutPage = GObject.registerClass(
 
             // Create GUI elements
             // Create the image box
-            let logoPath = Me.path + '/media/icons/settings_icons/arcmenu-settings-logo.svg';
+            let logoPath = Me.path + Constants.ARC_MENU_LOGO.Path;
             let [imageWidth, imageHeight] = Constants.ARC_MENU_LOGO.Size;
             let pixbuf = GdkPixbuf.Pixbuf.new_from_file_at_size(logoPath, 100, 100);
             let arcMenuImage = new Gtk.Image({ 
@@ -5945,13 +5945,7 @@ class ArcMenu_ArcMenuPreferencesWidget extends Gtk.Box{
                 hexpand: true,
                 visible: true
             });
-            this.arcIcon = new Gtk.Image({
-                gicon: Gio.icon_new_for_string(Me.path + '/media/icons/settings_icons/arcmenu-settings-logo.svg'),
-                pixel_size: 30,
-                visible: true,
-            });
-            this.leftHeaderBox.add(this.arcIcon);     
-            
+
             window.get_titlebar().pack_start(this.leftHeaderBox);
         });
         
@@ -5970,7 +5964,6 @@ class ArcMenu_ArcMenuPreferencesWidget extends Gtk.Box{
                 this.settingsListStack.set_visible_child_name("Main");
                 this.settingsListStack.get_child_by_name('Main').listBox.selectFirstRow();
                 this.leftHeaderBox.remove(this.backButton);
-                this.leftHeaderBox.add(this.arcIcon);
             }
         });
 
@@ -6106,7 +6099,6 @@ class ArcMenu_ArcMenuPreferencesWidget extends Gtk.Box{
         this.settingsListStack.get_child_by_name('Main').listBox.selectFirstRow();
         if(this.backButton.get_parent()){
             this.leftHeaderBox.remove(this.backButton);
-            this.leftHeaderBox.add(this.arcIcon);
         }
     }
 });
