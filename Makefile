@@ -4,7 +4,7 @@ UUID = arc-menu@linxgem33.com
 BASE_MODULES = AUTHORS convenience.js COPYING extension.js helper.js metadata.json README.md utils.js 
 EXTRA_MODULES = constants.js controller.js menuButton.js menuWidgets.js placeDisplay.js prefs.js prefsWidgets.js search.js
 
-MENU_LAYOUTS = baseMenuLayout.js arcmenu.js brisk.js budgie.js chromebook.js dashboard.js elementary.js gnomemenu.js mint.js redmond.js runner.js simple.js simple2.js tognee.js ubuntudash.js whisker.js windows.js
+MENU_LAYOUTS = arcmenu.js baseMenuLayout.js brisk.js budgie.js chromebook.js dashboard.js elementary.js gnomemenu.js mint.js raven.js ravenExtended.js redmond.js runner.js simple.js simple2.js tognee.js ubuntudash.js whisker.js windows.js
 MENU_TWEAKS = menulayouts/tweaks/tweaks.js
 
 TOLOCALIZE = $(EXTRA_MODULES) $(addprefix menulayouts/, $(MENU_LAYOUTS)) $(MENU_TWEAKS)
