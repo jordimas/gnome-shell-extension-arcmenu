@@ -195,7 +195,30 @@ var createMenu = class extends BaseMenuLayout.BaseLayout{
   
         this.applicationsScrollBox.add_actor(this.applicationsBox);
         this.subMainBox.add(this.applicationsScrollBox);
-           
+   
+        this.weatherBox = new St.BoxLayout({
+            x_expand: false,
+            y_expand: true,
+            x_align: Clutter.ActorAlign.CENTER,
+            y_align: Clutter.ActorAlign.END,
+            vertical: false,
+            style_class: 'show-apps'
+        });
+        
+        this._weatherItem = new MW.WeatherSection();
+        this._weatherItem.style = "border-radius:4px; padding: 10px; margin: 0px 25px 25px 25px;";
+        this._weatherItem.x_expand = true;
+        this._weatherItem.x_align = Clutter.ActorAlign.FILL;
+        this._weatherItem.connect("clicked", ()=> this.dashboard.close());
+        this._clocksItem = new MW.WorldClocksSection();
+        this._clocksItem.x_expand = true;
+        this._clocksItem.x_align = Clutter.ActorAlign.FILL;
+        this._clocksItem.style = "border-radius:4px; padding: 10px; margin: 0px 25px 25px 25px;";
+        this._clocksItem.connect("clicked", ()=> this.dashboard.close());
+
+        this.weatherBox.add(this._clocksItem);
+        this.weatherBox.add(this._weatherItem);
+        
         this.appShortcuts = [];
         this.shortcutsBox = new St.BoxLayout({
             x_expand: true,
@@ -258,6 +281,7 @@ var createMenu = class extends BaseMenuLayout.BaseLayout{
         this.newSearch.setMaxDisplayedResults(this.columnCount);
         this.mainBox.style = `height: ${height}px; width: ${width}px;`;
         this.applicationsBox.style = "width: " + Math.round(6 * (width / 10)) + "px; padding-bottom: 25px;";
+        this.weatherBox.style = "width: " + Math.round(6 * (width / 10)) + "px;";
         this.dashboard.style = `height: ${height}px; width: ${width}px;`;
         this.actionsBoxContainer.style = "height: "+ height +"px;margin: 0px 0px 0px 0px; spacing: 10px;background-color:rgba(186, 196,201, 0.1) ; padding: 5px 5px;" +
                                             "border-color:rgba(186, 196,201, 0.2) ; border-right-width: 1px;";
@@ -287,7 +311,12 @@ var createMenu = class extends BaseMenuLayout.BaseLayout{
         let addStyle = this._settings.get_boolean('enable-custom-arc-menu');
 
         addStyle ? this.dashboard.add_style_class_name('arc-menu-dashboard') : this.dashboard.remove_style_class_name('arc-menu-dashboard');
+        addStyle ? this._clocksItem.add_style_class_name('arc-menu-action') : this._clocksItem.remove_style_class_name('arc-menu-action');
+        addStyle ? this._weatherItem.add_style_class_name('arc-menu-action') : this._weatherItem.remove_style_class_name('arc-menu-action');
 
+        for(let categoryMenuItem of this.categoryDirectories.values()){
+            categoryMenuItem.updateStyle();	 
+        }    
         this.updateLocation();
     }
 
@@ -298,7 +327,7 @@ var createMenu = class extends BaseMenuLayout.BaseLayout{
     loadCategories() {
         this.categoryDirectories = null;
         this.categoryDirectories = new Map(); 
-        let categoryMenuItem = new MW.CategoryMenuItem(this, Constants.CategoryType.HOME_SCREEN);
+        let categoryMenuItem = new MW.CategoryMenuButton(this, Constants.CategoryType.HOME_SCREEN);
         this.categoryDirectories.set(Constants.CategoryType.HOME_SCREEN, categoryMenuItem);
 
         let extraCategories = this._settings.get_value("extra-categories").deep_unpack();
@@ -309,13 +338,13 @@ var createMenu = class extends BaseMenuLayout.BaseLayout{
             if(categoryEnum == Constants.CategoryType.PINNED_APPS)
                 shouldShow = false;
             if(shouldShow){
-                let categoryMenuItem = new MW.CategoryMenuItem(this, categoryEnum);
+                let categoryMenuItem = new MW.CategoryMenuButton(this, categoryEnum);
                 this.categoryDirectories.set(categoryEnum, categoryMenuItem);
             }
         }
 
         let isIconGrid = true;
-        super.loadCategories(MW.CategoryMenuItem, isIconGrid);
+        super.loadCategories(MW.CategoryMenuButton, isIconGrid);
     }
 
     displayCategories(){
@@ -333,6 +362,18 @@ var createMenu = class extends BaseMenuLayout.BaseLayout{
         this._displayAppList(this.appShortcuts, true, this.shortcutsGrid);
         if(!this.applicationsBox.contains(this.shortcutsBox))
             this.applicationsBox.add(this.shortcutsBox);
+        let actors = this.weatherBox.get_children();
+        for (let i = 0; i < actors.length; i++) {
+            this.weatherBox.remove_actor(actors[i]);
+        }
+        if(this._settings.get_boolean('enable-clock-widget-raven')){
+            this.weatherBox.add(this._clocksItem);
+        }
+        if(this._settings.get_boolean('enable-weather-widget-raven')){
+            this.weatherBox.add(this._weatherItem);
+        }
+        if(!this.subMainBox.contains(this.weatherBox))
+            this.subMainBox.add(this.weatherBox);
     }
 
     displayCategoryAppList(appList){
@@ -341,6 +382,9 @@ var createMenu = class extends BaseMenuLayout.BaseLayout{
     }
     
     _clearActorsFromBox(box) {
+        if(this.subMainBox.contains(this.weatherBox)){
+            this.subMainBox.remove_actor(this.weatherBox);
+        }
         super._clearActorsFromBox(box);
     }
 
@@ -380,7 +424,11 @@ var createMenu = class extends BaseMenuLayout.BaseLayout{
             this.mainBox.disconnect(this._mainBoxKeyPressId);
             this._mainBoxKeyPressId = 0;
         }
-
+        if(this._clocksItem)
+            this._clocksItem.destroy();
+        if(this._weatherItem)
+            this._weatherItem.destroy();
+            
         this.arcMenu = this.oldArcMenu;
         this.arcMenu.box.style = null;
         this.arcMenu.actor.style = null;

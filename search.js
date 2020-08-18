@@ -194,7 +194,7 @@ var AppSearchResult = class ArcMenu_AppSearchResult {
                     this.menuItem.box.style = 'padding: 0px; margin: 0px; spacing:0px;';
                     iconSize = 52;
                 }
-                else if(this.layout == Constants.MENU_LAYOUT.Dashboard){
+                else if(this._menuLayout.layoutProperties.isDashboard){
                     this.menuItem.box.style = 'margin-top: 14px; padding: 5px; spacing: 0px; width:125px; height:125px;';
                     iconSize = 80;
                 }
@@ -221,7 +221,7 @@ var AppSearchResult = class ArcMenu_AppSearchResult {
                 else{
                     if(this.layout == Constants.MENU_LAYOUT.Elementary || this.layout == Constants.MENU_LAYOUT.UbuntuDash)
                         this.menuItem.actor.style = "border-radius:4px; padding: 25px 0px;";
-                    else if(this.layout == Constants.MENU_LAYOUT.Dashboard)
+                    else if(this._menuLayout.layoutProperties.isDashboard)
                         this.menuItem.box.style = "padding: 30px 0px;";
                     else 
                         this.menuItem.actor.style = "border-radius:4px; padding: 20px 0px;";
@@ -451,7 +451,7 @@ var ListSearchResults = class ArcMenu_ListSearchResults extends SearchResultsBas
             y_align: Clutter.ActorAlign.FILL,
             x_expand: true,
             y_expand: true,
-            style_class: this.layout == Constants.MENU_LAYOUT.Dashboard ? 'search-section-content' : null
+            style_class: this._menuLayout.layoutProperties.isDashboard ? 'search-section-content' : null
         });
 
         if(gridView){
@@ -459,7 +459,7 @@ var ListSearchResults = class ArcMenu_ListSearchResults extends SearchResultsBas
                 this._container.vertical = true;
                 this._container.style = null;  
             }
-            else if(this.layout == Constants.MENU_LAYOUT.Dashboard){
+            else if(this._menuLayout.layoutProperties.isDashboard){
                 this._container.style = "padding: 10px; spacing: 6px; margin: 7px 20px;";
             }
             else{
@@ -539,7 +539,7 @@ var AppSearchResults = class ArcMenu_AppSearchResults extends SearchResultsBase 
             let spacing;
             if(this.layout == Constants.MENU_LAYOUT.Elementary || this.layout == Constants.MENU_LAYOUT.UbuntuDash)
                 spacing = 15;
-            else if(this.layout == Constants.MENU_LAYOUT.Dashboard)
+            else if(this._menuLayout.layoutProperties.isDashboard)
                 spacing = 30;
             else 
                 spacing = 10;
@@ -660,7 +660,7 @@ var SearchResults = class ArcMenu_SearchResults {
 
     setStyle(style){
         if(this._statusText){
-            if(this._menuLayout.layout === Constants.MENU_LAYOUT.Dashboard)
+            if(this._menuLayout.layoutProperties.isDashboard)
                 this._statusText.style_class = "search-statustext";
             else
                 this._statusText.style_class = style;
@@ -972,7 +972,7 @@ var ArcSearchProviderInfo = GObject.registerClass(class ArcMenu_ArcSearchProvide
             });
             this._content.add_actor(icon);
 
-            if(this._menuLayout.layout === Constants.MENU_LAYOUT.Dashboard){
+            if(this._menuLayout.layoutProperties.isDashboard){
                 this.actor.style = null;
                 this.box.style = 'width: 240px;';
                 this.remove_child(this._ornamentLabel);

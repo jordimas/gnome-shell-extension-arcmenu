@@ -61,6 +61,8 @@ function getMenuLayout(button, layout){
             return new MenuLayout.raven.createMenu(button);
         case Constants.MENU_LAYOUT.Tognee:
             return new MenuLayout.tognee.createMenu(button);
+        case Constants.MENU_LAYOUT.RavenExtended:
+            return new MenuLayout.ravenExtended.createMenu(button);
         case Constants.MENU_LAYOUT.Dashboard:
             return new MenuLayout.dashboard.createMenu(button);
     }

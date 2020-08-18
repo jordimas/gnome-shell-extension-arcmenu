@@ -160,12 +160,13 @@ var MENU_BUTTON_ICON = {
 };
 
 var MENU_ICONS = [
+    { path: '/media/icons/menu_icons/arcmenu-logo-symbolic.svg'},
+    { path: '/media/icons/menu_icons/arcmenu-logo-alt-symbolic.svg'},
     { path: '/media/icons/menu_icons/arc-menu-symbolic.svg'},
     { path: '/media/icons/menu_icons/arc-menu-alt-symbolic.svg'},
     { path: '/media/icons/menu_icons/arc-menu-old-symbolic.svg'},
     { path: 'start-here-symbolic'},
     { path: '/media/icons/menu_icons/curved-a-symbolic.svg'},
-    { path: '/media/icons/menu_icons/start-box-symbolic.svg'},
     { path: '/media/icons/menu_icons/focus-symbolic.svg'},
     { path: '/media/icons/menu_icons/triple-dash-symbolic.svg'},
     { path: '/media/icons/menu_icons/whirl-symbolic.svg'},
@@ -204,6 +205,7 @@ var MENU_ICONS = [
     { path: '/media/icons/menu_icons/step-symbolic.svg'},
     { path: '/media/icons/menu_icons/vancer-symbolic.svg'},
     { path: '/media/icons/menu_icons/vibe-symbolic.svg'},
+    { path: '/media/icons/menu_icons/start-box-symbolic.svg'},
     { path: '/media/icons/menu_icons/dimond-win-symbolic.svg'},
     { path: '/media/icons/menu_icons/dolphin-symbolic.svg'},
     { path: '/media/icons/menu_icons/dota-symbolic.svg'},
@@ -267,7 +269,8 @@ var MENU_LAYOUT = {
     Chromebook: 14,
     Raven: 15,
     Tognee: 16,
-    Dashboard: 17
+    RavenExtended: 17,
+    Dashboard: 18
 };
 
 var TRADITIONAL_MENU_STYLE = [   
@@ -290,6 +293,7 @@ var TOUCH_MENU_STYLE = [
 
 var LAUNCHER_MENU_STYLE = [   
     { thumbnail: '/media/layouts/krunner-menu.svg', name: _('KRunner Style'), layout: MENU_LAYOUT.Runner},
+    { thumbnail: '/media/layouts/raven-extended.svg', name: _('Raven Extended'), layout: MENU_LAYOUT.RavenExtended},
     { thumbnail: '/media/layouts/dashboard.svg', name: _('Dashboard'), layout: MENU_LAYOUT.Dashboard},
     { thumbnail: '/media/layouts/gnome-dash-menu.svg', name: _('GNOME Dash Style'), layout: MENU_LAYOUT.GnomeDash}];
 
