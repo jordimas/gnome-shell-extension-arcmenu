@@ -5,39 +5,64 @@
    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
    xmlns:svg="http://www.w3.org/2000/svg"
    xmlns="http://www.w3.org/2000/svg"
-   id="svg22"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   inkscape:version="1.0 (4035a4fb49, 2020-05-01)"
+   sodipodi:docname="equal-symbolic.svg"
+   width="64"
+   height="64"
    version="1.1"
-   height="48"
-   width="48">
+   id="svg24">
+  <sodipodi:namedview
+     inkscape:document-rotation="0"
+     inkscape:current-layer="svg24"
+     inkscape:window-maximized="1"
+     inkscape:window-y="40"
+     inkscape:window-x="0"
+     inkscape:cy="32"
+     inkscape:cx="-17.084746"
+     inkscape:zoom="3.6875"
+     showgrid="false"
+     id="namedview950"
+     inkscape:window-height="898"
+     inkscape:window-width="1920"
+     inkscape:pageshadow="2"
+     inkscape:pageopacity="0"
+     guidetolerance="10"
+     gridtolerance="10"
+     objecttolerance="10"
+     borderopacity="1"
+     bordercolor="#666666"
+     pagecolor="#ffffff" />
   <metadata
-     id="metadata28">
+     id="metadata30">
     <rdf:RDF>
       <cc:Work
          rdf:about="">
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
   <defs
-     id="defs26" />
+     id="defs28" />
   <g
+     id="g840"
      style="fill:#cccccc"
-     id="g840">
+     transform="matrix(1.4249304,0,0,1.4249304,-2.1913721,-2.1983296)">
     <path
-       style="fill:#cccccc"
-       d="M 25.480469 4 C 20.242369 4 15.996094 7.4776 15.996094 13 C 15.996094 18.5224 20.593694 21.643 24.996094 23 C 29.300694 24.3268 34.964844 28.4776 34.964844 34 C 34.964844 39.5224 30.718569 44 25.480469 44 C 35.705469 44 43.996094 35.0448 43.996094 24 C 43.996094 12.9552 35.705769 4 25.480469 4 z M 26 10 A 4 4 0 0 1 30 14 A 4 4 0 0 1 26 18 A 4 4 0 0 1 22 14 A 4 4 0 0 1 26 10 z "
-       id="path2" />
+       id="path2-8"
+       d="m 25.480469,4 c -5.2381,0 -9.484375,3.4776 -9.484375,9 0,5.5224 4.5976,8.643 9,10 4.3046,1.3268 9.96875,5.4776 9.96875,11 0,5.5224 -4.246275,10 -9.484375,10 10.225,0 18.515625,-8.9552 18.515625,-20 0,-11.0448 -8.290325,-20 -18.515625,-20 z M 26,10 a 4,4 0 0 1 4,4 4,4 0 0 1 -4,4 4,4 0 0 1 -4,-4 4,4 0 0 1 4,-4 z"
+       style="fill:#cccccc" />
     <path
-       style="fill:#cccccc"
-       d="M 22.509766 4 C 12.284766 4 3.9941406 12.955 3.9941406 24 C 3.9941406 35.045 12.284466 44 22.509766 44 C 27.747866 44 31.994141 40.5224 31.994141 35 C 31.994141 29.4776 27.396541 26.357 22.994141 25 C 18.689541 23.6732 13.025391 19.5224 13.025391 14 C 13.025391 8.4776 17.271666 4 22.509766 4 z M 22 32 A 4 4 0 0 1 26 36 A 4 4 0 0 1 22 40 A 4 4 0 0 1 18 36 A 4 4 0 0 1 22 32 z "
-       id="path4" />
+       id="path4"
+       d="m 22.509766,4 c -10.225,0 -18.5156254,8.955 -18.5156254,20 0,11.045 8.2903254,20 18.5156254,20 5.2381,0 9.484375,-3.4776 9.484375,-9 0,-5.5224 -4.5976,-8.643 -9,-10 -4.3046,-1.3268 -9.96875,-5.4776 -9.96875,-11 0,-5.5224 4.246275,-10 9.484375,-10 z M 22,32 a 4,4 0 0 1 4,4 4,4 0 0 1 -4,4 4,4 0 0 1 -4,-4 4,4 0 0 1 4,-4 z"
+       style="fill:#cccccc" />
     <g
-       style="fill:#cccccc"
-       opacity=".2"
+       id="g10"
        transform="translate(-310.29,-250.22)"
-       id="g10" />
+       style="opacity:0.2;fill:#cccccc" />
   </g>
 </svg>

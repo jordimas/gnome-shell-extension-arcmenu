@@ -5,35 +5,60 @@
    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
    xmlns:svg="http://www.w3.org/2000/svg"
    xmlns="http://www.w3.org/2000/svg"
-   id="svg22"
-   version="1"
-   height="48"
-   width="48">
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   inkscape:version="1.0 (4035a4fb49, 2020-05-01)"
+   sodipodi:docname="robots-symbolic.svg"
+   width="64"
+   height="64"
+   version="1.1"
+   id="svg24">
+  <sodipodi:namedview
+     inkscape:document-rotation="0"
+     inkscape:current-layer="svg24"
+     inkscape:window-maximized="1"
+     inkscape:window-y="40"
+     inkscape:window-x="0"
+     inkscape:cy="32"
+     inkscape:cx="-17.084746"
+     inkscape:zoom="3.6875"
+     showgrid="false"
+     id="namedview953"
+     inkscape:window-height="898"
+     inkscape:window-width="1920"
+     inkscape:pageshadow="2"
+     inkscape:pageopacity="0"
+     guidetolerance="10"
+     gridtolerance="10"
+     objecttolerance="10"
+     borderopacity="1"
+     bordercolor="#666666"
+     pagecolor="#ffffff" />
   <metadata
-     id="metadata28">
+     id="metadata30">
     <rdf:RDF>
       <cc:Work
          rdf:about="">
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
   <defs
-     id="defs26" />
+     id="defs28" />
   <g
+     id="g840"
      style="fill:#cccccc"
-     id="g840">
+     transform="matrix(1.425,0,0,1.425,-2.2,-2.2)">
     <path
-       style="fill:#cccccc"
-       d="M 8 18 L 8 30 L 40 30 L 40 18 L 8 18 z M 14 20 A 4 4 0 0 1 18 24 A 4 4 0 0 1 14 28 A 4 4 0 0 1 10 24 A 4 4 0 0 1 14 20 z M 24 20 A 4 4 0 0 1 28 24 A 4 4 0 0 1 24 28 A 4 4 0 0 1 20 24 A 4 4 0 0 1 24 20 z M 34 20 A 4 4 0 0 1 38 24 A 4 4 0 0 1 34 28 A 4 4 0 0 1 30 24 A 4 4 0 0 1 34 20 z "
-       id="rect2" />
+       id="rect2"
+       d="M 8,18 V 30 H 40 V 18 Z m 6,2 a 4,4 0 0 1 4,4 4,4 0 0 1 -4,4 4,4 0 0 1 -4,-4 4,4 0 0 1 4,-4 z m 10,0 a 4,4 0 0 1 4,4 4,4 0 0 1 -4,4 4,4 0 0 1 -4,-4 4,4 0 0 1 4,-4 z m 10,0 a 4,4 0 0 1 4,4 4,4 0 0 1 -4,4 4,4 0 0 1 -4,-4 4,4 0 0 1 4,-4 z"
+       style="fill:#cccccc" />
     <path
-       style="fill:#cccccc"
-       d="m24 4c-9.349 0-17.137 6.36-19.35 15h38.7c-2.213-8.64-10.001-15-19.35-15zm-19.35 25c2.2124 8.64 10.001 15 19.35 15s17.137-6.36 19.35-15h-38.7z"
        id="path4"
-       fill="#e4e4e4" />
+       d="M 24,4 C 14.651,4 6.863,10.36 4.65,19 h 38.7 C 41.137,10.36 33.349,4 24,4 Z M 4.65,29 C 6.8624,37.64 14.651,44 24,44 33.349,44 41.137,37.64 43.35,29 Z"
+       style="fill:#cccccc" />
   </g>
 </svg>
