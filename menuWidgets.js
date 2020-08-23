@@ -1524,7 +1524,7 @@ var ShortcutMenuItem = GObject.registerClass(class ArcMenu_ShortcutMenuItem exte
         else if(this._menuLayout.layoutProperties.isDashboard){
             this._iconSize = 80;
             this._icon.style = "padding-top: 5px;";
-            this.box.style ='margin-top: 10px; padding: 5px; spacing: 0px; width:125px; height:125px;';
+            this.box.style ='padding: 5px; spacing: 0px; width:125px; height:125px;';
         } 
         else{
             this._iconSize = 36;  
@@ -1952,7 +1952,7 @@ var ApplicationMenuItem = GObject.registerClass(class ArcMenu_ApplicationMenuIte
                 
             else if(this._menuLayout.layoutProperties.isDashboard){
                 this._iconBin.style = "padding-top: 5px;";
-                this.box.style ='margin-top: 10px; padding: 5px; spacing: 0px; width:125px; height:125px;';
+                this.box.style ='padding: 5px; spacing: 0px; width:125px; height:125px;';
             } 
             else{
                 this.actor.style ='text-align: center; border-radius:4px; padding: 5px; spacing: 0px; width:80px;height:80px;';
