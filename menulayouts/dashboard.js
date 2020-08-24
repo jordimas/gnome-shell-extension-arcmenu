@@ -113,14 +113,14 @@ var createMenu = class extends BaseMenuLayout.BaseLayout{
         Main.uiGroup.add_actor(this.dashboard);
 
         this.actionsBoxContainer = new St.BoxLayout({
-            x_expand: true,
+            x_expand: false,
             y_expand: true,
-            x_align: Clutter.ActorAlign.FILL,
+            x_align: Clutter.ActorAlign.END,
             y_align: Clutter.ActorAlign.FILL,
         });
 
         this.actionsBox = new St.BoxLayout({
-            x_expand: true,
+            x_expand: false,
             y_expand: true,
             x_align: Clutter.ActorAlign.END,
             y_align: Clutter.ActorAlign.CENTER,
@@ -164,9 +164,9 @@ var createMenu = class extends BaseMenuLayout.BaseLayout{
         });
 
         this.applicationsBoxContainer = new St.BoxLayout({
-            x_expand: false,
+            x_expand: true,
             y_expand: true,
-            x_align: Clutter.ActorAlign.START,
+            x_align: Clutter.ActorAlign.FILL,
             y_align: Clutter.ActorAlign.FILL,
             vertical: false
         });
