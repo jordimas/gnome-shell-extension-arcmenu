@@ -181,10 +181,28 @@ var createMenu = class extends BaseMenuLayout.BaseLayout{
             style_class: 'vfade',
         });    
 
-        this.applicationsScrollBox.add_actor(this.applicationsBoxContainer);
-        this.subMainBox.add(this.applicationsScrollBox);
+        this.applicationsScrollBox.add_actor(this.applicationsBox);
+        this.subMainBox.add(this.applicationsBoxContainer);
            
         this.appShortcuts = [];
+
+        this.shortcutsScrollBox = this._createScrollBox({
+            x_expand: true,
+            y_expand: true,
+            x_align: Clutter.ActorAlign.FILL,
+            y_align: Clutter.ActorAlign.FILL,
+            overlay_scrollbars: true,
+            style_class: 'vfade',
+        });  
+        
+        this.leftPanelBox = new St.BoxLayout({
+            x_expand: true,
+            y_expand: true,
+            x_align: Clutter.ActorAlign.FILL,
+            y_align: Clutter.ActorAlign.FILL,
+            vertical: true
+        });
+
         this.shortcutsBox = new St.BoxLayout({
             x_expand: true,
             y_expand: true,
@@ -192,6 +210,7 @@ var createMenu = class extends BaseMenuLayout.BaseLayout{
             y_align: Clutter.ActorAlign.START,
             vertical: true
         });
+        this.shortcutsScrollBox.add_actor(this.shortcutsBox);
 
         layout = new Clutter.GridLayout({ 
             orientation: Clutter.Orientation.VERTICAL,
@@ -211,7 +230,7 @@ var createMenu = class extends BaseMenuLayout.BaseLayout{
             x_align: Clutter.ActorAlign.CENTER,
             y_align: Clutter.ActorAlign.END,
             vertical: false,
-            style: 'spacing: ' + COLUMN_SPACING + 'px;'
+            style: 'spacing: ' + COLUMN_SPACING + 'px; padding: 10px 0px;'
         });
         if(this._settings.get_boolean('show-logout-button')){
             let logout = new MW.LogoutButton(this);
@@ -235,10 +254,11 @@ var createMenu = class extends BaseMenuLayout.BaseLayout{
         }      
 
         this.shortcutsBox.add(this.shortcutsGrid);
-        this.shortcutsBox.add(this.sessionButtonsBox);
+        this.leftPanelBox.add(this.shortcutsScrollBox);
+        this.leftPanelBox.add(this.sessionButtonsBox);
 
-        this.applicationsBoxContainer.add_actor(this.shortcutsBox);
-        this.applicationsBoxContainer.add_actor(this.applicationsBox);
+        this.applicationsBoxContainer.add_actor(this.leftPanelBox);
+        this.applicationsBoxContainer.add_actor(this.applicationsScrollBox);
 
         //Add Application Shortcuts to menu (Software, Settings, Tweaks, Terminal)
         let SOFTWARE_TRANSLATIONS = [_("Software"), _("Settings"), _("Tweaks"), _("Terminal"), _("Activities Overview"), _("Arc Menu Settings")];
@@ -282,7 +302,7 @@ var createMenu = class extends BaseMenuLayout.BaseLayout{
         this.mainBox.style = `height: ${height}px; width: ${width}px;`;
         this.applicationsBox.style = "width: " + Math.round(6 * ((width - 250) / 10)) + "px;";
         this.applicationsBoxContainer.style = "width: " + (width - 250) + "px;";
-        this.shortcutsBox.style = "height: " + (height - 150) + "px; width: " + Math.round(4 * ((width - 250) / 10)) + "px;";
+        this.shortcutsBox.style = "height: " + (height - 100) + "px; width: " + Math.round(4 * ((width - 250) / 10)) + "px;";
 
         this.dashboard.style = `height: ${height}px; width: ${width}px;`;
         this.actionsBoxContainer.style = " width: " + width + "px;height: "+ height +"px; spacing: 10px;"
@@ -345,7 +365,6 @@ var createMenu = class extends BaseMenuLayout.BaseLayout{
     displayFavorites(){
         this.shortcutsBox.remove_all_children();
         this.shortcutsBox.add(this.shortcutsGrid);
-        this.shortcutsBox.add(this.sessionButtonsBox);
         this._displayAppList(this.favoritesArray, true, this.shortcutsGrid);
     }
 
@@ -356,8 +375,8 @@ var createMenu = class extends BaseMenuLayout.BaseLayout{
     
     _clearActorsFromBox(box) {
         super._clearActorsFromBox(box);
-        if(!this.applicationsBoxContainer.contains(this.shortcutsBox))
-            this.applicationsBoxContainer.insert_child_at_index(this.shortcutsBox, 0);
+        if(!this.applicationsBoxContainer.contains(this.leftPanelBox))
+            this.applicationsBoxContainer.insert_child_at_index(this.leftPanelBox, 0);
     }
 
     _displayAppList(apps, isFavoriteMenuItem = false, differentGrid = null){  
@@ -395,13 +414,13 @@ var createMenu = class extends BaseMenuLayout.BaseLayout{
             this.newSearch.setTerms(['']); 
             this.setDefaultMenuView();                     	          	
             this.newSearch.actor.hide();
-            if(!this.applicationsBoxContainer.contains(this.shortcutsBox))
-                this.applicationsBoxContainer.insert_child_at_index(this.shortcutsBox, 0);
+            if(!this.applicationsBoxContainer.contains(this.leftPanelBox))
+                this.applicationsBoxContainer.insert_child_at_index(this.leftPanelBox, 0);
         }            
         else{         
             this._clearActorsFromBox(); 
-            if(this.applicationsBoxContainer.contains(this.shortcutsBox))
-                this.applicationsBoxContainer.remove_actor(this.shortcutsBox);
+            if(this.applicationsBoxContainer.contains(this.leftPanelBox))
+                this.applicationsBoxContainer.remove_actor(this.leftPanelBox);
             let appsScrollBoxAdj = this.applicationsScrollBox.get_vscroll_bar().get_adjustment();
             appsScrollBoxAdj.set_value(0);
             this.applicationsBox.add(this.newSearch.actor); 

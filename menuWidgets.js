@@ -1697,7 +1697,9 @@ var FavoritesMenuItem = GObject.registerClass({
         if(this._app && this._iconPath === ''){
             let appIcon = this._app.create_icon_texture(MEDIUM_ICON_SIZE);
             if(appIcon instanceof St.Icon){
-                this._iconString = appIcon.gicon.to_string();
+                this._iconString = appIcon.gicon ? appIcon.gicon.to_string() : appIcon.fallback_icon_name;
+                if(!this._iconString)
+                    this._iconString = "";
             }
         }
 
