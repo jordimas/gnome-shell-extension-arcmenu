@@ -85,10 +85,20 @@ var createMenu = class extends BaseMenuLayout.BaseLayout{
             this.activeCategory = _("All Programs");
         
         this.mainBox = new St.BoxLayout({
+            x_expand: true,
+            y_expand: true,
+            x_align: Clutter.ActorAlign.FILL,
+            y_align: Clutter.ActorAlign.FILL,
             vertical: true,
         });
 
-        this.dashboardBoxContainer = new St.BoxLayout();
+        this.dashboardBoxContainer = new St.BoxLayout({
+            x_expand: true,
+            y_expand: true,
+            x_align: Clutter.ActorAlign.FILL,
+            y_align: Clutter.ActorAlign.FILL,
+            vertical: true,
+        });
         this.mainBox.add_actor(this.dashboardBoxContainer);
 
         let monitorIndex = Main.layoutManager.findIndexForActor(this.menuButton.menuButtonWidget.actor);
@@ -119,7 +129,6 @@ var createMenu = class extends BaseMenuLayout.BaseLayout{
 
         this.actionsBoxContainer.add(this.actionsBox);
         this.actionsBox.style = "width: 250px; spacing: 5px;";
-        this.dashboard.add_child(this.actionsBoxContainer);
 
         this.topBox = new St.BoxLayout({
             x_expand: false,
@@ -155,8 +164,10 @@ var createMenu = class extends BaseMenuLayout.BaseLayout{
         });
 
         this.applicationsBoxContainer = new St.BoxLayout({
+            x_expand: false,
+            y_expand: true,
             x_align: Clutter.ActorAlign.START,
-            y_align: Clutter.ActorAlign.START,
+            y_align: Clutter.ActorAlign.FILL,
             vertical: false
         });
 
@@ -176,7 +187,7 @@ var createMenu = class extends BaseMenuLayout.BaseLayout{
             x_expand: true,
             y_expand: true,
             x_align: Clutter.ActorAlign.FILL,
-            y_align: Clutter.ActorAlign.FILL,
+            y_align: Clutter.ActorAlign.START,
             overlay_scrollbars: true,
             style_class: 'vfade',
         });    
@@ -207,7 +218,7 @@ var createMenu = class extends BaseMenuLayout.BaseLayout{
             x_expand: true,
             y_expand: true,
             x_align: Clutter.ActorAlign.FILL,
-            y_align: Clutter.ActorAlign.START,
+            y_align: Clutter.ActorAlign.FILL,
             vertical: true
         });
         this.shortcutsScrollBox.add_actor(this.shortcutsBox);
@@ -234,21 +245,25 @@ var createMenu = class extends BaseMenuLayout.BaseLayout{
         });
         if(this._settings.get_boolean('show-logout-button')){
             let logout = new MW.LogoutButton(this);
+            logout.style = "border-radius: 34px; padding: 16px"
             logout._icon.icon_size = 30;
             this.sessionButtonsBox.add(logout.actor);
         }  
         if(this._settings.get_boolean('show-lock-button')){
             let lock = new MW.LockButton(this);
+            lock.style = "border-radius: 34px; padding: 16px"
             lock._icon.icon_size = 30;
             this.sessionButtonsBox.add(lock.actor);
         }
         if(this._settings.get_boolean('show-suspend-button')){
             let suspend = new MW.SuspendButton(this);
+            suspend.style = "border-radius: 34px; padding: 16px"
             suspend._icon.icon_size = 30;
             this.sessionButtonsBox.add(suspend.actor);
         }
         if(this._settings.get_boolean('show-power-button')){
             let power = new MW.PowerButton(this);
+            power.style = "border-radius: 34px; padding: 16px"
             power._icon.icon_size = 30;
             this.sessionButtonsBox.add(power.actor);
         }      
@@ -259,6 +274,7 @@ var createMenu = class extends BaseMenuLayout.BaseLayout{
 
         this.applicationsBoxContainer.add_actor(this.leftPanelBox);
         this.applicationsBoxContainer.add_actor(this.applicationsScrollBox);
+        this.applicationsBoxContainer.add_actor(this.actionsBoxContainer);
 
         //Add Application Shortcuts to menu (Software, Settings, Tweaks, Terminal)
         let SOFTWARE_TRANSLATIONS = [_("Software"), _("Settings"), _("Tweaks"), _("Terminal"), _("Activities Overview"), _("Arc Menu Settings")];
@@ -301,11 +317,9 @@ var createMenu = class extends BaseMenuLayout.BaseLayout{
         this.newSearch.setMaxDisplayedResults(this.columnCount);
         this.mainBox.style = `height: ${height}px; width: ${width}px;`;
         this.applicationsBox.style = "width: " + Math.round(6 * ((width - 250) / 10)) + "px;";
-        this.applicationsBoxContainer.style = "width: " + (width - 250) + "px;";
-        this.shortcutsBox.style = "height: " + (height - 100) + "px; width: " + Math.round(4 * ((width - 250) / 10)) + "px;";
+        this.shortcutsBox.style = "width: " + Math.round(4 * ((width - 250) / 10)) + "px;";
 
         this.dashboard.style = `height: ${height}px; width: ${width}px;`;
-        this.actionsBoxContainer.style = " width: " + width + "px;height: "+ height +"px; spacing: 10px;"
         this.bgManager.backgroundActor.set_position(natX - monitorWorkArea.x, natY - monitorWorkArea.y);
         this.dashboard.set_position(monitorWorkArea.x, monitorWorkArea.y);
     }
@@ -322,7 +336,13 @@ var createMenu = class extends BaseMenuLayout.BaseLayout{
         
         let addStyle = this._settings.get_boolean('enable-custom-arc-menu');
         addStyle ? this.dashboard.add_style_class_name('arc-menu-dashboard') : this.dashboard.remove_style_class_name('arc-menu-dashboard');
-
+        
+        this.sessionButtonsBox.get_children().forEach((actor) => {
+            if(actor instanceof St.Button){
+                addStyle ? actor.add_style_class_name('arc-menu-action') : actor.remove_style_class_name('arc-menu-action');
+            }
+        });
+        
         this.updateLocation();
     }
 
