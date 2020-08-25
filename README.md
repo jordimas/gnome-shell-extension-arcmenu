@@ -22,6 +22,24 @@ This extension could be even better with your help! Any items in the issue track
 
 -----
 
+### Donation
+
+<details>
+<summary><b>Disclaimer..</b></summary>
+
+<p>
+
+*Disclaimer: all donations are non refundable so please take care at the time of donation that you donate the intended correct amount, thank you Arc Menu Team.*
+
+</p>
+</details>
+
+ArcMenu is provided free of charge. If it has improved your workflow, or you had a great support experience, feel free to say thanks by making a donation to the Project or developers. (If you would like your donation to go to a specific developer, you may mention it in the note field during payment)
+
+[![Donate via Paypal](https://gitlab.com/LinxGem33/Neon/-/raw/master/wiki%20screens/donate-button-alt.png)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=TV2Z7G9YZ745E&source=url)
+
+-----
+
 #### Arc Menu integrated with [Dash-to-Panel](https://extensions.gnome.org/extension/1160/dash-to-panel/)
 
 -----
