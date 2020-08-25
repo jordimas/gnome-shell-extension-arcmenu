@@ -613,6 +613,11 @@ var BaseLayout = class {
             box = this.applicationsBox;
             this.activeCategoryType = -1;
         }
+        let parent = box.get_parent();
+        if(parent instanceof St.ScrollView){
+            let scrollBoxAdj = parent.get_vscroll_bar().get_adjustment();
+            scrollBoxAdj.set_value(0);
+        }
         let actors = box.get_children();
         for (let i = 0; i < actors.length; i++) {
             let actor = actors[i];

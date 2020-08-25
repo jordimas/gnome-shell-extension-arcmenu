@@ -316,7 +316,7 @@ var createMenu = class extends BaseMenuLayout.BaseLayout{
         this.appsColumn = Math.round(6 * (this.columnCount / 10));
         this.newSearch.setMaxDisplayedResults(this.columnCount);
         this.mainBox.style = `height: ${height}px; width: ${width}px;`;
-        this.applicationsBox.style = "width: " + Math.round(6 * ((width - 250) / 10)) + "px;";
+        this.applicationsBox.style = "width: " + Math.round(6 * ((width - 250) / 10)) + "px; padding-bottom: 30px;";
         this.shortcutsBox.style = "width: " + Math.round(4 * ((width - 250) / 10)) + "px;";
 
         this.dashboard.style = `height: ${height}px; width: ${width}px;`;
