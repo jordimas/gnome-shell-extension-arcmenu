@@ -36,7 +36,7 @@ This extension could be even better with your help! Any items in the issue track
 
 ArcMenu is provided free of charge. If it has improved your workflow, or you had a great support experience, feel free to say thanks by making a donation to the Project or developers. (If you would like your donation to go to a specific developer, you may mention it in the note field during payment)
 
-[![Donate via Paypal](https://gitlab.com/LinxGem33/Neon/-/raw/master/wiki%20screens/donate-button-alt.png)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=TV2Z7G9YZ745E&source=url)
+[![Donate via Paypal](https://gitlab.com/LinxGem33/Neon/-/raw/master/wiki%20screens/donate-button-alt.png)](https://www.paypal.com/biz/fund?id=6NS5R6JXGVYP8)
 
 -----
 
