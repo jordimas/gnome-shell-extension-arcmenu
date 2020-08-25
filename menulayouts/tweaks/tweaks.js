@@ -70,7 +70,7 @@ var TweaksDialog = GObject.registerClass(
                 this._loadRedmondMenuTweaks(vbox)
             else if(menuLayout == Constants.MENU_LAYOUT.UbuntuDash)
                 this._loadUbuntuDashTweaks(vbox);
-            else if(menuLayout == Constants.MENU_LAYOUT.Raven || menuLayout == Constants.MENU_LAYOUT.Dashboard)
+            else if(menuLayout == Constants.MENU_LAYOUT.Raven || menuLayout == Constants.MENU_LAYOUT.RavenExtended)
                 this._loadRavenTweaks(vbox);
             else if(menuLayout == Constants.MENU_LAYOUT.Budgie)
                 this._loadBudgieMenuTweaks(vbox);

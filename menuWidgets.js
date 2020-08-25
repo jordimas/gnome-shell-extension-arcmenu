@@ -1521,10 +1521,10 @@ var ShortcutMenuItem = GObject.registerClass(class ArcMenu_ShortcutMenuItem exte
             this.actor.style ='text-align: center; border-radius:4px; padding: 5px; spacing: 0px; width:95px; height:95px;';
             this.box.style = 'padding: 0px; margin: 0px; spacing:0px;';
         } 
-        else if(layout == Constants.MENU_LAYOUT.Dashboard){
+        else if(this._menuLayout.layoutProperties.isDashboard){
             this._iconSize = 80;
             this._icon.style = "padding-top: 5px;";
-            this.box.style ='margin-top: 10px; padding: 5px; spacing: 0px; width:125px; height:125px;';
+            this.box.style ='padding: 5px; spacing: 0px; width:125px; height:125px;';
         } 
         else{
             this._iconSize = 36;  
@@ -1697,7 +1697,9 @@ var FavoritesMenuItem = GObject.registerClass({
         if(this._app && this._iconPath === ''){
             let appIcon = this._app.create_icon_texture(MEDIUM_ICON_SIZE);
             if(appIcon instanceof St.Icon){
-                this._iconString = appIcon.gicon.to_string();
+                this._iconString = appIcon.gicon ? appIcon.gicon.to_string() : appIcon.fallback_icon_name;
+                if(!this._iconString)
+                    this._iconString = "";
             }
         }
 
@@ -1740,7 +1742,7 @@ var FavoritesMenuItem = GObject.registerClass({
                 this.box.style = 'padding: 0px; margin: 0px; spacing:0px;';
                 this.actor.style ='text-align: center; border-radius:4px; padding: 5px; spacing: 0px; width:95px; height:95px;';
             }
-            else if(layout == Constants.MENU_LAYOUT.Dashboard){
+            else if(this._menuLayout.layoutProperties.isDashboard){
                 this._icon.icon_size = 80;
                 this._icon.style = "padding-top: 5px;";
                 this.box.style ='padding: 5px; spacing: 0px; width:125px; height:125px;';
@@ -1759,7 +1761,7 @@ var FavoritesMenuItem = GObject.registerClass({
             if(layout == Constants.MENU_LAYOUT.Elementary || layout == Constants.MENU_LAYOUT.UbuntuDash){
                 this._icon.icon_size = 52;  
             } 
-            else if(layout == Constants.MENU_LAYOUT.Dashboard){
+            else if(this._menuLayout.layoutProperties.isDashboard){
                 this._icon.icon_size = 80;
             } 
             else{
@@ -1950,9 +1952,9 @@ var ApplicationMenuItem = GObject.registerClass(class ArcMenu_ApplicationMenuIte
                 this.box.style = 'padding: 0px; margin: 0px; spacing:0px;';
             }
                 
-            else if(layout == Constants.MENU_LAYOUT.Dashboard){
+            else if(this._menuLayout.layoutProperties.isDashboard){
                 this._iconBin.style = "padding-top: 5px;";
-                this.box.style ='margin-top: 10px; padding: 5px; spacing: 0px; width:125px; height:125px;';
+                this.box.style ='padding: 5px; spacing: 0px; width:125px; height:125px;';
             } 
             else{
                 this.actor.style ='text-align: center; border-radius:4px; padding: 5px; spacing: 0px; width:80px;height:80px;';
@@ -2014,7 +2016,7 @@ var ApplicationMenuItem = GObject.registerClass(class ArcMenu_ApplicationMenuIte
                 let icon = this._app.create_icon_texture(52);
                 this._iconBin.set_child(icon);
             } 
-            else if(layout == Constants.MENU_LAYOUT.Dashboard){
+            else if(this._menuLayout.layoutProperties.isDashboard){
                 let icon = this._app.create_icon_texture(80);
                 this._iconBin.set_child(icon);
             } 
@@ -2041,7 +2043,7 @@ var SearchResultItem = GObject.registerClass(class ArcMenu_SearchResultItem exte
         this._app = app;
         this.hasContextMenu = this._app ? true : false;
         this._path = path;
-        if(this._menuLayout.layout === Constants.MENU_LAYOUT.Dashboard){
+        if(this._menuLayout.layoutProperties.isDashboard){
             this.box.x_align = Clutter.ActorAlign.FILL;
             this.box.x_expand = true;
             this.box.style = 'spacing: 6px; text-align: left;';
@@ -3482,6 +3484,7 @@ var Dashboard = GObject.registerClass(class ArcMenu_Dashboard extends St.Widget 
 
         this._syncGrab();
         global.sync_pointer();
+        this.menuLayout.mainBox.grab_key_focus();
     }
 
     close(){
@@ -3539,7 +3542,7 @@ var Dashboard = GObject.registerClass(class ArcMenu_Dashboard extends St.Widget 
 
     _onOverviewHide(){
         if(this.menuLayout.visible)
-                this.hide();
+            this.close();
         if (Main.overview.isDummy)
             return;
 

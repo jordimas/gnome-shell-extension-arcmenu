@@ -2445,7 +2445,6 @@ var MenuLayoutPage = GObject.registerClass(
                 transition_type: Gtk.StackTransitionType.SLIDE_LEFT_RIGHT
             });
 
-            
             let layoutsBox = new MenuLayoutsWindow(this._settings, this.stack);
             this.stack.add_named(this.scrollBox, "LayoutsBox");
             Constants.MENU_STYLES.Styles.forEach((style) => {
@@ -2460,6 +2459,7 @@ var MenuLayoutPage = GObject.registerClass(
                         tweaksLabel.label = currentLayoutBoxLabel.label +" " + _("Tweaks");
                         currentLayoutImage.gicon = Gio.icon_new_for_string(Me.path + this.getMenuLayoutThumbnailPath(dialog.index));
                         this.stack.set_visible_child_name("LayoutsBox");
+                        this.scrollBox.vadjustment.set_value(this.scrollBox.vadjustment.get_lower());
                     }
                     if(response === -20){
                         this.stack.set_visible_child_name("LayoutsBox");
@@ -2651,12 +2651,12 @@ var MenuLayoutsWindow = GObject.registerClass(
             };
             this._tileGrid = new PW.TileGrid(this._params.maxColumns);
             
-            this.halign = Gtk.Align.FILL;
+            this._tileGrid.hexpand = true;
+            this._tileGrid.halign = Gtk.Align.FILL;
             this._createLayout(this);
         }
 
         _createLayout(vbox) {         
-
             //Add each menu layout to frame
             this.add(this._tileGrid);
             this._tileGrid.set_selection_mode(Gtk.SelectionMode.NONE);
@@ -2843,15 +2843,36 @@ var MenuSettingsGeneralPage = GObject.registerClass(
             hexpand: true,
             value_pos: Gtk.PositionType.RIGHT
         });
-        hscale.connect('format-value', (scale, value) => { return value.toString() + ' px'; });
+        hscale.connect('format-value', (scale, value) => { return ''; });
         hscale.set_value(this.heightValue);
         hscale.connect('value-changed', () => {
             this.heightValue = hscale.get_value();
+            if(hSpinButton.value !== this.heightValue)
+                hSpinButton.set_value(this.heightValue);
             this.saveButton.set_sensitive(true);
             this.resetButton.set_sensitive(true);
         });
+
+        let hSpinButton = new Gtk.SpinButton({
+            adjustment: new Gtk.Adjustment({
+                lower: 300, upper: monitorHeight, step_increment: 1, page_increment: 1, page_size: 0,
+            }),
+            climb_rate: 1,
+            digits: 0,
+            numeric: true,
+        });
+        hSpinButton.set_value(this.heightValue);
+        hSpinButton.connect('value-changed', () => {
+            this.heightValue = hSpinButton.get_value();
+            if(hscale.value !== this.heightValue)
+                hscale.set_value(this.heightValue);
+            this.saveButton.set_sensitive(true);
+            this.resetButton.set_sensitive(true);
+        });
+
         heightRow.add(heightLabel);
         heightRow.add(hscale);
+        heightRow.add(hSpinButton);
         generalSettingsFrame.add(heightRow);
 
         let menuWidthRow = new PW.FrameBoxRow();
@@ -2862,21 +2883,42 @@ var MenuSettingsGeneralPage = GObject.registerClass(
          });   
         let menuWidthScale = new Gtk.HScale({
             adjustment: new Gtk.Adjustment({
-                lower: 175,upper: 500, step_increment: 1, page_increment: 1, page_size: 0,
+                lower: 175, upper: 500, step_increment: 1, page_increment: 1, page_size: 0,
             }),
             tooltip_text: _("Adjust the left-panel width") + "\n" +_("Certain menu layouts only"),
             digits: 0,round_digits: 0,hexpand: true,
             value_pos: Gtk.PositionType.RIGHT
         });
-        menuWidthScale.connect('format-value', (scale, value) => { return value.toString() + 'px'; });
+        menuWidthScale.connect('format-value', (scale, value) => { return ''; });
         menuWidthScale.set_value(this.menuWidth);
         menuWidthScale.connect('value-changed', () => {
             this.menuWidth = menuWidthScale.get_value();
+            if(menuWidthSpinButton.value !== this.menuWidth)
+                menuWidthSpinButton.set_value(this.menuWidth);
             this.saveButton.set_sensitive(true);
             this.resetButton.set_sensitive(true);
         });
+
+        let menuWidthSpinButton = new Gtk.SpinButton({
+            adjustment: new Gtk.Adjustment({
+                lower: 175, upper: 500, step_increment: 1, page_increment: 1, page_size: 0,
+            }),
+            climb_rate: 1,
+            digits: 0,
+            numeric: true,
+        });
+        menuWidthSpinButton.set_value(this.menuWidth);
+        menuWidthSpinButton.connect('value-changed', () => {
+            this.menuWidth = menuWidthSpinButton.get_value();
+            if(menuWidthScale.value !== this.menuWidth)
+                menuWidthScale.set_value(this.menuWidth);
+            this.saveButton.set_sensitive(true);
+            this.resetButton.set_sensitive(true);
+        });
+
         menuWidthRow.add(menuWidthLabel);
         menuWidthRow.add(menuWidthScale);
+        menuWidthRow.add( menuWidthSpinButton);
         generalSettingsFrame.add(menuWidthRow);
 
         let rightPanelWidthRow = new PW.FrameBoxRow();
@@ -2893,15 +2935,36 @@ var MenuSettingsGeneralPage = GObject.registerClass(
             digits: 0,round_digits: 0,hexpand: true,
             value_pos: Gtk.PositionType.RIGHT
         });
-        rightPanelWidthScale.connect('format-value', (scale, value) => { return value.toString() + 'px'; });
+        rightPanelWidthScale.connect('format-value', (scale, value) => { return '' });
         rightPanelWidthScale.set_value(this.rightPanelWidth);
         rightPanelWidthScale.connect('value-changed', () => {
             this.rightPanelWidth = rightPanelWidthScale.get_value();
+            if(rightPanelWidthSpinButton.value !== this.rightPanelWidth)
+                rightPanelWidthSpinButton.set_value(this.rightPanelWidth);
             this.saveButton.set_sensitive(true);
             this.resetButton.set_sensitive(true);
         });
+
+        let rightPanelWidthSpinButton = new Gtk.SpinButton({
+            adjustment: new Gtk.Adjustment({
+                lower: 200,upper: 500, step_increment: 1, page_increment: 1, page_size: 0,
+            }),
+            climb_rate: 1,
+            digits: 0,
+            numeric: true,
+        });
+        rightPanelWidthSpinButton.set_value(this.rightPanelWidth);
+        rightPanelWidthSpinButton.connect('value-changed', () => {
+            this.rightPanelWidth = rightPanelWidthSpinButton.get_value();
+            if(rightPanelWidthScale.value !== this.rightPanelWidth)
+                rightPanelWidthScale.set_value(this.rightPanelWidth);
+            this.saveButton.set_sensitive(true);
+            this.resetButton.set_sensitive(true);
+        });
+        
         rightPanelWidthRow.add(rightPanelWidthLabel);
         rightPanelWidthRow.add(rightPanelWidthScale);
+        rightPanelWidthRow.add(rightPanelWidthSpinButton);
         generalSettingsFrame.add(rightPanelWidthRow);
         this.mainBox.add(generalSettingsFrame);
 
@@ -5631,7 +5694,7 @@ var AboutPage = GObject.registerClass(
 
             // Create GUI elements
             // Create the image box
-            let logoPath = Me.path + '/media/icons/settings_icons/arcmenu-settings-logo.svg';
+            let logoPath = Me.path + Constants.ARC_MENU_LOGO.Path;
             let [imageWidth, imageHeight] = Constants.ARC_MENU_LOGO.Size;
             let pixbuf = GdkPixbuf.Pixbuf.new_from_file_at_size(logoPath, 100, 100);
             let arcMenuImage = new Gtk.Image({ 
@@ -5772,7 +5835,7 @@ var AboutPage = GObject.registerClass(
             let projectDescriptionLabel = new Gtk.Label({
                 label: _('A Dynamic, Traditional, Modern Menu for GNOME'),
                 expand: false,
-                margin_bottom: 10
+                margin_bottom: 5
             });
             let linksBox = new Gtk.Box({
                 expand: false,
@@ -5800,14 +5863,31 @@ var AboutPage = GObject.registerClass(
             let manualImage = new Gtk.Image({ 
                 pixbuf: pixbuf,
                 expand: false,
-                halign: Gtk.Align.CENTER 
+                halign: Gtk.Align.CENTER,
+                tooltip_text: _("Arc Menu User Manual")
             });
             let projectManualLinkButton = new Gtk.LinkButton({
-                label: _('User Manual'),
                 image: manualImage,
                 always_show_image: true,
                 uri: Constants.ARCMENU_MANUAL_URL,
                 expand: false,
+                halign: Gtk.Align.CENTER
+            });
+
+            imagePath = Me.path + "/media/misc/donate-button.png";
+            pixbuf = GdkPixbuf.Pixbuf.new_from_file_at_size(imagePath, 150, 50);
+            let donateImage = new Gtk.Image({ 
+                pixbuf: pixbuf,
+                expand: false,
+                halign: Gtk.Align.CENTER,
+                tooltip_text: _("Donate to the Arc Menu Project")
+            });
+            let donateLinkButton = new Gtk.LinkButton({
+                image: donateImage,
+                always_show_image: true,
+                uri: 'https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=TV2Z7G9YZ745E&source=url',
+                vexpand: false,
+                valign: Gtk.Align.START,
                 halign: Gtk.Align.CENTER
             });
 
@@ -5817,10 +5897,10 @@ var AboutPage = GObject.registerClass(
             let gitlabImage = new Gtk.Image({ 
                 pixbuf: pixbuf,
                 expand: false,
-                halign: Gtk.Align.CENTER 
+                halign: Gtk.Align.CENTER,
+                tooltip_text: _("Arc Menu GitLab Page")
             });
             let projectLinkButton = new Gtk.LinkButton({
-                label: _('GitLab Page'),
                 image: gitlabImage,
                 always_show_image: true,
                 uri: projectUrl,
@@ -5830,8 +5910,10 @@ var AboutPage = GObject.registerClass(
             });
             
             gitLabBox.add(projectLinkButton);
+            
             manualBox.add(projectManualLinkButton);
             linksBox.add(gitLabBox);
+            linksBox.add(donateLinkButton);
             linksBox.add(manualBox);
             
             this.creditsScrollWindow = new Gtk.ScrolledWindow({
@@ -5945,13 +6027,7 @@ class ArcMenu_ArcMenuPreferencesWidget extends Gtk.Box{
                 hexpand: true,
                 visible: true
             });
-            this.arcIcon = new Gtk.Image({
-                gicon: Gio.icon_new_for_string(Me.path + '/media/icons/settings_icons/arcmenu-settings-logo.svg'),
-                pixel_size: 30,
-                visible: true,
-            });
-            this.leftHeaderBox.add(this.arcIcon);     
-            
+
             window.get_titlebar().pack_start(this.leftHeaderBox);
         });
         
@@ -5970,7 +6046,6 @@ class ArcMenu_ArcMenuPreferencesWidget extends Gtk.Box{
                 this.settingsListStack.set_visible_child_name("Main");
                 this.settingsListStack.get_child_by_name('Main').listBox.selectFirstRow();
                 this.leftHeaderBox.remove(this.backButton);
-                this.leftHeaderBox.add(this.arcIcon);
             }
         });
 
@@ -6106,7 +6181,6 @@ class ArcMenu_ArcMenuPreferencesWidget extends Gtk.Box{
         this.settingsListStack.get_child_by_name('Main').listBox.selectFirstRow();
         if(this.backButton.get_parent()){
             this.leftHeaderBox.remove(this.backButton);
-            this.leftHeaderBox.add(this.arcIcon);
         }
     }
 });

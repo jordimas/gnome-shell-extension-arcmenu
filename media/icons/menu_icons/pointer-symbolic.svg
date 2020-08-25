@@ -5,26 +5,51 @@
    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
    xmlns:svg="http://www.w3.org/2000/svg"
    xmlns="http://www.w3.org/2000/svg"
-   id="svg12"
-   version="1"
-   height="48"
-   width="48">
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   inkscape:version="1.0 (4035a4fb49, 2020-05-01)"
+   sodipodi:docname="pointer-symbolic.svg"
+   width="64"
+   height="64"
+   version="1.1"
+   id="svg24">
+  <sodipodi:namedview
+     inkscape:document-rotation="0"
+     inkscape:current-layer="svg24"
+     inkscape:window-maximized="1"
+     inkscape:window-y="40"
+     inkscape:window-x="0"
+     inkscape:cy="32"
+     inkscape:cx="-17.084746"
+     inkscape:zoom="3.6875"
+     showgrid="false"
+     id="namedview948"
+     inkscape:window-height="898"
+     inkscape:window-width="1920"
+     inkscape:pageshadow="2"
+     inkscape:pageopacity="0"
+     guidetolerance="10"
+     gridtolerance="10"
+     objecttolerance="10"
+     borderopacity="1"
+     bordercolor="#666666"
+     pagecolor="#ffffff" />
   <metadata
-     id="metadata18">
+     id="metadata30">
     <rdf:RDF>
       <cc:Work
          rdf:about="">
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
   <defs
-     id="defs16" />
+     id="defs28" />
   <path
-     style="fill:#cccccc"
+     d="M 6.3499991,3.5 C 4.7710999,3.5 3.4999999,4.7711 3.4999999,6.35 v 51.3 c 0,1.5789 1.2711,2.85 2.8499992,2.85 H 57.65 c 1.5789,0 2.85,-1.2711 2.85,-2.85 V 6.35 C 60.5,4.7711 59.2289,3.5 57.65,3.5 Z m 25.8030769,4.519922 24.522802,23.838135 -23.77412,24.458789 -0.200389,-14.105273 9.872019,-10.091896 -0.0334,-0.03061 0.03061,-0.03061 -10.217138,-9.933254 z m -0.637354,14.968065 -9.095507,9.35713 9.963866,9.682764 L 18.342823,42.289502 8.3149401,32.545508 17.53291,23.063135 Z"
      id="rect2"
-     d="M 6 4 C 4.892 4 4 4.892 4 6 L 4 42 C 4 43.108 4.892 44 6 44 L 42 44 C 43.108 44 44 43.108 44 42 L 44 6 C 44 4.892 43.108 4 42 4 L 6 4 z M 24.107422 7.171875 L 41.316406 23.900391 L 24.632812 41.064453 L 24.492188 31.166016 L 31.419922 24.083984 L 31.396484 24.0625 L 31.417969 24.041016 L 24.248047 17.070312 L 24.107422 7.171875 z M 23.660156 17.675781 L 17.277344 24.242188 L 24.269531 31.037109 L 14.416016 31.220703 L 7.3789062 24.382812 L 13.847656 17.728516 L 23.660156 17.675781 z " />
+     style="fill:#cccccc;stroke-width:1.425" />
 </svg>

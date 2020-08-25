@@ -5,26 +5,51 @@
    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
    xmlns:svg="http://www.w3.org/2000/svg"
    xmlns="http://www.w3.org/2000/svg"
-   id="svg20"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   inkscape:version="1.0 (4035a4fb49, 2020-05-01)"
+   sodipodi:docname="loveheart-symbolic.svg"
+   width="64"
+   height="64"
    version="1.1"
-   height="48"
-   width="48">
+   id="svg24">
+  <sodipodi:namedview
+     inkscape:document-rotation="0"
+     inkscape:current-layer="svg24"
+     inkscape:window-maximized="1"
+     inkscape:window-y="40"
+     inkscape:window-x="0"
+     inkscape:cy="32"
+     inkscape:cx="-17.084746"
+     inkscape:zoom="3.6875"
+     showgrid="false"
+     id="namedview948"
+     inkscape:window-height="898"
+     inkscape:window-width="1920"
+     inkscape:pageshadow="2"
+     inkscape:pageopacity="0"
+     guidetolerance="10"
+     gridtolerance="10"
+     objecttolerance="10"
+     borderopacity="1"
+     bordercolor="#666666"
+     pagecolor="#ffffff" />
   <metadata
-     id="metadata26">
+     id="metadata30">
     <rdf:RDF>
       <cc:Work
          rdf:about="">
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
   <defs
-     id="defs24" />
+     id="defs28" />
   <path
-     id="circle4"
-     d="M 24 4 A 20 20 0 0 0 4 24 A 20 20 0 0 0 24 44 A 20 20 0 0 0 44 24 A 20 20 0 0 0 24 4 z M 24 10 A 14 14 0 0 1 38 24 A 14 14 0 0 1 24 38 A 14 14 0 0 1 10 24 A 14 14 0 0 1 24 10 z M 19.400391 17 C 16.426898 17.000988 14 19.233945 14 22 C 14 23.4396 14.651858 24.752283 15.697266 25.666016 L 23.865234 33 L 32.302734 25.666016 C 33.348485 24.752681 34 23.440001 34 22 C 34 19.233334 31.572048 17 28.597656 17 C 26.637586 17 24.941463 17.961348 24 19.416016 C 23.057428 17.961839 21.361576 17.000649 19.402344 17 L 19.400391 17 z "
-     style="fill:#cccccc" />
+     style="fill:#cccccc;stroke-width:1.425"
+     d="M 32.000001,3.5 A 28.500001,28.500001 0 0 0 3.5,32.000001 28.500001,28.500001 0 0 0 32.000001,60.5 28.500001,28.500001 0 0 0 60.5,32.000001 28.500001,28.500001 0 0 0 32.000001,3.5 Z m 0,8.550001 a 19.95,19.95 0 0 1 19.949998,19.95 19.95,19.95 0 0 1 -19.949998,19.949998 19.95,19.95 0 0 1 -19.95,-19.949998 19.95,19.95 0 0 1 19.95,-19.95 z M 25.445558,22.025 C 21.20833,22.0265 17.75,25.208372 17.75,29.15 c 0,2.051432 0.928898,3.922003 2.418604,5.224073 L 31.807958,44.825001 43.831396,34.374073 C 45.321591,33.072571 46.25,31.202002 46.25,29.15 c 0,-3.942499 -3.459831,-7.125 -7.698341,-7.125 -2.793098,0 -5.210075,1.369921 -6.551658,3.442823 C 30.656835,23.39562 28.240246,22.025925 25.448342,22.025 Z"
+     id="circle4" />
 </svg>
