@@ -324,4 +324,4 @@ Kind regards - **ArcMenu Team**
  
 -----
 
- **- @[stevendobay](https://gitlab.com/stevendobay) - Hungarian** |
+ **- @[stevendobay](https://gitlab.com/stevendobay) - Hungarian** | **- @[omeritzics](https://gitlab.com/omeritzics) - Hebrew** |
