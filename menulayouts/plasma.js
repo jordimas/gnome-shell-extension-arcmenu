@@ -203,39 +203,43 @@ var createMenu = class extends BaseMenuLayout.BaseLayout{
             this._sections[id] = new St.BoxLayout({
                 vertical: true
             });	
-            this.placesManager.connect(`${id}-updated`, () => {
+            this.placeManagerUpdatedID = this.placesManager.connect(`${id}-updated`, () => {
                 this._redisplayPlaces(id);
             });
 
             this._createPlaces(id);
             this.externalDevicesBox.add(this._sections[id]);
         }
-
+        
         this.loadFavorites();
         this.loadCategories();
         this.setDefaultMenuView(); 
+        this.updateIcons();
     }
 
     updateIcons(){
-        super.updateIcons();
-        if(this.powerOff)
-            this.powerOff._updateIcon();
-        if(this.lock)
-            this.lock._updateIcon();
-        if(this.logOut)
-            this.logOut._updateIcon();
-        if(this.suspend)
-            this.suspend._updateIcon();
+        let iconSize = 25;
+        this.applicationsMap.forEach((value,key,map)=>{
+            map.get(key).forceLargeIcon(iconSize);
+        });
+        let categoryMenuItem = this.categoryDirectories.get(Constants.CategoryType.PINNED_APPS);
+        if(categoryMenuItem){
+            for(let favoriteMenuItem of categoryMenuItem.appList){
+                favoriteMenuItem._icon.icon_size = iconSize;
+            }
+        }
+        if(this.layoutProperties.Search)
+            this.newSearch._reset(); 
         for(let i = 0; i < this.applicationShortcuts.length; i++){
-            this.applicationShortcuts[i]._updateIcon();
+            this.applicationShortcuts[i]._icon.icon_size = iconSize;
         }
         for(let i = 0; i < this.directoryShortcuts.length; i++){
-            this.directoryShortcuts[i]._updateIcon();
+            this.directoryShortcuts[i]._icon.icon_size = iconSize;
         }
         for(let id in this._sections){
             this._sections[id].get_children().forEach((child) =>{
                 if(child instanceof PlaceDisplay.PlaceMenuItem)
-                    child._updateIcon();
+                    child._icon.icon_size = iconSize;
             });
         };
     }
@@ -373,7 +377,7 @@ var createMenu = class extends BaseMenuLayout.BaseLayout{
 
     displayPowerItems(){
         this._clearActorsFromBox(this.applicationsBox);
-
+        this.applicationsBox.add(this.createLabelRow(_("Session")));
         if(!this.lock)
             this.lock = new MW.PlasmaPowerItem(this, Constants.PowerType.LOCK, _("Lock"), 'changes-prevent-symbolic');
         this.applicationsBox.add(this.lock);
@@ -381,7 +385,8 @@ var createMenu = class extends BaseMenuLayout.BaseLayout{
         if(!this.logOut)
             this.logOut = new MW.PlasmaPowerItem(this, Constants.PowerType.LOGOUT, _("Log Out"), 'application-exit-symbolic');
         this.applicationsBox.add(this.logOut);
-
+        
+        this.applicationsBox.add(this.createLabelRow(_("System")));
         if(!this.suspend)
             this.suspend = new MW.PlasmaPowerItem(this, Constants.PowerType.SUSPEND, _("Suspend"), 'media-playback-pause-symbolic');
         this.applicationsBox.add(this.suspend);

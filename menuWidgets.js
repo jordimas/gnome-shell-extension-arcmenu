@@ -1371,25 +1371,18 @@ var PlasmaPowerItem = GObject.registerClass(class ArcMenu_PlasmaPowerItem extend
         this._icon = new St.Icon({
             gicon: Gio.icon_new_for_string(icon),
             style_class: 'popup-menu-icon',
-            icon_size: SMALL_ICON_SIZE,
+            icon_size: MEDIUM_ICON_SIZE,
         });
 
         this.label = new St.Label({
             text: _(title),
             y_expand: false,
-            y_align: Clutter.ActorAlign.CENTER,
-            style: 'font-weight: bold'
+            y_align: Clutter.ActorAlign.CENTER
         });
 
         this.box.add_actor(this._icon);
 
         this.box.add_actor(this.label);
-        this._updateIcon();
-    }
-
-    _updateIcon() {
-        let largeIcons = this._settings.get_boolean('enable-large-icons');
-        this._icon.icon_size = largeIcons ? MEDIUM_ICON_SIZE : SMALL_ICON_SIZE;
     }
 
     activate(event){
@@ -1651,11 +1644,28 @@ var ShortcutMenuItem = GObject.registerClass(class ArcMenu_ShortcutMenuItem exte
             text: _(name), y_expand: true,
             y_align: Clutter.ActorAlign.CENTER
         });
-        this.box.add_child(this.label);
-        this.setShouldShow();
+
         let layout = this._settings.get_enum('menu-layout'); 
-        if(layout === Constants.MENU_LAYOUT.Plasma)
-            this._updateIcon();
+        if(layout === Constants.MENU_LAYOUT.Plasma && this._settings.get_boolean('plasma-show-descriptions') && this._app){
+            let labelBox = new St.BoxLayout({
+                vertical: true
+            });
+            let descriptionLabel = new St.Label({
+                text: this._app.get_description(),
+                y_expand: true,
+                y_align: Clutter.ActorAlign.CENTER,
+                style: "font-weight: lighter;"
+            });
+            labelBox.add(this.label);
+            if(this._app.get_description())
+                labelBox.add(descriptionLabel);
+            this.box.add_child(labelBox);
+        }
+        else{
+            this.box.add_child(this.label);
+        }
+
+        this.setShouldShow();
     }
     popupContextMenu(){
         if(this._app && this.contextMenu == undefined){
@@ -1673,8 +1683,7 @@ var ShortcutMenuItem = GObject.registerClass(class ArcMenu_ShortcutMenuItem exte
             if(!this.contextMenu.isOpen){
                 this.contextMenu.redisplay();
             }
-            this.contextMenu.toggle();
-            
+            this.contextMenu.toggle(); 
         }
     }
     setAsIcon(){
@@ -1895,7 +1904,25 @@ var FavoritesMenuItem = GObject.registerClass({
             x_align: Clutter.ActorAlign.START,
             y_align: Clutter.ActorAlign.CENTER
         });
-        this.box.add_child(this.label);
+        let layout = this._settings.get_enum('menu-layout'); 
+        if(layout === Constants.MENU_LAYOUT.Plasma && this._settings.get_boolean('plasma-show-descriptions') && this._app){
+            let labelBox = new St.BoxLayout({
+                vertical: true
+            });
+            let descriptionLabel = new St.Label({
+                text: this._app.get_description(),
+                y_expand: true,
+                y_align: Clutter.ActorAlign.CENTER,
+                style: "font-weight: lighter;"
+            });
+            labelBox.add(this.label);
+            if(this._app.get_description())
+                labelBox.add(descriptionLabel);
+            this.box.add_child(labelBox);
+        }
+        else{
+            this.box.add_child(this.label);
+        }
         if(!isIconGrid){
             this._draggable = DND.makeDraggable(this.actor);
             this.isDraggableApp = true;
@@ -2090,7 +2117,27 @@ var ApplicationMenuItem = GObject.registerClass(class ArcMenu_ApplicationMenuIte
             y_expand: true,
             y_align: Clutter.ActorAlign.CENTER
         });
-        this.box.add_child(this.label);
+
+        let layout = this._settings.get_enum('menu-layout'); 
+        if(layout === Constants.MENU_LAYOUT.Plasma && this._settings.get_boolean('plasma-show-descriptions')){
+            let labelBox = new St.BoxLayout({
+                vertical: true
+            });
+            let descriptionLabel = new St.Label({
+                text: app.get_description(),
+                y_expand: true,
+                y_align: Clutter.ActorAlign.CENTER,
+                style: "font-weight: lighter;"
+            });
+            labelBox.add(this.label);
+            if(app.get_description())
+                labelBox.add(descriptionLabel);
+            this.box.add_child(labelBox);
+        }
+        else{
+            this.box.add_child(this.label);
+        }
+        
         this.box.label_actor = this.label;
 
         if(this.isRecentlyInstalled){
@@ -2211,8 +2258,8 @@ var ApplicationMenuItem = GObject.registerClass(class ArcMenu_ApplicationMenuIte
             this._iconBin.set_child(icon);
         }
     }
-    forceLargeIcon(){
-        let icon = this._app.create_icon_texture(MEDIUM_ICON_SIZE);
+    forceLargeIcon(size){
+        let icon = this._app.create_icon_texture(size ? size : MEDIUM_ICON_SIZE);
         this._iconBin.set_child(icon);
     }
 });

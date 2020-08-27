@@ -162,7 +162,7 @@ var createMenu = class extends BaseMenuLayout.BaseLayout{
             this._sections[id] = new St.BoxLayout({
                 vertical: true
             });	
-            this.placesManager.connect(`${id}-updated`, () => {
+            this.placeManagerUpdatedID = this.placesManager.connect(`${id}-updated`, () => {
                 this._redisplayPlaces(id);
             });
 

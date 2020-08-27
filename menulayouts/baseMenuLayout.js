@@ -878,9 +878,19 @@ var BaseLayout = class {
             this.computerMenuItem.destroy();
         }
 
-        if(this.placesManager)
+        if(this.placesManager){
+            for(let id in this._sections){
+                this._sections[id].get_children().forEach((child) =>{
+                    child.destroy();
+                });
+            };
+            if(this.placeManagerUpdatedID){
+                this.placesManager.disconnect(this.placeManagerUpdatedID);
+                this.placeManagerUpdatedID = null;
+            }
             this.placesManager.destroy();
-
+        }
+            
         if(this.searchBox){
             if (this._searchBoxChangedId > 0) {
                 this.searchBox.disconnect(this._searchBoxChangedId);

@@ -228,6 +228,22 @@ var TweaksDialog = GObject.registerClass(
             hoverRow.add(hoverSwitch);
             plasmaMenuTweaksFrame.add(hoverRow);
 
+            let descriptionsRow = new PW.FrameBoxRow();
+            let descriptionsLabel = new Gtk.Label({
+                label: _("Show Application Descriptions"),
+                use_markup: true,
+                xalign: 0,
+                hexpand: true
+            });
+            let descriptionsSwitch = new Gtk.Switch({ halign: Gtk.Align.END });
+            descriptionsSwitch.set_active(this._settings.get_boolean('plasma-show-descriptions'));
+            descriptionsSwitch.connect('notify::active', (widget) => {
+                this._settings.set_boolean('plasma-show-descriptions', widget.get_active());
+            });
+            descriptionsRow.add(descriptionsLabel);
+            descriptionsRow.add(descriptionsSwitch);
+            plasmaMenuTweaksFrame.add(descriptionsRow);
+
             let foregroundColorRow = new PW.FrameBoxRow();
             let foregroundColorLabel = new Gtk.Label({
                 label: _('Selected Button Border Color'),
@@ -278,6 +294,7 @@ var TweaksDialog = GObject.registerClass(
                 let foregroundColor = this._settings.get_default_value('plasma-selected-color').unpack();
                 let backgroundColor = this._settings.get_default_value('plasma-selected-background-color').unpack();
                 let hoverEnabled = this._settings.get_default_value('plasma-enable-hover').unpack();
+                let showDescriptions = this._settings.get_default_value('plasma-show-descriptions').unpack();
                 this._settings.reset('searchbar-default-top-location');
                 searchbarLocationCombo.set_active(this._settings.get_enum(searchBarLocationSetting));
                 hoverSwitch.set_active(hoverEnabled);
@@ -285,10 +302,11 @@ var TweaksDialog = GObject.registerClass(
                 foregroundColorChooser.set_rgba(color); 
                 color.parse(backgroundColor);
                 backgroundColorChooser.set_rgba(color); 
+                descriptionsSwitch.set_active(showDescriptions);
                 this._settings.reset('plasma-selected-color');
                 this._settings.reset('plasma-selected-background-color');
                 this._settings.reset('plasma-enable-hover');
-                
+                this._settings.reset('plasma-show-descriptions');
                 this._settings.reset('reload-theme');
                 this._settings.set_boolean('reload-theme', true);
             });

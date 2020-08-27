@@ -213,6 +213,11 @@
       <summary>Flip menu horizontally</summary>
       <description>Flip menu horizontally</description>
     </key>
+    <key type="b" name="plasma-show-descriptions">
+      <default>false</default>
+      <summary>Plasma Menu Show Descriptions</summary>
+      <description>Plasma Menu Show Descriptions</description>
+    </key>
     <key type="s" name="plasma-selected-color">
       <default>"rgb(87, 163, 239)"</default>
       <summary>Plasma Selected Item Color</summary>

@@ -116,6 +116,7 @@ var MenuSettingsController = class {
             this._settings.connect('changed::searchbar-default-top-location', this._reload.bind(this)),
             this._settings.connect('changed::recently-installed-apps', this._reload.bind(this)),
             this._settings.connect('changed::multi-lined-labels', this._reload.bind(this)),
+            this._settings.connect('changed::plasma-show-descriptions', this._reload.bind(this)),
             this._settings.connect('changed::menu-height', this._updateMenuHeight.bind(this)),
             this._settings.connect('changed::right-panel-width', this._updateMenuHeight.bind(this)),
             this._settings.connect('changed::reload-theme', this._reloadExtension.bind(this)),
