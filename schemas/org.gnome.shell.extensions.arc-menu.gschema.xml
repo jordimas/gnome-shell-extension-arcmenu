@@ -20,6 +20,7 @@
         <value value='16' nick='Tognee'/>
         <value value='17' nick='RavenExtended'/>
         <value value='18' nick='Dashboard'/>
+        <value value='19' nick='Plasma'/>
     </enum>
     <enum id='org.gnome.shell.extensions.arc-menu.menu-hotkey'>
         <value value='0' nick='Undefined'/>
@@ -211,6 +212,21 @@
       <default>false</default>
       <summary>Flip menu horizontally</summary>
       <description>Flip menu horizontally</description>
+    </key>
+    <key type="s" name="plasma-selected-color">
+      <default>"rgb(87, 163, 239)"</default>
+      <summary>Plasma Selected Item Color</summary>
+      <description>Plasma Selected Item Color.</description>
+    </key>
+    <key type="s" name="plasma-selected-background-color">
+      <default>"rgba(245, 245, 245, .05)"</default>
+      <summary>Plasma Selected Item Background Color</summary>
+      <description>Plasma Selected Item Background Color.</description>
+    </key>
+    <key type="b" name="plasma-enable-hover">
+      <default>true</default>
+      <summary>Plasma Menu Hover to activate item</summary>
+      <description>Plasma Menu Hover to activate item.</description>
     </key>
     <key type="b" name="reload-theme">
       <default>false</default>

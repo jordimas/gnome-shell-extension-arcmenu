@@ -88,7 +88,7 @@ var createMenu = class extends BaseMenuLayout.BaseLayout{
         });
         this.mainBox.add(this.subMainBox);
 
-        this.user = new MW.UserMenuIcon(this);
+        this.user = new MW.UserMenuIcon(this, 75);
         this.user.actor.x_expand = false;
         this.user.actor.y_expand = false;
         this.user.actor.x_align = Clutter.ActorAlign.CENTER;

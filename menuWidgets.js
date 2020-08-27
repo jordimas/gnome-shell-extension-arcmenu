@@ -1361,6 +1361,178 @@ var LockButton = GObject.registerClass(class ArcMenu_LockButton extends SessionB
     }
 });
 
+var PlasmaPowerItem = GObject.registerClass(class ArcMenu_PlasmaPowerItem extends ArcMenuPopupBaseMenuItem{
+    _init(menuLayout, type, title, icon) {
+        super._init(menuLayout);
+        this.type = type;
+        this._menuLayout = menuLayout;
+        this._layout = this._menuLayout.layout;
+        this._settings = this._menuLayout._settings;
+        this._icon = new St.Icon({
+            gicon: Gio.icon_new_for_string(icon),
+            style_class: 'popup-menu-icon',
+            icon_size: SMALL_ICON_SIZE,
+        });
+
+        this.label = new St.Label({
+            text: _(title),
+            y_expand: false,
+            y_align: Clutter.ActorAlign.CENTER,
+            style: 'font-weight: bold'
+        });
+
+        this.box.add_actor(this._icon);
+
+        this.box.add_actor(this.label);
+        this._updateIcon();
+    }
+
+    _updateIcon() {
+        let largeIcons = this._settings.get_boolean('enable-large-icons');
+        this._icon.icon_size = largeIcons ? MEDIUM_ICON_SIZE : SMALL_ICON_SIZE;
+    }
+
+    activate(event){
+        if(this.type === Constants.PowerType.POWEROFF)
+            this._menuLayout._session.ShutdownRemote(0);
+        if(this.type === Constants.PowerType.LOCK){
+            this._menuLayout.isRunning = false;
+            Main.screenShield.lock(true);
+        }
+        if(this.type === Constants.PowerType.LOGOUT)
+            this._menuLayout._session.LogoutRemote(0);
+        if(this.type === Constants.PowerType.SUSPEND){
+            let loginManager = LoginManager.getLoginManager();
+            loginManager.canSuspend((result) => {
+                if (result) {
+                    loginManager.suspend();
+                }
+            });
+        }
+        super.activate(event);
+    }
+});
+
+var PlasmaMenuItem = GObject.registerClass(class ArcMenu_PlasmaMenuItem extends ArcMenuPopupBaseMenuItem{
+    _init(menuLayout, title, iconPath) {
+        super._init(menuLayout);
+        this.remove_child(this._ornamentLabel);
+        this._menuLayout = menuLayout;
+        this._layout = this._menuLayout.layout;
+        this._settings = this._menuLayout._settings;
+        this.box.vertical = true;
+        this.box.y_expand = false;
+        this.box.y_align = Clutter.ActorAlign.CENTER;
+        this.name = "arc-menu-plasma-button";
+        this.actor.style = "padding: 8px; margin-left:0px;"
+        this._icon = new St.Icon({
+            gicon: Gio.icon_new_for_string(iconPath),
+            style_class: 'popup-menu-icon',
+            icon_size: MEDIUM_ICON_SIZE,
+            x_align: Clutter.ActorAlign.CENTER
+        });
+        this.box.add_actor(this._icon);
+        let backLabel = new St.Label({
+            text: title,
+            y_expand: true,
+            x_align: Clutter.ActorAlign.CENTER,
+            y_align: Clutter.ActorAlign.CENTER
+        });
+        this.box.add_actor(backLabel);
+        this.actor.connect('notify::hover', this._onHover.bind(this));
+    }
+    
+    _onHover(){
+        let shouldHover = this._settings.get_boolean('plasma-enable-hover');
+        if(shouldHover && this.actor.hover && !this.isActive){
+            this.activate(Clutter.get_current_event()); 
+        }
+    }
+
+    set active(active) {
+        let activeChanged = active != this.active;
+        if(activeChanged){
+            this._active = active;
+            if(active){
+                this.add_style_class_name('selected');
+                this._menuLayout.activeMenuItem = this;
+                if(this.can_focus)
+                    this.grab_key_focus();
+            } 
+            else{
+                this.remove_style_class_name('selected');
+            }
+            this.notify('active');
+        }      
+    }
+
+    setActive(active){
+        if(active){
+            this.isActive = true;
+            this.set_style_pseudo_class("active-item");
+        }
+        else{
+            this.isActive = false;
+            this.set_style_pseudo_class(null);
+        }
+    }
+
+    activate(event){
+        this._menuLayout.clearActiveItem();
+        this.setActive(true);
+        super.activate(event);
+    }
+});
+
+var PlasmaCategoryHeader = GObject.registerClass(class ArcMenu_PlasmaCategoryHeader extends St.BoxLayout{
+    _init(menuLayout) {
+        super._init({ 
+            style_class: "popup-menu-item",
+            style: 'padding: 0px; margin: 0px;'
+        });
+        this._menuLayout = menuLayout;
+        this._layout = this._menuLayout.layout;
+        this._settings = this._menuLayout._settings;
+        this._icon = new St.Icon({
+            gicon: Gio.icon_new_for_string('go-next-symbolic'),
+            style_class: 'popup-menu-icon',
+            icon_size: 12,
+        });
+        this.backButton = new ArcMenuPopupBaseMenuItem(this._menuLayout);
+        this.backButton.x_expand = false;
+        this.backButton.x_align = Clutter.ActorAlign.START;
+        this.backButton.box.x_expand = false;
+        this.backButton.box.x_align = Clutter.ActorAlign.CENTER;
+        this.label = new St.Label({
+            text: _("All Programs"),
+            y_expand: false,
+            y_align: Clutter.ActorAlign.CENTER,
+            style: 'font-weight: bold'
+        });
+        this.backButton.box.style = 'spacing: 6px; padding: 0px; margin: 0px;';
+        this.backButton.box.add_actor(this.label);
+
+        this.add_actor(this.backButton);
+        this.backButton.connect("activate", () => this._menuLayout.displayCategories() );
+
+        this.add_actor(this._icon);
+        this._icon.hide();
+
+        this.categoryLabel = new St.Label({
+            text: '',
+            y_expand: true,
+            y_align: Clutter.ActorAlign.CENTER
+        });
+
+        this.add_actor(this.categoryLabel);
+    }
+
+    setActiveCategory(categoryText){
+        this.categoryLabel.text = _(categoryText);
+        this._icon.show();
+    }
+});
+
 // Menu item to go back to category view
 var BackMenuItem = GObject.registerClass(class ArcMenu_BackMenuItem extends ArcMenuPopupBaseMenuItem{
     _init(menuLayout) {
@@ -1481,6 +1653,9 @@ var ShortcutMenuItem = GObject.registerClass(class ArcMenu_ShortcutMenuItem exte
         });
         this.box.add_child(this.label);
         this.setShouldShow();
+        let layout = this._settings.get_enum('menu-layout'); 
+        if(layout === Constants.MENU_LAYOUT.Plasma)
+            this._updateIcon();
     }
     popupContextMenu(){
         if(this._app && this.contextMenu == undefined){
@@ -1531,7 +1706,7 @@ var ShortcutMenuItem = GObject.registerClass(class ArcMenu_ShortcutMenuItem exte
             this.actor.style ='text-align: center; border-radius:4px; padding: 5px; spacing: 0px; width:80px;height:80px;';
             this.box.style = 'padding: 0px; margin: 0px; spacing:0px;';
         }
-        this._icon.icon_size = this._iconSize;   
+        this._icon.icon_size = this._iconSize;
     }
     activate(event) {
         this._menuLayout.arcMenu.toggle();
@@ -1546,6 +1721,10 @@ var ShortcutMenuItem = GObject.registerClass(class ArcMenu_ShortcutMenuItem exte
         else
             Util.spawnCommandLine(this._command);
         super.activate(event);
+    }
+    _updateIcon(){
+        let largeIcons = this._settings.get_boolean('enable-large-icons');
+        this._icon.icon_size = largeIcons ? MEDIUM_ICON_SIZE : SMALL_ICON_SIZE;
     }
     setIconSizeLarge(){
         this._icon.icon_size = MEDIUM_ICON_SIZE;
@@ -1615,8 +1794,9 @@ var UserMenuItem = GObject.registerClass(class ArcMenu_UserMenuItem extends ArcM
 });
 
 var UserMenuIcon = class ArcMenu_UserMenuIcon{
-    constructor(menuLayout) {
+    constructor(menuLayout, size) {
         this._menuLayout = menuLayout;
+        this._size = size;
         let username = GLib.get_user_name();
         this._user = AccountsService.UserManager.get_default().get_user(username);
         this.actor = new St.Bin({ 
@@ -1624,7 +1804,7 @@ var UserMenuIcon = class ArcMenu_UserMenuIcon{
             track_hover:true,
             reactive: true
         });
-        this.actor.style = "width: 75px; height: 75px;";
+        this.actor.style = "width: " + this._size + "px; height: " + this._size + "px;";
         this._userLoadedId = this._user.connect('notify::is-loaded', this._onUserChanged.bind(this));
         this._userChangedId = this._user.connect('changed', this._onUserChanged.bind(this));
         this.actor.connect('destroy', this._onDestroy.bind(this));
@@ -1646,11 +1826,11 @@ var UserMenuIcon = class ArcMenu_UserMenuIcon{
                 iconFileName = null;
             if (iconFileName) {
                 this.actor.child = null;
-                this.actor.style = 'background-image: url("%s");'.format(iconFileName) + "width: 75px; height: 75px;";
+                this.actor.style = 'background-image: url("%s");'.format(iconFileName) + "width: " + this._size + "px; height: " + this._size + "px;";
             } else {
                 this.actor.style = null;
                 this.actor.child = new St.Icon({ icon_name: 'avatar-default-symbolic',
-                                                    icon_size: 75});
+                                                    icon_size: this._size});
             }
         }
         
@@ -2613,7 +2793,16 @@ var PlaceMenuItem = GObject.registerClass(class ArcMenu_PlaceMenuItem extends Ar
         this.box.add_child(this.label);
         this._changedId = this._info.connect('changed', this._propertiesChanged.bind(this));
         this.connect('destroy', this._onDestroy.bind(this));
+        let layout = this._menuLayout._settings.get_enum('menu-layout'); 
+        if(layout === Constants.MENU_LAYOUT.Plasma)
+            this._updateIcon();
     }
+
+    _updateIcon() {
+        let largeIcons = this._menuLayout._settings.get_boolean('enable-large-icons');
+        this._icon.icon_size = largeIcons ? MEDIUM_ICON_SIZE : SMALL_ICON_SIZE;
+    }
+
     _onDestroy() {
         if (this._changedId) {
             this._info.disconnect(this._changedId);
