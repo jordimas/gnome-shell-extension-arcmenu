@@ -356,8 +356,9 @@ function createStylesheet(settings){
     let indicatorTextBackgroundColor = settings.get_string('indicator-text-color');
     let plasmaSelectedItemColor = settings.get_string('plasma-selected-color');
     let plasmaSelectedItemBackgroundColor = settings.get_string('plasma-selected-background-color');
+    let plasmaSearchBarTop = settings.get_enum('searchbar-default-top-location');
     let tooltipStyle = '';
-
+    let plasmaButtonStyle = plasmaSearchBarTop === Constants.SearchbarLocation.TOP ? 'border-top-width: 2px;' : 'border-bottom-width: 2px;';
     if(customarcMenu){
         tooltipStyle = ".tooltip-menu-item{\nbox-shadow:0 0 0 1px " + modifyColorLuminance(menuColor, 0.10) + ";\nfont-size:" + fontSize + "pt;\npadding: 2px 5px;\nmin-height: 0px;"
                         + "\ncolor:" + menuForegroundColor+ ";\nbackground-color:" + modifyColorLuminance(menuColor, 0.05) + ";\nmax-width:550px;\n}\n\n"; 
@@ -386,8 +387,9 @@ function createStylesheet(settings){
         +".arc-menu-icon:active, .arc-menu-text:active, .arc-menu-arrow:active{\ncolor: " + menuButtonActiveColor + ";\n}\n\n"
         +".arc-menu-panel-menu:active{\nbackground-color: " + menuButtonActiveBackgroundcolor + ";\nbox-shadow: none;\n}\n\n"
 
-        +"#arc-menu-plasma-button{\nborder-top-width: 2px;\nborder-color: transparent;\n}\n\n"
-        +"#arc-menu-plasma-button:active-item, .arc-menu-plasma-button:active{\nbackground-color: " + plasmaSelectedItemBackgroundColor + ";\nborder-top-width: 2px;\nborder-color: " + plasmaSelectedItemColor + ";\n}\n\n"
+        +"#arc-menu-plasma-button{\n" + plasmaButtonStyle + ";\nborder-color: transparent;\n}\n\n"
+        +"#arc-menu-plasma-button:active-item, .arc-menu-plasma-button:active{\nbackground-color: " + plasmaSelectedItemBackgroundColor + ";\n"
+            + plasmaButtonStyle + "\nborder-color: " + plasmaSelectedItemColor + ";\n}\n\n"
 
         +"StScrollView .small-vfade{\n-st-vfade-offset: 44px;\n}\n\n"
 
