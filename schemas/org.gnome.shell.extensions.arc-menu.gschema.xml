@@ -219,7 +219,7 @@
       <description>Plasma Menu Show Descriptions</description>
     </key>
     <key type="s" name="plasma-selected-color">
-      <default>"rgb(87, 163, 239)"</default>
+      <default>"rgb(61, 174, 235)"</default>
       <summary>Plasma Selected Item Color</summary>
       <description>Plasma Selected Item Color.</description>
     </key>
