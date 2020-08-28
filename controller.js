@@ -113,9 +113,11 @@ var MenuSettingsController = class {
             this._settings.connect('changed::enable-activities-shortcut', this._reload.bind(this)),
             this._settings.connect('changed::enable-horizontal-flip', this._reload.bind(this)),
             this._settings.connect('changed::searchbar-default-bottom-location', this._reload.bind(this)),
+            this._settings.connect('changed::searchbar-default-top-location', this._plasmaMenuReloadExtension.bind(this)),
             this._settings.connect('changed::searchbar-default-top-location', this._reload.bind(this)),
             this._settings.connect('changed::recently-installed-apps', this._reload.bind(this)),
             this._settings.connect('changed::multi-lined-labels', this._reload.bind(this)),
+            this._settings.connect('changed::plasma-show-descriptions', this._reload.bind(this)),
             this._settings.connect('changed::menu-height', this._updateMenuHeight.bind(this)),
             this._settings.connect('changed::right-panel-width', this._updateMenuHeight.bind(this)),
             this._settings.connect('changed::reload-theme', this._reloadExtension.bind(this)),
@@ -144,6 +146,13 @@ var MenuSettingsController = class {
 
     _reload(){
         this._menuButton.reload();
+    }
+
+    _plasmaMenuReloadExtension(){
+        if(this._settings.get_enum('menu-layout') === Constants.MENU_LAYOUT.Plasma){
+            this._settings.reset('reload-theme');
+            this._settings.set_boolean('reload-theme', true);
+        }
     }
 
     updateLocation(){

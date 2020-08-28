@@ -65,6 +65,8 @@ function getMenuLayout(button, layout){
             return new MenuLayout.ravenExtended.createMenu(button);
         case Constants.MENU_LAYOUT.Dashboard:
             return new MenuLayout.dashboard.createMenu(button);
+        case Constants.MENU_LAYOUT.Plasma:
+            return new MenuLayout.plasma.createMenu(button);
     }
 }
 
@@ -352,8 +354,11 @@ function createStylesheet(settings){
     let gapAdjustment = settings.get_int('gap-adjustment');
     let indicatorColor = settings.get_string('indicator-color');
     let indicatorTextBackgroundColor = settings.get_string('indicator-text-color');
+    let plasmaSelectedItemColor = settings.get_string('plasma-selected-color');
+    let plasmaSelectedItemBackgroundColor = settings.get_string('plasma-selected-background-color');
+    let plasmaSearchBarTop = settings.get_enum('searchbar-default-top-location');
     let tooltipStyle = '';
-
+    let plasmaButtonStyle = plasmaSearchBarTop === Constants.SearchbarLocation.TOP ? 'border-top-width: 2px;' : 'border-bottom-width: 2px;';
     if(customarcMenu){
         tooltipStyle = ".tooltip-menu-item{\nbox-shadow:0 0 0 1px " + modifyColorLuminance(menuColor, 0.10) + ";\nfont-size:" + fontSize + "pt;\npadding: 2px 5px;\nmin-height: 0px;"
                         + "\ncolor:" + menuForegroundColor+ ";\nbackground-color:" + modifyColorLuminance(menuColor, 0.05) + ";\nmax-width:550px;\n}\n\n"; 
@@ -381,6 +386,10 @@ function createStylesheet(settings){
                 +", .arc-menu-panel-menu:hover .arc-menu-arrow{\ncolor: " + menuButtonHoverColor + ";\n}\n\n"
         +".arc-menu-icon:active, .arc-menu-text:active, .arc-menu-arrow:active{\ncolor: " + menuButtonActiveColor + ";\n}\n\n"
         +".arc-menu-panel-menu:active{\nbackground-color: " + menuButtonActiveBackgroundcolor + ";\nbox-shadow: none;\n}\n\n"
+
+        +"#arc-menu-plasma-button{\n" + plasmaButtonStyle + ";\nborder-color: transparent;\n}\n\n"
+        +"#arc-menu-plasma-button:active-item, .arc-menu-plasma-button:active{\nbackground-color: " + plasmaSelectedItemBackgroundColor + ";\n"
+            + plasmaButtonStyle + "\nborder-color: " + plasmaSelectedItemColor + ";\n}\n\n"
 
         +"StScrollView .small-vfade{\n-st-vfade-offset: 44px;\n}\n\n"
 
@@ -420,7 +429,7 @@ function createStylesheet(settings){
                                 +"-arrow-base:" + menuMargin + "px;\n"
                                 +"-arrow-rise:" + menuArrowSize + "px;\n}\n\n"
         +".arc-menu .popup-menu-content{\nmargin: 0;\nbackground-color: transparent;\nborder-radius: 0px;\nbox-shadow: 0;\n}\n\n"
-        
+
         +".arc-menu-sep{\nheight: 1px;\nmargin: 5px 20px;\nbackground-color: transparent;\nborder-bottom-style: solid;"
                             +"\nborder-color:" + separatorColor + ";\nborder-bottom-width: 1px;\n}\n\n"
 

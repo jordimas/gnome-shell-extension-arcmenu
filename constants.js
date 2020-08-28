@@ -159,6 +159,13 @@ var MENU_BUTTON_ICON = {
     Custom: 2
 };
 
+var PowerType = {
+    POWEROFF: 1,
+    LOCK: 2,
+    LOGOUT: 3,
+    SUSPEND: 4
+};
+
 var MENU_ICONS = [
     { path: '/media/icons/menu_icons/arcmenu-logo-symbolic.svg'},
     { path: '/media/icons/menu_icons/arcmenu-logo-alt-symbolic.svg'},
@@ -270,7 +277,8 @@ var MENU_LAYOUT = {
     Raven: 15,
     Tognee: 16,
     RavenExtended: 17,
-    Dashboard: 18
+    Dashboard: 18,
+    Plasma: 19
 };
 
 var TRADITIONAL_MENU_STYLE = [   
@@ -281,10 +289,11 @@ var TRADITIONAL_MENU_STYLE = [
     { thumbnail: '/media/layouts/mint-menu.svg', name: _('Mint Menu Style'), layout: MENU_LAYOUT.Mint},
     { thumbnail: '/media/layouts/budgie-menu.svg', name: _('Budgie Style'), layout: MENU_LAYOUT.Budgie}];
 
-var MODERN_MENU_STYLE = [   
-    { thumbnail: '/media/layouts/windows-10.svg', name: _('Windows 10 Style'), layout: MENU_LAYOUT.Windows},
+var MODERN_MENU_STYLE = [
     { thumbnail: '/media/layouts/ubuntu-dash-menu.svg', name: _('Ubuntu Dash Style'), layout: MENU_LAYOUT.UbuntuDash},
+    { thumbnail: '/media/layouts/plasma-menu.svg', name: _('Plasma Style'), layout: MENU_LAYOUT.Plasma},
     { thumbnail: '/media/layouts/tognee-menu.svg', name: _('tognee Menu'), layout: MENU_LAYOUT.Tognee},
+    { thumbnail: '/media/layouts/windows-10.svg', name: _('Windows 10 Style'), layout: MENU_LAYOUT.Windows},
     { thumbnail: '/media/layouts/redmond-style-menu.svg', name: _('Redmond Menu Style'), layout: MENU_LAYOUT.Redmond}];
 
 var TOUCH_MENU_STYLE = [   

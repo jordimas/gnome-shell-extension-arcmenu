@@ -82,6 +82,8 @@ var TweaksDialog = GObject.registerClass(
                 this._loadChromebookTweaks(vbox);
             else if(menuLayout == Constants.MENU_LAYOUT.Tognee)
                 this._loadTogneeMenuTweaks(vbox);
+            else if(menuLayout == Constants.MENU_LAYOUT.Plasma)
+                this._loadPlasmaMenuTweaks(vbox);
             else
                 this._loadPlaceHolderTweaks(vbox);
         }
@@ -146,7 +148,7 @@ var TweaksDialog = GObject.registerClass(
             searchbarLocationCombo.append_text(_("Top"));
             searchbarLocationCombo.set_active(this._settings.get_enum(searchBarLocationSetting ));
             searchbarLocationCombo.connect('changed', (widget) => {
-                    this._settings.set_enum(searchBarLocationSetting , widget.get_active());
+                this._settings.set_enum(searchBarLocationSetting , widget.get_active());
             });
 
             searchbarLocationRow.add(searchbarLocationLabel);
@@ -185,6 +187,130 @@ var TweaksDialog = GObject.registerClass(
             disableAvatarRow.add(disableAvatarLabel);
             disableAvatarRow.add(disableAvatarSwitch);
             return disableAvatarRow;
+        }
+        _loadPlasmaMenuTweaks(vbox){
+            let plasmaMenuTweaksFrame = new PW.FrameBox();
+            
+            let searchBarLocationSetting = 'searchbar-default-top-location';
+                 
+            let searchbarLocationRow = new PW.FrameBoxRow();
+            let searchbarLocationLabel = new Gtk.Label({
+                label: _("Searchbar Location"),
+                use_markup: true,
+                xalign: 0,
+                hexpand: true
+            });
+            let searchbarLocationCombo = new Gtk.ComboBoxText({ halign: Gtk.Align.END });
+            searchbarLocationCombo.append_text(_("Bottom"));
+            searchbarLocationCombo.append_text(_("Top"));
+            searchbarLocationCombo.set_active(this._settings.get_enum(searchBarLocationSetting));
+            searchbarLocationCombo.connect('changed', (widget) => {
+                this._settings.set_enum(searchBarLocationSetting , widget.get_active());
+            });
+
+            searchbarLocationRow.add(searchbarLocationLabel);
+            searchbarLocationRow.add(searchbarLocationCombo);
+            plasmaMenuTweaksFrame.add(searchbarLocationRow);
+
+            let hoverRow = new PW.FrameBoxRow();
+            let hoverLabel = new Gtk.Label({
+                label: _("Activate on Hover"),
+                use_markup: true,
+                xalign: 0,
+                hexpand: true
+            });
+            let hoverSwitch = new Gtk.Switch({ halign: Gtk.Align.END });
+            hoverSwitch.set_active(this._settings.get_boolean('plasma-enable-hover'));
+            hoverSwitch.connect('notify::active', (widget) => {
+                this._settings.set_boolean('plasma-enable-hover', widget.get_active());
+            });
+            hoverRow.add(hoverLabel);
+            hoverRow.add(hoverSwitch);
+            plasmaMenuTweaksFrame.add(hoverRow);
+
+            let descriptionsRow = new PW.FrameBoxRow();
+            let descriptionsLabel = new Gtk.Label({
+                label: _("Show Application Descriptions"),
+                use_markup: true,
+                xalign: 0,
+                hexpand: true
+            });
+            let descriptionsSwitch = new Gtk.Switch({ halign: Gtk.Align.END });
+            descriptionsSwitch.set_active(this._settings.get_boolean('plasma-show-descriptions'));
+            descriptionsSwitch.connect('notify::active', (widget) => {
+                this._settings.set_boolean('plasma-show-descriptions', widget.get_active());
+            });
+            descriptionsRow.add(descriptionsLabel);
+            descriptionsRow.add(descriptionsSwitch);
+            plasmaMenuTweaksFrame.add(descriptionsRow);
+
+            let foregroundColorRow = new PW.FrameBoxRow();
+            let foregroundColorLabel = new Gtk.Label({
+                label: _('Selected Button Border Color'),
+                xalign:0,
+                hexpand: true,
+             });   
+            let foregroundColorChooser = new Gtk.ColorButton({use_alpha:true});   
+            let color = new Gdk.RGBA();
+            color.parse(this._settings.get_string('plasma-selected-color'));
+            foregroundColorChooser.set_rgba(color);            
+            foregroundColorChooser.connect('color-set', ()=>{
+                this._settings.set_string('plasma-selected-color', foregroundColorChooser.get_rgba().to_string());
+                this._settings.reset('reload-theme');
+                this._settings.set_boolean('reload-theme', true);
+            });
+            foregroundColorRow.add(foregroundColorLabel);
+            foregroundColorRow.add(foregroundColorChooser);
+            plasmaMenuTweaksFrame.add(foregroundColorRow);
+
+            let backgroundColorRow = new PW.FrameBoxRow();
+            let backgroundColorLabel = new Gtk.Label({
+                label: _('Selected Button Background Color'),
+                xalign:0,
+                hexpand: true,
+             });   
+            let backgroundColorChooser = new Gtk.ColorButton({use_alpha:true});   
+            color = new Gdk.RGBA();
+            color.parse(this._settings.get_string('plasma-selected-background-color'));
+            backgroundColorChooser.set_rgba(color);            
+            backgroundColorChooser.connect('color-set', ()=>{
+                this._settings.set_string('plasma-selected-background-color',backgroundColorChooser.get_rgba().to_string());
+                this._settings.reset('reload-theme');
+                this._settings.set_boolean('reload-theme', true);
+            });
+            backgroundColorRow.add(backgroundColorLabel);
+            backgroundColorRow.add(backgroundColorChooser);
+            plasmaMenuTweaksFrame.add(backgroundColorRow);
+
+            vbox.add(plasmaMenuTweaksFrame);
+
+            let resetButton = new Gtk.Button({
+                label: _("Restore Defaults"),
+                halign: Gtk.Align.START,
+                hexpand: true
+            });
+            resetButton.set_sensitive(true);
+            resetButton.connect('clicked', ()=> {
+                let foregroundColor = this._settings.get_default_value('plasma-selected-color').unpack();
+                let backgroundColor = this._settings.get_default_value('plasma-selected-background-color').unpack();
+                let hoverEnabled = this._settings.get_default_value('plasma-enable-hover').unpack();
+                let showDescriptions = this._settings.get_default_value('plasma-show-descriptions').unpack();
+                this._settings.reset('searchbar-default-top-location');
+                searchbarLocationCombo.set_active(this._settings.get_enum(searchBarLocationSetting));
+                hoverSwitch.set_active(hoverEnabled);
+                color.parse(foregroundColor);
+                foregroundColorChooser.set_rgba(color); 
+                color.parse(backgroundColor);
+                backgroundColorChooser.set_rgba(color); 
+                descriptionsSwitch.set_active(showDescriptions);
+                this._settings.reset('plasma-selected-color');
+                this._settings.reset('plasma-selected-background-color');
+                this._settings.reset('plasma-enable-hover');
+                this._settings.reset('plasma-show-descriptions');
+                this._settings.reset('reload-theme');
+                this._settings.set_boolean('reload-theme', true);
+            });
+            vbox.add(resetButton);
         }
         _loadBriskMenuTweaks(vbox){
             let briskMenuTweaksFrame = new PW.FrameBox();
