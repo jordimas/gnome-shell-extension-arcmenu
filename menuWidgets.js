@@ -1748,7 +1748,9 @@ var UserMenuItem = GObject.registerClass(class ArcMenu_UserMenuItem extends ArcM
         let username = GLib.get_user_name();
         this._user = AccountsService.UserManager.get_default().get_user(username);
         this.iconBin =  new St.Bin({ 
-            style_class: 'menu-user-avatar'
+            style_class: 'menu-user-avatar',
+            y_expand: true,
+            y_align: Clutter.ActorAlign.CENTER
         });
         
         this._userAvatarSize = userAvatarSize ? userAvatarSize : USER_AVATAR_SIZE;
