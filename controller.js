@@ -34,6 +34,8 @@ const _ = Gettext.gettext;
 var MenuSettingsController = class {
     constructor(settings, settingsControllers, panel, panelIndex, arcMenuPlacement) {
         this._settings = settings;
+        if(this._settings.get_boolean('reload-theme'))
+            this._settings.reset('reload-theme');
         this.panel = panel;
         this.arcMenuPlacement = arcMenuPlacement;
 
@@ -150,7 +152,8 @@ var MenuSettingsController = class {
 
     _plasmaMenuReloadExtension(){
         if(this._settings.get_enum('menu-layout') === Constants.MENU_LAYOUT.Plasma){
-            this._settings.reset('reload-theme');
+            if(this._settings.get_boolean('reload-theme'))
+                this._settings.reset('reload-theme');
             this._settings.set_boolean('reload-theme', true);
         }
     }

@@ -126,7 +126,6 @@ var TweaksDialog = GObject.registerClass(
             avatarStyleCombo.set_active(this._settings.get_enum('avatar-style'));
             avatarStyleCombo.connect('changed', (widget) => {
                 this._settings.set_enum('avatar-style', widget.get_active());
-                this._settings.reset('reload-theme');
                 this._settings.set_boolean('reload-theme', true);
             });
             avatarStyleRow.add(avatarStyleLabel);
@@ -256,7 +255,6 @@ var TweaksDialog = GObject.registerClass(
             foregroundColorChooser.set_rgba(color);            
             foregroundColorChooser.connect('color-set', ()=>{
                 this._settings.set_string('plasma-selected-color', foregroundColorChooser.get_rgba().to_string());
-                this._settings.reset('reload-theme');
                 this._settings.set_boolean('reload-theme', true);
             });
             foregroundColorRow.add(foregroundColorLabel);
@@ -275,7 +273,6 @@ var TweaksDialog = GObject.registerClass(
             backgroundColorChooser.set_rgba(color);            
             backgroundColorChooser.connect('color-set', ()=>{
                 this._settings.set_string('plasma-selected-background-color',backgroundColorChooser.get_rgba().to_string());
-                this._settings.reset('reload-theme');
                 this._settings.set_boolean('reload-theme', true);
             });
             backgroundColorRow.add(backgroundColorLabel);
@@ -307,7 +304,6 @@ var TweaksDialog = GObject.registerClass(
                 this._settings.reset('plasma-selected-background-color');
                 this._settings.reset('plasma-enable-hover');
                 this._settings.reset('plasma-show-descriptions');
-                this._settings.reset('reload-theme');
                 this._settings.set_boolean('reload-theme', true);
             });
             vbox.add(resetButton);
