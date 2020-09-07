@@ -1749,7 +1749,6 @@ var UserMenuItem = GObject.registerClass(class ArcMenu_UserMenuItem extends ArcM
         this._user = AccountsService.UserManager.get_default().get_user(username);
         this.iconBin =  new St.Bin({ 
             style_class: 'menu-user-avatar',
-            y_expand: true,
             y_align: Clutter.ActorAlign.CENTER
         });
         
