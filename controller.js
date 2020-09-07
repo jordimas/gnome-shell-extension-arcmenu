@@ -128,6 +128,7 @@ var MenuSettingsController = class {
             this._settings.connect('changed::enable-clock-widget-ubuntu',this._updateFavorites.bind(this)),
             this._settings.connect('changed::enable-weather-widget-raven',this._updateFavorites.bind(this)),
             this._settings.connect('changed::enable-clock-widget-raven',this._updateFavorites.bind(this)),
+            this._settings.connect('changed::brisk-shortcuts-list',this._updateButtonFavorites.bind(this)),
             this._settings.connect('changed::mint-pinned-app-list',this._updateButtonFavorites.bind(this)),
             this._settings.connect('changed::mint-separator-index',this._updateButtonFavorites.bind(this)),
             this._settings.connect('changed::ubuntu-dash-pinned-app-list',this._updateButtonFavorites.bind(this)),
@@ -243,7 +244,7 @@ var MenuSettingsController = class {
 
     _updateButtonFavorites(){
         let layout = this._settings.get_enum('menu-layout');
-        if(layout == Constants.MENU_LAYOUT.UbuntuDash || layout == Constants.MENU_LAYOUT.Mint){
+        if(layout == Constants.MENU_LAYOUT.UbuntuDash || layout == Constants.MENU_LAYOUT.Mint || layout == Constants.MENU_LAYOUT.Brisk){
             if(this._menuButton.getShouldLoadFavorites())
                 this._menuButton._loadPinnedShortcuts();
         }

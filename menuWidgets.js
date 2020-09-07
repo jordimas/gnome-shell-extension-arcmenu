@@ -2845,6 +2845,10 @@ var PlaceMenuItem = GObject.registerClass(class ArcMenu_PlaceMenuItem extends Ar
         if(layout === Constants.MENU_LAYOUT.Plasma)
             this._updateIcon();
     }
+    
+    setIconSizeLarge(){
+        this._icon.icon_size = MEDIUM_ICON_SIZE;
+    }
 
     _updateIcon() {
         let largeIcons = this._menuLayout._settings.get_boolean('enable-large-icons');
