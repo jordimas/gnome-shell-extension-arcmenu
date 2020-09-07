@@ -552,6 +552,11 @@
       <summary>Index of Ubuntu-Dash Layout Pinned App Separator</summary>
       <description>Index of Ubuntu-Dash Layout Pinned App Separator, 0 = none</description>
     </key>
+    <key name="brisk-shortcuts-list" type="as">
+      <default>["Software","system-software-install-symbolic", "ArcMenu_Software", "Settings","preferences-system-symbolic", "gnome-control-center.desktop"]</default>
+      <summary>List of Brisk Layout Shortcuts</summary>
+      <description>List of Brisk Layout Shortcuts</description>
+    </key>
     <key name="mint-pinned-app-list" type="as">
       <default>[]</default>
       <summary>List of Mint Layout Pinned Apps</summary>
