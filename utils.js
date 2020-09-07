@@ -393,7 +393,7 @@ function createStylesheet(settings){
 
         +"StScrollView .small-vfade{\n-st-vfade-offset: 44px;\n}\n\n"
 
-        +".arc-menu-button{\n-st-icon-style: symbolic;\nmin-height:0px;\nborder-radius: 26px;\npadding: 13px;\n}\n\n"
+        +".arc-menu-button{\n-st-icon-style: symbolic;\nmin-height: 0px;\nmin-width: 0px;\nborder-radius: 26px;\npadding: 13px;\n}\n\n"
 
         +".arc-menu-action{\nmargin: 1px;\nbackground-color: transparent;\nbox-shadow: none;\ncolor:" + menuForegroundColor + ";\nborder-width: 1px;\n"
                             +"border-color: transparent;\n}\n\n"

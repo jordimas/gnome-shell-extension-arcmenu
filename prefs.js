@@ -160,7 +160,7 @@ var MenuSettingsPinnedAppsPage = GObject.registerClass(
                 }
                 iconString = frameRow._icon;
                 if(frameRow._icon === "" && Gio.DesktopAppInfo.new(frameRow._cmd)){
-                    iconString = Gio.DesktopAppInfo.new(frameRow._cmd).get_icon().to_string();
+                    iconString = Gio.DesktopAppInfo.new(frameRow._cmd).get_icon() ? Gio.DesktopAppInfo.new(frameRow._cmd).get_icon().to_string() : "";
                 }
 
                 let arcMenuImage = new Gtk.Image( {
@@ -1928,7 +1928,6 @@ var ButtonAppearancePage = GObject.registerClass(
                 resetButton.set_sensitive(true); 
                 this.menuButtonColor = menuButtonColorChooser.get_rgba().to_string();
                 this._settings.set_string('menu-button-color',this.menuButtonColor);
-                this._settings.reset('reload-theme');
                 this._settings.set_boolean('reload-theme', true);
             });
             let menuButtonColorInfoButton = new PW.InfoButton();
@@ -1962,7 +1961,6 @@ var ButtonAppearancePage = GObject.registerClass(
                 resetButton.set_sensitive(true); 
                 this.menuButtonHoverColor = menuButtonHoverColorChooser.get_rgba().to_string();
                 this._settings.set_string('menu-button-hover-color',this.menuButtonHoverColor);
-                this._settings.reset('reload-theme');
                 this._settings.set_boolean('reload-theme', true);
             });
 
@@ -1997,7 +1995,6 @@ var ButtonAppearancePage = GObject.registerClass(
                 resetButton.set_sensitive(true); 
                 this.menuButtonActiveColor = menuButtonActiveColorChooser.get_rgba().to_string();
                 this._settings.set_string('menu-button-active-color',this.menuButtonActiveColor);
-                this._settings.reset('reload-theme');
                 this._settings.set_boolean('reload-theme', true);
             });
 
@@ -2032,7 +2029,6 @@ var ButtonAppearancePage = GObject.registerClass(
                 resetButton.set_sensitive(true); 
                 this.menuButtonHoverBackgroundcolor = menuButtonHoverBackgroundcolorChooser.get_rgba().to_string();
                 this._settings.set_string('menu-button-hover-backgroundcolor',this.menuButtonHoverBackgroundcolor);
-                this._settings.reset('reload-theme');
                 this._settings.set_boolean('reload-theme', true);
             });
 
@@ -2054,7 +2050,6 @@ var ButtonAppearancePage = GObject.registerClass(
                 resetButton.set_sensitive(true); 
                 this.menuButtonActiveBackgroundcolor = menuButtonActiveBackgroundcolorChooser.get_rgba().to_string();
                 this._settings.set_string('menu-button-active-backgroundcolor',this.menuButtonActiveBackgroundcolor);
-                this._settings.reset('reload-theme');
                 this._settings.set_boolean('reload-theme', true);
             });
 
@@ -2094,7 +2089,6 @@ var ButtonAppearancePage = GObject.registerClass(
                 this._settings.reset('menu-button-hover-backgroundcolor');
                 this._settings.reset('menu-button-active-backgroundcolor');
                 this._settings.reset('menu-button-color');
-                this._settings.reset('reload-theme');
                 this._settings.set_boolean('reload-theme', true);
   
                 resetButton.set_sensitive(false);        
@@ -2453,7 +2447,6 @@ var MenuLayoutPage = GObject.registerClass(
                 menuLayoutsBox.connect('menu-layout-response', (dialog, response) => { 
                     if(response === -10) {
                         this._settings.set_enum('menu-layout', dialog.index);
-                        this._settings.reset('reload-theme');
                         this._settings.set_boolean('reload-theme', true);
                         currentLayoutBoxLabel.label = this.getMenuLayoutName(dialog.index);
                         tweaksLabel.label = currentLayoutBoxLabel.label +" " + _("Tweaks");
@@ -2553,7 +2546,6 @@ var MenuThemePage = GObject.registerClass(
             overrideArcMenuSwitch.set_active(this._settings.get_boolean('enable-custom-arc-menu'));
             overrideArcMenuSwitch.connect('notify::active', (widget) => {
                 this._settings.set_boolean('enable-custom-arc-menu',widget.get_active());
-                this._settings.reset('reload-theme');
                 this._settings.set_boolean('reload-theme', true);
                 if(widget.get_active()){
                     this.mainBox.add(this.menuThemeCustomizationBox);
@@ -2579,7 +2571,6 @@ var MenuThemePage = GObject.registerClass(
                     this._settings.set_int('menu-corner-radius', dialog.cornerRadius);
                     this._settings.set_int('menu-margin', dialog.menuMargin);
                     this._settings.set_int('menu-arrow-size', dialog.menuArrowSize);
-                    this._settings.reset('reload-theme');
                     this._settings.set_boolean('reload-theme', true);
                     this.presetName = dialog.presetName;
                 }
@@ -3183,7 +3174,6 @@ var MenuSettingsGeneralPage = GObject.registerClass(
             this._settings.set_boolean('enable-sub-menus', this.subMenus);
             this._settings.set_boolean('disable-recently-installed-apps', this.disableRecentApps);
             this._settings.set_boolean('disable-tooltips', this.disableTooltips);
-            this._settings.reset('reload-theme');
             this._settings.set_boolean('reload-theme', true);
             this.saveButton.set_sensitive(false);
             this.resetButton.set_sensitive(this.checkIfResetButtonSensitive());
@@ -3508,7 +3498,6 @@ var MenuSettingsFineTunePage = GObject.registerClass(
             this._settings.set_boolean('disable-searchbox-border', this.disableSearchStyle);
             this._settings.set_boolean('alphabetize-all-programs', this.alphabetizeAllPrograms);
             this._settings.set_boolean('multi-lined-labels', this.multiLinedLabels);
-            this._settings.reset('reload-theme');
             this._settings.set_boolean('reload-theme', true);
             this.saveButton.set_sensitive(false);
             this.resetButton.set_sensitive(this.checkIfResetButtonSensitive());
@@ -5116,7 +5105,7 @@ var MenuSettingsShortcutApplicationsPage = GObject.registerClass(
             frameRow._cmd = applicationShortcuts[i][2];
             iconString = frameRow._icon;
             if(frameRow._icon === "" && Gio.DesktopAppInfo.new(frameRow._cmd)){
-                iconString = Gio.DesktopAppInfo.new(frameRow._cmd).get_icon().to_string();
+                iconString = Gio.DesktopAppInfo.new(frameRow._cmd).get_icon() ? Gio.DesktopAppInfo.new(frameRow._cmd).get_icon().to_string() : "";
             }
             let applicationIcon = new Gtk.Image( {
                 gicon: Gio.icon_new_for_string(iconString),
@@ -5181,7 +5170,7 @@ var MenuSettingsShortcutApplicationsPage = GObject.registerClass(
                         softwareShortcutsLabel.label = _(frameRow._name);
                         let iconString;
                         if(frameRow._icon === "" && Gio.DesktopAppInfo.new(frameRow._cmd)){
-                            iconString = Gio.DesktopAppInfo.new(frameRow._cmd).get_icon().to_string();
+                            iconString = Gio.DesktopAppInfo.new(frameRow._cmd).get_icon() ? Gio.DesktopAppInfo.new(frameRow._cmd).get_icon().to_string() : "";
                         }
                         applicationIcon.gicon = Gio.icon_new_for_string(iconString ? iconString : frameRow._icon);
                         dialog.destroy();
