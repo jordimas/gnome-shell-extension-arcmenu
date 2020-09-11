@@ -657,7 +657,8 @@ Signals.addSignalMethods(PlacesManager.prototype);
 var Trash = class ArcMenu_Trash {
     constructor(menuItem) {
         this._menuItem = menuItem;
-        this._file = Gio.file_new_for_uri('trash://');
+        let trashPath = GLib.get_home_dir() + '/.local/share/Trash/files/';
+        this._file = Gio.file_new_for_path(trashPath);
         try {
             this._monitor = this._file.monitor_directory(0, null);
             this._signalId = this._monitor.connect(
