@@ -204,6 +204,9 @@ var createMenu = class extends BaseMenuLayout.BaseLayout{
                     || pinnedApps[i+2] == "ArcMenu_Lock" || app){
                 placeMenuItem = new MW.ShortcutMenuItem(this, pinnedApps[i], pinnedApps[i+1], pinnedApps[i+2]);
             }
+            else if(pinnedApps[i+2] === "ArcMenu_Trash"){
+                placeMenuItem = new MW.ShortcutMenuItem(this, _("Trash"), '', "ArcMenu_Trash");
+            }
             else if(pinnedApps[i+2].startsWith("ArcMenu_")){
                 let path = pinnedApps[i+2].replace("ArcMenu_",'');
 

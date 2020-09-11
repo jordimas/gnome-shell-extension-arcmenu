@@ -386,6 +386,7 @@ var AddAppsToPinnedListWindow = GObject.registerClass(
                 let defaultApplicationShortcuts = this._settings.get_default_value('directory-shortcuts-list').deep_unpack();
                 defaultApplicationShortcuts.push(["Computer", "ArcMenu_Computer", "ArcMenu_Computer"]);
                 defaultApplicationShortcuts.push(["Network", "ArcMenu_Network", "ArcMenu_Network"]);
+                defaultApplicationShortcuts.push(["Trash", "user-trash-symbolic", "ArcMenu_Trash"]);
                 for(let i = 0;i < defaultApplicationShortcuts.length; i++) {
                     let frameRow = new PW.FrameBoxRow();
                     
@@ -515,6 +516,7 @@ var AddAppsToPinnedListWindow = GObject.registerClass(
                 let defaultApplicationShortcuts = this._settings.get_default_value('directory-shortcuts-list').deep_unpack();
                 defaultApplicationShortcuts.push(["Computer", "ArcMenu_Computer", "ArcMenu_Computer"]);
                 defaultApplicationShortcuts.push(["Network", "ArcMenu_Network", "ArcMenu_Network"]);
+                defaultApplicationShortcuts.push(["Trash", "user-trash-symbolic", "ArcMenu_Trash"]);
 
                 defaultApplicationShortcuts.push(["Lock", "changes-prevent-symbolic", "ArcMenu_Lock"]);
                 defaultApplicationShortcuts.push(["Log Out", "application-exit-symbolic", "ArcMenu_LogOut"]);

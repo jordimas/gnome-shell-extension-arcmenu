@@ -652,3 +652,100 @@ var PlacesManager = class ArcMenu_PlacesManager {
     }
 };
 Signals.addSignalMethods(PlacesManager.prototype);
+
+//Trash can class implemented from Dash to Dock https://github.com/micheleg/dash-to-dock/blob/master/locations.js
+var Trash = class ArcMenu_Trash {
+    constructor(menuItem) {
+        this._menuItem = menuItem;
+        this._file = Gio.file_new_for_uri('trash://');
+        try {
+            this._monitor = this._file.monitor_directory(0, null);
+            this._signalId = this._monitor.connect(
+                'changed',
+                this._onTrashChange.bind(this)
+            );
+        } catch (e) {
+            log(`Impossible to monitor trash: ${e}`)
+        }
+        this._lastEmpty = true;
+        this._empty = true;
+        this._schedUpdateId = 0;
+        this._updateTrash();
+    }
+
+    destroy() {
+        if (this._monitor) {
+            this._monitor.disconnect(this._signalId);
+            this._monitor.run_dispose();
+        }
+        this._file.run_dispose();
+    }
+
+    _onTrashChange() {
+        if (this._schedUpdateId) {
+            GLib.source_remove(this._schedUpdateId);
+        }
+        this._schedUpdateId = GLib.timeout_add(
+            GLib.PRIORITY_DEFAULT, 500, () => {
+            this._schedUpdateId = 0;
+            this._updateTrash();
+            return GLib.SOURCE_REMOVE;
+        });
+    }
+
+    _updateTrash() {
+        try {
+            let children = this._file.enumerate_children('*', 0, null);
+            this._empty = children.next_file(null) == null;
+            children.close(null);
+        } catch (e) {
+            log(`Impossible to enumerate trash children: ${e}`)
+            return;
+        }
+
+        this._ensureApp();
+    }
+
+    _ensureApp() {
+        if (this._trashApp == null ||
+            this._lastEmpty != this._empty) {
+            let trashKeys = new GLib.KeyFile();
+            trashKeys.set_string('Desktop Entry', 'Name', _('Trash'));
+            trashKeys.set_string('Desktop Entry', 'Id', 'ArcMenu_Trash');
+            trashKeys.set_string('Desktop Entry', 'Icon',
+                                 this._empty ? 'user-trash-symbolic' : 'user-trash-full-symbolic');
+            trashKeys.set_string('Desktop Entry', 'Type', 'Application');
+            trashKeys.set_string('Desktop Entry', 'Exec', 'gio open trash:///');
+            trashKeys.set_string('Desktop Entry', 'StartupNotify', 'false');
+            trashKeys.set_string('Desktop Entry', 'XdtdUri', 'trash:///');
+            if (!this._empty) {
+                trashKeys.set_string('Desktop Entry', 'Actions', 'empty-trash;');
+                trashKeys.set_string('Desktop Action empty-trash', 'Name', _('Empty Trash'));
+                trashKeys.set_string('Desktop Action empty-trash', 'Exec',
+                                     'dbus-send --print-reply --dest=org.gnome.Nautilus /org/gnome/Nautilus org.gnome.Nautilus.FileOperations.EmptyTrash');
+            }
+            else{
+                trashKeys.set_string('Desktop Entry', 'Actions', 'empty-trash-inactive;');
+                trashKeys.set_string('Desktop Action empty-trash-inactive', 'Name', _('Empty Trash'));
+            }
+
+            let trashAppInfo = Gio.DesktopAppInfo.new_from_keyfile(trashKeys);
+            this._trashApp = new Shell.App({appInfo: trashAppInfo});
+            this._lastEmpty = this._empty;
+
+            this._menuItem._app = this._trashApp;
+            if(this._menuItem.contextMenu)
+                this._menuItem.contextMenu._app = this._trashApp;
+            if(this._menuItem._icon)
+                this._menuItem._icon.gicon = this._trashApp.create_icon_texture(MEDIUM_ICON_SIZE).gicon;
+
+            this.emit('changed');
+        }
+    }
+
+    getApp() {
+        this._ensureApp();
+        return this._trashApp;
+    }
+}
+Signals.addSignalMethods(Trash.prototype);
