@@ -665,7 +665,7 @@ var Trash = class ArcMenu_Trash {
                 this._onTrashChange.bind(this)
             );
         } catch (e) {
-            log(`Impossible to monitor trash: ${e}`)
+            log(`Impossible to monitor trash: ${e}`);
         }
         this._lastEmpty = true;
         this._empty = true;
@@ -736,8 +736,9 @@ var Trash = class ArcMenu_Trash {
             this._menuItem._app = this._trashApp;
             if(this._menuItem.contextMenu)
                 this._menuItem.contextMenu._app = this._trashApp;
-            if(this._menuItem._icon)
-                this._menuItem._icon.gicon = this._trashApp.create_icon_texture(MEDIUM_ICON_SIZE).gicon;
+            let trashIcon = this._trashApp.create_icon_texture(MEDIUM_ICON_SIZE);
+            if(this._menuItem._icon && trashIcon)
+                this._menuItem._icon.gicon = trashIcon.gicon;
 
             this.emit('changed');
         }
