@@ -180,7 +180,7 @@ var MenuButton = GObject.registerClass(class ArcMenu_MenuButton extends PanelMen
     syncWithDashToPanel(){
         this.arcMenuContextMenu.addExtensionSettings(this.arcMenuPlacement);  
         this.extensionSettingsItem = Convenience.getDTPSettings('org.gnome.shell.extensions.dash-to-panel', this.dashToPanel);
-        let monitorIndex = Main.layoutManager.findIndexForActor(this.menuButtonWidget.actor);
+        let monitorIndex = global.dashToPanel.panels.find(p => p.panel == this._panel).monitor.index;
         let side = Utils.getDashToPanelPosition(this.extensionSettingsItem, monitorIndex);
         this.updateArrowSide(side);
         let dashToPanelPositionSettings = 'panel-positions'
@@ -248,7 +248,7 @@ var MenuButton = GObject.registerClass(class ArcMenu_MenuButton extends PanelMen
                     this.arcMenu._boxPointer.setSourceAlignment(.5);
                 }
                 else if(this.dashToPanel && this.dashToPanel.stateObj){
-                    let monitorIndex = Main.layoutManager.findIndexForActor(this.menuButtonWidget.actor);
+                    let monitorIndex = global.dashToPanel.panels.find(p => p.panel == this._panel).monitor.index;
                     let side = Utils.getDashToPanelPosition(this.extensionSettingsItem, monitorIndex);
                     this.updateArrowSide(side, false);
                 }  
