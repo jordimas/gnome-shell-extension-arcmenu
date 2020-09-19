@@ -46,11 +46,11 @@ var MenuSettingsController = class {
             return GLib.SOURCE_REMOVE;
         });
         this.currentMonitorIndex = 0;
+        this._activitiesButton = Main.panel.statusArea.activities;
 
         if(this.arcMenuPlacement == Constants.ArcMenuPlacement.PANEL){
             this.isMainPanel = panelIndex;
             this._menuButton = new MenuButton.MenuButton(settings, this.arcMenuPlacement, panel);
-            this._activitiesButton = this.panel.statusArea.activities;
         }
         else if(this.arcMenuPlacement == Constants.ArcMenuPlacement.DASH){
             this.isMainPanel = panelIndex == 0 ? true : false;
@@ -483,8 +483,7 @@ var MenuSettingsController = class {
             let disable = this._settings.get_boolean('disable-activities-button'); 
             if(!disable || restore){
                 if(!isActivitiesButtonPresent){
-                    Main.panel._leftBox.add_child(Main.panel.statusArea.activities.container);
-                    Main.panel._leftBox.set_child_at_index(Main.panel.statusArea.activities.container, 0);
+                    Main.panel._leftBox.insert_child_at_index(Main.panel.statusArea.activities.container, 0);
                 }
             }                          
             if(disable){
@@ -523,8 +522,9 @@ var MenuSettingsController = class {
     _addActivitiesButtonToMainPanel() {
         if (this.panel == Main.panel && !this._isActivitiesButtonPresent()) {
             // Retsore the activities button at the default position
-            this.panel._leftBox.add_child(this._activitiesButton.container);
-            this.panel._leftBox.set_child_at_index(this._activitiesButton.container, 0);
+            let parent = this._activitiesButton.container.get_parent();
+            if(!parent)
+                this.panel._leftBox.insert_child_at_index(this._activitiesButton.container, 0);
         }
     }
 
@@ -542,10 +542,19 @@ var MenuSettingsController = class {
     }
 
     // Enable the menu button
-    enableButton() {
-        this._removeActivitiesButtonFromMainPanel(); // disable the activities button
-        this._addMenuButtonToMainPanel();
+    enableButton(index) {
+        if(this.arcMenuPlacement == Constants.ArcMenuPlacement.DASH){
+            this.dashIndex = index;
+            this.reEstablishDash();
+        }
+        if(this.arcMenuPlacement == Constants.ArcMenuPlacement.PANEL){
+            this._removeActivitiesButtonFromMainPanel();
+            this._addMenuButtonToMainPanel();
+        }
+
+        this._menuButton.initiate();
     }
+
     reEstablishDash(){
         let container = this.panel._allDocks[this.dashIndex].dash._container;
         this.panel._allDocks[this.dashIndex].dash.arcMenuEnabled = true;
@@ -588,16 +597,11 @@ var MenuSettingsController = class {
             this.panel._allDocks[this.dashIndex].dash._signalsHandler.destroy();
         };
     }
-    // Enable the menu button
-    enableButtonInDash(index) {
-        this.dashIndex = index;
-        this.reEstablishDash();       
-    }
 
     // Disable the menu button
     _disableButton() {
         this._removeMenuButtonFromMainPanel();
-        this._addActivitiesButtonToMainPanel(); // restore the activities button
+        this._addActivitiesButtonToMainPanel();
         this._menuButton.destroy();
     }
 

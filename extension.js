@@ -71,19 +71,17 @@ function enable() {
     // dash to panel might get enabled after Arc-Menu
     extensionChangedId = Main.extensionManager.connect('extension-state-changed', (data, extension) => {
         if (extension.uuid === 'dash-to-panel@jderose9.github.com') {
+            let arcMenuPlacement = settings.get_enum('arc-menu-placement');
             if(extension.state === 1){
                 this.set_DtD_DtP_State(Constants.EXTENSION.DTP, true);
-                let arcMenuPlacement = settings.get_enum('arc-menu-placement');
                 if(arcMenuPlacement == Constants.ArcMenuPlacement.PANEL || arcMenuPlacement == Constants.ArcMenuPlacement.DTP){
-                    for (let i = settingsControllers.length - 1; i >= 0; --i) {
-                        let sc = settingsControllers[i];
-                        _disableButton(sc, 1);
-                    }
                     _connectDtpSignals();
                     _enableButtons();
                 }
             }
-            else if(extension.state === 2) this.set_DtD_DtP_State(Constants.EXTENSION.DTP, false);
+            else if(extension.state === 2) {
+                this.set_DtD_DtP_State(Constants.EXTENSION.DTP, false);
+            }
         }
         if ((extension.uuid === "dash-to-dock@micxgx.gmail.com" || extension.uuid === "ubuntu-dock@ubuntu.com") && (extension.state === 1 || extension.state === 2)) {
             _disconnectDtdSignals();
@@ -221,8 +219,8 @@ function _enableButtons() {
                 for(var index = 0; index < iterLength; index++){      
                     if(!panel._allDocks[index].dash.arcMenuEnabled){
                         let settingsController = new Controller.MenuSettingsController(settings, settingsControllers, panel, index, Constants.ArcMenuPlacement.DASH);
-                        settingsController.enableButtonInDash(index);
-    
+                        
+                        settingsController.enableButton(index);
                         settingsController.bindSettingsChanges();
                         settingsControllers.push(settingsController); 
                     }      
