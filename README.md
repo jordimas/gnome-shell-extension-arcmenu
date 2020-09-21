@@ -6,6 +6,22 @@
 
 -----
 
+Hi
+
+As you will have read ArcMenu will be moving home on GitLab and EGO and have a new maintainer @AndrewZaech all information will be updated in the next few days as well as this repo going into archive mode after its final update..
+
+You can read the full reasons why here #358 (closed)
+
+
+kind regards **LinxGem33 aka Andy C**
+
+-----
+
+<details>
+<summary><b>Project information..</b></summary>
+
+<p>
+
 ### Introduction
 
 Arc Menu is a Gnome shell extension designed to replace the standard menu found in Gnome 3 this application menu extension has  some added benefits over the standard menu found in Gnome 3, these include the long awaited search functionality as well as quick access to files on your system and also the current logged in user along with quick access to the software centre and system settings and other features which can be accessed from the settings menu.
@@ -307,3 +323,6 @@ Kind regards - **ArcMenu Team**
 -----
 
  **- @[stevendobay](https://gitlab.com/stevendobay) - Hungarian** | **- @[omeritzics](https://gitlab.com/omeritzics) - Hebrew** |
+
+ </p>
+</details>
