@@ -364,6 +364,9 @@ var BaseLayout = class {
                 placeInfo = new PlaceDisplay.PlaceInfo('network',Gio.File.new_for_uri('network:///'), _('Network'),'network-workgroup-symbolic');
                 placeMenuItem = new PlaceDisplay.PlaceMenuItem(placeInfo, this);    
             }
+            else if(directory[2] === "ArcMenu_Trash"){
+                placeMenuItem = new MW.ShortcutMenuItem(this, _("Trash"), '', "ArcMenu_Trash");
+            }
             else if(directory[2].startsWith("ArcMenu_")){
                 let path = directory[2].replace("ArcMenu_",'');
 
@@ -381,7 +384,7 @@ var BaseLayout = class {
                 path = GLib.get_user_special_dir(path);
                 if (path != null){
                     placeInfo = new MW.PlaceInfo(Gio.File.new_for_path(path), _(directory[0]));
-                    placeMenuItem = new MW.PlaceMenuItem(this, placeInfo)
+                    placeMenuItem = new MW.PlaceMenuItem(this, placeInfo);
                 }
             }
             else{
@@ -389,8 +392,8 @@ var BaseLayout = class {
                 placeInfo = new MW.PlaceInfo(Gio.File.new_for_path(path), _(directory[0]), (directory[1] !== "ArcMenu_Folder") ? directory[1] : null);
                 placeMenuItem = new MW.PlaceMenuItem(this, placeInfo);
             }
-            
-            this.shortcutsBox.add_actor(placeMenuItem.actor);
+            if(placeMenuItem)
+                this.shortcutsBox.add_actor(placeMenuItem.actor);
         }
     }
 
@@ -408,23 +411,26 @@ var BaseLayout = class {
             let app = Shell.AppSystem.get_default().lookup_app(pinnedApps[i+2]);
             
             let placeInfo, placeMenuItem;
-            if(pinnedApps[i+2]=="ArcMenu_Home"){
+            if(pinnedApps[i+2] === "ArcMenu_Home"){
                 let homePath = GLib.get_home_dir();
                 placeInfo = new MW.PlaceInfo(Gio.File.new_for_path(homePath), _("Home"));
                 placeMenuItem = new MW.PlaceButtonItem(this, placeInfo);
             }
-            else if(pinnedApps[i+2]=="ArcMenu_Computer"){
+            else if(pinnedApps[i+2] === "ArcMenu_Computer"){
                 placeInfo = new PlaceDisplay.RootInfo();
                 placeInfo.icon = placeInfo.icon.to_string();
                 placeMenuItem = new MW.PlaceButtonItem(this, placeInfo);
             }
-            else if(pinnedApps[i+2]=="ArcMenu_Network"){
+            else if(pinnedApps[i+2] === "ArcMenu_Network"){
                 placeInfo = new PlaceDisplay.PlaceInfo('network',Gio.File.new_for_uri('network:///'), _('Network'),'network-workgroup-symbolic');
                 placeInfo.icon = placeInfo.icon.to_string();
                 placeMenuItem = new MW.PlaceButtonItem(this, placeInfo);    
             }
-            else if(pinnedApps[i+2] == Constants.ArcMenu_SettingsCommand || pinnedApps[i+2] == "ArcMenu_Suspend" || pinnedApps[i+2] == "ArcMenu_LogOut" || pinnedApps[i+2] == "ArcMenu_PowerOff"
-                    || pinnedApps[i+2] == "ArcMenu_Lock" || app){
+            else if(pinnedApps[i+2] === "ArcMenu_Trash"){
+                placeMenuItem = new MW.ShortcutButtonItem(this, _("Trash"), '', "ArcMenu_Trash");
+            }
+            else if(pinnedApps[i+2] === Constants.ArcMenu_SettingsCommand || pinnedApps[i+2] === "ArcMenu_Suspend" || pinnedApps[i+2] === "ArcMenu_LogOut" || pinnedApps[i+2] === "ArcMenu_PowerOff"
+                    || pinnedApps[i+2] === "ArcMenu_Lock" || app){
                 placeMenuItem = new MW.ShortcutButtonItem(this, pinnedApps[i], pinnedApps[i+1], pinnedApps[i+2]);
             }
             else if(pinnedApps[i+2].startsWith("ArcMenu_")){
@@ -442,7 +448,7 @@ var BaseLayout = class {
                     path = imports.gi.GLib.UserDirectory.DIRECTORY_VIDEOS;
 
                 path = GLib.get_user_special_dir(path);
-                if (path != null){
+                if (path !== null){
                     placeInfo = new MW.PlaceInfo(Gio.File.new_for_path(path), _(pinnedApps[i]));
                     placeMenuItem = new MW.PlaceButtonItem(this, placeInfo);
                 }
@@ -867,7 +873,7 @@ var BaseLayout = class {
             }
             this.favoritesArray = null;
         }
-
+        
         if(this.network){
             this.network.destroy();
             this.networkMenuItem.destroy();

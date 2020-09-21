@@ -216,16 +216,34 @@ var ApplicationContextMenu = class ArcMenu_ApplicationContextMenu extends PopupM
         
                     for (let i = 0; i < actions.length; i++) {
                         let action = actions[i];
-                        let item = this._appendMenuItem(this.appInfo.get_action_name(action));
+                        let item;
+                        if(action === "empty-trash-inactive"){
+                            item = new PopupMenu.PopupMenuItem(this.appInfo.get_action_name(action), {reactive:false,can_focus:false});
+                            item.actor.add_style_class_name('inactive');  
+                            this._appendSeparator();
+                            this.addMenuItem(item);
+                        }
+                        else if(action === "empty-trash"){
+                            this._appendSeparator();
+                            item = this._appendMenuItem(this.appInfo.get_action_name(action));
+                        }
+                        else{
+                            item = this._appendMenuItem(this.appInfo.get_action_name(action));
+                        }
+                       
                         item.connect('activate', (emitter, event) => {
                             this.closeMenus();
                             this._app.launch_action(action, event.get_time(), -1);
                             this.emit('activate-window', null);
                         });
                     }
+                    
+                    //If Trash Can, we don't want to add the rest of the entries below.
+                    if(this.appInfo.get_string('Id') === "ArcMenu_Trash")
+                        return false;
 
                     let desktopIcons = Main.extensionManager.lookup("desktop-icons@csoriano");
-                    let desktopIconsNG = Main.extensionManager.lookup("ding@rastersoft.com")   ;
+                    let desktopIconsNG = Main.extensionManager.lookup("ding@rastersoft.com");
                     if((desktopIcons && desktopIcons.stateObj) || (desktopIconsNG && desktopIconsNG.stateObj) ){
                         this._appendSeparator();
                         let fileSource = this.appInfo.get_filename();
@@ -1168,7 +1186,14 @@ var ShortcutButtonItem = GObject.registerClass(class ArcMenu_ShortcutButtonItem 
             let softwareManager = Utils.findSoftwareManager();
             this._command = softwareManager ? softwareManager : 'ArcMenu_unfound.desktop';
         }
-        this._app = Shell.AppSystem.get_default().lookup_app(this._command);
+        if(command === "ArcMenu_Trash"){
+            this.trash = new Me.imports.placeDisplay.Trash(this);          
+            this._command = "ArcMenu_Trash";
+            this._app = this.trash.getApp();
+            this._icon.gicon = this._app.create_icon_texture(MEDIUM_ICON_SIZE).gicon;
+        }
+        if(!this._app)
+            this._app = Shell.AppSystem.get_default().lookup_app(this._command);
         this.hasContextMenu = this._app ? true : false;
         if(this._command.endsWith(".desktop") && !Shell.AppSystem.get_default().lookup_app(this._command)){
             this.shouldShow = false;
@@ -1622,7 +1647,13 @@ var ShortcutMenuItem = GObject.registerClass(class ArcMenu_ShortcutMenuItem exte
             let softwareManager = Utils.findSoftwareManager();
             this._command = softwareManager ? softwareManager : 'ArcMenu_unfound.desktop';
         }
-        this._app = Shell.AppSystem.get_default().lookup_app(this._command);
+        else if(this._command === "ArcMenu_Trash"){
+            this.trash = new Me.imports.placeDisplay.Trash(this);
+            this._command = "ArcMenu_Trash";
+            this._app = this.trash.getApp();
+        }
+        if(!this._app)
+            this._app = Shell.AppSystem.get_default().lookup_app(this._command);
 
         if(this._app && icon === ''){
             let appIcon = this._app.create_icon_texture(MEDIUM_ICON_SIZE);
@@ -1748,7 +1779,8 @@ var UserMenuItem = GObject.registerClass(class ArcMenu_UserMenuItem extends ArcM
         let username = GLib.get_user_name();
         this._user = AccountsService.UserManager.get_default().get_user(username);
         this.iconBin =  new St.Bin({ 
-            style_class: 'menu-user-avatar'
+            style_class: 'menu-user-avatar',
+            y_align: Clutter.ActorAlign.CENTER
         });
         
         this._userAvatarSize = userAvatarSize ? userAvatarSize : USER_AVATAR_SIZE;
@@ -2843,6 +2875,10 @@ var PlaceMenuItem = GObject.registerClass(class ArcMenu_PlaceMenuItem extends Ar
         let layout = this._menuLayout._settings.get_enum('menu-layout'); 
         if(layout === Constants.MENU_LAYOUT.Plasma)
             this._updateIcon();
+    }
+    
+    setIconSizeLarge(){
+        this._icon.icon_size = MEDIUM_ICON_SIZE;
     }
 
     _updateIcon() {

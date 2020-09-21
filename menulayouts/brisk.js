@@ -23,11 +23,12 @@
 
 const Me = imports.misc.extensionUtils.getCurrentExtension();
 
-const {Clutter, Gtk, St} = imports.gi;
+const {Clutter, Gio, GLib, Gtk, Shell, St} = imports.gi;
 const BaseMenuLayout = Me.imports.menulayouts.baseMenuLayout;
 const Constants = Me.imports.constants;
 const Gettext = imports.gettext.domain(Me.metadata['gettext-domain']);
 const MW = Me.imports.menuWidgets;
+const PlaceDisplay = Me.imports.placeDisplay;
 const Utils =  Me.imports.utils;
 const _ = Gettext.gettext;
 
@@ -107,54 +108,42 @@ var createMenu = class extends BaseMenuLayout.BaseLayout{
         this.categoriesBox = new St.BoxLayout({ vertical: true });
         this.categoriesScrollBox.add_actor(this.categoriesBox);
         
-        this.shortcutsBox = new St.BoxLayout({ 
+        this.actionsBox = new St.BoxLayout({ 
             vertical: true,
             x_expand: true, 
             y_expand: true,
             y_align: Clutter.ActorAlign.END
         });
-        this.shortcutsBox.style = "padding: 5px 0px 0px 0px;"
-        this.leftBox.add(this.shortcutsBox);
-
-        this.shortcutsBox.add(this._createHorizontalSeparator(Constants.SEPARATOR_STYLE.LONG));
-
-        let shortcutMenuItem = new MW.ShortcutMenuItem(this, _("Software"), 'org.gnome.Software-symbolic', 'ArcMenu_Software');
-        shortcutMenuItem.setIconSizeLarge();
-        this.shortcutsBox.add(shortcutMenuItem.actor);
-
-        shortcutMenuItem = new MW.ShortcutMenuItem(this, _("Settings"), 'preferences-system-symbolic', 'gnome-control-center');
-        shortcutMenuItem.setIconSizeLarge();
-        this.shortcutsBox.add(shortcutMenuItem.actor);
-
-        this.shortcutsBox.add(this._createHorizontalSeparator(Constants.SEPARATOR_STYLE.LONG));    
+        this.actionsBox.style = "padding: 5px 0px 0px 0px;"
+        this.leftBox.add(this.actionsBox);
         
         //create new section for Power, Lock, Logout, Suspend Buttons
-        this.actionsBox = new St.BoxLayout({
+        this.sessionBox = new St.BoxLayout({
             vertical: false,
             x_expand: false,
             y_expand: false,
             y_align: Clutter.ActorAlign.END,
             x_align: Clutter.ActorAlign.CENTER
         });	
-        this.actionsBox.style = "spacing: 16px;";
+        this.sessionBox.style = "spacing: 16px;";
 
         if(this._settings.get_boolean('show-logout-button')){
             let logout = new MW.LogoutButton( this);
-            this.actionsBox.add(logout.actor);
+            this.sessionBox.add(logout.actor);
         }  
         if(this._settings.get_boolean('show-lock-button')){
             let lock = new MW.LockButton( this);
-            this.actionsBox.add(lock.actor);
+            this.sessionBox.add(lock.actor);
         }
         if(this._settings.get_boolean('show-suspend-button')){
             let suspend = new MW.SuspendButton( this);
-            this.actionsBox.add(suspend.actor);
+            this.sessionBox.add(suspend.actor);
         }
         if(this._settings.get_boolean('show-power-button')){
             let power = new MW.PowerButton( this);
-            this.actionsBox.add(power.actor);
+            this.sessionBox.add(power.actor);
         }           
-        this.leftBox.add(this.actionsBox);
+        this.leftBox.add(this.sessionBox);
         
         if(this._settings.get_enum('searchbar-default-top-location') === Constants.SearchbarLocation.BOTTOM){
             this.searchBox.actor.style ="margin: 10px 10px 0px 10px;";
@@ -163,8 +152,92 @@ var createMenu = class extends BaseMenuLayout.BaseLayout{
 
         this.loadFavorites();
         this.loadCategories();
+        this.loadPinnedShortcuts();
         this.displayCategories();
         this.setDefaultMenuView();
+    }
+
+    updateStyle(){
+        let addStyle = this._settings.get_boolean('enable-custom-arc-menu');
+        if(this.sessionBox){
+            this.sessionBox.get_children().forEach((actor) => {
+                if(actor instanceof St.Button){
+                    addStyle ? actor.add_style_class_name('arc-menu-action') : actor.remove_style_class_name('arc-menu-action');
+                }
+            });
+        }
+        super.updateStyle();
+    }
+
+    loadPinnedShortcuts(){
+        this.actionsBox.destroy_all_children();
+        this.actionsBox.add(this._createHorizontalSeparator(Constants.SEPARATOR_STYLE.LONG));
+        let pinnedApps = this._settings.get_strv('brisk-shortcuts-list');
+        this.favoritesArray=null;
+        this.favoritesArray=[];
+
+        for(let i = 0;i<pinnedApps.length;i+=3){
+            let app = Shell.AppSystem.get_default().lookup_app(pinnedApps[i+2]);
+            
+            let placeInfo, placeMenuItem;
+            if(pinnedApps[i+2]=="ArcMenu_Home"){
+                let homePath = GLib.get_home_dir();
+                placeInfo = new MW.PlaceInfo(Gio.File.new_for_path(homePath), _("Home"));
+                placeMenuItem = new MW.PlaceMenuItem(this, placeInfo);
+            }
+            else if(pinnedApps[i+2]=="ArcMenu_Computer"){
+                placeInfo = new PlaceDisplay.RootInfo();
+                placeInfo.icon = placeInfo.icon.to_string();
+                placeMenuItem = new MW.PlaceMenuItem(this, placeInfo);
+            }
+            else if(pinnedApps[i+2]=="ArcMenu_Network"){
+                placeInfo = new PlaceDisplay.PlaceInfo('network',Gio.File.new_for_uri('network:///'), _('Network'),'network-workgroup-symbolic');
+                placeInfo.icon = placeInfo.icon.to_string();
+                placeMenuItem = new MW.PlaceMenuItem(this, placeInfo);    
+            }
+            else if(pinnedApps[i+2] == "ArcMenu_Software"){
+                let software = Utils.findSoftwareManager();
+                if(software)
+                    placeMenuItem = new MW.ShortcutMenuItem(this, _("Software"), 'system-software-install-symbolic', software);
+            }
+            else if(pinnedApps[i+2] == Constants.ArcMenu_SettingsCommand || pinnedApps[i+2] == "ArcMenu_Suspend" || pinnedApps[i+2] == "ArcMenu_LogOut" || pinnedApps[i+2] == "ArcMenu_PowerOff"
+                    || pinnedApps[i+2] == "ArcMenu_Lock" || app){
+                placeMenuItem = new MW.ShortcutMenuItem(this, pinnedApps[i], pinnedApps[i+1], pinnedApps[i+2]);
+            }
+            else if(pinnedApps[i+2] === "ArcMenu_Trash"){
+                placeMenuItem = new MW.ShortcutMenuItem(this, _("Trash"), '', "ArcMenu_Trash");
+            }
+            else if(pinnedApps[i+2].startsWith("ArcMenu_")){
+                let path = pinnedApps[i+2].replace("ArcMenu_",'');
+
+                if(path === "Documents")
+                    path = imports.gi.GLib.UserDirectory.DIRECTORY_DOCUMENTS;
+                else if(path === "Downloads")
+                    path = imports.gi.GLib.UserDirectory.DIRECTORY_DOWNLOAD;
+                else if(path === "Music")
+                    path = imports.gi.GLib.UserDirectory.DIRECTORY_MUSIC;
+                else if(path === "Pictures")
+                    path = imports.gi.GLib.UserDirectory.DIRECTORY_PICTURES;
+                else if(path === "Videos")
+                    path = imports.gi.GLib.UserDirectory.DIRECTORY_VIDEOS;
+
+                path = GLib.get_user_special_dir(path);
+                if (path != null){
+                    placeInfo = new MW.PlaceInfo(Gio.File.new_for_path(path), _(pinnedApps[i]));
+                    placeMenuItem = new MW.PlaceMenuItem(this, placeInfo);
+                }
+            }
+            else{
+                let path = pinnedApps[i+2];
+                placeInfo = new MW.PlaceInfo(Gio.File.new_for_path(path), _(pinnedApps[i]), (pinnedApps[i+1] !== "ArcMenu_Folder") ? pinnedApps[i+1] : null);
+                placeMenuItem = new MW.PlaceMenuItem(this, placeInfo);
+            }   
+            if(placeMenuItem){
+                placeMenuItem.setIconSizeLarge();
+                this.actionsBox.add(placeMenuItem.actor);
+            }
+        }
+        this.actionsBox.add(this._createHorizontalSeparator(Constants.SEPARATOR_STYLE.LONG));  
     }
 
     setDefaultMenuView(){

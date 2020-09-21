@@ -126,7 +126,6 @@ var TweaksDialog = GObject.registerClass(
             avatarStyleCombo.set_active(this._settings.get_enum('avatar-style'));
             avatarStyleCombo.connect('changed', (widget) => {
                 this._settings.set_enum('avatar-style', widget.get_active());
-                this._settings.reset('reload-theme');
                 this._settings.set_boolean('reload-theme', true);
             });
             avatarStyleRow.add(avatarStyleLabel);
@@ -256,7 +255,6 @@ var TweaksDialog = GObject.registerClass(
             foregroundColorChooser.set_rgba(color);            
             foregroundColorChooser.connect('color-set', ()=>{
                 this._settings.set_string('plasma-selected-color', foregroundColorChooser.get_rgba().to_string());
-                this._settings.reset('reload-theme');
                 this._settings.set_boolean('reload-theme', true);
             });
             foregroundColorRow.add(foregroundColorLabel);
@@ -275,7 +273,6 @@ var TweaksDialog = GObject.registerClass(
             backgroundColorChooser.set_rgba(color);            
             backgroundColorChooser.connect('color-set', ()=>{
                 this._settings.set_string('plasma-selected-background-color',backgroundColorChooser.get_rgba().to_string());
-                this._settings.reset('reload-theme');
                 this._settings.set_boolean('reload-theme', true);
             });
             backgroundColorRow.add(backgroundColorLabel);
@@ -307,7 +304,6 @@ var TweaksDialog = GObject.registerClass(
                 this._settings.reset('plasma-selected-background-color');
                 this._settings.reset('plasma-enable-hover');
                 this._settings.reset('plasma-show-descriptions');
-                this._settings.reset('reload-theme');
                 this._settings.set_boolean('reload-theme', true);
             });
             vbox.add(resetButton);
@@ -317,7 +313,43 @@ var TweaksDialog = GObject.registerClass(
             briskMenuTweaksFrame.add(this._createActivateOnHoverRow());
             briskMenuTweaksFrame.add(this._createSearchBarLocationRow());
             briskMenuTweaksFrame.add(this._createFlipHorizontalRow());
+            let pinnedAppsFrame = new PW.FrameBox();
+            let pinnedAppsScrollWindow = new Gtk.ScrolledWindow();
+            pinnedAppsScrollWindow.set_policy(Gtk.PolicyType.AUTOMATIC, Gtk.PolicyType.AUTOMATIC);
+            pinnedAppsScrollWindow.set_max_content_height(100);
+            pinnedAppsScrollWindow.set_min_content_height(100);
+            //last row - save settings
+            let savePinnedAppsButton = new Gtk.Button({
+                label: _("Save"),
+            });
+            savePinnedAppsButton.connect('clicked', ()=> {
+                //iterate through each frame row (containing apps to pin) to create an array to save in settings
+                let array = [];
+                for(let x = 0;x < pinnedAppsFrame.count; x++) {
+                    array.push(pinnedAppsFrame.get_index(x)._name);
+                    array.push(pinnedAppsFrame.get_index(x)._icon);
+                    array.push(pinnedAppsFrame.get_index(x)._cmd);
+                }
+                this._settings.set_strv('brisk-shortcuts-list',array);
+                savePinnedAppsButton.set_sensitive(false);
+            }); 
+            savePinnedAppsButton.set_halign(Gtk.Align.END);
+            savePinnedAppsButton.set_sensitive(false);
+            
+            //function to load all pinned apps
+            this._loadPinnedApps(this._settings.get_strv('brisk-shortcuts-list'), pinnedAppsFrame, savePinnedAppsButton);
+            pinnedAppsScrollWindow.add_with_viewport(pinnedAppsFrame);
+
+            let pinnedAppsHeaderLabel = new Gtk.Label({
+                label: "<b>" + _("Brisk Menu Shortcuts") + "</b>",
+                use_markup: true,
+                xalign: 0
+            });
+
             vbox.add(briskMenuTweaksFrame);
+            vbox.add(pinnedAppsHeaderLabel);
+            vbox.add(pinnedAppsScrollWindow);
+            vbox.add(savePinnedAppsButton);
         }
         _loadChromebookTweaks(vbox){
             let chromeBookTweaksFrame = new PW.FrameBox();
@@ -673,7 +705,7 @@ var TweaksDialog = GObject.registerClass(
                 frameRow._cmd = array[i+2];
                 let iconString;
                 if(frameRow._icon === "" && Gio.DesktopAppInfo.new(frameRow._cmd)){
-                    iconString = Gio.DesktopAppInfo.new(frameRow._cmd).get_icon().to_string();
+                    iconString = Gio.DesktopAppInfo.new(frameRow._cmd).get_icon() ? Gio.DesktopAppInfo.new(frameRow._cmd).get_icon().to_string() : "";
                 }
                 let arcMenuImage = new Gtk.Image( {
                     gicon: Gio.icon_new_for_string(iconString ? iconString : frameRow._icon),
@@ -726,9 +758,10 @@ var TweaksDialog = GObject.registerClass(
                             frameLabel.label = _(frameRow._name);
                             let iconString;
                             if(frameRow._icon === "" && Gio.DesktopAppInfo.new(frameRow._cmd)){
-                                iconString = Gio.DesktopAppInfo.new(frameRow._cmd).get_icon().to_string();
+                                iconString = Gio.DesktopAppInfo.new(frameRow._cmd).get_icon() ? Gio.DesktopAppInfo.new(frameRow._cmd).get_icon().to_string() : "";
                             }
-                            arcMenuImage.gicon = Gio.icon_new_for_string(iconString ? iconString : frameRow._icon);
+                            let icon = Prefs.getIconPath(newPinnedApps);
+                            arcMenuImage.gicon = Gio.icon_new_for_string(iconString ? iconString : icon);
                             dialog.destroy();
                             frame.show();
                             savePinnedAppsButton.set_sensitive(true);
@@ -766,7 +799,7 @@ var TweaksDialog = GObject.registerClass(
                             frameLabel.label = _(frameRow._name);
                             let iconString;
                             if(frameRow._icon === "" && Gio.DesktopAppInfo.new(frameRow._cmd)){
-                                iconString = Gio.DesktopAppInfo.new(frameRow._cmd).get_icon().to_string();
+                                iconString = Gio.DesktopAppInfo.new(frameRow._cmd).get_icon() ? Gio.DesktopAppInfo.new(frameRow._cmd).get_icon().to_string() : "";
                             }
                             arcMenuImage.gicon = Gio.icon_new_for_string(iconString ? iconString : frameRow._icon);
                             dialog.destroy();

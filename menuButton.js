@@ -84,11 +84,32 @@ var MenuButton = GObject.registerClass(class ArcMenu_MenuButton extends PanelMen
         //Sub Menu Manager - Control all other popup menus
         this.subMenuManager = new PopupMenu.PopupMenuManager(this);
         this.subMenuManager._changeMenu = (menu) => {};
-
         if(this.arcMenuPlacement === Constants.ArcMenuPlacement.PANEL){
             this.menuButtonWidget = new MW.MenuButtonWidget();
             this.x_expand = false;
             this.y_expand = false;
+        }
+        else if(this.arcMenuPlacement === Constants.ArcMenuPlacement.DASH){
+            this.menuButtonWidget = new MW.DashMenuButtonWidget(this, this._settings);
+            this.dash = this._panel._allDocks[dashIndex];
+            this.style_class = 'dash-item-container';
+            this.child = this.menuButtonWidget.icon;
+            this.icon = this.menuButtonWidget.icon;
+            this.label = this.menuButtonWidget.label;
+            this.container.showLabel = () => this.menuButtonWidget.showLabel();
+            this.container.hideLabel = () => this.menuButtonWidget.hideLabel();
+            this.container.toggleButton = this.menuButtonWidget.actor;
+            this.toggleButton = this.menuButtonWidget.actor;
+            this.container.setDragApp = () => {};
+            this.arcMenuContextMenu.addExtensionSettings(this.arcMenuPlacement);
+        }
+
+        //Add Menu Button Widget to Button
+        this.add_actor(this.menuButtonWidget.actor);
+    }
+
+    initiate(){
+        if(this.arcMenuPlacement === Constants.ArcMenuPlacement.PANEL){
             //Dash to Panel Integration
             this.dashToPanel = Main.extensionManager.lookup(DASH_TO_PANEL_UUID);
             this.extensionChangedId = Main.extensionManager.connect('extension-state-changed', (data, extension) => {
@@ -110,20 +131,8 @@ var MenuButton = GObject.registerClass(class ArcMenu_MenuButton extends PanelMen
                 this.syncWithDashToPanel();
             }  
         }
-        else if(this.arcMenuPlacement === Constants.ArcMenuPlacement.DASH){
-            this.menuButtonWidget = new MW.DashMenuButtonWidget(this, this._settings);
-            this.dash = this._panel._allDocks[dashIndex];
-            this.style_class = 'dash-item-container';
-            this.child = this.menuButtonWidget.icon;
-            this.icon = this.menuButtonWidget.icon;
-            this.label = this.menuButtonWidget.label;
-            this.container.showLabel = () => this.menuButtonWidget.showLabel();
-            this.container.hideLabel = () => this.menuButtonWidget.hideLabel();
-            this.container.toggleButton = this.menuButtonWidget.actor;
-            this.toggleButton = this.menuButtonWidget.actor;
-            this.container.setDragApp = () => {};
-            this.arcMenuContextMenu.addExtensionSettings(this.arcMenuPlacement);  
-        
+        else if(this.arcMenuPlacement === Constants.ArcMenuPlacement.DASH){   
+            //Dash to Dock Integration    
             this.dtdPostionChangedID = this._panel._settings.connect('changed::dock-position', ()=> {
                 let side = this._panel._settings.get_enum('dock-position');
                 this.updateArrowSide(side);
@@ -154,9 +163,6 @@ var MenuButton = GObject.registerClass(class ArcMenu_MenuButton extends PanelMen
             this._appList = this._newAppList;
         });
         this._setMenuPositionAlignment();
-
-        //Add Menu Button Widget to Button
-        this.add_actor(this.menuButtonWidget.actor);
 
         //Create Basic Layout
         this.createLayoutID = GLib.timeout_add(0, 100, () => {
